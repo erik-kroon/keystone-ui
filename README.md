@@ -31,7 +31,6 @@ mason add button --registry <local-registry-path>
 
 The default local registry currently includes base components (`button`, `badge`, `card`, `field`, `input`, `label`, `separator`, `textarea`, `cn`), Keystone-backed overlays (`dialog`, `popover`, `sheet`, `tooltip`), and TanStack Form field examples (`text-field`, `select-field`).
 
-
 ## Design Principles
 
 - Solid-native APIs, not React ports.
