@@ -17,10 +17,11 @@
     "build": "turbo build",
     "check-types": "turbo check-types",
     "test:keystone": "turbo -F @keystone-ui/keystone test",
+    "test:docs": "bun --filter docs test",
     "test:mason-cli": "bun --filter @keystone-ui/mason-cli test",
     "test:mason-registry": "bun --filter @keystone-ui/mason-registry test",
     "verify:example-app": "bun scripts/verify-example-app.ts",
-    "verify:release": "bun run check && bun run check-types && bun run test:keystone && bun run test:mason-cli && bun run test:mason-registry && bun run verify:example-app && bun run build",
+    "verify:release": "bun run check && bun run check-types && bun run test:keystone && bun run test:docs && bun run test:mason-cli && bun run test:mason-registry && bun run verify:example-app && bun run build",
     "dev:docs": "turbo -F docs dev",
     "check": "oxlint && oxfmt --write"
   },

@@ -7,6 +7,7 @@ export type {
   MenuGroupLabelProps as NavigationMenuGroupLabelProps,
   MenuGroupProps as NavigationMenuGroupProps,
   MenuItemProps as NavigationMenuItemProps,
+  MenuLinkProps as NavigationMenuLinkProps,
   MenuOpenChangeDetail as NavigationMenuOpenChangeDetail,
   MenuPartProps as NavigationMenuPartProps,
   MenuPortalProps as NavigationMenuPortalProps,

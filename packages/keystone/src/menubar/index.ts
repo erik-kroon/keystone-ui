@@ -7,6 +7,7 @@ export type {
   MenuGroupLabelProps as MenubarGroupLabelProps,
   MenuGroupProps as MenubarGroupProps,
   MenuItemProps as MenubarItemProps,
+  MenuLinkProps as MenubarLinkProps,
   MenuOpenChangeDetail as MenubarOpenChangeDetail,
   MenuPartProps as MenubarPartProps,
   MenuPortalProps as MenubarPortalProps,

@@ -115,6 +115,39 @@ describe("Listbox interaction module", () => {
     });
   });
 
+  test("replaces duplicate option values without leaving stale collection indexes", () => {
+    createRoot((dispose) => {
+      const listbox = createListboxInteraction<
+        { disabled?: boolean; label: string; value: string },
+        { reason: string }
+      >({
+        id: () => "project-listbox",
+        labelledBy: () => "project-trigger",
+        optionId: (value) => `project-option-${value}`,
+        optionSelectDetail: () => ({ reason: "item" }),
+        programmaticDetail: { reason: "programmatic" },
+        scope: "test-listbox",
+      });
+
+      const unregisterAlpha = listbox.registerOption({ label: "Alpha", value: "alpha" });
+      listbox.registerOption({ label: "Updated alpha", value: "alpha" });
+      listbox.registerOption({ label: "Bravo", value: "bravo" });
+
+      expect(listbox.collection.items().map((item) => item.label)).toEqual([
+        "Updated alpha",
+        "Bravo",
+      ]);
+      expect(listbox.collection.itemByValue("alpha")?.label).toBe("Updated alpha");
+
+      unregisterAlpha();
+
+      expect(listbox.collection.items().map((item) => item.value)).toEqual(["bravo"]);
+      expect(listbox.collection.itemByValue("alpha")).toBeUndefined();
+      expect(listbox.collection.itemByValue("bravo")?.label).toBe("Bravo");
+      dispose();
+    });
+  });
+
   test("supports grouped options and multiple selection contracts", () => {
     createRoot((dispose) => {
       const changes: Array<readonly string[]> = [];

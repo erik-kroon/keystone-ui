@@ -7,6 +7,7 @@ export type {
   MenuGroupLabelProps as DropdownMenuGroupLabelProps,
   MenuGroupProps as DropdownMenuGroupProps,
   MenuItemProps as DropdownMenuItemProps,
+  MenuLinkProps as DropdownMenuLinkProps,
   MenuOpenChangeDetail as DropdownMenuOpenChangeDetail,
   MenuPartProps as DropdownMenuPartProps,
   MenuPortalProps as DropdownMenuPortalProps,

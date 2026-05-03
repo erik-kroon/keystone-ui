@@ -17,6 +17,7 @@ import {
 } from "../utils/index";
 
 export type ToolbarOrientation = "horizontal" | "vertical";
+export type ToolbarDirection = "ltr" | "rtl";
 
 export type ToolbarPartProps<T extends HTMLElement = HTMLElement> = {
   children?: JSX.Element;
@@ -28,6 +29,7 @@ export type ToolbarPartProps<T extends HTMLElement = HTMLElement> = {
 
 export type ToolbarRootProps = ToolbarPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> & {
+    dir?: ToolbarDirection;
     disabled?: boolean;
     loopFocus?: boolean;
     orientation?: ToolbarOrientation;
@@ -48,12 +50,14 @@ export type ToolbarSeparatorProps = ToolbarPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
 
 export type CreateToolbarOptions = {
+  dir?: () => ToolbarDirection | undefined;
   disabled?: () => boolean | undefined;
   loopFocus?: () => boolean | undefined;
   orientation?: () => ToolbarOrientation | undefined;
 };
 
 export type ToolbarApi = {
+  dir: Accessor<ToolbarDirection>;
   disabled: Accessor<boolean>;
   loopFocus: Accessor<boolean>;
   moveFocus: (event: KeyboardEvent) => void;
@@ -69,6 +73,7 @@ type ToolbarItemRecord = {
 const ToolbarContext = createContext<ToolbarApi>();
 
 export function createToolbar(options: CreateToolbarOptions = {}): ToolbarApi {
+  const dir = createMemo(() => options.dir?.() ?? "ltr");
   const disabled = createMemo(() => options.disabled?.() ?? false);
   const loopFocus = createMemo(() => options.loopFocus?.() ?? true);
   const orientation = createMemo(() => options.orientation?.() ?? "horizontal");
@@ -92,8 +97,8 @@ export function createToolbar(options: CreateToolbarOptions = {}): ToolbarApi {
 
   const moveFocus = (event: KeyboardEvent) => {
     const horizontal = orientation() === "horizontal";
-    const nextKey = horizontal ? "ArrowRight" : "ArrowDown";
-    const previousKey = horizontal ? "ArrowLeft" : "ArrowUp";
+    const nextKey = horizontal ? (dir() === "rtl" ? "ArrowLeft" : "ArrowRight") : "ArrowDown";
+    const previousKey = horizontal ? (dir() === "rtl" ? "ArrowRight" : "ArrowLeft") : "ArrowUp";
 
     if (![nextKey, previousKey, "Home", "End"].includes(event.key)) return;
 
@@ -123,6 +128,7 @@ export function createToolbar(options: CreateToolbarOptions = {}): ToolbarApi {
   };
 
   return {
+    dir,
     disabled,
     loopFocus,
     moveFocus,
@@ -165,8 +171,15 @@ function useToolbar(part: string) {
 }
 
 function Root(props: ToolbarRootProps) {
-  const [local, others] = splitProps(props, ["children", "disabled", "loopFocus", "orientation"]);
+  const [local, others] = splitProps(props, [
+    "children",
+    "dir",
+    "disabled",
+    "loopFocus",
+    "orientation",
+  ]);
   const toolbar = createToolbar({
+    dir: () => local.dir,
     disabled: () => local.disabled,
     loopFocus: () => local.loopFocus,
     orientation: () => local.orientation,
@@ -179,6 +192,7 @@ function Root(props: ToolbarRootProps) {
         aria-orientation={toolbar.orientation()}
         data-disabled={dataBoolean(toolbar.disabled())}
         data-orientation={toolbar.orientation()}
+        dir={local.dir}
         role="toolbar"
         {...partDataAttributes("toolbar", "root")}
       >

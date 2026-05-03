@@ -3,6 +3,7 @@ import {
   createMemo,
   createUniqueId,
   onCleanup,
+  onMount,
   splitProps,
   useContext,
   type Accessor,
@@ -24,6 +25,7 @@ export type RadioGroupRootProps = RadioGroupPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> & {
     defaultValue?: string;
     disabled?: boolean;
+    form?: string;
     invalid?: boolean;
     loopFocus?: boolean;
     name?: string;
@@ -63,6 +65,7 @@ type RadioItemRecord = {
 type RadioGroupApi = {
   disabled: Accessor<boolean>;
   invalid: Accessor<boolean>;
+  form: Accessor<string | undefined>;
   loopFocus: Accessor<boolean>;
   name: Accessor<string | undefined>;
   orientation: Accessor<RadioGroupOrientation>;
@@ -73,6 +76,7 @@ type RadioGroupApi = {
     disabled: Accessor<boolean>,
   ) => () => void;
   required: Accessor<boolean>;
+  reset: () => string | undefined;
   selectValue: (
     value: string | undefined,
     detail: RadioGroupValueChangeDetail,
@@ -96,6 +100,7 @@ export function createRadioGroup(
   options: {
     defaultValue?: string;
     disabled?: () => boolean | undefined;
+    form?: () => string | undefined;
     invalid?: () => boolean | undefined;
     loopFocus?: () => boolean | undefined;
     name?: () => string | undefined;
@@ -119,6 +124,7 @@ export function createRadioGroup(
 
   return {
     disabled: createMemo(() => options.disabled?.() ?? false),
+    form: createMemo(() => options.form?.()),
     invalid: createMemo(() => options.invalid?.() ?? false),
     loopFocus: createMemo(() => options.loopFocus?.() ?? true),
     name: createMemo(() => options.name?.()),
@@ -134,6 +140,12 @@ export function createRadioGroup(
       };
     },
     required: createMemo(() => options.required?.() ?? false),
+    reset: () => {
+      pendingDetail = { reason: "programmatic" };
+      const result = setValueState(options.defaultValue);
+      pendingDetail = undefined;
+      return result;
+    },
     selectValue: (nextValue, detail) => {
       pendingDetail = detail;
       const result = setValueState(nextValue);
@@ -162,6 +174,7 @@ function Root(props: RadioGroupRootProps) {
     "children",
     "defaultValue",
     "disabled",
+    "form",
     "invalid",
     "loopFocus",
     "name",
@@ -174,6 +187,7 @@ function Root(props: RadioGroupRootProps) {
   const group = createRadioGroup({
     defaultValue: local.defaultValue,
     disabled: () => local.disabled,
+    form: () => local.form,
     invalid: () => local.invalid,
     loopFocus: () => local.loopFocus,
     name: () => local.name,
@@ -290,12 +304,32 @@ function ItemIndicator(props: RadioGroupItemIndicatorProps) {
 function HiddenInput(props: RadioGroupHiddenInputProps) {
   const group = useRadioGroup("HiddenInput");
   const item = useRadioGroupItem("HiddenInput");
+  let input: HTMLInputElement | undefined;
+
+  onMount(() => {
+    const form = input?.form;
+    if (!form) return;
+
+    const onReset = () => group.reset();
+    form.addEventListener("reset", onReset);
+    onCleanup(() => form.removeEventListener("reset", onReset));
+  });
 
   return (
     <input
       {...props}
+      onChange={(event) => {
+        callEventHandler(props.onChange, event);
+        if (event.defaultPrevented || item.disabled() || group.readOnly()) return;
+        if (event.currentTarget.checked) group.selectValue(item.value, { reason: "item" });
+      }}
+      ref={(element) => {
+        input = element;
+        if (typeof props.ref === "function") props.ref(element);
+      }}
       checked={item.checked()}
       disabled={item.disabled()}
+      form={props.form ?? group.form()}
       id={item.inputId}
       name={group.name()}
       required={group.required()}

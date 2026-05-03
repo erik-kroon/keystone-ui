@@ -34,11 +34,12 @@ export function resolveRegistryDependencies(
     }
 
     if (temporary.has(name)) {
+      const cycle = [...stack, name];
       errors.push({
         code: "registryDependency.cycle",
-        message: `Registry dependency cycle detected: ${[...stack, name].join(" -> ")}.`,
+        message: `Registry dependency cycle detected: ${cycle.join(" -> ")}.`,
         value: name,
-        details: { cycle: [...stack, name] },
+        details: { cycle },
       });
       return;
     }
@@ -65,9 +66,11 @@ export function resolveRegistryDependencies(
     }
 
     temporary.add(name);
+    stack.push(name);
     for (const dependency of item.registryDependencies ?? []) {
-      visit(dependency, [...stack, name]);
+      visit(dependency, stack);
     }
+    stack.pop();
     temporary.delete(name);
     permanent.add(name);
     resolved.push(item);
@@ -96,11 +99,12 @@ export async function resolveRegistryDependencyGraph(
     }
 
     if (temporary.has(name)) {
+      const cycle = [...stack, name];
       errors.push({
         code: "registryDependency.cycle",
-        message: `Registry dependency cycle detected: ${[...stack, name].join(" -> ")}.`,
+        message: `Registry dependency cycle detected: ${cycle.join(" -> ")}.`,
         value: name,
-        details: { cycle: [...stack, name] },
+        details: { cycle },
       });
       return;
     }
@@ -129,9 +133,11 @@ export async function resolveRegistryDependencyGraph(
     }
 
     temporary.add(name);
+    stack.push(name);
     for (const dependency of itemValidation.value.registryDependencies ?? []) {
-      await visit(dependency, [...stack, name]);
+      await visit(dependency, stack);
     }
+    stack.pop();
     temporary.delete(name);
     permanent.add(name);
     resolved.push(itemValidation.value);

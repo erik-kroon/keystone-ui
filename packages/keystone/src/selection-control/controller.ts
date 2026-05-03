@@ -16,11 +16,13 @@ export type SelectionControlChangeDetail = {
 export type SelectionControlApi = {
   checked: Accessor<SelectionControlCheckedState>;
   disabled: Accessor<boolean>;
+  form: Accessor<string | undefined>;
   inputId: string;
   invalid: Accessor<boolean>;
   name: Accessor<string | undefined>;
   readOnly: Accessor<boolean>;
   required: Accessor<boolean>;
+  reset: () => SelectionControlCheckedState;
   scope: string;
   setChecked: (
     checked: SelectionControlCheckedState,
@@ -34,6 +36,7 @@ export type CreateSelectionControlOptions = {
   checked?: Accessor<SelectionControlCheckedState | undefined>;
   defaultChecked?: SelectionControlCheckedState;
   disabled?: Accessor<boolean | undefined>;
+  form?: Accessor<string | undefined>;
   invalid?: Accessor<boolean | undefined>;
   name?: Accessor<string | undefined>;
   onCheckedChange?: (
@@ -60,6 +63,7 @@ export function createSelectionControl(
   });
 
   const disabled = createMemo(() => options.disabled?.() ?? false);
+  const form = createMemo(() => options.form?.());
   const invalid = createMemo(() => options.invalid?.() ?? false);
   const readOnly = createMemo(() => options.readOnly?.() ?? false);
   const required = createMemo(() => options.required?.() ?? false);
@@ -79,11 +83,13 @@ export function createSelectionControl(
   return {
     checked,
     disabled,
+    form,
     inputId: `keystone-${options.scope}-input-${createUniqueId()}`,
     invalid,
     name,
     readOnly,
     required,
+    reset: () => setChecked(options.defaultChecked ?? false, { reason: "programmatic" }),
     scope: options.scope,
     setChecked,
     toggle: (detail) => setChecked(checked() === true ? false : true, detail),

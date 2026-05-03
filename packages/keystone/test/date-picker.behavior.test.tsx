@@ -103,6 +103,65 @@ describe("Calendar behavior", () => {
       dispose();
     });
   });
+
+  test("uses locale week info when weekStartsOn is not provided", () => {
+    render(() => <Calendar.Root defaultMonth="2026-05" locale="en-GB" />);
+
+    expect(
+      document.body.querySelector('[data-scope="calendar"][data-part="column-header"]')
+        ?.textContent,
+    ).toBe("Mon");
+  });
+
+  test("supports unavailable dates and range selection state", async () => {
+    const ranges: string[] = [];
+
+    render(() => (
+      <Calendar.Root
+        defaultMonth="2026-05"
+        selectionMode="range"
+        unavailable={(value) => value === "2026-05-12"}
+        onRangeValueChange={(value, detail) =>
+          ranges.push(`${value.start ?? ""}:${value.end ?? ""}:${detail.complete}`)
+        }
+      />
+    ));
+
+    const unavailable = getDay("2026-05-12");
+    expect(unavailable.disabled).toBe(true);
+    expect(unavailable.getAttribute("data-unavailable")).toBe("");
+
+    click(unavailable);
+    await settled();
+    expect(ranges).toEqual([]);
+
+    click(getDay("2026-05-20"));
+    await settled();
+    expect(ranges).toEqual(["2026-05-20::false"]);
+    expect(getDay("2026-05-20").getAttribute("data-range-start")).toBe("");
+
+    click(getDay("2026-05-18"));
+    await settled();
+    expect(ranges).toEqual(["2026-05-20::false", "2026-05-18:2026-05-20:true"]);
+    expect(getDay("2026-05-18").getAttribute("data-range-start")).toBe("");
+    expect(getDay("2026-05-19").getAttribute("data-in-range")).toBe("");
+    expect(getDay("2026-05-20").getAttribute("data-range-end")).toBe("");
+    expect(getByPart("calendar", "root").getAttribute("data-start-value")).toBe("2026-05-18");
+    expect(getByPart("calendar", "root").getAttribute("data-end-value")).toBe("2026-05-20");
+
+    click(getDay("2026-05-10"));
+    await settled();
+    click(getDay("2026-05-14"));
+    await settled();
+    expect(ranges).toEqual([
+      "2026-05-20::false",
+      "2026-05-18:2026-05-20:true",
+      "2026-05-10::false",
+      "2026-05-14::false",
+    ]);
+    expect(getByPart("calendar", "root").getAttribute("data-start-value")).toBe("2026-05-14");
+    expect(getByPart("calendar", "root").getAttribute("data-end-value")).toBeNull();
+  });
 });
 
 describe("DatePicker behavior", () => {
@@ -139,5 +198,44 @@ describe("DatePicker behavior", () => {
     expect(openChanges).toEqual(["true:trigger", "false:select"]);
     expect(queryByPart("date-picker", "content")).toBeNull();
     expect(trigger.textContent).toBe("2026-05-18");
+  });
+
+  test("keeps range picker open until the range has an end date", async () => {
+    const openChanges: string[] = [];
+    const ranges: string[] = [];
+
+    render(() => (
+      <DatePicker.Root
+        defaultMonth="2026-05"
+        selectionMode="range"
+        onOpenChange={(open, detail) => openChanges.push(`${open}:${detail.reason}`)}
+        onRangeValueChange={(value, detail) =>
+          ranges.push(`${value.start ?? ""}:${value.end ?? ""}:${detail.complete}`)
+        }
+      >
+        <DatePicker.Trigger placeholder="Pick dates" />
+        <DatePicker.Content />
+      </DatePicker.Root>
+    ));
+
+    const trigger = getByPart("date-picker", "trigger");
+    click(trigger);
+    await settled();
+
+    click(getDay("2026-05-10"));
+    await settled();
+
+    expect(ranges).toEqual(["2026-05-10::false"]);
+    expect(openChanges).toEqual(["true:trigger"]);
+    expect(queryByPart("date-picker", "content")).not.toBeNull();
+    expect(trigger.textContent).toBe("2026-05-10");
+
+    click(getDay("2026-05-12"));
+    await settled();
+
+    expect(ranges).toEqual(["2026-05-10::false", "2026-05-10:2026-05-12:true"]);
+    expect(openChanges).toEqual(["true:trigger", "false:select"]);
+    expect(queryByPart("date-picker", "content")).toBeNull();
+    expect(trigger.textContent).toBe("2026-05-10 - 2026-05-12");
   });
 });

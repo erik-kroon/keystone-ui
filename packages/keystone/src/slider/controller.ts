@@ -19,11 +19,16 @@ export type SliderValueChangeDetail = {
 export type SliderControllerOptions = {
   defaultValue?: readonly number[];
   disabled?: Accessor<boolean | undefined>;
+  form?: Accessor<string | undefined>;
+  invalid?: Accessor<boolean | undefined>;
   max?: Accessor<number | undefined>;
   min?: Accessor<number | undefined>;
+  name?: Accessor<string | undefined>;
   onValueChange?: (value: readonly number[], detail: SliderValueChangeDetail) => void;
   onValueCommit?: (value: readonly number[], detail: SliderValueChangeDetail) => void;
   orientation?: Accessor<SliderOrientation | undefined>;
+  readOnly?: Accessor<boolean | undefined>;
+  required?: Accessor<boolean | undefined>;
   step?: Accessor<number | undefined>;
   value?: Accessor<readonly number[] | undefined>;
 };
@@ -57,17 +62,37 @@ export type SliderThumbContractProps = Omit<
   ref?: HTMLButtonElement | ((element: HTMLButtonElement) => void);
 };
 
+export type SliderHiddenInputContractProps = Omit<
+  JSX.InputHTMLAttributes<HTMLInputElement>,
+  "children" | "checked" | "ref" | "type" | "value"
+> & {
+  index: number;
+  ref?: HTMLInputElement | ((element: HTMLInputElement) => void);
+};
+
 export type SliderApi = {
   disabled: Accessor<boolean>;
+  form: Accessor<string | undefined>;
+  getHiddenInputProps: (props: SliderHiddenInputContractProps) => Record<string, unknown>;
   getPercent: (value: number) => number;
   getRangeProps: (props: SliderRangeContractProps) => Record<string, unknown>;
   getRootProps: (props: SliderRootContractProps) => Record<string, unknown>;
   getThumbProps: (props: SliderThumbContractProps) => Record<string, unknown>;
   getTrackProps: (props: SliderTrackContractProps) => Record<string, unknown>;
+  invalid: Accessor<boolean>;
   max: Accessor<number>;
   min: Accessor<number>;
+  name: Accessor<string | undefined>;
   orientation: Accessor<SliderOrientation>;
+  readOnly: Accessor<boolean>;
+  required: Accessor<boolean>;
+  reset: () => readonly number[];
   step: Accessor<number>;
+  setValueAtIndex: (
+    thumbIndex: number,
+    nextValue: number,
+    detail: SliderValueChangeDetail,
+  ) => readonly number[];
   value: Accessor<readonly number[]>;
 };
 
@@ -76,7 +101,12 @@ export function createSliderController(options: SliderControllerOptions = {}): S
   const max = createMemo(() => Math.max(options.max?.() ?? 100, min()));
   const step = createMemo(() => Math.max(options.step?.() ?? 1, Number.EPSILON));
   const disabled = createMemo(() => options.disabled?.() ?? false);
+  const form = createMemo(() => options.form?.());
+  const invalid = createMemo(() => options.invalid?.() ?? false);
+  const name = createMemo(() => options.name?.());
   const orientation = createMemo(() => options.orientation?.() ?? "horizontal");
+  const readOnly = createMemo(() => options.readOnly?.() ?? false);
+  const required = createMemo(() => options.required?.() ?? false);
   let pendingDetail: SliderValueChangeDetail | undefined;
   let trackElement: HTMLDivElement | undefined;
   let activeThumbIndex: number | undefined;
@@ -98,7 +128,7 @@ export function createSliderController(options: SliderControllerOptions = {}): S
     nextValue: number,
     detail: SliderValueChangeDetail,
   ) => {
-    if (disabled() && detail.reason !== "programmatic") return normalizedValue();
+    if ((disabled() || readOnly()) && detail.reason !== "programmatic") return normalizedValue();
 
     pendingDetail = { ...detail, thumbIndex };
     const nextValues = setValueState((currentValue) => {
@@ -139,7 +169,7 @@ export function createSliderController(options: SliderControllerOptions = {}): S
   };
 
   const startDragging = (event: PointerEvent, thumbIndex?: number) => {
-    if (disabled()) return;
+    if (disabled() || readOnly()) return;
 
     activeThumbIndex = thumbIndex;
     setValueFromPoint(event, thumbIndex === undefined ? "track" : "pointer");
@@ -149,6 +179,67 @@ export function createSliderController(options: SliderControllerOptions = {}): S
 
   return {
     disabled,
+    form,
+    getHiddenInputProps: (props) => {
+      const { index, ...inputProps } = props;
+
+      return {
+        ...inputProps,
+        type: "hidden",
+        ...partDataAttributes("slider", "hidden-input"),
+        get disabled() {
+          return inputProps.disabled ?? disabled();
+        },
+        get form() {
+          return inputProps.form ?? form();
+        },
+        get name() {
+          return inputProps.name ?? name();
+        },
+        get required() {
+          return inputProps.required ?? required();
+        },
+        get value() {
+          return String(normalizedValue()[index] ?? min());
+        },
+        get "data-disabled"() {
+          return dataBoolean(disabled());
+        },
+        get "data-invalid"() {
+          return dataBoolean(invalid());
+        },
+        get "data-readonly"() {
+          return dataBoolean(readOnly());
+        },
+        get "data-required"() {
+          return dataBoolean(required());
+        },
+        get "data-orientation"() {
+          return orientation();
+        },
+        get "data-index"() {
+          return String(index);
+        },
+        onChange: (event: Event) => {
+          callEventHandler(inputProps.onChange, event);
+          if (event.defaultPrevented || disabled() || readOnly()) return;
+          setThumbValue(index, Number((event.currentTarget as HTMLInputElement).value), {
+            event,
+            reason: "programmatic",
+            thumbIndex: index,
+          });
+        },
+        onInput: (event: InputEvent) => {
+          callEventHandler(inputProps.onInput, event);
+          if (event.defaultPrevented || disabled() || readOnly()) return;
+          setThumbValue(index, Number((event.currentTarget as HTMLInputElement).value), {
+            event,
+            reason: "programmatic",
+            thumbIndex: index,
+          });
+        },
+      };
+    },
     getPercent,
     getRangeProps: (props) => ({
       ...props,
@@ -156,8 +247,17 @@ export function createSliderController(options: SliderControllerOptions = {}): S
       get "data-disabled"() {
         return dataBoolean(disabled());
       },
+      get "data-invalid"() {
+        return dataBoolean(invalid());
+      },
       get "data-orientation"() {
         return orientation();
+      },
+      get "data-readonly"() {
+        return dataBoolean(readOnly());
+      },
+      get "data-required"() {
+        return dataBoolean(required());
       },
       get style() {
         const values = normalizedValue();
@@ -178,8 +278,17 @@ export function createSliderController(options: SliderControllerOptions = {}): S
       get "data-disabled"() {
         return dataBoolean(disabled());
       },
+      get "data-invalid"() {
+        return dataBoolean(invalid());
+      },
       get "data-orientation"() {
         return orientation();
+      },
+      get "data-readonly"() {
+        return dataBoolean(readOnly());
+      },
+      get "data-required"() {
+        return dataBoolean(required());
       },
     }),
     getThumbProps: (props) => {
@@ -193,8 +302,17 @@ export function createSliderController(options: SliderControllerOptions = {}): S
         get "aria-disabled"() {
           return disabled() ? "true" : undefined;
         },
+        get "aria-invalid"() {
+          return invalid() ? "true" : undefined;
+        },
         get "aria-orientation"() {
           return orientation();
+        },
+        get "aria-readonly"() {
+          return readOnly() ? "true" : undefined;
+        },
+        get "aria-required"() {
+          return required() ? "true" : undefined;
         },
         get "aria-valuemax"() {
           return max();
@@ -211,8 +329,17 @@ export function createSliderController(options: SliderControllerOptions = {}): S
         get "data-disabled"() {
           return dataBoolean(disabled());
         },
+        get "data-invalid"() {
+          return dataBoolean(invalid());
+        },
         get "data-orientation"() {
           return orientation();
+        },
+        get "data-readonly"() {
+          return dataBoolean(readOnly());
+        },
+        get "data-required"() {
+          return dataBoolean(required());
         },
         get "data-index"() {
           return String(index);
@@ -230,6 +357,7 @@ export function createSliderController(options: SliderControllerOptions = {}): S
         onKeyDown: (event: KeyboardEvent) => {
           callEventHandler(thumbProps.onKeyDown, event);
           if (event.defaultPrevented) return;
+          if (disabled() || readOnly()) return;
 
           const delta = getKeyboardDelta(event.key, step(), max() - min());
           if (delta === undefined) return;
@@ -244,6 +372,7 @@ export function createSliderController(options: SliderControllerOptions = {}): S
         onPointerDown: (event: PointerEvent) => {
           callEventHandler(thumbProps.onPointerDown, event);
           if (event.defaultPrevented) return;
+          if (disabled() || readOnly()) return;
 
           event.preventDefault();
           startDragging(event, index);
@@ -260,21 +389,44 @@ export function createSliderController(options: SliderControllerOptions = {}): S
       get "data-disabled"() {
         return dataBoolean(disabled());
       },
+      get "data-invalid"() {
+        return dataBoolean(invalid());
+      },
       get "data-orientation"() {
         return orientation();
+      },
+      get "data-readonly"() {
+        return dataBoolean(readOnly());
+      },
+      get "data-required"() {
+        return dataBoolean(required());
       },
       onPointerDown: (event: PointerEvent) => {
         callEventHandler(props.onPointerDown, event);
         if (event.defaultPrevented) return;
+        if (disabled() || readOnly()) return;
 
         event.preventDefault();
         startDragging(event);
       },
     }),
+    invalid,
     max,
     min,
+    name,
     orientation,
+    readOnly,
+    required,
+    reset: () => {
+      pendingDetail = { reason: "programmatic" };
+      const result = setValueState(() =>
+        normalizeValues(options.defaultValue ?? [min()], min(), max(), step()),
+      );
+      pendingDetail = undefined;
+      return result;
+    },
     step,
+    setValueAtIndex: setThumbValue,
     value: normalizedValue,
   };
 }

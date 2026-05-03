@@ -74,6 +74,30 @@ describe("Tabs behavior", () => {
     expect(triggers[2].getAttribute("aria-selected")).toBe("true");
   });
 
+  test("uses RTL-aware horizontal arrow navigation", () => {
+    render(() => (
+      <Tabs.Root defaultValue="one" dir="rtl">
+        <Tabs.List>
+          <Tabs.Trigger value="one">One</Tabs.Trigger>
+          <Tabs.Trigger value="two">Two</Tabs.Trigger>
+          <Tabs.Trigger value="three">Three</Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="one">One panel</Tabs.Content>
+        <Tabs.Content value="two">Two panel</Tabs.Content>
+        <Tabs.Content value="three">Three panel</Tabs.Content>
+      </Tabs.Root>
+    ));
+
+    const triggers = getTriggers();
+
+    triggers[0].focus();
+    keyDown(triggers[0], "ArrowLeft");
+    expect(document.activeElement).toBe(triggers[1]);
+
+    keyDown(triggers[1], "ArrowRight");
+    expect(document.activeElement).toBe(triggers[0]);
+  });
+
   test("supports controlled state and respects prevented user events", () => {
     createRoot((dispose) => {
       const [value, setValue] = createSignal("alpha");

@@ -1,7 +1,6 @@
 /// <reference types="vite/client" />
 
 import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from "@tanstack/solid-router";
-import { TanStackRouterDevtools } from "@tanstack/solid-router-devtools";
 import type { JSX } from "solid-js";
 import { Suspense } from "solid-js";
 import { HydrationScript } from "solid-js/web";
@@ -30,7 +29,6 @@ function RootComponent() {
         <Header />
         <Outlet />
       </div>
-      <TanStackRouterDevtools />
     </RootDocument>
   );
 }

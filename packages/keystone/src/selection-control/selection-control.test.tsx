@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 import { Checkbox } from "../checkbox/index";
 import { RadioGroup } from "../radio-group/index";
 import { Switch } from "../switch/index";
-import { click, getByPart, keyDown, render } from "../../test/harness";
+import { click, getByPart, keyDown, render, settled } from "../../test/harness";
 
 function parts(scope: string, part: string) {
   return Array.from(
@@ -40,6 +40,29 @@ describe("Selection controls", () => {
     click(control);
     expect(input.checked).toBe(true);
     expect(changes).toEqual([]);
+  });
+
+  test("switch resets through its native input form owner", async () => {
+    render(() => (
+      <form>
+        <Switch.Root defaultChecked name="notifications">
+          <Switch.Control>
+            <Switch.Thumb />
+          </Switch.Control>
+          <Switch.HiddenInput />
+        </Switch.Root>
+      </form>
+    ));
+
+    const form = document.querySelector("form")!;
+    click(getByPart("switch", "control"));
+    expect(new FormData(form).get("notifications")).toBeNull();
+
+    form.reset();
+    await settled();
+
+    expect(getByPart("switch", "control").getAttribute("aria-checked")).toBe("true");
+    expect(new FormData(form).get("notifications")).toBe("on");
   });
 
   test("checkbox supports indeterminate state and keyboard toggling", () => {
@@ -93,6 +116,39 @@ describe("Selection controls", () => {
     expect(changes).toEqual([true]);
   });
 
+  test("checkbox submits, syncs, and resets through its native input", async () => {
+    render(() => (
+      <form>
+        <Checkbox.Root defaultChecked name="terms">
+          <Checkbox.Control />
+          <Checkbox.HiddenInput />
+        </Checkbox.Root>
+      </form>
+    ));
+
+    const form = document.querySelector("form")!;
+    const input = getByPart("checkbox", "hidden-input") as HTMLInputElement;
+
+    expect(new FormData(form).get("terms")).toBe("on");
+
+    click(getByPart("checkbox", "control"));
+    expect(new FormData(form).get("terms")).toBeNull();
+
+    input.checked = true;
+    input.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
+    await settled();
+    expect(getByPart("checkbox", "control").getAttribute("aria-checked")).toBe("true");
+
+    click(getByPart("checkbox", "control"));
+    expect(new FormData(form).get("terms")).toBeNull();
+
+    form.reset();
+    await settled();
+
+    expect(getByPart("checkbox", "control").getAttribute("aria-checked")).toBe("true");
+    expect(new FormData(form).get("terms")).toBe("on");
+  });
+
   test("radio group roves focus and selects with keyboard while skipping disabled items", () => {
     const changes: string[] = [];
 
@@ -135,5 +191,35 @@ describe("Selection controls", () => {
     expect(large.getAttribute("aria-checked")).toBe("true");
     expect((parts("radio-group", "hidden-input")[2] as HTMLInputElement).checked).toBe(true);
     expect(changes).toEqual(["large"]);
+  });
+
+  test("radio group resets through an external form owner", async () => {
+    render(() => (
+      <>
+        <form id="settings" />
+        <RadioGroup.Root defaultValue="small" form="settings" name="size">
+          <RadioGroup.Item value="small">
+            Small
+            <RadioGroup.HiddenInput />
+          </RadioGroup.Item>
+          <RadioGroup.Item value="large">
+            Large
+            <RadioGroup.HiddenInput />
+          </RadioGroup.Item>
+        </RadioGroup.Root>
+      </>
+    ));
+
+    const [, large] = parts("radio-group", "item");
+    click(large);
+
+    const form = document.querySelector<HTMLFormElement>("#settings")!;
+    expect(new FormData(form).get("size")).toBe("large");
+
+    form.reset();
+    await settled();
+
+    expect(new FormData(form).get("size")).toBe("small");
+    expect(parts("radio-group", "item")[0].getAttribute("aria-checked")).toBe("true");
   });
 });

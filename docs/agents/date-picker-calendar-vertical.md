@@ -12,12 +12,14 @@ This vertical applies the primitive delivery standard to DatePicker and Calendar
 
 ## Current Keystone Contract
 
-- `Calendar.Root` supports controlled and uncontrolled `value`, `month`, `defaultValue`, `defaultMonth`, `minValue`, `maxValue`, `disabled`, `locale`, `weekStartsOn`, `onValueChange`, and `onMonthChange`.
+- `Calendar.Root` supports controlled and uncontrolled single-date `value`, range `rangeValue`, `month`, `defaultValue`, `defaultRangeValue`, `defaultMonth`, `selectionMode`, `minValue`, `maxValue`, `unavailable`, `disabled`, `locale`, `weekStartsOn`, `onValueChange`, `onRangeValueChange`, and `onMonthChange`.
 - `Calendar.Grid` renders a `role="grid"` month table with column headers, rows, grid cells, and day buttons.
-- Day buttons expose selected, outside-month, today, disabled, and value data attributes.
+- Day buttons expose selected, range start/end/in-range, outside-month, today, unavailable, disabled, and value data attributes.
+- Range selection normalizes reverse selection, keeps partial ranges open, and restarts instead of completing across unavailable dates.
+- Calendar week starts infer from `Intl.Locale.weekInfo` when `weekStartsOn` is omitted, with an explicit `weekStartsOn` override and Sunday fallback.
 - Calendar keyboard support covers arrow movement, Home/End, PageUp/PageDown, Enter, and Space.
 - `DatePicker.Root` adds controlled and uncontrolled `open` state around the same calendar state.
-- `DatePicker.Trigger` exposes `aria-haspopup="dialog"`, `aria-expanded`, `aria-controls`, placeholder state, and selected value text.
+- `DatePicker.Trigger` exposes `aria-haspopup="dialog"`, `aria-expanded`, `aria-controls`, placeholder state, selection mode, selected single-date text, and range label text.
 - User click and keydown handlers run first; internal behavior skips when the event is default-prevented.
 
 ## Mason Surface
@@ -27,4 +29,4 @@ This vertical applies the primitive delivery standard to DatePicker and Calendar
 
 ## Parity Notes
 
-Kobalte and Base UI go deeper on date fields, segment editing, validation and form semantics, richer unavailable date policies, multi-month and range calendars, cursor/touch behavior, nested overlay coordination, focus restoration, and edge-case accessibility tests. The next parity pass should deepen those areas without moving TanStack app-layer form concerns into Keystone.
+Kobalte and Base UI still go deeper on date fields, segment editing, validation and form semantics, multi-month rendering, alternate calendar systems beyond localized `Intl` formatting and locale week starts, cursor/touch behavior, nested overlay coordination, focus restoration, and edge-case accessibility tests. The next parity pass should deepen those areas without moving TanStack app-layer form concerns into Keystone.

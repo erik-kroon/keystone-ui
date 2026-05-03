@@ -125,6 +125,34 @@ Optional metadata:
 - `changelog`: human-readable item changes.
 - `integrity`: hash metadata for remote item payloads when available.
 
+## Parity Metadata
+
+First-party Mason registry items should include `meta.parity` so docs and maintainers can see what each item currently matches, which references were used, and which gaps are intentionally left for later work.
+
+`meta.parity` is an object whose keys name reference systems and whose values are concise notes:
+
+```json
+{
+  "meta": {
+    "parity": {
+      "baseUi": "Matches the core runtime contract. Gaps: advanced transition metadata remains follow-up work.",
+      "kobalte": "Matches the Solid composition shape. Gaps: deeper form-control integration remains follow-up work."
+    }
+  }
+}
+```
+
+Reference selection:
+
+- Use `baseUi` first for Keystone-backed primitive and overlay runtime depth.
+- Use `kobalte` second for Solid-native primitive API shape and composition.
+- Use a more specific first-class reference when Base UI or Kobalte is not the right comparison.
+- TanStack-backed Mason app components may use keys such as `tanstackForm`, `tanstackTable`, or `tanstackRouter`.
+- Toast behavior may include `sonner`.
+- Mason utilities, blocks, and source-registry conventions may use keys such as `mason` or `shadcn`.
+
+Parity notes are not a claim of complete compatibility. They should state what the current item covers and name important gaps. For the default first-party registry, tests should fail when parity notes are missing, empty, or not string-valued. Third-party registries may adopt the same convention, but this RFC does not make parity metadata a public compatibility guarantee for all external registries yet.
+
 ## File Descriptors
 
 Each file descriptor must include:

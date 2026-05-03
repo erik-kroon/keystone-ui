@@ -27,11 +27,12 @@
       "group-label",
       "separator",
       "item",
+      "link",
       "item-indicator"
     ],
     "parity": {
-      "baseUi": "Thin vertical covers the core NavigationMenu trigger/content item contract through Keystone overlay positioning and menubar semantics. Gaps: Viewport, Popup-specific layout APIs, animation metadata, link activation helpers, touch pointer intent, and edge-case tests remain follow-up work.",
-      "kobalte": "Thin vertical maps Root/Trigger/Content/Item/Group/Separator behavior onto Keystone menu kernel with navigation-menu scope, controlled open state, typeahead, disabled skipping, and Mason wrappers. Gaps: explicit Root nav/List/Viewport parts, hover intent tuning, submenu cursor safety, focus restoration across routed links, and richer nested coordination remain follow-up work."
+      "baseUi": "Thin vertical covers the core NavigationMenu trigger/content item/link contract through Keystone overlay positioning and menubar semantics. Gaps: Viewport, Popup-specific layout APIs, animation metadata, touch pointer intent, and edge-case tests remain follow-up work.",
+      "kobalte": "Thin vertical maps Root/Trigger/Content/Item/Link/Group/Separator behavior onto Keystone menu kernel with navigation-menu scope, controlled open state, typeahead, disabled skipping, routed anchor activation, and Mason wrappers. Gaps: explicit Root nav/List/Viewport parts, hover intent tuning, submenu cursor safety, focus restoration across dynamic route transitions, and richer nested coordination remain follow-up work."
     }
   },
   "files": [
