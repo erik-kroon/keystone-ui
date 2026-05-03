@@ -1,0 +1,5 @@
+{
+  "$schema": "https://mason.build/schema/registry.json",
+  "name": "local",
+  "items": ["button"]
+}

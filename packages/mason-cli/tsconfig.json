@@ -1,0 +1,8 @@
+{
+  "extends": "@keystone-ui/config/tsconfig.base.json",
+  "include": ["src/**/*.ts", "test/**/*.ts"],
+  "exclude": ["src/testing/fixtures/**"],
+  "compilerOptions": {
+    "types": ["bun-types"]
+  }
+}
