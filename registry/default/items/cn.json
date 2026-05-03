@@ -1,0 +1,26 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "cn",
+  "type": "registry:lib",
+  "title": "Class Name Utility",
+  "description": "Small class name composition helper shared by Mason base components.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["utility"],
+  "keywords": ["classes", "utility", "styling"],
+  "docs": "https://mason.build/docs/components/cn",
+  "meta": {
+    "install": "mason add cn",
+    "customization": "Extend this helper when your project needs conditional class maps, array flattening, or conflict-aware class merging.",
+    "sourceFiles": ["registry/default/lib/cn.ts"]
+  },
+  "files": [
+    {
+      "path": "lib/cn.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

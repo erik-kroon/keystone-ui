@@ -1,0 +1,28 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "field",
+  "type": "registry:ui",
+  "title": "Field",
+  "description": "Form field shell with label, description, and error parts.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["form", "base"],
+  "keywords": ["field", "label", "description", "error", "form"],
+  "docs": "https://mason.build/docs/components/field",
+  "registryDependencies": ["cn", "label"],
+  "meta": {
+    "install": "mason add field",
+    "customization": "Style the shell through mason-field classes and data-part values for root, label, description, and error.",
+    "sourceFiles": ["registry/default/ui/field.tsx"],
+    "dependencies": ["cn", "label"]
+  },
+  "files": [
+    {
+      "path": "ui/field.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

@@ -7,7 +7,7 @@ Keystone UI aims to give Solid a serious UI ecosystem with two distinct layers:
 - `Keystone`: headless, accessible, unstyled primitives for Solid.
 - `Mason`: copy-paste styled components, blocks, templates, registry, and CLI for Solid.
 
-The strategic model is similar to a primitive layer plus a shadcn-style registry layer, but the implementation should be Solid-native rather than a React API port.
+The strategic model combines a primitive layer with a source-first registry layer, implemented with Solid-native APIs rather than React-shaped translations.
 
 ## Domain Terms
 
@@ -20,6 +20,7 @@ The strategic model is similar to a primitive layer plus a shadcn-style registry
 - `registry item`: Mason-distributed component, block, hook, utility, theme, page, template, config, rule, or asset.
 - `block`: production-shaped Mason UI composed from components, such as `dashboard-01`, `auth-01`, or `settings-01`.
 - `template`: starter project installed by Mason, such as `vite-solid-basic` or `solidstart-basic`.
+- `TanStack app layer`: Mason's preferred app-behavior layer for serious forms, data tables, shared app state, and keyboard shortcuts.
 
 ## Product Boundaries
 
@@ -37,6 +38,7 @@ Mason owns:
 - Styled source files installed into user apps.
 - Blocks, templates, themes, registry schema, and registry validation.
 - Generated component conventions and visual system.
+- TanStack-backed app integrations in generated source, especially Form, Table, Store, and Hotkeys.
 
 Forbidden dependency direction:
 
@@ -63,13 +65,10 @@ Keystone internals -> Keystone primitives -> Mason components -> Mason blocks ->
 - Every primitive part should expose stable `data-scope` and `data-part` attributes.
 - Floating/measured parts should expose documented CSS variables for geometry and transform origin.
 - Accessibility specs are product scope and should precede primitive implementation.
-- Inspiration priority:
-  - Base UI is the primary architecture and runtime-depth reference.
-  - Kobalte is the primary Solid-native API, polymorphism, and composition reference.
-  - Radix Primitives is secondary React precedent and should not override Solid-native design.
-  - shadcn UI is the primary copy-paste UI, CLI, registry, and docs-product reference for Mason.
-  - shadcn registry template is the focused registry-structure reference for Mason.
-  - coss UI is later Mason UI component inspiration.
+- Mason first-party app components should prefer TanStack libraries for app-grade behavior: `@tanstack/solid-form`, `@tanstack/solid-table`, TanStack Store, and `@tanstack/solid-hotkeys`.
+- Keystone must not depend on TanStack app libraries. Keystone owns intrinsic primitive behavior; Mason owns app-level form/table/store/hotkey integration.
+- Use [ADR 0003](docs/adr/0003-mason-tanstack-app-layer.md) and [End-State Primitive And Component Inventory](docs/agents/end-state-primitive-component-inventory.md) when deciding whether a new surface belongs in Keystone or Mason.
+- The active design source of truth is the accepted ADRs, RFCs, PRDs, agent guidance, and end-state inventory in `docs/`.
 
 ## Current State
 
@@ -81,7 +80,7 @@ Keystone internals -> Keystone primitives -> Mason components -> Mason blocks ->
 - `packages/mason-cli`: early Mason CLI tracer with init/add planning and tests.
 - `packages/mason-registry`: registry schema, validation, dependency resolution, path safety, and tests.
 - `docs/`: ADRs, RFCs, accessibility plan, PRDs, and agent notes.
-- `inspo/`: gitignored local clones of Base UI, Kobalte, Radix Primitives, shadcn UI, shadcn registry template, and coss for reference.
+- `registry/`: Mason registry source for first-party components, blocks, themes, and templates.
 
 The project is beyond a pure scaffold but still far from a mature primitive library. Mason registry and CLI tracer quality is ahead of Keystone runtime depth. Keystone needs a real internal kernel before broad primitive work.
 
@@ -94,6 +93,7 @@ The active planning baseline:
 - Use MIT as the intended license and lightweight ADR/RFC-based maintainer governance.
 - Use the Keystone API RFC as the baseline for compound components, low-level creators, controlled state, polymorphism, event composition, data attributes, CSS variables, SSR, and first API-proving primitives.
 - Use the Mason registry RFC as the baseline for registry schema, CLI install semantics, path safety, Solid project detection, and first proving items.
+- Use the end-state primitive/component inventory as the baseline for Keystone/Mason surface classification and sequencing.
 - Write accessibility testing plan.
 - Preserve the strict Keystone/Mason product boundary.
 - Prioritize Keystone internals parity before adding more primitive surface area.

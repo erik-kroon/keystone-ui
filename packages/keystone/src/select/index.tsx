@@ -1,12 +1,4 @@
-import {
-  Show,
-  createContext,
-  createMemo,
-  createSignal,
-  splitProps,
-  useContext,
-  type JSX,
-} from "solid-js";
+import { Show, createContext, createSignal, splitProps, useContext, type JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import { createFormControl, type FormControlApi } from "../form/index";
 import { assignRef } from "../overlay/dom";
@@ -17,16 +9,12 @@ import {
 } from "../overlay/index";
 import {
   composeEventHandlers,
-  createCollection,
   createControllableBooleanSignal,
-  createControllableSignal,
+  createListInteractionKernel,
   createStableId,
-  createTypeahead,
   dataBoolean,
-  firstEnabledItem,
-  lastEnabledItem,
-  nextEnabledItem,
   renderPolymorphic,
+  type ListInteractionKernelApi,
   type PolymorphicProps,
 } from "../utils/index";
 
@@ -99,6 +87,17 @@ export type SelectItemTextProps = SelectPartProps<HTMLSpanElement> &
 export type SelectItemIndicatorProps = SelectPartProps<HTMLSpanElement> &
   Omit<JSX.HTMLAttributes<HTMLSpanElement>, "children" | "ref">;
 
+export type SelectTriggerContractProps = Omit<SelectTriggerProps, "as" | "children">;
+export type SelectValueContractProps = Omit<SelectValueProps, "children" | "placeholder">;
+export type SelectContentContractProps = Omit<SelectContentProps, "children">;
+export type SelectPositionerContractProps = Omit<SelectPositionerProps, "children">;
+export type SelectListboxContractProps = Omit<SelectListboxProps, "children">;
+export type SelectItemContractProps = Omit<SelectItemProps, "children" | "label"> & {
+  label: string;
+};
+export type SelectItemTextContractProps = Omit<SelectItemTextProps, "children">;
+export type SelectItemIndicatorContractProps = Omit<SelectItemIndicatorProps, "children">;
+
 export type CreateSelectOptions = {
   defaultOpen?: boolean;
   defaultValue?: string;
@@ -119,22 +118,22 @@ export type SelectApi = {
   disabled: () => boolean;
   floating: FloatingAdapter;
   formControl: FormControlApi;
-  highlightedValue: () => string | undefined;
+  getContentProps: (props: SelectContentContractProps) => Record<string, unknown>;
+  getItemIndicatorProps: (props: SelectItemIndicatorContractProps) => Record<string, unknown>;
+  getItemProps: (props: SelectItemContractProps) => Record<string, unknown>;
+  getItemTextProps: (props: SelectItemTextContractProps) => Record<string, unknown>;
+  getListboxProps: (props: SelectListboxContractProps) => Record<string, unknown>;
+  getPositionerProps: (props: SelectPositionerContractProps) => Record<string, unknown>;
+  getTriggerProps: (props: SelectTriggerContractProps) => Record<string, unknown>;
+  getValueProps: (props: SelectValueContractProps) => Record<string, unknown>;
   invalid: () => boolean;
   itemId: (value: string) => string;
-  items: () => SelectItemData[];
+  list: ListInteractionKernelApi<SelectItemData, SelectChangeDetail>;
   listboxId: string;
   open: () => boolean;
   placeholder: () => string | undefined;
-  registerItem: (item: SelectItemData) => () => void;
   required: () => boolean;
-  selectValue: (value: string, detail: SelectChangeDetail) => void;
-  selectedItem: () => SelectItemData | undefined;
-  setContentElement: (element: HTMLDivElement) => void;
-  setHighlightedValue: (value: string | undefined) => void;
-  setPositionerElement: (element: HTMLDivElement) => void;
   setOpen: (open: boolean, detail: SelectOpenChangeDetail) => void;
-  setTriggerElement: (element: HTMLButtonElement) => void;
   triggerId: string;
   value: () => string | undefined;
 };
@@ -145,40 +144,39 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
   const triggerId = createStableId("select-trigger");
   const contentId = createStableId("select-content");
   const listboxId = createStableId("select-listbox");
-  const collection = createCollection<SelectItemData>();
   const [triggerElement, setTriggerElement] = createSignal<HTMLButtonElement>();
   const [contentElement, setContentElement] = createSignal<HTMLDivElement>();
   const [positionerElement, setPositionerElement] = createSignal<HTMLDivElement>();
-  let lastValueDetail: SelectChangeDetail = { reason: "programmatic" };
   let lastOpenDetail: SelectOpenChangeDetail = { reason: "programmatic" };
-  const [highlightedValue, setHighlightedValue] = createControllableSignal<string | undefined>({
-    defaultValue: undefined,
-  });
-  const [value, setValueState] = createControllableSignal<string | undefined>({
-    value: options.value,
-    defaultValue: options.defaultValue,
-    onChange: (next) => options.onValueChange?.(next, lastValueDetail),
-  });
   const [open, setOpenState] = createControllableBooleanSignal({
     value: options.open,
     defaultValue: options.defaultOpen ?? false,
     onChange: (next) => options.onOpenChange?.(next, lastOpenDetail),
   });
-  const itemList = () => [...collection.items()];
-  const selectedItem = createMemo(() => itemList().find((item) => item.value === value()));
   const disabled = () => options.disabled?.() ?? false;
   const invalid = () => options.invalid?.() ?? false;
   const required = () => options.required?.() ?? false;
+  const list = createListInteractionKernel<SelectItemData, SelectChangeDetail>({
+    value: options.value,
+    defaultValue: options.defaultValue,
+    programmaticDetail: { reason: "programmatic" },
+    onSelectionChange: options.onValueChange,
+    onValueSelect: (_item, detail) => {
+      setOpen(false, {
+        event: detail.event,
+        reason: detail.reason === "keyboard" ? "keyboard" : "select",
+      });
+    },
+  });
   const formControl = createFormControl({
     id: triggerId,
     name: options.name,
-    value: () => value() ?? null,
+    value: () => list.value() ?? null,
     disabled,
     invalid,
     required,
     onReset: () => {
-      lastValueDetail = { reason: "programmatic" };
-      setValueState(options.defaultValue);
+      list.setValue(options.defaultValue, { reason: "programmatic" });
     },
   });
   const floating = createFloatingAdapter({
@@ -192,45 +190,211 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
     lastOpenDetail = detail;
     setOpenState(next);
   };
-
-  const selectValue = (next: string, detail: SelectChangeDetail) => {
-    const item = collection.items().find((candidate) => candidate.value === next);
-
-    if (!item || item.disabled) {
-      return;
-    }
-
-    lastValueDetail = detail;
-    setValueState(next);
-    setOpen(false, {
-      event: detail.event,
-      reason: detail.reason === "keyboard" ? "keyboard" : "select",
-    });
-  };
+  const state = () => (open() ? "open" : "closed");
+  const itemId = (value: string) => `${listboxId()}-${value}`;
+  const partProps = (part: string) => ({
+    "data-scope": "select",
+    "data-part": part,
+  });
 
   return {
     contentId: contentId(),
     disabled,
     floating,
     formControl,
-    highlightedValue,
+    getContentProps: (props) => {
+      const floatingProps = floating.getFloatingProps({
+        style: props.style,
+      });
+
+      return {
+        ...props,
+        id: contentId(),
+        ...partProps("content"),
+        get "data-state"() {
+          return state();
+        },
+        get "data-side"() {
+          return floating.side();
+        },
+        get "data-align"() {
+          return floating.align();
+        },
+        style: floatingProps.style,
+        ref: (element: HTMLDivElement) => {
+          setContentElement(element);
+          assignRef(props.ref, element);
+          queueMicrotask(floating.update);
+        },
+        onKeyDown: composeEventHandlers<KeyboardEvent>(props.onKeyDown, (event) => {
+          if (event.key === "Escape") {
+            event.preventDefault();
+            setOpen(false, { event, reason: "escape" });
+          }
+        }),
+      };
+    },
+    getItemIndicatorProps: (props) => ({
+      ...props,
+      ...partProps("item-indicator"),
+    }),
+    getItemProps: (props) => {
+      const [local, others] = splitProps(props, [
+        "disabled",
+        "label",
+        "onClick",
+        "onPointerMove",
+        "value",
+      ]);
+
+      list.registerItem({
+        disabled: local.disabled,
+        label: local.label,
+        value: local.value,
+      });
+
+      return {
+        ...others,
+        id: itemId(local.value),
+        role: "option",
+        "aria-disabled": local.disabled ? "true" : undefined,
+        get "aria-selected"() {
+          return list.isSelected(local.value);
+        },
+        ...partProps("item"),
+        "data-disabled": dataBoolean(local.disabled),
+        get "data-highlighted"() {
+          return dataBoolean(list.isHighlighted(local.value));
+        },
+        get "data-selected"() {
+          return dataBoolean(list.isSelected(local.value));
+        },
+        onPointerMove: composeEventHandlers(local.onPointerMove, () => {
+          if (!local.disabled) {
+            list.setHighlightedValue(local.value);
+          }
+        }),
+        onClick: composeEventHandlers(local.onClick, (event) => {
+          list.selectValue(local.value, { event, reason: "item" });
+        }),
+      };
+    },
+    getItemTextProps: (props) => ({
+      ...props,
+      ...partProps("item-text"),
+    }),
+    getListboxProps: (props) => {
+      const highlightedItemId = () => {
+        const highlighted = list.highlightedValue();
+        return highlighted ? itemId(highlighted) : undefined;
+      };
+
+      return {
+        ...props,
+        id: listboxId(),
+        role: "listbox",
+        "aria-labelledby": triggerId(),
+        get "aria-activedescendant"() {
+          return highlightedItemId();
+        },
+        tabindex: -1,
+        ...partProps("listbox"),
+        onKeyDown: composeEventHandlers<KeyboardEvent>(props.onKeyDown, (event) => {
+          list.handleKeyDown(event, {
+            selectDetail: (event) => ({ event, reason: "keyboard" }),
+          });
+        }),
+      };
+    },
+    getPositionerProps: (props) => {
+      const floatingProps = floating.getFloatingProps({ style: props.style });
+
+      return {
+        ...props,
+        ...partProps("positioner"),
+        get "data-state"() {
+          return state();
+        },
+        get "data-side"() {
+          return floating.side();
+        },
+        get "data-align"() {
+          return floating.align();
+        },
+        style: floatingProps.style,
+        ref: (element: HTMLDivElement) => {
+          setPositionerElement(element);
+          assignRef(props.ref, element);
+          queueMicrotask(floating.update);
+        },
+      };
+    },
+    getTriggerProps: (props) => ({
+      ...formControl.getControlProps<HTMLButtonElement>({
+        ...props,
+        id: triggerId(),
+      }),
+      "aria-controls": contentId(),
+      get "aria-expanded"() {
+        return open();
+      },
+      "aria-haspopup": "listbox",
+      type: "button",
+      get disabled() {
+        return disabled();
+      },
+      ...partProps("trigger"),
+      get "data-state"() {
+        return state();
+      },
+      get "data-disabled"() {
+        return dataBoolean(disabled());
+      },
+      get "data-invalid"() {
+        return dataBoolean(invalid());
+      },
+      get "data-placeholder"() {
+        return dataBoolean(list.value() === undefined);
+      },
+      get "data-required"() {
+        return dataBoolean(required());
+      },
+      ref: (element: HTMLButtonElement) => {
+        setTriggerElement(element);
+        assignRef(props.ref, element);
+      },
+      onClick: composeEventHandlers(props.onClick, (event) => {
+        setOpen(!open(), { event, reason: "trigger" });
+      }),
+      onKeyDown: composeEventHandlers<KeyboardEvent>(props.onKeyDown, (event) => {
+        if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          setOpen(true, { event, reason: "keyboard" });
+          list.highlight("selected-or-first");
+        }
+
+        if (event.key === "Escape") {
+          setOpen(false, { event, reason: "escape" });
+        }
+      }),
+    }),
+    getValueProps: (props) => ({
+      ...props,
+      ...partProps("value"),
+      get "data-placeholder"() {
+        return dataBoolean(list.value() === undefined);
+      },
+    }),
     invalid,
-    itemId: (value) => `${listboxId()}-${value}`,
-    items: itemList,
+    itemId,
+    list,
     listboxId: listboxId(),
     open,
     placeholder: () => options.placeholder?.(),
-    registerItem: collection.registerItem,
     required,
-    selectValue,
-    selectedItem,
-    setContentElement,
-    setHighlightedValue,
-    setPositionerElement,
     setOpen,
-    setTriggerElement,
     triggerId: triggerId(),
-    value,
+    value: list.value,
   };
 }
 
@@ -281,62 +445,12 @@ function Trigger(props: SelectTriggerProps) {
   const select = useSelect("Trigger");
   const [local, others] = splitProps(props, ["as", "children", "onClick", "onKeyDown", "ref"]);
 
-  const triggerProps = {
+  const triggerProps = select.getTriggerProps({
     ...others,
-    id: select.triggerId,
-    type: "button",
-    "aria-controls": select.contentId,
-    get "aria-expanded"() {
-      return select.open();
-    },
-    "aria-haspopup": "listbox",
-    get "aria-invalid"() {
-      return select.invalid() ? "true" : undefined;
-    },
-    get "aria-required"() {
-      return select.required() ? "true" : undefined;
-    },
-    get disabled() {
-      return select.disabled();
-    },
-    "data-scope": "select",
-    "data-part": "trigger",
-    get "data-state"() {
-      return select.open() ? "open" : "closed";
-    },
-    get "data-disabled"() {
-      return dataBoolean(select.disabled());
-    },
-    get "data-invalid"() {
-      return dataBoolean(select.invalid());
-    },
-    get "data-placeholder"() {
-      return dataBoolean(select.value() === undefined);
-    },
-    get "data-required"() {
-      return dataBoolean(select.required());
-    },
-    ref: (element: HTMLButtonElement) => {
-      select.setTriggerElement(element);
-      assignRef(local.ref, element);
-    },
-    onClick: composeEventHandlers(local.onClick, (event) => {
-      select.setOpen(!select.open(), { event, reason: "trigger" });
-    }),
-    onKeyDown: composeEventHandlers<KeyboardEvent>(local.onKeyDown, (event) => {
-      const key = (event as KeyboardEvent).key;
-
-      if (key === "ArrowDown" || key === "Enter" || key === " ") {
-        event.preventDefault();
-        select.setOpen(true, { event, reason: "keyboard" });
-        select.setHighlightedValue(select.value() ?? firstEnabledItem(select.items())?.value);
-      }
-
-      if (key === "Escape") {
-        select.setOpen(false, { event, reason: "escape" });
-      }
-    }),
-  } as const;
+    onClick: local.onClick,
+    onKeyDown: local.onKeyDown,
+    ref: local.ref,
+  });
 
   if (!local.as) {
     return <button {...triggerProps}>{local.children}</button>;
@@ -352,18 +466,12 @@ function Value(props: SelectValueProps) {
   const select = useSelect("Value");
   const [local, others] = splitProps(props, ["children", "placeholder"]);
   const text = () =>
-    local.children ?? select.selectedItem()?.label ?? local.placeholder ?? select.placeholder();
+    local.children ??
+    select.list.selectedItem()?.label ??
+    local.placeholder ??
+    select.placeholder();
 
-  return (
-    <span
-      data-scope="select"
-      data-part="value"
-      data-placeholder={dataBoolean(select.value() === undefined)}
-      {...others}
-    >
-      {text()}
-    </span>
-  );
+  return <span {...select.getValueProps(others)}>{text()}</span>;
 }
 
 function PortalPart(props: SelectPortalProps) {
@@ -379,31 +487,14 @@ function PortalPart(props: SelectPortalProps) {
 function Content(props: SelectContentProps) {
   const select = useSelect("Content");
   const [local, others] = splitProps(props, ["children", "onKeyDown", "ref", "style"]);
-  const floatingProps = () =>
-    select.floating.getFloatingProps({
-      style: local.style,
-    });
 
   return (
     <div
-      id={select.contentId}
-      data-scope="select"
-      data-part="content"
-      data-state={select.open() ? "open" : "closed"}
-      data-side={select.floating.side()}
-      data-align={select.floating.align()}
-      style={floatingProps().style}
-      {...others}
-      ref={(element) => {
-        select.setContentElement(element);
-        assignRef(local.ref, element);
-        queueMicrotask(select.floating.update);
-      }}
-      onKeyDown={composeEventHandlers(local.onKeyDown, (event) => {
-        if (event.key === "Escape") {
-          event.preventDefault();
-          select.setOpen(false, { event, reason: "escape" });
-        }
+      {...select.getContentProps({
+        ...others,
+        onKeyDown: local.onKeyDown,
+        ref: local.ref,
+        style: local.style,
       })}
     >
       {local.children}
@@ -414,22 +505,14 @@ function Content(props: SelectContentProps) {
 function Positioner(props: SelectPositionerProps) {
   const select = useSelect("Positioner");
   const [local, others] = splitProps(props, ["children", "ref", "style"]);
-  const floatingProps = () => select.floating.getFloatingProps({ style: local.style });
 
   return (
     <div
-      data-scope="select"
-      data-part="positioner"
-      data-state={select.open() ? "open" : "closed"}
-      data-side={select.floating.side()}
-      data-align={select.floating.align()}
-      style={floatingProps().style}
-      {...others}
-      ref={(element) => {
-        select.setPositionerElement(element);
-        assignRef(local.ref, element);
-        queueMicrotask(select.floating.update);
-      }}
+      {...select.getPositionerProps({
+        ...others,
+        ref: local.ref,
+        style: local.style,
+      })}
     >
       {local.children}
     </div>
@@ -439,78 +522,9 @@ function Positioner(props: SelectPositionerProps) {
 function Listbox(props: SelectListboxProps) {
   const select = useSelect("Listbox");
   const [local, others] = splitProps(props, ["children", "onKeyDown"]);
-  const typeahead = createTypeahead({
-    current: select.highlightedValue,
-    items: select.items,
-    onMatch: (item) => select.setHighlightedValue(item.value),
-  });
-  const highlightedItemId = () => {
-    const highlighted = select.highlightedValue();
-    return highlighted ? select.itemId(highlighted) : undefined;
-  };
 
   return (
-    <div
-      id={select.listboxId}
-      role="listbox"
-      aria-labelledby={select.triggerId}
-      aria-activedescendant={highlightedItemId()}
-      tabindex={-1}
-      data-scope="select"
-      data-part="listbox"
-      {...others}
-      onKeyDown={composeEventHandlers(local.onKeyDown, (event) => {
-        const items = select.items();
-
-        if (event.key === "ArrowDown") {
-          event.preventDefault();
-          select.setHighlightedValue(
-            nextEnabledItem({
-              current: select.highlightedValue(),
-              direction: 1,
-              items,
-            })?.value,
-          );
-        }
-
-        if (event.key === "ArrowUp") {
-          event.preventDefault();
-          select.setHighlightedValue(
-            nextEnabledItem({
-              current: select.highlightedValue(),
-              direction: -1,
-              items,
-            })?.value,
-          );
-        }
-
-        if (event.key === "Home") {
-          event.preventDefault();
-          select.setHighlightedValue(firstEnabledItem(items)?.value);
-        }
-
-        if (event.key === "End") {
-          event.preventDefault();
-          select.setHighlightedValue(lastEnabledItem(items)?.value);
-        }
-
-        if (event.key === "Enter" || event.key === " ") {
-          if (event.key === " " && typeahead.isTyping()) {
-            typeahead.handleKeyDown(event);
-            return;
-          }
-
-          event.preventDefault();
-          const highlighted = select.highlightedValue();
-
-          if (highlighted) {
-            select.selectValue(highlighted, { event, reason: "keyboard" });
-          }
-        }
-
-        typeahead.handleKeyDown(event);
-      })}
-    >
+    <div {...select.getListboxProps({ ...others, onKeyDown: local.onKeyDown })}>
       {local.children}
     </div>
   );
@@ -528,31 +542,15 @@ function Item(props: SelectItemProps) {
   ]);
   const label = () => local.label ?? String(local.children ?? local.value);
 
-  select.registerItem({
-    disabled: local.disabled,
-    label: label(),
-    value: local.value,
-  });
-
   return (
     <div
-      id={select.itemId(local.value)}
-      role="option"
-      aria-disabled={local.disabled ? "true" : undefined}
-      aria-selected={select.value() === local.value}
-      data-scope="select"
-      data-part="item"
-      data-disabled={dataBoolean(local.disabled)}
-      data-highlighted={dataBoolean(select.highlightedValue() === local.value)}
-      data-selected={dataBoolean(select.value() === local.value)}
-      {...others}
-      onPointerMove={composeEventHandlers(local.onPointerMove, () => {
-        if (!local.disabled) {
-          select.setHighlightedValue(local.value);
-        }
-      })}
-      onClick={composeEventHandlers(local.onClick, (event) => {
-        select.selectValue(local.value, { event, reason: "item" });
+      {...select.getItemProps({
+        ...others,
+        disabled: local.disabled,
+        label: label(),
+        onClick: local.onClick,
+        onPointerMove: local.onPointerMove,
+        value: local.value,
       })}
     >
       {local.children}
@@ -561,23 +559,17 @@ function Item(props: SelectItemProps) {
 }
 
 function ItemText(props: SelectItemTextProps) {
+  const select = useSelect("ItemText");
   const [local, others] = splitProps(props, ["children"]);
 
-  return (
-    <span data-scope="select" data-part="item-text" {...others}>
-      {local.children}
-    </span>
-  );
+  return <span {...select.getItemTextProps(others)}>{local.children}</span>;
 }
 
 function ItemIndicator(props: SelectItemIndicatorProps) {
+  const select = useSelect("ItemIndicator");
   const [local, others] = splitProps(props, ["children"]);
 
-  return (
-    <span data-scope="select" data-part="item-indicator" {...others}>
-      {local.children}
-    </span>
-  );
+  return <span {...select.getItemIndicatorProps(others)}>{local.children}</span>;
 }
 
 export const Select = {

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "badge",
+  "type": "registry:ui",
+  "title": "Badge",
+  "description": "Inline status badge with Mason variant styling hooks.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["status", "base"],
+  "keywords": ["badge", "status", "label"],
+  "docs": "https://mason.build/docs/components/badge",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add badge",
+    "customization": "Customize color and shape through mason-badge classes and data-variant.",
+    "sourceFiles": ["registry/default/ui/badge.tsx"],
+    "dependencies": ["cn"]
+  },
+  "files": [
+    {
+      "path": "ui/badge.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

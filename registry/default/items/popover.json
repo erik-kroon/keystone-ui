@@ -1,0 +1,29 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "popover",
+  "type": "registry:ui",
+  "title": "Popover",
+  "description": "Styled Solid popover component backed by Keystone overlay positioning and dismissal.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["overlay", "disclosure"],
+  "keywords": ["popover", "overlay", "floating", "keystone"],
+  "docs": "https://mason.build/docs/components/popover",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add popover",
+    "customization": "Style the generated wrappers through mason-popover classes while Keystone owns positioning, dismissal, and layer ordering.",
+    "sourceFiles": ["registry/default/ui/popover.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "cn"]
+  },
+  "files": [
+    {
+      "path": "ui/popover.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import {
   createComponent,
   createMemo,
+  createSelector,
   createSignal,
   createUniqueId,
   onCleanup,
@@ -120,25 +121,39 @@ export type CollectionApi<T extends CollectionItem> = {
 };
 
 export function createCollection<T extends CollectionItem>(): CollectionApi<T> {
-  const [items, setItems] = createSignal<Array<T>>([]);
+  const [items, setItems] = createSignal<Array<T>>([], { equals: false });
+  const currentItems: Array<T> = [];
   let order = 0;
+  let needsOrderedSort = false;
   const fallbackOrder = new Map<string, number>();
 
   const registerItem = (item: CollectionRegistration<T>) => {
     const registrationOrder = item.index ?? order++;
     fallbackOrder.set(item.value, registrationOrder);
     const nextItem = item as T;
+    const existingIndex = currentItems.findIndex((candidate) => candidate.value === nextItem.value);
+    needsOrderedSort ||= item.index !== undefined || item.element !== undefined;
 
-    setItems((current) =>
-      sortCollectionItems(
-        [...current.filter((candidate) => candidate.value !== nextItem.value), nextItem],
-        fallbackOrder,
-      ),
-    );
+    if (existingIndex === -1) {
+      currentItems.push(nextItem);
+    } else {
+      currentItems[existingIndex] = nextItem;
+    }
+
+    if (needsOrderedSort) {
+      currentItems.sort((a, b) => sortCollectionItemOrder(a, b, fallbackOrder));
+    }
+
+    setItems(currentItems);
 
     const cleanup = () => {
       fallbackOrder.delete(nextItem.value);
-      setItems((current) => current.filter((candidate) => candidate.value !== nextItem.value));
+      const index = currentItems.findIndex((candidate) => candidate.value === nextItem.value);
+
+      if (index !== -1) {
+        currentItems.splice(index, 1);
+        setItems(currentItems);
+      }
     };
 
     onCleanup(cleanup);
@@ -257,6 +272,190 @@ export function createTypeahead<T extends CollectionItem>(
   };
 }
 
+export type ListInteractionNavigationIntent =
+  | "first"
+  | "last"
+  | "next"
+  | "previous"
+  | "selected-or-first";
+
+export type ListInteractionKernelOptions<T extends CollectionItem, Detail> = {
+  defaultValue?: string;
+  loop?: boolean;
+  onSelectionChange?: (value: string | undefined, detail: Detail) => void;
+  onValueSelect?: (item: T, detail: Detail) => void;
+  programmaticDetail: Detail;
+  typeaheadResetMs?: number;
+  value?: Accessor<string | undefined>;
+};
+
+export type ListInteractionKeyboardOptions<Detail> = {
+  selectDetail: (event: KeyboardEvent) => Detail;
+};
+
+export type ListInteractionKernelApi<T extends CollectionItem, Detail> = {
+  highlightedItem: Accessor<T | undefined>;
+  highlightedValue: Accessor<string | undefined>;
+  handleKeyDown: (event: KeyboardEvent, options: ListInteractionKeyboardOptions<Detail>) => boolean;
+  highlight: (intent: ListInteractionNavigationIntent) => T | undefined;
+  isHighlighted: (value: string) => boolean;
+  isSelected: (value: string) => boolean;
+  items: Accessor<readonly T[]>;
+  registerItem: (item: CollectionRegistration<T>) => () => void;
+  selectHighlighted: (detail: Detail) => T | undefined;
+  setValue: (value: string | undefined, detail: Detail) => T | undefined;
+  selectValue: (value: string, detail: Detail) => T | undefined;
+  selectedItem: Accessor<T | undefined>;
+  setHighlightedValue: (value: string | undefined) => void;
+  value: Accessor<string | undefined>;
+};
+
+export function createListInteractionKernel<T extends CollectionItem, Detail>(
+  options: ListInteractionKernelOptions<T, Detail>,
+): ListInteractionKernelApi<T, Detail> {
+  const collection = createCollection<T>();
+  const itemList = collection.items;
+  const itemByValueMap = createMemo(() => {
+    const map = new Map<string, T>();
+
+    for (const item of itemList()) {
+      map.set(item.value, item);
+    }
+
+    return map;
+  });
+  const enabledItems = createMemo(() => itemList().filter((item) => !item.disabled));
+  let lastSelectionDetail = options.programmaticDetail;
+  const [highlightedValue, setHighlightedValue] = createControllableSignal<string | undefined>({
+    defaultValue: undefined,
+  });
+  const [value, setValue] = createControllableSignal<string | undefined>({
+    value: options.value,
+    defaultValue: options.defaultValue,
+    onChange: (next) => options.onSelectionChange?.(next, lastSelectionDetail),
+  });
+  const isHighlighted = createSelector(highlightedValue);
+  const isSelected = createSelector(value);
+  const itemByValue = (candidateValue: string | undefined) =>
+    candidateValue === undefined ? undefined : itemByValueMap().get(candidateValue);
+  const selectedItem = createMemo(() => itemByValue(value()));
+  const highlightedItem = createMemo(() => itemByValue(highlightedValue()));
+  const typeahead = createTypeahead({
+    current: highlightedValue,
+    items: itemList,
+    onMatch: (item) => setHighlightedValue(item.value),
+    resetMs: options.typeaheadResetMs,
+  });
+
+  const highlightItem = (item: T | undefined) => {
+    setHighlightedValue(item?.value);
+    return item;
+  };
+
+  const highlight = (intent: ListInteractionNavigationIntent) => {
+    if (intent === "first") {
+      return highlightItem(firstEnabledItem(enabledItems()));
+    }
+
+    if (intent === "last") {
+      return highlightItem(lastEnabledItem(enabledItems()));
+    }
+
+    if (intent === "selected-or-first") {
+      const selected = selectedItem();
+      return highlightItem(
+        selected && !selected.disabled ? selected : firstEnabledItem(enabledItems()),
+      );
+    }
+
+    return highlightItem(
+      nextEnabledFromEnabledItems({
+        current: highlightedValue(),
+        direction: intent === "next" ? 1 : -1,
+        items: enabledItems(),
+        loop: options.loop,
+      }),
+    );
+  };
+
+  const selectValue = (next: string, detail: Detail) => {
+    const item = itemByValue(next);
+
+    if (!item || item.disabled) {
+      return undefined;
+    }
+
+    lastSelectionDetail = detail;
+    setValue(next);
+    options.onValueSelect?.(item, detail);
+    return item;
+  };
+
+  const setSelectionValue = (next: string | undefined, detail: Detail) => {
+    lastSelectionDetail = detail;
+    setValue(next);
+    return itemByValue(next);
+  };
+
+  const selectHighlighted = (detail: Detail) => {
+    const highlighted = highlightedValue();
+    return highlighted ? selectValue(highlighted, detail) : undefined;
+  };
+
+  return {
+    highlightedItem,
+    highlightedValue,
+    handleKeyDown: (event, keyboardOptions) => {
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        highlight("next");
+        return true;
+      }
+
+      if (event.key === "ArrowUp") {
+        event.preventDefault();
+        highlight("previous");
+        return true;
+      }
+
+      if (event.key === "Home") {
+        event.preventDefault();
+        highlight("first");
+        return true;
+      }
+
+      if (event.key === "End") {
+        event.preventDefault();
+        highlight("last");
+        return true;
+      }
+
+      if (event.key === "Enter" || event.key === " ") {
+        if (event.key === " " && typeahead.isTyping()) {
+          return typeahead.handleKeyDown(event);
+        }
+
+        event.preventDefault();
+        selectHighlighted(keyboardOptions.selectDetail(event));
+        return true;
+      }
+
+      return typeahead.handleKeyDown(event);
+    },
+    highlight,
+    isHighlighted,
+    isSelected,
+    items: itemList,
+    registerItem: collection.registerItem,
+    selectHighlighted,
+    setValue: setSelectionValue,
+    selectValue,
+    selectedItem,
+    setHighlightedValue,
+    value,
+  };
+}
+
 export type KeystoneAs<Props> =
   | ValidComponent
   | keyof JSX.HTMLElementTags
@@ -287,19 +486,18 @@ function resolveNext<T>(value: T | ((previous: T) => T), previous: T): T {
   return typeof value === "function" ? (value as (previous: T) => T)(previous) : value;
 }
 
-function sortCollectionItems<T extends CollectionItem>(
-  items: T[],
+function sortCollectionItemOrder<T extends CollectionItem>(
+  a: T,
+  b: T,
   fallbackOrder: Map<string, number>,
-): T[] {
-  return [...items].sort((a, b) => {
-    const elementOrder = compareElements(a.element?.(), b.element?.());
+): number {
+  const elementOrder = compareElements(a.element?.(), b.element?.());
 
-    if (elementOrder !== 0) {
-      return elementOrder;
-    }
+  if (elementOrder !== 0) {
+    return elementOrder;
+  }
 
-    return (fallbackOrder.get(a.value) ?? 0) - (fallbackOrder.get(b.value) ?? 0);
-  });
+  return (fallbackOrder.get(a.value) ?? 0) - (fallbackOrder.get(b.value) ?? 0);
 }
 
 function compareElements(a: HTMLElement | undefined, b: HTMLElement | undefined) {
@@ -358,4 +556,29 @@ function findTypeaheadMatch<T extends CollectionItem>(
   }
 
   return undefined;
+}
+
+function nextEnabledFromEnabledItems<T extends CollectionItem>(
+  options: CollectionNavigationOptions<T> & { direction: 1 | -1 },
+): T | undefined {
+  if (options.items.length === 0) {
+    return undefined;
+  }
+
+  const currentIndex = options.items.findIndex((item) => item.value === options.current);
+  const fallbackIndex = options.direction === 1 ? 0 : options.items.length - 1;
+
+  if (currentIndex === -1) {
+    return options.items[fallbackIndex];
+  }
+
+  const nextIndex = currentIndex + options.direction;
+
+  if (nextIndex < 0 || nextIndex >= options.items.length) {
+    return options.loop === false
+      ? undefined
+      : options.items[(nextIndex + options.items.length) % options.items.length];
+  }
+
+  return options.items[nextIndex];
 }

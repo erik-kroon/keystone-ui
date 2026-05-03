@@ -1,0 +1,28 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "separator",
+  "type": "registry:ui",
+  "title": "Separator",
+  "description": "Decorative or semantic separator component.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["layout", "base"],
+  "keywords": ["separator", "divider", "layout"],
+  "docs": "https://mason.build/docs/components/separator",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add separator",
+    "customization": "Use data-orientation and mason-separator classes to style horizontal and vertical separators.",
+    "sourceFiles": ["registry/default/ui/separator.tsx"],
+    "dependencies": ["cn"]
+  },
+  "files": [
+    {
+      "path": "ui/separator.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

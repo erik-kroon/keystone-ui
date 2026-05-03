@@ -1,0 +1,29 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "dialog",
+  "type": "registry:ui",
+  "title": "Dialog",
+  "description": "Styled Solid dialog component backed by Keystone overlay behavior.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["overlay", "feedback"],
+  "keywords": ["dialog", "modal", "overlay", "keystone"],
+  "docs": "https://mason.build/docs/components/dialog",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add dialog",
+    "customization": "Style the generated wrappers through mason-dialog classes while Keystone keeps focus, dismissal, layering, and ARIA behavior.",
+    "sourceFiles": ["registry/default/ui/dialog.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "cn"]
+  },
+  "files": [
+    {
+      "path": "ui/dialog.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

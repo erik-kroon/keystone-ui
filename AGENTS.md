@@ -8,14 +8,9 @@ This repository is the early Keystone UI monorepo. Treat `Keystone` and `Mason` 
 - Mason is the copy-paste styled component, block, template, registry, and CLI layer for Solid.
 - Mason may depend on Keystone primitives; Keystone must not depend on Mason.
 - Build depth before breadth: kernel utilities, overlays, fields/forms, then select/combobox before broad styled component catalogs.
-- Use local inspiration repos under `inspo/` when designing primitives:
-  - `inspo/base-ui`: first-priority architecture and runtime-depth reference.
-  - `inspo/kobalte`: first-priority Solid-native API and composition reference.
-  - `inspo/radix-primitives`: secondary React precedent; useful historically, but do not copy React-specific patterns.
-- Use local inspiration repos under `inspo/` when designing Mason registry/UI:
-  - `inspo/shadcn-ui`: primary copy-paste UI, CLI, docs, and registry platform reference.
-  - `inspo/shadcn-registry-template`: focused registry structure/reference implementation.
-  - `inspo/coss`: Mason UI component inspiration for later styled components.
+- Mason first-party app components are TanStack-native where useful: Form for forms, Table for data tables, Store for shared app state, and Hotkeys for app-level shortcuts.
+- Keystone must remain independent from TanStack app libraries; Keystone owns intrinsic primitive behavior and Mason owns app integrations.
+- Durable product decisions, API shape, registry shape, component inventory, and sequencing now live in repo docs; use those docs as the active source of truth.
 
 ## Repo Workflow
 
@@ -35,16 +30,20 @@ This repository is the early Keystone UI monorepo. Treat `Keystone` and `Mason` 
 - [CONTEXT-MAP.md](CONTEXT-MAP.md): current repo map and intended growth areas.
 - [docs/adr/](docs/adr/): durable decisions.
 - [docs/agents/](docs/agents/): agent/work tracking conventions.
+- [docs/adr/0003-mason-tanstack-app-layer.md](docs/adr/0003-mason-tanstack-app-layer.md): TanStack app-layer decision for Mason.
+- [docs/agents/end-state-primitive-component-inventory.md](docs/agents/end-state-primitive-component-inventory.md): optimal Keystone primitive and Mason component inventory.
 - `.context/attachments/pasted_text_2026-05-03_14-26-48.txt`: source PRD for the current strategic direction.
 
 ## Implementation Guardrails
 
 - Prefer Solid-native APIs over React-shaped translations.
-- Study Base UI and Kobalte before changing Keystone primitive internals; Radix is secondary context.
 - Keystone primitives must be styling-agnostic and expose stable `data-scope` and `data-part` attributes.
 - Stateful primitives should support controlled and uncontrolled usage.
 - Event handlers should run user code first; internal handlers should skip when `event.defaultPrevented`.
 - Overlay work must account for focus management, dismissal, layering, portals, SSR, hydration, and accessibility testing.
 - Mason generated code should be readable source owned by the user project and should not reimplement Keystone behavior.
-- Study shadcn UI and the shadcn registry template before changing Mason registry or CLI flows.
-- Treat coss UI as later Mason UI component inspiration, not as Keystone primitive architecture.
+- Mason form, table, store, and hotkey work should prefer TanStack libraries instead of custom app-behavior systems.
+
+## Tips
+
+- Use the fff MCP tools for all file search operations instead of default tools.

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "card",
+  "type": "registry:ui",
+  "title": "Card",
+  "description": "Composable card parts for grouped content.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["layout", "base"],
+  "keywords": ["card", "panel", "content"],
+  "docs": "https://mason.build/docs/components/card",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add card",
+    "customization": "Customize each part through mason-card classes and data-part values for root, header, title, description, content, and footer.",
+    "sourceFiles": ["registry/default/ui/card.tsx"],
+    "dependencies": ["cn"]
+  },
+  "files": [
+    {
+      "path": "ui/card.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "input",
+  "type": "registry:ui",
+  "title": "Input",
+  "description": "Solid text input component with invalid state styling hooks.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["form", "base"],
+  "keywords": ["input", "field", "form"],
+  "docs": "https://mason.build/docs/components/input",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add input",
+    "customization": "Use the mason-input class and data-invalid attribute for size, border, and validation-state styles.",
+    "sourceFiles": ["registry/default/ui/input.tsx"],
+    "dependencies": ["cn"]
+  },
+  "files": [
+    {
+      "path": "ui/input.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

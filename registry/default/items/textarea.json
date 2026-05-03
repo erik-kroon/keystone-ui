@@ -1,0 +1,28 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "textarea",
+  "type": "registry:ui",
+  "title": "Textarea",
+  "description": "Solid textarea component with invalid state styling hooks.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["form", "base"],
+  "keywords": ["textarea", "field", "form"],
+  "docs": "https://mason.build/docs/components/textarea",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add textarea",
+    "customization": "Use the mason-textarea class and data-invalid attribute for resize, border, and validation-state styles.",
+    "sourceFiles": ["registry/default/ui/textarea.tsx"],
+    "dependencies": ["cn"]
+  },
+  "files": [
+    {
+      "path": "ui/textarea.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

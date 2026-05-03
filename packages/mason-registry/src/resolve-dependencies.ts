@@ -3,6 +3,9 @@ import type { RegistryItem } from "./schema";
 import { validateItem } from "./validate-item";
 
 export type RegistryItemMap = Map<string, RegistryItem> | Record<string, RegistryItem>;
+export type RegistryItemLoader = (
+  name: string,
+) => RegistryItem | Promise<RegistryItem | undefined> | undefined;
 
 export type ResolvedRegistryDependencyGraph = {
   items: RegistryItem[];
@@ -72,6 +75,70 @@ export function resolveRegistryDependencies(
 
   for (const name of requestedItems) {
     visit(name, []);
+  }
+
+  return errors.length > 0 ? fail(errors) : ok({ items: resolved });
+}
+
+export async function resolveRegistryDependencyGraph(
+  requestedItems: string[],
+  loadItem: RegistryItemLoader,
+  options: { installSupportedOnly?: boolean } = {},
+): Promise<ValidationResult<ResolvedRegistryDependencyGraph>> {
+  const resolved: RegistryItem[] = [];
+  const errors: MasonRegistryError[] = [];
+  const temporary = new Set<string>();
+  const permanent = new Set<string>();
+
+  async function visit(name: string, stack: string[]): Promise<void> {
+    if (isRemoteReference(name)) {
+      return;
+    }
+
+    if (temporary.has(name)) {
+      errors.push({
+        code: "registryDependency.cycle",
+        message: `Registry dependency cycle detected: ${[...stack, name].join(" -> ")}.`,
+        value: name,
+        details: { cycle: [...stack, name] },
+      });
+      return;
+    }
+
+    if (permanent.has(name)) {
+      return;
+    }
+
+    const item = await loadItem(name);
+    if (!item) {
+      errors.push({
+        code: "registryDependency.missing",
+        message: `Registry dependency '${name}' was not found.`,
+        value: name,
+        details: { requestedBy: stack.at(-1) },
+      });
+      return;
+    }
+
+    const itemValidation = validateItem(item, {
+      installSupportedOnly: options.installSupportedOnly,
+    });
+    if (!itemValidation.ok) {
+      errors.push(...itemValidation.errors);
+      return;
+    }
+
+    temporary.add(name);
+    for (const dependency of itemValidation.value.registryDependencies ?? []) {
+      await visit(dependency, [...stack, name]);
+    }
+    temporary.delete(name);
+    permanent.add(name);
+    resolved.push(itemValidation.value);
+  }
+
+  for (const name of requestedItems) {
+    await visit(name, []);
   }
 
   return errors.length > 0 ? fail(errors) : ok({ items: resolved });

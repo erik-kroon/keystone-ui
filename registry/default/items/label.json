@@ -1,0 +1,28 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "label",
+  "type": "registry:ui",
+  "title": "Label",
+  "description": "Solid label component for form controls and field shells.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["form", "base"],
+  "keywords": ["label", "field", "form"],
+  "docs": "https://mason.build/docs/components/label",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add label",
+    "customization": "Style labels through mason-label and compose them into field shells when helper text or errors are needed.",
+    "sourceFiles": ["registry/default/ui/label.tsx"],
+    "dependencies": ["cn"]
+  },
+  "files": [
+    {
+      "path": "ui/label.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

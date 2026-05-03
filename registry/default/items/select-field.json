@@ -1,0 +1,29 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "select-field",
+  "type": "registry:ui",
+  "title": "SelectField",
+  "description": "TanStack Form select field composed with Keystone Select behavior and Mason styling hooks.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["form", "tanstack", "select"],
+  "keywords": ["select-field", "select", "field", "form", "tanstack", "keystone"],
+  "docs": "https://mason.build/docs/components/select-field",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add select-field",
+    "customization": "Use mason-select-field classes and data-part values while TanStack Form owns field state and Keystone owns listbox behavior.",
+    "sourceFiles": ["registry/default/ui/select-field.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "@tanstack/solid-form", "cn"]
+  },
+  "files": [
+    {
+      "path": "ui/select-field.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

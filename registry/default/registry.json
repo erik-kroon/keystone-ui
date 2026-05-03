@@ -1,0 +1,97 @@
+{
+  "$schema": "https://mason.build/schema/registry.json",
+  "name": "mason-default",
+  "homepage": "https://mason.build",
+  "items": [
+    {
+      "name": "cn",
+      "type": "registry:lib",
+      "title": "Class Name Utility",
+      "description": "Small class name composition helper shared by Mason base components."
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Solid button component with Mason styling hooks and variant metadata."
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "Solid text input component with invalid state styling hooks."
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Solid textarea component with invalid state styling hooks."
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "Solid label component for form controls and field shells."
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "Form field shell with label, description, and error parts."
+    },
+    {
+      "name": "text-field",
+      "type": "registry:ui",
+      "title": "TextField",
+      "description": "TanStack Form text field composed with Keystone form-control semantics and Mason styling hooks."
+    },
+    {
+      "name": "select-field",
+      "type": "registry:ui",
+      "title": "SelectField",
+      "description": "TanStack Form select field composed with Keystone Select behavior and Mason styling hooks."
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "Composable card parts for grouped content."
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Inline status badge with Mason variant styling hooks."
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "Decorative or semantic separator component."
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "Styled Solid dialog component backed by Keystone overlay behavior."
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "Styled Solid popover component backed by Keystone overlay positioning and dismissal."
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Styled Solid tooltip component backed by Keystone overlay positioning and Escape dismissal."
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "Styled Solid sheet component backed by Keystone modal overlay behavior."
+    }
+  ]
+}
