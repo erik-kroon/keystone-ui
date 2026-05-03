@@ -1,0 +1,102 @@
+import { describe, expect, test } from "vitest";
+import { partDataAttributes } from "../utils/index";
+import {
+  getDocsMetadata,
+  getPartDataAttributes,
+  getPartMetadata,
+  primitiveMetadata,
+  type PrimitiveScope,
+} from "./index";
+
+const expectedParts = {
+  dialog: ["trigger", "close", "backdrop", "positioner", "content", "title", "description"],
+  "form-control": ["root", "control", "label", "description", "error-message", "hidden-input"],
+  listbox: ["listbox", "option", "group", "group-label"],
+  overlay: ["layer"],
+  popover: ["trigger", "positioner", "content"],
+  select: [
+    "trigger",
+    "value",
+    "positioner",
+    "content",
+    "listbox",
+    "group",
+    "group-label",
+    "item",
+    "item-text",
+    "item-indicator",
+  ],
+  sheet: ["trigger", "close", "backdrop", "positioner", "content", "title", "description"],
+  tooltip: ["trigger", "positioner", "content"],
+} as const satisfies Record<PrimitiveScope, readonly string[]>;
+
+describe("primitive part metadata", () => {
+  test("defines docs-ready part metadata for every current primitive", () => {
+    for (const [scope, parts] of Object.entries(expectedParts)) {
+      const metadata = primitiveMetadata[scope as PrimitiveScope];
+      const docsMetadata = getDocsMetadata(scope);
+
+      expect(metadata.scope).toBe(scope);
+      expect(metadata.parts.map((part) => part.part)).toEqual(parts);
+      expect(docsMetadata?.parts.map((part) => part.selector)).toEqual(
+        parts.map((part) => `[data-scope="${scope}"][data-part="${part}"]`),
+      );
+
+      for (const part of metadata.parts) {
+        expect(part.dataAttributes.map((attribute) => attribute.name)).toContain("data-scope");
+        expect(part.dataAttributes.map((attribute) => attribute.name)).toContain("data-part");
+      }
+    }
+  });
+
+  test("routes runtime part attributes through the metadata helper", () => {
+    expect(getPartDataAttributes("select", "trigger")).toEqual({
+      "data-scope": "select",
+      "data-part": "trigger",
+    });
+    expect(partDataAttributes("form-control", "hidden-input")).toEqual({
+      "data-scope": "form-control",
+      "data-part": "hidden-input",
+    });
+  });
+
+  test("captures styling states and floating css variables on relevant parts", () => {
+    expect(attributeNames("select", "trigger")).toEqual(
+      expect.arrayContaining([
+        "data-disabled",
+        "data-invalid",
+        "data-placeholder",
+        "data-readonly",
+        "data-required",
+        "data-state",
+      ]),
+    );
+    expect(attributeNames("form-control", "control")).toEqual(
+      expect.arrayContaining([
+        "data-dirty",
+        "data-filled",
+        "data-focused",
+        "data-invalid",
+        "data-touched",
+        "data-validating",
+      ]),
+    );
+    expect(cssVarNames("popover", "positioner")).toEqual(
+      expect.arrayContaining([
+        "--keystone-anchor-width",
+        "--keystone-anchor-height",
+        "--keystone-available-width",
+        "--keystone-available-height",
+        "--keystone-transform-origin",
+      ]),
+    );
+  });
+});
+
+function attributeNames(scope: PrimitiveScope, part: string) {
+  return getPartMetadata(scope, part)?.dataAttributes.map((attribute) => attribute.name) ?? [];
+}
+
+function cssVarNames(scope: PrimitiveScope, part: string) {
+  return getPartMetadata(scope, part)?.cssVars.map((cssVar) => cssVar.name) ?? [];
+}

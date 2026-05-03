@@ -3,7 +3,12 @@ import { Portal } from "solid-js/web";
 import {
   OverlayLayerProvider,
   type FloatingAdapter,
+  type FloatingCollisionBoundary,
   type FloatingPlacement,
+  type FloatingRootBoundary,
+  type FloatingSticky,
+  type FloatingStrategy,
+  type OverlayPresenceCompleteDetail,
   type OverlayLayerOutsideEvent,
 } from "../overlay/index";
 import { createOverlayController } from "../overlay/controller";
@@ -16,11 +21,21 @@ export type PopoverOpenChangeDetail = {
 
 export type PopoverRootProps = {
   children?: JSX.Element;
+  arrowPadding?: number;
+  collisionBoundary?: FloatingCollisionBoundary;
+  collisionPadding?: number;
   defaultOpen?: boolean;
+  fitViewport?: boolean;
+  gutter?: number;
   modal?: boolean;
   onOpenChange?: (open: boolean, detail: PopoverOpenChangeDetail) => void;
+  onOpenChangeComplete?: (open: boolean, detail: OverlayPresenceCompleteDetail) => void;
   open?: boolean;
   placement?: FloatingPlacement;
+  rootBoundary?: FloatingRootBoundary;
+  sameWidth?: boolean;
+  sticky?: FloatingSticky;
+  strategy?: FloatingStrategy;
 };
 
 export type PopoverPartProps<T extends HTMLElement = HTMLElement> = {
@@ -56,14 +71,25 @@ type PopoverApi = {
   getPositionerProps: (props: Omit<PopoverPositionerProps, "children">) => Record<string, unknown>;
   getTriggerProps: (props: Omit<PopoverTriggerProps, "as" | "children">) => Record<string, unknown>;
   open: () => boolean;
+  shouldMount: (forceMount?: boolean) => boolean;
 };
 
 export type CreatePopoverOptions = {
+  arrowPadding?: () => number | undefined;
+  collisionBoundary?: () => FloatingCollisionBoundary | undefined;
+  collisionPadding?: () => number | undefined;
   defaultOpen?: boolean;
+  fitViewport?: () => boolean | undefined;
+  gutter?: () => number | undefined;
   modal?: () => boolean | undefined;
   onOpenChange?: (open: boolean, detail: PopoverOpenChangeDetail) => void;
+  onOpenChangeComplete?: (open: boolean, detail: OverlayPresenceCompleteDetail) => void;
   open?: () => boolean | undefined;
   placement?: () => FloatingPlacement | undefined;
+  rootBoundary?: () => FloatingRootBoundary | undefined;
+  sameWidth?: () => boolean | undefined;
+  sticky?: () => FloatingSticky | undefined;
+  strategy?: () => FloatingStrategy | undefined;
 };
 
 const PopoverContext = createContext<PopoverApi>();
@@ -75,8 +101,18 @@ export function createPopover(options: CreatePopoverOptions = {}): PopoverApi {
     defaultOpen: options.defaultOpen,
     modal: () => options.modal?.() ?? false,
     onOpenChange: (open, detail) => options.onOpenChange?.(open, detail),
+    onOpenChangeComplete: options.onOpenChangeComplete,
     floating: {
+      arrowPadding: options.arrowPadding,
+      collisionBoundary: options.collisionBoundary,
+      collisionPadding: options.collisionPadding,
+      fitViewport: options.fitViewport,
+      gutter: options.gutter,
       placement: options.placement,
+      rootBoundary: options.rootBoundary,
+      sameWidth: options.sameWidth,
+      sticky: options.sticky,
+      strategy: options.strategy,
     },
   });
   const floating = overlay.floating as FloatingAdapter;
@@ -141,6 +177,7 @@ export function createPopover(options: CreatePopoverOptions = {}): PopoverApi {
         reason: "trigger",
       }) as Record<string, unknown>,
     open: overlay.open,
+    shouldMount: overlay.shouldMount,
   };
 }
 
@@ -152,11 +189,21 @@ function usePopover(part: string) {
 
 function Root(props: PopoverRootProps) {
   const popover = createPopover({
+    arrowPadding: () => props.arrowPadding,
+    collisionBoundary: () => props.collisionBoundary,
+    collisionPadding: () => props.collisionPadding,
     defaultOpen: props.defaultOpen,
+    fitViewport: () => props.fitViewport,
+    gutter: () => props.gutter,
     modal: () => props.modal,
     onOpenChange: props.onOpenChange,
+    onOpenChangeComplete: props.onOpenChangeComplete,
     open: () => props.open,
     placement: () => props.placement,
+    rootBoundary: () => props.rootBoundary,
+    sameWidth: () => props.sameWidth,
+    sticky: () => props.sticky,
+    strategy: () => props.strategy,
   });
 
   return (
@@ -182,7 +229,7 @@ function Trigger(props: PopoverTriggerProps) {
 function PortalPart(props: PopoverPortalProps) {
   const popover = usePopover("Portal");
   return (
-    <Show when={props.forceMount || popover.open()}>
+    <Show when={popover.shouldMount(props.forceMount)}>
       <Portal mount={props.mount}>{props.children}</Portal>
     </Show>
   );

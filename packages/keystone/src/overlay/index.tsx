@@ -1,12 +1,20 @@
 export { DismissableLayer, createDismissableLayer } from "./dismissable-layer";
+export { createOverlayDismissalPolicy } from "./dismissal-policy";
 export { FocusScope, createFocusScope } from "./focus-scope";
 export { createFloatingAdapter } from "./floating";
+export { createOverlayPresence } from "./presence";
 export {
   createOverlayLayer,
   createOverlayLayerStack,
   OverlayLayer,
   OverlayLayerProvider,
 } from "./layer-kernel";
+export type {
+  CreateOverlayDismissalPolicyOptions,
+  OverlayDismissalPolicy,
+  OverlayDismissalPolicyContentEvents,
+  OverlayDismissalPolicyLayerOptions,
+} from "./dismissal-policy";
 export type {
   DismissableLayerOptions,
   DismissableLayerOutsideEvent,
@@ -16,8 +24,11 @@ export type {
   CreateFloatingAdapterOptions,
   FloatingAdapter,
   FloatingAlign,
+  FloatingCollisionBoundary,
   FloatingPlacement,
+  FloatingRootBoundary,
   FloatingSide,
+  FloatingSticky,
   FloatingStrategy,
 } from "./floating";
 export type { FocusScopeOptions, FocusScopeProps } from "./focus-scope";
@@ -30,3 +41,9 @@ export type {
   OverlayLayerProviderProps,
   OverlayLayerStack,
 } from "./layer-kernel";
+export type {
+  CreateOverlayPresenceOptions,
+  OverlayPresenceApi,
+  OverlayPresenceCompleteDetail,
+  OverlayPresenceTransitionStatus,
+} from "./presence";

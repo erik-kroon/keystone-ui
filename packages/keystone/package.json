@@ -17,6 +17,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.7.6",
     "solid-js": "^1.9.12"
   },
   "devDependencies": {

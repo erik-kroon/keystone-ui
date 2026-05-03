@@ -39,6 +39,12 @@ describe("Listbox interaction module", () => {
       expect(alpha.role).toBe("option");
       expect(alpha["data-scope"]).toBe("test-listbox");
       expect(alpha["aria-selected"]).toBe(true);
+      expect(listbox.collection.items().map((item) => item.value)).toEqual([
+        "alpha",
+        "beta",
+        "bravo",
+      ]);
+      expect(listbox.collection.itemByValue("bravo")?.label).toBe("Bravo");
 
       (props.onKeyDown as (event: KeyboardEvent) => void)(
         new KeyboardEvent("keydown", { cancelable: true, key: "ArrowDown" }),
@@ -105,6 +111,101 @@ describe("Listbox interaction module", () => {
       );
 
       expect(listbox.activeDescendant.highlightedValue()).toBe("bravo");
+      dispose();
+    });
+  });
+
+  test("supports grouped options and multiple selection contracts", () => {
+    createRoot((dispose) => {
+      const changes: Array<readonly string[]> = [];
+      const listbox = createListboxInteraction<
+        { disabled?: boolean; group?: string; label: string; value: string },
+        { reason: string }
+      >({
+        defaultValues: ["alpha"],
+        id: () => "project-listbox",
+        labelledBy: () => "project-trigger",
+        optionId: (value) => `project-option-${value}`,
+        optionSelectDetail: () => ({ reason: "item" }),
+        programmaticDetail: { reason: "programmatic" },
+        scope: "test-listbox",
+        selectionMode: "multiple",
+        onSelectedValuesChange: (values) => changes.push([...values]),
+      });
+
+      const props = listbox.getListboxProps(
+        {},
+        {
+          selectDetail: () => ({ reason: "keyboard" }),
+        },
+      );
+      const group = listbox.getGroupProps({ value: "recent" });
+      const alpha = listbox.getOptionProps({
+        group: "recent",
+        label: "Alpha",
+        value: "alpha",
+      });
+      const bravo = listbox.getOptionProps({
+        group: "recent",
+        label: "Bravo",
+        value: "bravo",
+      });
+
+      expect(props["aria-multiselectable"]).toBe("true");
+      expect(group.role).toBe("group");
+      expect(group["aria-labelledby"]).toBe("project-listbox-group-recent-label");
+      expect(alpha["data-group"]).toBe("recent");
+      expect(alpha["aria-selected"]).toBe(true);
+
+      (bravo.onClick as (event: MouseEvent) => void)(new MouseEvent("click", { cancelable: true }));
+      expect(listbox.selection.selectedValues()).toEqual(["alpha", "bravo"]);
+      expect(changes).toEqual([["alpha", "bravo"]]);
+
+      (alpha.onClick as (event: MouseEvent) => void)(new MouseEvent("click", { cancelable: true }));
+      expect(listbox.selection.selectedValues()).toEqual(["bravo"]);
+      dispose();
+    });
+  });
+
+  test("accepts custom keyboard delegates and locale-aware typeahead", () => {
+    createRoot((dispose) => {
+      const listbox = createListboxInteraction<
+        { disabled?: boolean; label: string; value: string },
+        { reason: string }
+      >({
+        id: () => "project-listbox",
+        labelledBy: () => "project-trigger",
+        keyboardDelegate: {
+          next: ({ items }) => items.find((item) => item.value === "charlie"),
+        },
+        locale: () => "fr",
+        optionId: (value) => `project-option-${value}`,
+        optionSelectDetail: () => ({ reason: "item" }),
+        programmaticDetail: { reason: "programmatic" },
+        scope: "test-listbox",
+        typeaheadCollator: new Intl.Collator("fr", { sensitivity: "base", usage: "search" }),
+      });
+
+      listbox.getOptionProps({ label: "Alpha", value: "alpha" });
+      listbox.getOptionProps({ label: "Bravo", value: "bravo" });
+      listbox.getOptionProps({ label: "Éclair", value: "charlie" });
+      const props = listbox.getListboxProps(
+        {},
+        {
+          selectDetail: () => ({ reason: "keyboard" }),
+        },
+      );
+
+      (props.onKeyDown as (event: KeyboardEvent) => void)(
+        new KeyboardEvent("keydown", { cancelable: true, key: "ArrowDown" }),
+      );
+      expect(listbox.activeDescendant.highlightedValue()).toBe("charlie");
+
+      listbox.activeDescendant.setHighlightedValue(undefined);
+      (props.onKeyDown as (event: KeyboardEvent) => void)(
+        new KeyboardEvent("keydown", { cancelable: true, key: "e" }),
+      );
+      expect(listbox.activeDescendant.highlightedValue()).toBe("charlie");
       dispose();
     });
   });

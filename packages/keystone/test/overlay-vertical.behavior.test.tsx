@@ -48,6 +48,7 @@ describe("Popover, Tooltip, and Sheet overlay vertical", () => {
       ({ bottom: 0, height: 64, left: 0, right: 0, top: 0, width: 180 }) as DOMRect;
     window.dispatchEvent(new Event("resize"));
     await settled();
+    await settled();
 
     expect(positioner.getAttribute("data-side")).toBe("bottom");
     expect(positioner.style.getPropertyValue("--keystone-anchor-width")).toBe("120px");
@@ -61,7 +62,7 @@ describe("Popover, Tooltip, and Sheet overlay vertical", () => {
 
   test("tooltip opens on pointer and focus, wires aria-describedby, and closes on Escape", async () => {
     render(() => (
-      <Tooltip.Root>
+      <Tooltip.Root delayDuration={0}>
         <Tooltip.Trigger>More info</Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Positioner>

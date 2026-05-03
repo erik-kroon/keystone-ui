@@ -10,6 +10,7 @@ import {
   type Accessor,
   type JSX,
 } from "solid-js";
+import { getPartDataAttributes } from "../metadata/index";
 import {
   assignRef,
   contains,
@@ -19,7 +20,10 @@ import {
   getTabbableElements,
 } from "./dom";
 
-export type OverlayLayerOutsideEvent = CustomEvent<{ originalEvent: Event }>;
+export type OverlayLayerOutsideEvent = CustomEvent<{
+  originalEvent: Event;
+  pointerType?: string;
+}>;
 
 export type OverlayLayerEntry = {
   id: string;
@@ -37,6 +41,7 @@ export type OverlayLayerStack = {
   register: (entry: OverlayLayerRegistration) => () => void;
   isTopLayer: (id: string) => boolean;
   indexOf: (id: string) => number;
+  syncModalState: (ownerDocument: Document) => void;
   syncPointerEvents: (ownerDocument: Document) => void;
 };
 
@@ -81,7 +86,14 @@ type PointerEventsState = {
   originalBodyPointerEvents: string;
 };
 
+type ModalDocumentState = {
+  hiddenElements: Array<{ element: HTMLElement; value: string | null }>;
+  originalBodyOverflow: string;
+  locked: boolean;
+};
+
 const OverlayLayerContext = createContext<OverlayLayerStack>();
+const modalStateByDocument = new WeakMap<Document, ModalDocumentState>();
 const pointerEventsByDocument = new WeakMap<Document, PointerEventsState>();
 const handledOutsideEvents = new WeakSet<Event>();
 let defaultOverlayLayerStack: OverlayLayerStack | undefined;
@@ -130,6 +142,58 @@ export function createOverlayLayerStack(): OverlayLayerStack {
     }
   };
 
+  const syncModalState = (ownerDocument: Document) => {
+    const state = modalStateByDocument.get(ownerDocument) ?? {
+      hiddenElements: [],
+      originalBodyOverflow: "",
+      locked: false,
+    };
+
+    for (const hidden of state.hiddenElements) {
+      if (hidden.value === null) {
+        hidden.element.removeAttribute("aria-hidden");
+      } else {
+        hidden.element.setAttribute("aria-hidden", hidden.value);
+      }
+    }
+
+    state.hiddenElements = [];
+
+    const modalLayers = registrations().filter((layer) => layer.modal);
+    const topModal = modalLayers[modalLayers.length - 1];
+    const topModalElement = untrack(() => topModal?.getElement?.() ?? topModal?.element);
+
+    if (!topModalElement) {
+      if (state.locked) {
+        ownerDocument.body.style.overflow = state.originalBodyOverflow;
+        state.locked = false;
+
+        if (!ownerDocument.body.getAttribute("style")) {
+          ownerDocument.body.removeAttribute("style");
+        }
+      }
+
+      modalStateByDocument.set(ownerDocument, state);
+      return;
+    }
+
+    if (!state.locked) {
+      state.originalBodyOverflow = ownerDocument.body.style.overflow;
+      ownerDocument.body.style.overflow = "hidden";
+      state.locked = true;
+    }
+
+    for (const element of getOutsideElements(topModalElement, ownerDocument)) {
+      state.hiddenElements.push({
+        element,
+        value: element.getAttribute("aria-hidden"),
+      });
+      element.setAttribute("aria-hidden", "true");
+    }
+
+    modalStateByDocument.set(ownerDocument, state);
+  };
+
   return {
     layers,
     register: (entry) => {
@@ -141,6 +205,7 @@ export function createOverlayLayerStack(): OverlayLayerStack {
     },
     indexOf,
     isTopLayer: (id) => indexOf(id) === registrations().length - 1,
+    syncModalState,
     syncPointerEvents,
   };
 }
@@ -172,6 +237,7 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
     let restoreFocus: (() => void) | undefined;
 
     stack.syncPointerEvents(ownerDocument);
+    stack.syncModalState(ownerDocument);
     queueMicrotask(() => {
       isReady = true;
 
@@ -190,6 +256,7 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
         onUnmountAutoFocus: options.onUnmountAutoFocus,
       });
       stack.syncPointerEvents(getOwnerDocument(element));
+      stack.syncModalState(getOwnerDocument(element));
     });
 
     const element = options.element?.();
@@ -265,6 +332,7 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
       restoreFocus?.();
       unregister();
       stack.syncPointerEvents(ownerDocument);
+      stack.syncModalState(ownerDocument);
     });
   });
 
@@ -286,8 +354,7 @@ export function OverlayLayer(props: OverlayLayerProps) {
 
   return (
     <div
-      data-scope="overlay"
-      data-part="layer"
+      {...getPartDataAttributes("overlay", "layer")}
       data-layer-id={layer.id}
       data-layer-index={layer.index()}
       data-top-layer={layer.isTopLayer() ? "" : undefined}
@@ -312,7 +379,12 @@ function dispatchOutsideEvent(
   type: "keystone.pointerDownOutside" | "keystone.focusOutside",
   originalEvent: Event,
 ) {
-  return new CustomEvent(type, { cancelable: true, detail: { originalEvent } });
+  const pointerType =
+    typeof PointerEvent !== "undefined" && originalEvent instanceof PointerEvent
+      ? originalEvent.pointerType
+      : undefined;
+
+  return new CustomEvent(type, { cancelable: true, detail: { originalEvent, pointerType } });
 }
 
 function containsLayerTarget(
@@ -321,6 +393,37 @@ function containsLayerTarget(
   options: CreateOverlayLayerOptions,
 ) {
   return contains(element, target) || options.containsTarget?.(target) === true;
+}
+
+function getOutsideElements(element: HTMLElement, ownerDocument: Document) {
+  const elements = new Set<HTMLElement>();
+  let current: HTMLElement | null = element;
+
+  while (current && current !== ownerDocument.body) {
+    const parent: HTMLElement | null = current.parentElement;
+
+    if (!parent) {
+      break;
+    }
+
+    for (const child of Array.from(parent.children)) {
+      if (child !== current && child instanceof HTMLElement) {
+        elements.add(child);
+      }
+    }
+
+    current = parent;
+  }
+
+  for (const child of Array.from(ownerDocument.body.children)) {
+    if (child !== current && child instanceof HTMLElement) {
+      elements.add(child);
+    }
+  }
+
+  elements.delete(element);
+
+  return elements;
 }
 
 function dismissFromOutside(
