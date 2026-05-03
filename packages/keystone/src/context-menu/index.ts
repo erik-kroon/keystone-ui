@@ -7,6 +7,7 @@ export type {
   MenuGroupLabelProps as ContextMenuGroupLabelProps,
   MenuGroupProps as ContextMenuGroupProps,
   MenuItemProps as ContextMenuItemProps,
+  MenuLinkProps as ContextMenuLinkProps,
   MenuOpenChangeDetail as ContextMenuOpenChangeDetail,
   MenuPartProps as ContextMenuPartProps,
   MenuPortalProps as ContextMenuPortalProps,

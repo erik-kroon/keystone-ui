@@ -1,16 +1,16 @@
-import { createFileRoute } from "@tanstack/solid-router";
 import { Dialog } from "@keystone-ui/keystone/dialog";
 import { Select } from "@keystone-ui/keystone/select";
+import { createFileRoute } from "@tanstack/solid-router";
 import {
   ArrowRight,
   BookOpen,
-  CheckCircle2,
+  Boxes,
   Code2,
   FileJson2,
   Layers,
   PackageCheck,
+  RouteIcon,
   Sparkles,
-  Terminal,
 } from "lucide-solid";
 import { For } from "solid-js";
 
@@ -18,50 +18,104 @@ export const Route = createFileRoute("/")({
   component: App,
 });
 
-const releaseChecks = [
-  "Keystone kernel tests",
-  "Dialog and Select behavior tests",
-  "Mason CLI generated app build",
-  "Registry validation and path safety",
-  "Example app SSR/build smoke",
-  "Web SSR build",
-];
-
-const primitives = [
+const entryPoints = [
   {
-    name: "Dialog",
-    status: "Dogfooded",
-    copy: "Focus entry, focus trap, restore, top-layer dismissal, preventable outside interaction.",
+    icon: <Layers size={19} />,
+    title: "Use Keystone",
+    body: "Start with unstyled Solid primitives. Learn anatomy, behavior, accessibility, data attributes, CSS variables, and SSR constraints.",
+    href: "/docs/keystone/contracts",
+    action: "Read primitive contracts",
   },
   {
-    name: "Select",
-    status: "Dogfooded",
-    copy: "Collection registration, typeahead, list navigation, form reset, floating geometry.",
+    icon: <FileJson2 size={19} />,
+    title: "Use Mason",
+    body: "Install editable source for app UI. Inspect generated files, registry dependencies, target paths, caveats, and parity notes.",
+    href: "/docs/mason/registry",
+    action: "Browse registry contracts",
   },
   {
-    name: "Form control",
-    status: "Kernel",
-    copy: "ARIA relationships, state attributes, hidden input props, reset hooks.",
-  },
-  {
-    name: "Overlay",
-    status: "Kernel",
-    copy: "Dismissable layer, focus scope, layer stack, pointer-event isolation.",
+    icon: <BookOpen size={19} />,
+    title: "Read a primitive page",
+    body: "Dialog is the model page for Keystone docs: import, anatomy, controlled state, focus, dismissal, styling, and deeper references.",
+    href: "/docs/keystone/dialog",
+    action: "Open Dialog docs",
   },
 ];
 
-const masonFlow = [
-  "Detect Solid app shape",
-  "Resolve registry dependencies",
-  "Plan target writes",
-  "Dry-run or apply source files",
-  "Typecheck and build generated output",
+const keystoneDocs = [
+  {
+    title: "Primitive contracts",
+    body: "Metadata-backed parts, ARIA notes, keyboard behavior, data attributes, CSS variables, SSR notes, and examples.",
+    href: "/docs/keystone/contracts",
+  },
+  {
+    title: "Dialog",
+    body: "Modal overlay behavior: focus entry, trap, restore, outside interaction, escape dismissal, ARIA relationships, and styling hooks.",
+    href: "/docs/keystone/dialog",
+  },
+  {
+    title: "Overlay vertical",
+    body: "Popover, Tooltip, and Sheet share the Keystone overlay layer model, geometry contracts, and modal/non-modal boundaries.",
+    href: "/docs/overlay/popover-tooltip-sheet",
+  },
 ];
 
-const nextWork = [
-  { issue: "#14", title: "Example app verification tracer", tone: "amber" },
-  { issue: "#13", title: "Docs product tracer", tone: "blue" },
-  { issue: "#12", title: "First Mason block tracer", tone: "green" },
+const masonDocs = [
+  {
+    title: "Registry contracts",
+    body: "Install commands, file trees, dependencies, generated-output caveats, customization notes, and parity references.",
+    href: "/docs/mason/registry",
+  },
+  {
+    title: "TanStack Form field",
+    body: "TextField shows how Mason owns app form integration while Keystone keeps form-control behavior generic.",
+    href: "/docs/mason/text-field",
+  },
+  {
+    title: "TanStack DataTable",
+    body: "DataTable documents the editable source layer around TanStack Table: toolbar, filters, pagination, row actions, and router state.",
+    href: "/docs/mason/data-table",
+  },
+];
+
+const primitiveTemplate = [
+  "Import",
+  "When to use",
+  "Anatomy",
+  "Basic example",
+  "Behavior",
+  "Accessibility",
+  "Styling contract",
+  "SSR notes",
+  "API reference",
+];
+
+const registryTemplate = [
+  "Install",
+  "What gets added",
+  "Usage",
+  "Generated source contract",
+  "Customization",
+  "Parity notes",
+  "Limitations",
+];
+
+const statusNotes = [
+  {
+    label: "Keystone",
+    value: "behavior first",
+    body: "Depth comes before catalog breadth. Dialog, Select, overlay, collection, and form-control contracts lead the docs.",
+  },
+  {
+    label: "Mason",
+    value: "source owned",
+    body: "Generated files are readable Solid source. Mason should explain writes, dependencies, and escape hatches before showing volume.",
+  },
+  {
+    label: "Reference",
+    value: "metadata backed",
+    body: "Contract pages can stay generated, but they should sit behind learning pages instead of replacing them.",
+  },
 ];
 
 function App() {
@@ -70,35 +124,40 @@ function App() {
       <section class="hero-section">
         <div class="hero-grid">
           <div class="hero-copy">
-            <p class="eyebrow">0.1.0 preparation surface</p>
-            <h1>Accessible Solid primitives. Editable app source.</h1>
+            <p class="eyebrow">Keystone UI docs</p>
+            <h1>Solid primitives and editable app source.</h1>
             <p class="hero-lede">
-              Keystone is the behavior layer. Mason is the source registry that installs UI into the
-              user project. This docs app is now the docs product surface and uses the local
-              Keystone package directly.
+              Keystone documents accessible, unstyled primitive behavior. Mason documents the source
+              registry that installs styled Solid components, blocks, and app integrations into user
+              projects.
             </p>
             <div class="hero-actions">
-              <a class="command-button primary" href="#keystone">
-                <Layers size={18} />
-                Inspect primitives
+              <a class="command-button primary" href="#start">
+                <RouteIcon size={18} />
+                Start here
               </a>
-              <a class="command-button secondary" href="#release">
-                <PackageCheck size={18} />
-                Release gate
+              <a class="command-button secondary" href="#shape">
+                <BookOpen size={18} />
+                Docs shape
               </a>
             </div>
           </div>
 
-          <div class="status-console" aria-label="Current verification state">
+          <div class="status-console" aria-label="Documentation model">
             <div class="console-topline">
-              <span>release/readiness</span>
-              <span>passing</span>
+              <span>docs/model</span>
+              <span>two tracks</span>
             </div>
-            <For each={releaseChecks}>
+            <For each={statusNotes}>
               {(item) => (
-                <div class="console-row">
-                  <CheckCircle2 size={17} />
-                  <span>{item}</span>
+                <div class="console-row doc-model-row">
+                  <PackageCheck size={17} />
+                  <span>
+                    <strong>{item.label}</strong>
+                    <small>
+                      {item.value}. {item.body}
+                    </small>
+                  </span>
                 </div>
               )}
             </For>
@@ -106,27 +165,54 @@ function App() {
         </div>
       </section>
 
-      <section id="keystone" class="surface-band">
+      <section id="start" class="surface-band">
         <div class="section-heading">
-          <p class="eyebrow">Keystone</p>
-          <h2>Primitive behavior is the product.</h2>
+          <p class="eyebrow">Start here</p>
+          <h2>Choose the layer you are working in.</h2>
           <p>
-            The first kernel pass is centered on Dialog and Select because overlays and item
-            collections prove most of the hard behavior.
+            The first decision in these docs should be whether you need primitive behavior or
+            editable application source. That split keeps Keystone independent and Mason practical.
           </p>
         </div>
 
-        <div class="primitive-layout">
-          <div class="primitive-list">
-            <For each={primitives}>
-              {(primitive) => (
-                <article class="primitive-item">
-                  <div>
-                    <h3>{primitive.name}</h3>
-                    <p>{primitive.copy}</p>
-                  </div>
-                  <span>{primitive.status}</span>
-                </article>
+        <div class="entry-grid">
+          <For each={entryPoints}>
+            {(item) => (
+              <a class="entry-card" href={item.href}>
+                <div class="entry-icon">{item.icon}</div>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+                <span>
+                  {item.action}
+                  <ArrowRight size={16} />
+                </span>
+              </a>
+            )}
+          </For>
+        </div>
+      </section>
+
+      <section id="keystone" class="surface-band">
+        <div class="section-heading">
+          <p class="eyebrow">Keystone</p>
+          <h2>Primitive pages should teach behavior before props.</h2>
+          <p>
+            Base UI is the runtime-depth reference and Kobalte is the Solid-shape reference.
+            Keystone docs should explain when to use a primitive, how its parts compose, and what
+            behavior it guarantees.
+          </p>
+        </div>
+
+        <div class="docs-track-grid">
+          <div class="doc-lanes">
+            <For each={keystoneDocs}>
+              {(item) => (
+                <DocLane
+                  icon={<BookOpen size={20} />}
+                  title={item.title}
+                  body={item.body}
+                  href={item.href}
+                />
               )}
             </For>
           </div>
@@ -134,7 +220,7 @@ function App() {
           <div class="live-lab">
             <div class="lab-header">
               <Code2 size={18} />
-              <span>Live Keystone parts</span>
+              <span>Primitive proof</span>
             </div>
             <DialogDemo />
             <SelectDemo />
@@ -145,94 +231,97 @@ function App() {
       <section id="mason" class="mason-section">
         <div class="section-heading narrow">
           <p class="eyebrow">Mason</p>
-          <h2>The registry installs source, not mystery runtime.</h2>
+          <h2>Registry pages should explain the write plan.</h2>
           <p>
-            Mason maps shadcn-style registry concepts onto Solid and Keystone. Generated files are
-            ordinary source files owned by the app.
+            Mason is closer to shadcn than to a runtime component package. The docs should show the
+            command, the files, the dependencies, the owned source contract, and the limits.
           </p>
         </div>
 
-        <div class="mason-flow" aria-label="Mason install flow">
-          <For each={masonFlow}>
-            {(step, index) => (
-              <div class="flow-step">
-                <span>{String(index() + 1).padStart(2, "0")}</span>
-                <p>{step}</p>
-              </div>
-            )}
-          </For>
-        </div>
-      </section>
-
-      <section id="docs" class="docs-band">
-        <div class="docs-grid">
-          <div>
-            <p class="eyebrow">Docs map</p>
-            <h2>What this app should grow into next.</h2>
+        <div class="docs-track-grid">
+          <div class="mason-flow" aria-label="Mason install flow">
+            <FlowStep index="01" title="Detect app" />
+            <FlowStep index="02" title="Resolve registry dependencies" />
+            <FlowStep index="03" title="Plan target writes" />
+            <FlowStep index="04" title="Dry-run or apply source" />
+            <FlowStep index="05" title="Verify generated output" />
           </div>
+
           <div class="doc-lanes">
-            <DocLane
-              icon={<BookOpen size={20} />}
-              title="Primitive docs"
-              body="Anatomy, keyboard behavior, ARIA, data attributes, examples, known limits."
-              href="/docs/keystone/dialog"
-            />
-            <DocLane
-              icon={<FileJson2 size={20} />}
-              title="Registry docs"
-              body="Item schema, dependency resolution, path safety, source ownership, install plans."
-              href="/docs/mason/dialog"
-            />
-            <DocLane
-              icon={<FileJson2 size={20} />}
-              title="TanStack Form field"
-              body="Mason TextField proves the app form layer without pulling TanStack into Keystone."
-              href="/docs/mason/text-field"
-            />
-            <DocLane
-              icon={<FileJson2 size={20} />}
-              title="TanStack Select field"
-              body="Mason SelectField composes TanStack Form state with Keystone Select behavior."
-              href="/docs/mason/select-field"
-            />
-            <DocLane
-              icon={<FileJson2 size={20} />}
-              title="TanStack DataTable"
-              body="Mason DataTable wraps TanStack Table for sorting, filtering, pagination, and row actions."
-              href="/docs/mason/data-table"
-            />
-            <DocLane
-              icon={<Terminal size={20} />}
-              title="CLI docs"
-              body="Init, add, dry-run, generated-output verification, and framework detection."
-            />
-          </div>
-        </div>
-      </section>
-
-      <section id="release" class="release-section">
-        <div class="release-panel">
-          <div class="release-title">
-            <p class="eyebrow">Remaining before 0.1.0</p>
-            <h2>Keep the release small and legible.</h2>
-          </div>
-          <div class="release-issues">
-            <For each={nextWork}>
+            <For each={masonDocs}>
               {(item) => (
-                <a
-                  class={`issue-link issue-${item.tone}`}
-                  href={`https://github.com/erik-kroon/keystone-ui/issues/${item.issue.slice(1)}`}
-                >
-                  <span>{item.issue}</span>
-                  <strong>{item.title}</strong>
-                  <ArrowRight size={17} />
-                </a>
+                <DocLane
+                  icon={<FileJson2 size={20} />}
+                  title={item.title}
+                  body={item.body}
+                  href={item.href}
+                />
               )}
             </For>
           </div>
         </div>
       </section>
+
+      <section id="shape" class="docs-band">
+        <div class="docs-grid">
+          <div>
+            <p class="eyebrow">Docs shape</p>
+            <h2>The map each page should follow.</h2>
+            <p class="section-note">
+              The content system should be predictable enough that maintainers, users, and agents
+              know where a detail belongs.
+            </p>
+          </div>
+          <div class="template-grid">
+            <TemplateList
+              icon={<Layers size={20} />}
+              title="Keystone primitive page"
+              items={primitiveTemplate}
+            />
+            <TemplateList
+              icon={<Boxes size={20} />}
+              title="Mason registry item page"
+              items={registryTemplate}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="reference" class="release-section">
+        <div class="release-panel">
+          <div class="release-title">
+            <p class="eyebrow">Reference</p>
+            <h2>Generated contracts stay useful, but move behind the learning path.</h2>
+          </div>
+          <div class="release-issues">
+            <a class="issue-link issue-green" href="/docs/keystone/contracts">
+              <span>Keystone</span>
+              <strong>Primitive metadata reference</strong>
+              <ArrowRight size={17} />
+            </a>
+            <a class="issue-link issue-blue" href="/docs/mason/registry">
+              <span>Mason</span>
+              <strong>Registry metadata reference</strong>
+              <ArrowRight size={17} />
+            </a>
+            <a class="issue-link issue-amber" href="/docs/overlay/popover-tooltip-sheet">
+              <span>Overlay</span>
+              <strong>Shared overlay vertical</strong>
+              <ArrowRight size={17} />
+            </a>
+          </div>
+        </div>
+      </section>
     </main>
+  );
+}
+
+function FlowStep(props: { index: string; title: string }) {
+  return (
+    <div class="flow-step">
+      <span>{props.index}</span>
+      <p>{props.title}</p>
+    </div>
   );
 }
 
@@ -289,24 +378,28 @@ function SelectDemo() {
   );
 }
 
-function DocLane(props: { icon: Element; title: string; body: string; href?: string }) {
-  const content = (
-    <>
+function DocLane(props: { icon: Element; title: string; body: string; href: string }) {
+  return (
+    <a class="doc-lane" href={props.href}>
       <div class="doc-icon">{props.icon}</div>
       <div>
         <h3>{props.title}</h3>
         <p>{props.body}</p>
       </div>
-    </>
+    </a>
   );
+}
 
-  if (props.href) {
-    return (
-      <a class="doc-lane" href={props.href}>
-        {content}
-      </a>
-    );
-  }
-
-  return <article class="doc-lane">{content}</article>;
+function TemplateList(props: { icon: Element; title: string; items: readonly string[] }) {
+  return (
+    <article class="template-list">
+      <div class="doc-section-title">
+        {props.icon}
+        <h3>{props.title}</h3>
+      </div>
+      <ol>
+        <For each={props.items}>{(item) => <li>{item}</li>}</For>
+      </ol>
+    </article>
+  );
 }

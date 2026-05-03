@@ -29,6 +29,7 @@ This vertical applies the primitive delivery standard to Tabs:
 - Kobalte Tabs documents the same anatomy: root, list, trigger, indicator, and content. It also calls out controlled/uncontrolled value, disabled tabs, horizontal/vertical orientation, automatic/manual activation, RTL keyboard navigation, focus management for panels, and `forceMount`.
 - Base UI Tabs exposes root, list, tab, indicator, and panel, with controlled/uncontrolled value, orientation, disabled tabs, `keepMounted`, and measured indicator CSS variables.
 - Keystone now covers the shared core contract: value state, orientation, disabled triggers, activation mode, roving focus, trigger/panel ARIA, `forceMount`, data parts, and Mason metadata.
+- The #51 parity pass adds explicit `dir="rtl"` handling for horizontal arrow keys so `ArrowLeft` moves forward and `ArrowRight` moves backward in RTL tablists.
 
 References checked on 2026-05-03:
 
@@ -37,4 +38,4 @@ References checked on 2026-05-03:
 
 ## Parity Notes
 
-The next Tabs parity pass should add RTL-aware horizontal key behavior, measured indicator positioning and CSS variables, dynamic removal focus restoration, closable/deleteable tab coordination, activation latency policy, panel focus heuristics that omit `tabIndex` when content already has focusable children, and broader touch/cursor edge-case tests.
+The next Tabs parity pass should add measured indicator positioning and CSS variables, dynamic removal focus restoration, closable/deleteable tab coordination, activation latency policy, panel focus heuristics that omit `tabIndex` when content already has focusable children, and broader touch/cursor edge-case tests.

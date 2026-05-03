@@ -94,6 +94,8 @@ Every first-party registry item carries docs-ready metadata:
 
 Base UI is the first reference for runtime depth. Kobalte is the first reference for Solid-native primitive shape. Some components use more specific references, such as TanStack Table, TanStack Form, TanStack Router, Sonner, or shadcn-style registry conventions.
 
+The registry metadata contract is documented in [Mason Registry RFC](docs/rfcs/mason-registry.md).
+
 ## Development
 
 Install dependencies:

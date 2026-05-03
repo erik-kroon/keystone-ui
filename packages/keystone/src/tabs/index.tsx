@@ -20,6 +20,7 @@ import {
 } from "../utils/index";
 
 export type TabsActivationMode = "automatic" | "manual";
+export type TabsDirection = "ltr" | "rtl";
 export type TabsOrientation = "horizontal" | "vertical";
 export type TabsValueChangeDetail = {
   event?: Event;
@@ -38,6 +39,7 @@ export type TabsRootProps = TabsPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> & {
     activationMode?: TabsActivationMode;
     defaultValue?: string;
+    dir?: TabsDirection;
     disabled?: boolean;
     loopFocus?: boolean;
     onValueChange?: (value: string, detail: TabsValueChangeDetail) => void;
@@ -69,6 +71,7 @@ type TriggerRecord = {
 export type CreateTabsOptions = {
   activationMode?: () => TabsActivationMode | undefined;
   defaultValue?: string;
+  dir?: () => TabsDirection | undefined;
   disabled?: () => boolean | undefined;
   loopFocus?: () => boolean | undefined;
   onValueChange?: (value: string, detail: TabsValueChangeDetail) => void;
@@ -78,6 +81,7 @@ export type CreateTabsOptions = {
 
 export type TabsApi = {
   activationMode: () => TabsActivationMode;
+  dir: () => TabsDirection;
   disabled: () => boolean;
   getContentId: (value: string) => string;
   getTriggerId: (value: string) => string;
@@ -111,6 +115,7 @@ export function createTabs(options: CreateTabsOptions = {}): TabsApi {
   const [highlightedValue, setHighlightedValue] = createSignal<string | undefined>();
   const [registryVersion, setRegistryVersion] = createSignal(0);
   const disabled = createMemo(() => options.disabled?.() ?? false);
+  const dir = createMemo(() => options.dir?.() ?? "ltr");
   const activationMode = createMemo(() => options.activationMode?.() ?? "automatic");
   const loopFocus = createMemo(() => options.loopFocus?.() ?? true);
   const orientation = createMemo(() => options.orientation?.() ?? "horizontal");
@@ -151,6 +156,7 @@ export function createTabs(options: CreateTabsOptions = {}): TabsApi {
 
   return {
     activationMode,
+    dir,
     disabled,
     getContentId,
     getTriggerId,
@@ -189,6 +195,7 @@ function Root(props: TabsRootProps) {
     "activationMode",
     "children",
     "defaultValue",
+    "dir",
     "disabled",
     "loopFocus",
     "onValueChange",
@@ -198,6 +205,7 @@ function Root(props: TabsRootProps) {
   const tabs = createTabs({
     activationMode: () => local.activationMode,
     defaultValue: local.defaultValue,
+    dir: () => local.dir,
     disabled: () => local.disabled,
     loopFocus: () => local.loopFocus,
     onValueChange: local.onValueChange,
@@ -211,6 +219,7 @@ function Root(props: TabsRootProps) {
         {...others}
         data-disabled={dataBoolean(tabs.disabled())}
         data-orientation={tabs.orientation()}
+        dir={local.dir}
         {...partDataAttributes("tabs", "root")}
       >
         {local.children}
@@ -372,8 +381,8 @@ function moveFocus(event: KeyboardEvent, tabs: TabsApi) {
   }
 
   const horizontal = tabs.orientation() === "horizontal";
-  const nextKey = horizontal ? "ArrowRight" : "ArrowDown";
-  const previousKey = horizontal ? "ArrowLeft" : "ArrowUp";
+  const nextKey = horizontal ? (tabs.dir() === "rtl" ? "ArrowLeft" : "ArrowRight") : "ArrowDown";
+  const previousKey = horizontal ? (tabs.dir() === "rtl" ? "ArrowRight" : "ArrowLeft") : "ArrowUp";
 
   if (![nextKey, previousKey, "Home", "End"].includes(event.key)) return;
 

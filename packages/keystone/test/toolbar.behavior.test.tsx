@@ -54,6 +54,29 @@ describe("Toolbar behavior", () => {
     expect(document.activeElement).toBe(controls[0]);
   });
 
+  test("uses RTL-aware horizontal arrow navigation", () => {
+    render(() => (
+      <Toolbar.Root dir="rtl">
+        <Toolbar.Button>Bold</Toolbar.Button>
+        <Toolbar.Button>Italic</Toolbar.Button>
+        <Toolbar.Link href="/docs">Docs</Toolbar.Link>
+      </Toolbar.Root>
+    ));
+
+    const controls = Array.from(
+      document.body.querySelectorAll<HTMLElement>(
+        '[data-scope="toolbar"][data-part="button"], [data-scope="toolbar"][data-part="link"]',
+      ),
+    );
+
+    controls[0].focus();
+    keyDown(controls[0], "ArrowLeft");
+    expect(document.activeElement).toBe(controls[1]);
+
+    keyDown(controls[1], "ArrowRight");
+    expect(document.activeElement).toBe(controls[0]);
+  });
+
   test("respects prevented keyboard events and non-looping focus boundaries", () => {
     render(() => (
       <Toolbar.Root loopFocus={false}>

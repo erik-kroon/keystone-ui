@@ -5,7 +5,7 @@
 - Keystone primitive: `@keystone-ui/keystone/toolbar`
 - Mason registry item: `toolbar`
 - Parts: `root`, `button`, `link`, `separator`
-- Core behavior: `role="toolbar"`, `aria-orientation`, horizontal and vertical roving focus, disabled item skipping, non-looping focus boundaries, pressed button metadata, separator semantics, and stable `data-scope`/`data-part` contracts.
+- Core behavior: `role="toolbar"`, `aria-orientation`, horizontal and vertical roving focus, RTL-aware horizontal arrow keys, disabled item skipping, non-looping focus boundaries, pressed button metadata, separator semantics, and stable `data-scope`/`data-part` contracts.
 
 ## Parity Baseline
 
@@ -14,7 +14,6 @@ The current vertical is the thin Keystone/Mason pass against Kobalte and Base UI
 ## Remaining Parity Gaps
 
 - Toggle group and radio group coordination inside toolbar.
-- RTL horizontal arrow behavior.
 - Cursor and touch behavior for non-button controls.
 - Nested coordination with menus, popovers, and command controls.
 - Focus restoration after nested overlay tools close.

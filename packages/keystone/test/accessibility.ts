@@ -1,5 +1,5 @@
 import { expect } from "vitest";
-import { keyDown, settled } from "./harness";
+import { keyDown, pointerDown, settled } from "./harness";
 
 type MaybePromise<T> = T | Promise<T>;
 type ElementTarget<T extends HTMLElement = HTMLElement> = T | (() => T);
@@ -25,9 +25,47 @@ export type AriaRelationshipSpec = {
 
 export type FormValueSpec = Record<string, string | readonly string[] | null>;
 
-export type ReducedMotionOptions = {
-  reduce?: boolean;
+export type MediaQueryOptions = {
+  matches?: boolean;
 };
+
+export type StablePartSpec = {
+  part: string;
+  scope: string;
+  target: AttributeTarget;
+  attributes?: readonly string[];
+};
+
+export type FocusTrapSpec = {
+  container: ElementTarget;
+  first: ElementTarget;
+  last: ElementTarget;
+};
+
+export type FocusRestoreSpec = {
+  close: () => MaybePromise<void>;
+  open: () => MaybePromise<void>;
+  trigger: ElementTarget;
+};
+
+export type OutsideDismissalSpec = {
+  assertDismissed: () => void;
+  open: () => MaybePromise<void>;
+  outside: ElementTarget;
+};
+
+export type FormResetSpec = {
+  afterReset: FormValueSpec;
+  beforeReset: FormValueSpec;
+  form: HTMLFormElement;
+};
+
+export type SsrSmokeSpec = {
+  expectedText?: string;
+  html: string;
+};
+
+export type HydrationSmokeSpec = SsrSmokeSpec;
 
 export function resolveElement<T extends HTMLElement>(target: ElementTarget<T>): T {
   return typeof target === "function" ? (target as () => T)() : target;
@@ -56,6 +94,14 @@ export function expectRole(target: AttributeTarget, role: string) {
 export function expectPart(target: AttributeTarget, scope: string, part: string) {
   expect(attributeValue(target, "data-scope")).toBe(scope);
   expect(attributeValue(target, "data-part")).toBe(part);
+}
+
+export function expectStablePartAttributes(spec: StablePartSpec) {
+  expectPart(spec.target, spec.scope, spec.part);
+
+  for (const attribute of spec.attributes ?? []) {
+    expect(attributeValue(spec.target, attribute)).not.toBeNull();
+  }
 }
 
 export function expectAriaRelationship(spec: AriaRelationshipSpec) {
@@ -92,6 +138,57 @@ export function expectFocusWithin(target: ElementTarget) {
   expect(resolveElement(target).contains(document.activeElement)).toBe(true);
 }
 
+export function expectFocusTrap(spec: FocusTrapSpec) {
+  const container = resolveElement(spec.container);
+  const first = resolveElement(spec.first);
+  const last = resolveElement(spec.last);
+
+  last.focus();
+  keyDown(
+    document.activeElement instanceof HTMLElement ? document.activeElement : container,
+    "Tab",
+  );
+  expectFocus(first);
+
+  first.focus();
+  (document.activeElement instanceof HTMLElement
+    ? document.activeElement
+    : container
+  ).dispatchEvent(
+    new KeyboardEvent("keydown", {
+      bubbles: true,
+      cancelable: true,
+      key: "Tab",
+      shiftKey: true,
+    }),
+  );
+  expectFocus(last);
+}
+
+export async function expectFocusRestore(spec: FocusRestoreSpec) {
+  const trigger = resolveElement(spec.trigger);
+  trigger.focus();
+  await spec.open();
+  await settled();
+
+  expectFocusWithin(document.body);
+
+  await spec.close();
+  await settled();
+
+  expectFocus(trigger);
+}
+
+export async function expectOutsideDismissal(spec: OutsideDismissalSpec) {
+  await spec.open();
+  await settled();
+
+  pointerDown(resolveElement(spec.outside));
+  await settled();
+
+  spec.assertDismissed();
+}
+
 export function expectFormValues(form: HTMLFormElement, expected: FormValueSpec) {
   const data = new FormData(form);
 
@@ -102,6 +199,36 @@ export function expectFormValues(form: HTMLFormElement, expected: FormValueSpec)
       expect(data.get(name)).toBe(value);
     }
   }
+}
+
+export async function expectFormReset(spec: FormResetSpec) {
+  expectFormValues(spec.form, spec.beforeReset);
+
+  spec.form.reset();
+  await settled();
+
+  expectFormValues(spec.form, spec.afterReset);
+}
+
+export function expectSsrSmoke(spec: SsrSmokeSpec) {
+  expect(spec.html.length).toBeGreaterThan(0);
+
+  if (spec.expectedText) {
+    expect(spec.html).toContain(spec.expectedText);
+  }
+
+  return spec.html;
+}
+
+export function expectHydrationSmoke(spec: HydrationSmokeSpec) {
+  const container = document.createElement("div");
+  container.innerHTML = expectSsrSmoke(spec);
+  document.body.append(container);
+
+  expect(container.childNodes.length).toBeGreaterThan(0);
+  container.remove();
+
+  return spec.html;
 }
 
 export async function withDirection<T>(
@@ -124,27 +251,30 @@ export async function withDirection<T>(
 
 export async function withReducedMotion<T>(
   callback: () => MaybePromise<T>,
-  options: ReducedMotionOptions = {},
+  options: MediaQueryOptions = {},
+): Promise<T> {
+  return withMediaQuery("prefers-reduced-motion", callback, options);
+}
+
+export async function withForcedColors<T>(
+  callback: () => MaybePromise<T>,
+  options: MediaQueryOptions = {},
+): Promise<T> {
+  return withMediaQuery("forced-colors", callback, options);
+}
+
+async function withMediaQuery<T>(
+  pattern: string,
+  callback: () => MaybePromise<T>,
+  options: MediaQueryOptions = {},
 ): Promise<T> {
   const previous = globalThis.matchMedia;
-  const reduce = options.reduce ?? true;
+  const expected = options.matches ?? true;
 
   Object.defineProperty(globalThis, "matchMedia", {
     configurable: true,
-    value: (query: string) => {
-      const matches = query.includes("prefers-reduced-motion") ? reduce : false;
-
-      return {
-        addEventListener: () => undefined,
-        addListener: () => undefined,
-        dispatchEvent: () => false,
-        matches,
-        media: query,
-        onchange: null,
-        removeEventListener: () => undefined,
-        removeListener: () => undefined,
-      } satisfies MediaQueryList;
-    },
+    value: (query: string) =>
+      createMediaQueryList(query, query.includes(pattern) ? expected : false),
   });
 
   try {
@@ -159,6 +289,19 @@ export async function withReducedMotion<T>(
       });
     }
   }
+}
+
+function createMediaQueryList(query: string, matches: boolean): MediaQueryList {
+  return {
+    addEventListener: () => undefined,
+    addListener: () => undefined,
+    dispatchEvent: () => false,
+    matches,
+    media: query,
+    onchange: null,
+    removeEventListener: () => undefined,
+    removeListener: () => undefined,
+  } satisfies MediaQueryList;
 }
 
 function tokenSet(value: string | null) {

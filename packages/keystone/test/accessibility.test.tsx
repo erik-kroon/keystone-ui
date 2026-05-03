@@ -4,11 +4,16 @@ import {
   expectAriaRelationship,
   expectAriaState,
   expectFocus,
+  expectFocusTrap,
   expectFormValues,
+  expectHydrationSmoke,
   expectPart,
   expectRole,
+  expectSsrSmoke,
+  expectStablePartAttributes,
   runKeyboardTable,
   withDirection,
+  withForcedColors,
   withReducedMotion,
 } from "./accessibility";
 
@@ -42,6 +47,12 @@ describe("accessibility spec harness", () => {
     });
 
     expectPart(trigger, "select", "trigger");
+    expectStablePartAttributes({
+      target: trigger,
+      scope: "select",
+      part: "trigger",
+      attributes: ["aria-controls", "aria-expanded"],
+    });
     expectRole(listbox, "listbox");
     expectAriaRelationship({
       source: trigger,
@@ -64,7 +75,35 @@ describe("accessibility spec harness", () => {
     expectFormValues(form, { project: "alpha" });
   });
 
-  test("scopes direction and reduced-motion hooks", async () => {
+  test("asserts focus traps and hydration smoke output", () => {
+    const first = document.createElement("button");
+    const last = document.createElement("button");
+    const container = document.createElement("div");
+    container.append(first, last);
+    document.body.append(container);
+
+    container.addEventListener("keydown", (event) => {
+      if (event.key === "Tab" && event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (event.key === "Tab" && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    expectFocusTrap({ container, first, last });
+    expectSsrSmoke({
+      html: `<button data-scope="button">Rendered</button>`,
+      expectedText: "Rendered",
+    });
+    expectHydrationSmoke({
+      html: `<label for="project">Project</label>`,
+      expectedText: "Project",
+    });
+  });
+
+  test("scopes direction, reduced-motion, and forced-colors hooks", async () => {
     await withDirection("rtl", () => {
       expect(document.documentElement.dir).toBe("rtl");
     });
@@ -72,6 +111,10 @@ describe("accessibility spec harness", () => {
 
     await withReducedMotion(() => {
       expect(matchMedia("(prefers-reduced-motion: reduce)").matches).toBe(true);
+    });
+
+    await withForcedColors(() => {
+      expect(matchMedia("(forced-colors: active)").matches).toBe(true);
     });
   });
 });

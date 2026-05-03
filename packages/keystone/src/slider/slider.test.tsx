@@ -1,7 +1,7 @@
 import { createSignal } from "solid-js";
 import { describe, expect, test } from "vitest";
 import { Slider } from "./index";
-import { getByPart, keyDown, render } from "../../test/harness";
+import { getByPart, keyDown, render, settled } from "../../test/harness";
 
 function parts(part: string) {
   return Array.from(
@@ -51,6 +51,7 @@ describe("Slider", () => {
           <Slider.Thumb index={0}>Minimum</Slider.Thumb>
           <Slider.Thumb index={1}>Maximum</Slider.Thumb>
         </Slider.Track>
+        <Slider.HiddenInput index={0} name="range" />
       </Slider.Root>
     ));
 
@@ -66,6 +67,7 @@ describe("Slider", () => {
     expect(firstThumb?.getAttribute("aria-valuenow")).toBe("25");
     expect(firstThumb?.getAttribute("data-index")).toBe("0");
     expect(secondThumb?.getAttribute("aria-valuenow")).toBe("75");
+    expect(getByPart("slider", "hidden-input").getAttribute("data-index")).toBe("0");
   });
 
   test("updates uncontrolled value with keyboard and commits each keyboard change", () => {
@@ -187,6 +189,78 @@ describe("Slider", () => {
     keyDown(getByPart("slider", "thumb"), "ArrowRight");
 
     expect(getByPart("slider", "thumb").getAttribute("aria-valuenow")).toBe("20");
+    expect(changes).toEqual([]);
+  });
+
+  test("submits, syncs, and resets through hidden input form ownership", async () => {
+    render(() => (
+      <>
+        <form id="filters" />
+        <Slider.Root defaultValue={[20]} form="filters" name="price" min={0} max={100} step={10}>
+          <Slider.Track>
+            <Slider.Range />
+            <Slider.Thumb />
+          </Slider.Track>
+          <Slider.HiddenInput />
+        </Slider.Root>
+      </>
+    ));
+
+    const form = document.querySelector<HTMLFormElement>("#filters")!;
+    const input = getByPart("slider", "hidden-input") as HTMLInputElement;
+    const thumb = getByPart("slider", "thumb");
+
+    expect(new FormData(form).get("price")).toBe("20");
+
+    keyDown(thumb, "ArrowRight");
+    expect(new FormData(form).get("price")).toBe("30");
+
+    input.value = "70";
+    input.dispatchEvent(new Event("input", { bubbles: true, cancelable: true }));
+    await settled();
+    expect(thumb.getAttribute("aria-valuenow")).toBe("70");
+
+    form.reset();
+    await settled();
+
+    expect(thumb.getAttribute("aria-valuenow")).toBe("20");
+    expect(new FormData(form).get("price")).toBe("20");
+  });
+
+  test("read-only slider exposes state and blocks keyboard and pointer changes", () => {
+    const changes: readonly number[][] = [];
+
+    render(() => (
+      <Slider.Root
+        readOnly
+        invalid
+        required
+        defaultValue={[20]}
+        min={0}
+        max={100}
+        step={10}
+        onValueChange={(value) => changes.push(value)}
+      >
+        <Slider.Track>
+          <Slider.Range />
+          <Slider.Thumb />
+        </Slider.Track>
+        <Slider.HiddenInput name="price" />
+      </Slider.Root>
+    ));
+
+    const track = getByPart("slider", "track");
+    const thumb = getByPart("slider", "thumb");
+    track.getBoundingClientRect = () =>
+      ({ bottom: 20, height: 20, left: 0, right: 100, top: 0, width: 100 }) as DOMRect;
+
+    keyDown(thumb, "ArrowRight");
+    pointerDown(track, { clientX: 90, clientY: 10 });
+
+    expect(thumb.getAttribute("aria-readonly")).toBe("true");
+    expect(thumb.getAttribute("aria-invalid")).toBe("true");
+    expect(thumb.getAttribute("aria-required")).toBe("true");
+    expect(thumb.getAttribute("aria-valuenow")).toBe("20");
     expect(changes).toEqual([]);
   });
 });

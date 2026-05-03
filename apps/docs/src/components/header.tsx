@@ -1,13 +1,13 @@
 import { Link } from "@tanstack/solid-router";
-import { Box, Code2, FileText, Layers } from "lucide-solid";
+import { Code2, FileText, Layers } from "lucide-solid";
 import { For } from "solid-js";
 
 export default function Header() {
   const links = [
     { to: "/", label: "Overview" },
-    { to: "/docs/keystone/dialog", label: "Keystone Dialog" },
-    { to: "/docs/mason/dialog", label: "Mason Dialog" },
-    { to: "/#release", label: "0.1.0" },
+    { to: "/#keystone", label: "Keystone" },
+    { to: "/#mason", label: "Mason" },
+    { to: "/#reference", label: "Reference" },
   ];
 
   return (
@@ -34,10 +34,7 @@ export default function Header() {
         </nav>
 
         <div class="icon-links" aria-label="Project links">
-          <a class="icon-link" href="#release" aria-label="Release status">
-            <Box size={17} />
-          </a>
-          <a class="icon-link" href="#docs" aria-label="Documentation map">
+          <a class="icon-link" href="#shape" aria-label="Documentation shape">
             <FileText size={17} />
           </a>
           <a

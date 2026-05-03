@@ -4,6 +4,13 @@ import path from "node:path";
 import { afterEach, describe, expect, test } from "bun:test";
 import { addCommand } from "../src/commands/add";
 import { initCommand } from "../src/commands/init";
+import {
+  diffCommand,
+  doctorCommand,
+  removeCommand,
+  updateCommand,
+} from "../src/commands/lifecycle";
+import { run } from "../src/index";
 import { createWritePlan } from "../src/install/plan";
 import { rejectUnsafeRelativePath } from "../src/install/paths";
 import { applyWritePlan } from "../src/install/write";
@@ -371,6 +378,92 @@ describe("add planning and writes", () => {
       enabled: true,
     });
     expect(await readFile(path.join(app, "src/readme.md"), "utf8")).toBe("installed\n");
+  });
+});
+
+describe("registry lifecycle commands", () => {
+  test("diff reports unchanged and locally changed installed files", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+    await addCommand({ cwd: app, item: "button", registry });
+
+    expect(await diffCommand({ cwd: app, item: "button", registry })).toBe(
+      ["Mason diff plan for button:", "unchanged src/components/ui/button.tsx"].join("\n"),
+    );
+
+    await writeFile(path.join(app, "src/components/ui/button.tsx"), "user edit\n");
+
+    expect(await diffCommand({ cwd: app, item: "button", registry })).toBe(
+      ["Mason diff plan for button:", "update src/components/ui/button.tsx (local changes)"].join(
+        "\n",
+      ),
+    );
+  });
+
+  test("update blocks local edits unless forced and refreshes recorded hashes", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+    await addCommand({ cwd: app, item: "button", registry });
+    await writeFile(path.join(app, "src/components/ui/button.tsx"), "user edit\n");
+
+    const blocked = await updateCommand({ cwd: app, item: "button", registry });
+    expect(blocked).toContain("blocked: local changes detected");
+    expect(await readFile(path.join(app, "src/components/ui/button.tsx"), "utf8")).toBe(
+      "user edit\n",
+    );
+
+    const output = await updateCommand({ cwd: app, item: "button", registry, force: true });
+    expect(output).toContain("update src/components/ui/button.tsx (local changes)");
+    expect(await readFile(path.join(app, "src/components/ui/button.tsx"), "utf8")).toContain(
+      "export function Button",
+    );
+
+    expect(await diffCommand({ cwd: app, item: "button", registry })).toBe(
+      ["Mason diff plan for button:", "unchanged src/components/ui/button.tsx"].join("\n"),
+    );
+  });
+
+  test("remove deletes clean installed files and clears installed metadata", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+    await addCommand({ cwd: app, item: "button", registry });
+
+    expect(await removeCommand({ cwd: app, item: "button", dryRun: true })).toBe(
+      ["Mason remove dry run plan for button:", "delete src/components/ui/button.tsx"].join("\n"),
+    );
+
+    await removeCommand({ cwd: app, item: "button" });
+
+    await expect(stat(path.join(app, "src/components/ui/button.tsx"))).rejects.toThrow();
+    const packageJson = JSON.parse(await readFile(path.join(app, "package.json"), "utf8")) as {
+      mason: { installed: Record<string, unknown> };
+    };
+    expect(packageJson.mason.installed.button).toBeUndefined();
+  });
+
+  test("doctor validates config, registry reachability, and installed metadata", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+    await addCommand({ cwd: app, item: "button", registry });
+
+    expect(await doctorCommand({ cwd: app, registry })).toBe("Mason doctor:\nok");
+
+    await rm(path.join(app, "src/components/ui/button.tsx"));
+
+    expect(await doctorCommand({ cwd: app, registry })).toContain(
+      "issue missing installed file for button: src/components/ui/button.tsx",
+    );
+  });
+
+  test("CLI routes lifecycle commands", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+    await addCommand({ cwd: app, item: "button", registry });
+
+    expect(await run(["diff", "button", "--cwd", app, "--registry", registry])).toContain(
+      "Mason diff plan for button:",
+    );
+    expect(await run(["doctor", "--cwd", app, "--registry", registry])).toBe("Mason doctor:\nok");
   });
 });
 

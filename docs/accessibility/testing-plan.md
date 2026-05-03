@@ -134,10 +134,12 @@ Keystone primitive tests should use `packages/keystone/test/accessibility.ts` fo
 The harness provides:
 
 - `runKeyboardTable` for keyboard interaction tables, including controller prop handlers and rendered DOM targets.
-- `expectRole`, `expectPart`, `expectAriaState`, `expectAriaRelationship`, and `expectNoAriaRelationship` for public DOM and prop getter contracts.
-- `expectFocus` and `expectFocusWithin` for focus entry, containment, restore, and active-descendant models.
-- `expectFormValues` for native submission and hidden input serialization.
-- `withDirection` and `withReducedMotion` for RTL and reduced-motion test hooks.
+- `expectRole`, `expectPart`, `expectStablePartAttributes`, `expectAriaState`, `expectAriaRelationship`, and `expectNoAriaRelationship` for public DOM and prop getter contracts.
+- `expectFocus`, `expectFocusWithin`, `expectFocusTrap`, and `expectFocusRestore` for focus entry, containment, restore, and active-descendant models.
+- `expectOutsideDismissal` for preventable outside pointer/focus dismissal checks.
+- `expectFormValues` and `expectFormReset` for native submission, reset, and hidden input serialization.
+- `expectSsrSmoke` and `expectHydrationSmoke` for server-render and hydration smoke checks.
+- `withDirection`, `withReducedMotion`, and `withForcedColors` for RTL, reduced-motion, and forced-color test hooks.
 
 Primitive accessibility specs should include a short "Automated Coverage" section that maps each required behavior to one of these harness interfaces. Example:
 
@@ -148,6 +150,8 @@ Primitive accessibility specs should include a short "Automated Coverage" sectio
 | Popup exposes listbox semantics   | `expectRole(listbox, "listbox")`                         |
 | Selection serializes to form data | `expectFormValues(form, { project: "alpha" })`           |
 | RTL navigation is direction-aware | `withDirection("rtl", () => ...)`                        |
+| Forced-colors branch stays stable | `withForcedColors(() => ...)`                            |
+| Hydration-sensitive IDs are safe  | `expectHydrationSmoke({ html })`                         |
 
 Controller tests should use the same harness against prop getter return objects when rendering is unnecessary. Browser tests should use it against rendered elements when focus, form ownership, portals, or native DOM behavior are part of the requirement.
 
@@ -224,6 +228,28 @@ Manual testing should record:
 - Follow-up issue or doc note.
 
 Manual evidence can live in `.context/` during active work, but release-blocking results should be summarized in durable docs or release notes.
+
+### Manual Checklist Output
+
+Use this shape for release-blocking manual evidence:
+
+```md
+## Manual Accessibility Check
+
+- Primitive:
+- Version or commit:
+- Tester:
+- Date:
+- Environment:
+- Assistive technology:
+- Scenario:
+- Expected:
+- Actual:
+- Result: Pass | Fail | Blocked
+- Follow-up:
+```
+
+Each stable primitive should have at least one checklist entry for keyboard-only use and one for the relevant screen-reader path before release. Failed or blocked checks need a linked issue or an explicit known-limitation note.
 
 ## First Primitive Coverage
 

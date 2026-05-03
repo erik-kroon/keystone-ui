@@ -111,6 +111,16 @@ export type MenuItemProps = MenuPartProps<HTMLDivElement> &
     textValue?: string;
     value: string;
   };
+export type MenuLinkProps = MenuPartProps<HTMLAnchorElement> &
+  Omit<JSX.AnchorHTMLAttributes<HTMLAnchorElement>, "children" | "ref" | "onSelect" | "role"> & {
+    closeOnSelect?: boolean;
+    description?: string;
+    disabled?: boolean;
+    label?: string;
+    onSelect?: (detail: MenuSelectDetail) => void;
+    textValue?: string;
+    value: string;
+  };
 export type MenuCheckboxItemProps = MenuItemProps & {
   checked?: boolean | "indeterminate";
   defaultChecked?: boolean | "indeterminate";
@@ -752,6 +762,50 @@ function createMenuNamespace(factoryOptions: MenuFactoryOptions) {
     );
   }
 
+  function Link(props: MenuLinkProps) {
+    const menu = useMenu("Link");
+    const [local, others] = splitProps(props, [
+      "children",
+      "closeOnSelect",
+      "description",
+      "disabled",
+      "label",
+      "onClick",
+      "onPointerMove",
+      "onSelect",
+      "textValue",
+      "value",
+    ]);
+    const label = () => local.textValue ?? local.label ?? String(local.children ?? local.value);
+    const itemContext = createMemo(
+      () =>
+        ({
+          descriptionId: menu.itemId(local.value) + "-description",
+          labelId: menu.itemId(local.value) + "-label",
+        }) satisfies MenuItemContextValue,
+    );
+    const linkProps = menu.getItemProps({
+      ...(others as Record<string, unknown>),
+      closeOnSelect: local.closeOnSelect,
+      description: local.description,
+      disabled: local.disabled,
+      label: label(),
+      onClick: local.onClick,
+      onPointerMove: local.onPointerMove,
+      onSelect: local.onSelect,
+      textValue: local.textValue,
+      value: local.value,
+    } as Omit<MenuItemProps, "children" | "label"> & { label: string }) as Record<string, unknown>;
+
+    return (
+      <MenuItemContext.Provider value={itemContext()}>
+        <a {...linkProps} data-scope={menu.scope} data-part="link">
+          {local.children}
+        </a>
+      </MenuItemContext.Provider>
+    );
+  }
+
   function CheckboxItem(props: MenuCheckboxItemProps) {
     const menu = useMenu("CheckboxItem");
     const [local, others] = splitProps(props, [
@@ -1065,6 +1119,7 @@ function createMenuNamespace(factoryOptions: MenuFactoryOptions) {
     GroupLabel,
     Separator,
     Item,
+    Link,
     CheckboxItem,
     RadioGroup,
     RadioItem,

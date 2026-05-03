@@ -51,7 +51,7 @@ describe("Mason registry validation tracer", () => {
     }
   });
 
-  test("validates every real default registry item against its source files", async () => {
+  test("validates every default registry item and its parity metadata contract", async () => {
     const rootRegistry = JSON.parse(
       await readFile(resolve(defaultRegistryRoot, "registry.json"), "utf8"),
     ) as unknown;

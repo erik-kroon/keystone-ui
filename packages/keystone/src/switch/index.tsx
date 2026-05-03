@@ -1,4 +1,4 @@
-import { createContext, splitProps, useContext, type JSX } from "solid-js";
+import { createContext, onCleanup, onMount, splitProps, useContext, type JSX } from "solid-js";
 import {
   createSelectionControl,
   getSelectionControlProps,
@@ -6,7 +6,7 @@ import {
   type SelectionControlChangeDetail,
   type SelectionControlCheckedState,
 } from "../selection-control/controller";
-import { dataBoolean, partDataAttributes } from "../utils/index";
+import { callEventHandler, dataBoolean, partDataAttributes } from "../utils/index";
 
 export type SwitchCheckedChangeDetail = SelectionControlChangeDetail;
 
@@ -15,6 +15,7 @@ export type SwitchRootProps = SwitchPartProps<HTMLSpanElement> &
     checked?: boolean;
     defaultChecked?: boolean;
     disabled?: boolean;
+    form?: string;
     invalid?: boolean;
     name?: string;
     onCheckedChange?: (checked: boolean, detail: SwitchCheckedChangeDetail) => void;
@@ -47,6 +48,7 @@ export function createSwitch(
     checked?: () => boolean | undefined;
     defaultChecked?: boolean;
     disabled?: () => boolean | undefined;
+    form?: () => string | undefined;
     invalid?: () => boolean | undefined;
     name?: () => string | undefined;
     onCheckedChange?: (checked: boolean, detail: SwitchCheckedChangeDetail) => void;
@@ -59,6 +61,7 @@ export function createSwitch(
     checked: options.checked,
     defaultChecked: options.defaultChecked,
     disabled: options.disabled,
+    form: options.form,
     invalid: options.invalid,
     name: options.name,
     onCheckedChange: (checked, detail) => options.onCheckedChange?.(checked === true, detail),
@@ -88,6 +91,7 @@ function Root(props: SwitchRootProps) {
     "children",
     "defaultChecked",
     "disabled",
+    "form",
     "invalid",
     "name",
     "onCheckedChange",
@@ -99,6 +103,7 @@ function Root(props: SwitchRootProps) {
     checked: () => local.checked,
     defaultChecked: local.defaultChecked,
     disabled: () => local.disabled,
+    form: () => local.form,
     invalid: () => local.invalid,
     name: () => local.name,
     onCheckedChange: local.onCheckedChange,
@@ -150,12 +155,32 @@ function Thumb(props: SwitchThumbProps) {
 
 function HiddenInput(props: SwitchHiddenInputProps) {
   const control = useSwitch("HiddenInput");
+  let input: HTMLInputElement | undefined;
+
+  onMount(() => {
+    const form = input?.form;
+    if (!form) return;
+
+    const onReset = () => control.reset();
+    form.addEventListener("reset", onReset);
+    onCleanup(() => form.removeEventListener("reset", onReset));
+  });
 
   return (
     <input
       {...props}
+      onChange={(event) => {
+        callEventHandler(props.onChange, event);
+        if (event.defaultPrevented || control.disabled() || control.readOnly()) return;
+        control.setChecked(event.currentTarget.checked, { reason: "control" });
+      }}
+      ref={(element) => {
+        input = element;
+        if (typeof props.ref === "function") props.ref(element);
+      }}
       checked={control.checked()}
       disabled={control.disabled()}
+      form={props.form ?? control.form()}
       id={control.inputId}
       name={control.name()}
       required={control.required()}

@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 import { addCommand } from "./commands/add";
 import { initCommand } from "./commands/init";
+import { diffCommand, doctorCommand, removeCommand, updateCommand } from "./commands/lifecycle";
 
 type ParsedArgs = {
   command: string | null;
@@ -50,7 +51,35 @@ export async function run(argv: string[] = process.argv.slice(2)): Promise<strin
       dryRun: args.dryRun,
     });
   }
-  throw new Error("Usage: mason init|add");
+  if (args.command === "diff") {
+    if (!args.item) throw new Error("Usage: mason diff <item> --registry <path>");
+    if (!args.registry) throw new Error("mason diff requires --registry <path>.");
+    return diffCommand({ cwd: args.cwd, item: args.item, registry: args.registry });
+  }
+  if (args.command === "update") {
+    if (!args.item) throw new Error("Usage: mason update <item> --registry <path>");
+    if (!args.registry) throw new Error("mason update requires --registry <path>.");
+    return updateCommand({
+      cwd: args.cwd,
+      item: args.item,
+      registry: args.registry,
+      dryRun: args.dryRun,
+      force: args.force,
+    });
+  }
+  if (args.command === "remove") {
+    if (!args.item) throw new Error("Usage: mason remove <item>");
+    return removeCommand({
+      cwd: args.cwd,
+      item: args.item,
+      dryRun: args.dryRun,
+      force: args.force,
+    });
+  }
+  if (args.command === "doctor") {
+    return doctorCommand({ cwd: args.cwd, registry: args.registry });
+  }
+  throw new Error("Usage: mason init|add|diff|update|remove|doctor");
 }
 
 if (import.meta.main) {

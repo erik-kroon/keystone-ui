@@ -18,10 +18,18 @@ import {
 
 export type CalendarValue = string;
 export type CalendarMonth = string;
+export type CalendarRangeValue = {
+  end?: CalendarValue;
+  start?: CalendarValue;
+};
+export type CalendarSelectionMode = "single" | "range";
 export type CalendarValueChangeReason = "cell" | "keyboard" | "programmatic";
 export type CalendarValueChangeDetail = {
   event?: Event;
   reason: CalendarValueChangeReason;
+};
+export type CalendarRangeValueChangeDetail = CalendarValueChangeDetail & {
+  complete: boolean;
 };
 export type CalendarMonthChangeDetail = {
   event?: Event;
@@ -43,6 +51,7 @@ export type CalendarPartProps<T extends HTMLElement = HTMLElement> = {
 export type CalendarRootProps = CalendarPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> & {
     defaultMonth?: CalendarMonth;
+    defaultRangeValue?: CalendarRangeValue;
     defaultValue?: CalendarValue;
     disabled?: boolean;
     locale?: string;
@@ -50,7 +59,14 @@ export type CalendarRootProps = CalendarPartProps<HTMLDivElement> &
     minValue?: CalendarValue;
     month?: CalendarMonth;
     onMonthChange?: (month: CalendarMonth, detail: CalendarMonthChangeDetail) => void;
+    onRangeValueChange?: (
+      rangeValue: CalendarRangeValue,
+      detail: CalendarRangeValueChangeDetail,
+    ) => void;
     onValueChange?: (value: CalendarValue, detail: CalendarValueChangeDetail) => void;
+    rangeValue?: CalendarRangeValue;
+    selectionMode?: CalendarSelectionMode;
+    unavailable?: (value: CalendarValue) => boolean;
     value?: CalendarValue;
     weekStartsOn?: number;
   };
@@ -83,6 +99,7 @@ export type DatePickerCalendarProps = Omit<
 
 export type CreateCalendarOptions = {
   defaultMonth?: CalendarMonth;
+  defaultRangeValue?: CalendarRangeValue;
   defaultValue?: CalendarValue;
   disabled?: () => boolean | undefined;
   locale?: () => string | undefined;
@@ -90,7 +107,14 @@ export type CreateCalendarOptions = {
   minValue?: () => CalendarValue | undefined;
   month?: () => CalendarMonth | undefined;
   onMonthChange?: (month: CalendarMonth, detail: CalendarMonthChangeDetail) => void;
+  onRangeValueChange?: (
+    rangeValue: CalendarRangeValue,
+    detail: CalendarRangeValueChangeDetail,
+  ) => void;
   onValueChange?: (value: CalendarValue, detail: CalendarValueChangeDetail) => void;
+  rangeValue?: () => CalendarRangeValue | undefined;
+  selectionMode?: () => CalendarSelectionMode | undefined;
+  unavailable?: (value: CalendarValue) => boolean;
   value?: () => CalendarValue | undefined;
   weekStartsOn?: () => number | undefined;
 };
@@ -105,9 +129,13 @@ export type CalendarDay = {
   date: CalendarValue;
   day: number;
   disabled: boolean;
+  inRange: boolean;
   outsideMonth: boolean;
+  rangeEnd: boolean;
+  rangeStart: boolean;
   selected: boolean;
   today: boolean;
+  unavailable: boolean;
 };
 
 export type CalendarApi = {
@@ -121,8 +149,10 @@ export type CalendarApi = {
   moveFocus: (value: CalendarValue, amount: number, detail: CalendarMonthChangeDetail) => void;
   nextMonth: (detail: CalendarMonthChangeDetail) => CalendarMonth;
   previousMonth: (detail: CalendarMonthChangeDetail) => CalendarMonth;
+  rangeValue: () => CalendarRangeValue | undefined;
   selectDate: (value: CalendarValue, detail: CalendarValueChangeDetail) => CalendarValue;
   setFocusedValue: (value: CalendarValue, detail: CalendarMonthChangeDetail) => void;
+  selectionMode: () => CalendarSelectionMode;
   value: () => CalendarValue | undefined;
   weekDayLabels: () => string[];
   weeks: () => CalendarDay[][];
@@ -140,9 +170,11 @@ const DatePickerContext = createContext<DatePickerApi>();
 
 export function createCalendar(options: CreateCalendarOptions = {}): CalendarApi {
   let pendingValueDetail: CalendarValueChangeDetail | undefined;
+  let pendingRangeValueDetail: CalendarRangeValueChangeDetail | undefined;
   let pendingMonthDetail: CalendarMonthChangeDetail | undefined;
   const today = todayValue();
-  const initialValue = options.defaultValue ?? options.value?.();
+  const initialRangeValue = options.defaultRangeValue ?? options.rangeValue?.();
+  const initialValue = options.defaultValue ?? options.value?.() ?? initialRangeValue?.start;
   const initialMonth = options.defaultMonth ?? valueToMonth(initialValue ?? today);
   const [value, setValueState] = createControllableSignal<CalendarValue | undefined>({
     value: options.value,
@@ -165,11 +197,31 @@ export function createCalendar(options: CreateCalendarOptions = {}): CalendarApi
     defaultValue: initialValue ?? today,
     value: () => undefined,
   });
+  const [rangeValue, setRangeValueState] = createControllableSignal<CalendarRangeValue | undefined>(
+    {
+      value: options.rangeValue,
+      defaultValue: initialRangeValue,
+      onChange: (nextRangeValue) => {
+        if (nextRangeValue === undefined) return;
+        options.onRangeValueChange?.(
+          nextRangeValue,
+          pendingRangeValueDetail ?? {
+            complete: isCompleteRange(nextRangeValue),
+            reason: "programmatic",
+          },
+        );
+        pendingRangeValueDetail = undefined;
+      },
+    },
+  );
   const disabled = createMemo(() => options.disabled?.() ?? false);
   const locale = createMemo(() => options.locale?.() ?? "en-US");
   const minValue = createMemo(() => options.minValue?.());
   const maxValue = createMemo(() => options.maxValue?.());
-  const weekStartsOn = createMemo(() => clampWeekStart(options.weekStartsOn?.() ?? 0));
+  const selectionMode = createMemo(() => options.selectionMode?.() ?? "single");
+  const weekStartsOn = createMemo(() =>
+    clampWeekStart(options.weekStartsOn?.() ?? getLocaleWeekStart(locale())),
+  );
 
   const setMonth = (nextMonth: CalendarMonth, detail: CalendarMonthChangeDetail) => {
     pendingMonthDetail = detail;
@@ -197,9 +249,20 @@ export function createCalendar(options: CreateCalendarOptions = {}): CalendarApi
     moveFocus: (currentValue, amount, detail) => focusDate(addDays(currentValue, amount), detail),
     nextMonth: (detail) => setMonth(addMonths(month(), 1), detail),
     previousMonth: (detail) => setMonth(addMonths(month(), -1), detail),
+    rangeValue,
     selectDate: (nextValue, detail) => {
-      if (disabled() || isDateDisabled(nextValue, minValue(), maxValue()))
+      if (disabled() || isDateDisabled(nextValue, minValue(), maxValue(), options.unavailable))
         return value() ?? nextValue;
+
+      if (selectionMode() === "range") {
+        const nextRangeValue = getNextRangeValue(rangeValue(), nextValue, options.unavailable);
+        pendingRangeValueDetail = { ...detail, complete: isCompleteRange(nextRangeValue) };
+        setRangeValueState(nextRangeValue);
+        pendingRangeValueDetail = undefined;
+        focusDate(nextValue, { event: detail.event, reason: "focus" });
+        return nextValue;
+      }
+
       pendingValueDetail = detail;
       const result = setValueState(nextValue);
       pendingValueDetail = undefined;
@@ -207,9 +270,20 @@ export function createCalendar(options: CreateCalendarOptions = {}): CalendarApi
       return result ?? nextValue;
     },
     setFocusedValue: focusDate,
+    selectionMode,
     value,
     weekDayLabels: () => getWeekDayLabels(locale(), weekStartsOn()),
-    weeks: () => getMonthWeeks(month(), value(), today, minValue(), maxValue(), weekStartsOn()),
+    weeks: () =>
+      getMonthWeeks(
+        month(),
+        value(),
+        rangeValue(),
+        today,
+        minValue(),
+        maxValue(),
+        weekStartsOn(),
+        options.unavailable,
+      ),
   };
 }
 
@@ -234,6 +308,10 @@ export function createDatePicker(options: CreateDatePickerOptions = {}): DatePic
     onValueChange: (nextValue, detail) => {
       options.onValueChange?.(nextValue, detail);
       setOpen(false, { event: detail.event, reason: "select" });
+    },
+    onRangeValueChange: (nextRangeValue, detail) => {
+      options.onRangeValueChange?.(nextRangeValue, detail);
+      if (detail.complete) setOpen(false, { event: detail.event, reason: "select" });
     },
   });
 
@@ -261,6 +339,7 @@ function CalendarRoot(props: CalendarRootProps) {
   const [local, others] = splitProps(props, [
     "children",
     "defaultMonth",
+    "defaultRangeValue",
     "defaultValue",
     "disabled",
     "locale",
@@ -268,12 +347,17 @@ function CalendarRoot(props: CalendarRootProps) {
     "minValue",
     "month",
     "onMonthChange",
+    "onRangeValueChange",
     "onValueChange",
+    "rangeValue",
+    "selectionMode",
+    "unavailable",
     "value",
     "weekStartsOn",
   ]);
   const calendar = createCalendar({
     defaultMonth: local.defaultMonth,
+    defaultRangeValue: local.defaultRangeValue,
     defaultValue: local.defaultValue,
     disabled: () => local.disabled,
     locale: () => local.locale,
@@ -281,7 +365,11 @@ function CalendarRoot(props: CalendarRootProps) {
     minValue: () => local.minValue,
     month: () => local.month,
     onMonthChange: local.onMonthChange,
+    onRangeValueChange: local.onRangeValueChange,
     onValueChange: local.onValueChange,
+    rangeValue: () => local.rangeValue,
+    selectionMode: () => local.selectionMode,
+    unavailable: local.unavailable,
     value: () => local.value,
     weekStartsOn: () => local.weekStartsOn,
   });
@@ -303,6 +391,9 @@ function CalendarRootView(
     <div
       {...others}
       data-disabled={dataBoolean(calendar.disabled())}
+      data-end-value={calendar.rangeValue()?.end}
+      data-selection-mode={calendar.selectionMode()}
+      data-start-value={calendar.rangeValue()?.start}
       data-value={calendar.value()}
       {...partDataAttributes("calendar", "root")}
     >
@@ -413,9 +504,13 @@ function Grid(props: CalendarGridProps) {
                     role="gridcell"
                     aria-selected={day.selected}
                     data-disabled={dataBoolean(day.disabled)}
+                    data-in-range={dataBoolean(day.inRange)}
                     data-outside-month={dataBoolean(day.outsideMonth)}
+                    data-range-end={dataBoolean(day.rangeEnd)}
+                    data-range-start={dataBoolean(day.rangeStart)}
                     data-selected={dataBoolean(day.selected)}
                     data-today={dataBoolean(day.today)}
+                    data-unavailable={dataBoolean(day.unavailable)}
                     data-value={day.date}
                     {...partDataAttributes("calendar", "cell")}
                   >
@@ -426,9 +521,13 @@ function Grid(props: CalendarGridProps) {
                       aria-label={formatDate(day.date, calendar.locale())}
                       data-date={day.date}
                       data-disabled={dataBoolean(calendar.disabled() || day.disabled)}
+                      data-in-range={dataBoolean(day.inRange)}
                       data-outside-month={dataBoolean(day.outsideMonth)}
+                      data-range-end={dataBoolean(day.rangeEnd)}
+                      data-range-start={dataBoolean(day.rangeStart)}
                       data-selected={dataBoolean(day.selected)}
                       data-today={dataBoolean(day.today)}
+                      data-unavailable={dataBoolean(day.unavailable)}
                       data-value={day.date}
                       onClick={(event) => calendar.selectDate(day.date, { event, reason: "cell" })}
                       onKeyDown={(event) => {
@@ -456,6 +555,7 @@ function DatePickerRoot(props: DatePickerRootProps) {
     "children",
     "defaultMonth",
     "defaultOpen",
+    "defaultRangeValue",
     "defaultValue",
     "disabled",
     "locale",
@@ -464,14 +564,19 @@ function DatePickerRoot(props: DatePickerRootProps) {
     "month",
     "onMonthChange",
     "onOpenChange",
+    "onRangeValueChange",
     "onValueChange",
     "open",
+    "rangeValue",
+    "selectionMode",
+    "unavailable",
     "value",
     "weekStartsOn",
   ]);
   const datePicker = createDatePicker({
     defaultMonth: local.defaultMonth,
     defaultOpen: local.defaultOpen,
+    defaultRangeValue: local.defaultRangeValue,
     defaultValue: local.defaultValue,
     disabled: () => local.disabled,
     locale: () => local.locale,
@@ -480,8 +585,12 @@ function DatePickerRoot(props: DatePickerRootProps) {
     month: () => local.month,
     onMonthChange: local.onMonthChange,
     onOpenChange: local.onOpenChange,
+    onRangeValueChange: local.onRangeValueChange,
     onValueChange: local.onValueChange,
     open: () => local.open,
+    rangeValue: () => local.rangeValue,
+    selectionMode: () => local.selectionMode,
+    unavailable: local.unavailable,
     value: () => local.value,
     weekStartsOn: () => local.weekStartsOn,
   });
@@ -492,6 +601,9 @@ function DatePickerRoot(props: DatePickerRootProps) {
         <div
           {...others}
           data-disabled={dataBoolean(datePicker.calendar.disabled())}
+          data-end-value={datePicker.calendar.rangeValue()?.end}
+          data-selection-mode={datePicker.calendar.selectionMode()}
+          data-start-value={datePicker.calendar.rangeValue()?.start}
           data-state={datePicker.open() ? "open" : "closed"}
           data-value={datePicker.calendar.value()}
           {...partDataAttributes("date-picker", "root")}
@@ -507,6 +619,7 @@ function Trigger(props: DatePickerTriggerProps) {
   const datePicker = useDatePicker("Trigger");
   const [local, others] = splitProps(props, ["children", "onClick", "placeholder", "type"]);
   const selectedValue = createMemo(() => datePicker.calendar.value());
+  const rangeLabel = createMemo(() => formatRangeValue(datePicker.calendar.rangeValue()));
 
   return (
     <button
@@ -517,7 +630,10 @@ function Trigger(props: DatePickerTriggerProps) {
       aria-haspopup="dialog"
       disabled={datePicker.calendar.disabled() || others.disabled}
       data-disabled={dataBoolean(datePicker.calendar.disabled() || others.disabled)}
-      data-placeholder={dataBoolean(!selectedValue())}
+      data-end-value={datePicker.calendar.rangeValue()?.end}
+      data-placeholder={dataBoolean(!selectedValue() && !rangeLabel())}
+      data-selection-mode={datePicker.calendar.selectionMode()}
+      data-start-value={datePicker.calendar.rangeValue()?.start}
       data-state={datePicker.open() ? "open" : "closed"}
       data-value={selectedValue()}
       onClick={(event) => {
@@ -527,7 +643,7 @@ function Trigger(props: DatePickerTriggerProps) {
       }}
       {...partDataAttributes("date-picker", "trigger")}
     >
-      {local.children ?? selectedValue() ?? local.placeholder ?? "Select date"}
+      {local.children ?? selectedValue() ?? rangeLabel() ?? local.placeholder ?? "Select date"}
     </button>
   );
 }
@@ -613,10 +729,12 @@ function handleDayKeyDown(event: KeyboardEvent, calendar: CalendarApi, value: Ca
 function getMonthWeeks(
   monthValue: CalendarMonth,
   selectedValue: CalendarValue | undefined,
+  rangeValue: CalendarRangeValue | undefined,
   today: CalendarValue,
   minValue: CalendarValue | undefined,
   maxValue: CalendarValue | undefined,
   weekStartsOn: number,
+  unavailable: ((value: CalendarValue) => boolean) | undefined,
 ): CalendarDay[][] {
   const monthDate = parseMonthValue(monthValue);
   const startOffset = modulo(monthDate.getUTCDay() - weekStartsOn, 7);
@@ -628,13 +746,21 @@ function getMonthWeeks(
     for (let dayIndex = 0; dayIndex < 7; dayIndex += 1) {
       const date = addDays(gridStart, weekIndex * 7 + dayIndex);
       const parsed = parseDateValue(date);
+      const rangeStart = rangeValue?.start === date;
+      const rangeEnd = rangeValue?.end === date;
+      const inRange = isInRange(date, rangeValue);
+      const isUnavailable = unavailable?.(date) ?? false;
       week.push({
         date,
         day: parsed.getUTCDate(),
-        disabled: isDateDisabled(date, minValue, maxValue),
+        disabled: isDateDisabled(date, minValue, maxValue, unavailable),
+        inRange,
         outsideMonth: valueToMonth(date) !== monthValue,
-        selected: selectedValue === date,
+        rangeEnd,
+        rangeStart,
+        selected: selectedValue === date || rangeStart || rangeEnd,
         today: today === date,
+        unavailable: isUnavailable,
       });
     }
     weeks.push(week);
@@ -651,14 +777,89 @@ function getWeekDayLabels(locale: string, weekStartsOn: number) {
   });
 }
 
+function getLocaleWeekStart(locale: string) {
+  const Locale = (
+    Intl as unknown as {
+      Locale?: new (locale: string) => { weekInfo?: { firstDay?: number } };
+    }
+  ).Locale;
+
+  try {
+    const firstDay = Locale ? new Locale(locale).weekInfo?.firstDay : undefined;
+    if (firstDay === undefined) return 0;
+    return firstDay % 7;
+  } catch {
+    return 0;
+  }
+}
+
 function isDateDisabled(
   value: CalendarValue,
   minValue: CalendarValue | undefined,
   maxValue: CalendarValue | undefined,
+  unavailable: ((value: CalendarValue) => boolean) | undefined,
 ) {
   return (
-    (minValue !== undefined && value < minValue) || (maxValue !== undefined && value > maxValue)
+    (minValue !== undefined && value < minValue) ||
+    (maxValue !== undefined && value > maxValue) ||
+    (unavailable?.(value) ?? false)
   );
+}
+
+function getNextRangeValue(
+  currentRangeValue: CalendarRangeValue | undefined,
+  nextValue: CalendarValue,
+  unavailable: ((value: CalendarValue) => boolean) | undefined,
+): CalendarRangeValue {
+  if (!currentRangeValue?.start || currentRangeValue.end) {
+    return { start: nextValue };
+  }
+
+  if (nextValue < currentRangeValue.start) {
+    const nextRangeValue = { start: nextValue, end: currentRangeValue.start };
+    return rangeContainsUnavailable(nextRangeValue, unavailable)
+      ? { start: nextValue }
+      : nextRangeValue;
+  }
+
+  const nextRangeValue = { start: currentRangeValue.start, end: nextValue };
+  return rangeContainsUnavailable(nextRangeValue, unavailable)
+    ? { start: nextValue }
+    : nextRangeValue;
+}
+
+function isCompleteRange(rangeValue: CalendarRangeValue | undefined) {
+  return rangeValue?.start !== undefined && rangeValue.end !== undefined;
+}
+
+function isInRange(value: CalendarValue, rangeValue: CalendarRangeValue | undefined) {
+  return (
+    rangeValue?.start !== undefined &&
+    rangeValue.end !== undefined &&
+    value >= rangeValue.start &&
+    value <= rangeValue.end
+  );
+}
+
+function rangeContainsUnavailable(
+  rangeValue: Required<CalendarRangeValue>,
+  unavailable: ((value: CalendarValue) => boolean) | undefined,
+) {
+  if (!unavailable) return false;
+
+  let value = rangeValue.start;
+  while (value <= rangeValue.end) {
+    if (unavailable(value)) return true;
+    value = addDays(value, 1);
+  }
+
+  return false;
+}
+
+function formatRangeValue(rangeValue: CalendarRangeValue | undefined) {
+  if (!rangeValue?.start) return undefined;
+  if (!rangeValue.end) return rangeValue.start;
+  return `${rangeValue.start} - ${rangeValue.end}`;
 }
 
 function focusDayButton(value: CalendarValue) {

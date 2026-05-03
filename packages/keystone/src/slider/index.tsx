@@ -1,7 +1,8 @@
-import { createContext, splitProps, useContext, type JSX } from "solid-js";
+import { createContext, onCleanup, onMount, splitProps, useContext, type JSX } from "solid-js";
 import {
   createSliderController,
   type SliderApi,
+  type SliderHiddenInputContractProps,
   type SliderOrientation,
   type SliderRangeContractProps,
   type SliderRootContractProps,
@@ -31,11 +32,16 @@ export type SliderRootProps = SliderPartProps<HTMLDivElement> &
   SliderRootContractProps & {
     defaultValue?: readonly number[];
     disabled?: boolean;
+    form?: string;
+    invalid?: boolean;
     max?: number;
     min?: number;
+    name?: string;
     onValueChange?: (value: readonly number[], detail: SliderValueChangeDetail) => void;
     onValueCommit?: (value: readonly number[], detail: SliderValueChangeDetail) => void;
     orientation?: SliderOrientation;
+    readOnly?: boolean;
+    required?: boolean;
     step?: number;
     value?: readonly number[];
   };
@@ -44,6 +50,10 @@ export type SliderTrackProps = SliderPartProps<HTMLDivElement> & SliderTrackCont
 export type SliderRangeProps = SliderPartProps<HTMLDivElement> & SliderRangeContractProps;
 export type SliderThumbProps = SliderPartProps<HTMLButtonElement> &
   Omit<SliderThumbContractProps, "index"> & {
+    index?: number;
+  };
+export type SliderHiddenInputProps = SliderPartProps<HTMLInputElement> &
+  Omit<SliderHiddenInputContractProps, "index"> & {
     index?: number;
   };
 
@@ -68,22 +78,32 @@ function Root(props: SliderRootProps) {
     "children",
     "defaultValue",
     "disabled",
+    "form",
+    "invalid",
     "max",
     "min",
+    "name",
     "onValueChange",
     "onValueCommit",
     "orientation",
+    "readOnly",
+    "required",
     "step",
     "value",
   ]);
   const slider = createSlider({
     defaultValue: local.defaultValue,
     disabled: () => local.disabled,
+    form: () => local.form,
+    invalid: () => local.invalid,
     max: () => local.max,
     min: () => local.min,
+    name: () => local.name,
     onValueChange: local.onValueChange,
     onValueCommit: local.onValueCommit,
     orientation: () => local.orientation,
+    readOnly: () => local.readOnly,
+    required: () => local.required,
     step: () => local.step,
     value: () => local.value,
   });
@@ -120,9 +140,36 @@ function Thumb(props: SliderThumbProps) {
   return <button {...thumbProps}>{local.children}</button>;
 }
 
+function HiddenInput(props: SliderHiddenInputProps) {
+  const slider = useSlider("HiddenInput");
+  const [local, others] = splitProps(props, ["index"]);
+  let input: HTMLInputElement | undefined;
+
+  onMount(() => {
+    const form = input?.form;
+    if (!form) return;
+
+    const onReset = () => slider.reset();
+    form.addEventListener("reset", onReset);
+    onCleanup(() => form.removeEventListener("reset", onReset));
+  });
+
+  const inputProps = slider.getHiddenInputProps({
+    ...others,
+    index: local.index ?? 0,
+    ref: (element) => {
+      input = element;
+      if (typeof others.ref === "function") others.ref(element);
+    },
+  });
+
+  return <input {...inputProps} />;
+}
+
 export const Slider = {
   Root,
   Track,
   Range,
   Thumb,
+  HiddenInput,
 };

@@ -5,6 +5,7 @@ import {
   type NavigationMenuGroupLabelProps as KeystoneNavigationMenuGroupLabelProps,
   type NavigationMenuGroupProps as KeystoneNavigationMenuGroupProps,
   type NavigationMenuItemProps as KeystoneNavigationMenuItemProps,
+  type NavigationMenuLinkProps as KeystoneNavigationMenuLinkProps,
   type NavigationMenuPartProps as KeystoneNavigationMenuPartProps,
   type NavigationMenuPortalProps as KeystoneNavigationMenuPortalProps,
   type NavigationMenuPositionerProps as KeystoneNavigationMenuPositionerProps,
@@ -29,6 +30,7 @@ export type NavigationMenuGroupProps = KeystoneNavigationMenuGroupProps;
 export type NavigationMenuGroupLabelProps = KeystoneNavigationMenuGroupLabelProps;
 export type NavigationMenuSeparatorProps = KeystoneNavigationMenuSeparatorProps;
 export type NavigationMenuItemProps = KeystoneNavigationMenuItemProps;
+export type NavigationMenuLinkProps = KeystoneNavigationMenuLinkProps;
 export type NavigationMenuCheckboxItemProps = KeystoneNavigationMenuCheckboxItemProps;
 export type NavigationMenuRadioGroupProps = KeystoneNavigationMenuRadioGroupProps;
 export type NavigationMenuRadioItemProps = KeystoneNavigationMenuRadioItemProps;
@@ -112,6 +114,13 @@ export function NavigationMenuItem(props: NavigationMenuItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
     <KeystoneNavigationMenu.Item {...rest} class={cn("mason-navigation-menu-item", local.class)} />
+  );
+}
+
+export function NavigationMenuLink(props: NavigationMenuLinkProps) {
+  const [local, rest] = splitProps(props, ["class"]);
+  return (
+    <KeystoneNavigationMenu.Link {...rest} class={cn("mason-navigation-menu-link", local.class)} />
   );
 }
 

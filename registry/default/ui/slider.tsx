@@ -1,5 +1,6 @@
 import {
   Slider as KeystoneSlider,
+  type SliderHiddenInputProps as KeystoneSliderHiddenInputProps,
   type SliderRangeProps as KeystoneSliderRangeProps,
   type SliderRootProps as KeystoneSliderRootProps,
   type SliderThumbProps as KeystoneSliderThumbProps,
@@ -12,6 +13,7 @@ export type SliderProps = KeystoneSliderRootProps;
 export type SliderTrackProps = KeystoneSliderTrackProps;
 export type SliderRangeProps = KeystoneSliderRangeProps;
 export type SliderThumbProps = KeystoneSliderThumbProps;
+export type SliderHiddenInputProps = KeystoneSliderHiddenInputProps;
 
 export function Slider(props: SliderProps) {
   const [local, rest] = splitProps(props, ["class"]);
@@ -39,4 +41,8 @@ export function SliderThumb(props: SliderThumbProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
   return <KeystoneSlider.Thumb {...rest} class={cn("mason-slider-thumb", local.class)} />;
+}
+
+export function SliderHiddenInput(props: SliderHiddenInputProps) {
+  return <KeystoneSlider.HiddenInput {...props} />;
 }

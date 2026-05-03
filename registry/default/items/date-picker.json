@@ -16,7 +16,7 @@
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add date-picker",
-    "customization": "Style the generated wrappers through mason-date-picker and mason-calendar classes while Keystone keeps calendar grid generation, selected date state, month navigation, keyboard movement, ARIA roles, and data attributes.",
+    "customization": "Style the generated wrappers through mason-date-picker and mason-calendar classes while Keystone keeps calendar grid generation, single-date and range state, unavailable dates, locale week starts, month navigation, keyboard movement, ARIA roles, and data attributes.",
     "sourceFiles": ["registry/default/ui/date-picker.tsx"],
     "dependencies": ["@keystone-ui/keystone", "cn"],
     "parts": {
@@ -37,8 +37,8 @@
       "datePicker": ["root", "trigger", "content"]
     },
     "parity": {
-      "baseUi": "Thin vertical covers calendar grid and popup trigger contract, selected date state, disabled bounds, month navigation, keyboard movement, ARIA roles, and Mason metadata. Gaps: date field segment editing, validation/form semantics, richer unavailable date policies, range calendars, focus restoration depth, and locale calendar systems remain follow-up work.",
-      "kobalte": "Matches the Solid calendar/date-picker direction for grid parts, trigger/content composition, controlled selected value, min/max bounds, and keyboard navigation. Gaps: DateField segments, DateRangePicker, granular unavailable dates, multi-month rendering, locale/calendar-system depth, and reset/submission tests remain follow-up work."
+      "baseUi": "Covers calendar grid and popup trigger contract, selected date state, range state, unavailable date policy, disabled bounds, locale week starts, month navigation, keyboard movement, ARIA roles, and Mason metadata. Gaps: date field segment editing, validation/form semantics, multi-month rendering, focus restoration depth, and full locale calendar systems remain follow-up work.",
+      "kobalte": "Matches the Solid calendar/date-picker direction for grid parts, trigger/content composition, controlled selected value, controlled range value, min/max bounds, granular unavailable dates, locale week starts, and keyboard navigation. Gaps: DateField segments, DateRangePicker composition, multi-month rendering, full locale/calendar-system depth, and reset/submission tests remain follow-up work."
     }
   },
   "files": [

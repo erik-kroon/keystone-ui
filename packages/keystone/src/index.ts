@@ -11,7 +11,23 @@ export { createFieldValidity, createFormControl } from "./form/index";
 export { HoverCard, createHoverCard } from "./hover-card/index";
 export { Menu, createMenu } from "./menu/index";
 export { Menubar, createMenubar } from "./menubar/index";
+export {
+  getDocsMetadata,
+  getPartDataAttributes,
+  getPartMetadata,
+  getPrimitiveMetadata,
+  primitiveMetadata,
+} from "./metadata/index";
 export { NavigationMenu, createNavigationMenu } from "./navigation-menu/index";
+export type {
+  DocsPartMetadata,
+  DocsPrimitiveMetadata,
+  PartCssVarMetadata,
+  PartStateAttributeMetadata,
+  PrimitiveMetadata,
+  PrimitivePartMetadata,
+  PrimitiveScope,
+} from "./metadata/index";
 export type {
   AccordionContentProps,
   AccordionHeaderProps,
@@ -203,6 +219,7 @@ export type {
 export type {
   CreateSliderOptions,
   SliderApi,
+  SliderHiddenInputProps,
   SliderOrientation,
   SliderPartProps,
   SliderRangeProps,

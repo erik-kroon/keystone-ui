@@ -7,7 +7,7 @@
     "build": "vite build",
     "serve": "vite preview",
     "start": "node .output/server/index.mjs",
-    "test": "vitest run",
+    "test": "bun test",
     "dev:bare": "vite dev"
   },
   "dependencies": {

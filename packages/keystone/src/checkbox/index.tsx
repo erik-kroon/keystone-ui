@@ -1,4 +1,12 @@
-import { createContext, createEffect, splitProps, useContext, type JSX } from "solid-js";
+import {
+  createContext,
+  createEffect,
+  onCleanup,
+  onMount,
+  splitProps,
+  useContext,
+  type JSX,
+} from "solid-js";
 import {
   createSelectionControl,
   getSelectionControlProps,
@@ -6,7 +14,7 @@ import {
   type SelectionControlChangeDetail,
   type SelectionControlCheckedState,
 } from "../selection-control/controller";
-import { dataBoolean, partDataAttributes } from "../utils/index";
+import { callEventHandler, dataBoolean, partDataAttributes } from "../utils/index";
 
 export type CheckboxCheckedState = SelectionControlCheckedState;
 export type CheckboxCheckedChangeDetail = SelectionControlChangeDetail;
@@ -16,6 +24,7 @@ export type CheckboxRootProps = CheckboxPartProps<HTMLSpanElement> &
     checked?: CheckboxCheckedState;
     defaultChecked?: CheckboxCheckedState;
     disabled?: boolean;
+    form?: string;
     invalid?: boolean;
     name?: string;
     onCheckedChange?: (checked: CheckboxCheckedState, detail: CheckboxCheckedChangeDetail) => void;
@@ -50,6 +59,7 @@ export function createCheckbox(
     checked?: () => CheckboxCheckedState | undefined;
     defaultChecked?: CheckboxCheckedState;
     disabled?: () => boolean | undefined;
+    form?: () => string | undefined;
     invalid?: () => boolean | undefined;
     name?: () => string | undefined;
     onCheckedChange?: (checked: CheckboxCheckedState, detail: CheckboxCheckedChangeDetail) => void;
@@ -62,6 +72,7 @@ export function createCheckbox(
     checked: options.checked,
     defaultChecked: options.defaultChecked,
     disabled: options.disabled,
+    form: options.form,
     invalid: options.invalid,
     name: options.name,
     onCheckedChange: options.onCheckedChange,
@@ -84,6 +95,7 @@ function Root(props: CheckboxRootProps) {
     "children",
     "defaultChecked",
     "disabled",
+    "form",
     "invalid",
     "name",
     "onCheckedChange",
@@ -95,6 +107,7 @@ function Root(props: CheckboxRootProps) {
     checked: () => local.checked,
     defaultChecked: local.defaultChecked,
     disabled: () => local.disabled,
+    form: () => local.form,
     invalid: () => local.invalid,
     name: () => local.name,
     onCheckedChange: local.onCheckedChange,
@@ -157,15 +170,30 @@ function HiddenInput(props: CheckboxHiddenInputProps) {
     if (input) input.indeterminate = control.checked() === "indeterminate";
   });
 
+  onMount(() => {
+    const form = input?.form;
+    if (!form) return;
+
+    const onReset = () => control.reset();
+    form.addEventListener("reset", onReset);
+    onCleanup(() => form.removeEventListener("reset", onReset));
+  });
+
   return (
     <input
       {...props}
+      onChange={(event) => {
+        callEventHandler(props.onChange, event);
+        if (event.defaultPrevented || control.disabled() || control.readOnly()) return;
+        control.setChecked(event.currentTarget.checked, { reason: "control" });
+      }}
       ref={(element) => {
         input = element;
         if (typeof props.ref === "function") props.ref(element);
       }}
       checked={control.checked() === true}
       disabled={control.disabled()}
+      form={props.form ?? control.form()}
       id={control.inputId}
       name={control.name()}
       required={control.required()}

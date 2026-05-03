@@ -14,21 +14,24 @@ This vertical applies the current primitive delivery standard to Switch, Checkbo
 
 Switch:
 
-- `Switch.Root` supports controlled and uncontrolled `checked`, `defaultChecked`, `disabled`, `readOnly`, `invalid`, `required`, `name`, `value`, and `onCheckedChange`.
+- `Switch.Root` supports controlled and uncontrolled `checked`, `defaultChecked`, `disabled`, `readOnly`, `invalid`, `required`, `name`, `form`, `value`, and `onCheckedChange`.
 - `Switch.Control` exposes `role="switch"`, `aria-checked`, state data attributes, keyboard Space toggling, and user-handler-first click behavior.
 - `Switch.HiddenInput` mirrors checked state for form submission.
+- `Switch.HiddenInput` participates in native form reset and can sync checked state from input change events.
 
 Checkbox:
 
-- `Checkbox.Root` supports controlled and uncontrolled `checked`, `defaultChecked`, indeterminate state, disabled/read-only/invalid/required flags, `name`, `value`, and `onCheckedChange`.
+- `Checkbox.Root` supports controlled and uncontrolled `checked`, `defaultChecked`, indeterminate state, disabled/read-only/invalid/required flags, `name`, `form`, `value`, and `onCheckedChange`.
 - `Checkbox.Control` exposes `role="checkbox"`, `aria-checked="mixed"` for indeterminate state, state data attributes, keyboard Space toggling, and preventable click behavior.
 - `Checkbox.HiddenInput` mirrors checked and `indeterminate` input state.
+- `Checkbox.HiddenInput` participates in native form reset and can sync checked state from input change events.
 
 RadioGroup:
 
-- `RadioGroup.Root` supports controlled and uncontrolled `value`, `defaultValue`, `disabled`, `readOnly`, `invalid`, `required`, `orientation`, `loopFocus`, `name`, and `onValueChange`.
+- `RadioGroup.Root` supports controlled and uncontrolled `value`, `defaultValue`, `disabled`, `readOnly`, `invalid`, `required`, `orientation`, `loopFocus`, `name`, `form`, and `onValueChange`.
 - `RadioGroup.Item` exposes `role="radio"`, roving `tabIndex`, checked data attributes, click selection, and arrow/Home/End keyboard selection.
 - `RadioGroup.HiddenInput` mirrors item selection as native radio inputs.
+- `RadioGroup.HiddenInput` participates in native form reset, including external form ownership through the root `form` prop.
 
 ## Mason Surface
 

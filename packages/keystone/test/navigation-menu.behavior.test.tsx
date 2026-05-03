@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { NavigationMenu } from "../src/navigation-menu/index";
-import { getByPart, keyDown, render } from "./harness";
+import { click, getByPart, keyDown, render, settled } from "./harness";
 
 describe("NavigationMenu behavior", () => {
   test("exposes a navigation-menu scoped menubar contract over the menu kernel", () => {
@@ -57,5 +57,51 @@ describe("NavigationMenu behavior", () => {
       document.querySelector('[data-scope="navigation-menu"][data-part="item"][data-highlighted]')
         ?.textContent,
     ).toBe("Bravo");
+  });
+
+  test("exposes routed link behavior with navigation-menu scoped metadata", async () => {
+    const selected: string[] = [];
+
+    render(() => (
+      <NavigationMenu.Root defaultOpen onOpenChange={(open) => selected.push(String(open))}>
+        <NavigationMenu.Trigger>Explore</NavigationMenu.Trigger>
+        <NavigationMenu.Content>
+          <NavigationMenu.Link href="/docs" value="docs" onSelect={() => selected.push("docs")}>
+            Docs
+          </NavigationMenu.Link>
+          <NavigationMenu.Link
+            href="/disabled"
+            value="disabled"
+            disabled
+            onSelect={() => selected.push("disabled")}
+          >
+            Disabled
+          </NavigationMenu.Link>
+        </NavigationMenu.Content>
+      </NavigationMenu.Root>
+    ));
+
+    const trigger = getByPart("navigation-menu", "trigger");
+    const links = Array.from(
+      document.body.querySelectorAll<HTMLAnchorElement>(
+        '[data-scope="navigation-menu"][data-part="link"]',
+      ),
+    );
+
+    expect(links[0].getAttribute("role")).toBe("menuitem");
+    expect(links[0].getAttribute("href")).toBe("/docs");
+    expect(links[1].getAttribute("aria-disabled")).toBe("true");
+
+    click(links[1]);
+    await settled();
+
+    expect(selected).not.toContain("disabled");
+    expect(trigger.getAttribute("aria-expanded")).toBe("true");
+
+    click(links[0]);
+    await settled();
+
+    expect(selected).toContain("docs");
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
   });
 });
