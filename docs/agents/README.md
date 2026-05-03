@@ -25,6 +25,17 @@ No issue tracker convention is recorded in this repository yet. Until one is cho
 - Keep scratch notes under `.context/` when they are workspace-local.
 - Do not invent labels, issue states, or external tracker workflow.
 
+## Task Selection Hygiene
+
+Attachments under `.context/attachments/` may be duplicated, stale, or already implemented.
+Before treating an attachment as the next task:
+
+- Compare it with existing repo docs and prior attachments when it looks like a PRD or issue brief.
+- Check the local package/source surface for the requested files, tests, and behavior.
+- Check the current GitHub issue state with `gh issue list` or `gh issue view` when an issue number is referenced.
+- Prefer the oldest unblocked open issue whose acceptance criteria are visibly absent from the repo.
+- Do not propose completed tracer work as next work only because its brief is present in `.context/attachments/`.
+
 ## Skill Usage
 
 - Use `context-map` when entering an unfamiliar product or code area.

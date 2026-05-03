@@ -1,4 +1,4 @@
-import { cp, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, test } from "bun:test";
@@ -127,6 +127,39 @@ describe("add planning and writes", () => {
     );
   });
 
+  test("write planning records target state, hashes, and conflicts before apply", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+    await mkdir(path.join(app, "src/components/ui"), { recursive: true });
+    await writeFile(path.join(app, "src/components/ui/button.tsx"), "user-owned\n");
+    const project = await detectProject(app);
+    const plan = await createWritePlan(project, {
+      item: "button",
+      registry,
+      allowConflicts: true,
+    });
+    const buttonFile = plan.files.find((file) => file.target === "src/components/ui/button.tsx");
+    expect(buttonFile).toBeDefined();
+    if (!buttonFile) throw new Error("Expected button file in write plan");
+    expect(buttonFile.conflict).toBeDefined();
+    if (!buttonFile.conflict) throw new Error("Expected button file conflict");
+
+    expect(buttonFile.contentHash).toMatch(/^sha256:/);
+    expect(buttonFile.existing).toMatchObject({
+      exists: true,
+      size: Buffer.byteLength("user-owned\n"),
+    });
+    expect(buttonFile.existing.hash).toMatch(/^sha256:/);
+    expect(buttonFile.conflict).toMatchObject({
+      kind: "target-exists",
+      target: "src/components/ui/button.tsx",
+    });
+    expect(plan.conflicts).toEqual([buttonFile.conflict]);
+    expect(plan.installedItems.find((item) => item.name === "button")?.fileHashes).toEqual({
+      "src/components/ui/button.tsx": buttonFile.contentHash,
+    });
+  });
+
   test("generated Solid app typechecks and builds after add", async () => {
     const app = await fixtureApp();
     await installFixtureAppDependencies(app);
@@ -194,6 +227,42 @@ describe("add planning and writes", () => {
     );
   });
 
+  test("real default registry block installs composed source and dependencies", async () => {
+    const app = await fixtureApp();
+    await installFixtureAppDependencies(app);
+    await initCommand({ cwd: app, yes: true });
+    const output = await addCommand({
+      cwd: app,
+      item: "account-settings",
+      registry: defaultRegistry,
+      dryRun: true,
+    });
+
+    expect(output).toBe(
+      [
+        "Mason dry run plan for account-settings:",
+        "create src/components/blocks/account-settings.tsx",
+        "create src/components/ui/badge.tsx",
+        "create src/components/ui/button.tsx",
+        "create src/components/ui/card.tsx",
+        "create src/components/ui/field.tsx",
+        "create src/components/ui/input.tsx",
+        "create src/components/ui/label.tsx",
+        "create src/components/ui/separator.tsx",
+        "create src/lib/cn.ts",
+      ].join("\n"),
+    );
+
+    await addCommand({ cwd: app, item: "account-settings", registry: defaultRegistry });
+
+    expect(
+      await readFile(path.join(app, "src/components/blocks/account-settings.tsx"), "utf8"),
+    ).toContain("export function AccountSettingsBlock");
+
+    await runAppScript(app, "check-types");
+    await runAppScript(app, "build");
+  });
+
   test("write application honors append-css, merge-json, and overwrite modes", async () => {
     const app = await fixtureApp();
     const project = await detectProject(app);
@@ -207,6 +276,7 @@ describe("add planning and writes", () => {
       dependencies: [],
       devDependencies: [],
       installedItems: [],
+      conflicts: [],
       files: [
         {
           item: "theme",
@@ -214,6 +284,9 @@ describe("add planning and writes", () => {
           target: "src/styles.css",
           absoluteTarget: path.join(app, "src/styles.css"),
           content: ".mason-button { color: red; }\n",
+          contentHash: "sha256:test-theme",
+          existing: { exists: true, hash: null, size: null },
+          conflict: null,
           mode: "append-css",
         },
         {
@@ -222,6 +295,9 @@ describe("add planning and writes", () => {
           target: "src/settings.json",
           absoluteTarget: path.join(app, "src/settings.json"),
           content: '{"theme":{"radius":"8px"},"enabled":true}',
+          contentHash: "sha256:test-settings",
+          existing: { exists: true, hash: null, size: null },
+          conflict: null,
           mode: "merge-json",
         },
         {
@@ -230,6 +306,9 @@ describe("add planning and writes", () => {
           target: "src/readme.md",
           absoluteTarget: path.join(app, "src/readme.md"),
           content: "installed\n",
+          contentHash: "sha256:test-readme",
+          existing: { exists: false, hash: null, size: null },
+          conflict: null,
           mode: "overwrite",
         },
       ],

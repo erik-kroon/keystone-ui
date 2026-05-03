@@ -5,6 +5,7 @@ import {
   onCleanup,
   onMount,
   splitProps,
+  untrack,
   useContext,
   type Accessor,
   type JSX,
@@ -27,6 +28,7 @@ export type OverlayLayerEntry = {
 
 type OverlayLayerRegistration = OverlayLayerEntry & {
   element?: HTMLElement;
+  getElement?: Accessor<HTMLElement | undefined>;
   disableOutsidePointerEvents: Accessor<boolean>;
 };
 
@@ -103,8 +105,10 @@ export function createOverlayLayerStack(): OverlayLayerStack {
     const hasBlockingLayer = current.some((layer) => layer.disableOutsidePointerEvents());
 
     for (const layer of current) {
-      if (layer.element) {
-        layer.element.style.pointerEvents = "auto";
+      const element = untrack(() => layer.getElement?.() ?? layer.element);
+
+      if (element) {
+        element.style.pointerEvents = "auto";
       }
     }
 
@@ -156,12 +160,12 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
   const isTopLayer = createMemo(() => stack.isTopLayer(options.id));
 
   onMount(() => {
-    const element = options.element?.();
-    const ownerDocument = getOwnerDocument(element);
+    const ownerDocument = getOwnerDocument(options.element?.());
     const unregister = stack.register({
       id: options.id,
       modal: modal(),
-      element,
+      element: options.element?.(),
+      getElement: options.element,
       disableOutsidePointerEvents: () => options.disableOutsidePointerEvents?.() ?? modal(),
     });
     let isReady = false;
@@ -170,7 +174,25 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
     stack.syncPointerEvents(ownerDocument);
     queueMicrotask(() => {
       isReady = true;
+
+      const element = options.element?.();
+
+      if (!element || restoreFocus) {
+        return;
+      }
+
+      restoreFocus = mountLayerFocusLifecycle({
+        element,
+        isTopLayer,
+        restoreFocus: () => options.restoreFocus?.() ?? true,
+        trapFocus: () => options.trapFocus?.() ?? false,
+        onMountAutoFocus: options.onMountAutoFocus,
+        onUnmountAutoFocus: options.onUnmountAutoFocus,
+      });
+      stack.syncPointerEvents(getOwnerDocument(element));
     });
+
+    const element = options.element?.();
 
     if (element) {
       restoreFocus = mountLayerFocusLifecycle({
@@ -184,6 +206,8 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
     }
 
     const onPointerDown = (event: PointerEvent) => {
+      const element = options.element?.();
+
       if (
         handledOutsideEvents.has(event) ||
         !element ||
@@ -200,6 +224,8 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
     };
 
     const onFocusIn = (event: FocusEvent) => {
+      const element = options.element?.();
+
       if (
         handledOutsideEvents.has(event) ||
         !element ||

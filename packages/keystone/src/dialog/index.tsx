@@ -1,19 +1,8 @@
-import { Show, createContext, createSignal, splitProps, useContext, type JSX } from "solid-js";
+import { Show, createContext, splitProps, useContext, type JSX } from "solid-js";
 import { Portal } from "solid-js/web";
-import {
-  OverlayLayerProvider,
-  createOverlayLayer,
-  type DismissableLayerOutsideEvent,
-  type OverlayLayerApi,
-} from "../overlay/index";
-import { assignRef } from "../overlay/dom";
-import {
-  composeEventHandlers,
-  createControllableBooleanSignal,
-  createStableId,
-  renderPolymorphic,
-  type PolymorphicProps,
-} from "../utils/index";
+import { OverlayLayerProvider, type DismissableLayerOutsideEvent } from "../overlay/index";
+import { createOverlayController } from "../overlay/controller";
+import { renderPolymorphic, type PolymorphicProps } from "../utils/index";
 
 export type DialogChangeDetail = {
   event?: Event;
@@ -95,78 +84,23 @@ export type CreateDialogOptions = {
 const DialogContext = createContext<DialogApi>();
 
 export function createDialog(options: CreateDialogOptions = {}): DialogApi {
-  const titleId = createStableId("dialog-title");
-  const descriptionId = createStableId("dialog-description");
-  const contentId = createStableId("dialog-content");
-  let lastDetail: DialogChangeDetail = { reason: "programmatic" };
-  const [open, setOpenState] = createControllableBooleanSignal({
-    value: options.open,
-    defaultValue: options.defaultOpen ?? false,
-    onChange: (next) => {
-      options.onOpenChange?.(next, lastDetail);
-    },
+  const overlay = createOverlayController<DialogChangeDetail["reason"]>({
+    scope: "dialog",
+    open: options.open,
+    defaultOpen: options.defaultOpen,
+    modal: () => options.modal?.() ?? true,
+    onOpenChange: (open, detail) => options.onOpenChange?.(open, detail),
   });
-
-  const setOpen = (next: boolean, detail: DialogChangeDetail) => {
-    lastDetail = detail;
-    setOpenState(next);
-  };
-  const state = () => (open() ? "open" : "closed");
-  const partProps = (part: string) => ({
-    "data-scope": "dialog",
-    "data-part": part,
-    get "data-state"() {
-      return state();
-    },
-  });
-  let contentElementSetter: ((element: HTMLDivElement) => void) | undefined;
-  let contentLayer: OverlayLayerApi | undefined;
-  let contentProps: DialogContentContractProps | undefined;
-  const ensureContentLayer = () => {
-    if (contentLayer) {
-      return contentLayer;
-    }
-
-    const [content, setContent] = createSignal<HTMLDivElement>();
-    contentElementSetter = setContent;
-    contentLayer = createOverlayLayer({
-      id: contentId(),
-      element: content,
-      modal: () => options.modal?.() ?? true,
-      disableOutsidePointerEvents: () => options.modal?.() ?? true,
-      trapFocus: () => options.modal?.() ?? true,
-      restoreFocus: () => true,
-      onEscapeKeyDown: (event) => contentProps?.onEscapeKeyDown?.(event),
-      onPointerDownOutside: (event) => contentProps?.onPointerDownOutside?.(event),
-      onFocusOutside: (event) => contentProps?.onFocusOutside?.(event),
-      onInteractOutside: (event) => contentProps?.onInteractOutside?.(event),
-      onDismiss: (event) => {
-        setOpen(false, { event, reason: event.type === "keydown" ? "escape" : "outside" });
-      },
-      onMountAutoFocus: (event) => contentProps?.onMountAutoFocus?.(event),
-      onUnmountAutoFocus: (event) => contentProps?.onUnmountAutoFocus?.(event),
-    });
-
-    return contentLayer;
-  };
 
   return {
-    contentId: contentId(),
-    descriptionId: descriptionId(),
+    contentId: overlay.contentId,
+    descriptionId: overlay.descriptionId,
     getBackdropProps: (props) => ({
       ...props,
-      ...partProps("backdrop"),
+      ...overlay.getPartProps("backdrop"),
     }),
-    getCloseProps: (props) => ({
-      ...props,
-      type: "button",
-      ...partProps("close"),
-      onClick: composeEventHandlers(props.onClick, (event) => {
-        setOpen(false, { event, reason: "close" });
-      }),
-    }),
+    getCloseProps: (props) => overlay.getCloseProps(props, "close") as Record<string, unknown>,
     getContentProps: (props) => {
-      contentProps = props;
       const [local, others] = splitProps(props, [
         "ref",
         "onEscapeKeyDown",
@@ -176,62 +110,62 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
         "onMountAutoFocus",
         "onUnmountAutoFocus",
       ]);
-      const layer = ensureContentLayer();
+      const layerProps = overlay.getContentLayerProps<HTMLDivElement>(
+        {
+          ref: local.ref,
+          onEscapeKeyDown: local.onEscapeKeyDown,
+          onFocusOutside: local.onFocusOutside,
+          onInteractOutside: local.onInteractOutside,
+          onMountAutoFocus: local.onMountAutoFocus,
+          onPointerDownOutside: local.onPointerDownOutside,
+          onUnmountAutoFocus: local.onUnmountAutoFocus,
+        },
+        {
+          modal: overlay.modal,
+          disableOutsidePointerEvents: overlay.modal,
+          trapFocus: overlay.modal,
+          restoreFocus: () => true,
+          dismissReason: (event) => (event.type === "keydown" ? "escape" : "outside"),
+        },
+      );
 
       return {
         ...others,
-        id: contentId(),
+        ...layerProps,
+        id: overlay.contentId,
         tabIndex: -1,
         role: "dialog",
-        "aria-modal": (options.modal?.() ?? true) ? "true" : undefined,
-        "aria-labelledby": titleId(),
-        "aria-describedby": descriptionId(),
-        "data-layer-id": layer.id,
-        get "data-layer-index"() {
-          return layer.index();
-        },
-        get "data-top-layer"() {
-          return layer.isTopLayer() ? "" : undefined;
-        },
-        ...partProps("content"),
-        ref: (node: HTMLDivElement) => {
-          contentElementSetter?.(node);
-          assignRef(local.ref, node);
-        },
+        "aria-modal": overlay.modal() ? "true" : undefined,
+        "aria-labelledby": overlay.titleId,
+        "aria-describedby": overlay.descriptionId,
+        ...overlay.getPartProps("content"),
       };
     },
     getDescriptionProps: (props) => ({
       ...props,
-      id: descriptionId(),
+      id: overlay.descriptionId,
       "data-scope": "dialog",
       "data-part": "description",
     }),
     getPositionerProps: (props) => ({
       ...props,
-      ...partProps("positioner"),
+      ...overlay.getPartProps("positioner"),
     }),
     getTitleProps: (props) => ({
       ...props,
-      id: titleId(),
+      id: overlay.titleId,
       "data-scope": "dialog",
       "data-part": "title",
     }),
-    getTriggerProps: (props) => ({
-      ...props,
-      type: "button",
-      "aria-controls": contentId(),
-      get "aria-expanded"() {
-        return open();
-      },
-      ...partProps("trigger"),
-      onClick: composeEventHandlers(props.onClick, (event) => {
-        setOpen(true, { event, reason: "trigger" });
-      }),
-    }),
-    modal: () => options.modal?.() ?? true,
-    open,
-    setOpen,
-    titleId: titleId(),
+    getTriggerProps: (props) =>
+      overlay.getTriggerProps(props, {
+        action: "open",
+        reason: "trigger",
+      }) as Record<string, unknown>,
+    modal: overlay.modal,
+    open: overlay.open,
+    setOpen: overlay.setOpen,
+    titleId: overlay.titleId,
   };
 }
 
@@ -295,15 +229,17 @@ function Backdrop(props: DialogContentProps) {
 function Positioner(props: DialogContentProps) {
   const dialog = useDialog("Positioner");
   const [local, others] = splitProps(props, ["children"]);
+  const positionerProps = dialog.getPositionerProps(others);
 
-  return <div {...dialog.getPositionerProps(others)}>{local.children}</div>;
+  return <div {...positionerProps}>{local.children}</div>;
 }
 
 function Content(props: DialogContentProps) {
   const dialog = useDialog("Content");
   const [local, others] = splitProps(props, ["children"]);
+  const contentProps = dialog.getContentProps(others);
 
-  return <div {...dialog.getContentProps(others)}>{local.children}</div>;
+  return <div {...contentProps}>{local.children}</div>;
 }
 
 function Title(props: DialogTitleProps) {

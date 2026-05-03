@@ -4,6 +4,12 @@
   "homepage": "https://mason.build",
   "items": [
     {
+      "name": "account-settings",
+      "type": "registry:block",
+      "title": "AccountSettingsBlock",
+      "description": "Account settings form block composed from Mason base components."
+    },
+    {
       "name": "cn",
       "type": "registry:lib",
       "title": "Class Name Utility",

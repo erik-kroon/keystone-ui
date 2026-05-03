@@ -41,6 +41,7 @@ export async function applyWritePlan(project: ProjectShape, plan: WritePlan): Pr
           {
             version: item.version,
             files: item.files,
+            fileHashes: item.fileHashes,
           },
         ]),
       ),

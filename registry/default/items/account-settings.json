@@ -1,0 +1,29 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "account-settings",
+  "type": "registry:block",
+  "title": "AccountSettingsBlock",
+  "description": "Account settings form block composed from Mason base components.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["settings", "form", "block"],
+  "keywords": ["account-settings", "settings", "profile", "form", "block"],
+  "docs": "https://mason.build/docs/blocks/account-settings",
+  "registryDependencies": ["badge", "button", "card", "field", "input", "separator"],
+  "meta": {
+    "install": "mason add account-settings",
+    "customization": "Customize the generated block through mason-block-account-settings classes while base controls stay owned source.",
+    "sourceFiles": ["registry/default/blocks/account-settings.tsx"],
+    "dependencies": ["badge", "button", "card", "field", "input", "separator"]
+  },
+  "files": [
+    {
+      "path": "blocks/account-settings.tsx",
+      "type": "registry:block",
+      "target": "src/components/blocks/account-settings.tsx"
+    }
+  ]
+}

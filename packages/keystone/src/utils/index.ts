@@ -307,6 +307,7 @@ export type ListInteractionKernelApi<T extends CollectionItem, Detail> = {
   selectValue: (value: string, detail: Detail) => T | undefined;
   selectedItem: Accessor<T | undefined>;
   setHighlightedValue: (value: string | undefined) => void;
+  typeahead: TypeaheadApi;
   value: Accessor<string | undefined>;
 };
 
@@ -452,6 +453,7 @@ export function createListInteractionKernel<T extends CollectionItem, Detail>(
     selectValue,
     selectedItem,
     setHighlightedValue,
+    typeahead,
     value,
   };
 }

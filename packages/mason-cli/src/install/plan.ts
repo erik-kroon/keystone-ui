@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
@@ -17,13 +18,29 @@ export type FileWrite = {
   target: string;
   absoluteTarget: string;
   content: string;
+  contentHash: string;
+  existing: FileTargetState;
+  conflict: WritePlanConflict | null;
   mode: "create" | "overwrite" | "merge-json" | "append-css";
+};
+
+export type FileTargetState = {
+  exists: boolean;
+  hash: string | null;
+  size: number | null;
+};
+
+export type WritePlanConflict = {
+  kind: "duplicate-target" | "target-exists";
+  target: string;
+  message: string;
 };
 
 export type InstalledItemRecord = {
   name: string;
   version: string;
   files: string[];
+  fileHashes: Record<string, string>;
 };
 
 export type WritePlan = {
@@ -32,6 +49,7 @@ export type WritePlan = {
   dependencies: DependencyChange[];
   devDependencies: DependencyChange[];
   installedItems: InstalledItemRecord[];
+  conflicts: WritePlanConflict[];
 };
 
 async function readJson(file: string): Promise<unknown> {
@@ -99,6 +117,23 @@ async function contentForFile(
   return readFile(path.join(path.resolve(registry), file.path), "utf8");
 }
 
+function hashContent(content: string): string {
+  return `sha256:${createHash("sha256").update(content).digest("hex")}`;
+}
+
+async function readTargetState(absoluteTarget: string): Promise<FileTargetState> {
+  if (!existsSync(absoluteTarget)) {
+    return { exists: false, hash: null, size: null };
+  }
+
+  const content = await readFile(absoluteTarget, "utf8");
+  return {
+    exists: true,
+    hash: hashContent(content),
+    size: Buffer.byteLength(content),
+  };
+}
+
 function collectDependencyChanges(
   project: ProjectShape,
   items: RegistryItem[],
@@ -134,7 +169,7 @@ function installedItemNames(project: ProjectShape): Set<string> {
 
 export async function createWritePlan(
   project: ProjectShape,
-  options: { item: string; registry: string },
+  options: { allowConflicts?: boolean; item: string; registry: string },
 ): Promise<WritePlan> {
   const config = await readMasonConfig(project.cwd);
   const items = await resolveItems(options.registry, options.item);
@@ -147,24 +182,44 @@ export async function createWritePlan(
     for (const file of item.files) {
       const target = targetForFile(config, item, file);
       const absoluteTarget = resolveProjectTarget(project.cwd, target);
+      const content = await contentForFile(options.registry, file);
+      const existing = await readTargetState(absoluteTarget);
+      const mode = file.mode ?? "create";
+      const conflict =
+        mode !== "create" || !existing.exists
+          ? null
+          : {
+              kind: "target-exists" as const,
+              target,
+              message: `Refusing to overwrite existing file: ${target}`,
+            };
       files.push({
         item: item.name,
         source: file.path,
         target,
         absoluteTarget,
-        content: await contentForFile(options.registry, file),
-        mode: file.mode ?? "create",
+        content,
+        contentHash: hashContent(content),
+        existing,
+        conflict,
+        mode,
       });
     }
   }
   const seenTargets = new Set<string>();
+  const conflicts = files.flatMap((file) => (file.conflict ? [file.conflict] : []));
   for (const file of files) {
-    if (seenTargets.has(file.absoluteTarget))
-      throw new Error(`Multiple registry files target ${file.target}`);
-    seenTargets.add(file.absoluteTarget);
-    if (file.mode === "create" && existsSync(file.absoluteTarget)) {
-      throw new Error(`Refusing to overwrite existing file: ${file.target}`);
+    if (seenTargets.has(file.absoluteTarget)) {
+      conflicts.push({
+        kind: "duplicate-target",
+        target: file.target,
+        message: `Multiple registry files target ${file.target}`,
+      });
     }
+    seenTargets.add(file.absoluteTarget);
+  }
+  if (!options.allowConflicts && conflicts.length > 0) {
+    throw new Error(conflicts.map((conflict) => conflict.message).join("\n"));
   }
   return {
     items,
@@ -178,6 +233,13 @@ export async function createWritePlan(
         .filter((file) => file.item === item.name)
         .map((file) => file.target)
         .sort(),
+      fileHashes: Object.fromEntries(
+        files
+          .filter((file) => file.item === item.name)
+          .sort((a, b) => a.target.localeCompare(b.target))
+          .map((file) => [file.target, file.contentHash]),
+      ),
     })),
+    conflicts,
   };
 }
