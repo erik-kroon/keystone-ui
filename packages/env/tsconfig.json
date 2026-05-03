@@ -1,0 +1,3 @@
+{
+  "extends": "@keystone-ui/config/tsconfig.base.json"
+}
