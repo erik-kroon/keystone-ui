@@ -75,10 +75,16 @@ describe("Mason registry validation tracer", () => {
       "button",
       "card",
       "cn",
+      "context-menu",
+      "data-table-tanstack-router",
+      "data-table",
       "dialog",
+      "dropdown-menu",
       "field",
       "input",
       "label",
+      "menu",
+      "menubar",
       "popover",
       "select-field",
       "separator",
@@ -87,6 +93,37 @@ describe("Mason registry validation tracer", () => {
       "textarea",
       "tooltip",
     ]);
+  });
+
+  test("validates docs-ready metadata on the real default data-table item", async () => {
+    const item = await import("../../../registry/default/items/data-table.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@tanstack/solid-table@^8.21.3");
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.columns).toBeString();
+      expect(result.value.meta?.sorting).toBeString();
+      expect(result.value.meta?.filtering).toBeString();
+      expect(result.value.meta?.pagination).toBeString();
+      expect(result.value.meta?.rowActions).toBeString();
+      expect(result.value.meta?.limitations).toBeString();
+    }
+  });
+
+  test("validates docs-ready metadata on the real default data-table router adapter item", async () => {
+    const item = await import("../../../registry/default/items/data-table-tanstack-router.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@tanstack/solid-router@^1.168.20");
+      expect(result.value.registryDependencies).toEqual(["data-table"]);
+      expect(result.value.meta?.searchParams).toBeString();
+      expect(result.value.meta?.stateMapping).toBeString();
+      expect(result.value.meta?.limitations).toBeString();
+    }
   });
 
   test("resolves dialog registry dependencies deterministically", () => {

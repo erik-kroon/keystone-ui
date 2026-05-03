@@ -1,0 +1,29 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "menubar",
+  "type": "registry:ui",
+  "title": "Menubar",
+  "description": "Styled Solid menubar backed by Keystone menu navigation, typeahead, and item state behavior.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["navigation"],
+  "keywords": ["menubar", "menu", "navigation", "keystone"],
+  "docs": "https://mason.build/docs/components/menubar",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add menubar",
+    "customization": "Style the generated wrappers through mason-menubar classes while Keystone owns menu roles, roving focus, typeahead, and item state behavior.",
+    "sourceFiles": ["registry/default/ui/menubar.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "cn"]
+  },
+  "files": [
+    {
+      "path": "ui/menubar.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

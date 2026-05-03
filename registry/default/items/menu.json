@@ -1,0 +1,29 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "menu",
+  "type": "registry:ui",
+  "title": "Menu",
+  "description": "Styled Solid menu component backed by Keystone menu navigation, typeahead, and overlay behavior.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["overlay", "navigation"],
+  "keywords": ["menu", "overlay", "typeahead", "keystone"],
+  "docs": "https://mason.build/docs/components/menu",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add menu",
+    "customization": "Style the generated wrappers through mason-menu classes while Keystone owns menu roles, roving focus, typeahead, dismissal, and positioning.",
+    "sourceFiles": ["registry/default/ui/menu.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "cn"]
+  },
+  "files": [
+    {
+      "path": "ui/menu.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

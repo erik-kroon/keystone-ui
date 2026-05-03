@@ -1,0 +1,29 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "dropdown-menu",
+  "type": "registry:ui",
+  "title": "DropdownMenu",
+  "description": "Styled Solid dropdown menu backed by Keystone menu navigation, typeahead, and overlay behavior.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["overlay", "navigation"],
+  "keywords": ["dropdown-menu", "menu", "overlay", "keystone"],
+  "docs": "https://mason.build/docs/components/dropdown-menu",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add dropdown-menu",
+    "customization": "Style the generated wrappers through mason-dropdown-menu classes while Keystone owns menu roles, roving focus, typeahead, dismissal, and positioning.",
+    "sourceFiles": ["registry/default/ui/dropdown-menu.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "cn"]
+  },
+  "files": [
+    {
+      "path": "ui/dropdown-menu.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

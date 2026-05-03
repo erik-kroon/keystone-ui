@@ -1,0 +1,100 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "data-table",
+  "type": "registry:ui",
+  "title": "DataTable",
+  "description": "TanStack Table source kit with local state, toolbar, filters, pagination, column visibility, skeletons, empty state, and row actions.",
+  "version": "0.1.0",
+  "dependencies": ["@tanstack/solid-table@^8.21.3"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["table", "tanstack", "data"],
+  "keywords": ["data-table", "table", "tanstack", "sorting", "filtering", "pagination"],
+  "docs": "https://mason.build/docs/components/data-table",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add data-table",
+    "dataShape": "Pass an array of row objects through data and TanStack ColumnDef<TData, unknown>[] through columns. Use getRowId when the row key is not stable by index.",
+    "columns": "Columns are ordinary TanStack Table column definitions. Use DataTableColumnHeader in header renderers and column meta for toolbar filters.",
+    "sorting": "Sorting is managed locally by useDataTable with TanStack getSortedRowModel and column.getToggleSortingHandler.",
+    "filtering": "Text and faceted filters are rendered by DataTableToolbar from column meta and use TanStack columnFilters state.",
+    "pagination": "Pagination is local through getPaginationRowModel and DataTablePagination.",
+    "rowActions": "Use DataTableRowActions in a display column. Each action receives the TanStack row.",
+    "routerAdapter": "Install data-table-tanstack-router for URL-backed search param state with TanStack Router.",
+    "customization": "Use mason-data-table classes and data-part values for root, toolbar, search, faceted-filter, table, header, row, cell, empty, skeleton, row-actions, and pagination.",
+    "limitations": "This source is a client-side table pattern. Server-side pagination, virtualization, persisted column preferences, and async loading orchestration should be added in app code.",
+    "sourceFiles": [
+      "registry/default/components/data-table/data-table.tsx",
+      "registry/default/components/data-table/data-table-column-header.tsx",
+      "registry/default/components/data-table/data-table-empty-state.tsx",
+      "registry/default/components/data-table/data-table-faceted-filter.tsx",
+      "registry/default/components/data-table/data-table-pagination.tsx",
+      "registry/default/components/data-table/data-table-row-actions.tsx",
+      "registry/default/components/data-table/data-table-skeleton.tsx",
+      "registry/default/components/data-table/data-table-toolbar.tsx",
+      "registry/default/components/data-table/data-table-view-options.tsx",
+      "registry/default/components/data-table/types.ts",
+      "registry/default/components/data-table/use-data-table.ts"
+    ],
+    "dependencies": ["@tanstack/solid-table", "cn"]
+  },
+  "files": [
+    {
+      "path": "components/data-table/data-table.tsx",
+      "target": "src/components/data-table/data-table.tsx",
+      "type": "registry:file"
+    },
+    {
+      "path": "components/data-table/data-table-column-header.tsx",
+      "target": "src/components/data-table/data-table-column-header.tsx",
+      "type": "registry:file"
+    },
+    {
+      "path": "components/data-table/data-table-empty-state.tsx",
+      "target": "src/components/data-table/data-table-empty-state.tsx",
+      "type": "registry:file"
+    },
+    {
+      "path": "components/data-table/data-table-faceted-filter.tsx",
+      "target": "src/components/data-table/data-table-faceted-filter.tsx",
+      "type": "registry:file"
+    },
+    {
+      "path": "components/data-table/data-table-pagination.tsx",
+      "target": "src/components/data-table/data-table-pagination.tsx",
+      "type": "registry:file"
+    },
+    {
+      "path": "components/data-table/data-table-row-actions.tsx",
+      "target": "src/components/data-table/data-table-row-actions.tsx",
+      "type": "registry:file"
+    },
+    {
+      "path": "components/data-table/data-table-skeleton.tsx",
+      "target": "src/components/data-table/data-table-skeleton.tsx",
+      "type": "registry:file"
+    },
+    {
+      "path": "components/data-table/data-table-toolbar.tsx",
+      "target": "src/components/data-table/data-table-toolbar.tsx",
+      "type": "registry:file"
+    },
+    {
+      "path": "components/data-table/data-table-view-options.tsx",
+      "target": "src/components/data-table/data-table-view-options.tsx",
+      "type": "registry:file"
+    },
+    {
+      "path": "components/data-table/types.ts",
+      "target": "src/components/data-table/types.ts",
+      "type": "registry:file"
+    },
+    {
+      "path": "components/data-table/use-data-table.ts",
+      "target": "src/components/data-table/use-data-table.ts",
+      "type": "registry:file"
+    }
+  ]
+}

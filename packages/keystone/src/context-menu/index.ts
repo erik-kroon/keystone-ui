@@ -1,0 +1,20 @@
+export { ContextMenu, createContextMenu } from "../menu/index";
+export type {
+  CreateMenuOptions as CreateContextMenuOptions,
+  MenuApi as ContextMenuApi,
+  MenuCheckboxItemProps as ContextMenuCheckboxItemProps,
+  MenuContentProps as ContextMenuContentProps,
+  MenuGroupLabelProps as ContextMenuGroupLabelProps,
+  MenuGroupProps as ContextMenuGroupProps,
+  MenuItemProps as ContextMenuItemProps,
+  MenuOpenChangeDetail as ContextMenuOpenChangeDetail,
+  MenuPartProps as ContextMenuPartProps,
+  MenuPortalProps as ContextMenuPortalProps,
+  MenuPositionerProps as ContextMenuPositionerProps,
+  MenuRadioGroupProps as ContextMenuRadioGroupProps,
+  MenuRadioItemProps as ContextMenuRadioItemProps,
+  MenuRootProps as ContextMenuRootProps,
+  MenuSelectDetail as ContextMenuSelectDetail,
+  MenuSeparatorProps as ContextMenuSeparatorProps,
+  MenuTriggerProps as ContextMenuTriggerProps,
+} from "../menu/index";
