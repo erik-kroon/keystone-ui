@@ -58,6 +58,18 @@
       "description": "TanStack Form select field composed with Keystone Select behavior and Mason styling hooks."
     },
     {
+      "name": "data-table",
+      "type": "registry:ui",
+      "title": "DataTable",
+      "description": "TanStack Table source kit with local state, toolbar, filters, pagination, column visibility, skeletons, empty state, and row actions."
+    },
+    {
+      "name": "data-table-tanstack-router",
+      "type": "registry:ui",
+      "title": "DataTable TanStack Router Adapter",
+      "description": "URL-backed DataTable state adapter for TanStack Router search params."
+    },
+    {
       "name": "card",
       "type": "registry:ui",
       "title": "Card",
@@ -86,6 +98,30 @@
       "type": "registry:ui",
       "title": "Popover",
       "description": "Styled Solid popover component backed by Keystone overlay positioning and dismissal."
+    },
+    {
+      "name": "menu",
+      "type": "registry:ui",
+      "title": "Menu",
+      "description": "Styled Solid menu component backed by Keystone menu navigation, typeahead, and overlay behavior."
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "DropdownMenu",
+      "description": "Styled Solid dropdown menu backed by Keystone menu navigation, typeahead, and overlay behavior."
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "ContextMenu",
+      "description": "Styled Solid context menu backed by Keystone menu navigation, typeahead, and overlay behavior."
+    },
+    {
+      "name": "menubar",
+      "type": "registry:ui",
+      "title": "Menubar",
+      "description": "Styled Solid menubar backed by Keystone menu navigation, typeahead, and item state behavior."
     },
     {
       "name": "tooltip",

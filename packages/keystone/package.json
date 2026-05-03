@@ -5,8 +5,12 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./context-menu": "./src/context-menu/index.ts",
     "./dialog": "./src/dialog/index.tsx",
+    "./dropdown-menu": "./src/dropdown-menu/index.ts",
     "./form": "./src/form/index.tsx",
+    "./menu": "./src/menu/index.tsx",
+    "./menubar": "./src/menubar/index.ts",
     "./popover": "./src/popover/index.tsx",
     "./sheet": "./src/sheet/index.tsx",
     "./tooltip": "./src/tooltip/index.tsx",

@@ -227,6 +227,54 @@ describe("add planning and writes", () => {
     );
   });
 
+  test("real default registry data-table plans TanStack Table generated source", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+    const output = await addCommand({
+      cwd: app,
+      item: "data-table",
+      registry: defaultRegistry,
+      dryRun: true,
+    });
+
+    expect(output).toBe(
+      [
+        "Mason dry run plan for data-table:",
+        "create src/components/data-table/data-table-column-header.tsx",
+        "create src/components/data-table/data-table-empty-state.tsx",
+        "create src/components/data-table/data-table-faceted-filter.tsx",
+        "create src/components/data-table/data-table-pagination.tsx",
+        "create src/components/data-table/data-table-row-actions.tsx",
+        "create src/components/data-table/data-table-skeleton.tsx",
+        "create src/components/data-table/data-table-toolbar.tsx",
+        "create src/components/data-table/data-table-view-options.tsx",
+        "create src/components/data-table/data-table.tsx",
+        "create src/components/data-table/types.ts",
+        "create src/components/data-table/use-data-table.ts",
+        "create src/lib/cn.ts",
+        "add @tanstack/solid-table@^8.21.3",
+        "install command: bun add @tanstack/solid-table@^8.21.3",
+      ].join("\n"),
+    );
+  });
+
+  test("real default registry data-table router adapter plans TanStack Router source", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+    const output = await addCommand({
+      cwd: app,
+      item: "data-table-tanstack-router",
+      registry: defaultRegistry,
+      dryRun: true,
+    });
+
+    expect(output).toContain("Mason dry run plan for data-table-tanstack-router:");
+    expect(output).toContain("create src/components/data-table/data-table-search.ts");
+    expect(output).toContain("create src/components/data-table/use-data-table-router.ts");
+    expect(output).toContain("add @tanstack/solid-router@^1.168.20");
+    expect(output).toContain("add @tanstack/solid-table@^8.21.3");
+  });
+
   test("real default registry block installs composed source and dependencies", async () => {
     const app = await fixtureApp();
     await installFixtureAppDependencies(app);

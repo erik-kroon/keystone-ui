@@ -196,6 +196,12 @@ function App() {
               href="/docs/mason/select-field"
             />
             <DocLane
+              icon={<FileJson2 size={20} />}
+              title="TanStack DataTable"
+              body="Mason DataTable wraps TanStack Table for sorting, filtering, pagination, and row actions."
+              href="/docs/mason/data-table"
+            />
+            <DocLane
               icon={<Terminal size={20} />}
               title="CLI docs"
               body="Init, add, dry-run, generated-output verification, and framework detection."

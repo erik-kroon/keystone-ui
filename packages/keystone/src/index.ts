@@ -1,5 +1,9 @@
+export { ContextMenu, createContextMenu } from "./context-menu/index";
 export { Dialog, createDialog } from "./dialog/index";
+export { DropdownMenu, createDropdownMenu } from "./dropdown-menu/index";
 export { createFieldValidity, createFormControl } from "./form/index";
+export { Menu, createMenu } from "./menu/index";
+export { Menubar, createMenubar } from "./menubar/index";
 export type {
   DialogChangeDetail,
   DialogCloseProps,
@@ -23,6 +27,26 @@ export type {
   FormControlApi,
   FormControlValue,
 } from "./form/index";
+export type {
+  CreateMenuOptions,
+  MenuApi,
+  MenuCheckboxItemProps,
+  MenuContentProps,
+  MenuGroupLabelProps,
+  MenuGroupProps,
+  MenuItemData,
+  MenuItemProps,
+  MenuOpenChangeDetail,
+  MenuPartProps,
+  MenuPortalProps,
+  MenuPositionerProps,
+  MenuRadioGroupProps,
+  MenuRadioItemProps,
+  MenuRootProps,
+  MenuSelectDetail,
+  MenuSeparatorProps,
+  MenuTriggerProps,
+} from "./menu/index";
 export { Popover, createPopover } from "./popover/index";
 export type {
   CreatePopoverOptions,

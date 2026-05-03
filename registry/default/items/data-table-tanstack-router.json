@@ -1,0 +1,41 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "data-table-tanstack-router",
+  "type": "registry:ui",
+  "title": "DataTable TanStack Router Adapter",
+  "description": "URL-backed DataTable state adapter for TanStack Router search params.",
+  "version": "0.1.0",
+  "dependencies": ["@tanstack/solid-router@^1.168.20"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "tanstack-router": ">=1.168.0 <2.0.0"
+  },
+  "categories": ["table", "tanstack", "router", "data"],
+  "keywords": ["data-table", "table", "tanstack-router", "search-params", "url-state"],
+  "docs": "https://mason.build/docs/components/data-table#tanstack-router",
+  "registryDependencies": ["data-table"],
+  "meta": {
+    "install": "mason add data-table-tanstack-router",
+    "searchParams": "Use validateDataTableSearch in route validateSearch, then pass Route.useSearch() and useNavigate({ from: Route.fullPath }) to useDataTableRouter.",
+    "stateMapping": "page and perPage map to TanStack pagination; sort maps to sorting; filters maps to columnFilters; visibility maps to columnVisibility.",
+    "limitations": "The adapter keeps row selection local and does not implement server fetching, virtualization, saved views, or advanced filter builders.",
+    "sourceFiles": [
+      "registry/default/components/data-table/data-table-search.ts",
+      "registry/default/components/data-table/use-data-table-router.ts"
+    ],
+    "dependencies": ["@tanstack/solid-router", "data-table"]
+  },
+  "files": [
+    {
+      "path": "components/data-table/data-table-search.ts",
+      "target": "src/components/data-table/data-table-search.ts",
+      "type": "registry:file"
+    },
+    {
+      "path": "components/data-table/use-data-table-router.ts",
+      "target": "src/components/data-table/use-data-table-router.ts",
+      "type": "registry:file"
+    }
+  ]
+}

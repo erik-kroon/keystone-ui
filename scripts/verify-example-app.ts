@@ -60,8 +60,13 @@ async function main() {
       "@tanstack/form-core",
       "@tanstack/pacer-lite",
       "@tanstack/solid-form",
+      "@tanstack/solid-router",
+      "@tanstack/solid-table",
       "@tanstack/solid-store",
+      "@tanstack/router-core",
+      "@tanstack/router-utils",
       "@tanstack/store",
+      "@tanstack/table-core",
       "@types/node",
       "solid-js",
       "typescript",
@@ -85,6 +90,8 @@ async function main() {
     await addCommand({ cwd: app, item: "sheet", registry });
     await addCommand({ cwd: app, item: "text-field", registry });
     await addCommand({ cwd: app, item: "select-field", registry });
+    await addCommand({ cwd: app, item: "data-table", registry });
+    await addCommand({ cwd: app, item: "data-table-tanstack-router", registry });
     await writeFile(
       path.join(app, "vite.config.ts"),
       `import { fileURLToPath, URL } from "node:url";
@@ -116,12 +123,69 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { createForm } from "@tanstack/solid-form";
+import type { ColumnDef } from "@tanstack/solid-table";
+import { DataTable } from "@/components/data-table/data-table";
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import { DataTableRowActions } from "@/components/data-table/data-table-row-actions";
+import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
+import { dataTableFacetedFilter, useDataTable } from "@/components/data-table/use-data-table";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { SelectField } from "@/components/ui/select-field";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { TextField } from "@/components/ui/text-field";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import "./styles.css";
+
+type Invoice = {
+  id: string;
+  customer: string;
+  status: "paid" | "open";
+  total: number;
+};
+
+const invoices: Invoice[] = [
+  { id: "inv-1", customer: "Ada Lovelace", status: "paid", total: 4200 },
+  { id: "inv-2", customer: "Grace Hopper", status: "open", total: 3100 },
+  { id: "inv-3", customer: "Katherine Johnson", status: "paid", total: 2900 },
+];
+
+const invoiceColumns: ColumnDef<Invoice, unknown>[] = [
+  {
+    accessorKey: "customer",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Customer" />,
+    cell: ({ row }) => row.original.customer,
+    meta: {
+      label: "Customer",
+      placeholder: "Search customers",
+      variant: "text",
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    filterFn: dataTableFacetedFilter,
+    meta: {
+      label: "Status",
+      variant: "multiSelect",
+      options: [
+        { label: "Paid", value: "paid" },
+        { label: "Open", value: "open" },
+      ],
+    },
+  },
+  {
+    accessorKey: "total",
+    header: "Total",
+    cell: ({ row }) => \`$\${row.original.total}\`,
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => (
+      <DataTableRowActions row={row} actions={[{ label: "Open", onSelect: (current) => current.original.id }]} />
+    ),
+  },
+];
 
 function App() {
   const form = createForm(() => ({
@@ -131,6 +195,14 @@ function App() {
     },
     onSubmit: ({ value }) => value,
   }));
+  const table = useDataTable({
+    data: invoices,
+    columns: invoiceColumns,
+    getRowId: (row) => row.id,
+    initialState: {
+      pagination: { pageIndex: 0, pageSize: 2 },
+    },
+  });
 
   return (
     <main>
@@ -164,6 +236,9 @@ function App() {
         />
         <button type="submit">Save</button>
       </form>
+      <DataTable table={table}>
+        <DataTableToolbar table={table} />
+      </DataTable>
       <Dialog>
         <DialogTrigger>Open Mason dialog</DialogTrigger>
         <DialogContent>
@@ -215,11 +290,68 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { createForm } from "@tanstack/solid-form";
+import type { ColumnDef } from "@tanstack/solid-table";
+import { DataTable } from "@/components/data-table/data-table";
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import { DataTableRowActions } from "@/components/data-table/data-table-row-actions";
+import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
+import { dataTableFacetedFilter, useDataTable } from "@/components/data-table/use-data-table";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { SelectField } from "@/components/ui/select-field";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { TextField } from "@/components/ui/text-field";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+
+type Invoice = {
+  id: string;
+  customer: string;
+  status: "paid" | "open";
+  total: number;
+};
+
+const invoices: Invoice[] = [
+  { id: "inv-1", customer: "Ada Lovelace", status: "paid", total: 4200 },
+  { id: "inv-2", customer: "Grace Hopper", status: "open", total: 3100 },
+  { id: "inv-3", customer: "Katherine Johnson", status: "paid", total: 2900 },
+];
+
+const invoiceColumns: ColumnDef<Invoice, unknown>[] = [
+  {
+    accessorKey: "customer",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Customer" />,
+    cell: ({ row }) => row.original.customer,
+    meta: {
+      label: "Customer",
+      placeholder: "Search customers",
+      variant: "text",
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    filterFn: dataTableFacetedFilter,
+    meta: {
+      label: "Status",
+      variant: "multiSelect",
+      options: [
+        { label: "Paid", value: "paid" },
+        { label: "Open", value: "open" },
+      ],
+    },
+  },
+  {
+    accessorKey: "total",
+    header: "Total",
+    cell: ({ row }) => \`$\${row.original.total}\`,
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => (
+      <DataTableRowActions row={row} actions={[{ label: "Open", onSelect: (current) => current.original.id }]} />
+    ),
+  },
+];
 
 function App() {
   const form = createForm(() => ({
@@ -229,6 +361,16 @@ function App() {
     },
     onSubmit: ({ value }) => value,
   }));
+  const table = useDataTable({
+    data: invoices,
+    columns: invoiceColumns,
+    getRowId: (row) => row.id,
+    initialState: {
+      columnFilters: [{ id: "status", value: ["paid"] }],
+      pagination: { pageIndex: 0, pageSize: 2 },
+      sorting: [{ id: "total", desc: true }],
+    },
+  });
 
   return (
     <main>
@@ -251,6 +393,9 @@ function App() {
           ]}
         />
       </form>
+      <DataTable table={table}>
+        <DataTableToolbar table={table} />
+      </DataTable>
       <Dialog defaultOpen>
         <DialogTrigger>Open Mason dialog</DialogTrigger>
         <DialogContent portal={{ forceMount: true }}>
@@ -293,7 +438,12 @@ for (const expected of [
   "mason-sheet-trigger",
   "mason-text-field-input",
   "mason-select-field-trigger",
+  "mason-data-table-table",
+  "mason-data-table-pagination",
+  "Ada Lovelace",
+  "Katherine Johnson",
   'data-scope="mason-text-field"',
+  'data-scope="mason-data-table"',
   'data-scope="select"',
   'data-part="input"',
   'data-scope="dialog"',
@@ -303,6 +453,84 @@ for (const expected of [
   if (!html.includes(expected)) {
     throw new Error(\`SSR output did not include \${expected}\`);
   }
+}
+
+if (html.includes("Grace Hopper")) {
+  throw new Error("SSR output included a row excluded by the DataTable faceted filter");
+}
+
+if (html.indexOf("Ada Lovelace") > html.indexOf("Katherine Johnson")) {
+  throw new Error("SSR output did not preserve the initial DataTable sorting state");
+}
+`,
+    );
+
+    await mkdir(path.join(app, "src/routes"), { recursive: true });
+    await writeFile(
+      path.join(app, "src/routes/users.tsx"),
+      `import { createMemoryHistory } from "@tanstack/solid-router";
+import type { ColumnDef } from "@tanstack/solid-table";
+import { DataTable } from "@/components/data-table/data-table";
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
+import { validateDataTableSearch, type DataTableSearch } from "@/components/data-table/data-table-search";
+import { useDataTableRouter, type DataTableRouterNavigate } from "@/components/data-table/use-data-table-router";
+import { dataTableFacetedFilter } from "@/components/data-table/use-data-table";
+
+type User = {
+  id: string;
+  email: string;
+  status: "active" | "paused";
+};
+
+const users: User[] = [
+  { id: "user-1", email: "ada@example.com", status: "active" },
+  { id: "user-2", email: "grace@example.com", status: "paused" },
+];
+
+const history = createMemoryHistory({ initialEntries: ["/users?page=1&perPage=10"] });
+let currentSearch = validateDataTableSearch({ page: 1, perPage: 10 });
+const navigate: DataTableRouterNavigate = (options) => {
+  currentSearch = options.search(currentSearch);
+  history.replace("/users");
+};
+const search = (): DataTableSearch => currentSearch;
+
+const columns: ColumnDef<User, unknown>[] = [
+  {
+    accessorKey: "email",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
+    meta: { label: "Email", placeholder: "Search email", variant: "text" },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    filterFn: dataTableFacetedFilter,
+    meta: {
+      label: "Status",
+      variant: "multiSelect",
+      options: [
+        { label: "Active", value: "active" },
+        { label: "Paused", value: "paused" },
+      ],
+    },
+  },
+];
+
+export function UsersPage() {
+  const table = useDataTableRouter({
+    data: users,
+    columns,
+    getRowId: (row) => row.id,
+    search,
+    navigate,
+  });
+
+  return (
+    <DataTable table={table}>
+      <DataTableToolbar table={table} />
+    </DataTable>
+  );
 }
 `,
     );

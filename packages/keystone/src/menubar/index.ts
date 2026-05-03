@@ -1,0 +1,20 @@
+export { Menubar, createMenubar } from "../menu/index";
+export type {
+  CreateMenuOptions as CreateMenubarOptions,
+  MenuApi as MenubarApi,
+  MenuCheckboxItemProps as MenubarCheckboxItemProps,
+  MenuContentProps as MenubarContentProps,
+  MenuGroupLabelProps as MenubarGroupLabelProps,
+  MenuGroupProps as MenubarGroupProps,
+  MenuItemProps as MenubarItemProps,
+  MenuOpenChangeDetail as MenubarOpenChangeDetail,
+  MenuPartProps as MenubarPartProps,
+  MenuPortalProps as MenubarPortalProps,
+  MenuPositionerProps as MenubarPositionerProps,
+  MenuRadioGroupProps as MenubarRadioGroupProps,
+  MenuRadioItemProps as MenubarRadioItemProps,
+  MenuRootProps as MenubarRootProps,
+  MenuSelectDetail as MenubarSelectDetail,
+  MenuSeparatorProps as MenubarSeparatorProps,
+  MenuTriggerProps as MenubarTriggerProps,
+} from "../menu/index";

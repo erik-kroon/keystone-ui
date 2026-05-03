@@ -74,6 +74,13 @@ const selectStateAttributes = [
   { name: "data-state", values: ["open", "closed"] },
 ] as const satisfies readonly PartStateAttributeMetadata[];
 
+const menuItemAttributes = [
+  { name: "data-checked" },
+  { name: "data-disabled" },
+  { name: "data-highlighted" },
+  { name: "data-value" },
+] as const satisfies readonly PartStateAttributeMetadata[];
+
 const groupAttributes = [
   { name: "data-disabled" },
   { name: "data-value" },
@@ -112,6 +119,10 @@ export const primitiveMetadata = {
     part("group", groupAttributes),
     part("group-label"),
   ]),
+  "context-menu": menuPrimitive("context-menu"),
+  "dropdown-menu": menuPrimitive("dropdown-menu"),
+  menu: menuPrimitive("menu"),
+  menubar: menuPrimitive("menubar"),
   overlay: definePrimitive("overlay", [
     part("layer", [
       { name: "data-layer-id" },
@@ -219,6 +230,19 @@ function part(
     dataAttributes: dedupeStateAttributes([...basePartAttributes, ...stateAttributes]),
     cssVars,
   };
+}
+
+function menuPrimitive(scope: string): PrimitiveMetadata {
+  return definePrimitive(scope, [
+    part("trigger", overlayStateAttributes),
+    part("positioner", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
+    part("content", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
+    part("group"),
+    part("group-label"),
+    part("separator"),
+    part("item", menuItemAttributes),
+    part("item-indicator"),
+  ]);
 }
 
 function dedupeStateAttributes(
