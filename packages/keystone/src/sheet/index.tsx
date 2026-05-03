@@ -1,19 +1,8 @@
-import { Show, createContext, createSignal, splitProps, useContext, type JSX } from "solid-js";
+import { Show, createContext, splitProps, useContext, type JSX } from "solid-js";
 import { Portal } from "solid-js/web";
-import { assignRef } from "../overlay/dom";
-import {
-  OverlayLayerProvider,
-  createOverlayLayer,
-  type OverlayLayerApi,
-  type OverlayLayerOutsideEvent,
-} from "../overlay/index";
-import {
-  composeEventHandlers,
-  createControllableBooleanSignal,
-  createStableId,
-  renderPolymorphic,
-  type PolymorphicProps,
-} from "../utils/index";
+import { OverlayLayerProvider, type OverlayLayerOutsideEvent } from "../overlay/index";
+import { createOverlayController } from "../overlay/controller";
+import { renderPolymorphic, type PolymorphicProps } from "../utils/index";
 
 export type SheetChangeDetail = {
   event?: Event;
@@ -68,16 +57,24 @@ export type SheetTitleProps = SheetPartProps<HTMLHeadingElement> &
 export type SheetDescriptionProps = SheetPartProps<HTMLParagraphElement> &
   Omit<JSX.HTMLAttributes<HTMLParagraphElement>, "children" | "ref">;
 
+export type SheetTriggerContractProps = Omit<SheetTriggerProps, "as" | "children">;
+export type SheetCloseContractProps = Omit<SheetCloseProps, "as" | "children">;
+export type SheetContentContractProps = Omit<SheetContentProps, "children">;
+export type SheetBackdropContractProps = Omit<SheetBackdropProps, "children">;
+export type SheetPositionerContractProps = Omit<SheetPositionerProps, "children">;
+export type SheetTitleContractProps = Omit<SheetTitleProps, "children">;
+export type SheetDescriptionContractProps = Omit<SheetDescriptionProps, "children">;
+
 type SheetApi = {
   contentId: string;
   descriptionId: string;
-  getBackdropProps: () => Record<string, unknown>;
-  getCloseProps: (props: { onClick?: SheetCloseProps["onClick"] }) => Record<string, unknown>;
-  getContentProps: (options: { layer: OverlayLayerApi }) => Record<string, unknown>;
-  getDescriptionProps: () => Record<string, unknown>;
-  getPositionerProps: () => Record<string, unknown>;
-  getTitleProps: () => Record<string, unknown>;
-  getTriggerProps: (props: { onClick?: SheetTriggerProps["onClick"] }) => Record<string, unknown>;
+  getBackdropProps: (props: SheetBackdropContractProps) => Record<string, unknown>;
+  getCloseProps: (props: SheetCloseContractProps) => Record<string, unknown>;
+  getContentProps: (props: SheetContentContractProps) => Record<string, unknown>;
+  getDescriptionProps: (props: SheetDescriptionContractProps) => Record<string, unknown>;
+  getPositionerProps: (props: SheetPositionerContractProps) => Record<string, unknown>;
+  getTitleProps: (props: SheetTitleContractProps) => Record<string, unknown>;
+  getTriggerProps: (props: SheetTriggerContractProps) => Record<string, unknown>;
   modal: () => boolean;
   open: () => boolean;
   setOpen: (open: boolean, detail: SheetChangeDetail) => void;
@@ -96,77 +93,99 @@ export type CreateSheetOptions = {
 const SheetContext = createContext<SheetApi>();
 
 export function createSheet(options: CreateSheetOptions = {}): SheetApi {
-  const titleId = createStableId("sheet-title");
-  const descriptionId = createStableId("sheet-description");
-  const contentId = createStableId("sheet-content");
-  let lastDetail: SheetChangeDetail = { reason: "programmatic" };
-  const [open, setOpenState] = createControllableBooleanSignal({
-    value: options.open,
-    defaultValue: options.defaultOpen ?? false,
-    onChange: (next) => options.onOpenChange?.(next, lastDetail),
+  const overlay = createOverlayController<SheetChangeDetail["reason"]>({
+    scope: "sheet",
+    open: options.open,
+    defaultOpen: options.defaultOpen,
+    modal: () => options.modal?.() ?? true,
+    onOpenChange: (open, detail) => options.onOpenChange?.(open, detail),
   });
-  const setOpen = (next: boolean, detail: SheetChangeDetail) => {
-    lastDetail = detail;
-    setOpenState(next);
-  };
   const side = () => options.side?.() ?? "right";
-  const modal = () => options.modal?.() ?? true;
-  const state = () => (open() ? "open" : "closed");
   const partProps = (part: string) => ({
-    "data-scope": "sheet",
-    "data-part": part,
+    ...overlay.getPartProps(part),
     "data-side": side(),
-    "data-state": state(),
   });
 
   return {
-    contentId: contentId(),
-    descriptionId: descriptionId(),
-    getBackdropProps: () => partProps("backdrop"),
+    contentId: overlay.contentId,
+    descriptionId: overlay.descriptionId,
+    getBackdropProps: (props) => ({
+      ...props,
+      ...partProps("backdrop"),
+    }),
     getCloseProps: (props) => ({
-      type: "button",
+      ...overlay.getCloseProps(props, "close"),
       ...partProps("close"),
-      onClick: composeEventHandlers(props.onClick, (event) => {
-        setOpen(false, { event, reason: "close" });
-      }),
     }),
-    getContentProps: ({ layer }) => ({
-      id: contentId(),
-      tabIndex: -1,
-      role: "dialog",
-      "aria-modal": modal() ? "true" : undefined,
-      "aria-labelledby": titleId(),
-      "aria-describedby": descriptionId(),
-      "data-layer-id": layer.id,
-      "data-layer-index": layer.index(),
-      "data-top-layer": layer.isTopLayer() ? "" : undefined,
-      ...partProps("content"),
-    }),
-    getDescriptionProps: () => ({
-      id: descriptionId(),
+    getContentProps: (props) => {
+      const [local, others] = splitProps(props, [
+        "ref",
+        "onEscapeKeyDown",
+        "onPointerDownOutside",
+        "onFocusOutside",
+        "onInteractOutside",
+        "onMountAutoFocus",
+        "onUnmountAutoFocus",
+      ]);
+      const layerProps = overlay.getContentLayerProps<HTMLDivElement>(
+        {
+          ref: local.ref,
+          onEscapeKeyDown: local.onEscapeKeyDown,
+          onFocusOutside: local.onFocusOutside,
+          onInteractOutside: local.onInteractOutside,
+          onMountAutoFocus: local.onMountAutoFocus,
+          onPointerDownOutside: local.onPointerDownOutside,
+          onUnmountAutoFocus: local.onUnmountAutoFocus,
+        },
+        {
+          modal: overlay.modal,
+          disableOutsidePointerEvents: overlay.modal,
+          trapFocus: overlay.modal,
+          restoreFocus: () => true,
+          dismissReason: (event) => (event.type === "keydown" ? "escape" : "outside"),
+        },
+      );
+
+      return {
+        ...others,
+        ...layerProps,
+        id: overlay.contentId,
+        tabIndex: -1,
+        role: "dialog",
+        "aria-modal": overlay.modal() ? "true" : undefined,
+        "aria-labelledby": overlay.titleId,
+        "aria-describedby": overlay.descriptionId,
+        ...partProps("content"),
+      };
+    },
+    getDescriptionProps: (props) => ({
+      ...props,
+      id: overlay.descriptionId,
       "data-scope": "sheet",
       "data-part": "description",
     }),
-    getPositionerProps: () => partProps("positioner"),
-    getTitleProps: () => ({
-      id: titleId(),
+    getPositionerProps: (props) => ({
+      ...props,
+      ...partProps("positioner"),
+    }),
+    getTitleProps: (props) => ({
+      ...props,
+      id: overlay.titleId,
       "data-scope": "sheet",
       "data-part": "title",
     }),
     getTriggerProps: (props) => ({
-      type: "button",
-      "aria-controls": contentId(),
-      "aria-expanded": open(),
-      ...partProps("trigger"),
-      onClick: composeEventHandlers(props.onClick, (event) => {
-        setOpen(true, { event, reason: "trigger" });
+      ...overlay.getTriggerProps(props, {
+        action: "open",
+        reason: "trigger",
       }),
+      ...partProps("trigger"),
     }),
-    modal,
-    open,
-    setOpen,
+    modal: overlay.modal,
+    open: overlay.open,
+    setOpen: overlay.setOpen,
     side,
-    titleId: titleId(),
+    titleId: overlay.titleId,
   };
 }
 
@@ -194,8 +213,8 @@ function Root(props: SheetRootProps) {
 
 function Trigger(props: SheetTriggerProps) {
   const sheet = useSheet("Trigger");
-  const [local, others] = splitProps(props, ["as", "children", "onClick"]);
-  const triggerProps = { ...others, ...sheet.getTriggerProps({ onClick: local.onClick }) };
+  const [local, others] = splitProps(props, ["as", "children"]);
+  const triggerProps = sheet.getTriggerProps(others);
   if (!local.as) return <button {...triggerProps}>{local.children}</button>;
   return renderPolymorphic(local.as, "button", { ...triggerProps, children: local.children });
 }
@@ -212,92 +231,40 @@ function PortalPart(props: SheetPortalProps) {
 function Backdrop(props: SheetBackdropProps) {
   const sheet = useSheet("Backdrop");
   const [local, others] = splitProps(props, ["children"]);
-  return (
-    <div {...others} {...sheet.getBackdropProps()}>
-      {local.children}
-    </div>
-  );
+  return <div {...sheet.getBackdropProps(others)}>{local.children}</div>;
 }
 
 function Positioner(props: SheetPositionerProps) {
   const sheet = useSheet("Positioner");
   const [local, others] = splitProps(props, ["children"]);
-  return (
-    <div {...others} {...sheet.getPositionerProps()}>
-      {local.children}
-    </div>
-  );
+  const positionerProps = sheet.getPositionerProps(others);
+  return <div {...positionerProps}>{local.children}</div>;
 }
 
 function Content(props: SheetContentProps) {
   const sheet = useSheet("Content");
-  const [local, others] = splitProps(props, [
-    "children",
-    "ref",
-    "onEscapeKeyDown",
-    "onPointerDownOutside",
-    "onFocusOutside",
-    "onInteractOutside",
-    "onMountAutoFocus",
-    "onUnmountAutoFocus",
-  ]);
-  const [content, setContent] = createSignal<HTMLDivElement>();
-  const layer = createOverlayLayer({
-    id: sheet.contentId,
-    element: content,
-    modal: sheet.modal,
-    disableOutsidePointerEvents: sheet.modal,
-    trapFocus: sheet.modal,
-    restoreFocus: () => true,
-    onEscapeKeyDown: local.onEscapeKeyDown,
-    onPointerDownOutside: local.onPointerDownOutside,
-    onFocusOutside: local.onFocusOutside,
-    onInteractOutside: local.onInteractOutside,
-    onDismiss: (event) => {
-      sheet.setOpen(false, { event, reason: event.type === "keydown" ? "escape" : "outside" });
-    },
-    onMountAutoFocus: local.onMountAutoFocus,
-    onUnmountAutoFocus: local.onUnmountAutoFocus,
-  });
+  const [local, others] = splitProps(props, ["children"]);
+  const contentProps = sheet.getContentProps(others);
 
-  return (
-    <div
-      {...others}
-      {...sheet.getContentProps({ layer })}
-      ref={(node) => {
-        setContent(node);
-        assignRef(local.ref, node);
-      }}
-    >
-      {local.children}
-    </div>
-  );
+  return <div {...contentProps}>{local.children}</div>;
 }
 
 function Title(props: SheetTitleProps) {
   const sheet = useSheet("Title");
   const [local, others] = splitProps(props, ["children"]);
-  return (
-    <h2 {...others} {...sheet.getTitleProps()}>
-      {local.children}
-    </h2>
-  );
+  return <h2 {...sheet.getTitleProps(others)}>{local.children}</h2>;
 }
 
 function Description(props: SheetDescriptionProps) {
   const sheet = useSheet("Description");
   const [local, others] = splitProps(props, ["children"]);
-  return (
-    <p {...others} {...sheet.getDescriptionProps()}>
-      {local.children}
-    </p>
-  );
+  return <p {...sheet.getDescriptionProps(others)}>{local.children}</p>;
 }
 
 function Close(props: SheetCloseProps) {
   const sheet = useSheet("Close");
-  const [local, others] = splitProps(props, ["as", "children", "onClick"]);
-  const closeProps = { ...others, ...sheet.getCloseProps({ onClick: local.onClick }) };
+  const [local, others] = splitProps(props, ["as", "children"]);
+  const closeProps = sheet.getCloseProps(others);
   if (!local.as) return <button {...closeProps}>{local.children}</button>;
   return renderPolymorphic(local.as, "button", { ...closeProps, children: local.children });
 }

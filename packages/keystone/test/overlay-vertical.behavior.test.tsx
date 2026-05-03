@@ -115,8 +115,12 @@ describe("Popover, Tooltip, and Sheet overlay vertical", () => {
     await settled();
 
     const content = getByPart("sheet", "content");
+    const title = getByPart("sheet", "title");
+    const description = getByPart("sheet", "description");
     expect(content.getAttribute("role")).toBe("dialog");
     expect(content.getAttribute("aria-modal")).toBe("true");
+    expect(content.getAttribute("aria-labelledby")).toBe(title.id);
+    expect(content.getAttribute("aria-describedby")).toBe(description.id);
     expect(content.getAttribute("data-side")).toBe("left");
     expect(document.activeElement).toBe(document.querySelector("[data-testid='field']"));
     expect(document.body.style.pointerEvents).toBe("none");
@@ -127,5 +131,37 @@ describe("Popover, Tooltip, and Sheet overlay vertical", () => {
     expect(queryByPart("sheet", "content")).toBeNull();
     expect(document.activeElement).toBe(trigger);
     expect(document.body.style.pointerEvents).toBe("");
+  });
+
+  test("sheet inherits preventable modal content dismissal", async () => {
+    render(() => (
+      <>
+        <button data-testid="outside">Outside</button>
+        <Sheet.Root>
+          <Sheet.Trigger>Open sheet</Sheet.Trigger>
+          <Sheet.Portal>
+            <Sheet.Content
+              onEscapeKeyDown={(event) => event.preventDefault()}
+              onInteractOutside={(event) => event.preventDefault()}
+            >
+              <Sheet.Title>Filters</Sheet.Title>
+              <Sheet.Description>Choose visible filters.</Sheet.Description>
+            </Sheet.Content>
+          </Sheet.Portal>
+        </Sheet.Root>
+      </>
+    ));
+
+    click(getByPart("sheet", "trigger"));
+    await settled();
+
+    const content = getByPart("sheet", "content");
+    keyDown(content, "Escape");
+    await settled();
+    expect(queryByPart("sheet", "content")).not.toBeNull();
+
+    pointerDown(document.querySelector<HTMLElement>("[data-testid='outside']")!);
+    await settled();
+    expect(queryByPart("sheet", "content")).not.toBeNull();
   });
 });

@@ -1,20 +1,12 @@
-import { Show, createContext, createSignal, splitProps, useContext, type JSX } from "solid-js";
+import { Show, createContext, splitProps, useContext, type JSX } from "solid-js";
 import { Portal } from "solid-js/web";
-import { assignRef, contains } from "../overlay/dom";
 import {
   OverlayLayerProvider,
-  createFloatingAdapter,
-  createOverlayLayer,
   type FloatingAdapter,
   type FloatingPlacement,
 } from "../overlay/index";
-import {
-  composeEventHandlers,
-  createControllableBooleanSignal,
-  createStableId,
-  renderPolymorphic,
-  type PolymorphicProps,
-} from "../utils/index";
+import { createOverlayController } from "../overlay/controller";
+import { callEventHandler, renderPolymorphic, type PolymorphicProps } from "../utils/index";
 
 export type TooltipOpenChangeDetail = {
   event?: Event;
@@ -69,101 +61,66 @@ export type CreateTooltipOptions = {
 const TooltipContext = createContext<TooltipApi>();
 
 export function createTooltip(options: CreateTooltipOptions = {}): TooltipApi {
-  const contentId = createStableId("tooltip-content");
-  const [triggerElement, setTriggerElement] = createSignal<HTMLButtonElement>();
-  const [contentElement, setContentElement] = createSignal<HTMLDivElement>();
-  const [positionerElement, setPositionerElement] = createSignal<HTMLDivElement>();
-  let lastDetail: TooltipOpenChangeDetail = { reason: "programmatic" };
-  const [open, setOpenState] = createControllableBooleanSignal({
-    value: options.open,
-    defaultValue: options.defaultOpen ?? false,
-    onChange: (next) => options.onOpenChange?.(next, lastDetail),
+  const overlay = createOverlayController<TooltipOpenChangeDetail["reason"]>({
+    scope: "tooltip",
+    open: options.open,
+    defaultOpen: options.defaultOpen,
+    onOpenChange: (open, detail) => options.onOpenChange?.(open, detail),
+    floating: {
+      placement: options.placement,
+    },
   });
-  const floating = createFloatingAdapter({
-    anchor: triggerElement,
-    floating: () => positionerElement() ?? contentElement(),
-    enabled: open,
-    placement: options.placement,
-  });
-  const setOpen = (next: boolean, detail: TooltipOpenChangeDetail) => {
-    lastDetail = detail;
-    setOpenState(next);
-  };
-  const state = () => (open() ? "open" : "closed");
+  const floating = overlay.floating as FloatingAdapter;
   const partProps = (part: string) => ({
-    "data-scope": "tooltip",
-    "data-part": part,
-    "data-state": state(),
+    ...overlay.getPartProps(part),
+    "data-side": floating.side(),
+    "data-align": floating.align(),
   });
 
   return {
-    contentId: contentId(),
+    contentId: overlay.contentId,
     floating,
     getContentProps: (props) => {
-      createOverlayLayer({
-        id: contentId(),
-        element: contentElement,
-        containsTarget: (target) => contains(triggerElement(), target),
-        onEscapeKeyDown: (event) => {
-          event.preventDefault();
-          setOpen(false, { event, reason: "escape" });
+      overlay.getContentLayerProps<HTMLDivElement>(
+        {},
+        {
+          containsTrigger: true,
+          onDismiss: (event) => {
+            overlay.close(event, "escape");
+          },
         },
-      });
+      );
+      const floatingProps = overlay.getFloatingContentProps<HTMLDivElement>(props);
 
-      const floatingProps = floating.getFloatingProps({ style: props.style });
       return {
-        ...props,
-        id: contentId(),
+        ...floatingProps,
+        id: overlay.contentId,
         role: "tooltip",
         ...partProps("content"),
-        "data-side": floating.side(),
-        "data-align": floating.align(),
-        style: floatingProps.style,
-        ref: (element: HTMLDivElement) => {
-          setContentElement(element);
-          assignRef(props.ref, element);
-          queueMicrotask(floating.update);
+        onKeyDown: (event: KeyboardEvent) => {
+          callEventHandler(props.onKeyDown, event);
+          if (event.defaultPrevented || event.key !== "Escape") {
+            return;
+          }
+
+          event.preventDefault();
+          overlay.close(event, "escape");
         },
       };
     },
     getPositionerProps: (props) => {
-      const floatingProps = floating.getFloatingProps({ style: props.style });
+      const floatingProps = overlay.getFloatingPositionerProps<HTMLDivElement>(props);
       return {
-        ...props,
+        ...floatingProps,
         ...partProps("positioner"),
-        "data-side": floating.side(),
-        "data-align": floating.align(),
-        style: floatingProps.style,
-        ref: (element: HTMLDivElement) => {
-          setPositionerElement(element);
-          assignRef(props.ref, element);
-          queueMicrotask(floating.update);
-        },
       };
     },
-    getTriggerProps: (props) => ({
-      ...props,
-      type: "button",
-      "aria-describedby": contentId(),
-      ...partProps("trigger"),
-      ref: (element: HTMLButtonElement) => {
-        setTriggerElement(element);
-        assignRef(props.ref, element);
-      },
-      onBlur: composeEventHandlers<FocusEvent>(props.onBlur, (event) => {
-        setOpen(false, { event, reason: "focus" });
-      }),
-      onFocus: composeEventHandlers<FocusEvent>(props.onFocus, (event) => {
-        setOpen(true, { event, reason: "focus" });
-      }),
-      onPointerEnter: composeEventHandlers<PointerEvent>(props.onPointerEnter, (event) => {
-        setOpen(true, { event, reason: "pointer" });
-      }),
-      onPointerLeave: composeEventHandlers<PointerEvent>(props.onPointerLeave, (event) => {
-        setOpen(false, { event, reason: "pointer" });
-      }),
-    }),
-    open,
+    getTriggerProps: (props) =>
+      overlay.getHoverFocusTriggerProps(props, {
+        focusReason: "focus",
+        pointerReason: "pointer",
+      }) as Record<string, unknown>,
+    open: overlay.open,
   };
 }
 
@@ -223,21 +180,19 @@ function PortalPart(props: TooltipPortalProps) {
 function Positioner(props: TooltipPositionerProps) {
   const tooltip = useTooltip("Positioner");
   const [local, others] = splitProps(props, ["children", "ref", "style"]);
-  return (
-    <div {...tooltip.getPositionerProps({ ...others, ref: local.ref, style: local.style })}>
-      {local.children}
-    </div>
-  );
+  const positionerProps = tooltip.getPositionerProps({
+    ...others,
+    ref: local.ref,
+    style: local.style,
+  });
+  return <div {...positionerProps}>{local.children}</div>;
 }
 
 function Content(props: TooltipContentProps) {
   const tooltip = useTooltip("Content");
   const [local, others] = splitProps(props, ["children", "ref", "style"]);
-  return (
-    <div {...tooltip.getContentProps({ ...others, ref: local.ref, style: local.style })}>
-      {local.children}
-    </div>
-  );
+  const contentProps = tooltip.getContentProps({ ...others, ref: local.ref, style: local.style });
+  return <div {...contentProps}>{local.children}</div>;
 }
 
 export const Tooltip = {

@@ -27,9 +27,12 @@ Current Mason preview surface:
 ```bash
 mason init
 mason add button --registry <local-registry-path>
+mason add account-settings --registry <local-registry-path>
 ```
 
-The default local registry currently includes base components (`button`, `badge`, `card`, `field`, `input`, `label`, `separator`, `textarea`, `cn`), Keystone-backed overlays (`dialog`, `popover`, `sheet`, `tooltip`), and TanStack Form field examples (`text-field`, `select-field`).
+The default local registry currently includes base components (`button`, `badge`, `card`, `field`, `input`, `label`, `separator`, `textarea`, `cn`), Keystone-backed overlays (`dialog`, `popover`, `sheet`, `tooltip`), TanStack Form field examples (`text-field`, `select-field`), and the first block tracer (`account-settings`).
+
+Mason install planning records target files, content hashes, existing target state, dependency changes, installed-item metadata, and conflicts before applying writes.
 
 ## Design Principles
 
@@ -54,6 +57,7 @@ packages/
 
 registry/
   default/             first-party Mason registry source
+    blocks/            first block tracer source
 
 docs/
   adr/                 durable decisions
@@ -117,7 +121,7 @@ bun run verify:release
 - `@keystone-ui` is the current workspace scope, not a cleared public package scope.
 - Keystone overlay and utility internals are private for `0.1.0`.
 - Mason currently supports a local registry path for the first tracer.
-- Mason blocks, templates, themes, and a public registry are not ready.
+- Mason has an early block tracer, but templates, themes, and a public registry are not ready.
 - The docs/product surface lives in `apps/docs` and is still early.
 
 ## License

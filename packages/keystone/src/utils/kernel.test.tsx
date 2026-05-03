@@ -77,12 +77,12 @@ describe("Keystone kernel utilities", () => {
         new KeyboardEvent("keydown", { cancelable: true, key: "ArrowDown" }),
       );
       expect(select.open()).toBe(true);
-      expect(select.list.highlightedValue()).toBe("alpha");
+      expect(select.listbox.activeDescendant.highlightedValue()).toBe("alpha");
 
       (listbox.onKeyDown as (event: KeyboardEvent) => void)(
         new KeyboardEvent("keydown", { cancelable: true, key: "ArrowDown" }),
       );
-      expect(select.list.highlightedValue()).toBe("bravo");
+      expect(select.listbox.activeDescendant.highlightedValue()).toBe("bravo");
 
       (alpha.onClick as (event: MouseEvent) => void)(new MouseEvent("click", { cancelable: true }));
       expect(select.value()).toBe("alpha");

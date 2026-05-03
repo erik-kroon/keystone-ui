@@ -18,6 +18,7 @@ The strategic model combines a primitive layer with a source-first registry laye
 - `part`: named DOM/component piece in a primitive, exposed through `data-part`.
 - `scope`: primitive namespace exposed through `data-scope`, for example `dialog` or `select`.
 - `registry item`: Mason-distributed component, block, hook, utility, theme, page, template, config, rule, or asset.
+- `install transaction`: Mason's planned install unit, including target files, content hashes, existing target state, dependency changes, installed metadata, and conflicts before any writes occur.
 - `block`: production-shaped Mason UI composed from components, such as `dashboard-01`, `auth-01`, or `settings-01`.
 - `template`: starter project installed by Mason, such as `vite-solid-basic` or `solidstart-basic`.
 - `TanStack app layer`: Mason's preferred app-behavior layer for serious forms, data tables, shared app state, and keyboard shortcuts.

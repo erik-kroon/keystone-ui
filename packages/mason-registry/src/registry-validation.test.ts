@@ -70,6 +70,7 @@ describe("Mason registry validation tracer", () => {
     }
 
     expect(validatedNames).toEqual([
+      "account-settings",
       "badge",
       "button",
       "card",
@@ -215,6 +216,26 @@ describe("Mason registry validation tracer", () => {
       expect(installResult.errors.map((error) => error.code)).toContain(
         "item.unsupportedForInstall",
       );
+    }
+  });
+
+  test("requires explicit targets for block source files", () => {
+    const result = validateItem({
+      ...button,
+      name: "account-settings",
+      type: "registry:block",
+      files: [
+        {
+          path: "blocks/account-settings.tsx",
+          type: "registry:block",
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.errors.map((error) => error.code)).toContain("schema.invalid");
+      expect(result.errors.some((error) => error.path?.includes("target"))).toBe(true);
     }
   });
 

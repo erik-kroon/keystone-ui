@@ -1,6 +1,7 @@
 import { Show, createContext, createSignal, splitProps, useContext, type JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import { createFormControl, type FormControlApi } from "../form/index";
+import { createListboxInteraction, type ListboxInteractionApi } from "../listbox/index";
 import { assignRef } from "../overlay/dom";
 import {
   createFloatingAdapter,
@@ -10,7 +11,6 @@ import {
 import {
   composeEventHandlers,
   createControllableBooleanSignal,
-  createListInteractionKernel,
   createStableId,
   dataBoolean,
   renderPolymorphic,
@@ -129,6 +129,7 @@ export type SelectApi = {
   invalid: () => boolean;
   itemId: (value: string) => string;
   list: ListInteractionKernelApi<SelectItemData, SelectChangeDetail>;
+  listbox: ListboxInteractionApi<SelectItemData, SelectChangeDetail>;
   listboxId: string;
   open: () => boolean;
   placeholder: () => string | undefined;
@@ -156,7 +157,15 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
   const disabled = () => options.disabled?.() ?? false;
   const invalid = () => options.invalid?.() ?? false;
   const required = () => options.required?.() ?? false;
-  const list = createListInteractionKernel<SelectItemData, SelectChangeDetail>({
+  const itemId = (value: string) => `${listboxId()}-${value}`;
+  const listbox = createListboxInteraction<SelectItemData, SelectChangeDetail>({
+    id: listboxId,
+    labelledBy: triggerId,
+    optionId: itemId,
+    optionPart: "item",
+    optionSelectDetail: (event) => ({ event, reason: "item" }),
+    rootPart: "listbox",
+    scope: "select",
     value: options.value,
     defaultValue: options.defaultValue,
     programmaticDetail: { reason: "programmatic" },
@@ -171,12 +180,12 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
   const formControl = createFormControl({
     id: triggerId,
     name: options.name,
-    value: () => list.value() ?? null,
+    value: () => listbox.selection.value() ?? null,
     disabled,
     invalid,
     required,
     onReset: () => {
-      list.setValue(options.defaultValue, { reason: "programmatic" });
+      listbox.selection.setValue(options.defaultValue, { reason: "programmatic" });
     },
   });
   const floating = createFloatingAdapter({
@@ -191,7 +200,6 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
     setOpenState(next);
   };
   const state = () => (open() ? "open" : "closed");
-  const itemId = (value: string) => `${listboxId()}-${value}`;
   const partProps = (part: string) => ({
     "data-scope": "select",
     "data-part": part,
@@ -247,65 +255,23 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
         "value",
       ]);
 
-      list.registerItem({
+      return listbox.getOptionProps({
+        ...others,
         disabled: local.disabled,
         label: local.label,
+        onClick: local.onClick,
+        onPointerMove: local.onPointerMove,
         value: local.value,
       });
-
-      return {
-        ...others,
-        id: itemId(local.value),
-        role: "option",
-        "aria-disabled": local.disabled ? "true" : undefined,
-        get "aria-selected"() {
-          return list.isSelected(local.value);
-        },
-        ...partProps("item"),
-        "data-disabled": dataBoolean(local.disabled),
-        get "data-highlighted"() {
-          return dataBoolean(list.isHighlighted(local.value));
-        },
-        get "data-selected"() {
-          return dataBoolean(list.isSelected(local.value));
-        },
-        onPointerMove: composeEventHandlers(local.onPointerMove, () => {
-          if (!local.disabled) {
-            list.setHighlightedValue(local.value);
-          }
-        }),
-        onClick: composeEventHandlers(local.onClick, (event) => {
-          list.selectValue(local.value, { event, reason: "item" });
-        }),
-      };
     },
     getItemTextProps: (props) => ({
       ...props,
       ...partProps("item-text"),
     }),
-    getListboxProps: (props) => {
-      const highlightedItemId = () => {
-        const highlighted = list.highlightedValue();
-        return highlighted ? itemId(highlighted) : undefined;
-      };
-
-      return {
-        ...props,
-        id: listboxId(),
-        role: "listbox",
-        "aria-labelledby": triggerId(),
-        get "aria-activedescendant"() {
-          return highlightedItemId();
-        },
-        tabindex: -1,
-        ...partProps("listbox"),
-        onKeyDown: composeEventHandlers<KeyboardEvent>(props.onKeyDown, (event) => {
-          list.handleKeyDown(event, {
-            selectDetail: (event) => ({ event, reason: "keyboard" }),
-          });
-        }),
-      };
-    },
+    getListboxProps: (props) =>
+      listbox.getListboxProps(props, {
+        selectDetail: (event) => ({ event, reason: "keyboard" }),
+      }),
     getPositionerProps: (props) => {
       const floatingProps = floating.getFloatingProps({ style: props.style });
 
@@ -354,7 +320,7 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
         return dataBoolean(invalid());
       },
       get "data-placeholder"() {
-        return dataBoolean(list.value() === undefined);
+        return dataBoolean(listbox.selection.value() === undefined);
       },
       get "data-required"() {
         return dataBoolean(required());
@@ -367,13 +333,15 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
         setOpen(!open(), { event, reason: "trigger" });
       }),
       onKeyDown: composeEventHandlers<KeyboardEvent>(props.onKeyDown, (event) => {
-        if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
+        const intent = listbox.keyboard.getTriggerOpenIntent(event);
+
+        if (intent === "open-and-highlight") {
           event.preventDefault();
           setOpen(true, { event, reason: "keyboard" });
-          list.highlight("selected-or-first");
+          listbox.keyboard.highlight("selected-or-first");
         }
 
-        if (event.key === "Escape") {
+        if (intent === "close") {
           setOpen(false, { event, reason: "escape" });
         }
       }),
@@ -382,19 +350,20 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
       ...props,
       ...partProps("value"),
       get "data-placeholder"() {
-        return dataBoolean(list.value() === undefined);
+        return dataBoolean(listbox.selection.value() === undefined);
       },
     }),
     invalid,
     itemId,
-    list,
+    list: listbox.interaction,
+    listbox,
     listboxId: listboxId(),
     open,
     placeholder: () => options.placeholder?.(),
     required,
     setOpen,
     triggerId: triggerId(),
-    value: list.value,
+    value: listbox.selection.value,
   };
 }
 
@@ -467,7 +436,7 @@ function Value(props: SelectValueProps) {
   const [local, others] = splitProps(props, ["children", "placeholder"]);
   const text = () =>
     local.children ??
-    select.list.selectedItem()?.label ??
+    select.listbox.selection.selectedItem()?.label ??
     local.placeholder ??
     select.placeholder();
 

@@ -16,6 +16,7 @@ export const registryItemTypes = [
 
 export const installSupportedItemTypes = [
   "registry:ui",
+  "registry:block",
   "registry:hook",
   "registry:lib",
   "registry:theme",
@@ -24,6 +25,7 @@ export const installSupportedItemTypes = [
 ] as const;
 
 export const targetRequiredFileTypes = [
+  "registry:block",
   "registry:page",
   "registry:config",
   "registry:rule",

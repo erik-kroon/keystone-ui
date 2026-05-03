@@ -1,21 +1,13 @@
-import { Show, createContext, createSignal, splitProps, useContext, type JSX } from "solid-js";
+import { Show, createContext, splitProps, useContext, type JSX } from "solid-js";
 import { Portal } from "solid-js/web";
-import { assignRef, contains } from "../overlay/dom";
 import {
   OverlayLayerProvider,
-  createFloatingAdapter,
-  createOverlayLayer,
   type FloatingAdapter,
   type FloatingPlacement,
   type OverlayLayerOutsideEvent,
 } from "../overlay/index";
-import {
-  composeEventHandlers,
-  createControllableBooleanSignal,
-  createStableId,
-  renderPolymorphic,
-  type PolymorphicProps,
-} from "../utils/index";
+import { createOverlayController } from "../overlay/controller";
+import { renderPolymorphic, type PolymorphicProps } from "../utils/index";
 
 export type PopoverOpenChangeDetail = {
   event?: Event;
@@ -77,102 +69,78 @@ export type CreatePopoverOptions = {
 const PopoverContext = createContext<PopoverApi>();
 
 export function createPopover(options: CreatePopoverOptions = {}): PopoverApi {
-  const triggerId = createStableId("popover-trigger");
-  const contentId = createStableId("popover-content");
-  const [triggerElement, setTriggerElement] = createSignal<HTMLButtonElement>();
-  const [contentElement, setContentElement] = createSignal<HTMLDivElement>();
-  const [positionerElement, setPositionerElement] = createSignal<HTMLDivElement>();
-  let lastDetail: PopoverOpenChangeDetail = { reason: "programmatic" };
-  const [open, setOpenState] = createControllableBooleanSignal({
-    value: options.open,
-    defaultValue: options.defaultOpen ?? false,
-    onChange: (next) => options.onOpenChange?.(next, lastDetail),
+  const overlay = createOverlayController<PopoverOpenChangeDetail["reason"]>({
+    scope: "popover",
+    open: options.open,
+    defaultOpen: options.defaultOpen,
+    modal: () => options.modal?.() ?? false,
+    onOpenChange: (open, detail) => options.onOpenChange?.(open, detail),
+    floating: {
+      placement: options.placement,
+    },
   });
-  const floating = createFloatingAdapter({
-    anchor: triggerElement,
-    floating: () => positionerElement() ?? contentElement(),
-    enabled: open,
-    placement: options.placement,
-  });
-  const setOpen = (next: boolean, detail: PopoverOpenChangeDetail) => {
-    lastDetail = detail;
-    setOpenState(next);
-  };
-  const state = () => (open() ? "open" : "closed");
+  const floating = overlay.floating as FloatingAdapter;
   const partProps = (part: string) => ({
-    "data-scope": "popover",
-    "data-part": part,
-    "data-state": state(),
+    ...overlay.getPartProps(part),
+    "data-side": floating.side(),
+    "data-align": floating.align(),
   });
 
   return {
-    contentId: contentId(),
+    contentId: overlay.contentId,
     floating,
     getContentProps: (props) => {
-      createOverlayLayer({
-        id: contentId(),
-        element: contentElement,
-        modal: () => options.modal?.() ?? false,
-        containsTarget: (target) => contains(triggerElement(), target),
-        disableOutsidePointerEvents: () => options.modal?.() ?? false,
-        onEscapeKeyDown: props.onEscapeKeyDown,
-        onPointerDownOutside: props.onPointerDownOutside,
-        onFocusOutside: props.onFocusOutside,
-        onInteractOutside: props.onInteractOutside,
-        onDismiss: (event) => {
-          setOpen(false, { event, reason: event.type === "keydown" ? "escape" : "outside" });
+      const [local, others] = splitProps(props, [
+        "ref",
+        "style",
+        "onEscapeKeyDown",
+        "onPointerDownOutside",
+        "onFocusOutside",
+        "onInteractOutside",
+      ]);
+      const layerProps = overlay.getContentLayerProps<HTMLDivElement>(
+        {
+          onEscapeKeyDown: local.onEscapeKeyDown,
+          onFocusOutside: local.onFocusOutside,
+          onInteractOutside: local.onInteractOutside,
+          onPointerDownOutside: local.onPointerDownOutside,
         },
+        {
+          containsTrigger: true,
+          modal: overlay.modal,
+          disableOutsidePointerEvents: overlay.modal,
+          dismissReason: (event) => (event.type === "keydown" ? "escape" : "outside"),
+        },
+      );
+      const floatingProps = overlay.getFloatingContentProps<HTMLDivElement>({
+        ref: local.ref,
+        style: local.style,
       });
 
-      const floatingProps = floating.getFloatingProps({ style: props.style });
       return {
-        ...props,
-        id: contentId(),
+        ...others,
+        ...layerProps,
+        ...floatingProps,
+        id: overlay.contentId,
         role: "dialog",
         tabindex: -1,
         ...partProps("content"),
-        "data-side": floating.side(),
-        "data-align": floating.align(),
-        style: floatingProps.style,
-        ref: (element: HTMLDivElement) => {
-          setContentElement(element);
-          assignRef(props.ref, element);
-          queueMicrotask(floating.update);
-        },
       };
     },
     getPositionerProps: (props) => {
-      const floatingProps = floating.getFloatingProps({ style: props.style });
+      const floatingProps = overlay.getFloatingPositionerProps<HTMLDivElement>(props);
       return {
-        ...props,
+        ...floatingProps,
         ...partProps("positioner"),
-        "data-side": floating.side(),
-        "data-align": floating.align(),
-        style: floatingProps.style,
-        ref: (element: HTMLDivElement) => {
-          setPositionerElement(element);
-          assignRef(props.ref, element);
-          queueMicrotask(floating.update);
-        },
       };
     },
-    getTriggerProps: (props) => ({
-      ...props,
-      id: triggerId(),
-      type: "button",
-      "aria-controls": contentId(),
-      "aria-expanded": open(),
-      "aria-haspopup": "dialog",
-      ...partProps("trigger"),
-      ref: (element: HTMLButtonElement) => {
-        setTriggerElement(element);
-        assignRef(props.ref, element);
-      },
-      onClick: composeEventHandlers(props.onClick, (event) => {
-        setOpen(!open(), { event, reason: "trigger" });
-      }),
-    }),
-    open,
+    getTriggerProps: (props) =>
+      overlay.getTriggerProps(props, {
+        action: "toggle",
+        ariaHasPopup: "dialog",
+        reason: "trigger",
+      }) as Record<string, unknown>,
+    open: overlay.open,
   };
 }
 
@@ -223,11 +191,12 @@ function PortalPart(props: PopoverPortalProps) {
 function Positioner(props: PopoverPositionerProps) {
   const popover = usePopover("Positioner");
   const [local, others] = splitProps(props, ["children", "ref", "style"]);
-  return (
-    <div {...popover.getPositionerProps({ ...others, ref: local.ref, style: local.style })}>
-      {local.children}
-    </div>
-  );
+  const positionerProps = popover.getPositionerProps({
+    ...others,
+    ref: local.ref,
+    style: local.style,
+  });
+  return <div {...positionerProps}>{local.children}</div>;
 }
 
 function Content(props: PopoverContentProps) {
@@ -241,21 +210,16 @@ function Content(props: PopoverContentProps) {
     "ref",
     "style",
   ]);
-  return (
-    <div
-      {...popover.getContentProps({
-        ...others,
-        onEscapeKeyDown: local.onEscapeKeyDown,
-        onFocusOutside: local.onFocusOutside,
-        onInteractOutside: local.onInteractOutside,
-        onPointerDownOutside: local.onPointerDownOutside,
-        ref: local.ref,
-        style: local.style,
-      })}
-    >
-      {local.children}
-    </div>
-  );
+  const contentProps = popover.getContentProps({
+    ...others,
+    onEscapeKeyDown: local.onEscapeKeyDown,
+    onFocusOutside: local.onFocusOutside,
+    onInteractOutside: local.onInteractOutside,
+    onPointerDownOutside: local.onPointerDownOutside,
+    ref: local.ref,
+    style: local.style,
+  });
+  return <div {...contentProps}>{local.children}</div>;
 }
 
 export const Popover = {
