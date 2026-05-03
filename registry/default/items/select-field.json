@@ -18,7 +18,12 @@
     "install": "mason add select-field",
     "customization": "Use mason-select-field classes and data-part values while TanStack Form owns field state and Keystone owns listbox behavior.",
     "sourceFiles": ["registry/default/ui/select-field.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "@tanstack/solid-form", "cn"]
+    "dependencies": ["@keystone-ui/keystone", "@tanstack/solid-form", "cn"],
+    "parity": {
+      "tanstackForm": "First-class comparison is TanStack Form: the component binds field state to Keystone Select behavior with generated Mason source. Gaps: async validation examples, field array coordination, schema adapters, submission lifecycle helpers, and richer error presentation remain follow-up work.",
+      "baseUi": "Behavior parity for the underlying select should track Base UI Select/Listbox depth: collection registration, keyboard navigation, typeahead, positioning, hidden form value, and data attributes. Gaps: grouped/multi select, scroll arrows, virtualized collections, and modal/non-modal popup policy remain follow-up work.",
+      "kobalte": "Solid reference is Kobalte Select plus form-control composition. Gaps: hidden select parity, reset listener depth, section APIs, and complete popper/focus management coverage remain follow-up work."
+    }
   },
   "files": [
     {

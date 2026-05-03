@@ -274,6 +274,10 @@ export function createMenubar(options: CreateMenuOptions = {}): MenuApi {
   return createScopedMenu({ ...options, scope: options.scope ?? "menubar" }, "menubar");
 }
 
+export function createNavigationMenu(options: CreateMenuOptions = {}): MenuApi {
+  return createScopedMenu({ ...options, scope: options.scope ?? "navigation-menu" }, "menubar");
+}
+
 function createScopedMenu(options: CreateMenuOptions, rootRole: "menu" | "menubar"): MenuApi {
   const scope = options.scope ?? "menu";
   const overlay = createOverlayController<MenuOpenChangeDetail["reason"]>({
@@ -1098,3 +1102,7 @@ export const Menu = createMenuNamespace({ scope: "menu" });
 export const DropdownMenu = createMenuNamespace({ scope: "dropdown-menu" });
 export const ContextMenu = createMenuNamespace({ scope: "context-menu" });
 export const Menubar = createMenuNamespace({ rootRole: "menubar", scope: "menubar" });
+export const NavigationMenu = createMenuNamespace({
+  rootRole: "menubar",
+  scope: "navigation-menu",
+});

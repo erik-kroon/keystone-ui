@@ -17,7 +17,11 @@
     "install": "mason add field",
     "customization": "Style the shell through mason-field classes and data-part values for root, label, description, and error.",
     "sourceFiles": ["registry/default/ui/field.tsx"],
-    "dependencies": ["cn", "label"]
+    "dependencies": ["cn", "label"],
+    "parity": {
+      "baseUi": "Thin vertical covers label/control/description/error relationships, required/disabled/invalid/read-only data, and field-oriented ARIA wiring. Gaps: Base UI form context, touched/dirty/filled/focused state, validation lifecycle, submit coordination, and control registration depth remain follow-up work.",
+      "kobalte": "Follows Kobalte form-control direction with Solid context, generated IDs, aria-labelledby/describedby wiring, and data attributes. Gaps: form reset listener integration, native validation policy, grouped fieldsets, and richer error message registration remain follow-up work."
+    }
   },
   "files": [
     {

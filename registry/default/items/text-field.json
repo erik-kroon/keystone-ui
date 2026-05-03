@@ -18,7 +18,12 @@
     "install": "mason add text-field",
     "customization": "Use mason-text-field classes and data-part values for root, label, input, description, and error while TanStack Form owns field state.",
     "sourceFiles": ["registry/default/ui/text-field.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "@tanstack/solid-form", "cn"]
+    "dependencies": ["@keystone-ui/keystone", "@tanstack/solid-form", "cn"],
+    "parity": {
+      "tanstackForm": "First-class comparison is TanStack Form: the component binds field state to an input with Mason label/description/error parts. Gaps: async validation examples, schema adapters, field arrays, submit lifecycle helpers, and masked/parsed value patterns remain follow-up work.",
+      "baseUi": "Tracks Base UI Field/Input depth for ARIA relationships, invalid/required/disabled state, native form participation, and validation messaging. Gaps: touched/dirty/filled/focused state, form-level validation orchestration, and control registration depth remain follow-up work.",
+      "kobalte": "Solid reference is Kobalte TextField/FormControl composition. Gaps: context-driven ID registration depth, reset listener behavior, and richer description/error composition remain follow-up work."
+    }
   },
   "files": [
     {

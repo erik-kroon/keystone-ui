@@ -17,7 +17,11 @@
     "install": "mason add separator",
     "customization": "Use data-orientation and mason-separator classes to style horizontal and vertical separators.",
     "sourceFiles": ["registry/default/ui/separator.tsx"],
-    "dependencies": ["cn"]
+    "dependencies": ["cn"],
+    "parity": {
+      "baseUi": "Thin vertical matches Base UI Separator direction for decorative or semantic separator rendering, horizontal/vertical orientation, role presentation/separator choice, and data-orientation styling hooks. Gaps: richer orientation docs and layout token presets remain follow-up work.",
+      "kobalte": "Comparable to Kobalte Separator with Solid pass-through props and orientation metadata. Gaps: no Keystone primitive dependency yet and no shared direction/RTL provider integration needed for this simple surface."
+    }
   },
   "files": [
     {

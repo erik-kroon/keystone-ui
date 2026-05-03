@@ -1,0 +1,43 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "navigation-menu",
+  "type": "registry:ui",
+  "title": "NavigationMenu",
+  "description": "Styled Solid navigation menu backed by Keystone menu navigation, typeahead, and overlay behavior.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["navigation"],
+  "keywords": ["navigation-menu", "menubar", "menu", "navigation", "keystone"],
+  "docs": "https://mason.build/docs/components/navigation-menu",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add navigation-menu",
+    "customization": "Style the generated wrappers through mason-navigation-menu classes while Keystone owns menubar roles, item navigation, typeahead, overlay positioning, and item state behavior.",
+    "sourceFiles": ["registry/default/ui/navigation-menu.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "parts": [
+      "trigger",
+      "positioner",
+      "content",
+      "group",
+      "group-label",
+      "separator",
+      "item",
+      "item-indicator"
+    ],
+    "parity": {
+      "baseUi": "Thin vertical covers the core NavigationMenu trigger/content item contract through Keystone overlay positioning and menubar semantics. Gaps: Viewport, Popup-specific layout APIs, animation metadata, link activation helpers, touch pointer intent, and edge-case tests remain follow-up work.",
+      "kobalte": "Thin vertical maps Root/Trigger/Content/Item/Group/Separator behavior onto Keystone menu kernel with navigation-menu scope, controlled open state, typeahead, disabled skipping, and Mason wrappers. Gaps: explicit Root nav/List/Viewport parts, hover intent tuning, submenu cursor safety, focus restoration across routed links, and richer nested coordination remain follow-up work."
+    }
+  },
+  "files": [
+    {
+      "path": "ui/navigation-menu.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

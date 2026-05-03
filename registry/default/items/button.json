@@ -17,7 +17,11 @@
     "install": "mason add button",
     "customization": "Customize visual treatment through the mason-button classes and data-variant/data-size attributes.",
     "sourceFiles": ["registry/default/ui/button.tsx"],
-    "dependencies": ["cn"]
+    "dependencies": ["cn"],
+    "parity": {
+      "baseUi": "Thin Mason base button follows Base UI Button direction for native button semantics, disabled state, type passthrough, and styling hooks without adding app behavior. Gaps: loading/pending state, pressed/toggle semantics, polymorphic render helper, focus-visible data, and icon-only accessibility guardrails remain follow-up work.",
+      "kobalte": "Comparable to Kobalte Button as a Solid-native button wrapper with pass-through props and disabled handling. Gaps: no shared Keystone polymorphic primitive, no link-button composition helper, and no data-disabled normalization beyond the Mason wrapper yet."
+    }
   },
   "files": [
     {

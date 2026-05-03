@@ -18,7 +18,9 @@ export type AccordionTriggerProps = KeystoneAccordionTriggerProps & {
 export type AccordionContentProps = KeystoneAccordionContentProps;
 
 export function Accordion(props: AccordionProps) {
-  return <KeystoneAccordion.Root {...props} />;
+  const [local, rest] = splitProps(props, ["class"]);
+
+  return <KeystoneAccordion.Root {...rest} class={cn("mason-accordion", local.class)} />;
 }
 
 export function AccordionItem(props: AccordionItemProps) {

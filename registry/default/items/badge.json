@@ -17,7 +17,11 @@
     "install": "mason add badge",
     "customization": "Customize color and shape through mason-badge classes and data-variant.",
     "sourceFiles": ["registry/default/ui/badge.tsx"],
-    "dependencies": ["cn"]
+    "dependencies": ["cn"],
+    "parity": {
+      "baseUi": "Base UI has no first-class Badge primitive, so parity is scoped to Mason display semantics: stable root element, variant metadata, and class/data styling hooks. Gaps: status role guidance, icon slots, removable badge behavior, and accessibility examples remain follow-up work.",
+      "kobalte": "Comparable to Kobalte Badge as a Solid display part with polymorphic composition potential and styling hooks. Gaps: Keystone/Mason does not yet expose a dedicated as-polymorphic API, semantic status presets, or design-token metadata."
+    }
   },
   "files": [
     {

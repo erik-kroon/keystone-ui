@@ -28,6 +28,24 @@
       "description": "Solid button component with Mason styling hooks and variant metadata."
     },
     {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "Styled Solid switch component backed by Keystone selection-control behavior."
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "Styled Solid checkbox component backed by Keystone selection-control behavior."
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "title": "RadioGroup",
+      "description": "Styled Solid radio group component backed by Keystone roving selection behavior."
+    },
+    {
       "name": "input",
       "type": "registry:ui",
       "title": "Input",
@@ -62,6 +80,24 @@
       "type": "registry:ui",
       "title": "SelectField",
       "description": "TanStack Form select field composed with Keystone Select behavior and Mason styling hooks."
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "Slider",
+      "description": "Styled Solid slider component backed by Keystone range, thumb, keyboard, and pointer behavior."
+    },
+    {
+      "name": "date-picker",
+      "type": "registry:ui",
+      "title": "DatePicker",
+      "description": "Styled Solid date picker and calendar components backed by Keystone date selection behavior."
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Styled Solid tabs component backed by Keystone tablist, trigger, and panel behavior."
     },
     {
       "name": "combobox",
@@ -154,10 +190,22 @@
       "description": "Styled Solid menubar backed by Keystone menu navigation, typeahead, and item state behavior."
     },
     {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "title": "NavigationMenu",
+      "description": "Styled Solid navigation menu backed by Keystone menu navigation, typeahead, and overlay behavior."
+    },
+    {
       "name": "toast",
       "type": "registry:ui",
       "title": "Toast",
       "description": "Styled Solid toast component backed by Keystone notification manager, viewport, timer, and live-region behavior."
+    },
+    {
+      "name": "toolbar",
+      "type": "registry:ui",
+      "title": "Toolbar",
+      "description": "Styled Solid toolbar component backed by Keystone roving focus and orientation behavior."
     },
     {
       "name": "tooltip",

@@ -18,7 +18,11 @@
     "install": "mason add dropdown-menu",
     "customization": "Style the generated wrappers through mason-dropdown-menu classes while Keystone owns menu roles, roving focus, typeahead, dismissal, and positioning.",
     "sourceFiles": ["registry/default/ui/dropdown-menu.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "cn"]
+    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "parity": {
+      "baseUi": "Thin vertical covers Menu trigger/content positioning, item roles, roving focus, typeahead, disabled skipping, separators/groups, dismissal, and Mason styling hooks. Gaps: checkbox/radio item groups, submenu pointer grace, complex modal/non-modal layering, animation metadata, and scroll/viewport helpers remain follow-up work.",
+      "kobalte": "Matches Kobalte DropdownMenu/Menu direction for Solid trigger, portal content, keyboard navigation, item parts, groups, and disabled state. Gaps: richer checked item APIs, submenu intent tuning, and deeper dismissable-layer/focus restoration coverage remain follow-up work."
+    }
   },
   "files": [
     {

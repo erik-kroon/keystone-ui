@@ -15,6 +15,12 @@ Start with:
 - [End-state primitive/component inventory](./end-state-primitive-component-inventory.md)
 - [Keystone internal kernel guidance](./keystone-internal-kernel-guidance.md)
 - [Accordion and Collapsible vertical](./accordion-collapsible-vertical.md)
+- [Selection controls vertical](./selection-controls-vertical.md)
+- [Slider vertical](./slider-vertical.md)
+- [DatePicker and Calendar vertical](./date-picker-calendar-vertical.md)
+- [Tabs vertical](./tabs-vertical.md)
+- [Toolbar vertical](./toolbar-vertical.md)
+- [NavigationMenu vertical](./navigation-menu-vertical.md)
 
 The current strategic PRD is stored in `.context/attachments/pasted_text_2026-05-03_14-26-48.txt`.
 
@@ -22,6 +28,7 @@ The current strategic PRD is stored in `.context/attachments/pasted_text_2026-05
 
 No issue tracker convention is recorded in this repository yet. Until one is chosen:
 
+- Treat GitHub as available because `origin` points at `erik-kroon/keystone-ui`, but do not infer labels, states, milestones, or queue rules from that alone.
 - Keep planning notes in docs when they are durable.
 - Keep scratch notes under `.context/` when they are workspace-local.
 - Do not invent labels, issue states, or external tracker workflow.
@@ -61,3 +68,13 @@ For Mason work, check:
 - TanStack Form/Table/Store/Hotkeys are preferred for first-party app behavior where applicable.
 - Registry paths are validated and deterministic.
 - CLI writes are diffable, dry-run friendly, and path traversal safe.
+- Registry item metadata includes `meta.parity` notes. Use Base UI and Kobalte for primitives by default, and use a more relevant first-class reference for exceptions such as TanStack-backed app components, Sonner-style toast behavior, Mason utilities, or shadcn-style source registry conventions.
+
+## External README Hygiene
+
+The root README is the public entry point for the current project state:
+
+- Keep the opening concise: what Keystone is, what Mason is, and why the split exists.
+- State preview instability plainly.
+- Describe current package and registry surface, not the ideal end-state catalog.
+- Keep roadmap, strategy, and internal sequencing in `CONTEXT.md`, `CONTEXT-MAP.md`, ADRs, RFCs, PRDs, and agent docs.

@@ -18,17 +18,16 @@ Early Keystone UI monorepo bootstrap for a Solid primitive library and Mason reg
 - `apps/docs`
   - Solid + TanStack Router docs/product app.
   - Current route is the active docs, examples, and registry preview surface.
-- `packages/config`
-  - Shared TypeScript config package.
 - `packages/keystone`
-  - Early primitive tracer package with Dialog, Form, Overlay, Select, and Utils exports.
-  - Needs deeper internals before more component breadth.
+  - Early primitive package with overlay, disclosure, menu, select/combobox, field, selection-control, tabs, toolbar, slider, date-picker, toast, metadata, and utility surfaces.
+  - Current breadth is useful for proving Mason wrappers, but the next quality bar is deeper shared internals.
 - `packages/mason-cli`
   - Early CLI tracer for init/add planning and writes.
 - `packages/mason-registry`
   - Registry schema, validation, dependency resolution, path safety, and tests.
 - `registry`
-  - Mason first-party component, block, theme, and template source.
+  - Mason first-party UI component, TanStack-backed app component, utility, and block source.
+  - Registry item metadata should include parity notes against the most relevant references.
 - `docs/adr`
   - Durable architecture decisions for product/package boundaries, scope, names, license, and governance.
 - `docs/rfcs`
@@ -56,6 +55,9 @@ Current executable flow:
 root package.json
   -> turbo tasks
     -> apps/docs Vite Solid app
+    -> packages/keystone primitive tests
+    -> packages/mason-cli and packages/mason-registry tests
+    -> local example-app verification
 ```
 
 Intended product flow:
@@ -72,6 +74,7 @@ Keystone kernel
 
 - [package.json](package.json): workspace packages, Bun version, root scripts.
 - [turbo.json](turbo.json): task graph.
+- [AGENTS.md](AGENTS.md): repo-local operating guidance for agents.
 - [bts.jsonc](bts.jsonc): Better-T-Stack scaffold provenance.
 - [apps/docs/package.json](apps/docs/package.json): Solid docs app dependencies.
 - [docs/adr/0001-keystone-mason-product-boundary.md](docs/adr/0001-keystone-mason-product-boundary.md): Keystone/Mason dependency and product boundary.
@@ -80,7 +83,9 @@ Keystone kernel
 - [docs/rfcs/mason-registry.md](docs/rfcs/mason-registry.md): Mason registry schema, CLI semantics, path safety, project detection, and first proving item.
 - [docs/adr/0003-mason-tanstack-app-layer.md](docs/adr/0003-mason-tanstack-app-layer.md): Mason's TanStack app-layer decision.
 - [docs/agents/end-state-primitive-component-inventory.md](docs/agents/end-state-primitive-component-inventory.md): Keystone primitive and Mason component end-state inventory.
+- [docs/agents/README.md](docs/agents/README.md): agent context sources, work tracking, review checks, and README hygiene.
 - [docs/accessibility/testing-plan.md](docs/accessibility/testing-plan.md): accessibility release gates, automated/manual testing matrix, and first primitive coverage.
+- [registry/default](registry/default): first-party Mason registry source and item metadata.
 - [.context/attachments/pasted_text_2026-05-03_14-26-48.txt](.context/attachments/pasted_text_2026-05-03_14-26-48.txt): strategic PRD source.
 
 ## What To Ignore For Now

@@ -17,7 +17,11 @@
     "install": "mason add account-settings",
     "customization": "Customize the generated block through mason-block-account-settings classes while base controls stay owned source.",
     "sourceFiles": ["registry/default/blocks/account-settings.tsx"],
-    "dependencies": ["badge", "button", "card", "field", "input", "separator"]
+    "dependencies": ["badge", "button", "card", "field", "input", "separator"],
+    "parity": {
+      "mason": "Composes existing Mason badge, button, card, field, input, and separator source into a copy-paste settings block with local state and readable classes. Gaps: TanStack Form integration, validation, submission lifecycle, async persistence, and error handling are intentionally left to app code or a future form block pass.",
+      "shadcn": "Comparable to shadcn-style settings blocks in copy-paste ownership and utility-class composition rather than primitive behavior. Gaps: no registry-managed schema, server action wiring, avatar/file controls, or account security sections yet."
+    }
   },
   "files": [
     {

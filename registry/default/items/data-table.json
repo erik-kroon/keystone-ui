@@ -38,7 +38,11 @@
       "registry/default/components/data-table/types.ts",
       "registry/default/components/data-table/use-data-table.ts"
     ],
-    "dependencies": ["@tanstack/solid-table", "cn"]
+    "dependencies": ["@tanstack/solid-table", "cn"],
+    "parity": {
+      "tanstackTable": "First-class comparison is TanStack Table: the kit uses Solid Table column definitions, local sorting, filtering, pagination, column visibility, row actions, and toolbar composition. Gaps: server-side orchestration, virtualization, persisted views, async loading policy, column sizing/ordering, and advanced filter builders remain app-code follow-up work.",
+      "shadcn": "Comparable to shadcn data-table source kits in copy-paste ownership and composable subcomponents. Gaps: no CLI-generated schema, no baked-in URL state without the adapter, and no opinionated server data layer."
+    }
   },
   "files": [
     {

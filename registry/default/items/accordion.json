@@ -16,11 +16,14 @@
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add accordion",
-    "customization": "Style the generated wrappers through mason-accordion classes while Keystone keeps item coordination, trigger ARIA, keyboard navigation, and data attributes.",
+    "customization": "Style the generated wrappers through mason-accordion classes while Keystone keeps item coordination, trigger ARIA, keyboard navigation, hidden-until-found behavior, and data attributes.",
     "sourceFiles": ["registry/default/ui/accordion.tsx"],
     "dependencies": ["@keystone-ui/keystone", "cn"],
     "parts": ["root", "item", "header", "trigger", "content"],
-    "parity": "Thin vertical: compares against Kobalte/Base UI with single and multiple value state, disabled items, trigger ARIA, vertical keyboard focus movement, and Mason wrapper metadata. Remaining parity gaps are RTL horizontal key behavior, measured panel CSS variables, hidden-until-found, transition lifecycle states, and broader edge-case tests."
+    "parity": {
+      "baseUi": "Thin vertical covers Root/Item/Header/Trigger/Panel-style anatomy, single and multiple value state, disabled items, trigger ARIA, vertical keyboard movement, hidden-until-found behavior, and Mason metadata. Gaps: measured panel CSS variables, transition lifecycle status, RTL horizontal keyboard behavior, and broader browser-find edge cases remain follow-up work.",
+      "kobalte": "Thin vertical matches Solid Root/Item/Header/Trigger/Content composition, controlled and uncontrolled values, collapsible single mode, multiple mode, disabled item guards, and stable data attributes. Gaps: richer transition hooks, DOM measurement helpers, and expanded accessibility regression coverage remain follow-up work."
+    }
   },
   "files": [
     {

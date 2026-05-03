@@ -1,0 +1,34 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "tabs",
+  "type": "registry:ui",
+  "title": "Tabs",
+  "description": "Styled Solid tabs component backed by Keystone tablist, trigger, and panel behavior.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["navigation", "disclosure", "layout"],
+  "keywords": ["tabs", "tablist", "tabpanel", "navigation", "keystone"],
+  "docs": "https://mason.build/docs/components/tabs",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add tabs",
+    "customization": "Style the generated wrappers through mason-tabs classes while Keystone keeps tablist roles, selection state, keyboard navigation, ARIA relationships, and data attributes.",
+    "sourceFiles": ["registry/default/ui/tabs.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "parts": ["root", "list", "trigger", "indicator", "content"],
+    "parity": {
+      "baseUi": "Thin vertical covers controlled and uncontrolled value state, disabled triggers, horizontal and vertical roving focus, automatic/manual activation, tablist/tabpanel ARIA, Mason wrapper metadata, and behavior tests. Gaps: RTL horizontal key behavior, measured indicator positioning, delete/closable tab coordination, activation latency policy, dynamic removal focus restoration, and broader touch/cursor tests remain follow-up work.",
+      "kobalte": "Matches Solid Tabs Root/List/Trigger/Content direction with controlled value, orientation, activation mode, disabled triggers, and stable data attributes. Gaps: indicator measurement, create-dom-collection depth, dynamic tab lifecycle, and SSR edge-case coverage remain follow-up work."
+    }
+  },
+  "files": [
+    {
+      "path": "ui/tabs.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

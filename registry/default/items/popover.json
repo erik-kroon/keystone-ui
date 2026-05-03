@@ -18,7 +18,11 @@
     "install": "mason add popover",
     "customization": "Style the generated wrappers through mason-popover classes while Keystone owns positioning, dismissal, and layer ordering.",
     "sourceFiles": ["registry/default/ui/popover.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "cn"]
+    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "parity": {
+      "baseUi": "Thin vertical covers Root/Trigger/Portal/Positioner/Popup-style anatomy, controlled open state, floating placement, outside/Escape dismissal, and Mason styling hooks. Gaps: modal mode, arrow geometry, anchor override, focus manager depth, collision CSS variables, and transition status metadata remain follow-up work.",
+      "kobalte": "Matches Solid Popover/Popper composition for trigger, portal/content, controlled state, positioning, and dismissable-layer direction. Gaps: create-hide-outside/modal variants, forceMount transition lifecycle, and richer focus restoration policies remain follow-up work."
+    }
   },
   "files": [
     {

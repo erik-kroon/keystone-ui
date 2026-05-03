@@ -18,7 +18,11 @@
     "install": "mason add dialog",
     "customization": "Style the generated wrappers through mason-dialog classes while Keystone keeps focus, dismissal, layering, and ARIA behavior.",
     "sourceFiles": ["registry/default/ui/dialog.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "cn"]
+    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "parity": {
+      "baseUi": "Thin vertical covers Root/Trigger/Portal/Backdrop/Popup-style anatomy, controlled open state, modal dismissal, Escape handling, focus entry/restore, and stable data attributes through Keystone overlay internals. Gaps: outside hiding/inert depth, nested modal edge cases, transition status metadata, scroll lock polish, and preventable autofocus events remain follow-up work.",
+      "kobalte": "Matches Solid Dialog composition with trigger, portal, overlay/content, title, description, controlled state, and dismissable-layer direction. Gaps: create-focus-scope parity, hide-outside ref counting, create-transition lifecycle, and broader browser accessibility tests remain follow-up work."
+    }
   },
   "files": [
     {

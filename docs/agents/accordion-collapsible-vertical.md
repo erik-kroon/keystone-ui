@@ -15,8 +15,10 @@ This vertical establishes the delivery standard for disclosure primitives:
 Collapsible:
 
 - `Collapsible.Root` supports `open`, `defaultOpen`, `disabled`, and `onOpenChange`.
+- `Collapsible.Root` renders the root part with `data-scope`, `data-part`, `data-state`, and `data-disabled`.
 - `Collapsible.Trigger` exposes `aria-expanded`, `aria-controls`, `data-scope`, `data-part`, `data-state`, and `data-disabled`.
 - `Collapsible.Content` owns the controlled content id and exposes `data-state`.
+- `Collapsible.Content hiddenUntilFound` keeps closed content mounted with `hidden="until-found"` and opens from the browser `beforematch` reveal event.
 - User click handlers run first; internal toggle behavior skips when the event is default-prevented.
 
 Accordion:
@@ -25,6 +27,7 @@ Accordion:
 - `Accordion.Item` coordinates item value state over the shared disclosure controller.
 - `Accordion.Trigger` exposes trigger/content ARIA relationships and roves focus with vertical arrow keys, Home, and End.
 - `Accordion.Content` renders a region labelled by the trigger.
+- `Accordion.Content hiddenUntilFound` keeps closed panels discoverable by browser find and opens the item when the browser reveals the panel.
 
 ## Mason Surface
 
@@ -34,4 +37,9 @@ Accordion:
 
 ## Parity Notes
 
-Kobalte and Base UI both go deeper than this first vertical in transition and browser edge behavior. The next parity pass should add measured panel CSS variables, hidden-until-found or equivalent browser-find handling, transition lifecycle data attributes, RTL-aware horizontal keyboard behavior, disabled-but-focusable trigger policy decisions, and broader edge-case tests.
+Reference surfaces:
+
+- Kobalte Accordion and Collapsible document `div` roots, button triggers, `div` content, controlled/uncontrolled state, shared open/closed/disabled data attributes, and accordion roving trigger focus.
+- Base UI Accordion and Collapsible document root/trigger/panel parts, controlled/uncontrolled state, `hiddenUntilFound`, measured panel CSS variables, loop focus, and transition lifecycle data attributes.
+
+Kobalte and Base UI both go deeper than this first vertical in transition and browser edge behavior. The next parity pass should add measured panel CSS variables, transition lifecycle data attributes, RTL-aware horizontal keyboard behavior, disabled-but-focusable trigger policy decisions, and broader edge-case tests.

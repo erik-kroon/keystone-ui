@@ -17,7 +17,11 @@
     "install": "mason add textarea",
     "customization": "Use the mason-textarea class and data-invalid attribute for resize, border, and validation-state styles.",
     "sourceFiles": ["registry/default/ui/textarea.tsx"],
-    "dependencies": ["cn"]
+    "dependencies": ["cn"],
+    "parity": {
+      "baseUi": "Thin Mason textarea follows Base UI Input/Field direction for native textarea semantics, invalid/disabled styling data, and form participation. Gaps: autosize helpers, field registration, validation lifecycle, filled/focused state data, and character count composition remain follow-up work.",
+      "kobalte": "Comparable to Kobalte TextField textarea usage when composed with Field. Gaps: no standalone Keystone TextArea primitive for form-control ownership, reset listener behavior, or description/error ID registration yet."
+    }
   },
   "files": [
     {
