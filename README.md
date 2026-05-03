@@ -5,7 +5,7 @@ Keystone UI is an early Solid UI ecosystem experiment. It is organized around tw
 - **Keystone**: headless, accessible, unstyled primitives for Solid.
 - **Mason**: a source-first component registry and CLI for installing editable Solid UI into an app.
 
-The goal is a serious primitive foundation plus a copy-paste registry for Solid apps. Keystone owns behavior and accessibility. Mason owns generated source, registry metadata, install planning, blocks, templates, and docs.
+The goal is a serious primitive foundation plus a source-first copy-paste registry for Solid. Keystone owns behavior and accessibility. Mason owns generated source, registry metadata, install planning, blocks, templates, and docs.
 
 ## Status
 
