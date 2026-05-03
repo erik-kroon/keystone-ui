@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import {
-  isInstallableItemType,
+  resolveRegistryDependencyGraph,
   validateRegistryItem,
   type RegistryItem,
 } from "@keystone-ui/mason-registry";
@@ -41,27 +41,33 @@ async function readJson(file: string): Promise<unknown> {
 async function resolveRegistryItem(registry: string, name: string): Promise<RegistryItem> {
   const registryRoot = path.resolve(registry);
   const itemPath = path.join(registryRoot, "items", `${name}.json`);
-  return validateRegistryItem(await readJson(itemPath));
+  return validateRegistryItem(await readJson(itemPath), { registryRoot });
+}
+
+async function loadRegistryItem(registry: string, name: string): Promise<RegistryItem | undefined> {
+  try {
+    return await resolveRegistryItem(registry, name);
+  } catch (error) {
+    if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
+      return undefined;
+    }
+
+    throw error;
+  }
 }
 
 async function resolveItems(registry: string, requested: string): Promise<RegistryItem[]> {
-  const ordered = new Map<string, RegistryItem>();
-  const visiting = new Set<string>();
-  async function visit(name: string): Promise<void> {
-    if (ordered.has(name)) return;
-    if (visiting.has(name)) throw new Error(`Registry dependency cycle detected at ${name}`);
-    visiting.add(name);
-    const item = await resolveRegistryItem(registry, name);
-    if (!isInstallableItemType(item.type))
-      throw new Error(`Unsupported registry item type: ${item.type}`);
-    for (const dependency of item.registryDependencies) {
-      await visit(dependency);
-    }
-    visiting.delete(name);
-    ordered.set(name, item);
+  const result = await resolveRegistryDependencyGraph(
+    [requested],
+    (name) => loadRegistryItem(registry, name),
+    { installSupportedOnly: true },
+  );
+
+  if (!result.ok) {
+    throw new Error(result.errors.map((error) => error.message).join("\n"));
   }
-  await visit(requested);
-  return [...ordered.values()];
+
+  return result.value.items;
 }
 
 function targetForFile(
@@ -118,14 +124,26 @@ function collectDependencyChanges(
   return [...changes.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
 
+function installedItemNames(project: ProjectShape): Set<string> {
+  const mason = project.packageJson.mason;
+  if (!mason || typeof mason !== "object" || Array.isArray(mason)) return new Set();
+  const installed = (mason as { installed?: unknown }).installed;
+  if (!installed || typeof installed !== "object" || Array.isArray(installed)) return new Set();
+  return new Set(Object.keys(installed));
+}
+
 export async function createWritePlan(
   project: ProjectShape,
   options: { item: string; registry: string },
 ): Promise<WritePlan> {
   const config = await readMasonConfig(project.cwd);
   const items = await resolveItems(options.registry, options.item);
+  const alreadyInstalled = installedItemNames(project);
+  const plannedItems = items.filter(
+    (item) => item.name === options.item || !alreadyInstalled.has(item.name),
+  );
   const files: FileWrite[] = [];
-  for (const item of items) {
+  for (const item of plannedItems) {
     for (const file of item.files) {
       const target = targetForFile(config, item, file);
       const absoluteTarget = resolveProjectTarget(project.cwd, target);
@@ -153,7 +171,7 @@ export async function createWritePlan(
     files: files.sort((a, b) => a.target.localeCompare(b.target)),
     dependencies: collectDependencyChanges(project, items, "dependencies"),
     devDependencies: collectDependencyChanges(project, items, "devDependencies"),
-    installedItems: items.map((item) => ({
+    installedItems: plannedItems.map((item) => ({
       name: item.name,
       version: item.version,
       files: files

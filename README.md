@@ -5,7 +5,7 @@ Keystone UI is an early Solid UI ecosystem experiment with two layers:
 - **Keystone**: headless, accessible, unstyled primitives for Solid.
 - **Mason**: a source-first component registry and CLI for installing editable Solid UI into an app.
 
-The goal is a serious primitive foundation plus a shadcn-style copy-paste registry for Solid. Keystone owns behavior and accessibility. Mason owns generated source, registry metadata, install planning, blocks, templates, and docs.
+The goal is a serious primitive foundation plus a source-first copy-paste registry for Solid. Keystone owns behavior and accessibility. Mason owns generated source, registry metadata, install planning, blocks, templates, and docs.
 
 ## Status
 
@@ -58,14 +58,6 @@ docs/
   agents/              repo guidance for future agents/contributors
 ```
 
-Local inspiration repositories live in gitignored `inspo/`:
-
-- Base UI: primary primitive architecture reference.
-- Kobalte: primary Solid-native primitive reference.
-- Radix Primitives: secondary React precedent.
-- shadcn UI and registry template: Mason registry/CLI/docs reference.
-- coss: later Mason UI component inspiration.
-
 ## Development
 
 Install dependencies:
@@ -94,6 +86,14 @@ bun run verify:release
 
 That runs formatting/linting, type checks, Keystone tests, Mason CLI tests, Mason registry tests, and the web build.
 
+Run only the example app verification tracer:
+
+```bash
+bun run verify:example-app
+```
+
+That creates a temporary Solid Vite app, installs Mason output from the local registry through the CLI, consumes Keystone Dialog in the same app, checks SSR-rendered data/ARIA output, typechecks, and builds.
+
 ## Useful Commands
 
 ```bash
@@ -102,6 +102,7 @@ bun run check-types
 bun run test:keystone
 bun run test:mason-cli
 bun run test:mason-registry
+bun run verify:example-app
 bun run build
 bun run verify:release
 ```

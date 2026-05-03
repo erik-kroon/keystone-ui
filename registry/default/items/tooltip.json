@@ -1,0 +1,29 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "tooltip",
+  "type": "registry:ui",
+  "title": "Tooltip",
+  "description": "Styled Solid tooltip component backed by Keystone overlay positioning and Escape dismissal.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["overlay", "help"],
+  "keywords": ["tooltip", "overlay", "floating", "keystone"],
+  "docs": "https://mason.build/docs/components/tooltip",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add tooltip",
+    "customization": "Style the generated wrappers through mason-tooltip classes while Keystone owns positioning and trigger/content relationships.",
+    "sourceFiles": ["registry/default/ui/tooltip.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "cn"]
+  },
+  "files": [
+    {
+      "path": "ui/tooltip.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

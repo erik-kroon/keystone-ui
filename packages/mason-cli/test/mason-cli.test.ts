@@ -1,4 +1,4 @@
-import { cp, mkdtemp, readFile, rm, stat } from "node:fs/promises";
+import { cp, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, test } from "bun:test";
@@ -6,11 +6,13 @@ import { addCommand } from "../src/commands/add";
 import { initCommand } from "../src/commands/init";
 import { createWritePlan } from "../src/install/plan";
 import { rejectUnsafeRelativePath } from "../src/install/paths";
+import { applyWritePlan } from "../src/install/write";
 import { readMasonConfig } from "../src/project/config";
 import { detectProject } from "../src/project/detect";
 
 const fixtureRoot = path.resolve(import.meta.dir, "../src/testing/fixtures");
 const registry = path.join(fixtureRoot, "local-registry");
+const defaultRegistry = path.resolve(import.meta.dir, "../../../registry/default");
 const tempRoots: string[] = [];
 
 async function fixtureApp(): Promise<string> {
@@ -133,6 +135,115 @@ describe("add planning and writes", () => {
 
     await runAppScript(app, "check-types");
     await runAppScript(app, "build");
+  });
+
+  test("real default registry field slice installs deterministic dependency plan", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+    const output = await addCommand({
+      cwd: app,
+      item: "field",
+      registry: defaultRegistry,
+      dryRun: true,
+    });
+
+    expect(output).toBe(
+      [
+        "Mason dry run plan for field:",
+        "create src/components/ui/field.tsx",
+        "create src/components/ui/label.tsx",
+        "create src/lib/cn.ts",
+      ].join("\n"),
+    );
+  });
+
+  test("real default registry base components typecheck and build after add", async () => {
+    const app = await fixtureApp();
+    await installFixtureAppDependencies(app);
+    await initCommand({ cwd: app, yes: true });
+    await addCommand({ cwd: app, item: "button", registry: defaultRegistry });
+    await addCommand({ cwd: app, item: "input", registry: defaultRegistry });
+    await addCommand({ cwd: app, item: "textarea", registry: defaultRegistry });
+    await addCommand({ cwd: app, item: "field", registry: defaultRegistry });
+    await addCommand({ cwd: app, item: "card", registry: defaultRegistry });
+    await addCommand({ cwd: app, item: "badge", registry: defaultRegistry });
+    await addCommand({ cwd: app, item: "separator", registry: defaultRegistry });
+
+    await runAppScript(app, "check-types");
+    await runAppScript(app, "build");
+  });
+
+  test("real default registry dialog plans Keystone-backed generated source", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+    const output = await addCommand({
+      cwd: app,
+      item: "dialog",
+      registry: defaultRegistry,
+      dryRun: true,
+    });
+
+    expect(output).toBe(
+      [
+        "Mason dry run plan for dialog:",
+        "create src/components/ui/dialog.tsx",
+        "create src/lib/cn.ts",
+        "add @keystone-ui/keystone@^0.0.0",
+        "install command: bun add @keystone-ui/keystone@^0.0.0",
+      ].join("\n"),
+    );
+  });
+
+  test("write application honors append-css, merge-json, and overwrite modes", async () => {
+    const app = await fixtureApp();
+    const project = await detectProject(app);
+    await writeFile(
+      path.join(app, "src/settings.json"),
+      '{"theme":{"color":"blue"},"keep":true}\n',
+    );
+
+    await applyWritePlan(project, {
+      items: [],
+      dependencies: [],
+      devDependencies: [],
+      installedItems: [],
+      files: [
+        {
+          item: "theme",
+          source: "registry/default/theme.css",
+          target: "src/styles.css",
+          absoluteTarget: path.join(app, "src/styles.css"),
+          content: ".mason-button { color: red; }\n",
+          mode: "append-css",
+        },
+        {
+          item: "settings",
+          source: "registry/default/settings.json",
+          target: "src/settings.json",
+          absoluteTarget: path.join(app, "src/settings.json"),
+          content: '{"theme":{"radius":"8px"},"enabled":true}',
+          mode: "merge-json",
+        },
+        {
+          item: "readme",
+          source: "registry/default/readme.md",
+          target: "src/readme.md",
+          absoluteTarget: path.join(app, "src/readme.md"),
+          content: "installed\n",
+          mode: "overwrite",
+        },
+      ],
+    });
+
+    expect(await readFile(path.join(app, "src/styles.css"), "utf8")).toContain(
+      ".mason-button { color: red; }",
+    );
+    expect(JSON.parse(await readFile(path.join(app, "src/settings.json"), "utf8"))).toEqual({
+      theme: { color: "blue", radius: "8px" },
+      keep: true,
+      enabled: true,
+    });
+    expect(await readFile(path.join(app, "src/readme.md"), "utf8")).toBe("installed\n");
   });
 });
 

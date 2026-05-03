@@ -7,6 +7,9 @@
     ".": "./src/index.ts",
     "./dialog": "./src/dialog/index.tsx",
     "./form": "./src/form/index.tsx",
+    "./popover": "./src/popover/index.tsx",
+    "./sheet": "./src/sheet/index.tsx",
+    "./tooltip": "./src/tooltip/index.tsx",
     "./select": "./src/select/index.tsx"
   },
   "scripts": {

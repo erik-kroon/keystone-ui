@@ -1,10 +1,13 @@
 import type { JSX } from "solid-js";
 import { describe, expect, test } from "vitest";
 import { createRoot, createSignal } from "solid-js";
+import { createDialog } from "../dialog/index";
+import { createSelect } from "../select/index";
 import {
   composeEventHandlers,
   createCollection,
   createControllableSignal,
+  createListInteractionKernel,
   createStableId,
   createTypeahead,
   firstEnabledItem,
@@ -16,6 +19,80 @@ import { createFormControl } from "../form/index";
 import { getByPart, render } from "../../test/harness";
 
 describe("Keystone kernel utilities", () => {
+  test("dialog creator exposes trigger and close part contracts", () => {
+    createRoot((dispose) => {
+      const changes: string[] = [];
+      const dialog = createDialog({
+        onOpenChange: (_open, detail) => changes.push(detail.reason),
+      });
+      const preventedTrigger = dialog.getTriggerProps({
+        onClick: (event) => event.preventDefault(),
+      });
+      const trigger = dialog.getTriggerProps({});
+      const close = dialog.getCloseProps({});
+
+      expect(trigger["aria-controls"]).toBe(dialog.contentId);
+      expect(trigger["data-scope"]).toBe("dialog");
+      expect(trigger["data-part"]).toBe("trigger");
+
+      (preventedTrigger.onClick as (event: MouseEvent) => void)(
+        new MouseEvent("click", { cancelable: true }),
+      );
+      expect(dialog.open()).toBe(false);
+
+      (trigger.onClick as (event: MouseEvent) => void)(
+        new MouseEvent("click", { cancelable: true }),
+      );
+      expect(dialog.open()).toBe(true);
+
+      (close.onClick as (event: MouseEvent) => void)(new MouseEvent("click", { cancelable: true }));
+      expect(dialog.open()).toBe(false);
+      expect(changes).toEqual(["trigger", "close"]);
+
+      dispose();
+    });
+  });
+
+  test("select creator exposes trigger, listbox, item, and value part contracts", () => {
+    createRoot((dispose) => {
+      const valueChanges: string[] = [];
+      const openChanges: string[] = [];
+      const select = createSelect({
+        onOpenChange: (_open, detail) => openChanges.push(detail.reason),
+        onValueChange: (value) => valueChanges.push(value ?? ""),
+      });
+      const trigger = select.getTriggerProps({});
+      const value = select.getValueProps({});
+      const alpha = select.getItemProps({ label: "Alpha", value: "alpha" });
+      select.getItemProps({ disabled: true, label: "Beta", value: "beta" });
+      select.getItemProps({ label: "Bravo", value: "bravo" });
+      const listbox = select.getListboxProps({});
+
+      expect(trigger["aria-haspopup"]).toBe("listbox");
+      expect(trigger["data-scope"]).toBe("select");
+      expect(trigger["data-part"]).toBe("trigger");
+      expect(value["data-part"]).toBe("value");
+
+      (trigger.onKeyDown as (event: KeyboardEvent) => void)(
+        new KeyboardEvent("keydown", { cancelable: true, key: "ArrowDown" }),
+      );
+      expect(select.open()).toBe(true);
+      expect(select.list.highlightedValue()).toBe("alpha");
+
+      (listbox.onKeyDown as (event: KeyboardEvent) => void)(
+        new KeyboardEvent("keydown", { cancelable: true, key: "ArrowDown" }),
+      );
+      expect(select.list.highlightedValue()).toBe("bravo");
+
+      (alpha.onClick as (event: MouseEvent) => void)(new MouseEvent("click", { cancelable: true }));
+      expect(select.value()).toBe("alpha");
+      expect(valueChanges).toEqual(["alpha"]);
+      expect(openChanges).toEqual(["keyboard", "select"]);
+
+      dispose();
+    });
+  });
+
   test("controlled signals derive from props and request changes without mutating local state", () => {
     createRoot((dispose) => {
       const changes: string[] = [];
@@ -156,6 +233,50 @@ describe("Keystone kernel utilities", () => {
 
       expect(space.defaultPrevented).toBe(true);
       expect(matches).toEqual(["apple", "bteam", "bteam"]);
+      dispose();
+    });
+  });
+
+  test("list interaction kernel owns ordering, navigation, typeahead, highlight, and selection", () => {
+    createRoot((dispose) => {
+      const changes: Array<{ reason: string; value: string | undefined }> = [];
+      const selected: string[] = [];
+      const list = createListInteractionKernel<
+        { disabled?: boolean; label: string; value: string },
+        { reason: string }
+      >({
+        defaultValue: "alpha",
+        programmaticDetail: { reason: "programmatic" },
+        onSelectionChange: (value, detail) => changes.push({ value, reason: detail.reason }),
+        onValueSelect: (item) => selected.push(item.value),
+      });
+
+      list.registerItem({ label: "Alpha", value: "alpha" });
+      list.registerItem({ disabled: true, label: "Beta", value: "beta" });
+      list.registerItem({ label: "Bravo", value: "bravo" });
+
+      expect(list.items().map((item) => item.value)).toEqual(["alpha", "beta", "bravo"]);
+      expect(list.selectedItem()?.value).toBe("alpha");
+
+      list.highlight("selected-or-first");
+      expect(list.highlightedValue()).toBe("alpha");
+
+      list.handleKeyDown(new KeyboardEvent("keydown", { key: "ArrowDown", cancelable: true }), {
+        selectDetail: () => ({ reason: "keyboard" }),
+      });
+      expect(list.highlightedValue()).toBe("bravo");
+
+      list.handleKeyDown(new KeyboardEvent("keydown", { key: "Enter", cancelable: true }), {
+        selectDetail: () => ({ reason: "keyboard" }),
+      });
+      expect(changes).toEqual([{ value: "bravo", reason: "keyboard" }]);
+      expect(selected).toEqual(["bravo"]);
+
+      list.handleKeyDown(new KeyboardEvent("keydown", { key: "a", cancelable: true }), {
+        selectDetail: () => ({ reason: "keyboard" }),
+      });
+      expect(list.highlightedValue()).toBe("alpha");
+
       dispose();
     });
   });

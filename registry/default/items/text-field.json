@@ -1,0 +1,29 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "text-field",
+  "type": "registry:ui",
+  "title": "TextField",
+  "description": "TanStack Form text field composed with Keystone form-control semantics and Mason styling hooks.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["form", "tanstack"],
+  "keywords": ["text-field", "field", "form", "tanstack", "keystone"],
+  "docs": "https://mason.build/docs/components/text-field",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add text-field",
+    "customization": "Use mason-text-field classes and data-part values for root, label, input, description, and error while TanStack Form owns field state.",
+    "sourceFiles": ["registry/default/ui/text-field.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "@tanstack/solid-form", "cn"]
+  },
+  "files": [
+    {
+      "path": "ui/text-field.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

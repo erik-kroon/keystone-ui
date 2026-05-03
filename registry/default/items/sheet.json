@@ -1,0 +1,29 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "sheet",
+  "type": "registry:ui",
+  "title": "Sheet",
+  "description": "Styled Solid sheet component backed by Keystone modal overlay behavior.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["overlay", "navigation"],
+  "keywords": ["sheet", "drawer", "overlay", "keystone"],
+  "docs": "https://mason.build/docs/components/sheet",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add sheet",
+    "customization": "Style the generated wrappers through mason-sheet classes while Keystone owns focus, dismissal, pointer blocking, and side data.",
+    "sourceFiles": ["registry/default/ui/sheet.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "cn"]
+  },
+  "files": [
+    {
+      "path": "ui/sheet.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

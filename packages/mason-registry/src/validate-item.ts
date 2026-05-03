@@ -7,6 +7,7 @@ import { validateFiles } from "./validate-files";
 export type ValidateItemOptions = {
   installSupportedOnly?: boolean;
   projectRoot?: string;
+  registryRoot?: string;
 };
 
 export function validateItem(
@@ -19,7 +20,10 @@ export function validateItem(
   }
 
   const errors: MasonRegistryError[] = [
-    ...validateFiles(parsed.data.files, { projectRoot: options.projectRoot }),
+    ...validateFiles(parsed.data.files, {
+      projectRoot: options.projectRoot,
+      registryRoot: options.registryRoot,
+    }),
     ...validateDependencies(parsed.data),
   ];
 
@@ -35,8 +39,11 @@ export function validateItem(
   return errors.length > 0 ? fail(errors) : ok(parsed.data);
 }
 
-export function validateRegistryItem(input: unknown): RegistryItem {
-  const result = validateItem(input);
+export function validateRegistryItem(
+  input: unknown,
+  options: ValidateItemOptions = {},
+): RegistryItem {
+  const result = validateItem(input, options);
   if (result.ok) {
     return result.value;
   }

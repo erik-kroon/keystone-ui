@@ -55,11 +55,13 @@ export const registryItemSchema = z
     devDependencies: z.array(z.string().min(1)).default([]),
     registryDependencies: z.array(z.string().min(1)).default([]),
     compatibility: z.record(z.string().min(1), z.string().min(1)).optional(),
+    categories: z.array(z.string().min(1)).optional(),
     keywords: z.array(z.string().min(1)).optional(),
     docs: z.string().url().optional(),
     preview: z.union([z.string().url(), z.record(z.string(), z.unknown())]).optional(),
     changelog: z.string().optional(),
     integrity: z.record(z.string(), z.unknown()).optional(),
+    meta: z.record(z.string(), z.unknown()).optional(),
   })
   .superRefine((item, context) => {
     for (const [index, file] of item.files.entries()) {

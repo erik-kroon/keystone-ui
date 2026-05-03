@@ -35,7 +35,9 @@ export { validateFiles, type ValidateFilesOptions } from "./validate-files";
 export { validateDependencies, isRegistryDependencyReference } from "./validate-dependencies";
 export { validateRegistryPath, type PathSafetyOptions } from "./path-safety";
 export {
+  resolveRegistryDependencyGraph,
   resolveRegistryDependencies,
+  type RegistryItemLoader,
   type RegistryItemMap,
   type ResolvedRegistryDependencyGraph,
 } from "./resolve-dependencies";

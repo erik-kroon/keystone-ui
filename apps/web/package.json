@@ -14,6 +14,7 @@
     "@keystone-ui/env": "workspace:*",
     "@keystone-ui/keystone": "workspace:*",
     "@tailwindcss/vite": "^4.2.2",
+    "@tanstack/solid-form": "^1.29.1",
     "@tanstack/solid-router": "^1.168.20",
     "@tanstack/solid-router-devtools": "^1.166.13",
     "@tanstack/solid-start": "^1.167.58",

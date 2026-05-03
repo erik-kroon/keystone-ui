@@ -68,7 +68,8 @@ a {
 .surface-band,
 .mason-section,
 .docs-band,
-.release-section {
+.release-section,
+.doc-page {
   padding-inline: clamp(1rem, 4vw, 4.5rem);
 }
 
@@ -479,6 +480,18 @@ h3 {
   padding-top: 1rem;
 }
 
+a.doc-lane {
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+a.doc-lane:hover,
+a.doc-lane:focus-visible {
+  color: #9b332c;
+  transform: translateX(0.25rem);
+}
+
 .doc-icon {
   width: 2.7rem;
   height: 2.7rem;
@@ -532,6 +545,197 @@ h3 {
   border-left: 0.5rem solid #83a86f;
 }
 
+.doc-page {
+  padding-block: clamp(2rem, 5vw, 4.5rem) clamp(4rem, 8vw, 7rem);
+}
+
+.mason-doc-page {
+  background: #17201c;
+  color: #f7f0df;
+}
+
+.doc-shell {
+  width: min(1120px, 100%);
+  margin-inline: auto;
+}
+
+.back-link {
+  width: max-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+  color: #58635c;
+  font-weight: 740;
+}
+
+.mason-doc-page .back-link {
+  color: #d4dccd;
+}
+
+.back-link:hover,
+.back-link:focus-visible,
+.doc-link-list a:hover,
+.doc-link-list a:focus-visible {
+  color: #b2382f;
+}
+
+.doc-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.42fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: end;
+  border-bottom: 2px solid currentcolor;
+  padding-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.doc-hero h1 {
+  max-width: none;
+  margin-bottom: 1rem;
+  font-size: clamp(4rem, 13vw, 10rem);
+}
+
+.doc-lede {
+  max-width: 50rem;
+  color: #4e5a53;
+  font-size: clamp(1.08rem, 2vw, 1.32rem);
+  line-height: 1.62;
+}
+
+.mason-doc-page .doc-lede,
+.mason-doc-page .doc-section p,
+.mason-doc-page .doc-list {
+  color: #d4dccd;
+}
+
+.mason-doc-page .eyebrow {
+  color: #f0c15c;
+}
+
+.doc-fact-panel {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: 1px solid currentcolor;
+  background: #fff8e9;
+  color: #17201c;
+}
+
+.mason-doc-page .doc-fact-panel {
+  background: #f7f0df;
+}
+
+.doc-fact-panel span,
+.doc-fact-panel strong {
+  padding: 0.8rem 0.9rem;
+}
+
+.doc-fact-panel span {
+  border-top: 1px solid rgba(23, 32, 28, 0.2);
+  color: #58635c;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+}
+
+.doc-fact-panel span:first-child {
+  border-top: 0;
+}
+
+.doc-fact-panel strong {
+  padding-top: 0;
+}
+
+.doc-two-column,
+.doc-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 3vw, 1.5rem);
+  margin-top: clamp(1.5rem, 4vw, 3rem);
+}
+
+.doc-section,
+.doc-panel {
+  border-top: 1px solid rgba(23, 32, 28, 0.22);
+  padding-top: 1rem;
+}
+
+.mason-doc-page .doc-section,
+.mason-doc-page .doc-panel {
+  border-top-color: rgba(247, 240, 223, 0.24);
+}
+
+.doc-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.9rem;
+}
+
+.doc-section-title h2,
+.doc-panel h2 {
+  margin-bottom: 0;
+  font-size: clamp(1.35rem, 2.5vw, 2rem);
+  line-height: 1.05;
+}
+
+.doc-section p,
+.doc-list {
+  color: #4e5a53;
+  line-height: 1.62;
+}
+
+.doc-section code,
+.doc-panel code {
+  font-family: var(--font-mono);
+}
+
+.doc-section pre,
+.doc-panel pre {
+  overflow-x: auto;
+  border: 1px solid #17201c;
+  background: #fff8e9;
+  padding: 1rem;
+  color: #17201c;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.part-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.part-grid span {
+  border: 1px solid rgba(23, 32, 28, 0.24);
+  background: #fff8e9;
+  padding: 0.5rem 0.65rem;
+  color: #17201c;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.doc-list {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.doc-list li + li {
+  margin-top: 0.65rem;
+}
+
+.doc-link-list {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.doc-link-list a {
+  border-bottom: 1px solid currentcolor;
+  padding-bottom: 0.35rem;
+  font-weight: 760;
+}
+
 @media (max-width: 920px) {
   .header-nav {
     display: none;
@@ -540,7 +744,10 @@ h3 {
   .hero-grid,
   .primitive-layout,
   .docs-grid,
-  .release-panel {
+  .release-panel,
+  .doc-hero,
+  .doc-two-column,
+  .doc-panel-grid {
     grid-template-columns: 1fr;
   }
 

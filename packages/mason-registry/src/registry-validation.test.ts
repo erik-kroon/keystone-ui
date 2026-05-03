@@ -1,12 +1,14 @@
 import { mkdtempSync, mkdirSync, symlinkSync } from "node:fs";
+import { readdir, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { describe, expect, test } from "bun:test";
 import button from "./testing/fixtures/registry/default/ui/button.json";
 import dialog from "./testing/fixtures/registry/default/ui/dialog.json";
 import registry from "./testing/fixtures/registry/default/registry.json";
 import {
   isInstallSupportedItemType,
+  resolveRegistryDependencyGraph,
   resolveRegistryDependencies,
   validateItem,
   validateRegistry,
@@ -16,6 +18,7 @@ import {
 
 const buttonItem = button as RegistryItem;
 const dialogItem = dialog as RegistryItem;
+const defaultRegistryRoot = resolve(import.meta.dir, "../../../registry/default");
 
 describe("Mason registry validation tracer", () => {
   test("parses a valid root registry document and lists items", () => {
@@ -36,10 +39,74 @@ describe("Mason registry validation tracer", () => {
     }
   });
 
+  test("validates docs-ready metadata on the real default button item", async () => {
+    const item = await import("../../../registry/default/items/button.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.categories).toContain("base");
+      expect(result.value.meta?.install).toBe("mason add button");
+      expect(result.value.meta?.customization).toBeString();
+    }
+  });
+
+  test("validates every real default registry item against its source files", async () => {
+    const rootRegistry = JSON.parse(
+      await readFile(resolve(defaultRegistryRoot, "registry.json"), "utf8"),
+    ) as unknown;
+    const rootResult = validateRegistry(rootRegistry);
+    expect(rootResult.ok).toBe(true);
+
+    const itemFiles = await readdir(resolve(defaultRegistryRoot, "items"));
+    const validatedNames: string[] = [];
+    for (const file of itemFiles.sort()) {
+      const item = JSON.parse(
+        await readFile(resolve(defaultRegistryRoot, "items", file), "utf8"),
+      ) as unknown;
+      const result = validateItem(item, { registryRoot: defaultRegistryRoot });
+      expect(result.ok).toBe(true);
+      if (result.ok) validatedNames.push(result.value.name);
+    }
+
+    expect(validatedNames).toEqual([
+      "badge",
+      "button",
+      "card",
+      "cn",
+      "dialog",
+      "field",
+      "input",
+      "label",
+      "popover",
+      "select-field",
+      "separator",
+      "sheet",
+      "text-field",
+      "textarea",
+      "tooltip",
+    ]);
+  });
+
   test("resolves dialog registry dependencies deterministically", () => {
     const result = resolveRegistryDependencies(["dialog"], {
       button: buttonItem,
       dialog: dialogItem,
+    });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.items.map((item) => item.name)).toEqual(["button", "dialog"]);
+    }
+  });
+
+  test("resolves and validates dependency graphs through an async registry loader", async () => {
+    const items: Record<string, RegistryItem> = {
+      button: buttonItem,
+      dialog: dialogItem,
+    };
+    const result = await resolveRegistryDependencyGraph(["dialog"], async (name) => items[name], {
+      installSupportedOnly: true,
     });
 
     expect(result.ok).toBe(true);
@@ -163,6 +230,44 @@ describe("Mason registry validation tracer", () => {
       expect(result.errors.map((error) => error.code)).toEqual(
         expect.arrayContaining(["dependency.packageName", "dependency.version"]),
       );
+    }
+  });
+
+  test("rejects missing registry source files when a registry root is provided", () => {
+    const result = validateItem(
+      {
+        ...button,
+        files: [{ path: "ui/missing.tsx", type: "registry:ui" }],
+      },
+      { registryRoot: defaultRegistryRoot },
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.errors.map((error) => error.code)).toContain("file.missingSource");
+    }
+  });
+
+  test("rejects duplicate explicit targets", () => {
+    const result = validateItem({
+      ...button,
+      files: [
+        {
+          path: "registry/default/ui/button.tsx",
+          type: "registry:ui",
+          target: "src/components/ui/button.tsx",
+        },
+        {
+          path: "registry/default/ui/dialog.tsx",
+          type: "registry:ui",
+          target: "src/components/ui/button.tsx",
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.errors.map((error) => error.code)).toContain("file.duplicateTarget");
     }
   });
 });

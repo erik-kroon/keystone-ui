@@ -23,6 +23,7 @@ const releaseChecks = [
   "Dialog and Select behavior tests",
   "Mason CLI generated app build",
   "Registry validation and path safety",
+  "Example app SSR/build smoke",
   "Web SSR build",
 ];
 
@@ -174,11 +175,25 @@ function App() {
               icon={<BookOpen size={20} />}
               title="Primitive docs"
               body="Anatomy, keyboard behavior, ARIA, data attributes, examples, known limits."
+              href="/docs/keystone/dialog"
             />
             <DocLane
               icon={<FileJson2 size={20} />}
               title="Registry docs"
               body="Item schema, dependency resolution, path safety, source ownership, install plans."
+              href="/docs/mason/dialog"
+            />
+            <DocLane
+              icon={<FileJson2 size={20} />}
+              title="TanStack Form field"
+              body="Mason TextField proves the app form layer without pulling TanStack into Keystone."
+              href="/docs/mason/text-field"
+            />
+            <DocLane
+              icon={<FileJson2 size={20} />}
+              title="TanStack Select field"
+              body="Mason SelectField composes TanStack Form state with Keystone Select behavior."
+              href="/docs/mason/select-field"
             />
             <DocLane
               icon={<Terminal size={20} />}
@@ -268,14 +283,24 @@ function SelectDemo() {
   );
 }
 
-function DocLane(props: { icon: Element; title: string; body: string }) {
-  return (
-    <article class="doc-lane">
+function DocLane(props: { icon: Element; title: string; body: string; href?: string }) {
+  const content = (
+    <>
       <div class="doc-icon">{props.icon}</div>
       <div>
         <h3>{props.title}</h3>
         <p>{props.body}</p>
       </div>
-    </article>
+    </>
   );
+
+  if (props.href) {
+    return (
+      <a class="doc-lane" href={props.href}>
+        {content}
+      </a>
+    );
+  }
+
+  return <article class="doc-lane">{content}</article>;
 }
