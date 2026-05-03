@@ -1,0 +1,29 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "autocomplete",
+  "type": "registry:ui",
+  "title": "Autocomplete",
+  "description": "Styled Solid autocomplete component backed by Keystone combobox behavior.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["form", "listbox", "autocomplete"],
+  "keywords": ["autocomplete", "combobox", "listbox", "keystone"],
+  "docs": "https://mason.build/docs/components/autocomplete",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add autocomplete",
+    "customization": "Style the generated wrappers through mason-autocomplete classes while Keystone owns input/listbox roles, selection, form value, and positioning.",
+    "sourceFiles": ["registry/default/ui/autocomplete.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "cn"]
+  },
+  "files": [
+    {
+      "path": "ui/autocomplete.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

@@ -70,17 +70,22 @@ describe("Mason registry validation tracer", () => {
     }
 
     expect(validatedNames).toEqual([
+      "accordion",
       "account-settings",
+      "autocomplete",
       "badge",
       "button",
       "card",
       "cn",
+      "collapsible",
+      "combobox",
       "context-menu",
       "data-table-tanstack-router",
       "data-table",
       "dialog",
       "dropdown-menu",
       "field",
+      "hover-card",
       "input",
       "label",
       "menu",
@@ -91,6 +96,7 @@ describe("Mason registry validation tracer", () => {
       "sheet",
       "text-field",
       "textarea",
+      "toast",
       "tooltip",
     ]);
   });
@@ -123,6 +129,28 @@ describe("Mason registry validation tracer", () => {
       expect(result.value.meta?.searchParams).toBeString();
       expect(result.value.meta?.stateMapping).toBeString();
       expect(result.value.meta?.limitations).toBeString();
+    }
+  });
+
+  test("captures Toast parity metadata against Kobalte, Base UI, and Sonner", async () => {
+    const item = await import("../../../registry/default/items/toast.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.meta?.parts).toEqual([
+        "viewport",
+        "root",
+        "title",
+        "description",
+        "action",
+        "close",
+      ]);
+      expect(result.value.meta?.parity).toMatchObject({
+        baseUi: expect.any(String),
+        kobalte: expect.any(String),
+        sonner: expect.any(String),
+      });
     }
   });
 

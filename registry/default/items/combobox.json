@@ -1,0 +1,29 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "combobox",
+  "type": "registry:ui",
+  "title": "Combobox",
+  "description": "Styled Solid combobox backed by Keystone input, listbox, selection, and floating behavior.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["form", "listbox", "autocomplete"],
+  "keywords": ["combobox", "autocomplete", "listbox", "keystone"],
+  "docs": "https://mason.build/docs/components/combobox",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add combobox",
+    "customization": "Style the generated wrappers through mason-combobox classes while Keystone owns input/listbox roles, selection, form value, and positioning.",
+    "sourceFiles": ["registry/default/ui/combobox.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "cn"]
+  },
+  "files": [
+    {
+      "path": "ui/combobox.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

@@ -46,7 +46,7 @@ export type FloatingRootBoundary = RootBoundary;
 export type FloatingSticky = "always" | "partial" | false;
 
 export type CreateFloatingAdapterOptions = {
-  anchor: Accessor<HTMLElement | undefined>;
+  anchor: Accessor<FloatingReferenceElement | undefined>;
   floating: Accessor<HTMLElement | undefined>;
   arrow?: Accessor<HTMLElement | undefined>;
   arrowPadding?: Accessor<number | undefined>;
@@ -61,6 +61,13 @@ export type CreateFloatingAdapterOptions = {
   sticky?: Accessor<FloatingSticky | undefined>;
   strategy?: Accessor<FloatingStrategy | undefined>;
 };
+
+export type FloatingReferenceElement =
+  | HTMLElement
+  | {
+      contextElement?: Element;
+      getBoundingClientRect: () => DOMRect;
+    };
 
 export type FloatingAdapter = {
   align: Accessor<FloatingAlign>;

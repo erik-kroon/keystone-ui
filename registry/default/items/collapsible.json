@@ -1,0 +1,31 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "collapsible",
+  "type": "registry:ui",
+  "title": "Collapsible",
+  "description": "Styled Solid collapsible component backed by Keystone disclosure behavior.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["disclosure", "layout"],
+  "keywords": ["collapsible", "disclosure", "keystone"],
+  "docs": "https://mason.build/docs/components/collapsible",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add collapsible",
+    "customization": "Style the generated wrappers through mason-collapsible classes while Keystone keeps open state, ARIA relationships, and data attributes.",
+    "sourceFiles": ["registry/default/ui/collapsible.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "parts": ["trigger", "content"],
+    "parity": "Thin vertical: matches Kobalte/Base UI controlled and uncontrolled disclosure state, trigger ARIA, and data-state hooks. Remaining parity gaps are measured height/width transition CSS variables, hidden-until-found, richer transition status, and edge-case browser find behavior."
+  },
+  "files": [
+    {
+      "path": "ui/collapsible.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

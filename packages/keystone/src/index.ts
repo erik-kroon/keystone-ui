@@ -1,9 +1,55 @@
+export { Accordion, createAccordion } from "./accordion/index";
+export { Autocomplete, createAutocomplete } from "./autocomplete/index";
+export { Collapsible, createCollapsible } from "./collapsible/index";
+export { Combobox, createCombobox } from "./combobox/index";
 export { ContextMenu, createContextMenu } from "./context-menu/index";
 export { Dialog, createDialog } from "./dialog/index";
 export { DropdownMenu, createDropdownMenu } from "./dropdown-menu/index";
 export { createFieldValidity, createFormControl } from "./form/index";
+export { HoverCard, createHoverCard } from "./hover-card/index";
 export { Menu, createMenu } from "./menu/index";
 export { Menubar, createMenubar } from "./menubar/index";
+export type {
+  AccordionContentProps,
+  AccordionHeaderProps,
+  AccordionItemProps,
+  AccordionOrientation,
+  AccordionPartProps,
+  AccordionRootProps,
+  AccordionTriggerProps,
+  AccordionValue,
+  AccordionValueChangeDetail,
+} from "./accordion/index";
+export type {
+  CollapsibleApi,
+  CollapsibleContentProps,
+  CollapsibleOpenChangeDetail,
+  CollapsiblePartProps,
+  CollapsibleRootProps,
+  CollapsibleTriggerProps,
+  CreateCollapsibleOptions,
+} from "./collapsible/index";
+export type {
+  ComboboxApi,
+  ComboboxChangeDetail,
+  ComboboxClearProps,
+  ComboboxContentProps,
+  ComboboxGroupLabelProps,
+  ComboboxGroupProps,
+  ComboboxInputProps,
+  ComboboxItemData,
+  ComboboxItemIndicatorProps,
+  ComboboxItemProps,
+  ComboboxItemTextProps,
+  ComboboxListboxProps,
+  ComboboxOpenChangeDetail,
+  ComboboxPartProps,
+  ComboboxPortalProps,
+  ComboboxPositionerProps,
+  ComboboxRootProps,
+  ComboboxTriggerProps,
+  CreateComboboxOptions,
+} from "./combobox/index";
 export type {
   DialogChangeDetail,
   DialogCloseProps,
@@ -27,6 +73,16 @@ export type {
   FormControlApi,
   FormControlValue,
 } from "./form/index";
+export type {
+  CreateHoverCardOptions,
+  HoverCardContentProps,
+  HoverCardOpenChangeDetail,
+  HoverCardPartProps,
+  HoverCardPortalProps,
+  HoverCardPositionerProps,
+  HoverCardRootProps,
+  HoverCardTriggerProps,
+} from "./hover-card/index";
 export type {
   CreateMenuOptions,
   MenuApi,
@@ -95,6 +151,25 @@ export type {
   SheetTitleProps,
   SheetTriggerProps,
 } from "./sheet/index";
+export { Toast, createToastManager, toaster } from "./toast/index";
+export type {
+  CreateToastManagerOptions,
+  ToastAction,
+  ToastActionProps,
+  ToastCloseProps,
+  ToastData,
+  ToastDescriptionProps,
+  ToastInput,
+  ToastManager,
+  ToastPartProps,
+  ToastPriority,
+  ToastProviderProps,
+  ToastRootProps,
+  ToastStatus,
+  ToastTitleProps,
+  ToastType,
+  ToastViewportProps,
+} from "./toast/index";
 export { Tooltip, createTooltip } from "./tooltip/index";
 export type {
   CreateTooltipOptions,

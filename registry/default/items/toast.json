@@ -1,0 +1,35 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "toast",
+  "type": "registry:ui",
+  "title": "Toast",
+  "description": "Styled Solid toast component backed by Keystone notification manager, viewport, timer, and live-region behavior.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["feedback", "overlay", "notification"],
+  "keywords": ["toast", "notification", "sonner", "keystone"],
+  "docs": "https://mason.build/docs/components/toast",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add toast",
+    "customization": "Style generated mason-toast classes while Keystone owns manager updates, live-region roles, dismissal, timer scheduling, and stable toast part attributes.",
+    "sourceFiles": ["registry/default/ui/toast.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "parts": ["viewport", "root", "title", "description", "action", "close"],
+    "parity": {
+      "kobalte": "Matches the core Toaster/Region/Toast Root, Title, Description, Close, action-like composition, Solid store subscription, duration, visible limit, pause-on-interaction, and polite/assertive live-region behavior. Gaps: region hotkey focus, swipe gestures, progress track/fill, persistent lifecycle status, and promise helper parity remain follow-up work.",
+      "baseUi": "Matches the manager/provider/store direction with add, update, dismiss, clear, limit, timer scheduling, viewport rendering, action and close parts, and hover/focus pause behavior. Gaps: loading-to-complete promise transitions, transition status metadata, window blur pausing, viewport geometry, and advanced positioner/portal composition remain follow-up work.",
+      "sonner": "Matches the ergonomic default toaster export, id-based update/dismiss, toast type variants, action callbacks, close button, duration, viewport limit, and generated Toaster wrapper. Gaps: stacked height CSS variables, expand mode, swipe directions, rich color/icon presets, cancel action, custom JSX toast renderer presets, position offsets, and mobile offset props remain follow-up work."
+    }
+  },
+  "files": [
+    {
+      "path": "ui/toast.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

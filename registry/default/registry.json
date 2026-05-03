@@ -4,6 +4,12 @@
   "homepage": "https://mason.build",
   "items": [
     {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "Styled Solid accordion component backed by Keystone disclosure coordination."
+    },
+    {
       "name": "account-settings",
       "type": "registry:block",
       "title": "AccountSettingsBlock",
@@ -58,6 +64,18 @@
       "description": "TanStack Form select field composed with Keystone Select behavior and Mason styling hooks."
     },
     {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "Styled Solid combobox backed by Keystone input, listbox, selection, and floating behavior."
+    },
+    {
+      "name": "autocomplete",
+      "type": "registry:ui",
+      "title": "Autocomplete",
+      "description": "Styled Solid autocomplete component backed by Keystone combobox behavior."
+    },
+    {
       "name": "data-table",
       "type": "registry:ui",
       "title": "DataTable",
@@ -88,6 +106,12 @@
       "description": "Decorative or semantic separator component."
     },
     {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "Styled Solid collapsible component backed by Keystone disclosure behavior."
+    },
+    {
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",
@@ -98,6 +122,12 @@
       "type": "registry:ui",
       "title": "Popover",
       "description": "Styled Solid popover component backed by Keystone overlay positioning and dismissal."
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "title": "HoverCard",
+      "description": "Styled Solid hover card component backed by Keystone overlay positioning and pointer/focus preview behavior."
     },
     {
       "name": "menu",
@@ -122,6 +152,12 @@
       "type": "registry:ui",
       "title": "Menubar",
       "description": "Styled Solid menubar backed by Keystone menu navigation, typeahead, and item state behavior."
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "Toast",
+      "description": "Styled Solid toast component backed by Keystone notification manager, viewport, timer, and live-region behavior."
     },
     {
       "name": "tooltip",
