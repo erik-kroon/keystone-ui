@@ -12,7 +12,9 @@ export type CollapsibleTriggerProps = KeystoneCollapsibleTriggerProps;
 export type CollapsibleContentProps = KeystoneCollapsibleContentProps;
 
 export function Collapsible(props: CollapsibleProps) {
-  return <KeystoneCollapsible.Root {...props} />;
+  const [local, rest] = splitProps(props, ["class"]);
+
+  return <KeystoneCollapsible.Root {...rest} class={cn("mason-collapsible", local.class)} />;
 }
 
 export function CollapsibleTrigger(props: CollapsibleTriggerProps) {

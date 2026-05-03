@@ -16,6 +16,7 @@ describe("Collapsible behavior", () => {
     ));
 
     const trigger = getByPart("collapsible", "trigger");
+    expect(getByPart("collapsible", "root").getAttribute("data-state")).toBe("closed");
     expect(trigger.getAttribute("aria-expanded")).toBe("false");
     expect(queryByPart("collapsible", "content")).toBeNull();
 
@@ -23,6 +24,7 @@ describe("Collapsible behavior", () => {
     await settled();
 
     const content = getByPart("collapsible", "content");
+    expect(getByPart("collapsible", "root").getAttribute("data-state")).toBe("open");
     expect(trigger.getAttribute("aria-expanded")).toBe("true");
     expect(trigger.getAttribute("aria-controls")).toBe(content.id);
     expect(content.getAttribute("data-state")).toBe("open");
@@ -58,6 +60,29 @@ describe("Collapsible behavior", () => {
       expect(collapsible.open()).toBe(true);
       dispose();
     });
+  });
+
+  test("keeps hidden-until-found content mounted and opens from beforematch", async () => {
+    const changes: string[] = [];
+
+    render(() => (
+      <Collapsible.Root onOpenChange={(_open, detail) => changes.push(detail.reason)}>
+        <Collapsible.Trigger>Details</Collapsible.Trigger>
+        <Collapsible.Content hiddenUntilFound>Searchable content</Collapsible.Content>
+      </Collapsible.Root>
+    ));
+
+    const trigger = getByPart("collapsible", "trigger");
+    const content = getByPart("collapsible", "content");
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    expect(content.getAttribute("hidden")).toBe("until-found");
+
+    content.dispatchEvent(new Event("beforematch", { bubbles: true, cancelable: true }));
+    await settled();
+
+    expect(changes).toEqual(["browser-find"]);
+    expect(trigger.getAttribute("aria-expanded")).toBe("true");
+    expect(content.hasAttribute("hidden")).toBe(false);
   });
 });
 
@@ -139,5 +164,39 @@ describe("Accordion behavior", () => {
     await settled();
     expect(triggers[0].getAttribute("aria-expanded")).toBe("true");
     expect(triggers[2].getAttribute("aria-expanded")).toBe("true");
+  });
+
+  test("opens hidden-until-found content when browser find reveals it", async () => {
+    const values: string[][] = [];
+    const reasons: string[] = [];
+
+    render(() => (
+      <Accordion.Root
+        onValueChange={(value, detail) => {
+          values.push(value);
+          reasons.push(detail.reason);
+        }}
+      >
+        <Accordion.Item value="account">
+          <Accordion.Header>
+            <Accordion.Trigger>Account</Accordion.Trigger>
+          </Accordion.Header>
+          <Accordion.Content hiddenUntilFound>Searchable account settings</Accordion.Content>
+        </Accordion.Item>
+      </Accordion.Root>
+    ));
+
+    const trigger = getByPart("accordion", "trigger");
+    const content = getByPart("accordion", "content");
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    expect(content.getAttribute("hidden")).toBe("until-found");
+
+    content.dispatchEvent(new Event("beforematch", { bubbles: true, cancelable: true }));
+    await settled();
+
+    expect(values).toEqual([["account"]]);
+    expect(reasons).toEqual(["browser-find"]);
+    expect(trigger.getAttribute("aria-expanded")).toBe("true");
+    expect(content.hasAttribute("hidden")).toBe(false);
   });
 });

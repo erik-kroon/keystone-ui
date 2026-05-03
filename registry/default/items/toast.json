@@ -21,8 +21,8 @@
     "dependencies": ["@keystone-ui/keystone", "cn"],
     "parts": ["viewport", "root", "title", "description", "action", "close"],
     "parity": {
-      "kobalte": "Matches the core Toaster/Region/Toast Root, Title, Description, Close, action-like composition, Solid store subscription, duration, visible limit, pause-on-interaction, and polite/assertive live-region behavior. Gaps: region hotkey focus, swipe gestures, progress track/fill, persistent lifecycle status, and promise helper parity remain follow-up work.",
       "baseUi": "Matches the manager/provider/store direction with add, update, dismiss, clear, limit, timer scheduling, viewport rendering, action and close parts, and hover/focus pause behavior. Gaps: loading-to-complete promise transitions, transition status metadata, window blur pausing, viewport geometry, and advanced positioner/portal composition remain follow-up work.",
+      "kobalte": "Matches the core Toaster/Region/Toast Root, Title, Description, Close, action-like composition, Solid store subscription, duration, visible limit, pause-on-interaction, and polite/assertive live-region behavior. Gaps: region hotkey focus, swipe gestures, progress track/fill, persistent lifecycle status, and promise helper parity remain follow-up work.",
       "sonner": "Matches the ergonomic default toaster export, id-based update/dismiss, toast type variants, action callbacks, close button, duration, viewport limit, and generated Toaster wrapper. Gaps: stacked height CSS variables, expand mode, swipe directions, rich color/icon presets, cancel action, custom JSX toast renderer presets, position offsets, and mobile offset props remain follow-up work."
     }
   },

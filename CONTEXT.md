@@ -66,6 +66,7 @@ Keystone internals -> Keystone primitives -> Mason components -> Mason blocks ->
 - Every primitive part should expose stable `data-scope` and `data-part` attributes.
 - Floating/measured parts should expose documented CSS variables for geometry and transform origin.
 - Accessibility specs are product scope and should precede primitive implementation.
+- First-party Mason registry items should carry `meta.parity` notes. Base UI is the default runtime-depth reference, Kobalte is the default Solid-native primitive reference, and exceptions should use the fitting first-class reference such as TanStack, Sonner, Mason utility, or shadcn-style registry conventions.
 - Mason first-party app components should prefer TanStack libraries for app-grade behavior: `@tanstack/solid-form`, `@tanstack/solid-table`, TanStack Store, and `@tanstack/solid-hotkeys`.
 - Keystone must not depend on TanStack app libraries. Keystone owns intrinsic primitive behavior; Mason owns app-level form/table/store/hotkey integration.
 - Use [ADR 0003](docs/adr/0003-mason-tanstack-app-layer.md) and [End-State Primitive And Component Inventory](docs/agents/end-state-primitive-component-inventory.md) when deciding whether a new surface belongs in Keystone or Mason.
@@ -74,14 +75,13 @@ Keystone internals -> Keystone primitives -> Mason components -> Mason blocks ->
 ## Current State
 
 - `apps/docs`: Solid + TanStack Router + Tailwind docs/product app.
-- `packages/config`: shared TypeScript config.
-- `packages/keystone`: early primitive tracer package with Dialog, Form, Overlay, Select, and Utils exports.
+- `packages/keystone`: early primitive package with overlay, disclosure, menu, select/combobox, field, selection-control, tabs, toolbar, slider, date-picker, toast, metadata, and utility surfaces. It has more breadth than the original tracer, but the shared kernel is still the main quality target.
 - `packages/mason-cli`: early Mason CLI tracer with init/add planning and tests.
 - `packages/mason-registry`: registry schema, validation, dependency resolution, path safety, and tests.
 - `docs/`: ADRs, RFCs, accessibility plan, PRDs, and agent notes.
-- `registry/`: Mason registry source for first-party components, blocks, themes, and templates.
+- `registry/`: Mason registry source for first-party UI components, TanStack-backed app components, utilities, and early blocks.
 
-The project is beyond a pure scaffold but still far from a mature primitive library. Mason registry and CLI tracer quality is ahead of Keystone runtime depth. Keystone needs a real internal kernel before broad primitive work.
+The project is beyond a pure scaffold but still far from a mature primitive library. Mason registry and CLI tracer quality is ahead of Keystone runtime depth. Keystone needs a deeper internal kernel before broad catalog work.
 
 ## Near-Term Milestone
 

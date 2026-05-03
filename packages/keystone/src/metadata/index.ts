@@ -117,6 +117,67 @@ const toastStateAttributes = [
   { name: "data-type", values: ["default", "success", "info", "warning", "error", "loading"] },
 ] as const satisfies readonly PartStateAttributeMetadata[];
 
+const tabsStateAttributes = [
+  { name: "data-disabled" },
+  { name: "data-highlighted" },
+  { name: "data-orientation", values: ["horizontal", "vertical"] },
+  { name: "data-selected" },
+] as const satisfies readonly PartStateAttributeMetadata[];
+
+const sliderStateAttributes = [
+  { name: "data-disabled" },
+  { name: "data-orientation", values: ["horizontal", "vertical"] },
+] as const satisfies readonly PartStateAttributeMetadata[];
+
+const sliderCssVars = [
+  { name: "--keystone-slider-range-start" },
+  { name: "--keystone-slider-range-end" },
+  { name: "--keystone-slider-thumb-percent" },
+] as const satisfies readonly PartCssVarMetadata[];
+
+const toolbarStateAttributes = [
+  { name: "data-disabled" },
+  { name: "data-orientation", values: ["horizontal", "vertical"] },
+] as const satisfies readonly PartStateAttributeMetadata[];
+
+const calendarStateAttributes = [
+  { name: "data-disabled" },
+  { name: "data-outside-month" },
+  { name: "data-selected" },
+  { name: "data-today" },
+  { name: "data-value" },
+] as const satisfies readonly PartStateAttributeMetadata[];
+
+const datePickerStateAttributes = [
+  { name: "data-disabled" },
+  { name: "data-placeholder" },
+  { name: "data-state", values: ["open", "closed"] },
+  { name: "data-value" },
+] as const satisfies readonly PartStateAttributeMetadata[];
+
+const selectionControlStateAttributes = [
+  { name: "data-checked" },
+  { name: "data-disabled" },
+  { name: "data-invalid" },
+  { name: "data-readonly" },
+  { name: "data-required" },
+  { name: "data-state", values: ["checked", "unchecked", "indeterminate"] },
+] as const satisfies readonly PartStateAttributeMetadata[];
+
+const radioGroupStateAttributes = [
+  { name: "data-disabled" },
+  { name: "data-invalid" },
+  { name: "data-orientation", values: ["horizontal", "vertical"] },
+  { name: "data-readonly" },
+  { name: "data-required" },
+] as const satisfies readonly PartStateAttributeMetadata[];
+
+const radioItemStateAttributes = [
+  { name: "data-checked" },
+  { name: "data-disabled" },
+  { name: "data-state", values: ["checked", "unchecked"] },
+] as const satisfies readonly PartStateAttributeMetadata[];
+
 export const primitiveMetadata = {
   accordion: definePrimitive("accordion", [
     part("root", [
@@ -129,11 +190,39 @@ export const primitiveMetadata = {
     part("content", accordionStateAttributes),
   ]),
   autocomplete: comboboxPrimitive("autocomplete"),
+  checkbox: definePrimitive("checkbox", [
+    part("root", selectionControlStateAttributes),
+    part("control", selectionControlStateAttributes),
+    part("indicator", selectionControlStateAttributes),
+    part("hidden-input", [
+      { name: "data-state", values: ["checked", "unchecked", "indeterminate"] },
+    ]),
+  ]),
   collapsible: definePrimitive("collapsible", [
+    part("root", disclosureStateAttributes),
     part("trigger", disclosureStateAttributes),
     part("content", disclosureStateAttributes),
   ]),
   combobox: comboboxPrimitive("combobox"),
+  calendar: definePrimitive("calendar", [
+    part("root", [{ name: "data-disabled" }, { name: "data-value" }]),
+    part("header", [{ name: "data-disabled" }]),
+    part("prev-trigger", [{ name: "data-disabled" }]),
+    part("next-trigger", [{ name: "data-disabled" }]),
+    part("heading"),
+    part("grid", [{ name: "data-disabled" }]),
+    part("grid-header"),
+    part("grid-body"),
+    part("row"),
+    part("column-header"),
+    part("cell", calendarStateAttributes),
+    part("cell-trigger", calendarStateAttributes),
+  ]),
+  "date-picker": definePrimitive("date-picker", [
+    part("root", datePickerStateAttributes),
+    part("trigger", datePickerStateAttributes),
+    part("content", [{ name: "data-state", values: ["open", "closed"] }]),
+  ]),
   dialog: definePrimitive("dialog", [
     part("trigger", overlayStateAttributes),
     part("close", overlayStateAttributes),
@@ -171,6 +260,7 @@ export const primitiveMetadata = {
   "dropdown-menu": menuPrimitive("dropdown-menu"),
   menu: menuPrimitive("menu"),
   menubar: menuPrimitive("menubar"),
+  "navigation-menu": menuPrimitive("navigation-menu"),
   overlay: definePrimitive("overlay", [
     part("layer", [
       { name: "data-layer-id" },
@@ -183,6 +273,12 @@ export const primitiveMetadata = {
     part("trigger", overlayStateAttributes),
     part("positioner", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
     part("content", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
+  ]),
+  "radio-group": definePrimitive("radio-group", [
+    part("root", radioGroupStateAttributes),
+    part("item", radioItemStateAttributes),
+    part("item-indicator", radioItemStateAttributes),
+    part("hidden-input", [{ name: "data-state", values: ["checked", "unchecked"] }]),
   ]),
   select: definePrimitive("select", [
     part("trigger", selectStateAttributes),
@@ -218,6 +314,32 @@ export const primitiveMetadata = {
     part("title"),
     part("description"),
   ]),
+  slider: definePrimitive("slider", [
+    part("root", sliderStateAttributes),
+    part("track", sliderStateAttributes),
+    part("range", sliderStateAttributes, sliderCssVars.slice(0, 2)),
+    part("thumb", [...sliderStateAttributes, { name: "data-index" }], sliderCssVars.slice(2)),
+  ]),
+  tabs: definePrimitive("tabs", [
+    part("root", [
+      { name: "data-disabled" },
+      { name: "data-orientation", values: ["horizontal", "vertical"] },
+    ]),
+    part("list", [
+      { name: "data-disabled" },
+      { name: "data-orientation", values: ["horizontal", "vertical"] },
+    ]),
+    part("trigger", tabsStateAttributes),
+    part("indicator", [
+      { name: "data-disabled" },
+      { name: "data-orientation", values: ["horizontal", "vertical"] },
+    ]),
+    part("content", [
+      { name: "data-disabled" },
+      { name: "data-orientation", values: ["horizontal", "vertical"] },
+      { name: "data-selected" },
+    ]),
+  ]),
   toast: definePrimitive("toast", [
     part("viewport"),
     part("root", toastStateAttributes),
@@ -225,6 +347,18 @@ export const primitiveMetadata = {
     part("description"),
     part("action"),
     part("close", [{ name: "data-disabled" }]),
+  ]),
+  toolbar: definePrimitive("toolbar", [
+    part("root", toolbarStateAttributes),
+    part("button", [...toolbarStateAttributes, { name: "data-pressed" }]),
+    part("link", toolbarStateAttributes),
+    part("separator", [{ name: "data-orientation", values: ["horizontal", "vertical"] }]),
+  ]),
+  switch: definePrimitive("switch", [
+    part("root", selectionControlStateAttributes),
+    part("control", selectionControlStateAttributes),
+    part("thumb", selectionControlStateAttributes),
+    part("hidden-input", [{ name: "data-state", values: ["checked", "unchecked"] }]),
   ]),
   tooltip: definePrimitive("tooltip", [
     part("trigger", overlayStateAttributes),

@@ -43,6 +43,8 @@ This repository is the early Keystone UI monorepo. Treat `Keystone` and `Mason` 
 - Overlay work must account for focus management, dismissal, layering, portals, SSR, hydration, and accessibility testing.
 - Mason generated code should be readable source owned by the user project and should not reimplement Keystone behavior.
 - Mason form, table, store, and hotkey work should prefer TanStack libraries instead of custom app-behavior systems.
+- Every first-party Mason primitive/component/block registry item should carry `meta.parity` notes. Prefer Base UI first for runtime depth and Kobalte second for Solid-native primitive shape; use the more fitting reference for exceptions such as TanStack app components, Sonner-style toast behavior, Mason utilities, or shadcn-style source registry conventions.
+- When updating the root `README.md`, keep it external-facing and grounded in current repo state. Do not turn it into an internal roadmap; link or defer durable planning detail to `CONTEXT.md`, `CONTEXT-MAP.md`, ADRs, RFCs, and `docs/agents/`.
 
 ## Tips
 

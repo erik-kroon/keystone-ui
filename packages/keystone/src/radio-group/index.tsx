@@ -1,0 +1,353 @@
+import {
+  createContext,
+  createMemo,
+  createUniqueId,
+  onCleanup,
+  splitProps,
+  useContext,
+  type Accessor,
+  type JSX,
+} from "solid-js";
+import {
+  callEventHandler,
+  createControllableSignal,
+  dataBoolean,
+  partDataAttributes,
+} from "../utils/index";
+
+export type RadioGroupOrientation = "horizontal" | "vertical";
+export type RadioGroupValueChangeDetail = {
+  reason: "item" | "keyboard" | "programmatic";
+};
+
+export type RadioGroupRootProps = RadioGroupPartProps<HTMLDivElement> &
+  Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> & {
+    defaultValue?: string;
+    disabled?: boolean;
+    invalid?: boolean;
+    loopFocus?: boolean;
+    name?: string;
+    onValueChange?: (value: string | undefined, detail: RadioGroupValueChangeDetail) => void;
+    orientation?: RadioGroupOrientation;
+    readOnly?: boolean;
+    required?: boolean;
+    value?: string;
+  };
+
+export type RadioGroupPartProps<T extends HTMLElement = HTMLElement> = {
+  children?: JSX.Element;
+  class?: string;
+  id?: string;
+  ref?: T | ((element: T) => void);
+  style?: JSX.CSSProperties | string;
+};
+
+export type RadioGroupItemProps = RadioGroupPartProps<HTMLButtonElement> &
+  Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, "children" | "ref" | "value"> & {
+    disabled?: boolean;
+    value: string;
+  };
+export type RadioGroupItemIndicatorProps = RadioGroupPartProps<HTMLSpanElement> &
+  Omit<JSX.HTMLAttributes<HTMLSpanElement>, "children" | "ref"> & {
+    forceMount?: boolean;
+  };
+export type RadioGroupHiddenInputProps = RadioGroupPartProps<HTMLInputElement> &
+  Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "children" | "checked" | "ref" | "type">;
+
+type RadioItemRecord = {
+  disabled: Accessor<boolean>;
+  element: HTMLButtonElement;
+  value: string;
+};
+
+type RadioGroupApi = {
+  disabled: Accessor<boolean>;
+  invalid: Accessor<boolean>;
+  loopFocus: Accessor<boolean>;
+  name: Accessor<string | undefined>;
+  orientation: Accessor<RadioGroupOrientation>;
+  readOnly: Accessor<boolean>;
+  registerItem: (
+    element: HTMLButtonElement,
+    value: string,
+    disabled: Accessor<boolean>,
+  ) => () => void;
+  required: Accessor<boolean>;
+  selectValue: (
+    value: string | undefined,
+    detail: RadioGroupValueChangeDetail,
+  ) => string | undefined;
+  value: Accessor<string | undefined>;
+  items: Accessor<RadioItemRecord[]>;
+};
+
+type RadioGroupItemApi = {
+  checked: Accessor<boolean>;
+  disabled: Accessor<boolean>;
+  inputId: string;
+  setItemElement: (element: HTMLButtonElement) => void;
+  value: string;
+};
+
+const RadioGroupContext = createContext<RadioGroupApi>();
+const RadioGroupItemContext = createContext<RadioGroupItemApi>();
+
+export function createRadioGroup(
+  options: {
+    defaultValue?: string;
+    disabled?: () => boolean | undefined;
+    invalid?: () => boolean | undefined;
+    loopFocus?: () => boolean | undefined;
+    name?: () => string | undefined;
+    onValueChange?: (value: string | undefined, detail: RadioGroupValueChangeDetail) => void;
+    orientation?: () => RadioGroupOrientation | undefined;
+    readOnly?: () => boolean | undefined;
+    required?: () => boolean | undefined;
+    value?: () => string | undefined;
+  } = {},
+): RadioGroupApi {
+  let pendingDetail: RadioGroupValueChangeDetail | undefined;
+  const [value, setValueState] = createControllableSignal<string | undefined>({
+    value: options.value,
+    defaultValue: options.defaultValue,
+    onChange: (nextValue) => {
+      options.onValueChange?.(nextValue, pendingDetail ?? { reason: "programmatic" });
+      pendingDetail = undefined;
+    },
+  });
+  const itemRecords: RadioItemRecord[] = [];
+
+  return {
+    disabled: createMemo(() => options.disabled?.() ?? false),
+    invalid: createMemo(() => options.invalid?.() ?? false),
+    loopFocus: createMemo(() => options.loopFocus?.() ?? true),
+    name: createMemo(() => options.name?.()),
+    orientation: createMemo(() => options.orientation?.() ?? "vertical"),
+    readOnly: createMemo(() => options.readOnly?.() ?? false),
+    registerItem: (element, itemValue, itemDisabled) => {
+      const record = { disabled: itemDisabled, element, value: itemValue };
+      itemRecords.push(record);
+
+      return () => {
+        const index = itemRecords.indexOf(record);
+        if (index >= 0) itemRecords.splice(index, 1);
+      };
+    },
+    required: createMemo(() => options.required?.() ?? false),
+    selectValue: (nextValue, detail) => {
+      pendingDetail = detail;
+      const result = setValueState(nextValue);
+      pendingDetail = undefined;
+      return result;
+    },
+    value,
+    items: () => itemRecords,
+  };
+}
+
+function useRadioGroup(part: string) {
+  const group = useContext(RadioGroupContext);
+  if (!group) throw new Error(`RadioGroup.${part} must be used within RadioGroup.Root`);
+  return group;
+}
+
+function useRadioGroupItem(part: string) {
+  const item = useContext(RadioGroupItemContext);
+  if (!item) throw new Error(`RadioGroup.${part} must be used within RadioGroup.Item`);
+  return item;
+}
+
+function Root(props: RadioGroupRootProps) {
+  const [local, others] = splitProps(props, [
+    "children",
+    "defaultValue",
+    "disabled",
+    "invalid",
+    "loopFocus",
+    "name",
+    "onValueChange",
+    "orientation",
+    "readOnly",
+    "required",
+    "value",
+  ]);
+  const group = createRadioGroup({
+    defaultValue: local.defaultValue,
+    disabled: () => local.disabled,
+    invalid: () => local.invalid,
+    loopFocus: () => local.loopFocus,
+    name: () => local.name,
+    onValueChange: local.onValueChange,
+    orientation: () => local.orientation,
+    readOnly: () => local.readOnly,
+    required: () => local.required,
+    value: () => local.value,
+  });
+
+  return (
+    <RadioGroupContext.Provider value={group}>
+      <div
+        {...others}
+        aria-disabled={group.disabled() || undefined}
+        aria-invalid={group.invalid() || undefined}
+        aria-orientation={group.orientation()}
+        aria-readonly={group.readOnly() || undefined}
+        aria-required={group.required() || undefined}
+        data-disabled={dataBoolean(group.disabled())}
+        data-invalid={dataBoolean(group.invalid())}
+        data-orientation={group.orientation()}
+        data-readonly={dataBoolean(group.readOnly())}
+        data-required={dataBoolean(group.required())}
+        role="radiogroup"
+        {...partDataAttributes("radio-group", "root")}
+      >
+        {local.children}
+      </div>
+    </RadioGroupContext.Provider>
+  );
+}
+
+function Item(props: RadioGroupItemProps) {
+  const group = useRadioGroup("Item");
+  const [local, others] = splitProps(props, [
+    "children",
+    "disabled",
+    "onClick",
+    "onKeyDown",
+    "ref",
+    "value",
+  ]);
+  const disabled = createMemo(() => group.disabled() || (local.disabled ?? false));
+  const checked = createMemo(() => group.value() === local.value);
+  const inputId = `keystone-radio-group-input-${createUniqueId()}`;
+  let unregisterItem: (() => void) | undefined;
+
+  const item: RadioGroupItemApi = {
+    checked,
+    disabled,
+    inputId,
+    setItemElement: (element) => {
+      unregisterItem?.();
+      unregisterItem = group.registerItem(element, local.value, disabled);
+    },
+    value: local.value,
+  };
+
+  onCleanup(() => unregisterItem?.());
+
+  return (
+    <RadioGroupItemContext.Provider value={item}>
+      <button
+        {...others}
+        aria-checked={checked()}
+        aria-disabled={disabled() || undefined}
+        data-checked={dataBoolean(checked())}
+        data-disabled={dataBoolean(disabled())}
+        data-state={checked() ? "checked" : "unchecked"}
+        role="radio"
+        tabIndex={getTabIndex(group, local.value, disabled())}
+        type="button"
+        {...partDataAttributes("radio-group", "item")}
+        onClick={(event) => {
+          callEventHandler(local.onClick, event);
+          if (event.defaultPrevented || disabled() || group.readOnly()) return;
+          group.selectValue(local.value, { reason: "item" });
+        }}
+        onKeyDown={(event) => {
+          callEventHandler(local.onKeyDown, event);
+          if (!event.defaultPrevented) moveRadioFocus(event, group);
+        }}
+        ref={(element) => {
+          if (typeof local.ref === "function") local.ref(element);
+          item.setItemElement(element);
+        }}
+      >
+        {local.children}
+      </button>
+    </RadioGroupItemContext.Provider>
+  );
+}
+
+function ItemIndicator(props: RadioGroupItemIndicatorProps) {
+  const item = useRadioGroupItem("ItemIndicator");
+  const [local, others] = splitProps(props, ["children", "forceMount"]);
+
+  if (!local.forceMount && !item.checked()) return null;
+
+  return (
+    <span
+      {...others}
+      data-checked={dataBoolean(item.checked())}
+      data-disabled={dataBoolean(item.disabled())}
+      data-state={item.checked() ? "checked" : "unchecked"}
+      {...partDataAttributes("radio-group", "item-indicator")}
+    >
+      {local.children}
+    </span>
+  );
+}
+
+function HiddenInput(props: RadioGroupHiddenInputProps) {
+  const group = useRadioGroup("HiddenInput");
+  const item = useRadioGroupItem("HiddenInput");
+
+  return (
+    <input
+      {...props}
+      checked={item.checked()}
+      disabled={item.disabled()}
+      id={item.inputId}
+      name={group.name()}
+      required={group.required()}
+      type="radio"
+      value={item.value}
+      data-state={item.checked() ? "checked" : "unchecked"}
+      {...partDataAttributes("radio-group", "hidden-input")}
+    />
+  );
+}
+
+function getTabIndex(group: RadioGroupApi, itemValue: string, disabled: boolean) {
+  if (disabled) return undefined;
+  if (group.value() === itemValue) return 0;
+  if (group.value() !== undefined) return -1;
+  const firstEnabled = group.items().find((item) => !item.disabled());
+  return firstEnabled?.value === itemValue ? 0 : -1;
+}
+
+function moveRadioFocus(event: KeyboardEvent, group: RadioGroupApi) {
+  const horizontal = group.orientation() === "horizontal";
+  const nextKey = horizontal ? "ArrowRight" : "ArrowDown";
+  const previousKey = horizontal ? "ArrowLeft" : "ArrowUp";
+
+  if (![nextKey, previousKey, "Home", "End"].includes(event.key)) return;
+  if (group.readOnly() || group.disabled()) return;
+
+  const items = group.items().filter((item) => !item.disabled());
+  const currentIndex = items.findIndex((item) => item.element === event.currentTarget);
+  if (currentIndex < 0) return;
+
+  event.preventDefault();
+
+  const lastIndex = items.length - 1;
+  let nextIndex = currentIndex;
+
+  if (event.key === "Home") nextIndex = 0;
+  else if (event.key === "End") nextIndex = lastIndex;
+  else if (event.key === nextKey) nextIndex = currentIndex + 1;
+  else if (event.key === previousKey) nextIndex = currentIndex - 1;
+
+  if (nextIndex > lastIndex) nextIndex = group.loopFocus() ? 0 : lastIndex;
+  if (nextIndex < 0) nextIndex = group.loopFocus() ? lastIndex : 0;
+
+  const nextItem = items[nextIndex];
+  nextItem?.element.focus();
+  if (nextItem) group.selectValue(nextItem.value, { reason: "keyboard" });
+}
+
+export const RadioGroup = {
+  Root,
+  Item,
+  ItemIndicator,
+  HiddenInput,
+};

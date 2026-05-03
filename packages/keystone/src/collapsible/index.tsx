@@ -1,16 +1,15 @@
 import { Show, createContext, splitProps, useContext, type JSX } from "solid-js";
 import { createDisclosureController, type DisclosureChangeDetail } from "../disclosure/controller";
-import { renderPolymorphic, type PolymorphicProps } from "../utils/index";
+import {
+  dataBoolean,
+  partDataAttributes,
+  renderPolymorphic,
+  type PolymorphicProps,
+} from "../utils/index";
 
-export type CollapsibleOpenChangeDetail = DisclosureChangeDetail<"trigger" | "programmatic">;
-
-export type CollapsibleRootProps = {
-  children?: JSX.Element;
-  defaultOpen?: boolean;
-  disabled?: boolean;
-  onOpenChange?: (open: boolean, detail: CollapsibleOpenChangeDetail) => void;
-  open?: boolean;
-};
+export type CollapsibleOpenChangeDetail = DisclosureChangeDetail<
+  "trigger" | "programmatic" | "browser-find"
+>;
 
 export type CollapsiblePartProps<T extends HTMLElement = HTMLElement> = {
   children?: JSX.Element;
@@ -20,6 +19,14 @@ export type CollapsiblePartProps<T extends HTMLElement = HTMLElement> = {
   style?: JSX.CSSProperties | string;
 };
 
+export type CollapsibleRootProps = CollapsiblePartProps<HTMLDivElement> &
+  Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> & {
+    defaultOpen?: boolean;
+    disabled?: boolean;
+    onOpenChange?: (open: boolean, detail: CollapsibleOpenChangeDetail) => void;
+    open?: boolean;
+  };
+
 export type CollapsibleTriggerProps = CollapsiblePartProps<HTMLButtonElement> &
   PolymorphicProps<HTMLButtonElement> &
   Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, "children" | "ref">;
@@ -27,6 +34,7 @@ export type CollapsibleTriggerProps = CollapsiblePartProps<HTMLButtonElement> &
 export type CollapsibleContentProps = CollapsiblePartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> & {
     forceMount?: boolean;
+    hiddenUntilFound?: boolean;
   };
 
 export type CollapsibleTriggerContractProps = Omit<CollapsibleTriggerProps, "as" | "children">;
@@ -76,15 +84,31 @@ function useCollapsible(part: string) {
 }
 
 function Root(props: CollapsibleRootProps) {
+  const [local, others] = splitProps(props, [
+    "children",
+    "defaultOpen",
+    "disabled",
+    "onOpenChange",
+    "open",
+  ]);
   const collapsible = createCollapsible({
-    defaultOpen: props.defaultOpen,
-    disabled: () => props.disabled,
-    onOpenChange: props.onOpenChange,
-    open: () => props.open,
+    defaultOpen: local.defaultOpen,
+    disabled: () => local.disabled,
+    onOpenChange: local.onOpenChange,
+    open: () => local.open,
   });
 
   return (
-    <CollapsibleContext.Provider value={collapsible}>{props.children}</CollapsibleContext.Provider>
+    <CollapsibleContext.Provider value={collapsible}>
+      <div
+        {...others}
+        data-disabled={dataBoolean(collapsible.disabled())}
+        data-state={collapsible.open() ? "open" : "closed"}
+        {...partDataAttributes("collapsible", "root")}
+      >
+        {local.children}
+      </div>
+    </CollapsibleContext.Provider>
   );
 }
 
@@ -105,11 +129,14 @@ function Trigger(props: CollapsibleTriggerProps) {
 
 function Content(props: CollapsibleContentProps) {
   const collapsible = useCollapsible("Content");
-  const [local, others] = splitProps(props, ["children", "forceMount"]);
-  const contentProps = collapsible.getContentProps(others);
+  const [local, others] = splitProps(props, ["children", "forceMount", "hiddenUntilFound"]);
+  const contentProps = collapsible.getContentProps({
+    ...others,
+    hiddenUntilFound: local.hiddenUntilFound,
+  });
 
   return (
-    <Show when={local.forceMount || collapsible.open()}>
+    <Show when={local.forceMount || local.hiddenUntilFound || collapsible.open()}>
       <div {...contentProps}>{local.children}</div>
     </Show>
   );

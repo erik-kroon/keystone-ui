@@ -66,7 +66,13 @@ describe("Mason registry validation tracer", () => {
       ) as unknown;
       const result = validateItem(item, { registryRoot: defaultRegistryRoot });
       expect(result.ok).toBe(true);
-      if (result.ok) validatedNames.push(result.value.name);
+      if (result.ok) {
+        validatedNames.push(result.value.name);
+        expect(result.value.meta?.parity).toBeObject();
+        expect(Object.values(result.value.meta?.parity ?? {})).toSatisfy(
+          (notes) => notes.length > 0 && notes.every((note) => typeof note === "string"),
+        );
+      }
     }
 
     expect(validatedNames).toEqual([
@@ -76,12 +82,14 @@ describe("Mason registry validation tracer", () => {
       "badge",
       "button",
       "card",
+      "checkbox",
       "cn",
       "collapsible",
       "combobox",
       "context-menu",
       "data-table-tanstack-router",
       "data-table",
+      "date-picker",
       "dialog",
       "dropdown-menu",
       "field",
@@ -90,13 +98,19 @@ describe("Mason registry validation tracer", () => {
       "label",
       "menu",
       "menubar",
+      "navigation-menu",
       "popover",
+      "radio-group",
       "select-field",
       "separator",
       "sheet",
+      "slider",
+      "switch",
+      "tabs",
       "text-field",
       "textarea",
       "toast",
+      "toolbar",
       "tooltip",
     ]);
   });

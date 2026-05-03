@@ -21,8 +21,8 @@
     "dependencies": ["@keystone-ui/keystone", "cn"],
     "parts": ["trigger", "positioner", "content"],
     "parity": {
-      "kobalte": "Matches the core Root/Trigger/Portal/Content shape, custom open/close delays, controlled state, forceMount, and screen-reader-hidden preview intent. Gaps: optional Arrow part and deeper safe-area tuning remain follow-up work.",
-      "baseUi": "Matches the simple PreviewCard Root/Trigger/Portal/Positioner/Popup-style contract through Keystone Content. Gaps: detached triggers, multiple trigger payloads, Backdrop, Viewport, Arrow, and trigger-id coordination remain follow-up work."
+      "baseUi": "Matches PreviewCard Root/Trigger/Portal/Positioner/Popup-style contract through Keystone trigger, positioner, and content parts. Gaps: detached triggers, multiple trigger payloads, Backdrop, Viewport, Arrow, and trigger-id coordination remain follow-up work.",
+      "kobalte": "Matches HoverCard Root/Trigger/Portal/Content shape, custom open/close delays, controlled state, forceMount direction, and screen-reader-hidden preview intent. Gaps: optional Arrow part and deeper safe-area tuning remain follow-up work."
     }
   },
   "files": [

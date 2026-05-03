@@ -17,7 +17,11 @@
     "install": "mason add card",
     "customization": "Customize each part through mason-card classes and data-part values for root, header, title, description, content, and footer.",
     "sourceFiles": ["registry/default/ui/card.tsx"],
-    "dependencies": ["cn"]
+    "dependencies": ["cn"],
+    "parity": {
+      "baseUi": "Base UI has no first-class Card primitive, so parity is Mason component anatomy: root, header, title, description, content, and footer parts with stable data-part hooks. Gaps: sectioning role guidance, interactive card patterns, media slots, and density variants remain follow-up work.",
+      "kobalte": "Kobalte has no direct Card primitive; this remains a styled composition component. Gaps: Solid polymorphic part rendering, heading-level guidance, and shared layout token metadata remain follow-up work."
+    }
   },
   "files": [
     {

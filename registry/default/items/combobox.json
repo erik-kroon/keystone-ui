@@ -18,7 +18,11 @@
     "install": "mason add combobox",
     "customization": "Style the generated wrappers through mason-combobox classes while Keystone owns input/listbox roles, selection, form value, and positioning.",
     "sourceFiles": ["registry/default/ui/combobox.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "cn"]
+    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "parity": {
+      "baseUi": "Thin vertical covers the core input, popup/listbox, item highlighting, selection, form value, and floating positioning contract through Keystone. Gaps: Base UI depth around field integration, collection virtualization, grouped items, scroll arrows, modal backdrop behavior, clear button semantics, and async filtering remain follow-up work.",
+      "kobalte": "Follows Kobalte Solid composition by building from form-control, listbox, selection, and popper-style pieces. Gaps: hidden select parity, multiple selection, section/group APIs, robust typeahead, controlled inputValue/open coordination, and reset semantics remain follow-up work."
+    }
   },
   "files": [
     {

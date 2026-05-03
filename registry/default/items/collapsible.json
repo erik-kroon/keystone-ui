@@ -16,11 +16,14 @@
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add collapsible",
-    "customization": "Style the generated wrappers through mason-collapsible classes while Keystone keeps open state, ARIA relationships, and data attributes.",
+    "customization": "Style the generated wrappers through mason-collapsible classes while Keystone keeps open state, ARIA relationships, hidden-until-found behavior, and data attributes.",
     "sourceFiles": ["registry/default/ui/collapsible.tsx"],
     "dependencies": ["@keystone-ui/keystone", "cn"],
-    "parts": ["trigger", "content"],
-    "parity": "Thin vertical: matches Kobalte/Base UI controlled and uncontrolled disclosure state, trigger ARIA, and data-state hooks. Remaining parity gaps are measured height/width transition CSS variables, hidden-until-found, richer transition status, and edge-case browser find behavior."
+    "parts": ["root", "trigger", "content"],
+    "parity": {
+      "baseUi": "Thin vertical covers controlled and uncontrolled disclosure state, Root/Trigger/Panel-style anatomy, trigger ARIA, data-state hooks, and hidden-until-found browser find reveal behavior. Gaps: measured height/width CSS variables, transition status metadata, and deeper browser-find coverage remain follow-up work.",
+      "kobalte": "Matches Solid Root/Trigger/Content composition, controlled state, default open state, disabled guards, and stable part attributes. Gaps: create-transition parity, force-mount lifecycle depth, and additional edge-case tests remain follow-up work."
+    }
   },
   "files": [
     {

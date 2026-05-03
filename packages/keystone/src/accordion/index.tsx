@@ -21,7 +21,9 @@ import {
 
 export type AccordionValue = string[];
 export type AccordionOrientation = "horizontal" | "vertical";
-export type AccordionValueChangeDetail = DisclosureChangeDetail<"trigger" | "programmatic">;
+export type AccordionValueChangeDetail = DisclosureChangeDetail<
+  "trigger" | "programmatic" | "browser-find"
+>;
 
 export type AccordionRootProps = AccordionPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> & {
@@ -56,6 +58,7 @@ export type AccordionTriggerProps = AccordionPartProps<HTMLButtonElement> &
 export type AccordionContentProps = AccordionPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> & {
     forceMount?: boolean;
+    hiddenUntilFound?: boolean;
   };
 
 type TriggerRecord = {
@@ -318,11 +321,14 @@ function Trigger(props: AccordionTriggerProps) {
 
 function Content(props: AccordionContentProps) {
   const item = useAccordionItem("Content");
-  const [local, others] = splitProps(props, ["children", "forceMount"]);
-  const contentProps = item.getContentProps(others);
+  const [local, others] = splitProps(props, ["children", "forceMount", "hiddenUntilFound"]);
+  const contentProps = item.getContentProps({
+    ...others,
+    hiddenUntilFound: local.hiddenUntilFound,
+  });
 
   return (
-    <Show when={local.forceMount || item.open()}>
+    <Show when={local.forceMount || local.hiddenUntilFound || item.open()}>
       <div {...contentProps}>{local.children}</div>
     </Show>
   );

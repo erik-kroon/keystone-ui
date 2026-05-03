@@ -18,7 +18,11 @@
     "install": "mason add context-menu",
     "customization": "Style the generated wrappers through mason-context-menu classes while Keystone owns menu roles, roving focus, typeahead, dismissal, and positioning.",
     "sourceFiles": ["registry/default/ui/context-menu.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "cn"]
+    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "parity": {
+      "baseUi": "Thin vertical covers menu roles, roving focus, typeahead, disabled skipping, submenu-capable item structure, context trigger positioning, dismissal, and Mason classes. Gaps: pointer grace areas, collision-aware submenu placement, checkbox/radio item groups, animation status metadata, and nested layer edge tests remain follow-up work.",
+      "kobalte": "Matches Solid ContextMenu/Menu anatomy direction with trigger, portal/content, items, separators, groups, and keyboard navigation. Gaps: advanced submenu intent, modality nuances, item checked state helpers, and deeper dismissable-layer coordination remain follow-up work."
+    }
   },
   "files": [
     {

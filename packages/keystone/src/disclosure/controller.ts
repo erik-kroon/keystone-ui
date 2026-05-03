@@ -31,6 +31,8 @@ export type DisclosureContentProps = Omit<
   JSX.HTMLAttributes<HTMLDivElement>,
   "children" | "ref"
 > & {
+  hiddenUntilFound?: boolean;
+  onBeforeMatch?: unknown;
   ref?: HTMLDivElement | ((element: HTMLDivElement) => void);
 };
 
@@ -74,20 +76,32 @@ export function createDisclosureController<TReason extends string = "trigger" | 
   return {
     contentId,
     disabled,
-    getContentProps: (props: DisclosureContentProps) => ({
-      ...props,
-      id: contentId(),
-      ...partDataAttributes(options.scope, "content"),
-      get hidden() {
-        return open() ? undefined : true;
-      },
-      get "data-state"() {
-        return open() ? "open" : "closed";
-      },
-      get "data-disabled"() {
-        return dataBoolean(disabled());
-      },
-    }),
+    getContentProps: (props: DisclosureContentProps) => {
+      const [local, others] = splitProps(props, ["hiddenUntilFound", "onBeforeMatch"]);
+
+      return {
+        ...others,
+        id: contentId(),
+        ...partDataAttributes(options.scope, "content"),
+        get hidden() {
+          if (open() || local.hiddenUntilFound) return undefined;
+          return true;
+        },
+        get "attr:hidden"() {
+          if (open()) return undefined;
+          return local.hiddenUntilFound ? "until-found" : undefined;
+        },
+        onBeforeMatch: composeEventHandlers(local.onBeforeMatch, (event) =>
+          setOpen(true, { event, reason: "browser-find" } as DisclosureChangeDetail<TReason>),
+        ),
+        get "data-state"() {
+          return open() ? "open" : "closed";
+        },
+        get "data-disabled"() {
+          return dataBoolean(disabled());
+        },
+      };
+    },
     getTriggerProps: (props: DisclosureTriggerProps) => {
       const [local, others] = splitProps(props, ["disabled", "onClick"]);
 

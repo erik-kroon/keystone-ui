@@ -18,7 +18,11 @@
     "install": "mason add menubar",
     "customization": "Style the generated wrappers through mason-menubar classes while Keystone owns menu roles, roving focus, typeahead, and item state behavior.",
     "sourceFiles": ["registry/default/ui/menubar.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "cn"]
+    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "parity": {
+      "baseUi": "Thin vertical covers horizontal menubar role, roving focus, menu item activation, nested popup positioning, typeahead, disabled skipping, groups, separators, and Mason classes. Gaps: complex submenu hover intent, RTL edge cases, checkbox/radio item groups, and robust pointer/keyboard modality tests remain follow-up work.",
+      "kobalte": "Matches Kobalte Menubar/Menu composition direction with Solid menubar root, trigger/content, items, and keyboard navigation. Gaps: advanced nested menu coordination, focus restoration across route links, and checked item helpers remain follow-up work."
+    }
   },
   "files": [
     {

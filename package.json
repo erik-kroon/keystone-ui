@@ -25,7 +25,6 @@
     "check": "oxlint && oxfmt --write"
   },
   "devDependencies": {
-    "@keystone-ui/config": "workspace:*",
     "@tanstack/solid-table": "^8.21.3",
     "oxfmt": "^0.46.0",
     "oxlint": "^1.61.0",

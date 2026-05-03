@@ -24,7 +24,11 @@
       "registry/default/components/data-table/data-table-search.ts",
       "registry/default/components/data-table/use-data-table-router.ts"
     ],
-    "dependencies": ["@tanstack/solid-router", "data-table"]
+    "dependencies": ["@tanstack/solid-router", "data-table"],
+    "parity": {
+      "tanstackRouter": "First-class comparison is TanStack Router: the adapter maps validated search params to pagination, sorting, filters, and visibility state while row selection stays local. Gaps: server fetching, route loader integration, saved views, debounced URL writes, and complex filter serialization remain follow-up work.",
+      "tanstackTable": "Complements the DataTable kit by keeping TanStack Table state URL-addressable without replacing table behavior. Gaps: no virtualization, no server-side pagination contract, and no global table preference persistence."
+    }
   },
   "files": [
     {
