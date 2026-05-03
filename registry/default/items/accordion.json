@@ -1,0 +1,31 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "accordion",
+  "type": "registry:ui",
+  "title": "Accordion",
+  "description": "Styled Solid accordion component backed by Keystone disclosure coordination.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["disclosure", "navigation", "layout"],
+  "keywords": ["accordion", "collapsible", "disclosure", "keystone"],
+  "docs": "https://mason.build/docs/components/accordion",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add accordion",
+    "customization": "Style the generated wrappers through mason-accordion classes while Keystone keeps item coordination, trigger ARIA, keyboard navigation, and data attributes.",
+    "sourceFiles": ["registry/default/ui/accordion.tsx"],
+    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "parts": ["root", "item", "header", "trigger", "content"],
+    "parity": "Thin vertical: compares against Kobalte/Base UI with single and multiple value state, disabled items, trigger ARIA, vertical keyboard focus movement, and Mason wrapper metadata. Remaining parity gaps are RTL horizontal key behavior, measured panel CSS variables, hidden-until-found, transition lifecycle states, and broader edge-case tests."
+  },
+  "files": [
+    {
+      "path": "ui/accordion.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

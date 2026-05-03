@@ -14,6 +14,7 @@ Start with:
 - [Mason Registry RFC](../rfcs/mason-registry.md)
 - [End-state primitive/component inventory](./end-state-primitive-component-inventory.md)
 - [Keystone internal kernel guidance](./keystone-internal-kernel-guidance.md)
+- [Accordion and Collapsible vertical](./accordion-collapsible-vertical.md)
 
 The current strategic PRD is stored in `.context/attachments/pasted_text_2026-05-03_14-26-48.txt`.
 

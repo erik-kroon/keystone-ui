@@ -23,6 +23,7 @@ import { Popover } from "@keystone-ui/keystone/popover";
 import { Select } from "@keystone-ui/keystone/select";
 import { Sheet } from "@keystone-ui/keystone/sheet";
 import { Tooltip } from "@keystone-ui/keystone/tooltip";
+import { Toast, toaster } from "@keystone-ui/keystone/toast";
 import { createFormControl } from "@keystone-ui/keystone/form";
 ```
 
@@ -34,7 +35,7 @@ mason add button --registry <local-registry-path>
 mason add account-settings --registry <local-registry-path>
 ```
 
-The default local registry currently includes base components (`button`, `badge`, `card`, `field`, `input`, `label`, `separator`, `textarea`, `cn`), Keystone-backed overlays and menus (`dialog`, `popover`, `sheet`, `tooltip`, `menu`, `dropdown-menu`, `context-menu`, `menubar`), TanStack Form field examples (`text-field`, `select-field`), and the first block tracer (`account-settings`).
+The default local registry currently includes base components (`button`, `badge`, `card`, `field`, `input`, `label`, `separator`, `textarea`, `cn`), Keystone-backed overlays, menus, and feedback primitives (`dialog`, `popover`, `sheet`, `tooltip`, `menu`, `dropdown-menu`, `context-menu`, `menubar`, `toast`), TanStack Form field examples (`text-field`, `select-field`), and the first block tracer (`account-settings`).
 
 Mason install planning records target files, content hashes, existing target state, dependency changes, installed-item metadata, and conflicts before applying writes.
 

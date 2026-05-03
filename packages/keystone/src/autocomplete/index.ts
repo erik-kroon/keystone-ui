@@ -1,0 +1,22 @@
+export { Autocomplete, createAutocomplete } from "../combobox/index";
+export type {
+  ComboboxApi as AutocompleteApi,
+  ComboboxChangeDetail as AutocompleteChangeDetail,
+  ComboboxClearProps as AutocompleteClearProps,
+  ComboboxContentProps as AutocompleteContentProps,
+  ComboboxGroupLabelProps as AutocompleteGroupLabelProps,
+  ComboboxGroupProps as AutocompleteGroupProps,
+  ComboboxInputProps as AutocompleteInputProps,
+  ComboboxItemData as AutocompleteItemData,
+  ComboboxItemIndicatorProps as AutocompleteItemIndicatorProps,
+  ComboboxItemProps as AutocompleteItemProps,
+  ComboboxItemTextProps as AutocompleteItemTextProps,
+  ComboboxListboxProps as AutocompleteListboxProps,
+  ComboboxOpenChangeDetail as AutocompleteOpenChangeDetail,
+  ComboboxPartProps as AutocompletePartProps,
+  ComboboxPortalProps as AutocompletePortalProps,
+  ComboboxPositionerProps as AutocompletePositionerProps,
+  ComboboxRootProps as AutocompleteRootProps,
+  ComboboxTriggerProps as AutocompleteTriggerProps,
+  CreateComboboxOptions as CreateAutocompleteOptions,
+} from "../combobox/index";

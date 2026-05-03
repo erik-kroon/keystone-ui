@@ -8,171 +8,170 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as DocsOverlayPopoverTooltipSheetRouteImport } from './routes/docs.overlay.popover-tooltip-sheet'
-import { Route as DocsMasonTextFieldRouteImport } from './routes/docs.mason.text-field'
-import { Route as DocsMasonSelectFieldRouteImport } from './routes/docs.mason.select-field'
-import { Route as DocsMasonDialogRouteImport } from './routes/docs.mason.dialog'
-import { Route as DocsMasonDataTableRouteImport } from './routes/docs.mason.data-table'
-import { Route as DocsKeystoneDialogRouteImport } from './routes/docs.keystone.dialog'
+import { Route as rootRouteImport } from "./routes/__root";
+import { Route as IndexRouteImport } from "./routes/index";
+import { Route as DocsOverlayPopoverTooltipSheetRouteImport } from "./routes/docs.overlay.popover-tooltip-sheet";
+import { Route as DocsMasonTextFieldRouteImport } from "./routes/docs.mason.text-field";
+import { Route as DocsMasonSelectFieldRouteImport } from "./routes/docs.mason.select-field";
+import { Route as DocsMasonDialogRouteImport } from "./routes/docs.mason.dialog";
+import { Route as DocsMasonDataTableRouteImport } from "./routes/docs.mason.data-table";
+import { Route as DocsKeystoneDialogRouteImport } from "./routes/docs.keystone.dialog";
 
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRouteImport,
-} as any)
-const DocsOverlayPopoverTooltipSheetRoute =
-  DocsOverlayPopoverTooltipSheetRouteImport.update({
-    id: '/docs/overlay/popover-tooltip-sheet',
-    path: '/docs/overlay/popover-tooltip-sheet',
-    getParentRoute: () => rootRouteImport,
-  } as any)
+} as any);
+const DocsOverlayPopoverTooltipSheetRoute = DocsOverlayPopoverTooltipSheetRouteImport.update({
+  id: "/docs/overlay/popover-tooltip-sheet",
+  path: "/docs/overlay/popover-tooltip-sheet",
+  getParentRoute: () => rootRouteImport,
+} as any);
 const DocsMasonTextFieldRoute = DocsMasonTextFieldRouteImport.update({
-  id: '/docs/mason/text-field',
-  path: '/docs/mason/text-field',
+  id: "/docs/mason/text-field",
+  path: "/docs/mason/text-field",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const DocsMasonSelectFieldRoute = DocsMasonSelectFieldRouteImport.update({
-  id: '/docs/mason/select-field',
-  path: '/docs/mason/select-field',
+  id: "/docs/mason/select-field",
+  path: "/docs/mason/select-field",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const DocsMasonDialogRoute = DocsMasonDialogRouteImport.update({
-  id: '/docs/mason/dialog',
-  path: '/docs/mason/dialog',
+  id: "/docs/mason/dialog",
+  path: "/docs/mason/dialog",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const DocsMasonDataTableRoute = DocsMasonDataTableRouteImport.update({
-  id: '/docs/mason/data-table',
-  path: '/docs/mason/data-table',
+  id: "/docs/mason/data-table",
+  path: "/docs/mason/data-table",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const DocsKeystoneDialogRoute = DocsKeystoneDialogRouteImport.update({
-  id: '/docs/keystone/dialog',
-  path: '/docs/keystone/dialog',
+  id: "/docs/keystone/dialog",
+  path: "/docs/keystone/dialog",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/docs/keystone/dialog': typeof DocsKeystoneDialogRoute
-  '/docs/mason/data-table': typeof DocsMasonDataTableRoute
-  '/docs/mason/dialog': typeof DocsMasonDialogRoute
-  '/docs/mason/select-field': typeof DocsMasonSelectFieldRoute
-  '/docs/mason/text-field': typeof DocsMasonTextFieldRoute
-  '/docs/overlay/popover-tooltip-sheet': typeof DocsOverlayPopoverTooltipSheetRoute
+  "/": typeof IndexRoute;
+  "/docs/keystone/dialog": typeof DocsKeystoneDialogRoute;
+  "/docs/mason/data-table": typeof DocsMasonDataTableRoute;
+  "/docs/mason/dialog": typeof DocsMasonDialogRoute;
+  "/docs/mason/select-field": typeof DocsMasonSelectFieldRoute;
+  "/docs/mason/text-field": typeof DocsMasonTextFieldRoute;
+  "/docs/overlay/popover-tooltip-sheet": typeof DocsOverlayPopoverTooltipSheetRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/docs/keystone/dialog': typeof DocsKeystoneDialogRoute
-  '/docs/mason/data-table': typeof DocsMasonDataTableRoute
-  '/docs/mason/dialog': typeof DocsMasonDialogRoute
-  '/docs/mason/select-field': typeof DocsMasonSelectFieldRoute
-  '/docs/mason/text-field': typeof DocsMasonTextFieldRoute
-  '/docs/overlay/popover-tooltip-sheet': typeof DocsOverlayPopoverTooltipSheetRoute
+  "/": typeof IndexRoute;
+  "/docs/keystone/dialog": typeof DocsKeystoneDialogRoute;
+  "/docs/mason/data-table": typeof DocsMasonDataTableRoute;
+  "/docs/mason/dialog": typeof DocsMasonDialogRoute;
+  "/docs/mason/select-field": typeof DocsMasonSelectFieldRoute;
+  "/docs/mason/text-field": typeof DocsMasonTextFieldRoute;
+  "/docs/overlay/popover-tooltip-sheet": typeof DocsOverlayPopoverTooltipSheetRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/docs/keystone/dialog': typeof DocsKeystoneDialogRoute
-  '/docs/mason/data-table': typeof DocsMasonDataTableRoute
-  '/docs/mason/dialog': typeof DocsMasonDialogRoute
-  '/docs/mason/select-field': typeof DocsMasonSelectFieldRoute
-  '/docs/mason/text-field': typeof DocsMasonTextFieldRoute
-  '/docs/overlay/popover-tooltip-sheet': typeof DocsOverlayPopoverTooltipSheetRoute
+  __root__: typeof rootRouteImport;
+  "/": typeof IndexRoute;
+  "/docs/keystone/dialog": typeof DocsKeystoneDialogRoute;
+  "/docs/mason/data-table": typeof DocsMasonDataTableRoute;
+  "/docs/mason/dialog": typeof DocsMasonDialogRoute;
+  "/docs/mason/select-field": typeof DocsMasonSelectFieldRoute;
+  "/docs/mason/text-field": typeof DocsMasonTextFieldRoute;
+  "/docs/overlay/popover-tooltip-sheet": typeof DocsOverlayPopoverTooltipSheetRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
-    | '/'
-    | '/docs/keystone/dialog'
-    | '/docs/mason/data-table'
-    | '/docs/mason/dialog'
-    | '/docs/mason/select-field'
-    | '/docs/mason/text-field'
-    | '/docs/overlay/popover-tooltip-sheet'
-  fileRoutesByTo: FileRoutesByTo
+    | "/"
+    | "/docs/keystone/dialog"
+    | "/docs/mason/data-table"
+    | "/docs/mason/dialog"
+    | "/docs/mason/select-field"
+    | "/docs/mason/text-field"
+    | "/docs/overlay/popover-tooltip-sheet";
+  fileRoutesByTo: FileRoutesByTo;
   to:
-    | '/'
-    | '/docs/keystone/dialog'
-    | '/docs/mason/data-table'
-    | '/docs/mason/dialog'
-    | '/docs/mason/select-field'
-    | '/docs/mason/text-field'
-    | '/docs/overlay/popover-tooltip-sheet'
+    | "/"
+    | "/docs/keystone/dialog"
+    | "/docs/mason/data-table"
+    | "/docs/mason/dialog"
+    | "/docs/mason/select-field"
+    | "/docs/mason/text-field"
+    | "/docs/overlay/popover-tooltip-sheet";
   id:
-    | '__root__'
-    | '/'
-    | '/docs/keystone/dialog'
-    | '/docs/mason/data-table'
-    | '/docs/mason/dialog'
-    | '/docs/mason/select-field'
-    | '/docs/mason/text-field'
-    | '/docs/overlay/popover-tooltip-sheet'
-  fileRoutesById: FileRoutesById
+    | "__root__"
+    | "/"
+    | "/docs/keystone/dialog"
+    | "/docs/mason/data-table"
+    | "/docs/mason/dialog"
+    | "/docs/mason/select-field"
+    | "/docs/mason/text-field"
+    | "/docs/overlay/popover-tooltip-sheet";
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  DocsKeystoneDialogRoute: typeof DocsKeystoneDialogRoute
-  DocsMasonDataTableRoute: typeof DocsMasonDataTableRoute
-  DocsMasonDialogRoute: typeof DocsMasonDialogRoute
-  DocsMasonSelectFieldRoute: typeof DocsMasonSelectFieldRoute
-  DocsMasonTextFieldRoute: typeof DocsMasonTextFieldRoute
-  DocsOverlayPopoverTooltipSheetRoute: typeof DocsOverlayPopoverTooltipSheetRoute
+  IndexRoute: typeof IndexRoute;
+  DocsKeystoneDialogRoute: typeof DocsKeystoneDialogRoute;
+  DocsMasonDataTableRoute: typeof DocsMasonDataTableRoute;
+  DocsMasonDialogRoute: typeof DocsMasonDialogRoute;
+  DocsMasonSelectFieldRoute: typeof DocsMasonSelectFieldRoute;
+  DocsMasonTextFieldRoute: typeof DocsMasonTextFieldRoute;
+  DocsOverlayPopoverTooltipSheetRoute: typeof DocsOverlayPopoverTooltipSheetRoute;
 }
 
-declare module '@tanstack/solid-router' {
+declare module "@tanstack/solid-router" {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/docs/overlay/popover-tooltip-sheet': {
-      id: '/docs/overlay/popover-tooltip-sheet'
-      path: '/docs/overlay/popover-tooltip-sheet'
-      fullPath: '/docs/overlay/popover-tooltip-sheet'
-      preLoaderRoute: typeof DocsOverlayPopoverTooltipSheetRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/docs/mason/text-field': {
-      id: '/docs/mason/text-field'
-      path: '/docs/mason/text-field'
-      fullPath: '/docs/mason/text-field'
-      preLoaderRoute: typeof DocsMasonTextFieldRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/docs/mason/select-field': {
-      id: '/docs/mason/select-field'
-      path: '/docs/mason/select-field'
-      fullPath: '/docs/mason/select-field'
-      preLoaderRoute: typeof DocsMasonSelectFieldRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/docs/mason/dialog': {
-      id: '/docs/mason/dialog'
-      path: '/docs/mason/dialog'
-      fullPath: '/docs/mason/dialog'
-      preLoaderRoute: typeof DocsMasonDialogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/docs/mason/data-table': {
-      id: '/docs/mason/data-table'
-      path: '/docs/mason/data-table'
-      fullPath: '/docs/mason/data-table'
-      preLoaderRoute: typeof DocsMasonDataTableRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/docs/keystone/dialog': {
-      id: '/docs/keystone/dialog'
-      path: '/docs/keystone/dialog'
-      fullPath: '/docs/keystone/dialog'
-      preLoaderRoute: typeof DocsKeystoneDialogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/docs/overlay/popover-tooltip-sheet": {
+      id: "/docs/overlay/popover-tooltip-sheet";
+      path: "/docs/overlay/popover-tooltip-sheet";
+      fullPath: "/docs/overlay/popover-tooltip-sheet";
+      preLoaderRoute: typeof DocsOverlayPopoverTooltipSheetRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/docs/mason/text-field": {
+      id: "/docs/mason/text-field";
+      path: "/docs/mason/text-field";
+      fullPath: "/docs/mason/text-field";
+      preLoaderRoute: typeof DocsMasonTextFieldRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/docs/mason/select-field": {
+      id: "/docs/mason/select-field";
+      path: "/docs/mason/select-field";
+      fullPath: "/docs/mason/select-field";
+      preLoaderRoute: typeof DocsMasonSelectFieldRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/docs/mason/dialog": {
+      id: "/docs/mason/dialog";
+      path: "/docs/mason/dialog";
+      fullPath: "/docs/mason/dialog";
+      preLoaderRoute: typeof DocsMasonDialogRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/docs/mason/data-table": {
+      id: "/docs/mason/data-table";
+      path: "/docs/mason/data-table";
+      fullPath: "/docs/mason/data-table";
+      preLoaderRoute: typeof DocsMasonDataTableRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/docs/keystone/dialog": {
+      id: "/docs/keystone/dialog";
+      path: "/docs/keystone/dialog";
+      fullPath: "/docs/keystone/dialog";
+      preLoaderRoute: typeof DocsKeystoneDialogRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
@@ -184,16 +183,16 @@ const rootRouteChildren: RootRouteChildren = {
   DocsMasonSelectFieldRoute: DocsMasonSelectFieldRoute,
   DocsMasonTextFieldRoute: DocsMasonTextFieldRoute,
   DocsOverlayPopoverTooltipSheetRoute: DocsOverlayPopoverTooltipSheetRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/solid-start'
-declare module '@tanstack/solid-start' {
+import type { getRouter } from "./router.tsx";
+import type { createStart } from "@tanstack/solid-start";
+declare module "@tanstack/solid-start" {
   interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
+    ssr: true;
+    router: Awaited<ReturnType<typeof getRouter>>;
   }
 }

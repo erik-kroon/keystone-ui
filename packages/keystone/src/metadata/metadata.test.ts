@@ -9,8 +9,37 @@ import {
 } from "./index";
 
 const expectedParts = {
+  accordion: ["root", "item", "header", "trigger", "content"],
+  autocomplete: [
+    "input",
+    "trigger",
+    "clear",
+    "positioner",
+    "content",
+    "listbox",
+    "group",
+    "group-label",
+    "item",
+    "item-text",
+    "item-indicator",
+  ],
+  combobox: [
+    "input",
+    "trigger",
+    "clear",
+    "positioner",
+    "content",
+    "listbox",
+    "group",
+    "group-label",
+    "item",
+    "item-text",
+    "item-indicator",
+  ],
+  collapsible: ["trigger", "content"],
   dialog: ["trigger", "close", "backdrop", "positioner", "content", "title", "description"],
   "form-control": ["root", "control", "label", "description", "error-message", "hidden-input"],
+  "hover-card": ["trigger", "positioner", "content"],
   listbox: ["listbox", "option", "group", "group-label"],
   "context-menu": [
     "trigger",
@@ -67,6 +96,7 @@ const expectedParts = {
     "item-indicator",
   ],
   sheet: ["trigger", "close", "backdrop", "positioner", "content", "title", "description"],
+  toast: ["viewport", "root", "title", "description", "action", "close"],
   tooltip: ["trigger", "positioner", "content"],
 } as const satisfies Record<PrimitiveScope, readonly string[]>;
 

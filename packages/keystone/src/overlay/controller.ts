@@ -7,6 +7,7 @@ import {
   type FloatingAdapter,
   type FloatingCollisionBoundary,
   type FloatingPlacement,
+  type FloatingReferenceElement,
   type FloatingRootBoundary,
   type FloatingSticky,
   type FloatingStrategy,
@@ -45,6 +46,7 @@ export type OverlayControllerContentEvents = {
 export type OverlayControllerOptions<Reason extends string> = {
   defaultOpen?: boolean;
   floating?: {
+    anchor?: Accessor<FloatingReferenceElement | undefined>;
     arrowPadding?: Accessor<number | undefined>;
     collisionBoundary?: Accessor<FloatingCollisionBoundary | undefined>;
     collisionPadding?: Accessor<number | undefined>;
@@ -128,6 +130,7 @@ export type OverlayController<Reason extends string> = {
   open: Accessor<boolean>;
   presence: OverlayPresenceApi;
   setOpen: (open: boolean, detail: OverlayControllerChangeDetail<Reason>) => void;
+  setVirtualAnchor: (anchor: FloatingReferenceElement | undefined) => void;
   shouldMount: (forceMount?: boolean) => boolean;
   state: Accessor<"closed" | "open">;
   titleId: string;
@@ -145,6 +148,7 @@ export function createOverlayController<Reason extends string>(
   const [triggerElement, setTriggerElement] = createSignal<HTMLElement>();
   const [contentElement, setContentElement] = createSignal<HTMLElement>();
   const [positionerElement, setPositionerElement] = createSignal<HTMLElement>();
+  const [virtualAnchor, setVirtualAnchor] = createSignal<FloatingReferenceElement>();
   let lastDetail: OverlayControllerChangeDetail<Reason> = {
     reason: "programmatic" as Reason,
   };
@@ -161,7 +165,7 @@ export function createOverlayController<Reason extends string>(
   });
   const floating = options.floating
     ? createFloatingAdapter({
-        anchor: triggerElement,
+        anchor: () => virtualAnchor() ?? options.floating?.anchor?.() ?? triggerElement(),
         floating: () => positionerElement() ?? contentElement(),
         enabled: open,
         arrowPadding: options.floating.arrowPadding,
@@ -390,6 +394,7 @@ export function createOverlayController<Reason extends string>(
     open,
     presence,
     setOpen,
+    setVirtualAnchor: (anchor) => setVirtualAnchor(() => anchor),
     shouldMount: (forceMount) => forceMount === true || presence.mounted(),
     state,
     titleId: titleId(),

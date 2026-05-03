@@ -51,6 +51,17 @@ const floatingCssVars = [
   { name: "--keystone-transform-origin" },
 ] as const satisfies readonly PartCssVarMetadata[];
 
+const disclosureStateAttributes = [
+  { name: "data-disabled" },
+  { name: "data-state", values: ["open", "closed"] },
+] as const satisfies readonly PartStateAttributeMetadata[];
+
+const accordionStateAttributes = [
+  { name: "data-disabled" },
+  { name: "data-orientation", values: ["horizontal", "vertical"] },
+  { name: "data-state", values: ["open", "closed"] },
+] as const satisfies readonly PartStateAttributeMetadata[];
+
 const formStateAttributes = [
   { name: "data-dirty" },
   { name: "data-disabled" },
@@ -64,6 +75,17 @@ const formStateAttributes = [
 ] as const satisfies readonly PartStateAttributeMetadata[];
 
 const selectStateAttributes = [
+  { name: "data-disabled" },
+  { name: "data-highlighted" },
+  { name: "data-invalid" },
+  { name: "data-placeholder" },
+  { name: "data-readonly" },
+  { name: "data-required" },
+  { name: "data-selected" },
+  { name: "data-state", values: ["open", "closed"] },
+] as const satisfies readonly PartStateAttributeMetadata[];
+
+const comboboxStateAttributes = [
   { name: "data-disabled" },
   { name: "data-highlighted" },
   { name: "data-invalid" },
@@ -90,7 +112,28 @@ const sideAttributes = [
   { name: "data-side", values: ["top", "right", "bottom", "left"] },
 ] as const satisfies readonly PartStateAttributeMetadata[];
 
+const toastStateAttributes = [
+  { name: "data-status", values: ["open", "closed"] },
+  { name: "data-type", values: ["default", "success", "info", "warning", "error", "loading"] },
+] as const satisfies readonly PartStateAttributeMetadata[];
+
 export const primitiveMetadata = {
+  accordion: definePrimitive("accordion", [
+    part("root", [
+      { name: "data-disabled" },
+      { name: "data-orientation", values: ["horizontal", "vertical"] },
+    ]),
+    part("item", accordionStateAttributes),
+    part("header", disclosureStateAttributes),
+    part("trigger", accordionStateAttributes),
+    part("content", accordionStateAttributes),
+  ]),
+  autocomplete: comboboxPrimitive("autocomplete"),
+  collapsible: definePrimitive("collapsible", [
+    part("trigger", disclosureStateAttributes),
+    part("content", disclosureStateAttributes),
+  ]),
+  combobox: comboboxPrimitive("combobox"),
   dialog: definePrimitive("dialog", [
     part("trigger", overlayStateAttributes),
     part("close", overlayStateAttributes),
@@ -107,6 +150,11 @@ export const primitiveMetadata = {
     part("description", formStateAttributes),
     part("error-message", formStateAttributes),
     part("hidden-input"),
+  ]),
+  "hover-card": definePrimitive("hover-card", [
+    part("trigger", overlayStateAttributes),
+    part("positioner", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
+    part("content", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
   ]),
   listbox: definePrimitive("listbox", [
     part("listbox"),
@@ -169,6 +217,14 @@ export const primitiveMetadata = {
     part("content", [...overlayStateAttributes, ...sideAttributes]),
     part("title"),
     part("description"),
+  ]),
+  toast: definePrimitive("toast", [
+    part("viewport"),
+    part("root", toastStateAttributes),
+    part("title"),
+    part("description"),
+    part("action"),
+    part("close", [{ name: "data-disabled" }]),
   ]),
   tooltip: definePrimitive("tooltip", [
     part("trigger", overlayStateAttributes),
@@ -241,6 +297,35 @@ function menuPrimitive(scope: string): PrimitiveMetadata {
     part("group-label"),
     part("separator"),
     part("item", menuItemAttributes),
+    part("item-indicator"),
+  ]);
+}
+
+function comboboxPrimitive(scope: string): PrimitiveMetadata {
+  return definePrimitive(scope, [
+    part("input", comboboxStateAttributes),
+    part("trigger", comboboxStateAttributes),
+    part("clear", comboboxStateAttributes),
+    part(
+      "positioner",
+      [...floatingAttributes, { name: "data-state", values: ["open", "closed"] }],
+      floatingCssVars,
+    ),
+    part(
+      "content",
+      [...floatingAttributes, { name: "data-state", values: ["open", "closed"] }],
+      floatingCssVars,
+    ),
+    part("listbox"),
+    part("group", groupAttributes),
+    part("group-label"),
+    part("item", [
+      { name: "data-disabled" },
+      { name: "data-group" },
+      { name: "data-highlighted" },
+      { name: "data-selected" },
+    ]),
+    part("item-text"),
     part("item-indicator"),
   ]);
 }
