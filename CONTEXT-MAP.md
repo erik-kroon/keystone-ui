@@ -10,20 +10,16 @@ Early Keystone UI monorepo bootstrap for a Solid primitive library and Mason reg
 - `Mason`: copy-paste registry, CLI, blocks, templates, and styled source layer.
 - `kernel`: shared primitive internals that should be built before visible components.
 - `registry`: Mason distribution model for components, blocks, templates, themes, and related files.
-- `docs`: product documentation and API guidance, currently via Fumadocs.
+- `docs`: product documentation and API guidance, served through `apps/docs`.
 - `TanStack app layer`: Mason's preferred app-behavior layer for forms, tables, shared state, and app-level shortcuts.
 
 ## Module Map
 
-- `apps/web`
-  - Solid + TanStack Router web app.
-  - Current route is the active app surface; docs/playground responsibilities are still unsettled.
-- `packages/env`
-  - Shared env helper package.
+- `apps/docs`
+  - Solid + TanStack Router docs/product app.
+  - Current route is the active docs, examples, and registry preview surface.
 - `packages/config`
   - Shared TypeScript config package.
-- `packages/infra`
-  - Alchemy/Cloudflare deployment wrapper for the web app.
 - `packages/keystone`
   - Early primitive tracer package with Dialog, Form, Overlay, Select, and Utils exports.
   - Needs deeper internals before more component breadth.
@@ -50,7 +46,7 @@ The PRD's end-state structure points toward these future areas:
 - `packages/mason-registry`: schema, validation, build, and resolution logic.
 - `registry/default`: Mason UI, blocks, themes, and templates.
 - `examples`: install and compatibility targets.
-- `apps/web`: public docs/product surface, API references, examples, and registry previews.
+- `apps/docs`: public docs/product surface, API references, examples, and registry previews.
 
 ## Call/Data Flow
 
@@ -59,8 +55,7 @@ Current executable flow:
 ```txt
 root package.json
   -> turbo tasks
-    -> apps/web Vite Solid app
-    -> packages/infra Alchemy deploy task
+    -> apps/docs Vite Solid app
 ```
 
 Intended product flow:
@@ -78,8 +73,7 @@ Keystone kernel
 - [package.json](package.json): workspace packages, Bun version, root scripts.
 - [turbo.json](turbo.json): task graph.
 - [bts.jsonc](bts.jsonc): Better-T-Stack scaffold provenance.
-- [apps/web/package.json](apps/web/package.json): Solid app dependencies.
-- [packages/infra/alchemy.run.ts](packages/infra/alchemy.run.ts): Cloudflare deployment.
+- [apps/docs/package.json](apps/docs/package.json): Solid docs app dependencies.
 - [docs/adr/0001-keystone-mason-product-boundary.md](docs/adr/0001-keystone-mason-product-boundary.md): Keystone/Mason dependency and product boundary.
 - [docs/adr/0002-scope-names-license-governance.md](docs/adr/0002-scope-names-license-governance.md): provisional names, package scope, license intent, and governance.
 - [docs/rfcs/keystone-api.md](docs/rfcs/keystone-api.md): Keystone compound API, low-level creators, state, polymorphism, styling contracts, SSR, and first primitives.
@@ -100,4 +94,4 @@ Keystone kernel
 
 - Deepen Keystone kernel modules before adding new primitives.
 - Use the accepted ADRs, RFCs, and end-state inventory before adding new Keystone or Mason surfaces.
-- Keep docs/playground/registry preview work centered in `apps/web`.
+- Keep docs/playground/registry preview work centered in `apps/docs`.
