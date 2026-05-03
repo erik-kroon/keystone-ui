@@ -1,6 +1,11 @@
 import { Show, createContext, splitProps, useContext, type JSX } from "solid-js";
 import { Portal } from "solid-js/web";
-import { OverlayLayerProvider, type OverlayLayerOutsideEvent } from "../overlay/index";
+import { getPartDataAttributes } from "../metadata/index";
+import {
+  OverlayLayerProvider,
+  type OverlayLayerOutsideEvent,
+  type OverlayPresenceCompleteDetail,
+} from "../overlay/index";
 import { createOverlayController } from "../overlay/controller";
 import { renderPolymorphic, type PolymorphicProps } from "../utils/index";
 
@@ -16,6 +21,7 @@ export type SheetRootProps = {
   defaultOpen?: boolean;
   modal?: boolean;
   onOpenChange?: (open: boolean, detail: SheetChangeDetail) => void;
+  onOpenChangeComplete?: (open: boolean, detail: OverlayPresenceCompleteDetail) => void;
   open?: boolean;
   side?: SheetSide;
 };
@@ -78,6 +84,7 @@ type SheetApi = {
   modal: () => boolean;
   open: () => boolean;
   setOpen: (open: boolean, detail: SheetChangeDetail) => void;
+  shouldMount: (forceMount?: boolean) => boolean;
   side: () => SheetSide;
   titleId: string;
 };
@@ -86,6 +93,7 @@ export type CreateSheetOptions = {
   defaultOpen?: boolean;
   modal?: () => boolean | undefined;
   onOpenChange?: (open: boolean, detail: SheetChangeDetail) => void;
+  onOpenChangeComplete?: (open: boolean, detail: OverlayPresenceCompleteDetail) => void;
   open?: () => boolean | undefined;
   side?: () => SheetSide | undefined;
 };
@@ -99,6 +107,7 @@ export function createSheet(options: CreateSheetOptions = {}): SheetApi {
     defaultOpen: options.defaultOpen,
     modal: () => options.modal?.() ?? true,
     onOpenChange: (open, detail) => options.onOpenChange?.(open, detail),
+    onOpenChangeComplete: options.onOpenChangeComplete,
   });
   const side = () => options.side?.() ?? "right";
   const partProps = (part: string) => ({
@@ -138,10 +147,10 @@ export function createSheet(options: CreateSheetOptions = {}): SheetApi {
           onUnmountAutoFocus: local.onUnmountAutoFocus,
         },
         {
+          containsTrigger: true,
           modal: overlay.modal,
           disableOutsidePointerEvents: overlay.modal,
           trapFocus: overlay.modal,
-          restoreFocus: () => true,
           dismissReason: (event) => (event.type === "keydown" ? "escape" : "outside"),
         },
       );
@@ -161,8 +170,7 @@ export function createSheet(options: CreateSheetOptions = {}): SheetApi {
     getDescriptionProps: (props) => ({
       ...props,
       id: overlay.descriptionId,
-      "data-scope": "sheet",
-      "data-part": "description",
+      ...getPartDataAttributes("sheet", "description"),
     }),
     getPositionerProps: (props) => ({
       ...props,
@@ -171,8 +179,7 @@ export function createSheet(options: CreateSheetOptions = {}): SheetApi {
     getTitleProps: (props) => ({
       ...props,
       id: overlay.titleId,
-      "data-scope": "sheet",
-      "data-part": "title",
+      ...getPartDataAttributes("sheet", "title"),
     }),
     getTriggerProps: (props) => ({
       ...overlay.getTriggerProps(props, {
@@ -184,6 +191,7 @@ export function createSheet(options: CreateSheetOptions = {}): SheetApi {
     modal: overlay.modal,
     open: overlay.open,
     setOpen: overlay.setOpen,
+    shouldMount: overlay.shouldMount,
     side,
     titleId: overlay.titleId,
   };
@@ -200,6 +208,7 @@ function Root(props: SheetRootProps) {
     defaultOpen: props.defaultOpen,
     modal: () => props.modal,
     onOpenChange: props.onOpenChange,
+    onOpenChangeComplete: props.onOpenChangeComplete,
     open: () => props.open,
     side: () => props.side,
   });
@@ -222,7 +231,7 @@ function Trigger(props: SheetTriggerProps) {
 function PortalPart(props: SheetPortalProps) {
   const sheet = useSheet("Portal");
   return (
-    <Show when={props.forceMount || sheet.open()}>
+    <Show when={sheet.shouldMount(props.forceMount)}>
       <Portal mount={props.mount}>{props.children}</Portal>
     </Show>
   );

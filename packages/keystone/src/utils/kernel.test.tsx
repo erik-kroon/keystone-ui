@@ -5,16 +5,16 @@ import { createDialog } from "../dialog/index";
 import { createSelect } from "../select/index";
 import {
   composeEventHandlers,
-  createCollection,
   createControllableSignal,
-  createListInteractionKernel,
   createStableId,
-  createTypeahead,
-  firstEnabledItem,
-  lastEnabledItem,
-  nextEnabledItem,
   renderPolymorphic,
 } from "./index";
+import { createCollectionRegistry } from "../listbox/collection-registry";
+import { createListCollectionManager } from "../listbox/collection-manager";
+import { createListInteractionKernel } from "../listbox/interaction-kernel";
+import { firstEnabledItem, lastEnabledItem, nextEnabledItem } from "../listbox/keyboard-delegate";
+import { createListSelectionManager } from "../listbox/selection-manager";
+import { createTypeahead } from "../listbox/typeahead";
 import { createFormControl } from "../form/index";
 import { getByPart, render } from "../../test/harness";
 
@@ -183,7 +183,7 @@ describe("Keystone kernel utilities", () => {
 
   test("collections register ordered items and clean up on disposal", () => {
     createRoot((dispose) => {
-      const collection = createCollection();
+      const collection = createCollectionRegistry();
 
       collection.registerItem({ label: "Beta", value: "beta" });
       collection.registerItem({ label: "Alpha", value: "alpha" });
@@ -276,6 +276,69 @@ describe("Keystone kernel utilities", () => {
         selectDetail: () => ({ reason: "keyboard" }),
       });
       expect(list.highlightedValue()).toBe("alpha");
+
+      dispose();
+    });
+  });
+
+  test("list collection manager owns registration, lookup, highlight navigation, and typeahead", () => {
+    createRoot((dispose) => {
+      const collection = createListCollectionManager<{
+        disabled?: boolean;
+        label: string;
+        value: string;
+      }>();
+
+      collection.registerItem({ label: "Alpha", value: "alpha" });
+      collection.registerItem({ disabled: true, label: "Beta", value: "beta" });
+      collection.registerItem({ label: "Bravo", value: "bravo" });
+
+      expect(collection.items().map((item) => item.value)).toEqual(["alpha", "beta", "bravo"]);
+      expect(collection.enabledItems().map((item) => item.value)).toEqual(["alpha", "bravo"]);
+      expect(collection.itemByValue("beta")?.disabled).toBe(true);
+
+      collection.highlight("first");
+      expect(collection.highlightedValue()).toBe("alpha");
+
+      collection.highlight("next");
+      expect(collection.highlightedValue()).toBe("bravo");
+
+      collection.typeahead.handleKeyDown(new KeyboardEvent("keydown", { key: "a" }));
+      expect(collection.highlightedValue()).toBe("alpha");
+
+      dispose();
+    });
+  });
+
+  test("list selection manager owns value state and ignores disabled selects", () => {
+    createRoot((dispose) => {
+      const changes: Array<{ reason: string; value: string | undefined }> = [];
+      const selected: string[] = [];
+      const items = new Map([
+        ["alpha", { label: "Alpha", value: "alpha" }],
+        ["beta", { disabled: true, label: "Beta", value: "beta" }],
+      ]);
+      const selection = createListSelectionManager<
+        { disabled?: boolean; label: string; value: string },
+        { reason: string }
+      >({
+        defaultValue: "alpha",
+        itemByValue: (value) => (value ? items.get(value) : undefined),
+        programmaticDetail: { reason: "programmatic" },
+        onSelectionChange: (value, detail) => changes.push({ value, reason: detail.reason }),
+        onValueSelect: (item) => selected.push(item.value),
+      });
+
+      expect(selection.value()).toBe("alpha");
+      expect(selection.selectedItem()?.label).toBe("Alpha");
+      expect(selection.isSelected("alpha")).toBe(true);
+
+      expect(selection.selectValue("beta", { reason: "item" })).toBeUndefined();
+      expect(changes).toEqual([]);
+      expect(selected).toEqual([]);
+
+      selection.setValue(undefined, { reason: "programmatic" });
+      expect(changes).toEqual([{ value: undefined, reason: "programmatic" }]);
 
       dispose();
     });

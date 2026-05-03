@@ -14,10 +14,27 @@ describe("Keystone floating adapter", () => {
     });
   };
 
-  test("positions floating content from an anchor and exposes geometry variables", () => {
-    createRoot((dispose) => {
+  const withRoot = async (run: (dispose: () => void) => Promise<void>) => {
+    await new Promise<void>((resolve, reject) => {
+      createRoot((dispose) => {
+        void run(dispose).then(resolve, reject);
+      });
+    });
+  };
+  const mountPair = (anchor: HTMLElement, floatingElement: HTMLElement) => {
+    document.body.append(anchor, floatingElement);
+
+    return () => {
+      anchor.remove();
+      floatingElement.remove();
+    };
+  };
+
+  test("positions floating content from an anchor and exposes geometry variables", async () => {
+    await withRoot(async (dispose) => {
       const anchor = document.createElement("button");
       const floatingElement = document.createElement("div");
+      const cleanupDom = mountPair(anchor, floatingElement);
       const [enabled] = createSignal(true);
 
       setViewport(1024, 768);
@@ -48,7 +65,7 @@ describe("Keystone floating adapter", () => {
         placement: () => "bottom-start",
       });
 
-      floating.update();
+      await floating.update();
 
       expect(floating.side()).toBe("bottom");
       expect(floating.align()).toBe("start");
@@ -59,17 +76,19 @@ describe("Keystone floating adapter", () => {
       expect(floatingElement.style.getPropertyValue("--keystone-arrow-x")).toBe("60px");
       expect(floatingElement.style.getPropertyValue("--keystone-arrow-y")).toBe("0px");
       expect(floatingElement.style.getPropertyValue("--keystone-transform-origin")).toBe(
-        "start top",
+        "60px top",
       );
       expect(floating.getFloatingProps()["data-side"]).toBe("bottom");
+      cleanupDom();
       dispose();
     });
   });
 
-  test("flips placement when the requested side collides with the viewport", () => {
-    createRoot((dispose) => {
+  test("flips placement when the requested side collides with the viewport", async () => {
+    await withRoot(async (dispose) => {
       const anchor = document.createElement("button");
       const floatingElement = document.createElement("div");
+      const cleanupDom = mountPair(anchor, floatingElement);
 
       setViewport(320, 240);
       anchor.getBoundingClientRect = () =>
@@ -98,21 +117,23 @@ describe("Keystone floating adapter", () => {
         placement: () => "bottom",
       });
 
-      floating.update();
+      await floating.update();
 
       expect(floating.side()).toBe("top");
       expect(floating.align()).toBe("center");
       expect(floatingElement.style.top).toBe("110px");
       expect(floatingElement.style.getPropertyValue("--keystone-available-height")).toBe("186px");
       expect(floating.getFloatingProps()["data-side"]).toBe("top");
+      cleanupDom();
       dispose();
     });
   });
 
-  test("shifts cross-axis coordinates to keep content inside the viewport", () => {
-    createRoot((dispose) => {
+  test("shifts cross-axis coordinates to keep content inside the viewport", async () => {
+    await withRoot(async (dispose) => {
       const anchor = document.createElement("button");
       const floatingElement = document.createElement("div");
+      const cleanupDom = mountPair(anchor, floatingElement);
 
       setViewport(320, 240);
       anchor.getBoundingClientRect = () =>
@@ -140,21 +161,23 @@ describe("Keystone floating adapter", () => {
         placement: () => "bottom-end",
       });
 
-      floating.update();
+      await floating.update();
 
       expect(floating.side()).toBe("bottom");
       expect(floating.align()).toBe("end");
       expect(floatingElement.style.left).toBe("196px");
       expect(floatingElement.style.getPropertyValue("--keystone-arrow-x")).toBe("102px");
+      cleanupDom();
       dispose();
     });
   });
 
-  test("uses scroll offsets for absolute strategy and viewport coordinates for fixed strategy", () => {
-    createRoot((dispose) => {
+  test("uses scroll offsets for absolute strategy and viewport coordinates for fixed strategy", async () => {
+    await withRoot(async (dispose) => {
       const anchor = document.createElement("button");
       const absoluteElement = document.createElement("div");
       const fixedElement = document.createElement("div");
+      document.body.append(anchor, absoluteElement, fixedElement);
 
       setViewport(800, 600);
       Object.defineProperty(window, "scrollX", {
@@ -199,23 +222,117 @@ describe("Keystone floating adapter", () => {
         strategy: () => "fixed",
       });
 
-      absolute.update();
-      fixed.update();
+      await absolute.update();
+      await fixed.update();
 
       expect(absoluteElement.style.left).toBe("50px");
       expect(absoluteElement.style.top).toBe("124px");
       expect(fixedElement.style.left).toBe("20px");
       expect(fixedElement.style.top).toBe("74px");
       expect(fixed.getFloatingProps().style).toMatchObject({ position: "fixed" });
+      anchor.remove();
+      absoluteElement.remove();
+      fixedElement.remove();
+      dispose();
+    });
+  });
+
+  test("applies same-width and fit-viewport sizing styles from computed overflow", async () => {
+    await withRoot(async (dispose) => {
+      const anchor = document.createElement("button");
+      const floatingElement = document.createElement("div");
+      const cleanupDom = mountPair(anchor, floatingElement);
+
+      setViewport(320, 240);
+      anchor.getBoundingClientRect = () =>
+        ({
+          bottom: 70,
+          height: 32,
+          left: 20,
+          right: 160,
+          top: 38,
+          width: 140,
+        }) as DOMRect;
+      floatingElement.getBoundingClientRect = () =>
+        ({
+          bottom: 0,
+          height: 100,
+          left: 0,
+          right: 0,
+          top: 0,
+          width: 200,
+        }) as DOMRect;
+
+      const floating = createFloatingAdapter({
+        anchor: () => anchor,
+        fitViewport: () => true,
+        floating: () => floatingElement,
+        placement: () => "bottom-start",
+        sameWidth: () => true,
+      });
+
+      await floating.update();
+
+      expect(floatingElement.style.width).toBe("140px");
+      expect(floatingElement.style.maxHeight).toBe("162px");
+      expect(floatingElement.style.maxWidth).toBe("312px");
+      cleanupDom();
+      dispose();
+    });
+  });
+
+  test("respects collision boundary rects when resolving placement", async () => {
+    await withRoot(async (dispose) => {
+      const anchor = document.createElement("button");
+      const floatingElement = document.createElement("div");
+      const cleanupDom = mountPair(anchor, floatingElement);
+
+      setViewport(800, 600);
+      anchor.getBoundingClientRect = () =>
+        ({
+          bottom: 110,
+          height: 24,
+          left: 40,
+          right: 140,
+          top: 86,
+          width: 100,
+        }) as DOMRect;
+      floatingElement.getBoundingClientRect = () =>
+        ({
+          bottom: 0,
+          height: 48,
+          left: 0,
+          right: 0,
+          top: 0,
+          width: 120,
+        }) as DOMRect;
+
+      const floating = createFloatingAdapter({
+        anchor: () => anchor,
+        collisionBoundary: () => ({
+          height: 120,
+          width: 220,
+          x: 0,
+          y: 0,
+        }),
+        floating: () => floatingElement,
+        placement: () => "bottom",
+      });
+
+      await floating.update();
+
+      expect(floating.side()).toBe("top");
+      cleanupDom();
       dispose();
     });
   });
 
   test("updates geometry from window resize and scroll triggers", async () => {
-    await new Promise<void>((resolve) => {
+    await new Promise<void>((resolve, reject) => {
       createRoot((dispose) => {
         const anchor = document.createElement("button");
         const floatingElement = document.createElement("div");
+        const cleanupDom = mountPair(anchor, floatingElement);
         let left = 20;
 
         setViewport(800, 600);
@@ -246,23 +363,27 @@ describe("Keystone floating adapter", () => {
             width: 100,
           }) as DOMRect;
 
-        createFloatingAdapter({
+        const floating = createFloatingAdapter({
           anchor: () => anchor,
           floating: () => floatingElement,
           placement: () => "bottom-start",
         });
 
-        queueMicrotask(() => {
+        void (async () => {
+          await floating.update();
           expect(floatingElement.style.left).toBe("20px");
           left = 44;
           window.dispatchEvent(new Event("resize"));
+          await floating.update();
           expect(floatingElement.style.left).toBe("44px");
           left = 68;
           window.dispatchEvent(new Event("scroll"));
+          await floating.update();
           expect(floatingElement.style.left).toBe("68px");
+          cleanupDom();
           dispose();
           resolve();
-        });
+        })().catch(reject);
       });
     });
   });

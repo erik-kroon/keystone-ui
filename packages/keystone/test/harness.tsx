@@ -64,6 +64,7 @@ export function pointerDown(element: HTMLElement) {
 export async function settled() {
   await Promise.resolve();
   await Promise.resolve();
+  await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 afterEach(() => {

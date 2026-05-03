@@ -77,6 +77,8 @@ describe("Overlay layer kernel", () => {
     expect(stack.layers().map((layer) => layer.id)).toEqual(["base", "top"]);
     expect(stack.isTopLayer("top")).toBe(true);
     expect(document.body.style.pointerEvents).toBe("none");
+    expect(document.body.style.overflow).toBe("hidden");
+    expect(outside.getAttribute("aria-hidden")).toBe("true");
     expect(base.style.pointerEvents).toBe("auto");
     expect(top.style.pointerEvents).toBe("auto");
 
@@ -87,6 +89,8 @@ describe("Overlay layer kernel", () => {
     expect(stack.layers().map((layer) => layer.id)).toEqual(["base"]);
     expect(stack.isTopLayer("base")).toBe(true);
     expect(document.body.style.pointerEvents).toBe("none");
+    expect(document.body.style.overflow).toBe("hidden");
+    expect(outside.getAttribute("aria-hidden")).toBe("true");
 
     pointerDown(outside);
     await settled();
@@ -94,5 +98,7 @@ describe("Overlay layer kernel", () => {
     expect(dismissed).toEqual(["top", "base"]);
     expect(stack.layers()).toEqual([]);
     expect(document.body.style.pointerEvents).toBe("");
+    expect(document.body.style.overflow).toBe("");
+    expect(outside.getAttribute("aria-hidden")).toBeNull();
   });
 });

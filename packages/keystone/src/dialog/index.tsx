@@ -1,7 +1,9 @@
 import { Show, createContext, splitProps, useContext, type JSX } from "solid-js";
 import { Portal } from "solid-js/web";
+import { getPartDataAttributes } from "../metadata/index";
 import { OverlayLayerProvider, type DismissableLayerOutsideEvent } from "../overlay/index";
 import { createOverlayController } from "../overlay/controller";
+import type { OverlayPresenceCompleteDetail } from "../overlay/index";
 import { renderPolymorphic, type PolymorphicProps } from "../utils/index";
 
 export type DialogChangeDetail = {
@@ -15,6 +17,7 @@ export type DialogRootProps = {
   defaultOpen?: boolean;
   modal?: boolean;
   onOpenChange?: (open: boolean, detail: DialogChangeDetail) => void;
+  onOpenChangeComplete?: (open: boolean, detail: OverlayPresenceCompleteDetail) => void;
 };
 
 export type DialogPartProps<T extends HTMLElement = HTMLElement> = {
@@ -71,6 +74,7 @@ export type DialogApi = {
   modal: () => boolean;
   open: () => boolean;
   setOpen: (open: boolean, detail: DialogChangeDetail) => void;
+  shouldMount: (forceMount?: boolean) => boolean;
   titleId: string;
 };
 
@@ -79,6 +83,7 @@ export type CreateDialogOptions = {
   defaultOpen?: boolean;
   modal?: () => boolean | undefined;
   onOpenChange?: (open: boolean, detail: DialogChangeDetail) => void;
+  onOpenChangeComplete?: (open: boolean, detail: OverlayPresenceCompleteDetail) => void;
 };
 
 const DialogContext = createContext<DialogApi>();
@@ -90,6 +95,7 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
     defaultOpen: options.defaultOpen,
     modal: () => options.modal?.() ?? true,
     onOpenChange: (open, detail) => options.onOpenChange?.(open, detail),
+    onOpenChangeComplete: options.onOpenChangeComplete,
   });
 
   return {
@@ -121,10 +127,10 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
           onUnmountAutoFocus: local.onUnmountAutoFocus,
         },
         {
+          containsTrigger: true,
           modal: overlay.modal,
           disableOutsidePointerEvents: overlay.modal,
           trapFocus: overlay.modal,
-          restoreFocus: () => true,
           dismissReason: (event) => (event.type === "keydown" ? "escape" : "outside"),
         },
       );
@@ -144,8 +150,7 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
     getDescriptionProps: (props) => ({
       ...props,
       id: overlay.descriptionId,
-      "data-scope": "dialog",
-      "data-part": "description",
+      ...getPartDataAttributes("dialog", "description"),
     }),
     getPositionerProps: (props) => ({
       ...props,
@@ -154,8 +159,7 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
     getTitleProps: (props) => ({
       ...props,
       id: overlay.titleId,
-      "data-scope": "dialog",
-      "data-part": "title",
+      ...getPartDataAttributes("dialog", "title"),
     }),
     getTriggerProps: (props) =>
       overlay.getTriggerProps(props, {
@@ -165,6 +169,7 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
     modal: overlay.modal,
     open: overlay.open,
     setOpen: overlay.setOpen,
+    shouldMount: overlay.shouldMount,
     titleId: overlay.titleId,
   };
 }
@@ -185,6 +190,7 @@ function Root(props: DialogRootProps) {
     defaultOpen: props.defaultOpen,
     modal: () => props.modal,
     onOpenChange: props.onOpenChange,
+    onOpenChangeComplete: props.onOpenChangeComplete,
   });
 
   return (
@@ -213,7 +219,7 @@ function PortalPart(props: DialogPortalProps) {
   const dialog = useDialog("Portal");
 
   return (
-    <Show when={props.forceMount || dialog.open()}>
+    <Show when={dialog.shouldMount(props.forceMount)}>
       <Portal mount={props.mount}>{props.children}</Portal>
     </Show>
   );

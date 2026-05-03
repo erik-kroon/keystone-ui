@@ -1,6 +1,16 @@
-import { createSignal, type Accessor, type JSX } from "solid-js";
-import { assignRef, contains } from "./dom";
-import { createFloatingAdapter, type FloatingAdapter, type FloatingPlacement } from "./floating";
+import { createEffect, createSignal, type Accessor, type JSX } from "solid-js";
+import { assignRef } from "./dom";
+import { getPartDataAttributes } from "../metadata/index";
+import { createOverlayDismissalPolicy } from "./dismissal-policy";
+import {
+  createFloatingAdapter,
+  type FloatingAdapter,
+  type FloatingCollisionBoundary,
+  type FloatingPlacement,
+  type FloatingRootBoundary,
+  type FloatingSticky,
+  type FloatingStrategy,
+} from "./floating";
 import {
   createOverlayLayer,
   type CreateOverlayLayerOptions,
@@ -12,6 +22,11 @@ import {
   createControllableBooleanSignal,
   createStableId,
 } from "../utils/index";
+import {
+  createOverlayPresence,
+  type OverlayPresenceApi,
+  type OverlayPresenceCompleteDetail,
+} from "./presence";
 
 export type OverlayControllerChangeDetail<Reason extends string> = {
   event?: Event;
@@ -30,7 +45,16 @@ export type OverlayControllerContentEvents = {
 export type OverlayControllerOptions<Reason extends string> = {
   defaultOpen?: boolean;
   floating?: {
+    arrowPadding?: Accessor<number | undefined>;
+    collisionBoundary?: Accessor<FloatingCollisionBoundary | undefined>;
+    collisionPadding?: Accessor<number | undefined>;
+    fitViewport?: Accessor<boolean | undefined>;
+    gutter?: Accessor<number | undefined>;
     placement?: Accessor<FloatingPlacement | undefined>;
+    rootBoundary?: Accessor<FloatingRootBoundary | undefined>;
+    sameWidth?: Accessor<boolean | undefined>;
+    sticky?: Accessor<FloatingSticky | undefined>;
+    strategy?: Accessor<FloatingStrategy | undefined>;
   };
   ids?: {
     content?: string;
@@ -40,6 +64,7 @@ export type OverlayControllerOptions<Reason extends string> = {
   };
   modal?: Accessor<boolean | undefined>;
   onOpenChange?: (open: boolean, detail: OverlayControllerChangeDetail<Reason>) => void;
+  onOpenChangeComplete?: (open: boolean, detail: OverlayPresenceCompleteDetail) => void;
   open?: Accessor<boolean | undefined>;
   scope: string;
 };
@@ -56,6 +81,7 @@ export type OverlayControllerLayerOptions<Reason extends string> = {
 
 export type OverlayController<Reason extends string> = {
   close: (event: Event | undefined, reason: Reason) => void;
+  contentElement: Accessor<HTMLElement | undefined>;
   contentId: string;
   descriptionId: string;
   floating?: FloatingAdapter;
@@ -83,6 +109,7 @@ export type OverlayController<Reason extends string> = {
   getHoverFocusTriggerProps: <T extends HTMLElement>(
     props: JSX.HTMLAttributes<T>,
     options: {
+      deferOpenChange?: boolean;
       focusReason: Reason;
       pointerReason: Reason;
     },
@@ -99,10 +126,12 @@ export type OverlayController<Reason extends string> = {
   ) => JSX.HTMLAttributes<T>;
   modal: Accessor<boolean>;
   open: Accessor<boolean>;
+  presence: OverlayPresenceApi;
   setOpen: (open: boolean, detail: OverlayControllerChangeDetail<Reason>) => void;
   shouldMount: (forceMount?: boolean) => boolean;
   state: Accessor<"closed" | "open">;
   titleId: string;
+  triggerElement: Accessor<HTMLElement | undefined>;
   triggerId: string;
 };
 
@@ -126,25 +155,62 @@ export function createOverlayController<Reason extends string>(
     defaultValue: options.defaultOpen ?? false,
     onChange: (next) => options.onOpenChange?.(next, lastDetail),
   });
+  const presence = createOverlayPresence({
+    open,
+    onOpenChangeComplete: options.onOpenChangeComplete,
+  });
   const floating = options.floating
     ? createFloatingAdapter({
         anchor: triggerElement,
         floating: () => positionerElement() ?? contentElement(),
         enabled: open,
+        arrowPadding: options.floating.arrowPadding,
+        collisionBoundary: options.floating.collisionBoundary,
+        collisionPadding: options.floating.collisionPadding,
+        fitViewport: options.floating.fitViewport,
+        gutter: options.floating.gutter,
         placement: options.floating.placement,
+        rootBoundary: options.floating.rootBoundary,
+        sameWidth: options.floating.sameWidth,
+        sticky: options.floating.sticky,
+        strategy: options.floating.strategy,
       })
     : undefined;
   const modal = () => options.modal?.() ?? false;
-  const state = () => (open() ? "open" : "closed") as "closed" | "open";
   const setOpen = (next: boolean, detail: OverlayControllerChangeDetail<Reason>) => {
     lastDetail = detail;
     setOpenState(next);
   };
+  const dismissal = createOverlayDismissalPolicy<Reason>({
+    close: (event, reason) => setOpen(false, { event, reason }),
+    contentEvents: () => currentContentEvents,
+    modal,
+    triggerElement,
+  });
+  const state = () => (open() ? "open" : "closed") as "closed" | "open";
+  createEffect(() => {
+    const content = contentElement();
+    const status = presence.transitionStatus();
+    const currentState = state();
+
+    content?.setAttribute("data-state", currentState);
+    content?.setAttribute("data-transition-status", status);
+  });
+  createEffect(() => {
+    const positioner = positionerElement();
+    const status = presence.transitionStatus();
+    const currentState = state();
+
+    positioner?.setAttribute("data-state", currentState);
+    positioner?.setAttribute("data-transition-status", status);
+  });
   const getPartProps = (part: string) => ({
-    "data-scope": options.scope,
-    "data-part": part,
+    ...getPartDataAttributes(options.scope, part),
     get "data-state"() {
       return state();
+    },
+    get "data-transition-status"() {
+      return presence.transitionStatus();
     },
   });
   const getFloatingProps = <T extends HTMLElement>(props: JSX.HTMLAttributes<T>) => {
@@ -153,6 +219,7 @@ export function createOverlayController<Reason extends string>(
 
   return {
     close: (event, reason) => setOpen(false, { event, reason }),
+    contentElement,
     contentId: contentId(),
     descriptionId: descriptionId(),
     floating,
@@ -182,29 +249,17 @@ export function createOverlayController<Reason extends string>(
         id: contentId(),
         element: contentElement,
         modal: layerOptions.modal ?? modal,
-        containsTarget: layerOptions.containsTrigger
-          ? (target) => contains(triggerElement(), target)
-          : undefined,
-        disableOutsidePointerEvents: layerOptions.disableOutsidePointerEvents,
-        trapFocus: layerOptions.trapFocus,
-        restoreFocus: layerOptions.restoreFocus,
-        onEscapeKeyDown: (event) => currentContentEvents?.onEscapeKeyDown?.(event),
-        onPointerDownOutside: (event) => currentContentEvents?.onPointerDownOutside?.(event),
-        onFocusOutside: (event) => currentContentEvents?.onFocusOutside?.(event),
-        onInteractOutside: (event) => currentContentEvents?.onInteractOutside?.(event),
-        onMountAutoFocus: (event) => currentContentEvents?.onMountAutoFocus?.(event),
-        onUnmountAutoFocus: (event) => currentContentEvents?.onUnmountAutoFocus?.(event),
-        onDismiss: (event) => {
-          if (layerOptions.onDismiss) {
-            layerOptions.onDismiss(event);
-            return;
-          }
-
-          setOpen(false, {
-            event,
-            reason: layerOptions.dismissReason?.(event) ?? ("programmatic" as Reason),
-          });
-        },
+        containsTarget: (target) => dismissal.containsTarget(target, layerOptions),
+        disableOutsidePointerEvents: () => dismissal.disableOutsidePointerEvents(layerOptions),
+        trapFocus: () => dismissal.trapFocus(layerOptions),
+        restoreFocus: () => dismissal.restoreFocus(layerOptions),
+        onEscapeKeyDown: dismissal.onEscapeKeyDown,
+        onPointerDownOutside: (event) => dismissal.onPointerDownOutside(event, layerOptions),
+        onFocusOutside: (event) => dismissal.onFocusOutside(event, layerOptions),
+        onInteractOutside: (event) => dismissal.onInteractOutside(event, layerOptions),
+        onMountAutoFocus: dismissal.onMountAutoFocus,
+        onUnmountAutoFocus: dismissal.onUnmountAutoFocus,
+        onDismiss: (event) => dismissal.onDismiss(event, layerOptions),
       } satisfies CreateOverlayLayerOptions);
       const layer = contentLayer;
 
@@ -219,6 +274,7 @@ export function createOverlayController<Reason extends string>(
         },
         ref: (element: T) => {
           setContentElement(() => element);
+          presence.setElement(element);
           assignRef(domProps.ref, element);
         },
       };
@@ -233,6 +289,7 @@ export function createOverlayController<Reason extends string>(
         style: floatingProps.style,
         ref: (element: T) => {
           setContentElement(() => element);
+          presence.setElement(element);
           assignRef(props.ref, element);
           queueMicrotask(() => floating?.update());
         },
@@ -256,6 +313,7 @@ export function createOverlayController<Reason extends string>(
     getHoverFocusTriggerProps: <T extends HTMLElement>(
       props: JSX.HTMLAttributes<T>,
       triggerOptions: {
+        deferOpenChange?: boolean;
         focusReason: Reason;
         pointerReason: Reason;
       },
@@ -269,15 +327,31 @@ export function createOverlayController<Reason extends string>(
         assignRef(props.ref, element);
       },
       onBlur: composeEventHandlers<FocusEvent>(props.onBlur, (event) => {
+        if (triggerOptions.deferOpenChange) {
+          return;
+        }
+
         setOpen(false, { event, reason: triggerOptions.focusReason });
       }),
       onFocus: composeEventHandlers<FocusEvent>(props.onFocus, (event) => {
+        if (triggerOptions.deferOpenChange) {
+          return;
+        }
+
         setOpen(true, { event, reason: triggerOptions.focusReason });
       }),
       onPointerEnter: composeEventHandlers<PointerEvent>(props.onPointerEnter, (event) => {
+        if (triggerOptions.deferOpenChange) {
+          return;
+        }
+
         setOpen(true, { event, reason: triggerOptions.pointerReason });
       }),
       onPointerLeave: composeEventHandlers<PointerEvent>(props.onPointerLeave, (event) => {
+        if (triggerOptions.deferOpenChange) {
+          return;
+        }
+
         setOpen(false, { event, reason: triggerOptions.pointerReason });
       }),
     }),
@@ -314,10 +388,12 @@ export function createOverlayController<Reason extends string>(
     }),
     modal,
     open,
+    presence,
     setOpen,
-    shouldMount: (forceMount) => forceMount === true || open(),
+    shouldMount: (forceMount) => forceMount === true || presence.mounted(),
     state,
     titleId: titleId(),
+    triggerElement,
     triggerId: triggerId(),
   };
 }

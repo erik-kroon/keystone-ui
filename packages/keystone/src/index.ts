@@ -1,5 +1,5 @@
 export { Dialog, createDialog } from "./dialog/index";
-export { createFormControl } from "./form/index";
+export { createFieldValidity, createFormControl } from "./form/index";
 export type {
   DialogChangeDetail,
   DialogCloseProps,
@@ -11,7 +11,18 @@ export type {
   DialogTitleProps,
   DialogTriggerProps,
 } from "./dialog/index";
-export type { CreateFormControlOptions, FormControlApi, FormControlValue } from "./form/index";
+export type {
+  CreateFieldValidityOptions,
+  CreateFormControlOptions,
+  FieldNativeValidity,
+  FieldValidationContext,
+  FieldValidationMode,
+  FieldValidationReason,
+  FieldValidationResult,
+  FieldValidityApi,
+  FormControlApi,
+  FormControlValue,
+} from "./form/index";
 export { Popover, createPopover } from "./popover/index";
 export type {
   CreatePopoverOptions,
@@ -29,6 +40,8 @@ export type {
   SelectApi,
   SelectChangeDetail,
   SelectContentProps,
+  SelectGroupLabelProps,
+  SelectGroupProps,
   SelectItemData,
   SelectItemIndicatorProps,
   SelectItemProps,
@@ -66,6 +79,7 @@ export type {
   TooltipPartProps,
   TooltipPortalProps,
   TooltipPositionerProps,
+  TooltipProviderProps,
   TooltipRootProps,
   TooltipTriggerProps,
 } from "./tooltip/index";

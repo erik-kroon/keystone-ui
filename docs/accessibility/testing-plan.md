@@ -127,6 +127,30 @@ Primitive tests should run against real DOM behavior and assert public output:
 
 Tests should prefer user-observable assertions such as active element, accessible name, attributes, emitted change details, and form data. They should avoid locking private signal structure or internal helper names.
 
+#### Spec-To-Test Harness
+
+Keystone primitive tests should use `packages/keystone/test/accessibility.ts` for reusable accessibility contracts instead of rebuilding APG assertions in each primitive test file.
+
+The harness provides:
+
+- `runKeyboardTable` for keyboard interaction tables, including controller prop handlers and rendered DOM targets.
+- `expectRole`, `expectPart`, `expectAriaState`, `expectAriaRelationship`, and `expectNoAriaRelationship` for public DOM and prop getter contracts.
+- `expectFocus` and `expectFocusWithin` for focus entry, containment, restore, and active-descendant models.
+- `expectFormValues` for native submission and hidden input serialization.
+- `withDirection` and `withReducedMotion` for RTL and reduced-motion test hooks.
+
+Primitive accessibility specs should include a short "Automated Coverage" section that maps each required behavior to one of these harness interfaces. Example:
+
+| Spec requirement                  | Harness interface                                        |
+| --------------------------------- | -------------------------------------------------------- |
+| Trigger controls popup            | `expectAriaRelationship({ attribute: "aria-controls" })` |
+| Arrow Down opens and highlights   | `runKeyboardTable([{ key: "ArrowDown", ... }])`          |
+| Popup exposes listbox semantics   | `expectRole(listbox, "listbox")`                         |
+| Selection serializes to form data | `expectFormValues(form, { project: "alpha" })`           |
+| RTL navigation is direction-aware | `withDirection("rtl", () => ...)`                        |
+
+Controller tests should use the same harness against prop getter return objects when rendering is unnecessary. Browser tests should use it against rendered elements when focus, form ownership, portals, or native DOM behavior are part of the requirement.
+
 ### 4. Automated Accessibility Smoke Tests
 
 Run automated accessibility checks against docs or preview examples for each stable primitive and Mason item.
