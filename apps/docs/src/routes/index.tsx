@@ -74,8 +74,8 @@ function App() {
             <h1>Accessible Solid primitives. Editable app source.</h1>
             <p class="hero-lede">
               Keystone is the behavior layer. Mason is the source registry that installs UI into the
-              user project. This web app is now the docs product surface and uses the local Keystone
-              package directly.
+              user project. This docs app is now the docs product surface and uses the local
+              Keystone package directly.
             </p>
             <div class="hero-actions">
               <a class="command-button primary" href="#keystone">

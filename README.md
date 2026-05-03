@@ -1,21 +1,24 @@
 # Keystone UI
 
-Keystone UI is an early Solid UI ecosystem experiment with two layers:
+Keystone UI is an early Solid UI ecosystem experiment. It is organized around two layers:
 
 - **Keystone**: headless, accessible, unstyled primitives for Solid.
 - **Mason**: a source-first component registry and CLI for installing editable Solid UI into an app.
 
-The goal is a serious primitive foundation plus a source-first copy-paste registry for Solid. Keystone owns behavior and accessibility. Mason owns generated source, registry metadata, install planning, blocks, templates, and docs.
+The goal is a serious primitive foundation plus a copy-paste registry for Solid apps. Keystone owns behavior and accessibility. Mason owns generated source, registry metadata, install planning, blocks, templates, and docs.
 
 ## Status
 
-This repository is preparing for a `0.1.0` preview. It is not a stable public release yet.
+This repository is preparing for a `0.1.0` preview. It is not a stable public release, the package names are not final, and workspace packages are still private.
 
 Current Keystone preview surface:
 
 ```ts
 import { Dialog } from "@keystone-ui/keystone/dialog";
+import { Popover } from "@keystone-ui/keystone/popover";
 import { Select } from "@keystone-ui/keystone/select";
+import { Sheet } from "@keystone-ui/keystone/sheet";
+import { Tooltip } from "@keystone-ui/keystone/tooltip";
 import { createFormControl } from "@keystone-ui/keystone/form";
 ```
 
@@ -26,7 +29,8 @@ mason init
 mason add button --registry <local-registry-path>
 ```
 
-The first Mason registry item is a standalone `button`. Keystone-backed Mason components, starting with `dialog`, are planned next.
+The default local registry currently includes base components (`button`, `badge`, `card`, `field`, `input`, `label`, `separator`, `textarea`, `cn`), Keystone-backed overlays (`dialog`, `popover`, `sheet`, `tooltip`), and TanStack Form field examples (`text-field`, `select-field`).
+
 
 ## Design Principles
 
@@ -41,15 +45,16 @@ The first Mason registry item is a standalone `button`. Keystone-backed Mason co
 
 ```txt
 apps/
-  web/                 docs/product/landing surface, built with Solid
+  docs/                docs/product/landing surface, built with Solid
 
 packages/
   keystone/            Solid primitive package
   mason-cli/           Mason init/add CLI tracer
   mason-registry/      registry schema, validation, path safety, dependency resolution
   config/              shared TypeScript config
-  env/                 shared env helpers
-  infra/               Cloudflare/Alchemy deployment
+
+registry/
+  default/             first-party Mason registry source
 
 docs/
   adr/                 durable decisions
@@ -66,10 +71,10 @@ Install dependencies:
 bun install
 ```
 
-Run the web app:
+Run the docs app:
 
 ```bash
-bun run dev:web
+bun run dev:docs
 ```
 
 Open:
@@ -84,7 +89,7 @@ Run the release verification gate:
 bun run verify:release
 ```
 
-That runs formatting/linting, type checks, Keystone tests, Mason CLI tests, Mason registry tests, and the web build.
+That runs formatting/linting, type checks, Keystone tests, Mason CLI tests, Mason registry tests, example app verification, and the docs build.
 
 Run only the example app verification tracer:
 
@@ -111,10 +116,10 @@ bun run verify:release
 
 - Package names and product names are provisional.
 - `@keystone-ui` is the current workspace scope, not a cleared public package scope.
-- Keystone `./overlay` and `./utils` internals are private for `0.1.0`.
+- Keystone overlay and utility internals are private for `0.1.0`.
 - Mason currently supports a local registry path for the first tracer.
 - Mason blocks, templates, themes, and a public registry are not ready.
-- The docs/product surface lives in `apps/web` and is still early.
+- The docs/product surface lives in `apps/docs` and is still early.
 
 ## License
 

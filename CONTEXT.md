@@ -72,10 +72,8 @@ Keystone internals -> Keystone primitives -> Mason components -> Mason blocks ->
 
 ## Current State
 
-- `apps/web`: Solid + TanStack Router + Tailwind app.
-- `packages/env`: shared environment helpers.
+- `apps/docs`: Solid + TanStack Router + Tailwind docs/product app.
 - `packages/config`: shared TypeScript config.
-- `packages/infra`: Cloudflare deployment through Alchemy.
 - `packages/keystone`: early primitive tracer package with Dialog, Form, Overlay, Select, and Utils exports.
 - `packages/mason-cli`: early Mason CLI tracer with init/add planning and tests.
 - `packages/mason-registry`: registry schema, validation, dependency resolution, path safety, and tests.
