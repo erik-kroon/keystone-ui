@@ -1,54 +1,120 @@
-# keystone-ui
+# Keystone UI
 
-## Features
+Keystone UI is an early Solid UI ecosystem experiment with two layers:
 
-- **TypeScript** - For type safety and improved developer experience
-- **SolidJS** - Simple and performant reactivity
-- **TailwindCSS** - Utility-first CSS for rapid UI development
-- **Oxlint** - Oxlint + Oxfmt (linting & formatting)
-- **Turborepo** - Optimized monorepo build system
+- **Keystone**: headless, accessible, unstyled primitives for Solid.
+- **Mason**: a source-first component registry and CLI for installing editable Solid UI into an app.
 
-## Getting Started
+The goal is a serious primitive foundation plus a shadcn-style copy-paste registry for Solid. Keystone owns behavior and accessibility. Mason owns generated source, registry metadata, install planning, blocks, templates, and docs.
 
-First, install the dependencies:
+## Status
+
+This repository is preparing for a `0.1.0` preview. It is not a stable public release yet.
+
+Current Keystone preview surface:
+
+```ts
+import { Dialog } from "@keystone-ui/keystone/dialog";
+import { Select } from "@keystone-ui/keystone/select";
+import { createFormControl } from "@keystone-ui/keystone/form";
+```
+
+Current Mason preview surface:
+
+```bash
+mason init
+mason add button --registry <local-registry-path>
+```
+
+The first Mason registry item is a standalone `button`. Keystone-backed Mason components, starting with `dialog`, are planned next.
+
+## Design Principles
+
+- Solid-native APIs, not React ports.
+- Accessible behavior is product scope.
+- Keystone primitives are unstyled and expose stable `data-scope` and `data-part` attributes.
+- Mason installs readable source files that the app owns.
+- Mason components import Keystone behavior instead of reimplementing focus, dismissal, selection, or form semantics.
+- Kernel depth comes before primitive count.
+
+## Repository Layout
+
+```txt
+apps/
+  web/                 docs/product/landing surface, built with Solid
+
+packages/
+  keystone/            Solid primitive package
+  mason-cli/           Mason init/add CLI tracer
+  mason-registry/      registry schema, validation, path safety, dependency resolution
+  config/              shared TypeScript config
+  env/                 shared env helpers
+  infra/               Cloudflare/Alchemy deployment
+
+docs/
+  adr/                 durable decisions
+  rfcs/                API and registry proposals
+  reports/             readiness and audit notes
+  agents/              repo guidance for future agents/contributors
+```
+
+Local inspiration repositories live in gitignored `inspo/`:
+
+- Base UI: primary primitive architecture reference.
+- Kobalte: primary Solid-native primitive reference.
+- Radix Primitives: secondary React precedent.
+- shadcn UI and registry template: Mason registry/CLI/docs reference.
+- coss: later Mason UI component inspiration.
+
+## Development
+
+Install dependencies:
 
 ```bash
 bun install
 ```
 
-Then, run the development server:
+Run the web app:
 
 ```bash
-bun run dev
+bun run dev:web
 ```
 
-Open [http://localhost:3001](http://localhost:3001) in your browser to see the web application.
+Open:
 
-## Deployment (Cloudflare via Alchemy)
-
-- Target: web
-- Dev: bun run dev
-- Deploy: bun run deploy
-- Destroy: bun run destroy
-
-For more details, see the guide on [Deploying to Cloudflare with Alchemy](https://www.better-t-stack.dev/docs/guides/cloudflare-alchemy).
-
-## Git Hooks and Formatting
-
-- Format and lint fix: `bun run check`
-
-## Project Structure
-
-```
-keystone-ui/
-├── apps/
-│   ├── web/         # Frontend application (SolidJS)
+```txt
+http://localhost:3001
 ```
 
-## Available Scripts
+Run the release verification gate:
 
-- `bun run dev`: Start all applications in development mode
-- `bun run build`: Build all applications
-- `bun run dev:web`: Start only the web application
-- `bun run check-types`: Check TypeScript types across all apps
-- `bun run check`: Run Oxlint and Oxfmt
+```bash
+bun run verify:release
+```
+
+That runs formatting/linting, type checks, Keystone tests, Mason CLI tests, Mason registry tests, and the web build.
+
+## Useful Commands
+
+```bash
+bun run check
+bun run check-types
+bun run test:keystone
+bun run test:mason-cli
+bun run test:mason-registry
+bun run build
+bun run verify:release
+```
+
+## What Is Not Stable Yet
+
+- Package names and product names are provisional.
+- `@keystone-ui` is the current workspace scope, not a cleared public package scope.
+- Keystone `./overlay` and `./utils` internals are private for `0.1.0`.
+- Mason currently supports a local registry path for the first tracer.
+- Mason blocks, templates, themes, and a public registry are not ready.
+- The docs/product surface lives in `apps/web` and is still early.
+
+## License
+
+MIT is the intended license before public release. A root `LICENSE` file still needs to be added before publication.

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://mason.build/schema/registry.json",
+  "name": "mason",
+  "homepage": "https://mason.build",
+  "items": [
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "A styled Solid button component."
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "A styled Solid dialog component backed by Keystone."
+    }
+  ]
+}

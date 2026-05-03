@@ -3,16 +3,20 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "dev": "vite dev",
     "build": "vite build",
     "serve": "vite preview",
+    "start": "node .output/server/index.mjs",
     "test": "vitest run",
     "dev:bare": "vite dev"
   },
   "dependencies": {
     "@keystone-ui/env": "workspace:*",
+    "@keystone-ui/keystone": "workspace:*",
     "@tailwindcss/vite": "^4.2.2",
-    "@tanstack/router-plugin": "^1.167.22",
     "@tanstack/solid-router": "^1.168.20",
+    "@tanstack/solid-router-devtools": "^1.166.13",
+    "@tanstack/solid-start": "^1.167.58",
     "dotenv": "catalog:",
     "lucide-solid": "^1.8.0",
     "solid-js": "^1.9.12",
@@ -21,6 +25,7 @@
   },
   "devDependencies": {
     "@keystone-ui/config": "workspace:*",
+    "@types/node": "^25.6.0",
     "alchemy": "catalog:",
     "typescript": "catalog:",
     "vite": "^8.0.8",
