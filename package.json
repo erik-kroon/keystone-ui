@@ -7,10 +7,8 @@
       "packages/*"
     ],
     "catalog": {
-      "dotenv": "^17.2.2",
       "zod": "^4.1.13",
-      "typescript": "^6",
-      "alchemy": "^0.91.2"
+      "typescript": "^6"
     }
   },
   "type": "module",
@@ -23,18 +21,10 @@
     "test:mason-registry": "bun --filter @keystone-ui/mason-registry test",
     "verify:example-app": "bun scripts/verify-example-app.ts",
     "verify:release": "bun run check && bun run check-types && bun run test:keystone && bun run test:mason-cli && bun run test:mason-registry && bun run verify:example-app && bun run build",
-    "dev:web": "turbo -F web dev",
-    "deploy": "turbo -F @keystone-ui/infra deploy",
-    "destroy": "turbo -F @keystone-ui/infra destroy",
+    "dev:docs": "turbo -F docs dev",
     "check": "oxlint && oxfmt --write"
   },
-  "dependencies": {
-    "@keystone-ui/env": "workspace:*",
-    "dotenv": "catalog:",
-    "zod": "catalog:"
-  },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20251213.0",
     "@keystone-ui/config": "workspace:*",
     "oxfmt": "^0.46.0",
     "oxlint": "^1.61.0",
