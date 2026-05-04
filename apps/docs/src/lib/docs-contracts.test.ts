@@ -2,7 +2,14 @@ import { readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, test } from "bun:test";
 import { primitiveMetadata } from "@keystone-ui/keystone";
-import { primitiveContracts, primitiveScopes } from "./primitive-contracts";
+import {
+  getPrimitiveDocs,
+  primitiveContracts,
+  primitiveMaturityContracts,
+  primitiveMaturityCounts,
+  primitiveScopes,
+} from "./primitive-contracts";
+import { defaultRegistry, defaultRegistryItems } from "./default-registry-items.gen";
 import { registryItemContracts } from "./registry-contracts";
 
 describe("docs metadata contracts", () => {
@@ -21,6 +28,13 @@ describe("docs metadata contracts", () => {
       expect(contract.example).toBeString();
 
       const metadata = primitiveMetadata[contract.scope];
+      const docs = getPrimitiveDocs(contract.scope);
+      const maturity = primitiveMaturityContracts[metadata.maturity];
+
+      expect(docs.maturity).toEqual(maturity);
+      expect(docs.metadata.maturityLabel).toBe(maturity.label);
+      expect(maturity.label).toBeString();
+      expect(maturity.summary).toBeString();
       expect(metadata.parts.length).toBeGreaterThan(0);
       for (const part of metadata.parts) {
         expect(part.dataAttributes.map((attribute) => attribute.name)).toContain("data-scope");
@@ -37,6 +51,9 @@ describe("docs metadata contracts", () => {
       .sort();
 
     expect(registryItemContracts.map((item) => item.name).sort()).toEqual(itemNames);
+    expect(defaultRegistryItems.map((item) => item.name)).toEqual(
+      defaultRegistry.items.map((item) => item.name),
+    );
 
     for (const item of registryItemContracts) {
       expect(item.install).toStartWith("mason add ");
@@ -46,6 +63,19 @@ describe("docs metadata contracts", () => {
       expect(Object.keys(item.parity).length).toBeGreaterThan(0);
       expect(Object.values(item.parity).every((note) => note.length > 0)).toBe(true);
     }
+  });
+
+  test("surfaces conservative primitive maturity counts", () => {
+    const counted = Object.values(primitiveMaturityCounts).reduce(
+      (total, count) => total + count,
+      0,
+    );
+
+    expect(counted).toBe(primitiveScopes.length);
+    expect(primitiveMaturityCounts.stable).toBeGreaterThan(0);
+    expect(primitiveMaturityCounts.beta).toBeGreaterThan(0);
+    expect(primitiveMaturityCounts.experimental).toBeGreaterThan(0);
+    expect(primitiveMaturityCounts.internal).toBeGreaterThan(0);
   });
 
   test("includes the required preview docs surfaces", () => {

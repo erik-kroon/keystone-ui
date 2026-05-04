@@ -1,4 +1,5 @@
-import { For, Show, createContext, createEffect, splitProps, useContext } from "solid-js";
+import { For, Show, createContext, splitProps, useContext } from "solid-js";
+import { createPopupFieldHiddenInputProps } from "../collection/popup-field-kernel";
 import { Portal } from "../portal/index";
 import { renderPolymorphic } from "../utils/index";
 import {
@@ -77,31 +78,13 @@ function HiddenInput(props: {
   input: ReturnType<SelectApi["formValue"]["hiddenInputs"]>[number];
   select: SelectApi;
 }) {
-  let inputElement: HTMLInputElement | undefined;
-
-  createEffect(() => {
-    if (inputElement) {
-      inputElement.value = props.input.value;
-    }
+  const inputProps = createPopupFieldHiddenInputProps({
+    formControl: props.select.formControl,
+    input: () => props.input,
+    syncInputValue: props.select.formValue.syncInputValue,
   });
 
-  return (
-    <input
-      {...props.select.formControl.getHiddenInputProps({
-        name: props.input.name,
-        disabled: props.input.disabled,
-        ref: (element) => {
-          inputElement = element;
-          element.value = props.input.value;
-          props.select.formControl.registerFormReset(() => element);
-          props.select.formControl.registerFormValueSync(
-            () => element,
-            props.select.formValue.syncInputValue,
-          );
-        },
-      })}
-    />
-  );
+  return <input {...inputProps} />;
 }
 
 function Trigger(props: SelectTriggerProps) {

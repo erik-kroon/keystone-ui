@@ -11,7 +11,13 @@ import {
   updateCommand,
 } from "../src/commands/lifecycle";
 import { run } from "../src/index";
-import { createWritePlan } from "../src/install/plan";
+import {
+  createDoctorReport,
+  createRemoveTransaction,
+  createWritePlan,
+  diffInstallTransaction,
+  installedItems,
+} from "../src/install/plan";
 import { rejectUnsafeRelativePath } from "../src/install/paths";
 import { applyWritePlan } from "../src/install/write";
 import { readMasonConfig } from "../src/project/config";
@@ -382,6 +388,33 @@ describe("add planning and writes", () => {
 });
 
 describe("registry lifecycle commands", () => {
+  test("install transaction owns diff, remove, and doctor state", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+    await addCommand({ cwd: app, item: "button", registry });
+    const project = await detectProject(app);
+    const transaction = await createWritePlan(project, {
+      allowConflicts: true,
+      item: "button",
+      registry,
+    });
+    const record = installedItems(project).button;
+
+    expect(diffInstallTransaction(transaction, record)).toMatchObject([
+      {
+        localChanged: false,
+        status: "unchanged",
+        file: { target: "src/components/ui/button.tsx" },
+      },
+    ]);
+    expect(await createRemoveTransaction(project, "button")).toMatchObject({
+      item: "button",
+      files: [{ status: "delete", target: "src/components/ui/button.tsx" }],
+      localChanges: [],
+    });
+    expect(await createDoctorReport(project, { registry })).toEqual({ issues: [] });
+  });
+
   test("diff reports unchanged and locally changed installed files", async () => {
     const app = await fixtureApp();
     await initCommand({ cwd: app, yes: true });

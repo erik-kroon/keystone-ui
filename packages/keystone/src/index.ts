@@ -32,6 +32,7 @@ export {
   getPartDataAttributes,
   getPartMetadata,
   getPrimitiveMetadata,
+  primitiveMaturityLabels,
   primitiveMetadata,
 } from "./metadata/index";
 export { NavigationMenu, createNavigationMenu } from "./navigation-menu/index";
@@ -43,6 +44,8 @@ export type {
   PartCssVarMetadata,
   PartStateAttributeMetadata,
   PrimitiveMetadata,
+  PrimitiveMaturity,
+  PrimitiveMaturityLabel,
   PrimitivePartMetadata,
   PrimitiveScope,
 } from "./metadata/index";

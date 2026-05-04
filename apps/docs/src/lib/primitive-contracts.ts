@@ -1,4 +1,9 @@
-import { getDocsMetadata, primitiveMetadata, type PrimitiveScope } from "@keystone-ui/keystone";
+import {
+  getDocsMetadata,
+  primitiveMetadata,
+  type PrimitiveMaturity,
+  type PrimitiveScope,
+} from "@keystone-ui/keystone";
 
 export type PrimitiveContract = {
   scope: PrimitiveScope;
@@ -10,6 +15,40 @@ export type PrimitiveContract = {
   ssrNotes: readonly string[];
   example: string;
 };
+
+export type PrimitiveMaturityContract = {
+  label: string;
+  summary: string;
+};
+
+export const primitiveMaturityContracts = {
+  internal: {
+    label: "Internal",
+    summary: "Private implementation detail. Tested through consuming primitives.",
+  },
+  experimental: {
+    label: "Experimental",
+    summary: "Preview surface for feedback. API and behavior may still change.",
+  },
+  beta: {
+    label: "Beta",
+    summary: "Mostly stable preview surface with core behavior tests and known gaps.",
+  },
+  stable: {
+    label: "Stable",
+    summary: "Public contract candidate. Changes need migration notes.",
+  },
+  deprecated: {
+    label: "Deprecated",
+    summary: "Public surface with a documented replacement path.",
+  },
+} as const satisfies Record<PrimitiveMaturity, PrimitiveMaturityContract>;
+
+export function getPrimitiveMaturityContract(
+  maturity: PrimitiveMaturity,
+): PrimitiveMaturityContract {
+  return primitiveMaturityContracts[maturity];
+}
 
 const overlayNotes = {
   keyboardNotes: [
@@ -499,7 +538,23 @@ export function getPrimitiveDocs(scope: PrimitiveScope) {
   return {
     contract: getPrimitiveContract(scope),
     metadata,
+    maturity: getPrimitiveMaturityContract(metadata.maturity),
   };
 }
 
 export const primitiveScopes = Object.keys(primitiveMetadata).sort() as PrimitiveScope[];
+
+export const primitiveMaturityCounts = primitiveScopes.reduce(
+  (counts, scope) => {
+    const maturity = primitiveMetadata[scope].maturity;
+    counts[maturity] += 1;
+    return counts;
+  },
+  {
+    internal: 0,
+    experimental: 0,
+    beta: 0,
+    stable: 0,
+    deprecated: 0,
+  } satisfies Record<PrimitiveMaturity, number>,
+);

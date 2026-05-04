@@ -1,8 +1,8 @@
 import { existsSync } from "node:fs";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { ProjectShape } from "../project/detect";
-import type { FileWrite, WritePlan } from "./plan";
+import type { FileWrite, RemoveTransaction, WritePlan } from "./plan";
 
 function sortedObject(input: Record<string, string>): Record<string, string> {
   return Object.fromEntries(Object.entries(input).sort(([a], [b]) => a.localeCompare(b)));
@@ -49,6 +49,25 @@ export async function applyWritePlan(project: ProjectShape, plan: WritePlan): Pr
   };
   packageJson.mason = mason;
   await writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
+}
+
+export async function applyRemoveTransaction(
+  project: ProjectShape,
+  transaction: RemoveTransaction,
+): Promise<void> {
+  for (const file of transaction.files) {
+    if (file.status === "missing" || !existsSync(file.absoluteTarget)) continue;
+    await rm(file.absoluteTarget);
+  }
+
+  const packagePath = path.join(project.cwd, "package.json");
+  const packageJson = JSON.parse(await readFile(packagePath, "utf8")) as Record<string, unknown>;
+  const mason = packageJson.mason as { installed?: Record<string, unknown> } | undefined;
+  if (mason?.installed) {
+    delete mason.installed[transaction.item];
+    packageJson.mason = mason;
+    await writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
+  }
 }
 
 async function writeFileByMode(file: FileWrite): Promise<void> {

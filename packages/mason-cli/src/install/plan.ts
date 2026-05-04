@@ -8,6 +8,7 @@ import {
   type RegistryItem,
 } from "@keystone-ui/mason-registry";
 import { readMasonConfig, type MasonConfig } from "../project/config";
+import { configPath } from "../project/config";
 import type { ProjectShape } from "../project/detect";
 import { parseDependencySpecifier, type DependencyChange } from "./dependencies";
 import { aliasToPath, resolveProjectTarget } from "./paths";
@@ -43,6 +44,14 @@ export type InstalledItemRecord = {
   fileHashes: Record<string, string>;
 };
 
+export type InstalledRecord = {
+  files: string[];
+  fileHashes?: Record<string, string>;
+  version: string;
+};
+
+export type InstalledMap = Record<string, InstalledRecord>;
+
 export type WritePlan = {
   items: RegistryItem[];
   files: FileWrite[];
@@ -50,6 +59,37 @@ export type WritePlan = {
   devDependencies: DependencyChange[];
   installedItems: InstalledItemRecord[];
   conflicts: WritePlanConflict[];
+};
+
+export type InstallTransaction = WritePlan & {
+  requestedItem: string;
+  plannedItems: RegistryItem[];
+};
+
+export type FileDiff = {
+  file: FileWrite;
+  localChanged: boolean;
+  status: "create" | "delete" | "update" | "unchanged";
+};
+
+export type RemoveFileChange = {
+  absoluteTarget: string;
+  currentHash: string | null;
+  localChanged: boolean;
+  recordedHash: string | null;
+  status: "delete" | "keep" | "missing";
+  target: string;
+};
+
+export type RemoveTransaction = {
+  item: string;
+  record: InstalledRecord;
+  files: RemoveFileChange[];
+  localChanges: RemoveFileChange[];
+};
+
+export type DoctorReport = {
+  issues: string[];
 };
 
 async function readJson(file: string): Promise<unknown> {
@@ -125,7 +165,7 @@ async function contentForFile(
   return readFile(path.join(path.resolve(registry), file.path), "utf8");
 }
 
-function hashContent(content: string): string {
+export function hashContent(content: string): string {
   return `sha256:${createHash("sha256").update(content).digest("hex")}`;
 }
 
@@ -167,18 +207,34 @@ function collectDependencyChanges(
   return [...changes.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
 
-function installedItemNames(project: ProjectShape): Set<string> {
+export function installedItems(project: ProjectShape): InstalledMap {
   const mason = project.packageJson.mason;
-  if (!mason || typeof mason !== "object" || Array.isArray(mason)) return new Set();
+  if (!mason || typeof mason !== "object" || Array.isArray(mason)) return {};
   const installed = (mason as { installed?: unknown }).installed;
-  if (!installed || typeof installed !== "object" || Array.isArray(installed)) return new Set();
-  return new Set(Object.keys(installed));
+  if (!installed || typeof installed !== "object" || Array.isArray(installed)) return {};
+  return installed as InstalledMap;
 }
 
-export async function createWritePlan(
+export function installedItem(project: ProjectShape, item: string): InstalledRecord {
+  const record = installedItems(project)[item];
+  if (!record) {
+    throw new Error(`Mason item is not installed: ${item}`);
+  }
+  return record;
+}
+
+export function fileHash(record: InstalledRecord, target: string): string | null {
+  return record.fileHashes?.[target] ?? null;
+}
+
+function installedItemNames(project: ProjectShape): Set<string> {
+  return new Set(Object.keys(installedItems(project)));
+}
+
+export async function createInstallTransaction(
   project: ProjectShape,
   options: { allowConflicts?: boolean; item: string; registry: string },
-): Promise<WritePlan> {
+): Promise<InstallTransaction> {
   const config = await readMasonConfig(project.cwd);
   const items = await resolveItems(options.registry, options.item);
   const alreadyInstalled = installedItemNames(project);
@@ -230,7 +286,9 @@ export async function createWritePlan(
     throw new Error(conflicts.map((conflict) => conflict.message).join("\n"));
   }
   return {
+    requestedItem: options.item,
     items,
+    plannedItems,
     files: files.sort((a, b) => a.target.localeCompare(b.target)),
     dependencies: collectDependencyChanges(project, items, "dependencies"),
     devDependencies: collectDependencyChanges(project, items, "devDependencies"),
@@ -250,4 +308,166 @@ export async function createWritePlan(
     })),
     conflicts,
   };
+}
+
+export async function createWritePlan(
+  project: ProjectShape,
+  options: { allowConflicts?: boolean; item: string; registry: string },
+): Promise<InstallTransaction> {
+  return createInstallTransaction(project, options);
+}
+
+export function diffInstallTransaction(
+  transaction: WritePlan,
+  record?: InstalledRecord,
+): FileDiff[] {
+  const plannedTargets = new Set(transaction.files.map((file) => file.target));
+  const diffs = transaction.files.map((file): FileDiff => {
+    const recordedHash = record ? fileHash(record, file.target) : null;
+    const localChanged = Boolean(
+      file.existing.exists && recordedHash && file.existing.hash !== recordedHash,
+    );
+    const status = !file.existing.exists
+      ? "create"
+      : file.existing.hash === file.contentHash
+        ? "unchanged"
+        : "update";
+    return { file, localChanged, status };
+  });
+
+  for (const target of record?.files ?? []) {
+    if (plannedTargets.has(target)) continue;
+    diffs.push({
+      file: {
+        item: "",
+        source: "",
+        target,
+        absoluteTarget: "",
+        content: "",
+        contentHash: "",
+        existing: { exists: true, hash: null, size: null },
+        conflict: null,
+        mode: "create",
+      },
+      localChanged: false,
+      status: "delete",
+    });
+  }
+
+  return diffs.sort((a, b) => a.file.target.localeCompare(b.file.target));
+}
+
+export function forceOverwriteTransaction<T extends WritePlan>(transaction: T): T {
+  return {
+    ...transaction,
+    files: transaction.files.map((file) => ({
+      ...file,
+      conflict: null,
+      mode: file.mode === "create" && file.existing.exists ? "overwrite" : file.mode,
+    })),
+  };
+}
+
+export async function createRemoveTransaction(
+  project: ProjectShape,
+  item: string,
+): Promise<RemoveTransaction> {
+  const record = installedItem(project, item);
+  const files: RemoveFileChange[] = [];
+
+  for (const target of [...record.files].sort()) {
+    const absoluteTarget = resolveProjectTarget(project.cwd, target);
+    if (!existsSync(absoluteTarget)) {
+      files.push({
+        absoluteTarget,
+        currentHash: null,
+        localChanged: false,
+        recordedHash: fileHash(record, target),
+        status: "missing",
+        target,
+      });
+      continue;
+    }
+
+    const content = await readFile(absoluteTarget, "utf8");
+    const currentHash = hashContent(content);
+    const recordedHash = fileHash(record, target);
+    const localChanged = Boolean(recordedHash && currentHash !== recordedHash);
+    files.push({
+      absoluteTarget,
+      currentHash,
+      localChanged,
+      recordedHash,
+      status: localChanged ? "keep" : "delete",
+      target,
+    });
+  }
+
+  return {
+    item,
+    record,
+    files,
+    localChanges: files.filter((file) => file.localChanged),
+  };
+}
+
+export async function createDoctorReport(
+  project: ProjectShape,
+  options: { registry?: string | null } = {},
+): Promise<DoctorReport> {
+  const issues: string[] = [];
+
+  if (!existsSync(configPath(project.cwd))) {
+    issues.push("missing mason.config.json");
+  } else {
+    const config = await readMasonConfig(project.cwd);
+    for (const [name, alias] of Object.entries(config.aliases)) {
+      if (!alias) issues.push(`empty alias: ${name}`);
+    }
+    const styleTarget = path.isAbsolute(config.aliases.theme)
+      ? config.aliases.theme
+      : path.join(project.cwd, config.aliases.theme.replace(/^@\//, "src/"));
+    if (!existsSync(styleTarget)) issues.push(`missing style entry: ${config.aliases.theme}`);
+  }
+
+  if (project.packageManager === "unknown") issues.push("unknown package manager");
+
+  const installed = installedItems(project);
+  for (const [name, record] of Object.entries(installed).sort(([a], [b]) => a.localeCompare(b))) {
+    if (!Array.isArray(record.files)) {
+      issues.push(`invalid installed metadata for ${name}: files must be an array`);
+      continue;
+    }
+    for (const target of record.files) {
+      const absoluteTarget = resolveProjectTarget(project.cwd, target);
+      if (!existsSync(absoluteTarget)) {
+        issues.push(`missing installed file for ${name}: ${target}`);
+        continue;
+      }
+      const recordedHash = fileHash(record, target);
+      if (!recordedHash) issues.push(`missing recorded hash for ${name}: ${target}`);
+    }
+  }
+
+  if (options.registry) {
+    const registryIndex = path.join(path.resolve(options.registry), "registry.json");
+    if (!existsSync(registryIndex)) issues.push(`registry not reachable: ${options.registry}`);
+  }
+
+  if (Object.keys(installed).length > 0) {
+    const dependencies = {
+      ...(project.packageJson.dependencies as Record<string, string> | undefined),
+      ...(project.packageJson.devDependencies as Record<string, string> | undefined),
+    };
+    if (
+      Object.keys(installed).some((name) =>
+        ["accordion", "dialog", "popover", "select", "sheet", "tooltip"].includes(name),
+      ) &&
+      !dependencies["@keystone-ui/keystone"]
+    ) {
+      issues.push("missing @keystone-ui/keystone dependency for Keystone-backed installed items");
+    }
+  }
+
+  return { issues };
 }

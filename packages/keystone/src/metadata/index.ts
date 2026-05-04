@@ -15,6 +15,8 @@ export type PrimitivePartMetadata = {
 
 export type PrimitiveMaturity = "internal" | "experimental" | "beta" | "stable" | "deprecated";
 
+export type PrimitiveMaturityLabel = "Internal" | "Experimental" | "Beta" | "Stable" | "Deprecated";
+
 export type PrimitiveMetadata = {
   maturity: PrimitiveMaturity;
   scope: string;
@@ -26,6 +28,7 @@ export type DocsPartMetadata = PrimitivePartMetadata & {
 };
 
 export type DocsPrimitiveMetadata = Omit<PrimitiveMetadata, "parts"> & {
+  maturityLabel: PrimitiveMaturityLabel;
   parts: readonly DocsPartMetadata[];
 };
 
@@ -231,6 +234,14 @@ const primitiveMaturityByScope: Record<string, PrimitiveMaturity> = {
   tooltip: "experimental",
   "visually-hidden": "stable",
 };
+
+export const primitiveMaturityLabels = {
+  internal: "Internal",
+  experimental: "Experimental",
+  beta: "Beta",
+  stable: "Stable",
+  deprecated: "Deprecated",
+} as const satisfies Record<PrimitiveMaturity, PrimitiveMaturityLabel>;
 
 export const primitiveMetadata = {
   "accessible-icon": definePrimitive("accessible-icon", [part("root"), part("label")]),
@@ -485,6 +496,7 @@ export function getDocsMetadata(scope: string): DocsPrimitiveMetadata | undefine
 
   return {
     maturity: metadata.maturity,
+    maturityLabel: primitiveMaturityLabels[metadata.maturity],
     scope: metadata.scope,
     parts: metadata.parts.map((metadataPart) => ({
       ...metadataPart,
