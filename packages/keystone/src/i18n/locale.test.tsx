@@ -1,6 +1,14 @@
 import { createRoot, createSignal } from "solid-js";
 import { describe, expect, test } from "vitest";
-import { createLocale, getLocaleDirection, type LocaleMessages } from "./locale";
+import { render } from "../../test/harness";
+import {
+  Locale,
+  LocaleProvider,
+  createLocale,
+  getLocaleDirection,
+  useLocale,
+  type LocaleMessages,
+} from "./locale";
 
 describe("Locale provider kernel", () => {
   test("creates stable locale, direction, and message accessors", () => {
@@ -44,5 +52,33 @@ describe("Locale provider kernel", () => {
       expect(api.direction()).toBe("ltr");
       dispose();
     });
+  });
+
+  test("provides context without rendering wrapper DOM", () => {
+    function Probe() {
+      const locale = useLocale();
+
+      return (
+        <span
+          data-dir={locale.direction()}
+          data-locale={locale.locale()}
+          data-message={locale.getMessage("datePicker.selectDate")}
+        />
+      );
+    }
+
+    const result = render(() => (
+      <LocaleProvider locale="ar-EG" messages={{ "datePicker.selectDate": "Pick a day" }}>
+        <Locale.Provider direction="ltr">
+          <Probe />
+        </Locale.Provider>
+      </LocaleProvider>
+    ));
+    const probe = result.container.querySelector("span");
+
+    expect(result.container.children).toHaveLength(1);
+    expect(probe?.dataset.locale).toBe("ar-EG");
+    expect(probe?.dataset.dir).toBe("ltr");
+    expect(probe?.dataset.message).toBe("Pick a day");
   });
 });

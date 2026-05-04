@@ -11,6 +11,7 @@ import {
 } from "./index";
 
 const expectedParts = {
+  "accessible-icon": ["root", "label"],
   accordion: ["root", "item", "header", "trigger", "content"],
   autocomplete: [
     "input",
@@ -57,9 +58,17 @@ const expectedParts = {
   ],
   collapsible: ["root", "trigger", "content"],
   "date-picker": ["root", "trigger", "content"],
+  description: ["root"],
+  direction: ["root"],
   dialog: ["trigger", "close", "backdrop", "positioner", "content", "title", "description"],
+  "error-message": ["root"],
+  field: ["root", "control", "label", "description", "error-message", "hidden-input"],
+  fieldset: ["root", "legend", "description", "error-message"],
   "form-control": ["root", "control", "label", "description", "error-message", "hidden-input"],
   "hover-card": ["trigger", "positioner", "arrow", "content"],
+  label: ["root"],
+  "live-announcer": ["root", "polite", "assertive"],
+  locale: [],
   listbox: ["listbox", "option", "group", "group-label"],
   "context-menu": [
     "trigger",
@@ -119,6 +128,7 @@ const expectedParts = {
   overlay: ["layer"],
   popover: ["trigger", "positioner", "arrow", "content"],
   popper: ["anchor", "positioner", "arrow"],
+  portal: ["root"],
   "radio-group": ["root", "item", "item-indicator", "hidden-input"],
   select: [
     "trigger",
@@ -140,10 +150,53 @@ const expectedParts = {
   toolbar: ["root", "button", "link", "separator"],
   switch: ["root", "control", "thumb", "hidden-input"],
   tooltip: ["trigger", "positioner", "arrow", "content"],
+  "visually-hidden": ["root"],
 } as const satisfies Record<PrimitiveScope, readonly string[]>;
+
+const publicPrimitiveScopes = [
+  "accessible-icon",
+  "accordion",
+  "autocomplete",
+  "calendar",
+  "checkbox",
+  "collapsible",
+  "combobox",
+  "context-menu",
+  "date-picker",
+  "description",
+  "direction",
+  "dialog",
+  "dropdown-menu",
+  "error-message",
+  "field",
+  "fieldset",
+  "form-control",
+  "hover-card",
+  "label",
+  "live-announcer",
+  "locale",
+  "menu",
+  "menubar",
+  "navigation-menu",
+  "popover",
+  "popper",
+  "portal",
+  "radio-group",
+  "select",
+  "sheet",
+  "slider",
+  "switch",
+  "tabs",
+  "toast",
+  "toolbar",
+  "tooltip",
+  "visually-hidden",
+] as const satisfies readonly PrimitiveScope[];
 
 describe("primitive part metadata", () => {
   test("defines docs-ready part metadata for every current primitive", () => {
+    expect(Object.keys(expectedParts).sort()).toEqual(Object.keys(primitiveMetadata).sort());
+
     for (const [scope, parts] of Object.entries(expectedParts)) {
       const metadata = primitiveMetadata[scope as PrimitiveScope];
       const docsMetadata = getDocsMetadata(scope);
@@ -160,6 +213,13 @@ describe("primitive part metadata", () => {
         expect(part.dataAttributes.map((attribute) => attribute.name)).toContain("data-scope");
         expect(part.dataAttributes.map((attribute) => attribute.name)).toContain("data-part");
       }
+    }
+  });
+
+  test("covers every public primitive contract scope", () => {
+    for (const scope of publicPrimitiveScopes) {
+      expect(primitiveMetadata[scope]).toBeDefined();
+      expect(getDocsMetadata(scope)).toBeDefined();
     }
   });
 
@@ -218,6 +278,9 @@ describe("primitive part metadata", () => {
         "data-touched",
         "data-validating",
       ]),
+    );
+    expect(attributeNames("fieldset", "root")).toEqual(
+      expect.arrayContaining(["data-disabled", "data-invalid", "data-readonly", "data-required"]),
     );
     expect(attributeNames("direction", "root")).toEqual(expect.arrayContaining(["data-dir"]));
     expect(cssVarNames("popover", "positioner")).toEqual(

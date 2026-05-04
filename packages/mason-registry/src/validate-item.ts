@@ -1,6 +1,11 @@
 import { fail, ok, type MasonRegistryError, type ValidationResult } from "./errors";
 import { fromZodError } from "./validate-registry";
-import { isInstallSupportedItemType, registryItemSchema, type RegistryItem } from "./schema";
+import {
+  isInstallSupportedItemType,
+  registryItemSchema,
+  registryParityMetadataSchema,
+  type RegistryItem,
+} from "./schema";
 import { validateDependencies } from "./validate-dependencies";
 import { validateFiles } from "./validate-files";
 
@@ -8,6 +13,7 @@ export type ValidateItemOptions = {
   installSupportedOnly?: boolean;
   projectRoot?: string;
   registryRoot?: string;
+  requireParityMetadata?: boolean;
 };
 
 export function validateItem(
@@ -38,7 +44,39 @@ export function validateItem(
     });
   }
 
+  if (options.requireParityMetadata) {
+    errors.push(...validateParityMetadata(parsed.data));
+  }
+
   return errors.length > 0 ? fail(errors) : ok(parsed.data);
+}
+
+function validateParityMetadata(item: RegistryItem): MasonRegistryError[] {
+  const parity = item.meta?.parity;
+
+  if (parity === undefined) {
+    return [
+      {
+        code: "parity.missing",
+        message: `Registry item ${item.name} is missing meta.parity metadata.`,
+        path: ["meta", "parity"],
+      },
+    ];
+  }
+
+  const result = registryParityMetadataSchema.safeParse(parity);
+  if (!result.success || Object.keys(result.data).length === 0) {
+    return [
+      {
+        code: "parity.invalid",
+        message: `Registry item ${item.name} must include non-empty string notes in meta.parity.`,
+        path: ["meta", "parity"],
+        value: parity,
+      },
+    ];
+  }
+
+  return [];
 }
 
 export function validateRegistryItem(

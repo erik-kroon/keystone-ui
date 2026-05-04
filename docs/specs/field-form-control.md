@@ -6,7 +6,7 @@ Beta accessibility spec for the 0.1 preview.
 
 ## Scope
 
-This spec covers Keystone `Field` and `FormControl` behavior. Mason TextField and SelectField may compose these parts for styled source, but label, description, error, validation, hidden input, reset, and ARIA wiring belong to Keystone.
+This spec covers Keystone `Field`, `Fieldset`, `FormControl`, and the standalone `Label`, `Description`, and `ErrorMessage` primitives. Mason TextField and SelectField may compose these parts for styled source, but label, description, error, validation, hidden input, reset, and ARIA wiring belong to Keystone.
 
 ## Anatomy
 
@@ -17,11 +17,27 @@ This spec covers Keystone `Field` and `FormControl` behavior. Mason TextField an
 - `ErrorMessage`: provides validation feedback when invalid.
 - `HiddenInput`: serializes non-native primitive values.
 
+Fieldset anatomy:
+
+- `Root`: renders a native fieldset and provides grouped state.
+- `Legend`: renders the fieldset legend and accessible group name.
+- `Description`: provides grouped supplemental help text.
+- `ErrorMessage`: provides grouped validation feedback when invalid.
+
+Standalone anatomy:
+
+- `Label.Root`: renders a native label.
+- `Description.Root`: renders descriptive text.
+- `ErrorMessage.Root`: renders validation feedback with alert semantics by default.
+
 ## Roles And ARIA
 
 - `Label` is associated with `Control` through native `for`/`id` or equivalent control ownership.
 - `Description` participates in `aria-describedby` when present.
 - `ErrorMessage` participates in `aria-describedby` when invalid and rendered.
+- `Fieldset.Legend` supplies the group name through native fieldset/legend semantics and an `aria-labelledby` fallback.
+- `Fieldset.Description` participates in root `aria-describedby`.
+- `Fieldset.ErrorMessage` participates in root `aria-describedby` when invalid and rendered.
 - Invalid controls expose `aria-invalid`.
 - Required controls expose native `required` where possible and ARIA required state where needed.
 - Disabled controls are removed from interaction and submission where native semantics require it.
@@ -65,7 +81,7 @@ Validation state must be observable through data attributes and through ARIA/nat
 
 ## State And Data Attributes
 
-All public parts expose `data-scope="field"` or `data-scope="form-control"` and their `data-part`.
+All public parts expose `data-scope` and their `data-part`. Form control surfaces use `field` or `form-control`; grouped fields use `fieldset`; standalone native helpers use `label`, `description`, or `error-message`.
 
 Form state attributes include:
 
@@ -80,6 +96,13 @@ Form state attributes include:
 - `data-validating`
 
 Mason fields should style these attributes directly instead of duplicating validation state.
+
+Fieldset state attributes include:
+
+- `data-disabled`
+- `data-invalid`
+- `data-readonly`
+- `data-required`
 
 ## SSR And Hydration
 

@@ -36,6 +36,7 @@ export const targetRequiredFileTypes = [
 
 export const fileModeSchema = z.enum(["create", "overwrite", "merge-json", "append-css"]);
 export const registryItemTypeSchema = z.enum(registryItemTypes);
+export const registryParityMetadataSchema = z.record(z.string().min(1), z.string().min(1));
 
 export const fileDescriptorSchema = z.object({
   path: z.string().min(1),
@@ -135,6 +136,7 @@ export const rootRegistrySchema = z.object({
 export type RegistryItemType = (typeof registryItemTypes)[number];
 export type InstallSupportedItemType = (typeof installSupportedItemTypes)[number];
 export type FileDescriptor = z.infer<typeof fileDescriptorSchema>;
+export type RegistryParityMetadata = z.infer<typeof registryParityMetadataSchema>;
 export type RegistryItem = z.infer<typeof registryItemSchema>;
 export type RootRegistry = z.infer<typeof rootRegistrySchema>;
 

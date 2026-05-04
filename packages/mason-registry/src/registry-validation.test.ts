@@ -64,7 +64,10 @@ describe("Mason registry validation tracer", () => {
       const item = JSON.parse(
         await readFile(resolve(defaultRegistryRoot, "items", file), "utf8"),
       ) as unknown;
-      const result = validateItem(item, { registryRoot: defaultRegistryRoot });
+      const result = validateItem(item, {
+        registryRoot: defaultRegistryRoot,
+        requireParityMetadata: true,
+      });
       expect(result.ok).toBe(true);
       if (result.ok) {
         validatedNames.push(result.value.name);
@@ -114,6 +117,32 @@ describe("Mason registry validation tracer", () => {
       "toolbar",
       "tooltip",
     ]);
+  });
+
+  test("can require first-party parity metadata during validation", () => {
+    const missing = validateItem(
+      {
+        ...button,
+        meta: {},
+      },
+      { requireParityMetadata: true },
+    );
+    expect(missing.ok).toBe(false);
+    if (!missing.ok) {
+      expect(missing.errors.map((error) => error.code)).toContain("parity.missing");
+    }
+
+    const empty = validateItem(
+      {
+        ...button,
+        meta: { parity: { baseUi: "" } },
+      },
+      { requireParityMetadata: true },
+    );
+    expect(empty.ok).toBe(false);
+    if (!empty.ok) {
+      expect(empty.errors.map((error) => error.code)).toContain("parity.invalid");
+    }
   });
 
   test("validates docs-ready metadata on the real default data-table item", async () => {

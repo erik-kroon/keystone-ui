@@ -1,4 +1,4 @@
-import { defaultRegistryItems } from "./default-registry-items.gen";
+import { defaultRegistryItems, defaultRegistrySourcePreviews } from "./default-registry-items.gen";
 
 type RawRegistryFile = {
   path: string;
@@ -18,6 +18,7 @@ type RawRegistryItem = {
     install: string;
     customization?: string;
     limitations?: string;
+    sourceFiles?: readonly string[];
     parity: Readonly<Record<string, string>>;
   };
 };
@@ -36,6 +37,8 @@ export type RegistryItemContract = {
   install: string;
   dependencies: readonly string[];
   registryDependencies: readonly string[];
+  sourceFiles: readonly string[];
+  sourcePreview: string;
   customization: string;
   caveats: string;
   files: readonly RegistryFileContract[];
@@ -53,6 +56,11 @@ export const registryItemContracts = rawItems
     install: item.meta.install,
     dependencies: item.dependencies ?? [],
     registryDependencies: item.registryDependencies ?? [],
+    sourceFiles: item.meta.sourceFiles ?? item.files.map((file) => `registry/default/${file.path}`),
+    sourcePreview: createSourcePreview(
+      item.name,
+      item.meta.sourceFiles ?? item.files.map((file) => `registry/default/${file.path}`),
+    ),
     customization: String(item.meta.customization ?? item.meta.limitations ?? ""),
     caveats: String(
       item.meta.limitations ??
@@ -93,4 +101,16 @@ function deriveTarget(sourcePath: string, type: string): string {
   }
 
   return sourcePath.replace(/^ui\//, "src/components/ui/");
+}
+
+function createSourcePreview(itemName: string, sourceFiles: readonly string[]): string {
+  return sourceFiles
+    .map((sourceFile) => {
+      const source =
+        defaultRegistrySourcePreviews[itemName as keyof typeof defaultRegistrySourcePreviews]?.[
+          sourceFile
+        ];
+      return [`// ${sourceFile}`, source ?? ""].join("\n").trimEnd();
+    })
+    .join("\n\n");
 }

@@ -9,6 +9,7 @@ const visuallyHiddenStyle = {
   margin: "-1px",
   overflow: "hidden",
   clip: "rect(0, 0, 0, 0)",
+  "clip-path": "inset(50%)",
   "white-space": "nowrap",
   border: "0",
 } as const satisfies JSX.CSSProperties;
@@ -76,13 +77,19 @@ function mergeVisuallyHiddenStyle(
   style: JSX.CSSProperties | string | undefined,
 ): JSX.CSSProperties | string {
   if (typeof style === "string") {
-    return style;
+    return `${styleFromObject(visuallyHiddenStyle)}${style}`;
   }
 
   return {
     ...visuallyHiddenStyle,
     ...style,
   };
+}
+
+function styleFromObject(style: JSX.CSSProperties): string {
+  return Object.entries(style)
+    .map(([property, value]) => `${property}:${value};`)
+    .join("");
 }
 
 export const AccessibleIcon = {

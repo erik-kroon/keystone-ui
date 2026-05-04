@@ -55,3 +55,4 @@ This repository is the early Keystone UI monorepo. Treat `Keystone` and `Mason` 
 ## Tips
 
 - Use the fff MCP tools for all file search operations instead of default tools.
+- If given a number with a hashtag, for example #32, it is linked to a github issue and the github issue should be read and closed if/when implemented.

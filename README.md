@@ -107,6 +107,7 @@ Every first-party registry item carries docs-ready metadata:
 - customization guidance
 - anatomy or part names where relevant
 - maturity and implementation notes where relevant
+- `meta.parity` notes for first-party reference coverage and known gaps
 
 Registry metadata should make each item understandable without requiring readers to compare it to another component system.
 

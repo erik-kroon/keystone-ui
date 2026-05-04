@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import {
   resolveRegistryDependencyGraph,
+  validateRegistry,
   validateRegistryItem,
   type RegistryItem,
 } from "@keystone-ui/mason-registry";
@@ -420,14 +421,24 @@ export async function createDoctorReport(
   if (!existsSync(configPath(project.cwd))) {
     issues.push("missing mason.config.json");
   } else {
-    const config = await readMasonConfig(project.cwd);
-    for (const [name, alias] of Object.entries(config.aliases)) {
-      if (!alias) issues.push(`empty alias: ${name}`);
+    try {
+      const config = await readMasonConfig(project.cwd);
+      for (const [name, alias] of Object.entries(config.aliases ?? {})) {
+        if (!alias) issues.push(`empty alias: ${name}`);
+      }
+      if (!config.aliases?.theme) {
+        issues.push("empty alias: theme");
+      } else {
+        const styleTarget = path.isAbsolute(config.aliases.theme)
+          ? config.aliases.theme
+          : path.join(project.cwd, config.aliases.theme.replace(/^@\//, "src/"));
+        if (!existsSync(styleTarget)) issues.push(`missing style entry: ${config.aliases.theme}`);
+      }
+    } catch (error) {
+      issues.push(
+        `invalid mason.config.json: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
-    const styleTarget = path.isAbsolute(config.aliases.theme)
-      ? config.aliases.theme
-      : path.join(project.cwd, config.aliases.theme.replace(/^@\//, "src/"));
-    if (!existsSync(styleTarget)) issues.push(`missing style entry: ${config.aliases.theme}`);
   }
 
   if (project.packageManager === "unknown") issues.push("unknown package manager");
@@ -451,7 +462,21 @@ export async function createDoctorReport(
 
   if (options.registry) {
     const registryIndex = path.join(path.resolve(options.registry), "registry.json");
-    if (!existsSync(registryIndex)) issues.push(`registry not reachable: ${options.registry}`);
+    if (!existsSync(registryIndex)) {
+      issues.push(`registry not reachable: ${options.registry}`);
+    } else {
+      try {
+        const registry = JSON.parse(await readFile(registryIndex, "utf8")) as unknown;
+        const result = validateRegistry(registry);
+        if (!result.ok) {
+          issues.push(
+            `invalid registry: ${result.errors.map((error) => error.message).join("; ")}`,
+          );
+        }
+      } catch (error) {
+        issues.push(`invalid registry: ${error instanceof Error ? error.message : String(error)}`);
+      }
+    }
   }
 
   if (Object.keys(installed).length > 0) {

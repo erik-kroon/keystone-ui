@@ -30,6 +30,7 @@ Start with:
 - [Tabs vertical](./tabs-vertical.md)
 - [Toolbar vertical](./toolbar-vertical.md)
 - [NavigationMenu vertical](./navigation-menu-vertical.md)
+- [VisuallyHidden and AccessibleIcon vertical](./visually-hidden-accessible-icon-vertical.md)
 
 The durable strategic PRDs are [Keystone And Mason Foundation](../prd/keystone-mason-foundation.md) and [Keystone Internals Inspiration Parity](../prd/keystone-internals-inspiration-parity.md). The [Canonical Roadmap](../roadmap/canonical-roadmap.md) is the active north-star sequencing document. Workspace-local pasted attachments may be useful source material, but durable product direction should be copied into repo docs before future agents treat it as authoritative.
 

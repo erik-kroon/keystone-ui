@@ -20,8 +20,8 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 - Direction provider (`proven`; see [direction-provider-vertical.md](direction-provider-vertical.md))
 - Locale/i18n provider (`proven`; see [locale-i18n-provider.md](locale-i18n-provider.md))
 - Live announcer
-- Visually hidden
-- Accessible icon (`proven`; root/label parts, required label, SSR-safe named image contract)
+- Visually hidden (`proven`; see [visually-hidden-accessible-icon-vertical.md](visually-hidden-accessible-icon-vertical.md))
+- Accessible icon (`proven`; root/label parts, required label, SSR-safe named image contract; see [visually-hidden-accessible-icon-vertical.md](visually-hidden-accessible-icon-vertical.md))
 
 ### Overlay And Positioning
 
@@ -56,10 +56,10 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 
 - FormControl (`proven`; compound anatomy, ARIA/data contracts, repeated hidden inputs, and native reset listeners)
 - Field (`proven`; public compound surface backed by FormControl and Field validity)
-- Fieldset
-- Label
-- Description
-- ErrorMessage
+- Fieldset (`proven`; native group anatomy, legend/description/error relationships, invalid/required/readonly/disabled state)
+- Label (`proven`; standalone native label primitive with stable part attributes)
+- Description (`proven`; standalone descriptive text primitive with stable part attributes)
+- ErrorMessage (`proven`; standalone alert feedback primitive with stable part attributes)
 - Hidden input helpers (`proven`; repeated inputs for array values and native form ownership)
 - Native form reset listener (`proven`; owning-form and external `form` owner changes)
 - Required/invalid/disabled/readonly data and ARIA contracts (`proven`; root/control/label/description/error state attributes)
