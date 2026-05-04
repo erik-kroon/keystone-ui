@@ -20,6 +20,7 @@ Parent PRD: [Keystone Core And UI Foundation](../prd/keystone-foundation.md)
 2. **Realtime Data Table Pattern Tracer** ([#272](https://github.com/erik-kroon/core-ui/issues/272))
    - Type: AFK
    - Blocked by: [#271](https://github.com/erik-kroon/core-ui/issues/271)
+   - Foundation: [UI DataTable vertical](./ui-data-table-vertical.md) proves the base TanStack Table source kit for [#233](https://github.com/erik-kroon/core-ui/issues/233); realtime/domain blocks should build on it instead of re-solving the base table contract.
    - User stories covered: 8, 10, 15, 49, 52
    - Acceptance criteria:
      - A Mason registry item demonstrates a TanStack-backed data table pattern for frequent row/cell updates.

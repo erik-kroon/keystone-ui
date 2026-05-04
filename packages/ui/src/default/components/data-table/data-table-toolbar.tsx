@@ -39,6 +39,7 @@ export function DataTableToolbar<TData extends RowData>(props: {
                   type="search"
                   value={String(column.getFilterValue() ?? "")}
                   placeholder={meta?.placeholder ?? `Search ${label.toLowerCase()}...`}
+                  aria-label={meta?.placeholder ?? `Search ${label}`}
                   data-scope="ui-data-table"
                   data-part="search"
                   class="ui-data-table-search"
@@ -63,6 +64,7 @@ export function DataTableToolbar<TData extends RowData>(props: {
       <Show when={hasFilters()}>
         <button
           type="button"
+          aria-label="Reset table filters and column visibility"
           data-scope="ui-data-table"
           data-part="reset"
           class="ui-data-table-reset"

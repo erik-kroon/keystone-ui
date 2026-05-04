@@ -16,11 +16,11 @@
   "registryDependencies": ["cn", "select", "tanstack-field"],
   "meta": {
     "install": "mason add select-field",
-    "customization": "Use ui-select-field classes, TanStackField shell classes, Select classes, Core data attributes, and neutral data-slot hooks while TanStack Form owns field state and Core owns listbox behavior.",
+    "customization": "Use ui-select-field classes, TanStackField shell classes, Select classes, Core data attributes, neutral data-slot hooks, selectProps, and trigger/content/listbox/group/item escape hatches while TanStack Form owns field state and Core owns listbox behavior.",
     "sourceFiles": ["packages/ui/src/default/ui/select-field.tsx"],
     "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn", "select", "tanstack-field"],
-    "api": "SelectField exports SelectField, SelectFieldOption, SelectFieldProps, and SelectFieldValidators. It composes TanStackField with the styled Select item, passes validators to form.Field, derives touched error state through TanStackField, maps Select value changes to field.handleChange, maps popup close to field.handleBlur, and accepts trigger/content/listbox/item class and prop escape hatches.",
-    "accessibility": "Backed by TanStackField for label, description, error, aria-describedby, invalid state, and alert messaging, and by @keystone-ui/core/select for trigger/listbox roles, active descendant, highlighted and selected item state, disabled items, hidden form value serialization, Escape dismissal, typeahead, and native reset support.",
+    "api": "SelectField exports SelectField, SelectFieldOption, SelectFieldOptionGroup, SelectFieldProps, and SelectFieldValidators. It composes TanStackField with the styled Select item, passes validators to form.Field, derives touched error state through TanStackField, maps Select value changes to field.handleChange, maps popup close to field.handleBlur, treats the empty string as no selection for placeholder rendering, supports grouped and disabled options, uses textValue for typeahead/value text when labels are JSX, exposes an empty state, forwards disabled/readOnly/required/formId to Core Select, and accepts select/trigger/content/listbox/group/item class and prop escape hatches.",
+    "accessibility": "Backed by TanStackField for label, description, error, aria-describedby, invalid state, and alert messaging, and by @keystone-ui/core/select for trigger/listbox roles, active descendant, highlighted and selected item state, disabled items and groups, hidden form value serialization, Escape dismissal, typeahead, and native reset support. SelectField wires the trigger to TanStackField label/description/error IDs through aria-labelledby and aria-describedby while Core owns the popup/listbox relationship.",
     "anatomy": [
       "field-root",
       "field-label",
@@ -28,9 +28,12 @@
       "value",
       "content",
       "listbox",
+      "group",
+      "group-label",
       "item",
       "item-text",
       "item-indicator",
+      "empty",
       "field-description",
       "field-error"
     ],
@@ -49,7 +52,10 @@
       "--color-destructive",
       "--color-ring"
     ],
-    "limitations": "SelectField is intentionally single-value string-first. Multi-select values, object value adapters, async option loading, and schema-specific validation helpers remain app-owned composition until the underlying Select API grows those contracts.",
+    "state": "TanStack Form owns value, touched, dirty, blurred, validating, and errors. SelectField maps undefined Core Select values back to an empty string for field state, maps non-empty strings into Core Select value, marks the field focused while the popup is open, and calls field.handleBlur when the popup closes.",
+    "dataAttributes": "Generated source exposes ui-select-field data slots including data-slot=\"select-field-trigger\", data-slot=\"select-field-content\", data-slot=\"select-field-group\", data-slot=\"select-field-group-label\", data-slot=\"select-field-item\", and data-slot=\"select-field-empty\"; Core Select additionally exposes select data-scope/data-part states such as data-state, data-disabled, data-invalid, data-placeholder, data-required, data-readonly, data-highlighted, and data-selected.",
+    "ssr": "Initial placeholder/value output, hidden input serialization, and TanStackField relationship IDs are deterministic. Portal mounting, collection registration, floating measurement, and active descendant movement remain client-side Core Select effects.",
+    "limitations": "SelectField is intentionally single-value string-first and reserves the empty string as the no-selection value for placeholder display. Multi-select values, object value adapters, async option loading, filtering, virtualization, and schema-specific validation helpers remain app-owned composition until the underlying Select API grows those contracts.",
     "parity": {
       "tanstackForm": "First-class comparison is TanStack Form: SelectField now composes TanStackField, passes validators through form.Field, maps Core Select value and blur events into TanStack field handlers, and exposes field-driven touched/invalid/error state.",
       "baseUi": "Behavior parity for the underlying select is inherited through Keystone Core Select: collection registration, keyboard navigation, typeahead, positioning, hidden form value, data attributes, disabled items, and reset support.",

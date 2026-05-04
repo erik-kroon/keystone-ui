@@ -41,14 +41,26 @@ SelectField:
   `field.handleBlur()`.
 - It preserves Core Select listbox behavior, hidden form value, typeahead, disabled options,
   and popup geometry instead of copying primitive internals.
+- The end-state API supports flat or grouped string options, disabled groups/options,
+  `textValue` for JSX labels, an empty listbox state, `selectProps`, and per-part class/prop
+  escape hatches for trigger, content, listbox, group, group label, and item source.
+- SelectField forwards disabled, readonly, required, and form ownership to Core Select,
+  treats the empty string as the no-selection value for placeholder display, and wires
+  trigger `aria-labelledby`/`aria-describedby` to TanStackField label, description, and
+  error IDs.
 
 ## Registry Status
 
 - `tanstack-form`, `tanstack-field`, and `select-field` carry `meta.api`,
-  `meta.accessibility`, `meta.anatomy`, `meta.cssVariables`, `meta.limitations`, and
-  `meta.parity` notes.
+  `meta.accessibility`, `meta.anatomy`, `meta.cssVariables`, `meta.state`,
+  `meta.dataAttributes`, `meta.ssr`, `meta.limitations`, and `meta.parity` notes where
+  relevant to the item.
 - `select-field` depends on `select` and `tanstack-field`, so installed source reuses the
   same UI Select and TanStack field contracts.
+- Issue #201 final status: implemented as the string-first, single-select TanStack adapter.
+  Known limitations are intentional: empty string means no selection, and multi-select,
+  object adapters, async loading, filtering, virtualization, and schema-specific validation
+  helpers remain app-owned composition.
 
 ## Verification
 

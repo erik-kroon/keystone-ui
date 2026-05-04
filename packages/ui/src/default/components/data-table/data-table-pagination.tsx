@@ -13,13 +13,15 @@ export function DataTablePagination<TData extends RowData>(props: {
     <div
       data-scope="ui-data-table"
       data-part="pagination"
+      role="navigation"
+      aria-label="Table pagination"
       class={cn("ui-data-table-pagination", props.class)}
     >
-      <span data-scope="ui-data-table" data-part="selected-summary">
+      <span data-scope="ui-data-table" data-part="selected-summary" aria-live="polite">
         {props.table.getFilteredSelectedRowModel().rows.length} of{" "}
         {props.table.getFilteredRowModel().rows.length} selected
       </span>
-      <span data-scope="ui-data-table" data-part="page-summary">
+      <span data-scope="ui-data-table" data-part="page-summary" aria-live="polite">
         Page {props.table.getState().pagination.pageIndex + 1} of {props.table.getPageCount() || 1}
       </span>
       <label data-scope="ui-data-table" data-part="page-size">
@@ -36,6 +38,7 @@ export function DataTablePagination<TData extends RowData>(props: {
       <div data-scope="ui-data-table" data-part="page-buttons">
         <button
           type="button"
+          aria-label="Go to first page"
           onClick={() => props.table.setPageIndex(0)}
           disabled={!props.table.getCanPreviousPage()}
         >
@@ -43,6 +46,7 @@ export function DataTablePagination<TData extends RowData>(props: {
         </button>
         <button
           type="button"
+          aria-label="Go to previous page"
           onClick={() => props.table.previousPage()}
           disabled={!props.table.getCanPreviousPage()}
         >
@@ -50,6 +54,7 @@ export function DataTablePagination<TData extends RowData>(props: {
         </button>
         <button
           type="button"
+          aria-label="Go to next page"
           onClick={() => props.table.nextPage()}
           disabled={!props.table.getCanNextPage()}
         >
@@ -57,6 +62,7 @@ export function DataTablePagination<TData extends RowData>(props: {
         </button>
         <button
           type="button"
+          aria-label="Go to last page"
           onClick={() => props.table.setPageIndex(props.table.getPageCount() - 1)}
           disabled={!props.table.getCanNextPage()}
         >

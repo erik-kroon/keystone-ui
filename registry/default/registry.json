@@ -16,6 +16,12 @@
       "description": "Account settings form block composed from UI base components."
     },
     {
+      "name": "invoice-dashboard",
+      "type": "registry:block",
+      "title": "InvoiceDashboardBlock",
+      "description": "Multi-file invoice workspace block composed from Keystone UI source and TanStack app components."
+    },
+    {
       "name": "cn",
       "type": "registry:lib",
       "title": "Class Name Utility",
@@ -146,6 +152,12 @@
       "type": "registry:ui",
       "title": "DataTable TanStack Router Adapter",
       "description": "URL-backed DataTable state adapter for TanStack Router search params."
+    },
+    {
+      "name": "tanstack-start-dashboard",
+      "type": "registry:template",
+      "title": "TanStack Start Dashboard Template",
+      "description": "Solid TanStack Start app shape that mounts the invoice dashboard block as the first route."
     },
     {
       "name": "card",

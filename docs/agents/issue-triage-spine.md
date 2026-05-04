@@ -31,7 +31,7 @@ Keep the active board near 12-15 issues:
 - [#52](https://github.com/erik-kroon/core-ui/issues/52): registry parity metadata contract.
 - [#233](https://github.com/erik-kroon/core-ui/issues/233): UI DataTable.
 - [#246](https://github.com/erik-kroon/core-ui/issues/246): UI CommandMenu.
-- [#197](https://github.com/erik-kroon/core-ui/issues/197) and [#198](https://github.com/erik-kroon/core-ui/issues/198): TanStack Form proof.
+- [#197](https://github.com/erik-kroon/core-ui/issues/197), [#198](https://github.com/erik-kroon/core-ui/issues/198), and [#201](https://github.com/erik-kroon/core-ui/issues/201): TanStack Form proof.
 
 ## 0.1 Hardening Checklist
 
@@ -51,10 +51,10 @@ Keep the active board near 12-15 issues:
 - [ ] Menu/DropdownMenu.
 - [ ] Select.
 - [ ] Combobox.
-- [ ] Tabs.
+- [x] Tabs.
 - [ ] Checkbox/Switch/RadioGroup.
 - [ ] Field/FormControl.
-- [ ] Toast.
+- [x] Toast.
 
 ### UI
 

@@ -20,14 +20,16 @@ import { dataTableFacetedFilter } from "./use-data-table";
 import type { DataTableSearch } from "./data-table-search";
 import type { DataTableColumns } from "./types";
 
+type MaybeAccessor<TValue> = TValue | Accessor<TValue>;
+
 export type DataTableRouterNavigate = (options: {
   replace?: boolean;
   search: (previous: DataTableSearch) => DataTableSearch;
 }) => void | Promise<void>;
 
 export type UseDataTableRouterOptions<TData extends RowData> = {
-  columns: DataTableColumns<TData>;
-  data: readonly TData[];
+  columns: MaybeAccessor<DataTableColumns<TData>>;
+  data: MaybeAccessor<readonly TData[]>;
   getRowId?: (originalRow: TData, index: number, parent?: Row<TData>) => string;
   navigate: DataTableRouterNavigate;
   search: Accessor<DataTableSearch> | DataTableSearch;
@@ -50,10 +52,10 @@ export function useDataTableRouter<TData extends RowData>(
 
   return createSolidTable<TData>({
     get data() {
-      return [...options.data];
+      return [...resolveDataTableOption(options.data)];
     },
     get columns() {
-      return options.columns;
+      return resolveDataTableOption(options.columns);
     },
     get state() {
       return {
@@ -122,4 +124,8 @@ export function useDataTableRouter<TData extends RowData>(
 
 function applyUpdater<TValue>(updater: Updater<TValue>, current: TValue): TValue {
   return typeof updater === "function" ? (updater as (value: TValue) => TValue)(current) : updater;
+}
+
+function resolveDataTableOption<TValue>(value: MaybeAccessor<TValue>): TValue {
+  return typeof value === "function" ? (value as Accessor<TValue>)() : value;
 }

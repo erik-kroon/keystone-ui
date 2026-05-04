@@ -1,4 +1,4 @@
-import { createRoot, createSignal } from "solid-js";
+import { For, createRoot, createSignal } from "solid-js";
 import { describe, expect, test } from "vitest";
 import { Tabs, createTabs } from "../src/tabs/index";
 import { click, keyDown, render, settled } from "./harness";
@@ -135,7 +135,113 @@ describe("Tabs behavior", () => {
     expect(triggers[0].getAttribute("aria-selected")).toBe("true");
     expect(triggers[1].getAttribute("aria-selected")).toBe("false");
   });
+
+  test("measures the active trigger for indicator CSS variables", async () => {
+    render(() => (
+      <Tabs.Root defaultValue="alpha">
+        <Tabs.List>
+          <Tabs.Trigger value="alpha">Alpha</Tabs.Trigger>
+          <Tabs.Trigger value="beta">Beta</Tabs.Trigger>
+          <Tabs.Indicator />
+        </Tabs.List>
+        <Tabs.Content value="alpha">Alpha panel</Tabs.Content>
+        <Tabs.Content value="beta">Beta panel</Tabs.Content>
+      </Tabs.Root>
+    ));
+
+    const list = getList();
+    const triggers = getTriggers();
+    const indicator = document.body.querySelector<HTMLElement>(
+      '[data-scope="tabs"][data-part="indicator"]',
+    );
+    if (!indicator) throw new Error("Unable to find tabs indicator");
+
+    setRect(list, { height: 40, left: 10, top: 20, width: 240 });
+    setRect(triggers[1], { height: 32, left: 90, top: 24, width: 72 });
+
+    click(triggers[1]);
+    await settled();
+
+    expect(indicator.style.getPropertyValue("--keystone-tabs-indicator-x")).toBe("80px");
+    expect(indicator.style.getPropertyValue("--keystone-tabs-indicator-y")).toBe("4px");
+    expect(indicator.style.getPropertyValue("--keystone-tabs-indicator-width")).toBe("72px");
+    expect(indicator.style.getPropertyValue("--keystone-tabs-indicator-height")).toBe("32px");
+    expect(indicator.getAttribute("data-state")).toBe("measured");
+  });
+
+  test("moves selection and focus when the active trigger is removed", async () => {
+    const [items, setItems] = createSignal([
+      { label: "One", value: "one" },
+      { label: "Two", value: "two" },
+      { label: "Three", value: "three" },
+    ]);
+    const changes: Array<{ reason: string; value: string }> = [];
+
+    render(() => (
+      <Tabs.Root
+        defaultValue="two"
+        onValueChange={(value, detail) => changes.push({ reason: detail.reason, value })}
+      >
+        <Tabs.List>
+          <For each={items()}>
+            {(item) => <Tabs.Trigger value={item.value}>{item.label}</Tabs.Trigger>}
+          </For>
+        </Tabs.List>
+        <For each={items()}>
+          {(item) => <Tabs.Content value={item.value}>{item.label} panel</Tabs.Content>}
+        </For>
+      </Tabs.Root>
+    ));
+
+    getTriggers()[1].focus();
+    setItems((current) => current.filter((item) => item.value !== "two"));
+    await settled();
+
+    const triggers = getTriggers();
+    expect(document.activeElement).toBe(triggers[1]);
+    expect(triggers[1].getAttribute("aria-selected")).toBe("true");
+    expect(getPanel("three").textContent).toBe("Three panel");
+    expect(changes).toContainEqual({ reason: "dynamic-removal", value: "three" });
+  });
+
+  test("omits panel tabIndex when the active panel has focusable content", async () => {
+    render(() => (
+      <Tabs.Root defaultValue="plain">
+        <Tabs.List>
+          <Tabs.Trigger value="plain">Plain</Tabs.Trigger>
+          <Tabs.Trigger value="interactive">Interactive</Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="plain">Plain panel</Tabs.Content>
+        <Tabs.Content value="interactive">
+          Interactive panel
+          <button type="button">Focusable action</button>
+        </Tabs.Content>
+      </Tabs.Root>
+    ));
+
+    expect(getPanel("plain").getAttribute("tabindex")).toBe("0");
+
+    click(getTriggers()[1]);
+    await settled();
+
+    expect(getPanel("interactive").hasAttribute("tabindex")).toBe(false);
+  });
 });
+
+function setRect(element: HTMLElement, rect: Pick<DOMRect, "height" | "left" | "top" | "width">) {
+  element.getBoundingClientRect = () =>
+    ({
+      bottom: rect.top + rect.height,
+      height: rect.height,
+      left: rect.left,
+      right: rect.left + rect.width,
+      top: rect.top,
+      width: rect.width,
+      x: rect.left,
+      y: rect.top,
+      toJSON: () => ({}),
+    }) as DOMRect;
+}
 
 function getList() {
   const list = document.body.querySelector<HTMLElement>('[data-scope="tabs"][data-part="list"]');
