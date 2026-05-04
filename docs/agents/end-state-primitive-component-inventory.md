@@ -13,7 +13,7 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 - Controllable state
 - Event composition and reason details
 - Stable ID and SSR guards
-- State/data attribute helpers
+- State/data attribute helpers (`proven`; see [state-data-attribute-helpers.md](state-data-attribute-helpers.md))
 - Solid polymorphic `as` rendering
 - Portal
 - Presence and `forceMount`

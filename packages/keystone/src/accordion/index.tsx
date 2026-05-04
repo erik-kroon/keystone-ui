@@ -14,6 +14,7 @@ import {
   createControllableSignal,
   callEventHandler,
   dataBoolean,
+  getOpenClosedState,
   partDataAttributes,
   renderPolymorphic,
   type PolymorphicProps,
@@ -267,7 +268,7 @@ function Item(props: AccordionItemProps) {
         {...others}
         data-disabled={dataBoolean(itemDisabled())}
         data-orientation={accordion.orientation()}
-        data-state={open() ? "open" : "closed"}
+        data-state={getOpenClosedState(open())}
         {...partDataAttributes("accordion", "item")}
       >
         {local.children}
@@ -285,7 +286,7 @@ function Header(props: AccordionHeaderProps) {
       {...others}
       id={item.headerId}
       data-disabled={dataBoolean(item.disabled())}
-      data-state={item.open() ? "open" : "closed"}
+      data-state={getOpenClosedState(item.open())}
       {...partDataAttributes("accordion", "header")}
     >
       {local.children}

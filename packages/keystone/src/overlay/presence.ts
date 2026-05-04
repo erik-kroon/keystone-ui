@@ -1,4 +1,5 @@
 import { createEffect, createSignal, onCleanup, type Accessor } from "solid-js";
+import { getOpenClosedState } from "../utils/index";
 
 export type OverlayPresenceTransitionStatus = "closed" | "closing" | "opening" | "open";
 
@@ -8,13 +9,15 @@ export type OverlayPresenceCompleteDetail = {
 };
 
 export type OverlayPresenceApi = {
+  hidden: (forceMount?: boolean) => boolean;
   mounted: Accessor<boolean>;
-  preventUnmountOnClose: () => void;
   setElement: (element: HTMLElement | undefined) => void;
+  shouldMount: (forceMount?: boolean) => boolean;
   transitionStatus: Accessor<OverlayPresenceTransitionStatus>;
 };
 
 export type CreateOverlayPresenceOptions = {
+  forceMount?: Accessor<boolean | undefined>;
   onOpenChangeComplete?: (open: boolean, detail: OverlayPresenceCompleteDetail) => void;
   open: Accessor<boolean>;
 };
@@ -23,24 +26,41 @@ export function createOverlayPresence(options: CreateOverlayPresenceOptions): Ov
   const [element, setElement] = createSignal<HTMLElement>();
   const [mounted, setMounted] = createSignal(options.open());
   const [transitionStatus, setTransitionStatus] = createSignal<OverlayPresenceTransitionStatus>(
-    options.open() ? "open" : "closed",
+    getOpenClosedState(options.open()),
   );
   let cleanupTransition: (() => void) | undefined;
   let preventedUnmount = false;
+  let requestedForceMount = false;
   let skipInitialEffect = true;
+  const isForceMounted = (forceMount?: boolean) =>
+    forceMount === true || requestedForceMount || options.forceMount?.() === true;
+
+  const shouldMount = (forceMount?: boolean) => {
+    if (forceMount !== undefined) {
+      requestedForceMount = forceMount === true;
+    }
+
+    if (forceMount === true && transitionStatus() === "closing") {
+      preventedUnmount = true;
+    }
+
+    return isForceMounted(forceMount) || mounted();
+  };
 
   const complete = (open: boolean) => {
+    const shouldRetainOnClose = !open && (preventedUnmount || isForceMounted());
+
     cleanupTransition?.();
     cleanupTransition = undefined;
-    setTransitionStatus(open ? "open" : "closed");
+    setTransitionStatus(getOpenClosedState(open));
 
-    if (!open && !preventedUnmount) {
+    if (!open && !shouldRetainOnClose) {
       setMounted(false);
     }
 
     options.onOpenChangeComplete?.(open, {
       open,
-      preventedUnmount,
+      preventedUnmount: shouldRetainOnClose,
     });
     preventedUnmount = false;
   };
@@ -70,11 +90,11 @@ export function createOverlayPresence(options: CreateOverlayPresenceOptions): Ov
   onCleanup(() => cleanupTransition?.());
 
   return {
+    hidden: (forceMount) =>
+      shouldMount(forceMount) && !options.open() && transitionStatus() === "closed",
     mounted,
-    preventUnmountOnClose: () => {
-      preventedUnmount = true;
-    },
     setElement,
+    shouldMount,
     transitionStatus,
   };
 }
@@ -83,7 +103,7 @@ function waitForElementTransition(element: Accessor<HTMLElement | undefined>, do
   let disposed = false;
   let removeListeners: (() => void) | undefined;
   let fallbackTimeout: ReturnType<typeof setTimeout> | undefined;
-  const frame = requestAnimationFrame(() => {
+  const frame = scheduleAnimationFrame(() => {
     const target = element();
 
     if (disposed) {
@@ -134,12 +154,29 @@ function waitForElementTransition(element: Accessor<HTMLElement | undefined>, do
 
   return () => {
     disposed = true;
-    cancelAnimationFrame(frame);
+    cancelScheduledAnimationFrame(frame);
     removeListeners?.();
     if (fallbackTimeout) {
       clearTimeout(fallbackTimeout);
     }
   };
+}
+
+function scheduleAnimationFrame(callback: FrameRequestCallback) {
+  if (typeof requestAnimationFrame === "function") {
+    return requestAnimationFrame(callback);
+  }
+
+  return setTimeout(() => callback(performance.now()), 16) as unknown as number;
+}
+
+function cancelScheduledAnimationFrame(frame: number) {
+  if (typeof cancelAnimationFrame === "function") {
+    cancelAnimationFrame(frame);
+    return;
+  }
+
+  clearTimeout(frame);
 }
 
 function getLongestTransitionDuration(element: HTMLElement) {

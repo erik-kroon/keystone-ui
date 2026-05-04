@@ -13,6 +13,7 @@ import {
   callEventHandler,
   createControllableSignal,
   dataBoolean,
+  getCheckedState,
   partDataAttributes,
 } from "../utils/index";
 
@@ -247,7 +248,7 @@ function Item(props: RadioGroupItemProps) {
         aria-disabled={disabled() || undefined}
         data-checked={dataBoolean(checked())}
         data-disabled={dataBoolean(disabled())}
-        data-state={checked() ? "checked" : "unchecked"}
+        data-state={getCheckedState(checked())}
         role="radio"
         tabIndex={getTabIndex(group, local.value, disabled())}
         type="button"
@@ -283,7 +284,7 @@ function ItemIndicator(props: RadioGroupItemIndicatorProps) {
       {...others}
       data-checked={dataBoolean(item.checked())}
       data-disabled={dataBoolean(item.disabled())}
-      data-state={item.checked() ? "checked" : "unchecked"}
+      data-state={getCheckedState(item.checked())}
       {...partDataAttributes("radio-group", "item-indicator")}
     >
       {local.children}
@@ -325,7 +326,7 @@ function HiddenInput(props: RadioGroupHiddenInputProps) {
       required={group.required()}
       type="radio"
       value={item.value}
-      data-state={item.checked() ? "checked" : "unchecked"}
+      data-state={getCheckedState(item.checked())}
       {...partDataAttributes("radio-group", "hidden-input")}
     />
   );

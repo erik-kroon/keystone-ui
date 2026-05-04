@@ -13,6 +13,7 @@ import {
   createControllableBooleanSignal,
   createControllableSignal,
   dataBoolean,
+  getOpenClosedState,
   partDataAttributes,
   scheduleMicrotask,
 } from "../utils/index";
@@ -605,7 +606,7 @@ function DatePickerRoot(props: DatePickerRootProps) {
           data-end-value={datePicker.calendar.rangeValue()?.end}
           data-selection-mode={datePicker.calendar.selectionMode()}
           data-start-value={datePicker.calendar.rangeValue()?.start}
-          data-state={datePicker.open() ? "open" : "closed"}
+          data-state={getOpenClosedState(datePicker.open())}
           data-value={datePicker.calendar.value()}
           {...partDataAttributes("date-picker", "root")}
         >
@@ -635,7 +636,7 @@ function Trigger(props: DatePickerTriggerProps) {
       data-placeholder={dataBoolean(!selectedValue() && !rangeLabel())}
       data-selection-mode={datePicker.calendar.selectionMode()}
       data-start-value={datePicker.calendar.rangeValue()?.start}
-      data-state={datePicker.open() ? "open" : "closed"}
+      data-state={getOpenClosedState(datePicker.open())}
       data-value={selectedValue()}
       onClick={(event) => {
         callEventHandler(local.onClick, event);
@@ -659,7 +660,7 @@ function Content(props: DatePickerContentProps) {
         {...others}
         id={datePicker.contentId}
         role="dialog"
-        data-state={datePicker.open() ? "open" : "closed"}
+        data-state={getOpenClosedState(datePicker.open())}
         {...partDataAttributes("date-picker", "content")}
       >
         {local.children ?? defaultCalendarChildren()}

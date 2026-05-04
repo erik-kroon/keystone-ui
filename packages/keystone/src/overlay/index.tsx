@@ -1,4 +1,8 @@
-export { DismissableLayer, createDismissableLayer } from "./dismissable-layer";
+export {
+  DismissableLayer,
+  DismissableLayerBranch,
+  createDismissableLayer,
+} from "./dismissable-layer";
 export { createOverlayDismissalPolicy } from "./dismissal-policy";
 export { FocusScope, createFocusScope } from "./focus-scope";
 export { createFloatingAdapter } from "./floating";
@@ -17,6 +21,8 @@ export type {
 } from "./dismissal-policy";
 export type {
   DismissableLayerOptions,
+  DismissableLayerApi,
+  DismissableLayerBranchProps,
   DismissableLayerOutsideEvent,
   DismissableLayerProps,
 } from "./dismissable-layer";

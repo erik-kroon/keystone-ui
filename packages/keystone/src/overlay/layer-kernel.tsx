@@ -4,7 +4,6 @@ import {
   createMemo,
   createSignal,
   onCleanup,
-  onMount,
   splitProps,
   untrack,
   useContext,
@@ -50,8 +49,10 @@ export type OverlayLayerProviderProps = {
 
 export type CreateOverlayLayerOptions = {
   id: string;
+  branchElements?: Accessor<readonly HTMLElement[]>;
   containsTarget?: (target: Node | null) => boolean;
   element?: Accessor<HTMLElement | undefined>;
+  enabled?: Accessor<boolean>;
   modal?: Accessor<boolean>;
   disableOutsidePointerEvents?: Accessor<boolean>;
   trapFocus?: Accessor<boolean>;
@@ -239,22 +240,46 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
   const modal = () => options.modal?.() ?? false;
   const isTopLayer = createMemo(() => stack.isTopLayer(options.id));
   const ownerDocuments = new Set<Document>();
+  let cleanupLayer: (() => void) | undefined;
+  let mountedElement: HTMLElement | undefined;
   let syncLayerDocument: ((document: Document) => void) | undefined;
 
+  const syncRegisteredDocuments = () => {
+    for (const document of ownerDocuments) {
+      stack.syncPointerEvents(document);
+      stack.syncModalState(document);
+    }
+  };
+
+  const cleanupRegisteredLayer = () => {
+    cleanupLayer?.();
+    cleanupLayer = undefined;
+    mountedElement = undefined;
+  };
+
   createEffect(() => {
+    const enabled = options.enabled?.() ?? true;
     const element = options.element?.();
     modal();
     options.disableOutsidePointerEvents?.();
 
-    if (!syncLayerDocument) {
+    if (!enabled || !element) {
+      cleanupRegisteredLayer();
       return;
     }
 
-    syncLayerDocument(getOwnerDocument(element));
-  });
+    if (syncLayerDocument) {
+      syncLayerDocument(getOwnerDocument(element));
+    }
 
-  onMount(() => {
-    const ownerDocument = getOwnerDocument(options.element?.());
+    if (cleanupLayer && mountedElement === element) {
+      return;
+    }
+
+    cleanupRegisteredLayer();
+    mountedElement = element;
+
+    const ownerDocument = getOwnerDocument(element);
     syncLayerDocument = (document: Document) => {
       ownerDocuments.add(document);
       stack.syncPointerEvents(document);
@@ -263,7 +288,7 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
     const unregister = stack.register({
       id: options.id,
       modal,
-      element: options.element?.(),
+      element,
       getElement: options.element,
       disableOutsidePointerEvents: () => options.disableOutsidePointerEvents?.() ?? modal(),
     });
@@ -273,36 +298,16 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
     syncLayerDocument(ownerDocument);
     scheduleMicrotask(() => {
       isReady = true;
-
-      const element = options.element?.();
-
-      if (!element || restoreFocus) {
-        return;
-      }
-
-      restoreFocus = mountLayerFocusLifecycle({
-        element,
-        isTopLayer,
-        restoreFocus: () => options.restoreFocus?.() ?? true,
-        trapFocus: () => options.trapFocus?.() ?? false,
-        onMountAutoFocus: options.onMountAutoFocus,
-        onUnmountAutoFocus: options.onUnmountAutoFocus,
-      });
-      syncLayerDocument?.(getOwnerDocument(element));
     });
 
-    const element = options.element?.();
-
-    if (element) {
-      restoreFocus = mountLayerFocusLifecycle({
-        element,
-        isTopLayer,
-        restoreFocus: () => options.restoreFocus?.() ?? true,
-        trapFocus: () => options.trapFocus?.() ?? false,
-        onMountAutoFocus: options.onMountAutoFocus,
-        onUnmountAutoFocus: options.onUnmountAutoFocus,
-      });
-    }
+    restoreFocus = mountLayerFocusLifecycle({
+      element,
+      isTopLayer,
+      restoreFocus: () => options.restoreFocus?.() ?? true,
+      trapFocus: () => options.trapFocus?.() ?? false,
+      onMountAutoFocus: options.onMountAutoFocus,
+      onUnmountAutoFocus: options.onUnmountAutoFocus,
+    });
 
     const onPointerDown = (event: PointerEvent) => {
       const element = options.element?.();
@@ -357,19 +362,20 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
     ownerDocument.addEventListener("focusin", onFocusIn, true);
     ownerDocument.addEventListener("keydown", onKeyDown);
 
-    onCleanup(() => {
+    cleanupLayer = () => {
       ownerDocument.removeEventListener("pointerdown", onPointerDown, true);
       ownerDocument.removeEventListener("focusin", onFocusIn, true);
       ownerDocument.removeEventListener("keydown", onKeyDown);
       restoreFocus?.();
       unregister();
       ownerDocuments.add(ownerDocument);
-      for (const document of ownerDocuments) {
-        stack.syncPointerEvents(document);
-        stack.syncModalState(document);
-      }
-    });
+      syncRegisteredDocuments();
+      mountedElement = undefined;
+      syncLayerDocument = undefined;
+    };
   });
+
+  onCleanup(cleanupRegisteredLayer);
 
   return {
     id: options.id,
@@ -427,7 +433,11 @@ function containsLayerTarget(
   target: Node | null,
   options: CreateOverlayLayerOptions,
 ) {
-  return contains(element, target) || options.containsTarget?.(target) === true;
+  return (
+    contains(element, target) ||
+    options.branchElements?.().some((branch) => contains(branch, target)) === true ||
+    options.containsTarget?.(target) === true
+  );
 }
 
 function getOutsideElements(element: HTMLElement, ownerDocument: Document) {

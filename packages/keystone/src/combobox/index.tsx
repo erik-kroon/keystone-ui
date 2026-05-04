@@ -9,7 +9,6 @@ import {
   useContext,
   type JSX,
 } from "solid-js";
-import { Portal } from "solid-js/web";
 import { createFormControl, type FormControlApi } from "../form/index";
 import { createListboxInteraction, type ListboxInteractionApi } from "../listbox/index";
 import type { ListInteractionKernelApi } from "../listbox/interaction-kernel";
@@ -24,12 +23,14 @@ import {
   type FloatingSticky,
   type FloatingStrategy,
 } from "../overlay/index";
+import { Portal } from "../portal/index";
 import {
   composeEventHandlers,
   createControllableBooleanSignal,
   createControllableSignal,
   createStableId,
   dataBoolean,
+  getOpenClosedState,
   renderPolymorphic,
   scheduleMicrotask,
   type PolymorphicProps,
@@ -331,7 +332,7 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
     sticky: options.sticky,
     strategy: options.strategy,
   });
-  const state = () => (open() ? "open" : "closed");
+  const state = () => getOpenClosedState(open());
   const partProps = (part: string) => ({
     ...getPartDataAttributes(scope, part),
   });
@@ -784,9 +785,9 @@ function createComboboxNamespace(factoryOptions: ComboboxFactoryOptions) {
     const combobox = useCombobox("Portal");
 
     return (
-      <Show when={props.forceMount || combobox.open()}>
-        <Portal mount={props.mount}>{props.children}</Portal>
-      </Show>
+      <Portal forceMount={props.forceMount} mount={props.mount} present={combobox.open()}>
+        {props.children}
+      </Portal>
     );
   }
 

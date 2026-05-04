@@ -22,6 +22,7 @@ import {
   composeEventHandlers,
   createControllableBooleanSignal,
   createStableId,
+  getOpenClosedState,
   scheduleMicrotask,
   type KeystoneChangeDetail,
 } from "../utils/index";
@@ -187,17 +188,8 @@ export function createOverlayController<Reason extends string>(
     modal,
     triggerElement,
   });
-  const state = () => (open() ? "open" : "closed") as "closed" | "open";
-  const shouldMount = (forceMount?: boolean) => {
-    const forced = forceMount === true;
-    const transitionStatus = presence.transitionStatus();
-
-    if (forced && transitionStatus === "closing") {
-      presence.preventUnmountOnClose();
-    }
-
-    return forced || presence.mounted();
-  };
+  const state = () => getOpenClosedState(open());
+  const shouldMount = (forceMount?: boolean) => presence.shouldMount(forceMount);
   createEffect(() => {
     const content = contentElement();
     const status = presence.transitionStatus();

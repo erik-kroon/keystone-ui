@@ -3,6 +3,7 @@ import {
   composeEventHandlers,
   createControllableBooleanSignal,
   dataBoolean,
+  getOpenClosedState,
   partDataAttributes,
   type KeystoneChangeDetail,
 } from "../utils/index";
@@ -59,7 +60,7 @@ export function createDisclosureController<TReason extends string = "trigger" | 
   const getPartProps = (part: string) => ({
     ...partDataAttributes(options.scope, part),
     get "data-state"() {
-      return open() ? "open" : "closed";
+      return getOpenClosedState(open());
     },
     get "data-disabled"() {
       return dataBoolean(disabled());
@@ -88,7 +89,7 @@ export function createDisclosureController<TReason extends string = "trigger" | 
           setOpen(true, { event, reason: "browser-find" } as DisclosureChangeDetail<TReason>),
         ),
         get "data-state"() {
-          return open() ? "open" : "closed";
+          return getOpenClosedState(open());
         },
         get "data-disabled"() {
           return dataBoolean(disabled());
@@ -116,7 +117,7 @@ export function createDisclosureController<TReason extends string = "trigger" | 
           } as unknown as DisclosureChangeDetail<TReason>),
         ),
         get "data-state"() {
-          return open() ? "open" : "closed";
+          return getOpenClosedState(open());
         },
         get "data-disabled"() {
           return dataBoolean(disabled());

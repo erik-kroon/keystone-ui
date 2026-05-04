@@ -19,6 +19,7 @@ export {
   primitiveMetadata,
 } from "./metadata/index";
 export { NavigationMenu, createNavigationMenu } from "./navigation-menu/index";
+export { Portal } from "./portal/index";
 export type {
   DocsPartMetadata,
   DocsPrimitiveMetadata,
@@ -28,6 +29,7 @@ export type {
   PrimitivePartMetadata,
   PrimitiveScope,
 } from "./metadata/index";
+export type { PortalProps } from "./portal/index";
 export type {
   AccordionContentProps,
   AccordionHeaderProps,
