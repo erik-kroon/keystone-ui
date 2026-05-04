@@ -8,9 +8,10 @@ export type TanStackFieldApi<TValue = unknown, TElement extends HTMLElement = HT
   state: {
     value: TValue;
     meta: {
-      errors: unknown[];
-      isTouched: boolean;
+      errors?: readonly unknown[];
+      isBlurred?: boolean;
       isDirty?: boolean;
+      isTouched?: boolean;
       isValidating?: boolean;
     };
   };
@@ -31,11 +32,19 @@ export type TanStackFieldRenderContext<
   TElement extends HTMLElement = HTMLElement,
 > = {
   control: FormControlApi;
+  controlId: Accessor<string>;
+  descriptionId: Accessor<string>;
+  dirty: Accessor<boolean>;
+  errorId: Accessor<string>;
   field: Accessor<TanStackFieldApi<TValue, TElement>>;
   firstError: Accessor<JSX.Element | undefined>;
   focused: Accessor<boolean>;
   invalid: Accessor<boolean>;
+  labelId: Accessor<string>;
+  blurred: Accessor<boolean>;
   setFocused: (focused: boolean) => void;
+  touched: Accessor<boolean>;
+  validating: Accessor<boolean>;
   value: Accessor<TValue>;
 };
 
@@ -52,6 +61,7 @@ export type TanStackFieldProps<TValue = unknown, TElement extends HTMLElement = 
   descriptionClass?: string;
   errorClass?: string;
   disabled?: boolean;
+  formId?: string;
   invalid?: boolean;
   readOnly?: boolean;
   required?: boolean;
@@ -86,6 +96,7 @@ function TanStackFieldControl<TValue = unknown, TElement extends HTMLElement = H
     "error",
     "errorClass",
     "field",
+    "formId",
     "id",
     "invalid",
     "label",
@@ -95,13 +106,15 @@ function TanStackFieldControl<TValue = unknown, TElement extends HTMLElement = H
   ]);
   const [focused, setFocused] = createSignal(false);
   const value = createMemo(() => local.field().state.value);
-  const firstError = createMemo(
-    () => local.error ?? formatFieldError(local.field().state.meta.errors[0]),
-  );
-  const invalid = createMemo(
-    () => local.invalid || (local.field().state.meta.isTouched && Boolean(firstError())),
-  );
+  const meta = createMemo(() => local.field().state.meta);
+  const firstError = createMemo(() => local.error ?? formatFieldError(meta().errors?.[0]));
+  const touched = createMemo(() => Boolean(meta().isTouched));
+  const dirty = createMemo(() => Boolean(meta().isDirty));
+  const validating = createMemo(() => Boolean(meta().isValidating));
+  const blurred = createMemo(() => Boolean(meta().isBlurred));
+  const invalid = createMemo(() => local.invalid || (touched() && Boolean(firstError())));
   const control = createFormControl({
+    form: () => local.formId,
     id: () => local.id,
     name: () => local.field().name,
     value: () => {
@@ -113,18 +126,29 @@ function TanStackFieldControl<TValue = unknown, TElement extends HTMLElement = H
         : undefined;
     },
     disabled: () => local.disabled,
+    dirty,
     focused,
     invalid,
     readonly: () => local.readOnly,
     required: () => local.required,
+    touched,
+    validating,
   });
   const context = {
     control,
+    controlId: control.controlId,
+    descriptionId: control.descriptionId,
+    dirty,
+    errorId: control.errorMessageId,
     field: local.field,
     firstError,
     focused,
     invalid,
+    labelId: control.labelId,
+    blurred,
     setFocused,
+    touched,
+    validating,
     value,
   } satisfies TanStackFieldRenderContext<TValue, TElement>;
 
@@ -134,8 +158,7 @@ function TanStackFieldControl<TValue = unknown, TElement extends HTMLElement = H
       data-scope="ui-tanstack-field"
       data-part="root"
       data-slot="tanstack-field"
-      data-dirty={local.field().state.meta.isDirty ? "" : undefined}
-      data-validating={local.field().state.meta.isValidating ? "" : undefined}
+      data-blurred={blurred() ? "" : undefined}
       class={cn(
         classes("ui-tanstack-field", "flex", "flex-col", "items-start", "gap-2"),
         local.class,

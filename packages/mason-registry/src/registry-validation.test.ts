@@ -251,20 +251,65 @@ describe("Mason registry validation tracer", () => {
   test("validates docs-ready metadata on the real default command-menu item", async () => {
     const item = await import("../../../registry/default/items/command-menu.json");
     const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/command-menu.tsx"), "utf8");
 
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.value.dependencies).toContain("@tanstack/solid-store@^0.11.0");
       expect(result.value.dependencies).toContain("@tanstack/solid-hotkeys@^0.10.0");
       expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("CommandMenuFooter");
+      expect(result.value.meta?.anatomy).toEqual([
+        "root",
+        "trigger",
+        "portal",
+        "backdrop",
+        "positioner",
+        "content",
+        "input-row",
+        "input-icon",
+        "input",
+        "panel",
+        "list",
+        "group",
+        "group-label",
+        "item",
+        "item-text",
+        "item-label",
+        "item-description",
+        "shortcut",
+        "empty",
+        "separator",
+        "footer",
+      ]);
       expect(result.value.meta?.commandItems).toBeString();
       expect(result.value.meta?.searchFiltering).toBeString();
       expect(result.value.meta?.store).toBeString();
       expect(result.value.meta?.shortcutDisplay).toBeString();
       expect(result.value.meta?.hotkeysPreview).toContain("preview");
       expect(result.value.meta?.accessibility).toContain("Keystone Combobox");
-      expect(result.value.meta?.limitations).toBeString();
+      expect(result.value.meta?.customization).toContain("Coss command component");
+      expect(result.value.meta?.limitations).toContain("Coss command component");
+      expect(result.value.meta?.parity).toMatchObject({
+        visualReference: expect.any(String),
+        baseUi: expect.any(String),
+        kobalte: expect.any(String),
+        tanstackStore: expect.any(String),
+        tanstackHotkeys: expect.any(String),
+      });
     }
+
+    expect(source).toContain("export function CommandMenuBackdrop");
+    expect(source).toContain("export function CommandMenuPanel");
+    expect(source).toContain("export function CommandMenuFooter");
+    expect(source).toContain("export function CommandMenuSeparator");
+    expect(source).toContain('data-slot="command-menu-backdrop"');
+    expect(source).toContain('data-slot="command-menu-input-icon"');
+    expect(source).toContain('data-slot="command-menu-panel"');
+    expect(source).toContain('data-slot="command-menu-shortcut"');
+    expect(source).toContain('"max-w-xl"');
+    expect(source).toContain('"rounded-2xl"');
+    expect(source).toContain('"backdrop-blur-sm"');
   });
 
   test("captures Field parity metadata and generated source contract", async () => {
@@ -470,7 +515,9 @@ describe("Mason registry validation tracer", () => {
       expect(result.value.dependencies).toContain("@tanstack/solid-form@^1.29.1");
       expect(result.value.registryDependencies).toEqual(["cn"]);
       expect(result.value.meta?.api).toContain("TanStackFormSubmit");
+      expect(result.value.meta?.api).toContain("getTanStackFormState");
       expect(result.value.meta?.accessibility).toContain("aria-busy");
+      expect(result.value.meta?.accessibility).toContain("submit disabling");
       expect(result.value.meta?.anatomy).toEqual(["root", "submit", "errors"]);
       expect(result.value.meta?.limitations).toContain("server action");
       expect(result.value.meta?.parity).toMatchObject({
@@ -483,12 +530,16 @@ describe("Mason registry validation tracer", () => {
     expect(source).toContain("export function TanStackForm");
     expect(source).toContain("export function TanStackFormSubmit");
     expect(source).toContain("export function TanStackFormErrors");
+    expect(source).toContain("export function getTanStackFormState");
     expect(source).toContain("export function formatFieldError");
     expect(source).toContain("form().handleSubmit()");
     expect(source).toContain('data-slot="tanstack-form"');
     expect(source).toContain('data-slot="tanstack-form-submit"');
     expect(source).toContain('data-slot="tanstack-form-errors"');
     expect(source).toContain("aria-busy");
+    expect(source).toContain("data-submission-attempts");
+    expect(source).toContain("disableWhenCannotSubmit");
+    expect(source).toContain("getTanStackFormState(local.form)");
   });
 
   test("captures TanStackField parity metadata and generated source contract", async () => {
@@ -502,7 +553,9 @@ describe("Mason registry validation tracer", () => {
       expect(result.value.dependencies).toContain("@tanstack/solid-form@^1.29.1");
       expect(result.value.registryDependencies).toEqual(["cn", "tanstack-form"]);
       expect(result.value.meta?.api).toContain("TanStackFieldRenderContext");
+      expect(result.value.meta?.api).toContain("controlId");
       expect(result.value.meta?.accessibility).toContain("aria-describedby");
+      expect(result.value.meta?.accessibility).toContain("touched/dirty/validating");
       expect(result.value.meta?.anatomy).toEqual([
         "root",
         "label",
@@ -523,9 +576,14 @@ describe("Mason registry validation tracer", () => {
     expect(source).toContain("export function TanStackField");
     expect(source).toContain("createFormControl");
     expect(source).toContain("FormField name={props.name}");
+    expect(source).toContain("form: () => local.formId");
+    expect(source).toContain("touched,");
+    expect(source).toContain("dirty,");
+    expect(source).toContain("validating,");
     expect(source).toContain('data-slot="tanstack-field"');
     expect(source).toContain('data-slot="tanstack-field-label"');
     expect(source).toContain('data-slot="tanstack-field-error"');
+    expect(source).toContain("data-blurred");
     expect(source).toContain("setFocused");
   });
 
