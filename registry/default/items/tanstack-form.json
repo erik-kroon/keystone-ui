@@ -19,13 +19,13 @@
     "customization": "Style the generated form, submit, and form-error parts through ui-tanstack-form classes, form state data attributes, and neutral data-slot hooks while TanStack Form owns app form state.",
     "sourceFiles": ["packages/ui/src/default/ui/tanstack-form.tsx"],
     "dependencies": ["@tanstack/solid-form", "cn"],
-    "api": "TanStackForm exports TanStackForm, TanStackFormSubmit, TanStackFormErrors, and formatFieldError. TanStackForm wraps a native form element, runs user onSubmit first, optionally prevents default and stops propagation, calls form.handleSubmit, and mirrors submitting, validating, invalid, and can-submit metadata.",
-    "accessibility": "TanStackForm keeps native form semantics, sets aria-busy while submitting or validating, preserves preventDefault escape hatches through user onSubmit, and exposes TanStackFormErrors with role=alert when form errors are present.",
+    "api": "TanStackForm exports TanStackForm, TanStackFormSubmit, TanStackFormErrors, getTanStackFormState, TanStackFormState, and formatFieldError. TanStackForm wraps a native form element, runs user onSubmit first, optionally prevents default and stops propagation, calls form.handleSubmit, and mirrors submitting, validating, invalid, can-submit, dirty, touched, submitted, and submission-attempt metadata. TanStackFormSubmit can bind to the form state to disable while submitting or while canSubmit is false.",
+    "accessibility": "TanStackForm keeps native form semantics, sets aria-busy while submitting or validating, preserves preventDefault escape hatches through user onSubmit, exposes state-aware submit disabling, and exposes TanStackFormErrors with role=alert when form errors are present.",
     "anatomy": ["root", "submit", "errors"],
     "cssVariables": ["--color-destructive-foreground"],
     "limitations": "Schema adapters, server action wiring, optimistic submission state, and route-level mutation orchestration stay app-owned. This source shell intentionally does not hide TanStack Form behind a new runtime abstraction.",
     "parity": {
-      "tanstackForm": "First-class TanStack Form parity: source-owned native form wrapper around handleSubmit, form-state metadata for submitting/validating/can-submit, user-submit precedence, and helpers for submit controls and root error display.",
+      "tanstackForm": "First-class TanStack Form parity: source-owned native form wrapper around handleSubmit, form-state metadata for submitting/validating/can-submit/dirty/touched/submitted/submission-attempts, user-submit precedence, state-aware submit controls, and root error display.",
       "baseUi": "Base UI is not the primary target for app form state; intrinsic ARIA and native form semantics are preserved while Keystone Core remains independent from TanStack app libraries.",
       "kobalte": "Solid parity is native-form composition with explicit source-owned state hooks rather than a hidden context runtime."
     }

@@ -59,6 +59,7 @@ export function SelectField(props: SelectFieldProps) {
       error={props.error}
       errorClass={props.errorClass}
       form={props.form}
+      formId={props.formId}
       id={props.id}
       invalid={props.invalid}
       label={props.label}

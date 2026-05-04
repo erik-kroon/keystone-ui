@@ -20,6 +20,7 @@ Start with:
 - [Core internal kernel guidance](./core-internal-kernel-guidance.md)
 - [Issue triage spine](./issue-triage-spine.md)
 - [Data-dense workspace verticals](./data-dense-workspace-verticals.md)
+- [UI CommandMenu vertical](./ui-command-menu-vertical.md)
 - [Core layer stack vertical](./layer-stack-vertical.md)
 - [Controllable state vertical](./controllable-state-vertical.md)
 - [Solid polymorphic `as` rendering](./solid-polymorphic-as-rendering.md)

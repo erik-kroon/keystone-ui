@@ -17,19 +17,22 @@ TanStackForm:
 - `TanStackForm` wraps a native `form`, runs user `onSubmit` first, optionally prevents
   default and stops propagation, then calls `form.handleSubmit()`.
 - It mirrors submitting, validating, invalid, and can-submit metadata through data
-  attributes and `aria-busy`.
+  attributes and `aria-busy`, and also exposes dirty, touched, submitted, and submission
+  attempt state for source-owned styling and instrumentation.
 - `TanStackFormSubmit` and `TanStackFormErrors` are small source-owned helpers for submit
-  controls and root error display.
+  controls and root error display. Submit can bind to a form instance and disables while
+  submitting or when `canSubmit` is false by default.
 
 TanStackField:
 
 - `TanStackField` renders `form.Field`, passes validators through, derives first error and
   touched invalid state from field meta, and creates a Keystone Core form-control contract.
-- The child render function receives `control`, `field`, `value`, `invalid`, `firstError`,
-  `focused`, and `setFocused`, so concrete controls decide how to call `handleChange` and
-  `handleBlur`.
+- The child render function receives `control`, generated relationship IDs, `field`, `value`,
+  `invalid`, `firstError`, `focused`, `setFocused`, `touched`, `dirty`, `blurred`, and
+  `validating`, so concrete controls decide how to call `handleChange` and `handleBlur`.
 - The adapter exposes label, description, and error parts with stable `data-slot` hooks and
-  Core-backed ARIA relationships.
+  Core-backed ARIA relationships. TanStack touched, dirty, and validating metadata feeds the
+  Core form-control state contract; blur metadata is exposed as `data-blurred`.
 
 SelectField:
 
