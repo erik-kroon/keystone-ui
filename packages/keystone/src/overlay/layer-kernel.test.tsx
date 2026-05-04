@@ -7,6 +7,7 @@ function TestLayer(props: {
   children?: JSX.Element;
   id: string;
   modal?: boolean;
+  disableOutsidePointerEvents?: boolean;
   onDismiss?: (event: Event) => void;
   onFocusOutside?: (event: CustomEvent<{ originalEvent: Event }>) => void;
 }) {
@@ -15,6 +16,7 @@ function TestLayer(props: {
     id: props.id,
     element,
     modal: () => props.modal ?? false,
+    disableOutsidePointerEvents: () => props.disableOutsidePointerEvents ?? props.modal ?? false,
     onFocusOutside: props.onFocusOutside,
     onDismiss: props.onDismiss,
   });
@@ -100,5 +102,63 @@ describe("Overlay layer kernel", () => {
     expect(document.body.style.pointerEvents).toBe("");
     expect(document.body.style.overflow).toBe("");
     expect(outside.getAttribute("aria-hidden")).toBeNull();
+  });
+
+  test("reacts to modal and pointer-blocking changes after registration", async () => {
+    let stack!: ReturnType<typeof createOverlayLayerStack>;
+    let setModal!: (modal: boolean) => void;
+    let setBlocksPointer!: (blocksPointer: boolean) => void;
+
+    render(() => {
+      stack = createOverlayLayerStack();
+      const [modal, updateModal] = createSignal(true);
+      const [blocksPointer, updateBlocksPointer] = createSignal(true);
+      setModal = updateModal;
+      setBlocksPointer = updateBlocksPointer;
+
+      return (
+        <OverlayLayerProvider stack={stack}>
+          <button data-testid="outside">Outside</button>
+          <TestLayer id="layer" modal={modal()} disableOutsidePointerEvents={blocksPointer()} />
+        </OverlayLayerProvider>
+      );
+    });
+    await settled();
+
+    const outside = document.querySelector<HTMLElement>("[data-testid='outside']")!;
+    const layer = document.querySelector<HTMLElement>("[data-testid='layer']")!;
+
+    expect(stack.layers()).toEqual([{ id: "layer", modal: true }]);
+    expect(document.body.style.overflow).toBe("hidden");
+    expect(document.body.style.pointerEvents).toBe("none");
+    expect(outside.getAttribute("aria-hidden")).toBe("true");
+    expect(layer.style.pointerEvents).toBe("auto");
+
+    setModal(false);
+    await settled();
+
+    expect(stack.layers()).toEqual([{ id: "layer", modal: false }]);
+    expect(document.body.style.overflow).toBe("");
+    expect(outside.getAttribute("aria-hidden")).toBeNull();
+    expect(document.body.style.pointerEvents).toBe("none");
+
+    setBlocksPointer(false);
+    await settled();
+
+    expect(document.body.style.pointerEvents).toBe("");
+
+    setModal(true);
+    await settled();
+
+    expect(stack.layers()).toEqual([{ id: "layer", modal: true }]);
+    expect(document.body.style.overflow).toBe("hidden");
+    expect(document.body.style.pointerEvents).toBe("");
+    expect(outside.getAttribute("aria-hidden")).toBe("true");
+
+    setBlocksPointer(true);
+    await settled();
+
+    expect(document.body.style.pointerEvents).toBe("none");
+    expect(outside.getAttribute("aria-hidden")).toBe("true");
   });
 });
