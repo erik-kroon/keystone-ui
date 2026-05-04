@@ -16,7 +16,7 @@
   "meta": {
     "install": "mason add input",
     "customization": "Use ui-input-control, ui-input, data-size, data-invalid, data-disabled, and reference-style data-slot hooks for wrapper and native input styling.",
-    "sourceFiles": ["registry/default/ui/input.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/input.tsx"],
     "dependencies": ["cn"],
     "api": "Input supports size sm, default, lg, or a numeric native size attribute; invalid mirrors aria-invalid and data-invalid; unstyled removes the wrapper surface classes; nativeInput is accepted as a compatibility no-op because this Solid implementation always renders a native input.",
     "accessibility": "Input renders a native input inside a presentational span wrapper. Type, name, value, disabled, required, autocomplete, placeholder, aria-* attributes, events, and form participation pass through to the native input. For labelled form flows, compose with FieldControl or wire labels/descriptions manually.",
@@ -39,7 +39,7 @@
   },
   "files": [
     {
-      "path": "ui/input.tsx",
+      "path": "packages/ui/src/default/ui/input.tsx",
       "type": "registry:ui"
     }
   ]

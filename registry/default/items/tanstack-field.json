@@ -1,0 +1,43 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "tanstack-field",
+  "type": "registry:ui",
+  "title": "TanStackField",
+  "description": "Source-owned Solid field adapter connecting TanStack Form field state to Keystone form-control semantics.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["form", "tanstack"],
+  "keywords": ["tanstack-field", "field", "form", "validation", "keystone"],
+  "docs": "https://keystone-ui.dev/docs/ui/tanstack-field",
+  "registryDependencies": ["cn", "tanstack-form"],
+  "meta": {
+    "install": "mason add tanstack-field",
+    "customization": "Style the generated field shell, label, description, and error parts through ui-tanstack-field classes, Keystone Core data attributes, TanStack meta data attributes, and neutral data-slot hooks.",
+    "sourceFiles": ["packages/ui/src/default/ui/tanstack-field.tsx"],
+    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn", "tanstack-form"],
+    "api": "TanStackField exports TanStackField plus TanStackFieldApi, TanStackFormApi, TanStackFieldRenderContext, and TanStackFieldProps types. It renders form.Field, derives first error and invalid state from TanStack field meta, creates a Keystone form-control contract, and passes control, field, value, invalid, firstError, focused, and setFocused to child renderers.",
+    "accessibility": "Backed by @keystone-ui/core/form for generated IDs, label/control relationships, aria-describedby, aria-invalid, required/disabled/readonly metadata, error alert wiring, and stable field state data attributes. TanStack Form remains responsible for value, touched, dirty, validating, blur, and validation lifecycle state.",
+    "anatomy": ["root", "label", "control-slot", "description", "error"],
+    "cssVariables": [
+      "--color-foreground",
+      "--color-muted-foreground",
+      "--color-destructive-foreground"
+    ],
+    "limitations": "TanStackField is a render-prop adapter instead of a hidden context runtime. Concrete controls still decide how to call handleChange and handleBlur so text, select, combobox, checkbox, and file controls can preserve their own primitive behavior.",
+    "parity": {
+      "tanstackForm": "First-class TanStack Form parity: form.Field integration, validator pass-through, field value and meta access, touched-derived invalid state, dirty/validating metadata, blur/change delegation, and source-owned render-prop composition.",
+      "baseUi": "Field semantics are inherited through Keystone Core FormControl: generated IDs, label/description/error relationships, invalid/required/disabled/read-only attributes, and stable data attributes.",
+      "kobalte": "Solid form-control parity follows Keystone Core Field/FormControl while preserving TanStack Form as the app-state owner."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/tanstack-field.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

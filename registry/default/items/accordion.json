@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add accordion",
     "customization": "Style the generated wrappers through ui-accordion classes while Keystone keeps item coordination, trigger ARIA, keyboard navigation, hidden-until-found behavior, and data attributes.",
-    "sourceFiles": ["registry/default/ui/accordion.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/accordion.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "parts": ["root", "item", "header", "trigger", "content"],
     "parity": {
@@ -27,7 +27,7 @@
   },
   "files": [
     {
-      "path": "ui/accordion.tsx",
+      "path": "packages/ui/src/default/ui/accordion.tsx",
       "type": "registry:ui"
     }
   ]

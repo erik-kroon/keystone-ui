@@ -16,7 +16,7 @@
   "meta": {
     "install": "mason add label",
     "customization": "Style labels through ui-label and compose them into field shells when helper text or errors are needed.",
-    "sourceFiles": ["registry/default/ui/label.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/label.tsx"],
     "dependencies": ["cn"],
     "parity": {
       "baseUi": "Thin UI label aligns with Base UI Field Label semantics by rendering a native label and styling hook. Gaps: automatic control registration, generated for/id wiring, required marker policy, and disabled propagation remain follow-up work.",
@@ -25,7 +25,7 @@
   },
   "files": [
     {
-      "path": "ui/label.tsx",
+      "path": "packages/ui/src/default/ui/label.tsx",
       "type": "registry:ui"
     }
   ]

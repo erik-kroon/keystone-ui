@@ -56,10 +56,10 @@ export const registryItemContracts = rawItems
     install: item.meta.install,
     dependencies: item.dependencies ?? [],
     registryDependencies: item.registryDependencies ?? [],
-    sourceFiles: item.meta.sourceFiles ?? item.files.map((file) => `registry/default/${file.path}`),
+    sourceFiles: item.meta.sourceFiles ?? item.files.map((file) => file.path),
     sourcePreview: createSourcePreview(
       item.name,
-      item.meta.sourceFiles ?? item.files.map((file) => `registry/default/${file.path}`),
+      item.meta.sourceFiles ?? item.files.map((file) => file.path),
     ),
     customization: String(item.meta.customization ?? item.meta.limitations ?? ""),
     caveats: String(
@@ -88,19 +88,21 @@ export function getRegistryItemContract(name: string): RegistryItemContract {
 }
 
 function deriveTarget(sourcePath: string, type: string): string {
+  const installPath = sourcePath.replace(/^packages\/ui\/src\/default\//, "");
+
   if (type === "registry:block") {
-    return sourcePath.replace(/^blocks\//, "src/components/blocks/");
+    return installPath.replace(/^blocks\//, "src/components/blocks/");
   }
 
   if (type === "registry:lib") {
-    return sourcePath.replace(/^lib\//, "src/lib/");
+    return installPath.replace(/^lib\//, "src/lib/");
   }
 
-  if (sourcePath.startsWith("components/")) {
-    return `src/${sourcePath}`;
+  if (installPath.startsWith("components/")) {
+    return `src/${installPath}`;
   }
 
-  return sourcePath.replace(/^ui\//, "src/components/ui/");
+  return installPath.replace(/^ui\//, "src/components/ui/");
 }
 
 function createSourcePreview(itemName: string, sourceFiles: readonly string[]): string {

@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add dropdown-menu",
     "customization": "Style the generated wrappers through ui-dropdown-menu classes while Core owns menu roles, roving focus, typeahead, dismissal, and positioning.",
-    "sourceFiles": ["registry/default/ui/dropdown-menu.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/dropdown-menu.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "api": "DropdownMenu exports DropdownMenu, DropdownMenuTrigger, DropdownMenuPortal, DropdownMenuPositioner, DropdownMenuContent, DropdownMenuPopup, DropdownMenuArrow, DropdownMenuGroup, DropdownMenuGroupLabel, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem, DropdownMenuLink, DropdownMenuCheckboxItem, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuItemIndicator, DropdownMenuItemLabel, DropdownMenuItemDescription, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent, and DropdownMenuPrimitive. Core owns open state, roving focus, typeahead, checkbox/radio state, link/item selection, submenus, dismissal, and positioning.",
     "accessibility": "Backed by @keystone-ui/core/dropdown-menu for trigger aria-haspopup/expanded relationships, menu and menuitem roles, disabled item skipping, highlighted state, typeahead, checkbox and radio item roles, groups and labels, separators, Escape and outside dismissal, focus restoration, and submenu keyboard behavior.",
@@ -71,7 +71,7 @@
   },
   "files": [
     {
-      "path": "ui/dropdown-menu.tsx",
+      "path": "packages/ui/src/default/ui/dropdown-menu.tsx",
       "type": "registry:ui"
     }
   ]

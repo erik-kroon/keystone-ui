@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add select",
     "customization": "Style trigger, value, popup surface, listbox, groups, items, indicators, labels, and separators through ui-select classes, Core data attributes, and neutral data-slot hooks.",
-    "sourceFiles": ["registry/default/ui/select.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/select.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "api": "Select exports Select, SelectButton, SelectTrigger, SelectValue, SelectContent, SelectPopup, SelectPortal, SelectPositioner, SelectListbox, SelectGroup, SelectGroupLabel, SelectLabel, SelectItem, SelectItemText, SelectItemIndicator, SelectArrow, SelectSeparator, and SelectPrimitive. Core owns open/value state, controlled and uncontrolled values, multiple values, hidden form inputs, keyboard navigation, typeahead, collection registration, popup positioning, and data attributes.",
     "accessibility": "Backed by @keystone-ui/core/select for button/listbox roles, active descendant, highlighted and selected item state, disabled item handling, Escape dismissal, typeahead, hidden form value serialization, and native form reset support.",
@@ -65,7 +65,7 @@
   },
   "files": [
     {
-      "path": "ui/select.tsx",
+      "path": "packages/ui/src/default/ui/select.tsx",
       "type": "registry:ui"
     }
   ]

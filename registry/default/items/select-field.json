@@ -13,21 +13,52 @@
   "categories": ["form", "tanstack", "select"],
   "keywords": ["select-field", "select", "field", "form", "tanstack", "keystone"],
   "docs": "https://keystone-ui.dev/docs/ui/select-field",
-  "registryDependencies": ["cn"],
+  "registryDependencies": ["cn", "select", "tanstack-field"],
   "meta": {
     "install": "mason add select-field",
-    "customization": "Use ui-select-field classes and data-part values while TanStack Form owns field state and Core owns listbox behavior.",
-    "sourceFiles": ["registry/default/ui/select-field.tsx"],
-    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn"],
+    "customization": "Use ui-select-field classes, TanStackField shell classes, Select classes, Core data attributes, and neutral data-slot hooks while TanStack Form owns field state and Core owns listbox behavior.",
+    "sourceFiles": ["packages/ui/src/default/ui/select-field.tsx"],
+    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn", "select", "tanstack-field"],
+    "api": "SelectField exports SelectField, SelectFieldOption, SelectFieldProps, and SelectFieldValidators. It composes TanStackField with the styled Select item, passes validators to form.Field, derives touched error state through TanStackField, maps Select value changes to field.handleChange, maps popup close to field.handleBlur, and accepts trigger/content/listbox/item class and prop escape hatches.",
+    "accessibility": "Backed by TanStackField for label, description, error, aria-describedby, invalid state, and alert messaging, and by @keystone-ui/core/select for trigger/listbox roles, active descendant, highlighted and selected item state, disabled items, hidden form value serialization, Escape dismissal, typeahead, and native reset support.",
+    "anatomy": [
+      "field-root",
+      "field-label",
+      "trigger",
+      "value",
+      "content",
+      "listbox",
+      "item",
+      "item-text",
+      "item-indicator",
+      "field-description",
+      "field-error"
+    ],
+    "cssVariables": [
+      "--radius-lg",
+      "--anchor-width",
+      "--available-height",
+      "--transform-origin",
+      "--color-input",
+      "--color-background",
+      "--color-popover",
+      "--color-foreground",
+      "--color-muted-foreground",
+      "--color-accent",
+      "--color-accent-foreground",
+      "--color-destructive",
+      "--color-ring"
+    ],
+    "limitations": "SelectField is intentionally single-value string-first. Multi-select values, object value adapters, async option loading, and schema-specific validation helpers remain app-owned composition until the underlying Select API grows those contracts.",
     "parity": {
-      "tanstackForm": "First-class comparison is TanStack Form: the component binds field state to Keystone Select behavior with generated UI source. Gaps: async validation examples, field array coordination, schema adapters, submission lifecycle helpers, and richer error presentation remain follow-up work.",
-      "baseUi": "Behavior parity for the underlying select should track Base UI Select/Listbox depth: collection registration, keyboard navigation, typeahead, positioning, hidden form value, and data attributes. Gaps: grouped/multi select, scroll arrows, virtualized collections, and modal/non-modal popup policy remain follow-up work.",
-      "kobalte": "Solid reference is Kobalte Select plus form-control composition. Gaps: hidden select parity, reset listener depth, section APIs, and complete popper/focus management coverage remain follow-up work."
+      "tanstackForm": "First-class comparison is TanStack Form: SelectField now composes TanStackField, passes validators through form.Field, maps Core Select value and blur events into TanStack field handlers, and exposes field-driven touched/invalid/error state.",
+      "baseUi": "Behavior parity for the underlying select is inherited through Keystone Core Select: collection registration, keyboard navigation, typeahead, positioning, hidden form value, data attributes, disabled items, and reset support.",
+      "kobalte": "Solid reference is Kobalte Select plus form-control composition. SelectField follows that shape through TanStackField for form-control relationships and Keystone Select for trigger, portal, listbox, item, and value behavior."
     }
   },
   "files": [
     {
-      "path": "ui/select-field.tsx",
+      "path": "packages/ui/src/default/ui/select-field.tsx",
       "type": "registry:ui"
     }
   ]

@@ -14,7 +14,7 @@
   "keywords": ["data-table", "table", "tanstack", "sorting", "filtering", "pagination"],
   "docs": "https://keystone-ui.dev/docs/ui/data-table",
   "registryDependencies": ["cn"],
-  "filesRoot": "components/data-table",
+  "filesRoot": "packages/ui/src/default/components/data-table",
   "targetRoot": "src/components/data-table",
   "meta": {
     "install": "mason add data-table",
@@ -28,17 +28,17 @@
     "customization": "Use ui-data-table classes and data-part values for root, toolbar, search, faceted-filter, table, header, row, cell, empty, skeleton, row-actions, and pagination.",
     "limitations": "This source is a client-side table pattern. Server-side pagination, virtualization, persisted column preferences, and async loading orchestration should be added in app code.",
     "sourceFiles": [
-      "registry/default/components/data-table/data-table.tsx",
-      "registry/default/components/data-table/data-table-column-header.tsx",
-      "registry/default/components/data-table/data-table-empty-state.tsx",
-      "registry/default/components/data-table/data-table-faceted-filter.tsx",
-      "registry/default/components/data-table/data-table-pagination.tsx",
-      "registry/default/components/data-table/data-table-row-actions.tsx",
-      "registry/default/components/data-table/data-table-skeleton.tsx",
-      "registry/default/components/data-table/data-table-toolbar.tsx",
-      "registry/default/components/data-table/data-table-view-options.tsx",
-      "registry/default/components/data-table/types.ts",
-      "registry/default/components/data-table/use-data-table.ts"
+      "packages/ui/src/default/components/data-table/data-table.tsx",
+      "packages/ui/src/default/components/data-table/data-table-column-header.tsx",
+      "packages/ui/src/default/components/data-table/data-table-empty-state.tsx",
+      "packages/ui/src/default/components/data-table/data-table-faceted-filter.tsx",
+      "packages/ui/src/default/components/data-table/data-table-pagination.tsx",
+      "packages/ui/src/default/components/data-table/data-table-row-actions.tsx",
+      "packages/ui/src/default/components/data-table/data-table-skeleton.tsx",
+      "packages/ui/src/default/components/data-table/data-table-toolbar.tsx",
+      "packages/ui/src/default/components/data-table/data-table-view-options.tsx",
+      "packages/ui/src/default/components/data-table/types.ts",
+      "packages/ui/src/default/components/data-table/use-data-table.ts"
     ],
     "dependencies": ["@tanstack/solid-table", "cn"],
     "parity": {
@@ -48,47 +48,47 @@
   },
   "files": [
     {
-      "path": "components/data-table/data-table.tsx",
+      "path": "packages/ui/src/default/components/data-table/data-table.tsx",
       "type": "registry:ui"
     },
     {
-      "path": "components/data-table/data-table-column-header.tsx",
+      "path": "packages/ui/src/default/components/data-table/data-table-column-header.tsx",
       "type": "registry:ui"
     },
     {
-      "path": "components/data-table/data-table-empty-state.tsx",
+      "path": "packages/ui/src/default/components/data-table/data-table-empty-state.tsx",
       "type": "registry:ui"
     },
     {
-      "path": "components/data-table/data-table-faceted-filter.tsx",
+      "path": "packages/ui/src/default/components/data-table/data-table-faceted-filter.tsx",
       "type": "registry:ui"
     },
     {
-      "path": "components/data-table/data-table-pagination.tsx",
+      "path": "packages/ui/src/default/components/data-table/data-table-pagination.tsx",
       "type": "registry:ui"
     },
     {
-      "path": "components/data-table/data-table-row-actions.tsx",
+      "path": "packages/ui/src/default/components/data-table/data-table-row-actions.tsx",
       "type": "registry:ui"
     },
     {
-      "path": "components/data-table/data-table-skeleton.tsx",
+      "path": "packages/ui/src/default/components/data-table/data-table-skeleton.tsx",
       "type": "registry:ui"
     },
     {
-      "path": "components/data-table/data-table-toolbar.tsx",
+      "path": "packages/ui/src/default/components/data-table/data-table-toolbar.tsx",
       "type": "registry:ui"
     },
     {
-      "path": "components/data-table/data-table-view-options.tsx",
+      "path": "packages/ui/src/default/components/data-table/data-table-view-options.tsx",
       "type": "registry:ui"
     },
     {
-      "path": "components/data-table/types.ts",
+      "path": "packages/ui/src/default/components/data-table/types.ts",
       "type": "registry:ui"
     },
     {
-      "path": "components/data-table/use-data-table.ts",
+      "path": "packages/ui/src/default/components/data-table/use-data-table.ts",
       "type": "registry:ui"
     }
   ]

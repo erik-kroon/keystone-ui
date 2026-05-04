@@ -234,7 +234,7 @@ export function ComboboxInput(props: ComboboxInputProps) {
           ),
           size() === "sm" && classes("h-7.5", "px-[calc(--spacing(2.5)-1px)]", "sm:h-6.5"),
           size() === "lg" && classes("h-9.5", "sm:h-8.5"),
-          local.startAddon &&
+          Boolean(local.startAddon) &&
             classes(
               "ps-[calc(--spacing(8.5)-1px)]",
               "sm:ps-[calc(--spacing(8)-1px)]",

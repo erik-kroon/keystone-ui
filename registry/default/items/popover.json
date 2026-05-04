@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add popover",
     "customization": "Style the generated wrappers through ui-popover classes while Core owns positioning, dismissal, and layer ordering.",
-    "sourceFiles": ["registry/default/ui/popover.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/popover.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "api": "Popover exports Popover, PopoverTrigger, PopoverPortal, PopoverPositioner, PopoverContent, PopoverPopup, PopoverArrow, PopoverHeader, PopoverFooter, PopoverTitle, PopoverDescription, and PopoverPrimitive. PopoverContent composes portal, positioner, popup surface, viewport, optional tooltip-style density, and class escape hatches while Core owns open state, positioning, modal option, dismissal, layer ordering, and state data attributes.",
     "accessibility": "Backed by @keystone-ui/core/popover for trigger aria-haspopup/expanded relationships, role=dialog content, controlled and uncontrolled open state, Escape and outside dismissal, modal outside pointer blocking when requested, portal rendering, force-mounted presence, and floating placement metadata.",
@@ -58,7 +58,7 @@
   },
   "files": [
     {
-      "path": "ui/popover.tsx",
+      "path": "packages/ui/src/default/ui/popover.tsx",
       "type": "registry:ui"
     }
   ]

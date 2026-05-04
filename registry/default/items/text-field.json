@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add text-field",
     "customization": "Use ui-text-field classes and data-part values for root, label, input, description, and error while TanStack Form owns field state.",
-    "sourceFiles": ["registry/default/ui/text-field.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/text-field.tsx"],
     "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn"],
     "parity": {
       "tanstackForm": "First-class comparison is TanStack Form: the component binds field state to an input with UI label/description/error parts. Gaps: async validation examples, schema adapters, field arrays, submit lifecycle helpers, and masked/parsed value patterns remain follow-up work.",
@@ -27,7 +27,7 @@
   },
   "files": [
     {
-      "path": "ui/text-field.tsx",
+      "path": "packages/ui/src/default/ui/text-field.tsx",
       "type": "registry:ui"
     }
   ]

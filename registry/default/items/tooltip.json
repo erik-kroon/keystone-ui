@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add tooltip",
     "customization": "Style the generated wrappers through ui-tooltip classes while Core owns positioning and trigger/content relationships.",
-    "sourceFiles": ["registry/default/ui/tooltip.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/tooltip.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "api": "Tooltip exports TooltipProvider, Tooltip, TooltipTrigger, TooltipPortal, TooltipPositioner, TooltipContent, TooltipPopup, TooltipArrow, and TooltipPrimitive. TooltipContent composes portal, positioner, popup surface, viewport, and class escape hatches while Core owns delay groups, hover/focus interactions, open state, pointer grace area, Escape dismissal, positioning, and aria-describedby wiring.",
     "accessibility": "Backed by @keystone-ui/core/tooltip for role=tooltip, trigger aria-describedby, hover and focus opening, close and skip-delay timing, hoverable content, pointer grace area, Escape dismissal, portal rendering, controlled and uncontrolled open state, and floating placement metadata.",
@@ -52,7 +52,7 @@
   },
   "files": [
     {
-      "path": "ui/tooltip.tsx",
+      "path": "packages/ui/src/default/ui/tooltip.tsx",
       "type": "registry:ui"
     }
   ]

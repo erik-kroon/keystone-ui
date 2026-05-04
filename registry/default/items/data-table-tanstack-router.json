@@ -15,7 +15,7 @@
   "keywords": ["data-table", "table", "tanstack-router", "search-params", "url-state"],
   "docs": "https://keystone-ui.dev/docs/ui/data-table#tanstack-router",
   "registryDependencies": ["data-table"],
-  "filesRoot": "components/data-table",
+  "filesRoot": "packages/ui/src/default/components/data-table",
   "targetRoot": "src/components/data-table",
   "meta": {
     "install": "mason add data-table-tanstack-router",
@@ -23,8 +23,8 @@
     "stateMapping": "page and perPage map to TanStack pagination; sort maps to sorting; filters maps to columnFilters; visibility maps to columnVisibility.",
     "limitations": "The adapter keeps row selection local and does not implement server fetching, virtualization, saved views, or advanced filter builders.",
     "sourceFiles": [
-      "registry/default/components/data-table/data-table-search.ts",
-      "registry/default/components/data-table/use-data-table-router.ts"
+      "packages/ui/src/default/components/data-table/data-table-search.ts",
+      "packages/ui/src/default/components/data-table/use-data-table-router.ts"
     ],
     "dependencies": ["@tanstack/solid-router", "data-table"],
     "parity": {
@@ -34,11 +34,11 @@
   },
   "files": [
     {
-      "path": "components/data-table/data-table-search.ts",
+      "path": "packages/ui/src/default/components/data-table/data-table-search.ts",
       "type": "registry:ui"
     },
     {
-      "path": "components/data-table/use-data-table-router.ts",
+      "path": "packages/ui/src/default/components/data-table/use-data-table-router.ts",
       "type": "registry:ui"
     }
   ]

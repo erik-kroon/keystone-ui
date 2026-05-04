@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add dialog",
     "customization": "Style the generated wrappers through ui-dialog classes while Keystone keeps focus, dismissal, layering, and ARIA behavior.",
-    "sourceFiles": ["registry/default/ui/dialog.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/dialog.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "api": "Dialog exports Dialog, DialogTrigger, DialogPortal, DialogBackdrop, DialogPositioner, DialogContent, DialogPanel, DialogHeader, DialogFooter, DialogTitle, DialogDescription, DialogClose, and DialogPrimitive. DialogContent composes portal, backdrop, positioner, content, an optional close button, mobile bottom-stick behavior, and class escape hatches while Core owns open state, modal behavior, focus, dismissal, presence, and ARIA.",
     "accessibility": "Backed by @keystone-ui/core/dialog for role=dialog, aria-modal, title and description relationships, controlled and uncontrolled open state, Escape and outside dismissal, focus entry, focus trap, focus restore, modal outside hiding, scroll lock, preventable events, and hidden force-mounted content semantics.",
@@ -54,7 +54,7 @@
   },
   "files": [
     {
-      "path": "ui/dialog.tsx",
+      "path": "packages/ui/src/default/ui/dialog.tsx",
       "type": "registry:ui"
     }
   ]

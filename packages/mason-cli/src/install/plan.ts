@@ -97,10 +97,31 @@ async function readJson(file: string): Promise<unknown> {
   return JSON.parse(await readFile(file, "utf8"));
 }
 
+function repoRootForDefaultRegistry(registryRoot: string): string {
+  return path.resolve(registryRoot, "../..");
+}
+
+function isRepoSourcePath(sourcePath: string): boolean {
+  return sourcePath.startsWith("packages/");
+}
+
+function sourceRootForItem(registryRoot: string, item: { files: RegistryItem["files"] }): string {
+  return item.files.some((file) => isRepoSourcePath(file.path))
+    ? repoRootForDefaultRegistry(registryRoot)
+    : registryRoot;
+}
+
+function sourceRootForFile(registryRoot: string, file: RegistryItem["files"][number]): string {
+  return isRepoSourcePath(file.path) ? repoRootForDefaultRegistry(registryRoot) : registryRoot;
+}
+
 async function resolveRegistryItem(registry: string, name: string): Promise<RegistryItem> {
   const registryRoot = path.resolve(registry);
   const itemPath = path.join(registryRoot, "items", `${name}.json`);
-  return validateRegistryItem(await readJson(itemPath), { registryRoot });
+  const item = await readJson(itemPath);
+  return validateRegistryItem(item, {
+    registryRoot: sourceRootForItem(registryRoot, item as RegistryItem),
+  });
 }
 
 async function loadRegistryItem(registry: string, name: string): Promise<RegistryItem | undefined> {
@@ -163,7 +184,8 @@ async function contentForFile(
   file: RegistryItem["files"][number],
 ): Promise<string> {
   if (file.content !== undefined) return file.content;
-  return readFile(path.join(path.resolve(registry), file.path), "utf8");
+  const registryRoot = path.resolve(registry);
+  return readFile(path.join(sourceRootForFile(registryRoot, file), file.path), "utf8");
 }
 
 export function hashContent(content: string): string {

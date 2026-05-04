@@ -16,7 +16,7 @@
   "meta": {
     "install": "mason add account-settings",
     "customization": "Customize the generated block through ui-block-account-settings classes while base controls stay owned source.",
-    "sourceFiles": ["registry/default/blocks/account-settings.tsx"],
+    "sourceFiles": ["packages/ui/src/default/blocks/account-settings.tsx"],
     "dependencies": ["badge", "button", "card", "field", "input", "separator"],
     "parity": {
       "mason": "Composes existing UI badge, button, card, field, input, and separator source into a copy-paste settings block with local state and readable classes. Gaps: TanStack Form integration, validation, submission lifecycle, async persistence, and error handling are intentionally left to app code or a future form block pass.",
@@ -25,7 +25,7 @@
   },
   "files": [
     {
-      "path": "blocks/account-settings.tsx",
+      "path": "packages/ui/src/default/blocks/account-settings.tsx",
       "type": "registry:block",
       "target": "src/components/blocks/account-settings.tsx"
     }

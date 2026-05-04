@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add tabs",
     "customization": "Style the generated wrappers through ui-tabs classes while Keystone keeps tablist roles, selection state, keyboard navigation, ARIA relationships, and data attributes.",
-    "sourceFiles": ["registry/default/ui/tabs.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/tabs.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "parts": ["root", "list", "trigger", "indicator", "content"],
     "parity": {
@@ -27,7 +27,7 @@
   },
   "files": [
     {
-      "path": "ui/tabs.tsx",
+      "path": "packages/ui/src/default/ui/tabs.tsx",
       "type": "registry:ui"
     }
   ]

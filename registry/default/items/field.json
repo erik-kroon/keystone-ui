@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add field",
     "customization": "Style the shell through ui-field classes, reference-style data-slot values, and Core data attributes for field state on root, label, control, description, error-message, and hidden-input parts.",
-    "sourceFiles": ["registry/default/ui/field.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/field.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "api": "Field exports Field, FieldLabel, FieldItem, FieldControl, FieldDescription, FieldError, FieldHiddenInput, and FieldPrimitive. Field and its semantic parts are backed by @keystone-ui/core/form for generated IDs, label/control relationships, aria-describedby, aria-invalid, required/disabled/readonly state, validation state, hidden inputs, and native reset handling.",
     "accessibility": "Field uses Keystone Core Field semantics. FieldLabel labels FieldControl, FieldDescription and FieldError participate in aria-describedby, FieldError uses alert semantics through Core, and FieldControl receives aria-invalid, aria-required, aria-readonly, aria-disabled, and state data attributes from Core.",
@@ -39,7 +39,7 @@
   },
   "files": [
     {
-      "path": "ui/field.tsx",
+      "path": "packages/ui/src/default/ui/field.tsx",
       "type": "registry:ui"
     }
   ]

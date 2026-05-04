@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add hover-card",
     "customization": "Style the generated wrappers through ui-hover-card classes while Core owns preview timing, positioning, and dismissal.",
-    "sourceFiles": ["registry/default/ui/hover-card.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/hover-card.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "parts": ["trigger", "positioner", "content"],
     "parity": {
@@ -27,7 +27,7 @@
   },
   "files": [
     {
-      "path": "ui/hover-card.tsx",
+      "path": "packages/ui/src/default/ui/hover-card.tsx",
       "type": "registry:ui"
     }
   ]

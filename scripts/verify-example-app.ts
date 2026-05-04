@@ -90,6 +90,8 @@ async function main() {
     await addCommand({ cwd: app, item: "popover", registry });
     await addCommand({ cwd: app, item: "tooltip", registry });
     await addCommand({ cwd: app, item: "sheet", registry });
+    await addCommand({ cwd: app, item: "tanstack-form", registry });
+    await addCommand({ cwd: app, item: "tanstack-field", registry });
     await addCommand({ cwd: app, item: "text-field", registry });
     await addCommand({ cwd: app, item: "select-field", registry });
     await addCommand({ cwd: app, item: "command-menu", registry });
@@ -140,6 +142,7 @@ import { dataTableFacetedFilter, useDataTable } from "@/components/data-table/us
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { SelectField } from "@/components/ui/select-field";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { TanStackForm, TanStackFormSubmit } from "@/components/ui/tanstack-form";
 import { TextField } from "@/components/ui/text-field";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import "./styles.css";
@@ -235,13 +238,7 @@ function App() {
 
   return (
     <main>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          event.stopPropagation();
-          form.handleSubmit();
-        }}
-      >
+      <TanStackForm form={form}>
         <TextField
           form={form}
           name="email"
@@ -263,8 +260,8 @@ function App() {
             { value: "enterprise", label: "Enterprise" },
           ]}
         />
-        <button type="submit">Save</button>
-      </form>
+        <TanStackFormSubmit>Save</TanStackFormSubmit>
+      </TanStackForm>
       <DataTable table={table}>
         <DataTableToolbar table={table} />
       </DataTable>
@@ -340,6 +337,7 @@ import { dataTableFacetedFilter, useDataTable } from "@/components/data-table/us
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { SelectField } from "@/components/ui/select-field";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { TanStackForm } from "@/components/ui/tanstack-form";
 import { TextField } from "@/components/ui/text-field";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -435,7 +433,7 @@ function App() {
 
   return (
     <main>
-      <form>
+      <TanStackForm form={form}>
         <TextField
           form={form}
           name="email"
@@ -453,7 +451,7 @@ function App() {
             { value: "team", label: "Team" },
           ]}
         />
-      </form>
+      </TanStackForm>
       <DataTable table={table}>
         <DataTableToolbar table={table} />
       </DataTable>

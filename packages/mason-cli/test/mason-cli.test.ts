@@ -1,4 +1,4 @@
-import { cp, mkdir, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, readFile, rm, stat, symlink, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, test } from "bun:test";
@@ -59,6 +59,15 @@ async function runAppCommand(app: string, args: string[]): Promise<void> {
 
 async function installFixtureAppDependencies(app: string): Promise<void> {
   await runAppCommand(app, ["bun", "install"]);
+}
+
+async function linkCoreDependency(app: string): Promise<void> {
+  await mkdir(path.join(app, "node_modules/@keystone-ui"), { recursive: true });
+  await symlink(
+    path.resolve(import.meta.dir, "../../../packages/core"),
+    path.join(app, "node_modules/@keystone-ui/core"),
+    "dir",
+  );
 }
 
 async function runAppScript(app: string, script: "check-types" | "build"): Promise<void> {
@@ -197,8 +206,9 @@ describe("add planning and writes", () => {
       [
         "Mason dry run plan for field:",
         "create src/components/ui/field.tsx",
-        "create src/components/ui/label.tsx",
         "create src/lib/cn.ts",
+        "add @keystone-ui/core@^0.0.0",
+        "install command: bun add @keystone-ui/core@^0.0.0",
       ].join("\n"),
     );
   });
@@ -214,6 +224,7 @@ describe("add planning and writes", () => {
     await addCommand({ cwd: app, item: "card", registry: defaultRegistry });
     await addCommand({ cwd: app, item: "badge", registry: defaultRegistry });
     await addCommand({ cwd: app, item: "separator", registry: defaultRegistry });
+    await linkCoreDependency(app);
 
     await runAppScript(app, "check-types");
     await runAppScript(app, "build");
@@ -308,13 +319,15 @@ describe("add planning and writes", () => {
         "create src/components/ui/card.tsx",
         "create src/components/ui/field.tsx",
         "create src/components/ui/input.tsx",
-        "create src/components/ui/label.tsx",
         "create src/components/ui/separator.tsx",
         "create src/lib/cn.ts",
+        "add @keystone-ui/core@^0.0.0",
+        "install command: bun add @keystone-ui/core@^0.0.0",
       ].join("\n"),
     );
 
     await addCommand({ cwd: app, item: "account-settings", registry: defaultRegistry });
+    await linkCoreDependency(app);
 
     expect(
       await readFile(path.join(app, "src/components/blocks/account-settings.tsx"), "utf8"),

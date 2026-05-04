@@ -16,7 +16,7 @@
   "meta": {
     "install": "mason add textarea",
     "customization": "Use the ui-textarea class and data-invalid attribute for resize, border, and validation-state styles.",
-    "sourceFiles": ["registry/default/ui/textarea.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/textarea.tsx"],
     "dependencies": ["cn"],
     "parity": {
       "baseUi": "Thin UI textarea follows Base UI Input/Field direction for native textarea semantics, invalid/disabled styling data, and form participation. Gaps: autosize helpers, field registration, validation lifecycle, filled/focused state data, and character count composition remain follow-up work.",
@@ -25,7 +25,7 @@
   },
   "files": [
     {
-      "path": "ui/textarea.tsx",
+      "path": "packages/ui/src/default/ui/textarea.tsx",
       "type": "registry:ui"
     }
   ]
