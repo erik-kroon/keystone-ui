@@ -86,6 +86,7 @@ describe("Mason registry validation tracer", () => {
       "cn",
       "collapsible",
       "combobox",
+      "command-menu",
       "context-menu",
       "data-table-tanstack-router",
       "data-table",
@@ -142,6 +143,25 @@ describe("Mason registry validation tracer", () => {
       expect(result.value.registryDependencies).toEqual(["data-table"]);
       expect(result.value.meta?.searchParams).toBeString();
       expect(result.value.meta?.stateMapping).toBeString();
+      expect(result.value.meta?.limitations).toBeString();
+    }
+  });
+
+  test("validates docs-ready metadata on the real default command-menu item", async () => {
+    const item = await import("../../../registry/default/items/command-menu.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@tanstack/solid-store@^0.11.0");
+      expect(result.value.dependencies).toContain("@tanstack/solid-hotkeys@^0.10.0");
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.commandItems).toBeString();
+      expect(result.value.meta?.searchFiltering).toBeString();
+      expect(result.value.meta?.store).toBeString();
+      expect(result.value.meta?.shortcutDisplay).toBeString();
+      expect(result.value.meta?.hotkeysPreview).toContain("preview");
+      expect(result.value.meta?.accessibility).toContain("Keystone Combobox");
       expect(result.value.meta?.limitations).toBeString();
     }
   });

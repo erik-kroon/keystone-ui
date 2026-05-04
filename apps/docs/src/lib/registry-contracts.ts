@@ -8,6 +8,7 @@ import checkbox from "../../../../registry/default/items/checkbox.json";
 import cn from "../../../../registry/default/items/cn.json";
 import collapsible from "../../../../registry/default/items/collapsible.json";
 import combobox from "../../../../registry/default/items/combobox.json";
+import commandMenu from "../../../../registry/default/items/command-menu.json";
 import contextMenu from "../../../../registry/default/items/context-menu.json";
 import dataTableTanstackRouter from "../../../../registry/default/items/data-table-tanstack-router.json";
 import dataTable from "../../../../registry/default/items/data-table.json";
@@ -66,6 +67,7 @@ const rawItems = [
   cn,
   collapsible,
   combobox,
+  commandMenu,
   contextMenu,
   dataTableTanstackRouter,
   dataTable,
