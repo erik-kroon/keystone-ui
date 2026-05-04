@@ -15,6 +15,7 @@ const expectedParts = {
     "trigger",
     "clear",
     "positioner",
+    "arrow",
     "content",
     "listbox",
     "group",
@@ -43,6 +44,7 @@ const expectedParts = {
     "trigger",
     "clear",
     "positioner",
+    "arrow",
     "content",
     "listbox",
     "group",
@@ -55,11 +57,12 @@ const expectedParts = {
   "date-picker": ["root", "trigger", "content"],
   dialog: ["trigger", "close", "backdrop", "positioner", "content", "title", "description"],
   "form-control": ["root", "control", "label", "description", "error-message", "hidden-input"],
-  "hover-card": ["trigger", "positioner", "content"],
+  "hover-card": ["trigger", "positioner", "arrow", "content"],
   listbox: ["listbox", "option", "group", "group-label"],
   "context-menu": [
     "trigger",
     "positioner",
+    "arrow",
     "content",
     "group",
     "group-label",
@@ -70,6 +73,7 @@ const expectedParts = {
   "dropdown-menu": [
     "trigger",
     "positioner",
+    "arrow",
     "content",
     "group",
     "group-label",
@@ -80,6 +84,7 @@ const expectedParts = {
   menu: [
     "trigger",
     "positioner",
+    "arrow",
     "content",
     "group",
     "group-label",
@@ -90,6 +95,7 @@ const expectedParts = {
   menubar: [
     "trigger",
     "positioner",
+    "arrow",
     "content",
     "group",
     "group-label",
@@ -100,6 +106,7 @@ const expectedParts = {
   "navigation-menu": [
     "trigger",
     "positioner",
+    "arrow",
     "content",
     "group",
     "group-label",
@@ -108,12 +115,14 @@ const expectedParts = {
     "item-indicator",
   ],
   overlay: ["layer"],
-  popover: ["trigger", "positioner", "content"],
+  popover: ["trigger", "positioner", "arrow", "content"],
+  popper: ["anchor", "positioner", "arrow"],
   "radio-group": ["root", "item", "item-indicator", "hidden-input"],
   select: [
     "trigger",
     "value",
     "positioner",
+    "arrow",
     "content",
     "listbox",
     "group",
@@ -128,7 +137,7 @@ const expectedParts = {
   toast: ["viewport", "root", "title", "description", "action", "close"],
   toolbar: ["root", "button", "link", "separator"],
   switch: ["root", "control", "thumb", "hidden-input"],
-  tooltip: ["trigger", "positioner", "content"],
+  tooltip: ["trigger", "positioner", "arrow", "content"],
 } as const satisfies Record<PrimitiveScope, readonly string[]>;
 
 describe("primitive part metadata", () => {

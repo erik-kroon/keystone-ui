@@ -20,8 +20,8 @@
     "sourceFiles": ["registry/default/ui/dialog.tsx"],
     "dependencies": ["@keystone-ui/keystone", "cn"],
     "parity": {
-      "baseUi": "Thin vertical covers Root/Trigger/Portal/Backdrop/Popup-style anatomy, controlled open state, modal dismissal, Escape handling, focus entry/restore, and stable data attributes through Keystone overlay internals. Gaps: outside hiding/inert depth, nested modal edge cases, transition status metadata, scroll lock polish, and preventable autofocus events remain follow-up work.",
-      "kobalte": "Matches Solid Dialog composition with trigger, portal, overlay/content, title, description, controlled state, and dismissable-layer direction. Gaps: create-focus-scope parity, hide-outside ref counting, create-transition lifecycle, and broader browser accessibility tests remain follow-up work."
+      "baseUi": "Covers Root/Trigger/Portal/Backdrop/Content anatomy, controlled and uncontrolled open state, modal dismissal, Escape handling, focus entry/restore/trap, force-mounted presence lifecycle, transition status metadata, outside pointer blocking, modal scroll lock, and stable data attributes through Keystone overlay internals. Follow-up: advanced scroll-lock compensation and broader browser accessibility tests.",
+      "kobalte": "Matches Solid Dialog composition with trigger, portal, overlay/content, title, description, controlled state, dismissable-layer direction, preventable outside/autofocus events, and hide-outside behavior for existing and newly inserted outside DOM. Follow-up: extracting hide-outside as a standalone utility and deeper browser matrix coverage."
     }
   },
   "files": [

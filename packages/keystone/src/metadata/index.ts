@@ -51,6 +51,8 @@ const floatingCssVars = [
   { name: "--keystone-transform-origin" },
 ] as const satisfies readonly PartCssVarMetadata[];
 
+const floatingArrowAttributes = floatingAttributes;
+
 const disclosureStateAttributes = [
   { name: "data-disabled" },
   { name: "data-state", values: ["open", "closed"] },
@@ -250,6 +252,7 @@ export const primitiveMetadata = {
   "hover-card": definePrimitive("hover-card", [
     part("trigger", overlayStateAttributes),
     part("positioner", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
+    part("arrow", [...overlayStateAttributes, ...floatingArrowAttributes]),
     part("content", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
   ]),
   "live-announcer": definePrimitive("live-announcer", [
@@ -284,7 +287,13 @@ export const primitiveMetadata = {
   popover: definePrimitive("popover", [
     part("trigger", overlayStateAttributes),
     part("positioner", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
+    part("arrow", [...overlayStateAttributes, ...floatingArrowAttributes]),
     part("content", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
+  ]),
+  popper: definePrimitive("popper", [
+    part("anchor"),
+    part("positioner", floatingAttributes, floatingCssVars),
+    part("arrow", floatingArrowAttributes),
   ]),
   "radio-group": definePrimitive("radio-group", [
     part("root", radioGroupStateAttributes),
@@ -300,6 +309,10 @@ export const primitiveMetadata = {
       [...floatingAttributes, { name: "data-state", values: ["open", "closed"] }],
       floatingCssVars,
     ),
+    part("arrow", [
+      ...floatingArrowAttributes,
+      { name: "data-state", values: ["open", "closed"] },
+    ]),
     part(
       "content",
       [...floatingAttributes, { name: "data-state", values: ["open", "closed"] }],
@@ -377,6 +390,7 @@ export const primitiveMetadata = {
   tooltip: definePrimitive("tooltip", [
     part("trigger", overlayStateAttributes),
     part("positioner", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
+    part("arrow", [...overlayStateAttributes, ...floatingArrowAttributes]),
     part("content", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
   ]),
   "visually-hidden": definePrimitive("visually-hidden", [part("root")]),
@@ -441,6 +455,7 @@ function menuPrimitive(scope: string): PrimitiveMetadata {
   return definePrimitive(scope, [
     part("trigger", overlayStateAttributes),
     part("positioner", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
+    part("arrow", [...overlayStateAttributes, ...floatingArrowAttributes]),
     part("content", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
     part("group"),
     part("group-label"),
@@ -460,6 +475,10 @@ function comboboxPrimitive(scope: string): PrimitiveMetadata {
       [...floatingAttributes, { name: "data-state", values: ["open", "closed"] }],
       floatingCssVars,
     ),
+    part("arrow", [
+      ...floatingArrowAttributes,
+      { name: "data-state", values: ["open", "closed"] },
+    ]),
     part(
       "content",
       [...floatingAttributes, { name: "data-state", values: ["open", "closed"] }],

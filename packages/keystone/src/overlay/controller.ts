@@ -250,6 +250,7 @@ export function createOverlayController<Reason extends string>(
       contentLayer ??= createOverlayLayer({
         id: contentId(),
         element: contentElement,
+        enabled: () => open() || presence.transitionStatus() !== "closed",
         modal: layerOptions.modal ?? modal,
         containsTarget: (target) => dismissal.containsTarget(target, layerOptions),
         disableOutsidePointerEvents: () => dismissal.disableOutsidePointerEvents(layerOptions),

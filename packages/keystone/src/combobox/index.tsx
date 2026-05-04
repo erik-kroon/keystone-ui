@@ -17,6 +17,7 @@ import { assignRef } from "../overlay/dom";
 import {
   createFloatingAdapter,
   type FloatingAdapter,
+  type FloatingArrowProps,
   type FloatingCollisionBoundary,
   type FloatingPlacement,
   type FloatingRootBoundary,
@@ -109,6 +110,7 @@ export type ComboboxContentProps = ComboboxPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
 export type ComboboxPositionerProps = ComboboxPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
+export type ComboboxArrowProps = FloatingArrowProps<HTMLSpanElement>;
 export type ComboboxListboxProps = ComboboxPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
 export type ComboboxGroupProps = ComboboxPartProps<HTMLDivElement> &
@@ -136,6 +138,7 @@ export type ComboboxTriggerContractProps = Omit<ComboboxTriggerProps, "as" | "ch
 export type ComboboxClearContractProps = Omit<ComboboxClearProps, "as" | "children">;
 export type ComboboxContentContractProps = Omit<ComboboxContentProps, "children">;
 export type ComboboxPositionerContractProps = Omit<ComboboxPositionerProps, "children">;
+export type ComboboxArrowContractProps = Omit<ComboboxArrowProps, "children">;
 export type ComboboxListboxContractProps = Omit<ComboboxListboxProps, "children">;
 export type ComboboxGroupContractProps = Omit<ComboboxGroupProps, "children" | "label"> & {
   label?: string;
@@ -184,6 +187,7 @@ export type ComboboxApi = {
   floating: FloatingAdapter;
   formControl: FormControlApi;
   formValue: ComboboxValueFormApi;
+  getArrowProps: (props: ComboboxArrowContractProps) => Record<string, unknown>;
   getClearProps: (props: ComboboxClearContractProps) => Record<string, unknown>;
   getContentProps: (props: ComboboxContentContractProps) => Record<string, unknown>;
   getGroupLabelProps: (props: ComboboxGroupLabelContractProps) => Record<string, unknown>;
@@ -336,6 +340,15 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
   const partProps = (part: string) => ({
     ...getPartDataAttributes(scope, part),
   });
+  const floatingPartProps = (part: string) => ({
+    ...partProps(part),
+    get "data-side"() {
+      return floating.side();
+    },
+    get "data-align"() {
+      return floating.align();
+    },
+  });
 
   return {
     contentId: contentId(),
@@ -343,6 +356,14 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
     floating,
     formControl,
     formValue,
+    getArrowProps: (props) => ({
+      ...floating.getArrowProps(props),
+      ...floatingPartProps("arrow"),
+      "aria-hidden": "true",
+      get "data-state"() {
+        return state();
+      },
+    }),
     getClearProps: (props) => ({
       ...props,
       type: "button",
@@ -826,6 +847,23 @@ function createComboboxNamespace(factoryOptions: ComboboxFactoryOptions) {
     );
   }
 
+  function Arrow(props: ComboboxArrowProps) {
+    const combobox = useCombobox("Arrow");
+    const [local, others] = splitProps(props, ["children", "ref", "style"]);
+
+    return (
+      <span
+        {...combobox.getArrowProps({
+          ...others,
+          ref: local.ref,
+          style: local.style,
+        })}
+      >
+        {local.children}
+      </span>
+    );
+  }
+
   function Listbox(props: ComboboxListboxProps) {
     const combobox = useCombobox("Listbox");
     const [local, others] = splitProps(props, ["children", "onKeyDown"]);
@@ -927,6 +965,7 @@ function createComboboxNamespace(factoryOptions: ComboboxFactoryOptions) {
     Clear,
     Portal: PortalPart,
     Positioner,
+    Arrow,
     Content,
     Listbox,
     Group,

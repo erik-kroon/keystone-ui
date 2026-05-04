@@ -21,7 +21,7 @@
     "dependencies": ["@keystone-ui/keystone", "cn"],
     "parity": {
       "baseUi": "Thin vertical composes Dialog/Drawer-style overlay behavior with side metadata, backdrop/content parts, controlled open state, focus/dismissal, pointer blocking, and Mason side classes. Gaps: Base UI Drawer gesture depth, nested modal edge cases, transition status data, scroll lock polish, and responsive viewport geometry remain follow-up work.",
-      "kobalte": "Kobalte has Dialog rather than a dedicated Sheet primitive; parity is through Solid dialog/dismissable-layer/focus-scope behavior. Gaps: create-transition parity, outside hiding ref counts, and route-navigation restoration remain follow-up work."
+      "kobalte": "Kobalte has Dialog rather than a dedicated Sheet primitive; parity is through Solid dialog/dismissable-layer/focus-scope behavior, including ref-counted outside hiding. Gaps: create-transition parity and route-navigation restoration remain follow-up work."
     }
   },
   "files": [

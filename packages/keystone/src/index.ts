@@ -29,6 +29,7 @@ export {
   primitiveMetadata,
 } from "./metadata/index";
 export { NavigationMenu, createNavigationMenu } from "./navigation-menu/index";
+export { Popper, createPopper } from "./popper/index";
 export { Portal } from "./portal/index";
 export type {
   DocsPartMetadata,
@@ -46,6 +47,23 @@ export type {
   AccessibleIconRootProps,
   CreateAccessibleIconOptions,
 } from "./accessible-icon/index";
+export type {
+  CreatePopperOptions,
+  PopperAlign,
+  PopperAnchorElement,
+  PopperAnchorProps,
+  PopperApi,
+  PopperArrowProps,
+  PopperCollisionBoundary,
+  PopperPartProps,
+  PopperPlacement,
+  PopperPositionerProps,
+  PopperRootBoundary,
+  PopperRootProps,
+  PopperSide,
+  PopperSticky,
+  PopperStrategy,
+} from "./popper/index";
 export type {
   AccordionContentProps,
   AccordionHeaderProps,
@@ -100,6 +118,7 @@ export type {
 } from "./date-picker/index";
 export type {
   ComboboxApi,
+  ComboboxArrowProps,
   ComboboxChangeDetail,
   ComboboxClearProps,
   ComboboxContentProps,
@@ -151,6 +170,7 @@ export type {
 } from "./form/index";
 export type {
   CreateHoverCardOptions,
+  HoverCardArrowProps,
   HoverCardContentProps,
   HoverCardOpenChangeDetail,
   HoverCardPartProps,
@@ -177,6 +197,7 @@ export type {
 export type {
   CreateMenuOptions,
   MenuApi,
+  MenuArrowProps,
   MenuCheckboxItemProps,
   MenuContentProps,
   MenuGroupLabelProps,
@@ -217,6 +238,7 @@ export { Popover, createPopover } from "./popover/index";
 export { RadioGroup, createRadioGroup } from "./radio-group/index";
 export type {
   CreatePopoverOptions,
+  PopoverArrowProps,
   PopoverContentProps,
   PopoverOpenChangeDetail,
   PopoverPartProps,
@@ -239,6 +261,7 @@ export { Slider, createSlider } from "./slider/index";
 export type {
   CreateSelectOptions,
   SelectApi,
+  SelectArrowProps,
   SelectChangeDetail,
   SelectContentProps,
   SelectGroupLabelProps,
@@ -341,6 +364,7 @@ export type {
 export { Tooltip, createTooltip } from "./tooltip/index";
 export type {
   CreateTooltipOptions,
+  TooltipArrowProps,
   TooltipContentProps,
   TooltipOpenChangeDetail,
   TooltipPartProps,

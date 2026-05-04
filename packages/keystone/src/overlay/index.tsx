@@ -4,6 +4,7 @@ export {
   createDismissableLayer,
 } from "./dismissable-layer";
 export { createOverlayDismissalPolicy } from "./dismissal-policy";
+export { getFloatingArrowProps } from "./arrow";
 export { FocusScope, createFocusScope } from "./focus-scope";
 export { createFloatingAdapter } from "./floating";
 export { createOverlayPresence } from "./presence";
@@ -13,6 +14,9 @@ export {
   OverlayLayer,
   OverlayLayerProvider,
 } from "./layer-kernel";
+export type {
+  FloatingArrowProps,
+} from "./arrow";
 export type {
   CreateOverlayDismissalPolicyOptions,
   OverlayDismissalPolicy,
