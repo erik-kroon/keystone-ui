@@ -29,9 +29,11 @@ Checkbox:
 RadioGroup:
 
 - `RadioGroup.Root` supports controlled and uncontrolled `value`, `defaultValue`, `disabled`, `readOnly`, `invalid`, `required`, `orientation`, `loopFocus`, `name`, `form`, and `onValueChange`.
+- `RadioGroup.Root` accepts explicit `dir` and inherits the Keystone direction provider for RTL-aware horizontal keyboard navigation.
 - `RadioGroup.Item` exposes `role="radio"`, roving `tabIndex`, checked data attributes, click selection, and arrow/Home/End keyboard selection.
 - `RadioGroup.HiddenInput` mirrors item selection as native radio inputs.
 - `RadioGroup.HiddenInput` participates in native form reset, including external form ownership through the root `form` prop.
+- Checkbox, Switch, and RadioGroup hidden-input parts mirror stable checked, disabled, invalid, readonly, required, orientation, and direction data where applicable so generated source can style and test native form state without reaching into private controllers.
 
 ## Mason Surface
 
@@ -42,4 +44,4 @@ RadioGroup:
 
 ## Parity Notes
 
-Kobalte and Base UI still go deeper than this first vertical. The next parity pass should add cursor/touch press behavior, richer label and description composition, nested or toolbar coordination decisions for radio groups, RTL-aware horizontal keyboard behavior, form validation edge cases, animation lifecycle data attributes, and broader SSR/hydration tests.
+Kobalte and Base UI still go deeper than this first vertical. The next parity pass should add cursor/touch press behavior, richer label and description composition, nested or toolbar coordination decisions for radio groups, form validation edge cases, animation lifecycle data attributes, and broader SSR/hydration tests.

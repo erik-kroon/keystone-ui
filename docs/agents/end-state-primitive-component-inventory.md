@@ -44,25 +44,25 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 
 ### Collection And Navigation
 
-- Collection
-- DOM-order collection
-- Roving focus
-- List navigation
-- Typeahead
-- Single selection
-- Multiple selection, after single-selection primitives are stable
+- Collection (`proven`; see [collection-selection-menu-closure.md](collection-selection-menu-closure.md))
+- DOM-order collection (`proven`; see [collection-selection-menu-closure.md](collection-selection-menu-closure.md))
+- Roving focus (`proven`; see [collection-selection-menu-closure.md](collection-selection-menu-closure.md))
+- List navigation (`proven`; see [collection-selection-menu-closure.md](collection-selection-menu-closure.md))
+- Typeahead (`proven`; see [collection-selection-menu-closure.md](collection-selection-menu-closure.md))
+- Single selection (`proven`; see [collection-selection-menu-closure.md](collection-selection-menu-closure.md))
+- Multiple selection (`proven`; see [collection-selection-menu-closure.md](collection-selection-menu-closure.md))
 
 ### Forms And Fields
 
-- FormControl
-- Field
+- FormControl (`proven`; compound anatomy, ARIA/data contracts, repeated hidden inputs, and native reset listeners)
+- Field (`proven`; public compound surface backed by FormControl and Field validity)
 - Fieldset
 - Label
 - Description
 - ErrorMessage
-- Hidden input helpers
-- Native form reset listener
-- Required/invalid/disabled/readonly data and ARIA contracts
+- Hidden input helpers (`proven`; repeated inputs for array values and native form ownership)
+- Native form reset listener (`proven`; owning-form and external `form` owner changes)
+- Required/invalid/disabled/readonly data and ARIA contracts (`proven`; root/control/label/description/error state attributes)
 
 ### Disclosure And Structure
 
@@ -72,15 +72,15 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 
 ### Selection And Menus
 
-- Select
-- Listbox
-- Combobox
+- Select (`proven`; see [collection-selection-menu-closure.md](collection-selection-menu-closure.md))
+- Listbox (`internal proven`; see [collection-selection-menu-closure.md](collection-selection-menu-closure.md))
+- Combobox (`proven`; see [collection-selection-menu-closure.md](collection-selection-menu-closure.md))
 - Autocomplete
 - Command primitive, only if its behavior cannot be cleanly composed from Combobox/Listbox
-- Menu
-- DropdownMenu
-- ContextMenu
-- Menubar
+- Menu (`proven`; see [collection-selection-menu-closure.md](collection-selection-menu-closure.md))
+- DropdownMenu (`proven`; see [collection-selection-menu-closure.md](collection-selection-menu-closure.md))
+- ContextMenu (`proven`; see [collection-selection-menu-closure.md](collection-selection-menu-closure.md))
+- Menubar (`proven`; see [collection-selection-menu-closure.md](collection-selection-menu-closure.md))
 - NavigationMenu
 
 ### Inputs

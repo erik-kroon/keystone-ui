@@ -104,6 +104,53 @@ describe("Slider", () => {
     expect(commits.map((commit) => commit.value)).toEqual([[15], [65], [0]]);
   });
 
+  test("uses RTL-aware horizontal keyboard and pointer math", () => {
+    render(() => (
+      <Slider.Root dir="rtl" defaultValue={[40]} max={100} min={0} step={10}>
+        <Slider.Track>
+          <Slider.Range />
+          <Slider.Thumb />
+        </Slider.Track>
+      </Slider.Root>
+    ));
+
+    const track = getByPart("slider", "track");
+    const thumb = getByPart("slider", "thumb");
+    track.getBoundingClientRect = () =>
+      ({ bottom: 20, height: 20, left: 0, right: 100, top: 0, width: 100 }) as DOMRect;
+
+    expect(getByPart("slider", "root").getAttribute("data-dir")).toBe("rtl");
+
+    keyDown(thumb, "ArrowRight");
+    expect(thumb.getAttribute("aria-valuenow")).toBe("30");
+
+    pointerDown(track, { clientX: 20, clientY: 10 });
+    pointerUp({ clientX: 20, clientY: 10 });
+    expect(thumb.getAttribute("aria-valuenow")).toBe("80");
+  });
+
+  test("keeps range thumbs at the configured minimum step distance", () => {
+    render(() => (
+      <Slider.Root defaultValue={[20, 80]} max={100} min={0} minStepsBetweenThumbs={2} step={10}>
+        <Slider.Track>
+          <Slider.Range />
+          <Slider.Thumb index={0} />
+          <Slider.Thumb index={1} />
+        </Slider.Track>
+      </Slider.Root>
+    ));
+
+    const [firstThumb, secondThumb] = parts("thumb");
+
+    keyDown(firstThumb!, "End");
+    expect(firstThumb?.getAttribute("aria-valuenow")).toBe("80");
+    expect(secondThumb?.getAttribute("aria-valuenow")).toBe("100");
+
+    keyDown(secondThumb!, "Home");
+    expect(firstThumb?.getAttribute("aria-valuenow")).toBe("0");
+    expect(secondThumb?.getAttribute("aria-valuenow")).toBe("80");
+  });
+
   test("supports controlled value updates", () => {
     const [value, setValue] = createSignal<readonly number[]>([20]);
 

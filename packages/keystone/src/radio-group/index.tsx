@@ -9,6 +9,7 @@ import {
   type Accessor,
   type JSX,
 } from "solid-js";
+import { useDirection, type Direction as KeystoneDirection } from "../i18n/direction";
 import {
   callEventHandler,
   createControllableSignal,
@@ -18,6 +19,7 @@ import {
 } from "../utils/index";
 
 export type RadioGroupOrientation = "horizontal" | "vertical";
+export type RadioGroupDirection = KeystoneDirection;
 export type RadioGroupValueChangeDetail = {
   reason: "item" | "keyboard" | "programmatic";
 };
@@ -25,6 +27,7 @@ export type RadioGroupValueChangeDetail = {
 export type RadioGroupRootProps = RadioGroupPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> & {
     defaultValue?: string;
+    dir?: RadioGroupDirection;
     disabled?: boolean;
     form?: string;
     invalid?: boolean;
@@ -65,6 +68,7 @@ type RadioItemRecord = {
 
 type RadioGroupApi = {
   disabled: Accessor<boolean>;
+  dir: Accessor<RadioGroupDirection>;
   invalid: Accessor<boolean>;
   form: Accessor<string | undefined>;
   loopFocus: Accessor<boolean>;
@@ -100,6 +104,7 @@ const RadioGroupItemContext = createContext<RadioGroupItemApi>();
 export function createRadioGroup(
   options: {
     defaultValue?: string;
+    dir?: () => RadioGroupDirection | undefined;
     disabled?: () => boolean | undefined;
     form?: () => string | undefined;
     invalid?: () => boolean | undefined;
@@ -125,6 +130,7 @@ export function createRadioGroup(
 
   return {
     disabled: createMemo(() => options.disabled?.() ?? false),
+    dir: createMemo(() => (options.dir?.() === "rtl" ? "rtl" : "ltr")),
     form: createMemo(() => options.form?.()),
     invalid: createMemo(() => options.invalid?.() ?? false),
     loopFocus: createMemo(() => options.loopFocus?.() ?? true),
@@ -161,9 +167,11 @@ function useRadioGroupItem(part: string) {
 }
 
 function Root(props: RadioGroupRootProps) {
+  const inheritedDir = useDirection();
   const [local, others] = splitProps(props, [
     "children",
     "defaultValue",
+    "dir",
     "disabled",
     "form",
     "invalid",
@@ -177,6 +185,7 @@ function Root(props: RadioGroupRootProps) {
   ]);
   const group = createRadioGroup({
     defaultValue: local.defaultValue,
+    dir: () => local.dir ?? inheritedDir(),
     disabled: () => local.disabled,
     form: () => local.form,
     invalid: () => local.invalid,
@@ -199,6 +208,7 @@ function Root(props: RadioGroupRootProps) {
         aria-readonly={group.readOnly() || undefined}
         aria-required={group.required() || undefined}
         data-disabled={dataBoolean(group.disabled())}
+        data-dir={group.dir()}
         data-invalid={dataBoolean(group.invalid())}
         data-orientation={group.orientation()}
         data-readonly={dataBoolean(group.readOnly())}
@@ -248,6 +258,7 @@ function Item(props: RadioGroupItemProps) {
         aria-disabled={disabled() || undefined}
         data-checked={dataBoolean(checked())}
         data-disabled={dataBoolean(disabled())}
+        data-dir={group.dir()}
         data-state={getCheckedState(checked())}
         role="radio"
         tabIndex={getTabIndex(group, local.value, disabled())}
@@ -326,6 +337,13 @@ function HiddenInput(props: RadioGroupHiddenInputProps) {
       required={group.required()}
       type="radio"
       value={item.value}
+      data-checked={dataBoolean(item.checked())}
+      data-disabled={dataBoolean(item.disabled())}
+      data-dir={group.dir()}
+      data-invalid={dataBoolean(group.invalid())}
+      data-orientation={group.orientation()}
+      data-readonly={dataBoolean(group.readOnly())}
+      data-required={dataBoolean(group.required())}
       data-state={getCheckedState(item.checked())}
       {...partDataAttributes("radio-group", "hidden-input")}
     />
@@ -342,8 +360,8 @@ function getTabIndex(group: RadioGroupApi, itemValue: string, disabled: boolean)
 
 function moveRadioFocus(event: KeyboardEvent, group: RadioGroupApi) {
   const horizontal = group.orientation() === "horizontal";
-  const nextKey = horizontal ? "ArrowRight" : "ArrowDown";
-  const previousKey = horizontal ? "ArrowLeft" : "ArrowUp";
+  const nextKey = horizontal ? (group.dir() === "rtl" ? "ArrowLeft" : "ArrowRight") : "ArrowDown";
+  const previousKey = horizontal ? (group.dir() === "rtl" ? "ArrowRight" : "ArrowLeft") : "ArrowUp";
 
   if (![nextKey, previousKey, "Home", "End"].includes(event.key)) return;
   if (group.readOnly() || group.disabled()) return;

@@ -186,6 +186,11 @@ function HiddenInput(props: SwitchHiddenInputProps) {
       required={control.required()}
       type="checkbox"
       value={control.value()}
+      data-checked={dataBoolean(control.checked())}
+      data-disabled={dataBoolean(control.disabled())}
+      data-invalid={dataBoolean(control.invalid())}
+      data-readonly={dataBoolean(control.readOnly())}
+      data-required={dataBoolean(control.required())}
       data-state={getSelectionState(control.checked() as SelectionControlCheckedState)}
       {...partDataAttributes("switch", "hidden-input")}
     />

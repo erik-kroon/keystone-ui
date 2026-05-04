@@ -456,6 +456,7 @@ function createScopedMenu(options: CreateMenuOptions, rootRole: "menu" | "menuba
         "closeOnSelect",
         "description",
         "disabled",
+        "hidden",
         "label",
         "onClick",
         "onPointerMove",
@@ -474,6 +475,7 @@ function createScopedMenu(options: CreateMenuOptions, rootRole: "menu" | "menuba
         checked: local.checked,
         closeOnSelect: itemCloseOnSelect,
         disabled: local.disabled,
+        hidden: Boolean(local.hidden),
         label: local.textValue ?? local.label,
         type: local.type ?? "item",
         value: local.value,
@@ -487,8 +489,10 @@ function createScopedMenu(options: CreateMenuOptions, rootRole: "menu" | "menuba
         "aria-checked": isCheckedItem ? checked : undefined,
         "aria-labelledby": itemLabelId(local.value),
         "aria-describedby": local.description ? itemDescriptionId(local.value) : undefined,
+        hidden: local.hidden,
         ...partProps("item"),
         "data-disabled": dataBoolean(local.disabled),
+        "data-hidden": dataBoolean(Boolean(local.hidden)),
         get "data-highlighted"() {
           return dataBoolean(list.isHighlighted(local.value));
         },
@@ -500,12 +504,12 @@ function createScopedMenu(options: CreateMenuOptions, rootRole: "menu" | "menuba
         },
         "data-value": local.value,
         onPointerMove: composeEventHandlers<PointerEvent>(local.onPointerMove, () => {
-          if (!local.disabled) {
+          if (!local.disabled && !local.hidden) {
             list.setHighlightedValue(local.value);
           }
         }),
         onClick: composeEventHandlers<MouseEvent>(local.onClick, (event) => {
-          if (local.disabled) {
+          if (local.disabled || Boolean(local.hidden)) {
             event.preventDefault();
             return;
           }

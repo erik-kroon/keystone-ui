@@ -31,6 +31,7 @@ export type ListboxOptionContractProps = ListboxPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref" | "value"> & {
     disabled?: boolean;
     group?: string;
+    hidden?: JSX.HTMLAttributes<HTMLDivElement>["hidden"];
     label: string;
     value: string;
   };
@@ -228,6 +229,7 @@ export function createListboxInteraction<T extends CollectionItem, Detail>(
       const [local, others] = splitProps(props, [
         "disabled",
         "group",
+        "hidden",
         "label",
         "onClick",
         "onPointerMove",
@@ -240,6 +242,7 @@ export function createListboxInteraction<T extends CollectionItem, Detail>(
         disabled: local.disabled,
         element,
         group: local.group,
+        hidden: Boolean(local.hidden),
         label: local.label,
         value: local.value,
       } as CollectionRegistration<T>);
@@ -249,6 +252,7 @@ export function createListboxInteraction<T extends CollectionItem, Detail>(
         id: options.optionId(local.value),
         role: "option",
         "aria-disabled": local.disabled ? "true" : undefined,
+        hidden: local.hidden,
         ref: (element: HTMLDivElement) => {
           setElement(element);
           list.collection.scheduleRefreshOrder();
@@ -260,6 +264,7 @@ export function createListboxInteraction<T extends CollectionItem, Detail>(
         ...partProps(optionPart),
         "data-disabled": dataBoolean(local.disabled),
         "data-group": local.group,
+        "data-hidden": dataBoolean(Boolean(local.hidden)),
         get "data-highlighted"() {
           return dataBoolean(list.collection.isHighlighted(local.value));
         },
@@ -267,7 +272,7 @@ export function createListboxInteraction<T extends CollectionItem, Detail>(
           return dataBoolean(list.selection.isSelected(local.value));
         },
         onPointerMove: composeEventHandlers<PointerEvent>(local.onPointerMove, () => {
-          if (!local.disabled) {
+          if (!local.disabled && !local.hidden) {
             list.collection.setHighlightedValue(local.value);
           }
         }),

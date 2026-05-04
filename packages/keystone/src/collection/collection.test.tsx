@@ -1,6 +1,7 @@
 import { createRoot } from "solid-js";
 import { describe, expect, test } from "vitest";
 import { createListboxInteraction } from "./index";
+import { createRovingFocus } from "./roving-focus";
 
 describe("Listbox interaction module", () => {
   test("returns listbox, option, active-descendant, keyboard, and selection contracts", () => {
@@ -111,6 +112,84 @@ describe("Listbox interaction module", () => {
       );
 
       expect(listbox.activeDescendant.highlightedValue()).toBe("bravo");
+      dispose();
+    });
+  });
+
+  test("typeahead cycles repeated printable keys across matching options", () => {
+    createRoot((dispose) => {
+      const listbox = createListboxInteraction<
+        { disabled?: boolean; label: string; value: string },
+        { reason: string }
+      >({
+        id: () => "project-listbox",
+        labelledBy: () => "project-trigger",
+        optionId: (value) => `project-option-${value}`,
+        optionSelectDetail: () => ({ reason: "item" }),
+        programmaticDetail: { reason: "programmatic" },
+        scope: "test-listbox",
+      });
+
+      listbox.getOptionProps({ label: "Alpha", value: "alpha" });
+      listbox.getOptionProps({ label: "Alpine", value: "alpine" });
+      listbox.getOptionProps({ label: "Bravo", value: "bravo" });
+      const props = listbox.getListboxProps(
+        {},
+        {
+          selectDetail: () => ({ reason: "keyboard" }),
+        },
+      );
+
+      (props.onKeyDown as (event: KeyboardEvent) => void)(
+        new KeyboardEvent("keydown", { cancelable: true, key: "a" }),
+      );
+      expect(listbox.activeDescendant.highlightedValue()).toBe("alpha");
+
+      (props.onKeyDown as (event: KeyboardEvent) => void)(
+        new KeyboardEvent("keydown", { cancelable: true, key: "a" }),
+      );
+      expect(listbox.activeDescendant.highlightedValue()).toBe("alpine");
+      dispose();
+    });
+  });
+
+  test("navigation and typeahead skip hidden options while preserving collection lookup", () => {
+    createRoot((dispose) => {
+      const listbox = createListboxInteraction<
+        { disabled?: boolean; hidden?: boolean; label: string; value: string },
+        { reason: string }
+      >({
+        id: () => "project-listbox",
+        labelledBy: () => "project-trigger",
+        optionId: (value) => `project-option-${value}`,
+        optionSelectDetail: () => ({ reason: "item" }),
+        programmaticDetail: { reason: "programmatic" },
+        scope: "test-listbox",
+      });
+
+      listbox.getOptionProps({ label: "Alpha", value: "alpha" });
+      const hidden = listbox.getOptionProps({ hidden: true, label: "Bravo", value: "bravo" });
+      listbox.getOptionProps({ label: "Beta", value: "beta" });
+      const props = listbox.getListboxProps(
+        {},
+        {
+          selectDetail: () => ({ reason: "keyboard" }),
+        },
+      );
+
+      expect(hidden["data-hidden"]).toBe("");
+      expect(listbox.collection.itemByValue("bravo")?.label).toBe("Bravo");
+
+      (props.onKeyDown as (event: KeyboardEvent) => void)(
+        new KeyboardEvent("keydown", { cancelable: true, key: "b" }),
+      );
+      expect(listbox.activeDescendant.highlightedValue()).toBe("beta");
+
+      listbox.activeDescendant.setHighlightedValue("alpha");
+      (props.onKeyDown as (event: KeyboardEvent) => void)(
+        new KeyboardEvent("keydown", { cancelable: true, key: "ArrowDown" }),
+      );
+      expect(listbox.activeDescendant.highlightedValue()).toBe("beta");
       dispose();
     });
   });
@@ -278,6 +357,40 @@ describe("Listbox interaction module", () => {
         new KeyboardEvent("keydown", { cancelable: true, key: "e" }),
       );
       expect(listbox.activeDescendant.highlightedValue()).toBe("charlie");
+      dispose();
+    });
+  });
+
+  test("creates roving focus contracts from collection items", () => {
+    createRoot((dispose) => {
+      const alpha = document.createElement("button");
+      const bravo = document.createElement("button");
+      const charlie = document.createElement("button");
+      const focused: string[] = [];
+      alpha.addEventListener("focus", () => focused.push("alpha"));
+      bravo.addEventListener("focus", () => focused.push("bravo"));
+      charlie.addEventListener("focus", () => focused.push("charlie"));
+      document.body.append(alpha, bravo, charlie);
+
+      const roving = createRovingFocus({
+        items: () => [
+          { element: () => alpha, label: "Alpha", value: "alpha" },
+          { element: () => bravo, hidden: true, label: "Bravo", value: "bravo" },
+          { element: () => charlie, label: "Charlie", value: "charlie" },
+        ],
+      });
+
+      expect(roving.currentValue()).toBe("alpha");
+      expect(roving.getItemTabIndex("alpha")).toBe(0);
+      expect(roving.getItemTabIndex("charlie")).toBe(-1);
+
+      roving.focus("next");
+      expect(roving.currentValue()).toBe("charlie");
+      expect(focused).toEqual(["charlie"]);
+
+      bravo.remove();
+      alpha.remove();
+      charlie.remove();
       dispose();
     });
   });

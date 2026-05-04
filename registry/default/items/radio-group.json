@@ -16,12 +16,12 @@
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add radio-group",
-    "customization": "Style the generated wrappers through mason-radio-group classes while Keystone keeps radiogroup semantics, roving focus, hidden radio inputs, keyboard selection, and data attributes.",
+    "customization": "Style the generated wrappers through mason-radio-group classes while Keystone keeps radiogroup semantics, roving focus, RTL-aware horizontal keyboard selection, hidden radio inputs, and data attributes.",
     "sourceFiles": ["registry/default/ui/radio-group.tsx"],
     "dependencies": ["@keystone-ui/keystone", "cn"],
     "parts": ["root", "item", "item-indicator", "hidden-input"],
     "parity": {
-      "baseUi": "Thin vertical covers controlled and uncontrolled value state, disabled items, radiogroup ARIA, roving tabindex, arrow/Home/End keyboard selection, hidden radio submission, and Mason wrapper metadata. Gaps: RTL horizontal key behavior, toolbar/nested coordination, richer label composition, form validation edge cases, and hydration edge tests remain follow-up work.",
+      "baseUi": "Thin vertical covers controlled and uncontrolled value state, disabled items, radiogroup ARIA, roving tabindex, RTL-aware arrow/Home/End keyboard selection, hidden radio submission, hidden-input state metadata, and Mason wrapper metadata. Gaps: toolbar/nested coordination, richer label composition, form validation edge cases, and hydration edge tests remain follow-up work.",
       "kobalte": "Matches Solid RadioGroup Root/Item/Input/Control/Indicator direction with single selection, hidden native inputs, disabled state, orientation, and stable data attributes. Gaps: form-control group composition, validation/reset semantics, and nested composite-widget policy remain follow-up work."
     }
   },

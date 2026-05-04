@@ -1,9 +1,15 @@
 import {
+  createContext,
+  createEffect,
   createMemo,
   createSignal,
+  For,
   onCleanup,
   onMount,
+  Show,
+  splitProps,
   untrack,
+  useContext,
   type Accessor,
   type JSX,
 } from "solid-js";
@@ -14,6 +20,8 @@ import {
   dataBoolean,
   mergeIds,
   partDataAttributes,
+  renderPolymorphic,
+  type KeystoneAs,
 } from "../utils/index";
 
 type BooleanAccessor = () => boolean | undefined;
@@ -105,10 +113,15 @@ type FormControlState = {
   validating: boolean;
 };
 
+type FormControlStateAccessors = {
+  [Key in keyof FormControlState]: () => FormControlState[Key];
+};
+
 export type CreateFormControlOptions = {
   form?: StringAccessor;
   id?: StringAccessor;
   name?: StringAccessor;
+  scope?: string;
   value?: FormValueAccessor;
   disabled?: BooleanAccessor;
   dirty?: BooleanAccessor;
@@ -158,6 +171,7 @@ export type FormControlApi = {
   getHiddenInputProps: (
     props?: JSX.InputHTMLAttributes<HTMLInputElement>,
   ) => JSX.InputHTMLAttributes<HTMLInputElement>;
+  hiddenInputDescriptors: () => readonly HiddenInputDescriptor[];
   registerDescription: (id?: Accessor<string | undefined>) => () => void;
   registerErrorMessage: (id?: Accessor<string | undefined>) => () => void;
   registerFormReset: (element: Accessor<HTMLElement | undefined>) => void;
@@ -166,6 +180,97 @@ export type FormControlApi = {
     onValueChange: (value: string) => void,
   ) => void;
 };
+
+export type HiddenInputDescriptor = {
+  disabled?: boolean;
+  form?: string;
+  name: string;
+  required?: boolean;
+  value: string;
+};
+
+export type FormControlPartProps<T extends HTMLElement = HTMLElement> = {
+  children?: JSX.Element;
+  class?: string;
+  id?: string;
+  ref?: T | ((element: T) => void);
+  style?: JSX.CSSProperties | string;
+};
+
+export type FormControlRootProps = FormControlPartProps<HTMLSpanElement> &
+  Omit<JSX.HTMLAttributes<HTMLSpanElement>, "children" | "ref"> & {
+    defaultValue?: FormControlValue;
+    disabled?: boolean;
+    form?: string;
+    invalid?: boolean;
+    name?: string;
+    readOnly?: boolean;
+    required?: boolean;
+    value?: FormControlValue;
+    onReset?: () => void;
+  };
+
+export type FormControlLabelProps = FormControlPartProps<HTMLLabelElement> &
+  Omit<JSX.LabelHTMLAttributes<HTMLLabelElement>, "children" | "ref">;
+
+export type FormControlControlProps<T extends HTMLElement = HTMLElement> = FormControlPartProps<T> &
+  Omit<JSX.HTMLAttributes<T>, "children" | "ref"> & {
+    as?: KeystoneAs<JSX.HTMLAttributes<T>>;
+  };
+
+export type FormControlDescriptionProps = FormControlPartProps &
+  Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
+
+export type FormControlErrorMessageProps = FormControlPartProps &
+  Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> & {
+    forceMount?: boolean;
+  };
+
+export type FormControlHiddenInputProps = Omit<
+  JSX.InputHTMLAttributes<HTMLInputElement>,
+  "children" | "ref" | "type"
+> & {
+  ref?: HTMLInputElement | ((element: HTMLInputElement) => void);
+};
+
+export type FieldRootProps = FormControlPartProps<HTMLDivElement> &
+  Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> &
+  Pick<
+    CreateFieldValidityOptions,
+    | "customError"
+    | "defaultValue"
+    | "revalidationMode"
+    | "validate"
+    | "validationMode"
+    | "onValidityChange"
+  > & {
+    disabled?: boolean;
+    form?: string;
+    invalid?: boolean;
+    name?: string;
+    readOnly?: boolean;
+    required?: boolean;
+    value?: FormControlValue;
+  };
+
+export type FieldLabelProps = FormControlLabelProps;
+
+export type FieldControlProps<T extends HTMLElement = HTMLInputElement> = FormControlPartProps<T> &
+  Omit<JSX.HTMLAttributes<T>, "children" | "ref"> & {
+    as?: KeystoneAs<JSX.HTMLAttributes<T>>;
+  };
+
+export type FieldDescriptionProps = FormControlDescriptionProps;
+export type FieldErrorMessageProps = FormControlErrorMessageProps;
+export type FieldHiddenInputProps = FormControlHiddenInputProps;
+
+type FormControlContextValue = {
+  control: FormControlApi;
+  validity?: FieldValidityApi;
+};
+
+const FormControlContext = createContext<FormControlContextValue>();
+const FieldContext = createContext<FormControlContextValue>();
 
 export function createFormControl(options: CreateFormControlOptions = {}): FormControlApi {
   const controlId = createStableId("form-control", options.id);
@@ -184,6 +289,7 @@ export function createFormControl(options: CreateFormControlOptions = {}): FormC
   const required = createMemo(() => options.required?.() ?? false);
   const touched = createMemo(() => options.touched?.() ?? false);
   const validating = createMemo(() => options.validating?.() ?? false);
+  const scope = options.scope ?? "form-control";
   const describedBy = createMemo(() => {
     const ids = [...descriptionIds.ids()];
 
@@ -193,52 +299,92 @@ export function createFormControl(options: CreateFormControlOptions = {}): FormC
 
     return mergeIds(...ids);
   });
+  const stateAccessors: FormControlStateAccessors = {
+    dirty,
+    disabled,
+    filled,
+    focused,
+    invalid,
+    readonly,
+    required,
+    touched,
+    validating,
+  };
 
   const getRootProps = <T extends HTMLElement = HTMLElement>(
     props: JSX.HTMLAttributes<T> = {},
-  ): JSX.HTMLAttributes<T> => ({
-    ...props,
-    ...getStateDataAttributes("root", getFormControlState()),
-  });
+  ): JSX.HTMLAttributes<T> => applyStateDataAttributes({ ...props }, scope, "root", stateAccessors);
 
   const getControlProps = <T extends HTMLElement = HTMLElement>(
     props: JSX.HTMLAttributes<T> = {},
-  ): JSX.HTMLAttributes<T> => ({
-    ...props,
-    id: props.id ?? controlId(),
-    "aria-labelledby": props["aria-labelledby"] ?? labelId(),
-    "aria-describedby": mergeIds(describedBy(), props["aria-describedby"]),
-    "aria-disabled": props["aria-disabled"] ?? ariaBoolean(disabled()),
-    "aria-invalid": props["aria-invalid"] ?? ariaBoolean(invalid()),
-    "aria-readonly": props["aria-readonly"] ?? ariaBoolean(readonly()),
-    "aria-required": props["aria-required"] ?? ariaBoolean(required()),
-    ...getStateDataAttributes("control", getFormControlState()),
-  });
+  ): JSX.HTMLAttributes<T> =>
+    applyStateDataAttributes(
+      {
+        ...props,
+        id: props.id ?? controlId(),
+        get "aria-labelledby"() {
+          return props["aria-labelledby"] ?? labelId();
+        },
+        get "aria-describedby"() {
+          return mergeIds(describedBy(), props["aria-describedby"]);
+        },
+        get "aria-disabled"() {
+          return props["aria-disabled"] ?? ariaBoolean(disabled());
+        },
+        get "aria-invalid"() {
+          return props["aria-invalid"] ?? ariaBoolean(invalid());
+        },
+        get "aria-readonly"() {
+          return props["aria-readonly"] ?? ariaBoolean(readonly());
+        },
+        get "aria-required"() {
+          return props["aria-required"] ?? ariaBoolean(required());
+        },
+      },
+      scope,
+      "control",
+      stateAccessors,
+    );
 
   const getLabelProps = <T extends HTMLElement = HTMLLabelElement>(
     props: JSX.LabelHTMLAttributes<T> = {},
-  ): JSX.LabelHTMLAttributes<T> => ({
-    ...props,
-    id: props.id ?? labelId(),
-    for: props.for ?? controlId(),
-    ...getStateDataAttributes("label", getFormControlState()),
-  });
+  ): JSX.LabelHTMLAttributes<T> =>
+    applyStateDataAttributes(
+      {
+        ...props,
+        id: props.id ?? labelId(),
+        for: props.for ?? controlId(),
+      },
+      scope,
+      "label",
+      stateAccessors,
+    );
 
   const getDescriptionProps = <T extends HTMLElement = HTMLElement>(
     props: JSX.HTMLAttributes<T> = {},
-  ): JSX.HTMLAttributes<T> => ({
-    ...props,
-    id: props.id ?? descriptionId(),
-    ...getStateDataAttributes("description", getFormControlState()),
-  });
+  ): JSX.HTMLAttributes<T> =>
+    applyStateDataAttributes(
+      {
+        ...props,
+        id: props.id ?? descriptionId(),
+      },
+      scope,
+      "description",
+      stateAccessors,
+    );
 
   const getErrorMessageProps = <T extends HTMLElement = HTMLElement>(
     props: JSX.HTMLAttributes<T> = {},
-  ): JSX.HTMLAttributes<T> => ({
-    ...props,
-    id: props.id ?? errorMessageId(),
-    ...getStateDataAttributes("error-message", getFormControlState()),
-  });
+  ): JSX.HTMLAttributes<T> =>
+    applyStateDataAttributes(
+      {
+        ...props,
+        id: props.id ?? errorMessageId(),
+      },
+      scope,
+      "error-message",
+      stateAccessors,
+    );
 
   const getHiddenInputProps = (
     props: JSX.InputHTMLAttributes<HTMLInputElement> = {},
@@ -253,26 +399,24 @@ export function createFormControl(options: CreateFormControlOptions = {}): FormC
     form: props.form ?? form(),
     required: props.required ?? required(),
     "aria-hidden": "true",
-    ...partDataAttributes("form-control", "hidden-input"),
+    ...partDataAttributes(scope, "hidden-input"),
   });
 
-  const getFormControlState = (): FormControlState => ({
-    dirty: dirty(),
-    disabled: disabled(),
-    filled: filled(),
-    focused: focused(),
-    invalid: invalid(),
-    readonly: readonly(),
-    required: required(),
-    touched: touched(),
-    validating: validating(),
-  });
+  const hiddenInputDescriptors = createMemo(() =>
+    createHiddenInputDescriptors({
+      disabled: disabled(),
+      form: form(),
+      name: options.name?.(),
+      required: required(),
+      value: options.value?.(),
+    }),
+  );
 
   const registerDescription = descriptionIds.register;
   const registerErrorMessage = errorMessageIds.register;
 
   const registerFormReset = (element: Accessor<HTMLElement | undefined>) => {
-    onMount(() => {
+    createEffect(() => {
       const form = getOwningForm(element());
 
       if (!form) {
@@ -289,7 +433,7 @@ export function createFormControl(options: CreateFormControlOptions = {}): FormC
     element: Accessor<HTMLInputElement | undefined>,
     onValueChange: (value: string) => void,
   ) => {
-    onMount(() => {
+    createEffect(() => {
       const input = element();
 
       if (!input) {
@@ -330,6 +474,7 @@ export function createFormControl(options: CreateFormControlOptions = {}): FormC
     getDescriptionProps,
     getErrorMessageProps,
     getHiddenInputProps,
+    hiddenInputDescriptors,
     registerDescription,
     registerErrorMessage,
     registerFormReset,
@@ -524,7 +669,7 @@ export function createFieldValidity(options: CreateFieldValidityOptions = {}): F
   };
 
   const registerFormReset = (element: Accessor<HTMLElement | undefined>) => {
-    onMount(() => {
+    createEffect(() => {
       const form = getOwningForm(element());
 
       if (!form) {
@@ -538,7 +683,7 @@ export function createFieldValidity(options: CreateFieldValidityOptions = {}): F
   };
 
   const registerFormSubmit = (element: Accessor<HTMLElement | undefined>) => {
-    onMount(() => {
+    createEffect(() => {
       const form = getOwningForm(element());
 
       if (!form) {
@@ -597,22 +742,25 @@ function ariaBoolean(value: boolean): "true" | undefined {
   return value ? "true" : undefined;
 }
 
-function getStateDataAttributes(
+function applyStateDataAttributes<T extends Record<string, unknown>>(
+  props: T,
+  scope: string,
   part: string,
-  state: FormControlState,
-): Record<string, string | undefined> {
-  return {
-    ...partDataAttributes("form-control", part),
-    "data-dirty": dataBoolean(state.dirty),
-    "data-disabled": dataBoolean(state.disabled),
-    "data-filled": dataBoolean(state.filled),
-    "data-focused": dataBoolean(state.focused),
-    "data-invalid": dataBoolean(state.invalid),
-    "data-readonly": dataBoolean(state.readonly),
-    "data-required": dataBoolean(state.required),
-    "data-touched": dataBoolean(state.touched),
-    "data-validating": dataBoolean(state.validating),
-  };
+  state: FormControlStateAccessors,
+): T {
+  Object.assign(props, partDataAttributes(scope, part));
+  Object.defineProperties(props, {
+    "data-dirty": { enumerable: true, get: () => dataBoolean(state.dirty()) },
+    "data-disabled": { enumerable: true, get: () => dataBoolean(state.disabled()) },
+    "data-filled": { enumerable: true, get: () => dataBoolean(state.filled()) },
+    "data-focused": { enumerable: true, get: () => dataBoolean(state.focused()) },
+    "data-invalid": { enumerable: true, get: () => dataBoolean(state.invalid()) },
+    "data-readonly": { enumerable: true, get: () => dataBoolean(state.readonly()) },
+    "data-required": { enumerable: true, get: () => dataBoolean(state.required()) },
+    "data-touched": { enumerable: true, get: () => dataBoolean(state.touched()) },
+    "data-validating": { enumerable: true, get: () => dataBoolean(state.validating()) },
+  });
+  return props;
 }
 
 function getOwningForm(element: HTMLElement | undefined): HTMLFormElement | null | undefined {
@@ -754,3 +902,360 @@ function serializeFormValue(value: FormControlValue | undefined): string | numbe
 function isStringArray(value: FormControlValue): value is readonly string[] {
   return Array.isArray(value);
 }
+
+export function createHiddenInputDescriptors(options: {
+  disabled?: boolean;
+  form?: string;
+  name?: string;
+  required?: boolean;
+  value?: FormControlValue;
+}): readonly HiddenInputDescriptor[] {
+  if (!options.name || options.value === undefined || options.value === null) {
+    return [];
+  }
+
+  const base = {
+    disabled: options.disabled,
+    form: options.form,
+    name: options.name,
+    required: options.required,
+  };
+
+  if (Array.isArray(options.value)) {
+    return options.value.map((value) => ({ ...base, value }));
+  }
+
+  return [
+    {
+      ...base,
+      value: typeof options.value === "boolean" ? String(options.value) : String(options.value),
+    },
+  ];
+}
+
+function useFormControl(part: string) {
+  const context = useContext(FormControlContext);
+  if (!context) throw new Error(`FormControl.${part} must be used within FormControl.Root`);
+  return context;
+}
+
+function useField(part: string) {
+  const context = useContext(FieldContext);
+  if (!context) throw new Error(`Field.${part} must be used within Field.Root`);
+  return context;
+}
+
+function FormControlRoot(props: FormControlRootProps) {
+  const [local, others] = splitProps(props, [
+    "children",
+    "defaultValue",
+    "disabled",
+    "form",
+    "invalid",
+    "name",
+    "onReset",
+    "readOnly",
+    "required",
+    "value",
+  ]);
+  const value = createMemo(() => local.value ?? local.defaultValue);
+  const control = createFormControl({
+    disabled: () => local.disabled,
+    form: () => local.form,
+    invalid: () => local.invalid,
+    name: () => local.name,
+    onReset: local.onReset,
+    readonly: () => local.readOnly,
+    required: () => local.required,
+    value,
+  });
+
+  return (
+    <FormControlContext.Provider value={{ control }}>
+      <span {...control.getRootProps(others)}>{local.children}</span>
+    </FormControlContext.Provider>
+  );
+}
+
+function FormControlLabel(props: FormControlLabelProps) {
+  const { control } = useFormControl("Label");
+  return <label {...control.getLabelProps(props)} />;
+}
+
+function FormControlControl<T extends HTMLElement = HTMLElement>(
+  props: FormControlControlProps<T>,
+) {
+  const { control } = useFormControl("Control");
+  const [local, others] = splitProps(props, ["as", "children"]);
+  const controlProps = control.getControlProps({
+    ...others,
+    children: local.children,
+  } as JSX.HTMLAttributes<T>);
+
+  if (!local.as) {
+    return <div {...(controlProps as unknown as JSX.HTMLAttributes<HTMLDivElement>)} />;
+  }
+
+  return renderPolymorphic(local.as, "div", controlProps as Record<string, unknown>);
+}
+
+function FormControlDescription(props: FormControlDescriptionProps) {
+  const { control } = useFormControl("Description");
+  let element: HTMLElement | undefined;
+
+  onMount(() => {
+    const unregister = control.registerDescription(() => element?.id);
+    onCleanup(unregister);
+  });
+
+  return (
+    <div
+      {...control.getDescriptionProps({
+        ...props,
+        ref: (nextElement) => {
+          element = nextElement;
+          assignRef(props.ref, nextElement);
+        },
+      })}
+    />
+  );
+}
+
+function FormControlErrorMessage(props: FormControlErrorMessageProps) {
+  const { control } = useFormControl("ErrorMessage");
+  const [local, others] = splitProps(props, ["forceMount"]);
+  let element: HTMLElement | undefined;
+
+  onMount(() => {
+    const unregister = control.registerErrorMessage(() => element?.id);
+    onCleanup(unregister);
+  });
+
+  return (
+    <Show when={local.forceMount || control.invalid()}>
+      <div
+        {...control.getErrorMessageProps({
+          ...others,
+          ref: (nextElement) => {
+            element = nextElement;
+            assignRef(others.ref, nextElement);
+          },
+        })}
+      />
+    </Show>
+  );
+}
+
+function FormControlHiddenInput(props: FormControlHiddenInputProps) {
+  const { control } = useFormControl("HiddenInput");
+
+  return (
+    <For each={control.hiddenInputDescriptors()}>
+      {(input) => <HiddenInputElement control={control} input={input} props={props} />}
+    </For>
+  );
+}
+
+function FieldRoot(props: FieldRootProps) {
+  const [local, others] = splitProps(props, [
+    "children",
+    "customError",
+    "defaultValue",
+    "disabled",
+    "form",
+    "invalid",
+    "name",
+    "onValidityChange",
+    "readOnly",
+    "required",
+    "revalidationMode",
+    "validate",
+    "validationMode",
+    "value",
+  ]);
+  const validity = createFieldValidity({
+    customError: local.customError,
+    defaultValue: local.defaultValue,
+    disabled: () => local.disabled,
+    invalid: () => local.invalid,
+    readonly: () => local.readOnly,
+    required: () => local.required,
+    revalidationMode: local.revalidationMode,
+    validate: local.validate,
+    validationMode: local.validationMode,
+    value: () => local.value,
+    onValidityChange: local.onValidityChange,
+  });
+  const control = createFormControl({
+    dirty: validity.dirty,
+    disabled: () => local.disabled,
+    filled: validity.filled,
+    focused: validity.focused,
+    form: () => local.form,
+    invalid: () => local.invalid ?? validity.invalid(),
+    name: () => local.name,
+    readonly: () => local.readOnly,
+    required: () => local.required,
+    scope: "field",
+    touched: validity.touched,
+    validating: validity.validating,
+    value: () => local.value ?? validity.value(),
+  });
+
+  return (
+    <FieldContext.Provider value={{ control, validity }}>
+      <div {...control.getRootProps(others)}>{local.children}</div>
+    </FieldContext.Provider>
+  );
+}
+
+function FieldLabel(props: FieldLabelProps) {
+  const { control } = useField("Label");
+  return <label {...control.getLabelProps(props)} />;
+}
+
+function FieldControl<T extends HTMLElement = HTMLInputElement>(props: FieldControlProps<T>) {
+  const { control, validity } = useField("Control");
+  const [local, others] = splitProps(props, ["as", "children", "ref"]);
+  const [element, setElement] = createSignal<T>();
+
+  if (validity) {
+    validity.registerControl(element);
+    validity.registerFormReset(element);
+    validity.registerFormSubmit(element);
+  }
+
+  const controlProps = control.getControlProps(
+    validity?.getControlProps({
+      ...others,
+      children: local.children,
+      ref: (element: T) => {
+        setElement(() => element);
+        assignRef(local.ref, element);
+      },
+    } as JSX.HTMLAttributes<T>) ??
+      ({ ...others, children: local.children } as JSX.HTMLAttributes<T>),
+  );
+
+  if (!local.as) {
+    return <input {...(controlProps as JSX.InputHTMLAttributes<HTMLInputElement>)} />;
+  }
+
+  return renderPolymorphic(local.as, "input", controlProps as Record<string, unknown>);
+}
+
+function FieldDescription(props: FieldDescriptionProps) {
+  const { control } = useField("Description");
+  let element: HTMLElement | undefined;
+
+  onMount(() => {
+    const unregister = control.registerDescription(() => element?.id);
+    onCleanup(unregister);
+  });
+
+  return (
+    <div
+      {...control.getDescriptionProps({
+        ...props,
+        ref: (nextElement) => {
+          element = nextElement;
+          assignRef(props.ref, nextElement);
+        },
+      })}
+    />
+  );
+}
+
+function FieldErrorMessage(props: FieldErrorMessageProps) {
+  const { control, validity } = useField("ErrorMessage");
+  const [local, others] = splitProps(props, ["children", "forceMount"]);
+  let element: HTMLElement | undefined;
+
+  onMount(() => {
+    const unregister = control.registerErrorMessage(() => element?.id);
+    onCleanup(unregister);
+  });
+
+  return (
+    <Show when={local.forceMount || control.invalid()}>
+      <div
+        {...control.getErrorMessageProps({
+          ...others,
+          ref: (nextElement) => {
+            element = nextElement;
+            assignRef(others.ref, nextElement);
+          },
+        })}
+      >
+        {local.children ?? validity?.validationMessage()}
+      </div>
+    </Show>
+  );
+}
+
+function FieldHiddenInput(props: FieldHiddenInputProps) {
+  const { control } = useField("HiddenInput");
+
+  return (
+    <For each={control.hiddenInputDescriptors()}>
+      {(input) => <HiddenInputElement control={control} input={input} props={props} />}
+    </For>
+  );
+}
+
+function HiddenInputElement(props: {
+  control: FormControlApi;
+  input: HiddenInputDescriptor;
+  props: FormControlHiddenInputProps;
+}) {
+  let inputElement: HTMLInputElement | undefined;
+
+  createEffect(() => {
+    if (inputElement) {
+      inputElement.value = props.input.value;
+    }
+  });
+
+  return (
+    <input
+      {...props.control.getHiddenInputProps({
+        ...props.props,
+        disabled: props.props.disabled ?? props.input.disabled,
+        form: props.props.form ?? props.input.form,
+        name: props.props.name ?? props.input.name,
+        ref: (element) => {
+          inputElement = element;
+          element.value = props.input.value;
+          props.control.registerFormReset(() => element);
+          assignRef(props.props.ref, element);
+        },
+        required: props.props.required ?? props.input.required,
+        value: props.props.value ?? props.input.value,
+      })}
+    />
+  );
+}
+
+function assignRef<T>(ref: unknown, element: T) {
+  if (typeof ref === "function") {
+    (ref as (element: T) => void)(element);
+  }
+}
+
+export const FormControl = {
+  Root: FormControlRoot,
+  Control: FormControlControl,
+  Label: FormControlLabel,
+  Description: FormControlDescription,
+  ErrorMessage: FormControlErrorMessage,
+  HiddenInput: FormControlHiddenInput,
+};
+
+export const Field = {
+  Root: FieldRoot,
+  Control: FieldControl,
+  Label: FieldLabel,
+  Description: FieldDescription,
+  ErrorMessage: FieldErrorMessage,
+  HiddenInput: FieldHiddenInput,
+};

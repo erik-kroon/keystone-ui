@@ -133,7 +133,7 @@ const expectedParts = {
     "item-indicator",
   ],
   sheet: ["trigger", "close", "backdrop", "positioner", "content", "title", "description"],
-  slider: ["root", "track", "range", "thumb"],
+  slider: ["root", "track", "range", "thumb", "hidden-input"],
   tabs: ["root", "list", "trigger", "indicator", "content"],
   toast: ["viewport", "root", "title", "description", "action", "close"],
   toolbar: ["root", "button", "link", "separator"],

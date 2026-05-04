@@ -5,6 +5,7 @@ import {
   dataBoolean,
   partDataAttributes,
 } from "../utils/index";
+import type { Direction } from "../i18n/direction";
 
 export type SliderOrientation = "horizontal" | "vertical";
 
@@ -18,10 +19,12 @@ export type SliderValueChangeDetail = {
 
 export type SliderControllerOptions = {
   defaultValue?: readonly number[];
+  dir?: Accessor<Direction | undefined>;
   disabled?: Accessor<boolean | undefined>;
   form?: Accessor<string | undefined>;
   invalid?: Accessor<boolean | undefined>;
   max?: Accessor<number | undefined>;
+  minStepsBetweenThumbs?: Accessor<number | undefined>;
   min?: Accessor<number | undefined>;
   name?: Accessor<string | undefined>;
   onValueChange?: (value: readonly number[], detail: SliderValueChangeDetail) => void;
@@ -71,6 +74,7 @@ export type SliderHiddenInputContractProps = Omit<
 };
 
 export type SliderApi = {
+  dir: Accessor<Direction>;
   disabled: Accessor<boolean>;
   form: Accessor<string | undefined>;
   getHiddenInputProps: (props: SliderHiddenInputContractProps) => Record<string, unknown>;
@@ -82,6 +86,7 @@ export type SliderApi = {
   invalid: Accessor<boolean>;
   max: Accessor<number>;
   min: Accessor<number>;
+  minStepsBetweenThumbs: Accessor<number>;
   name: Accessor<string | undefined>;
   orientation: Accessor<SliderOrientation>;
   readOnly: Accessor<boolean>;
@@ -100,6 +105,10 @@ export function createSliderController(options: SliderControllerOptions = {}): S
   const min = createMemo(() => options.min?.() ?? 0);
   const max = createMemo(() => Math.max(options.max?.() ?? 100, min()));
   const step = createMemo(() => Math.max(options.step?.() ?? 1, Number.EPSILON));
+  const minStepsBetweenThumbs = createMemo(() =>
+    Math.max(options.minStepsBetweenThumbs?.() ?? 0, 0),
+  );
+  const dir = createMemo((): Direction => (options.dir?.() === "rtl" ? "rtl" : "ltr"));
   const disabled = createMemo(() => options.disabled?.() ?? false);
   const form = createMemo(() => options.form?.());
   const invalid = createMemo(() => options.invalid?.() ?? false);
@@ -114,11 +123,20 @@ export function createSliderController(options: SliderControllerOptions = {}): S
     SliderValueChangeDetail
   >({
     value: options.value,
-    defaultValue: () => normalizeValues(options.defaultValue ?? [min()], min(), max(), step()),
+    defaultValue: () =>
+      normalizeValues(
+        options.defaultValue ?? [min()],
+        min(),
+        max(),
+        step(),
+        minStepsBetweenThumbs(),
+      ),
     defaultDetail: { reason: "programmatic" },
     onChange: (nextValue, detail) => options.onValueChange?.(nextValue, detail),
   });
-  const normalizedValue = createMemo(() => normalizeValues(value(), min(), max(), step()));
+  const normalizedValue = createMemo(() =>
+    normalizeValues(value(), min(), max(), step(), minStepsBetweenThumbs()),
+  );
   const getPercent = (currentValue: number) => {
     if (max() === min()) return 0;
     return ((snapValue(currentValue, min(), max(), step()) - min()) / (max() - min())) * 100;
@@ -133,9 +151,11 @@ export function createSliderController(options: SliderControllerOptions = {}): S
 
     const nextValues = setValueState(
       (currentValue) => {
-        const values = normalizeValues(currentValue, min(), max(), step());
+        const values = normalizeValues(currentValue, min(), max(), step(), minStepsBetweenThumbs());
         values[thumbIndex] = snapValue(nextValue, min(), max(), step());
-        return values.slice().sort((a, b) => a - b);
+        return constrainThumbSpacing(values, min(), max(), step(), minStepsBetweenThumbs()).sort(
+          (a, b) => a - b,
+        );
       },
       { ...detail, thumbIndex },
     );
@@ -149,7 +169,14 @@ export function createSliderController(options: SliderControllerOptions = {}): S
   const setValueFromPoint = (event: PointerEvent, reason: "pointer" | "track") => {
     if (!trackElement) return;
 
-    const valueFromPoint = getValueFromPointer(event, trackElement, min(), max(), orientation());
+    const valueFromPoint = getValueFromPointer(
+      event,
+      trackElement,
+      min(),
+      max(),
+      orientation(),
+      dir(),
+    );
     const thumbIndex = activeThumbIndex ?? getClosestThumbIndex(normalizedValue(), valueFromPoint);
     activeThumbIndex = thumbIndex;
     setThumbValue(thumbIndex, valueFromPoint, { event, reason });
@@ -180,6 +207,7 @@ export function createSliderController(options: SliderControllerOptions = {}): S
   };
 
   return {
+    dir,
     disabled,
     form,
     getHiddenInputProps: (props) => {
@@ -219,6 +247,9 @@ export function createSliderController(options: SliderControllerOptions = {}): S
         get "data-orientation"() {
           return orientation();
         },
+        get "data-dir"() {
+          return dir();
+        },
         get "data-index"() {
           return String(index);
         },
@@ -255,6 +286,9 @@ export function createSliderController(options: SliderControllerOptions = {}): S
       get "data-orientation"() {
         return orientation();
       },
+      get "data-dir"() {
+        return dir();
+      },
       get "data-readonly"() {
         return dataBoolean(readOnly());
       },
@@ -285,6 +319,9 @@ export function createSliderController(options: SliderControllerOptions = {}): S
       },
       get "data-orientation"() {
         return orientation();
+      },
+      get "data-dir"() {
+        return dir();
       },
       get "data-readonly"() {
         return dataBoolean(readOnly());
@@ -337,6 +374,9 @@ export function createSliderController(options: SliderControllerOptions = {}): S
         get "data-orientation"() {
           return orientation();
         },
+        get "data-dir"() {
+          return dir();
+        },
         get "data-readonly"() {
           return dataBoolean(readOnly());
         },
@@ -361,7 +401,7 @@ export function createSliderController(options: SliderControllerOptions = {}): S
           if (event.defaultPrevented) return;
           if (disabled() || readOnly()) return;
 
-          const delta = getKeyboardDelta(event.key, step(), max() - min());
+          const delta = getKeyboardDelta(event.key, step(), max() - min(), orientation(), dir());
           if (delta === undefined) return;
 
           event.preventDefault();
@@ -397,6 +437,9 @@ export function createSliderController(options: SliderControllerOptions = {}): S
       get "data-orientation"() {
         return orientation();
       },
+      get "data-dir"() {
+        return dir();
+      },
       get "data-readonly"() {
         return dataBoolean(readOnly());
       },
@@ -415,23 +458,43 @@ export function createSliderController(options: SliderControllerOptions = {}): S
     invalid,
     max,
     min,
+    minStepsBetweenThumbs,
     name,
     orientation,
     readOnly,
     required,
     reset: () =>
-      setValueState(() => normalizeValues(options.defaultValue ?? [min()], min(), max(), step()), {
-        reason: "programmatic",
-      }),
+      setValueState(
+        () =>
+          normalizeValues(
+            options.defaultValue ?? [min()],
+            min(),
+            max(),
+            step(),
+            minStepsBetweenThumbs(),
+          ),
+        {
+          reason: "programmatic",
+        },
+      ),
     step,
     setValueAtIndex: setThumbValue,
     value: normalizedValue,
   };
 }
 
-function getKeyboardDelta(key: string, step: number, range: number) {
-  if (key === "ArrowRight" || key === "ArrowUp") return step;
-  if (key === "ArrowLeft" || key === "ArrowDown") return -step;
+function getKeyboardDelta(
+  key: string,
+  step: number,
+  range: number,
+  orientation: SliderOrientation,
+  dir: Direction,
+) {
+  const forward = orientation === "horizontal" && dir === "rtl" ? "ArrowLeft" : "ArrowRight";
+  const backward = orientation === "horizontal" && dir === "rtl" ? "ArrowRight" : "ArrowLeft";
+
+  if (key === forward || key === "ArrowUp") return step;
+  if (key === backward || key === "ArrowDown") return -step;
   if (key === "PageUp") return step * 10;
   if (key === "PageDown") return step * -10;
   if (key === "Home" || key === "End") return range;
@@ -459,12 +522,15 @@ function getValueFromPointer(
   min: number,
   max: number,
   orientation: SliderOrientation,
+  dir: Direction,
 ) {
   const rect = element.getBoundingClientRect();
   const rawPercent =
     orientation === "vertical"
       ? (rect.bottom - event.clientY) / rect.height
-      : (event.clientX - rect.left) / rect.width;
+      : dir === "rtl"
+        ? (rect.right - event.clientX) / rect.width
+        : (event.clientX - rect.left) / rect.width;
   const percent = Math.min(Math.max(rawPercent, 0), 1);
 
   return min + percent * (max - min);
@@ -475,9 +541,55 @@ function normalizeValues(
   min: number,
   max: number,
   step: number,
+  minStepsBetweenThumbs: number,
 ): number[] {
   const nextValues = values.length > 0 ? values : [min];
-  return nextValues.map((value) => snapValue(value, min, max, step)).sort((a, b) => a - b);
+  return constrainThumbSpacing(
+    nextValues.map((value) => snapValue(value, min, max, step)).sort((a, b) => a - b),
+    min,
+    max,
+    step,
+    minStepsBetweenThumbs,
+  );
+}
+
+function constrainThumbSpacing(
+  values: number[],
+  min: number,
+  max: number,
+  step: number,
+  minStepsBetweenThumbs: number,
+) {
+  if (values.length <= 1 || minStepsBetweenThumbs <= 0) return values;
+
+  const minDistance = minStepsBetweenThumbs * step;
+  const nextValues = values.map((value) => snapValue(value, min, max, step)).sort((a, b) => a - b);
+
+  for (let index = 1; index < nextValues.length; index += 1) {
+    const previousValue = nextValues[index - 1];
+    const currentValue = nextValues[index];
+    if (
+      previousValue !== undefined &&
+      currentValue !== undefined &&
+      currentValue - previousValue < minDistance
+    ) {
+      nextValues[index] = snapValue(previousValue + minDistance, min, max, step);
+    }
+  }
+
+  for (let index = nextValues.length - 2; index >= 0; index -= 1) {
+    const nextValue = nextValues[index + 1];
+    const currentValue = nextValues[index];
+    if (
+      nextValue !== undefined &&
+      currentValue !== undefined &&
+      nextValue - currentValue < minDistance
+    ) {
+      nextValues[index] = snapValue(nextValue - minDistance, min, max, step);
+    }
+  }
+
+  return nextValues.map((value) => snapValue(value, min, max, step));
 }
 
 function snapValue(value: number, min: number, max: number, step: number) {
