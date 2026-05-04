@@ -1,6 +1,6 @@
 import { performance } from "node:perf_hooks";
 import { createRoot } from "solid-js";
-import { createListboxInteraction } from "../src/listbox/index";
+import { createListboxInteraction } from "../src/collection/index";
 
 type BenchmarkResult = {
   itemCount: number;

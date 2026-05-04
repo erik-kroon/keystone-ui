@@ -13,7 +13,10 @@ export type PrimitivePartMetadata = {
   cssVars: readonly PartCssVarMetadata[];
 };
 
+export type PrimitiveMaturity = "internal" | "experimental" | "beta" | "stable" | "deprecated";
+
 export type PrimitiveMetadata = {
+  maturity: PrimitiveMaturity;
   scope: string;
   parts: readonly PrimitivePartMetadata[];
 };
@@ -185,6 +188,43 @@ const radioItemStateAttributes = [
   { name: "data-state", values: ["checked", "unchecked"] },
 ] as const satisfies readonly PartStateAttributeMetadata[];
 
+const primitiveMaturityByScope: Record<string, PrimitiveMaturity> = {
+  "accessible-icon": "beta",
+  accordion: "beta",
+  autocomplete: "experimental",
+  calendar: "experimental",
+  checkbox: "beta",
+  collapsible: "beta",
+  combobox: "experimental",
+  "context-menu": "experimental",
+  "date-picker": "experimental",
+  dialog: "beta",
+  direction: "stable",
+  "dropdown-menu": "experimental",
+  "form-control": "beta",
+  "hover-card": "experimental",
+  listbox: "internal",
+  "live-announcer": "beta",
+  locale: "beta",
+  menu: "experimental",
+  menubar: "experimental",
+  "navigation-menu": "experimental",
+  overlay: "internal",
+  popover: "experimental",
+  popper: "beta",
+  portal: "beta",
+  "radio-group": "beta",
+  select: "beta",
+  sheet: "experimental",
+  slider: "experimental",
+  switch: "beta",
+  tabs: "beta",
+  toast: "experimental",
+  toolbar: "experimental",
+  tooltip: "experimental",
+  "visually-hidden": "stable",
+};
+
 export const primitiveMetadata = {
   "accessible-icon": definePrimitive("accessible-icon", [part("root"), part("label")]),
   accordion: definePrimitive("accordion", [
@@ -309,10 +349,7 @@ export const primitiveMetadata = {
       [...floatingAttributes, { name: "data-state", values: ["open", "closed"] }],
       floatingCssVars,
     ),
-    part("arrow", [
-      ...floatingArrowAttributes,
-      { name: "data-state", values: ["open", "closed"] },
-    ]),
+    part("arrow", [...floatingArrowAttributes, { name: "data-state", values: ["open", "closed"] }]),
     part(
       "content",
       [...floatingAttributes, { name: "data-state", values: ["open", "closed"] }],
@@ -424,6 +461,7 @@ export function getDocsMetadata(scope: string): DocsPrimitiveMetadata | undefine
   }
 
   return {
+    maturity: metadata.maturity,
     scope: metadata.scope,
     parts: metadata.parts.map((metadataPart) => ({
       ...metadataPart,
@@ -435,8 +473,9 @@ export function getDocsMetadata(scope: string): DocsPrimitiveMetadata | undefine
 function definePrimitive(
   scope: string,
   parts: readonly PrimitivePartMetadata[],
+  maturity: PrimitiveMaturity = primitiveMaturityByScope[scope] ?? "experimental",
 ): PrimitiveMetadata {
-  return { scope, parts };
+  return { maturity, scope, parts };
 }
 
 function part(
@@ -475,10 +514,7 @@ function comboboxPrimitive(scope: string): PrimitiveMetadata {
       [...floatingAttributes, { name: "data-state", values: ["open", "closed"] }],
       floatingCssVars,
     ),
-    part("arrow", [
-      ...floatingArrowAttributes,
-      { name: "data-state", values: ["open", "closed"] },
-    ]),
+    part("arrow", [...floatingArrowAttributes, { name: "data-state", values: ["open", "closed"] }]),
     part(
       "content",
       [...floatingAttributes, { name: "data-state", values: ["open", "closed"] }],

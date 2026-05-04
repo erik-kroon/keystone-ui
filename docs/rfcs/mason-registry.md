@@ -25,12 +25,15 @@ The registry distributes readable source files into user projects. Users own the
 
 Mason should be compatible with shadcn-style registry concepts where useful: registry JSON, item JSON, item types, file lists, npm dependencies, registry dependencies, target paths, namespaces, and registry indexes. Mason must not depend on React-specific assumptions or the shadcn CLI.
 
+Multi-file components are first-class registry items. A single item may install several component files, hooks, utilities, and adapters when that keeps generated source readable and locally owned. The CLI should plan those files as one install transaction instead of forcing large app components into one oversized file.
+
 ## Goals
 
 - Define the first Mason registry item schema and metadata contract.
 - Define install, dry-run, diff, update, and doctor behavior for the first CLI slice.
 - Define file target handling, dependency handling, registry dependency handling, and path safety.
 - Define Solid-specific project detection requirements.
+- Define multi-file item semantics for app components such as DataTable.
 - Identify the first registry item that proves the registry flow.
 
 ## Non-Goals
@@ -166,9 +169,16 @@ Each file descriptor may include:
 - `content`: file content when the registry payload is self-contained.
 - `mode`: write mode, such as `create`, `overwrite`, `merge-json`, or `append-css`.
 
-`target` is required for `registry:page`, `registry:config`, `registry:rule`, `registry:asset`, and `registry:file`. For `registry:ui`, `registry:hook`, `registry:lib`, and `registry:theme`, Mason may derive the target from project configuration when `target` is omitted.
+Multi-file item documents may include:
+
+- `filesRoot`: source directory shared by the item files.
+- `targetRoot`: destination directory shared by the item files.
+
+`target` is required for `registry:page`, `registry:config`, `registry:rule`, `registry:asset`, and `registry:file` unless the item provides `filesRoot` and `targetRoot`. For `registry:ui`, `registry:hook`, `registry:lib`, and `registry:theme`, Mason may derive the target from project configuration when `target` is omitted.
 
 Generated targets must be deterministic. The same registry item installed into the same project config must produce the same write plan.
+
+For multi-file items, every file descriptor participates in one item-level transaction. Validation, conflict detection, dependency planning, installed metadata, diff, and update must consider the full file set. Large Mason app components such as `data-table` should prefer several focused files over a single generated module when that improves source ownership. When `filesRoot` and `targetRoot` are present, each file without an explicit `target` is installed at `targetRoot` plus its path relative to `filesRoot`; explicit file targets remain available for exceptions.
 
 ## Target Resolution
 

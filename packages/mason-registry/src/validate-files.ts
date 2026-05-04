@@ -5,9 +5,23 @@ import type { FileDescriptor } from "./schema";
 import { validateRegistryPath } from "./path-safety";
 
 export type ValidateFilesOptions = {
+  filesRoot?: string;
   projectRoot?: string;
   registryRoot?: string;
+  targetRoot?: string;
 };
+
+function targetFromRoot(
+  file: FileDescriptor,
+  options: Pick<ValidateFilesOptions, "filesRoot" | "targetRoot">,
+): string | undefined {
+  if (!options.filesRoot || !options.targetRoot) return file.target;
+  if (file.target) return file.target;
+
+  const relativePath = path.posix.relative(options.filesRoot, file.path);
+  if (relativePath.startsWith("..") || path.posix.isAbsolute(relativePath)) return undefined;
+  return path.posix.join(options.targetRoot, relativePath);
+}
 
 export function validateFiles(
   files: FileDescriptor[],
@@ -16,6 +30,26 @@ export function validateFiles(
   const errors: MasonRegistryError[] = [];
   const sourcePaths = new Set<string>();
   const targets = new Set<string>();
+
+  if (options.filesRoot) {
+    errors.push(
+      ...validateRegistryPath(options.filesRoot, {
+        field: "filesRoot",
+        path: ["filesRoot"],
+      }),
+    );
+  }
+
+  if (options.targetRoot) {
+    errors.push(
+      ...validateRegistryPath(options.targetRoot, {
+        field: "targetRoot",
+        path: ["targetRoot"],
+        projectRoot: options.projectRoot,
+        checkSymlinkEscape: true,
+      }),
+    );
+  }
 
   for (const [index, file] of files.entries()) {
     errors.push(
@@ -48,25 +82,39 @@ export function validateFiles(
       }
     }
 
-    if (file.target) {
+    if (options.filesRoot && options.targetRoot) {
+      const relativePath = path.posix.relative(options.filesRoot, file.path);
+      if (relativePath.startsWith("..") || path.posix.isAbsolute(relativePath)) {
+        errors.push({
+          code: "file.outsideFilesRoot",
+          message: `Registry source path is outside filesRoot: ${file.path}`,
+          field: "path",
+          path: ["files", index, "path"],
+          value: file.path,
+        });
+      }
+    }
+
+    const target = targetFromRoot(file, options);
+    if (target) {
       errors.push(
-        ...validateRegistryPath(file.target, {
+        ...validateRegistryPath(target, {
           field: "target",
           path: ["files", index, "target"],
           projectRoot: options.projectRoot,
           checkSymlinkEscape: true,
         }),
       );
-      if (targets.has(file.target)) {
+      if (targets.has(target)) {
         errors.push({
           code: "file.duplicateTarget",
-          message: `Duplicate registry file target: ${file.target}`,
+          message: `Duplicate registry file target: ${target}`,
           field: "target",
           path: ["files", index, "target"],
-          value: file.target,
+          value: target,
         });
       }
-      targets.add(file.target);
+      targets.add(target);
     }
   }
 

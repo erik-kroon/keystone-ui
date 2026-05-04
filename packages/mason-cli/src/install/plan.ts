@@ -94,6 +94,14 @@ function targetForFile(
   file: RegistryItem["files"][number],
 ): string {
   if (file.target) return file.target;
+  if (item.filesRoot && item.targetRoot) {
+    const relativePath = path.posix.relative(item.filesRoot, file.path);
+    if (relativePath.startsWith("..") || path.posix.isAbsolute(relativePath)) {
+      throw new Error(`Registry file ${file.path} is outside filesRoot ${item.filesRoot}`);
+    }
+    return path.posix.join(item.targetRoot, relativePath);
+  }
+
   const basename = path.basename(file.path);
   switch (file.type) {
     case "registry:ui":

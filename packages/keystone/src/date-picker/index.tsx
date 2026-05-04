@@ -8,7 +8,7 @@ import {
   useContext,
   type JSX,
 } from "solid-js";
-import { useLocale, type LocaleApi, type LocaleMessageKey } from "../locale/index";
+import { useLocale, type LocaleApi, type LocaleMessageKey } from "../i18n/locale";
 import {
   callEventHandler,
   createControllableBooleanSignal,

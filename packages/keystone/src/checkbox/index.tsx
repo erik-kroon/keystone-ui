@@ -13,7 +13,12 @@ import {
   type SelectionControlChangeDetail,
   type SelectionControlCheckedState,
 } from "../selection-control/controller";
-import { callEventHandler, dataBoolean, getSelectionState, partDataAttributes } from "../utils/index";
+import {
+  callEventHandler,
+  dataBoolean,
+  getSelectionState,
+  partDataAttributes,
+} from "../utils/index";
 
 export type CheckboxCheckedState = SelectionControlCheckedState;
 export type CheckboxCheckedChangeDetail = SelectionControlChangeDetail;
