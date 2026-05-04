@@ -31,6 +31,7 @@ This repository is the early Keystone UI monorepo. Treat `Keystone` and `Mason` 
 - [docs/adr/](docs/adr/): durable decisions.
 - [docs/agents/](docs/agents/): agent/work tracking conventions.
 - [docs/adr/0003-mason-tanstack-app-layer.md](docs/adr/0003-mason-tanstack-app-layer.md): TanStack app-layer decision for Mason.
+- [docs/adr/0004-keystone-kernel-api-boundary.md](docs/adr/0004-keystone-kernel-api-boundary.md): public/private Keystone kernel API boundary.
 - [docs/prd/keystone-mason-foundation.md](docs/prd/keystone-mason-foundation.md): foundation PRD and product flywheel.
 - [docs/prd/keystone-internals-inspiration-parity.md](docs/prd/keystone-internals-inspiration-parity.md): Keystone kernel parity PRD.
 - [docs/agents/issue-triage-spine.md](docs/agents/issue-triage-spine.md): GitHub issue milestones, labels, and 0.1 active spine.
@@ -41,6 +42,7 @@ This repository is the early Keystone UI monorepo. Treat `Keystone` and `Mason` 
 
 - Prefer Solid-native APIs over React-shaped translations.
 - Keystone primitives must be styling-agnostic and expose stable `data-scope` and `data-part` attributes.
+- Keystone kernels stay private by default; do not export generic `utils`, overlay, or collection internals without an ADR or accepted RFC.
 - Stateful primitives should support controlled and uncontrolled usage.
 - Event handlers should run user code first; internal handlers should skip when `event.defaultPrevented`.
 - Overlay work must account for focus management, dismissal, layering, portals, SSR, hydration, and accessibility testing.

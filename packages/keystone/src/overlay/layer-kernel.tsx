@@ -85,6 +85,7 @@ export type OverlayLayerProps = Omit<JSX.HTMLAttributes<HTMLDivElement>, "childr
 
 type PointerEventsState = {
   disabled: boolean;
+  elementStates: Map<HTMLElement, string>;
   originalBodyPointerEvents: string;
 };
 
@@ -112,15 +113,21 @@ export function createOverlayLayerStack(): OverlayLayerStack {
   const syncPointerEvents = (ownerDocument: Document) => {
     const state = pointerEventsByDocument.get(ownerDocument) ?? {
       disabled: false,
+      elementStates: new Map<HTMLElement, string>(),
       originalBodyPointerEvents: "",
     };
     const current = registrations();
     const hasBlockingLayer = current.some((layer) => layer.disableOutsidePointerEvents());
+    const unblockedElements = new Set(
+      current.flatMap((layer) => getRegistrationElements(layer, ownerDocument)),
+    );
 
-    for (const layer of current) {
-      const element = untrack(() => layer.getElement?.() ?? layer.element);
+    if (hasBlockingLayer) {
+      for (const element of unblockedElements) {
+        if (!state.elementStates.has(element)) {
+          state.elementStates.set(element, element.style.pointerEvents);
+        }
 
-      if (element) {
         element.style.pointerEvents = "auto";
       }
     }
@@ -130,6 +137,19 @@ export function createOverlayLayerStack(): OverlayLayerStack {
       ownerDocument.body.style.pointerEvents = "none";
       state.disabled = true;
       pointerEventsByDocument.set(ownerDocument, state);
+    }
+
+    for (const [element, pointerEvents] of state.elementStates) {
+      if (hasBlockingLayer && unblockedElements.has(element)) {
+        continue;
+      }
+
+      element.style.pointerEvents = pointerEvents;
+      state.elementStates.delete(element);
+
+      if (!element.getAttribute("style")) {
+        element.removeAttribute("style");
+      }
     }
 
     if (!hasBlockingLayer && state.disabled) {

@@ -163,6 +163,9 @@ export function createPopover(options: CreatePopoverOptions = {}): PopoverApi {
         ...layerProps,
         ...floatingProps,
         id: overlay.contentId,
+        get hidden() {
+          return overlay.hidden();
+        },
         role: "dialog",
         tabindex: -1,
         ...partProps("content"),
@@ -172,6 +175,9 @@ export function createPopover(options: CreatePopoverOptions = {}): PopoverApi {
       const floatingProps = overlay.getFloatingPositionerProps<HTMLDivElement>(props);
       return {
         ...floatingProps,
+        get hidden() {
+          return overlay.hidden();
+        },
         ...partProps("positioner"),
       };
     },

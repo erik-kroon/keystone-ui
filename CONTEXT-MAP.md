@@ -79,6 +79,7 @@ Keystone kernel
 - [apps/docs/package.json](apps/docs/package.json): Solid docs app dependencies.
 - [docs/adr/0001-keystone-mason-product-boundary.md](docs/adr/0001-keystone-mason-product-boundary.md): Keystone/Mason dependency and product boundary.
 - [docs/adr/0002-scope-names-license-governance.md](docs/adr/0002-scope-names-license-governance.md): provisional names, package scope, license intent, and governance.
+- [docs/adr/0004-keystone-kernel-api-boundary.md](docs/adr/0004-keystone-kernel-api-boundary.md): public/private Keystone kernel API boundary.
 - [docs/rfcs/keystone-api.md](docs/rfcs/keystone-api.md): Keystone compound API, low-level creators, state, polymorphism, styling contracts, SSR, and first primitives.
 - [docs/rfcs/mason-registry.md](docs/rfcs/mason-registry.md): Mason registry schema, CLI semantics, path safety, project detection, and first proving item.
 - [docs/adr/0003-mason-tanstack-app-layer.md](docs/adr/0003-mason-tanstack-app-layer.md): Mason's TanStack app-layer decision.

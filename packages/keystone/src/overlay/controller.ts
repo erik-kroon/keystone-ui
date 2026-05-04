@@ -129,6 +129,7 @@ export type OverlayController<Reason extends string> = {
   modal: Accessor<boolean>;
   open: Accessor<boolean>;
   presence: OverlayPresenceApi;
+  hidden: (forceMount?: boolean) => boolean;
   setOpen: (open: boolean, detail: OverlayControllerChangeDetail<Reason>) => void;
   setVirtualAnchor: (anchor: FloatingReferenceElement | undefined) => void;
   shouldMount: (forceMount?: boolean) => boolean;
@@ -392,6 +393,7 @@ export function createOverlayController<Reason extends string>(
     modal,
     open,
     presence,
+    hidden: presence.hidden,
     setOpen,
     setVirtualAnchor: (anchor) => setVirtualAnchor(() => anchor),
     shouldMount,

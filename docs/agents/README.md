@@ -10,6 +10,7 @@ Start with:
 - [ADR 0001](../adr/0001-keystone-mason-product-boundary.md)
 - [ADR 0002](../adr/0002-scope-names-license-governance.md)
 - [ADR 0003](../adr/0003-mason-tanstack-app-layer.md)
+- [ADR 0004](../adr/0004-keystone-kernel-api-boundary.md)
 - [Canonical Roadmap](../roadmap/canonical-roadmap.md)
 - [Maturity Model](../roadmap/maturity-model.md)
 - [Do Not Reinvent Engines](../roadmap/do-not-reinvent.md)

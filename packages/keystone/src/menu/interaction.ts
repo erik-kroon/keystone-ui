@@ -152,6 +152,9 @@ export function createScopedMenu(
         ...layerProps,
         ...floatingProps,
         id: overlay.contentId,
+        get hidden() {
+          return overlay.hidden();
+        },
         role: rootRole,
         tabindex: -1,
         get "aria-activedescendant"() {
@@ -278,6 +281,9 @@ export function createScopedMenu(
     },
     getPositionerProps: (props) => ({
       ...overlay.getFloatingPositionerProps<HTMLDivElement>(props),
+      get hidden() {
+        return overlay.hidden();
+      },
       ...floatingPartProps("positioner"),
     }),
     getSeparatorProps: (props) => ({

@@ -635,6 +635,45 @@ a.doc-lane:focus-visible {
   border-left: 0.25rem solid #7c966d;
 }
 
+.issue-red {
+  border-left: 0.25rem solid #b96b62;
+}
+
+.preview-link-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.8rem, 2vw, 1rem);
+}
+
+.preview-link {
+  min-width: 0;
+  display: grid;
+  gap: 0.45rem;
+  border: 1px solid rgba(32, 39, 34, 0.12);
+  background: #fbfaf6;
+  padding: 0.95rem;
+}
+
+.preview-link:hover,
+.preview-link:focus-visible {
+  color: #8f4b42;
+}
+
+.preview-link span {
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(32, 39, 34, 0.14);
+  background: #f7f4ec;
+}
+
+.preview-link small {
+  color: #4e5a53;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
 .doc-page {
   padding-block: clamp(1.5rem, 4vw, 3.5rem) clamp(4rem, 7vw, 6rem);
 }
@@ -1027,7 +1066,8 @@ a.doc-lane:focus-visible {
   .doc-hero,
   .doc-two-column,
   .doc-panel-grid,
-  .contract-layout {
+  .contract-layout,
+  .preview-link-grid {
     grid-template-columns: 1fr;
   }
 

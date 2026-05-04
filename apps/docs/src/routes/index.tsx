@@ -9,6 +9,7 @@ import {
   FileJson2,
   Layers,
   PackageCheck,
+  ShieldCheck,
   RouteIcon,
   Sparkles,
 } from "lucide-solid";
@@ -32,6 +33,13 @@ const entryPoints = [
     body: "Install editable source for app UI. Inspect generated files, registry dependencies, target paths, caveats, and parity notes.",
     href: "/docs/mason/registry",
     action: "Browse registry contracts",
+  },
+  {
+    icon: <ShieldCheck size={19} />,
+    title: "Review the 0.1 preview",
+    body: "Private preview posture, codename limits, package posture, frozen breadth, release checks, and the first reading path.",
+    href: "/docs/preview",
+    action: "Open preview posture",
   },
   {
     icon: <BookOpen size={19} />,
@@ -297,6 +305,11 @@ function App() {
             <a class="issue-link issue-green" href="/docs/keystone/contracts">
               <span>Keystone</span>
               <strong>Primitive metadata reference</strong>
+              <ArrowRight size={17} />
+            </a>
+            <a class="issue-link issue-red" href="/docs/preview">
+              <span>Preview</span>
+              <strong>Private 0.1 release posture</strong>
               <ArrowRight size={17} />
             </a>
             <a class="issue-link issue-blue" href="/docs/mason/registry">

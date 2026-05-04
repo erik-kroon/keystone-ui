@@ -30,7 +30,8 @@ Behavior:
 - User event handlers run before internal behavior; `preventDefault()` cancels Escape dismissal,
   outside dismissal, mount autofocus, and unmount autofocus.
 - Force-mounted content remains in the DOM for closed-state styling without registering as an
-  active modal layer.
+  active modal layer, and closed force-mounted backdrop, positioner, and content parts receive the
+  native `hidden` attribute so dialog semantics stay out of the accessibility tree.
 - Closing content remains mounted through exit transitions and reports transition completion.
 - Nested dialogs dismiss in top-layer order through the shared overlay stack.
 

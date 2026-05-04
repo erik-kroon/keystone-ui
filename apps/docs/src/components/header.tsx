@@ -5,6 +5,7 @@ import { For } from "solid-js";
 export default function Header() {
   const links = [
     { to: "/", label: "Overview" },
+    { to: "/docs/preview", label: "Preview" },
     { to: "/#keystone", label: "Keystone" },
     { to: "/#mason", label: "Mason" },
     { to: "/#reference", label: "Reference" },

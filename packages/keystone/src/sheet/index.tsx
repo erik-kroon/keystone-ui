@@ -84,6 +84,7 @@ type SheetApi = {
   modal: () => boolean;
   open: () => boolean;
   setOpen: (open: boolean, detail: SheetChangeDetail) => void;
+  hidden: (forceMount?: boolean) => boolean;
   shouldMount: (forceMount?: boolean) => boolean;
   side: () => SheetSide;
   titleId: string;
@@ -120,6 +121,9 @@ export function createSheet(options: CreateSheetOptions = {}): SheetApi {
     descriptionId: overlay.descriptionId,
     getBackdropProps: (props) => ({
       ...props,
+      get hidden() {
+        return overlay.hidden();
+      },
       ...partProps("backdrop"),
     }),
     getCloseProps: (props) => ({
@@ -159,6 +163,9 @@ export function createSheet(options: CreateSheetOptions = {}): SheetApi {
         ...others,
         ...layerProps,
         id: overlay.contentId,
+        get hidden() {
+          return overlay.hidden();
+        },
         tabIndex: -1,
         role: "dialog",
         "aria-modal": overlay.modal() ? "true" : undefined,
@@ -174,6 +181,9 @@ export function createSheet(options: CreateSheetOptions = {}): SheetApi {
     }),
     getPositionerProps: (props) => ({
       ...props,
+      get hidden() {
+        return overlay.hidden();
+      },
       ...partProps("positioner"),
     }),
     getTitleProps: (props) => ({
@@ -191,6 +201,7 @@ export function createSheet(options: CreateSheetOptions = {}): SheetApi {
     modal: overlay.modal,
     open: overlay.open,
     setOpen: overlay.setOpen,
+    hidden: overlay.hidden,
     shouldMount: overlay.shouldMount,
     side,
     titleId: overlay.titleId,
