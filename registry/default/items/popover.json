@@ -19,9 +19,41 @@
     "customization": "Style the generated wrappers through ui-popover classes while Core owns positioning, dismissal, and layer ordering.",
     "sourceFiles": ["registry/default/ui/popover.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
+    "api": "Popover exports Popover, PopoverTrigger, PopoverPortal, PopoverPositioner, PopoverContent, PopoverPopup, PopoverArrow, PopoverHeader, PopoverFooter, PopoverTitle, PopoverDescription, and PopoverPrimitive. PopoverContent composes portal, positioner, popup surface, viewport, optional tooltip-style density, and class escape hatches while Core owns open state, positioning, modal option, dismissal, layer ordering, and state data attributes.",
+    "accessibility": "Backed by @keystone-ui/core/popover for trigger aria-haspopup/expanded relationships, role=dialog content, controlled and uncontrolled open state, Escape and outside dismissal, modal outside pointer blocking when requested, portal rendering, force-mounted presence, and floating placement metadata.",
+    "anatomy": [
+      "root",
+      "trigger",
+      "portal",
+      "positioner",
+      "content",
+      "viewport",
+      "arrow",
+      "header",
+      "footer",
+      "title",
+      "description"
+    ],
+    "cssVariables": [
+      "--radius-lg",
+      "--radius-md",
+      "--radius-xl",
+      "--positioner-height",
+      "--positioner-width",
+      "--available-width",
+      "--available-height",
+      "--popup-height",
+      "--popup-width",
+      "--transform-origin",
+      "--viewport-inline-padding",
+      "--color-popover",
+      "--color-popover-foreground"
+    ],
+    "limitations": "Title and description are styled UI composition helpers, not automatic ARIA relationships. Close controls remain app composition because Core Popover does not expose a close part yet.",
     "parity": {
-      "baseUi": "Thin vertical covers Root/Trigger/Portal/Positioner/Popup-style anatomy, controlled open state, floating placement, outside/Escape dismissal, and UI styling hooks. Gaps: modal mode, arrow geometry, anchor override, focus manager depth, collision CSS variables, and transition status metadata remain follow-up work.",
-      "kobalte": "Matches Solid Popover/Popper composition for trigger, portal/content, controlled state, positioning, and dismissable-layer direction. Gaps: create-hide-outside/modal variants, forceMount transition lifecycle, and richer focus restoration policies remain follow-up work."
+      "visualReference": "Matches the reference popover visual shape in Solid source form: z-layered positioner, rounded popover surface, viewport padding, dense tooltip-style option, calendar-friendly padding hooks, transition status styling, floating CSS variables, and neutral data-slot hooks.",
+      "baseUi": "Behavior parity is inherited through Keystone Core Popover: Root/Trigger/Portal/Positioner/Content anatomy, controlled open state, modal option, floating placement, same-width and fit-viewport options, arrow geometry, outside and Escape dismissal, and presence metadata.",
+      "kobalte": "Matches Solid Popover/Popper composition for trigger, portal/content, controlled state, positioning, arrow, dismissable-layer direction, modal option, force-mounted lifecycle, and focus restoration through Keystone overlay internals."
     }
   },
   "files": [

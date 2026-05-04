@@ -19,9 +19,35 @@
     "customization": "Style the generated wrappers through ui-tooltip classes while Core owns positioning and trigger/content relationships.",
     "sourceFiles": ["registry/default/ui/tooltip.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
+    "api": "Tooltip exports TooltipProvider, Tooltip, TooltipTrigger, TooltipPortal, TooltipPositioner, TooltipContent, TooltipPopup, TooltipArrow, and TooltipPrimitive. TooltipContent composes portal, positioner, popup surface, viewport, and class escape hatches while Core owns delay groups, hover/focus interactions, open state, pointer grace area, Escape dismissal, positioning, and aria-describedby wiring.",
+    "accessibility": "Backed by @keystone-ui/core/tooltip for role=tooltip, trigger aria-describedby, hover and focus opening, close and skip-delay timing, hoverable content, pointer grace area, Escape dismissal, portal rendering, controlled and uncontrolled open state, and floating placement metadata.",
+    "anatomy": [
+      "provider",
+      "root",
+      "trigger",
+      "portal",
+      "positioner",
+      "content",
+      "viewport",
+      "arrow"
+    ],
+    "cssVariables": [
+      "--radius-md",
+      "--positioner-height",
+      "--positioner-width",
+      "--available-width",
+      "--popup-height",
+      "--popup-width",
+      "--transform-origin",
+      "--viewport-inline-padding",
+      "--color-popover",
+      "--color-popover-foreground"
+    ],
+    "limitations": "The UI item styles the popup and viewport only; custom arrow artwork and disabled-trigger composition remain app-level choices while Core owns tooltip behavior.",
     "parity": {
-      "baseUi": "Thin vertical covers trigger/content relationship, controlled open state, delay intent, Escape dismissal, floating placement, portal rendering, and UI classes. Gaps: provider-level delay groups, arrow geometry, hoverable content policy, transition status metadata, disabled trigger handling, and full focus manager coverage remain follow-up work.",
-      "kobalte": "Matches Solid Tooltip/Popper direction with trigger, portal/content, open delays, controlled state, and aria-describedby wiring. Gaps: skip-delay-duration groups, forceMount transition lifecycle, arrow part, and advanced pointer safe-area behavior remain follow-up work."
+      "visualReference": "Matches the reference tooltip visual shape in Solid source form: compact text-balanced popup, rounded bordered popover surface, small viewport padding, transition status styling, z-layered positioner, floating CSS variables, and neutral data-slot hooks.",
+      "baseUi": "Behavior parity is inherited through Keystone Core Tooltip: provider-level delay groups, controlled open state, hover/focus trigger intent, hoverable content policy, pointer grace area, Escape dismissal, floating placement, arrow geometry, portal rendering, and transition status metadata.",
+      "kobalte": "Matches Solid Tooltip/Popper direction with trigger, portal/content, delay and skip-delay timing, controlled state, aria-describedby wiring, force-mounted lifecycle, arrow part, and pointer safe-area behavior through Keystone overlay internals."
     }
   },
   "files": [

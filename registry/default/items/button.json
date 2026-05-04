@@ -3,24 +3,43 @@
   "name": "button",
   "type": "registry:ui",
   "title": "Button",
-  "description": "Solid button component with UI styling hooks and variant metadata.",
+  "description": "Solid button component with reference-inspired UI styling, loading state, and native form semantics.",
   "version": "0.1.0",
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0"
   },
   "categories": ["action", "base"],
-  "keywords": ["button", "action", "form"],
+  "keywords": ["button", "action", "form", "loading", "icon"],
   "docs": "https://keystone-ui.dev/docs/ui/button",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add button",
-    "customization": "Customize visual treatment through the ui-button classes and data-variant/data-size attributes.",
+    "customization": "Customize visual treatment through buttonClass, ui-button classes, data-variant/data-size attributes, and the root/loading part hooks.",
     "sourceFiles": ["registry/default/ui/button.tsx"],
     "dependencies": ["cn"],
+    "api": "Button supports variant default, secondary, destructive, destructive-outline, outline, ghost, link, and solid compatibility alias; size default, xs, sm, md, lg, xl, icon-xs, icon-sm, icon, icon-lg, and icon-xl; loading disables the native button and adds data-loading, aria-busy, aria-disabled, and a loading indicator.",
+    "accessibility": "Renders a native button, defaults type to button, preserves explicit submit/reset types, uses native disabled for disabled and loading states, exposes aria-pressed when pressed is provided, and keeps icon-only labeling as caller-owned through aria-label.",
+    "anatomy": ["root", "loading-indicator", "loading-label"],
+    "cssVariables": [
+      "--radius-lg",
+      "--radius-md",
+      "--color-primary",
+      "--color-primary-foreground",
+      "--color-secondary",
+      "--color-secondary-foreground",
+      "--color-destructive",
+      "--color-ring",
+      "--color-background",
+      "--color-input",
+      "--color-popover",
+      "--color-accent"
+    ],
+    "limitations": "Button intentionally remains a presentational native button rather than a polymorphic link or toggle primitive; LinkButton, IconButton, Toggle, and ToggleGroup remain separate end-state surfaces.",
     "parity": {
-      "baseUi": "Thin UI base button follows Base UI Button direction for native button semantics, disabled state, type passthrough, and styling hooks without adding app behavior. Gaps: loading/pending state, pressed/toggle semantics, polymorphic render helper, focus-visible data, and icon-only accessibility guardrails remain follow-up work.",
-      "kobalte": "Comparable to Kobalte Button as a Solid-native button wrapper with pass-through props and disabled handling. Gaps: no shared Keystone polymorphic primitive, no link-button composition helper, and no data-disabled normalization beyond the UI wrapper yet."
+      "visualReference": "Matches the reference Button visual contract in Solid source form: broad variant and icon-size vocabulary, focus-visible ring classes, pointer-coarse target expansion, SVG normalization, loading indicator slot, data-loading styling, and default type=button semantics. Intentional differences: Solid class/classList conventions, no Base UI render prop, and solid/md compatibility aliases for the existing Keystone registry surface.",
+      "baseUi": "Keeps Base UI-aligned native button semantics, disabled behavior, default type=button behavior, pressed state exposure through aria-pressed/data-pressed, and styling hooks without moving app behavior into Core. Intentional gap: no polymorphic render helper until Keystone has a Solid-native public polymorphic UI convention.",
+      "kobalte": "Comparable to Kobalte Button as a Solid-native native-button wrapper with pass-through HTML props, disabled handling, loading-driven disabled state, data attributes, and form-safe defaults. Icon-only accessible names remain caller-owned through aria-label because Button, IconButton, and LinkButton are separate inventory surfaces."
     }
   },
   "files": [

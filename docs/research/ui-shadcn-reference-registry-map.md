@@ -10,7 +10,7 @@ Draft
 
 ## Related
 
-- [Issue #26: Map shadcn and coss registry patterns for UI](https://github.com/erik-kroon/core-ui/issues/26)
+- [Issue #26: Map shadcn and external UI reference registry patterns for UI](https://github.com/erik-kroon/core-ui/issues/26)
 - [RFC: Mason Registry](../rfcs/mason-registry.md)
 - [PRD: Keystone Core And UI Foundation](../prd/keystone-foundation.md)
 - [ADR 0001: Keystone Core And UI Product Boundary](../adr/0001-keystone-core-ui-boundary.md)
@@ -29,18 +29,18 @@ Draft
 - `inspo/shadcn-registry-template/registry.json`
 - `inspo/shadcn-registry-template/package.json`
 - `inspo/shadcn-registry-template/README.md`
-- `inspo/coss/packages/ui/components.json`
-- `inspo/coss/packages/ui/src/styles/globals.css`
-- `inspo/coss/apps/ui/skills/coss/references/component-registry.md`
-- `inspo/coss/apps/ui/skills/coss/references/rules/styling.md`
-- `inspo/coss/apps/ui/lib/registry.ts`
-- `inspo/coss/apps/origin/registry/registry-tags.ts`
+- `inspo/external UI reference/packages/ui/components.json`
+- `inspo/external UI reference/packages/ui/src/styles/globals.css`
+- `inspo/external UI reference/apps/ui/skills/external UI reference/references/component-registry.md`
+- `inspo/external UI reference/apps/ui/skills/external UI reference/references/rules/styling.md`
+- `inspo/external UI reference/apps/ui/lib/registry.ts`
+- `inspo/external UI reference/apps/origin/registry/registry-tags.ts`
 
 ## Executive Map
 
 UI should adopt the shadcn registry mental model: source-first registry items, project config, aliases, dependency metadata, registry dependencies, static JSON output, docs previews, and CLI install plans. UI should adapt those patterns for Solid project detection, Solid JSX, SolidStart and TanStack Router conventions, Core-backed behavior imports, and generated output typecheck/build gates.
 
-UI should treat coss as a later UI styling and component-inventory reference, not as a registry architecture authority. coss is useful for token discipline, component grouping, dense primitive coverage, docs reference shape, and registry consumption patterns. It remains React/Base UI-oriented, so UI should not copy its runtime component code directly.
+UI should treat external UI reference as a later UI styling and component-inventory reference, not as a registry architecture authority. external UI reference is useful for token discipline, component grouping, dense primitive coverage, docs reference shape, and registry consumption patterns. It remains React/Base UI-oriented, so UI should not copy its runtime component code directly.
 
 ## shadcn UI Patterns
 
@@ -107,7 +107,7 @@ UI should treat coss as a later UI styling and component-inventory reference, no
 - Assuming every registry author uses Tailwind v4.
 - Publishing unvalidated static JSON because the docs app can render it.
 
-## coss Patterns
+## external UI reference Patterns
 
 ### Adopt Later For UI
 
@@ -124,18 +124,18 @@ UI should treat coss as a later UI styling and component-inventory reference, no
 
 ### Adapt For UI
 
-- Replace coss React/Base UI components with Solid/Core-backed components.
+- Replace external UI reference React/Base UI components with Solid/Core-backed components.
 - Use `data-scope` and `data-part` from Keystone as stable styling selectors. UI can add its own data attributes only when styling needs them.
 - Token names can be similar, but UI should keep tokens small until the first components prove the system.
-- coss's large component inventory should become a prioritization reference, not immediate scope.
+- external UI reference's large component inventory should become a prioritization reference, not immediate scope.
 - Portal guidance should map to Core overlay internals and Solid app roots.
 - Tags should include Solid-specific and Keystone-specific categories once Mason registry search exists.
 
 ### Avoid
 
-- Copying coss component source directly.
+- Copying external UI reference component source directly.
 - Treating Base UI portal or React composition APIs as UI runtime constraints.
-- Importing coss token volume wholesale before UI has a real default style and docs surface.
+- Importing external UI reference token volume wholesale before UI has a real default style and docs surface.
 - Building hundreds of component items before Core primitives are stable enough to support them.
 
 ## React And Next Assumptions That Must Not Drive UI
@@ -199,5 +199,5 @@ UI should treat coss as a later UI styling and component-inventory reference, no
 - Mason registry should stay shadcn-compatible in concepts and import paths, but Mason's source generation, detection, and verification must be Solid-native.
 - shadcn UI is the primary registry/CLI/docs product reference.
 - shadcn registry template is the primary authoring/build/serve reference for third-party registry workflows.
-- coss is a later UI style and component inventory reference, not a registry schema source of truth.
+- external UI reference is a later UI style and component inventory reference, not a registry schema source of truth.
 - Keystone remains the behavior layer. UI owns styled source, registry metadata, CLI workflows, and docs previews.

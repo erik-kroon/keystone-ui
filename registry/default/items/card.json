@@ -3,24 +3,54 @@
   "name": "card",
   "type": "registry:ui",
   "title": "Card",
-  "description": "Composable card parts for grouped content.",
+  "description": "Composable reference-inspired card and card-frame parts for grouped content.",
   "version": "0.1.0",
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0"
   },
   "categories": ["layout", "base"],
-  "keywords": ["card", "panel", "content"],
+  "keywords": ["card", "panel", "content", "frame", "surface"],
   "docs": "https://keystone-ui.dev/docs/ui/card",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add card",
-    "customization": "Customize each part through ui-card classes and data-part values for root, header, title, description, content, and footer.",
+    "customization": "Customize each part through ui-card classes, reference-style data-slot values, and stable data-part values across card and card-frame anatomy.",
     "sourceFiles": ["registry/default/ui/card.tsx"],
     "dependencies": ["cn"],
+    "api": "Card exports Card, CardHeader, CardTitle, CardDescription, CardAction, CardPanel, CardContent, CardFooter, CardFrame, CardFrameHeader, CardFrameTitle, CardFrameDescription, CardFrameAction, and CardFrameFooter. CardPanel is the preferred content part; CardContent remains a compatibility alias with its own content data part.",
+    "accessibility": "Card remains a presentational native div surface by default. Consumers own heading levels, labelled regions, links, buttons, and form controls inside cards through native HTML and ARIA props passed to each part.",
+    "anatomy": [
+      "root",
+      "header",
+      "title",
+      "description",
+      "action",
+      "panel",
+      "content",
+      "footer",
+      "frame",
+      "frame-header",
+      "frame-title",
+      "frame-description",
+      "frame-action",
+      "frame-footer"
+    ],
+    "cssVariables": [
+      "--radius-2xl",
+      "--radius-xl",
+      "--clip-top",
+      "--clip-bottom",
+      "--color-card",
+      "--color-card-foreground",
+      "--color-muted",
+      "--color-muted-foreground"
+    ],
+    "limitations": "Card intentionally does not create roles, headings, focus behavior, keyboard behavior, or interactive-card semantics. Use native buttons/links inside cards or future LinkButton/IconButton surfaces for actions.",
     "parity": {
-      "baseUi": "Base UI has no first-class Card primitive, so parity is UI item anatomy: root, header, title, description, content, and footer parts with stable data-part hooks. Gaps: sectioning role guidance, interactive card patterns, media slots, and density variants remain follow-up work.",
-      "kobalte": "Kobalte has no direct Card primitive; this remains a styled composition component. Gaps: Solid polymorphic part rendering, heading-level guidance, and shared layout token metadata remain follow-up work."
+      "visualReference": "Matches the reference Card source shape in Solid form: root surface styling, CardPanel/CardContent content area, CardAction, CardFrame, frame header/title/description/action/footer, reference data-slot names, nested card clipping variables, and table-container frame affordances. Intentional difference: no Base UI render prop until Keystone has a public Solid-native polymorphic UI convention.",
+      "baseUi": "Base UI has no first-class Card primitive, so parity is source-owned anatomy and native semantics: presentational div parts, pass-through HTML/ARIA props, and no invented state machine. Interactive behavior remains owned by nested buttons, links, forms, or future primitives.",
+      "kobalte": "Kobalte has no direct Card primitive; this remains a styled Solid composition component with stable data-scope/data-part hooks and reference-style data-slot hooks. Heading level and labelled-region semantics remain caller-owned by design."
     }
   },
   "files": [

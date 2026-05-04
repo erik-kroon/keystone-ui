@@ -16,13 +16,27 @@
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add checkbox",
-    "customization": "Style the generated wrappers through ui-checkbox classes while Keystone keeps role=checkbox, mixed state, hidden input, and preventable toggle behavior.",
+    "customization": "Style the generated root, control, indicator, indicator icon, and hidden input through ui-checkbox classes, Core data attributes, and neutral data-slot hooks while Keystone keeps role=checkbox, mixed state, hidden input, form reset, validation, and preventable toggle behavior.",
     "sourceFiles": ["registry/default/ui/checkbox.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
-    "parts": ["root", "control", "indicator", "hidden-input"],
+    "api": "Checkbox exports Checkbox, CheckboxControl, CheckboxIndicator, CheckboxIndicatorIcon, CheckboxHiddenInput, and CheckboxPrimitive. The default Checkbox renders a styled control, state-aware indicator icon, and hidden native input when no custom children are provided; custom children can compose the same Core-backed parts directly.",
+    "accessibility": "Backed by @keystone-ui/core/checkbox for role=checkbox, aria-checked including mixed state, Space keyboard toggling, disabled/read-only guards, required and invalid state metadata, hidden native input submission, user-handler precedence, and form reset synchronization.",
+    "anatomy": ["root", "control", "indicator", "indicator-icon", "hidden-input"],
+    "cssVariables": [
+      "--radius-lg",
+      "--color-input",
+      "--color-background",
+      "--color-primary",
+      "--color-primary-foreground",
+      "--color-foreground",
+      "--color-destructive",
+      "--color-ring"
+    ],
+    "limitations": "Group-level checkbox coordination and app-specific field copy remain composition concerns; Keystone Core owns the primitive state and form contract while UI owns the generated visual shell.",
     "parity": {
-      "baseUi": "Thin vertical covers controlled and uncontrolled checked state, indeterminate state, disabled/read-only guards, role=checkbox, hidden input submission, hidden-input state metadata, user-handler precedence, and UI wrapper metadata. Gaps: cursor/touch press behavior, richer field composition, validation edge cases, animation lifecycle data, and hydration edge tests remain follow-up work.",
-      "kobalte": "Matches Solid Root/Input/Control/Indicator direction for checked and indeterminate state, hidden native input, preventable interaction, disabled/read-only state, and stable data attributes. Gaps: group composition, form-control registration depth, and broader SSR/form reset coverage remain follow-up work."
+      "visualReference": "Matches the reference checkbox visual shape in Solid source form: compact square control, subtle surface treatment, checked and indeterminate indicator states, focus/invalid rings, disabled opacity, data-slot hooks, and responsive icon sizing.",
+      "baseUi": "Behavior parity is inherited through Keystone Core Checkbox: controlled/uncontrolled checked state, indeterminate state, disabled/read-only guards, role=checkbox, hidden input submission, validation metadata, form reset, and preventable user handlers.",
+      "kobalte": "Solid parity follows Keystone Core Checkbox composition with Root, Control, Indicator, HiddenInput, stable data attributes, mixed state, native form participation, and user-owned label/description composition."
     }
   },
   "files": [

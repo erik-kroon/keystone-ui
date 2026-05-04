@@ -2,6 +2,7 @@ export { DropdownMenu, createDropdownMenu } from "../menu/index";
 export type {
   CreateMenuOptions as CreateDropdownMenuOptions,
   MenuApi as DropdownMenuApi,
+  MenuArrowProps as DropdownMenuArrowProps,
   MenuCheckboxItemProps as DropdownMenuCheckboxItemProps,
   MenuContentProps as DropdownMenuContentProps,
   MenuGroupLabelProps as DropdownMenuGroupLabelProps,
