@@ -1,4 +1,5 @@
 import { createSignal, onCleanup, untrack, type Accessor } from "solid-js";
+import { scheduleMicrotask } from "../utils/index";
 
 export type CollectionItem = {
   disabled?: boolean;
@@ -71,7 +72,7 @@ export function createCollectionRegistry<T extends CollectionItem>(): Collection
     }
 
     refreshScheduled = true;
-    queueMicrotask(() => {
+    scheduleMicrotask(() => {
       refreshScheduled = false;
       refreshItems(entriesByValue);
     });

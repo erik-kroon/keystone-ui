@@ -14,6 +14,7 @@ import {
   createControllableSignal,
   dataBoolean,
   partDataAttributes,
+  scheduleMicrotask,
 } from "../utils/index";
 
 export type CalendarValue = string;
@@ -863,7 +864,11 @@ function formatRangeValue(rangeValue: CalendarRangeValue | undefined) {
 }
 
 function focusDayButton(value: CalendarValue) {
-  queueMicrotask(() => {
+  scheduleMicrotask(() => {
+    if (typeof document === "undefined") {
+      return;
+    }
+
     document
       .querySelector<HTMLButtonElement>(
         `[data-scope="calendar"][data-part="cell-trigger"][data-date="${value}"]`,

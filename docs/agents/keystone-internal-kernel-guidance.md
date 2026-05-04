@@ -28,6 +28,7 @@ The `./overlay` and `./utils` subpaths stay private until a later API decision p
 - Prefer Solid accessors and effects over React-shaped render snapshots.
 - Keep kernel APIs small and behavior-heavy. Primitive parts should delegate to kernels instead of duplicating keyboard, form, floating, focus, or dismissal logic.
 - Keep user handlers first. Internal handlers must skip when `event.defaultPrevented`.
+- Keep reason details on the shared controllable-state setter path. Use `KeystoneChangeDetail`-shaped details and `defaultDetail` for programmatic changes instead of controller-local `lastDetail` or `pendingDetail` side channels.
 - Keep `data-scope` and `data-part` on every public primitive part. State attributes and floating CSS variables are styling contracts.
 - Do not add Mason dependencies to Keystone internals.
 - Avoid public subpath exports for private kernels until a later ADR/RFC explicitly promotes them.

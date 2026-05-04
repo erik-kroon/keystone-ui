@@ -6,8 +6,12 @@ import { createSelect } from "../select/index";
 import {
   composeEventHandlers,
   createControllableSignal,
+  createKeystoneId,
+  createRegisteredIds,
   createStableId,
+  mergeIds,
   renderPolymorphic,
+  scheduleMicrotask,
 } from "./index";
 import { createCollectionRegistry } from "../listbox/collection-registry";
 import { createListCollectionManager } from "../listbox/collection-manager";
@@ -114,6 +118,54 @@ describe("Keystone kernel utilities", () => {
     });
   });
 
+  test("controlled signals can treat undefined as a controlled value when presence is explicit", () => {
+    createRoot((dispose) => {
+      const changes: Array<string | undefined> = [];
+      const [value, setValue] = createSignal<string | undefined>(undefined);
+      const [current, setCurrent] = createControllableSignal({
+        value,
+        isControlled: () => true,
+        defaultValue: "default",
+        onChange: (next) => changes.push(next),
+      });
+
+      expect(current()).toBeUndefined();
+      expect(setCurrent("requested")).toBe("requested");
+      expect(current()).toBeUndefined();
+      expect(changes).toEqual(["requested"]);
+
+      setValue("controlled");
+      expect(current()).toBe("controlled");
+      dispose();
+    });
+  });
+
+  test("controllable signals pass typed change details without mutable caller state", () => {
+    createRoot((dispose) => {
+      const changes: Array<[string, string]> = [];
+      const [current, setCurrent] = createControllableSignal<
+        string,
+        { reason: "keyboard" | "programmatic" }
+      >({
+        defaultValue: "default",
+        defaultDetail: { reason: "programmatic" },
+        onChange: (next, detail) => changes.push([next, detail.reason]),
+      });
+
+      expect(current()).toBe("default");
+      setCurrent("typed", { reason: "keyboard" });
+      setCurrent("reset");
+      setCurrent("reset", { reason: "keyboard" });
+
+      expect(current()).toBe("reset");
+      expect(changes).toEqual([
+        ["typed", "keyboard"],
+        ["reset", "programmatic"],
+      ]);
+      dispose();
+    });
+  });
+
   test("uncontrolled signals update locally and skip unchanged notifications", () => {
     createRoot((dispose) => {
       const changes: string[] = [];
@@ -148,6 +200,25 @@ describe("Keystone kernel utilities", () => {
     expect(order).toEqual(["user"]);
   });
 
+  test("composed event handlers support Solid bound event tuples", () => {
+    const order: string[] = [];
+    const event = new MouseEvent("click", { cancelable: true });
+    const handler = composeEventHandlers<MouseEvent>(
+      [
+        (label: string, received: MouseEvent) => {
+          order.push(label);
+          expect(received).toBe(event);
+        },
+        "user",
+      ],
+      () => order.push("internal"),
+    );
+
+    handler(event);
+
+    expect(order).toEqual(["user", "internal"]);
+  });
+
   test("stable ids keep caller-provided ids reactive", () => {
     createRoot((dispose) => {
       const [id, setId] = createSignal<string | undefined>();
@@ -161,6 +232,59 @@ describe("Keystone kernel utilities", () => {
       expect(stableId()).toBe(fallback);
       dispose();
     });
+  });
+
+  test("keystone ids expose the target utility name while preserving stable fallback semantics", () => {
+    createRoot((dispose) => {
+      const keystoneId = createKeystoneId("test-part");
+      const fallback = keystoneId();
+
+      expect(fallback).toMatch(/^keystone-test-part-/);
+      expect(keystoneId()).toBe(fallback);
+      dispose();
+    });
+  });
+
+  test("registered ids keep default and dynamic ARIA references stable and removable", () => {
+    createRoot((dispose) => {
+      const [dynamicId, setDynamicId] = createSignal<string | undefined>("dynamic-description");
+      const defaultId = () => "default-description";
+      const registry = createRegisteredIds(defaultId);
+      const unregister = registry.register(dynamicId);
+
+      expect(registry.ids()).toEqual(["default-description", "dynamic-description"]);
+      expect(mergeIds(...registry.ids())).toBe("default-description dynamic-description");
+
+      setDynamicId("default-description");
+      expect(registry.ids()).toEqual(["default-description"]);
+
+      setDynamicId("dynamic-description");
+      unregister();
+      expect(registry.ids()).toEqual(["default-description"]);
+      dispose();
+    });
+  });
+
+  test("microtask scheduling works when the host queueMicrotask global is unavailable", async () => {
+    const previousQueueMicrotask = globalThis.queueMicrotask;
+    const calls: string[] = [];
+
+    try {
+      Object.defineProperty(globalThis, "queueMicrotask", {
+        configurable: true,
+        value: undefined,
+      });
+
+      scheduleMicrotask(() => calls.push("scheduled"));
+      await Promise.resolve();
+
+      expect(calls).toEqual(["scheduled"]);
+    } finally {
+      Object.defineProperty(globalThis, "queueMicrotask", {
+        configurable: true,
+        value: previousQueueMicrotask,
+      });
+    }
   });
 
   test("polymorphic rendering supports callback-style composition", () => {
@@ -179,6 +303,45 @@ describe("Keystone kernel utilities", () => {
     const trigger = getByPart("kernel", "trigger");
     expect(trigger.tagName).toBe("A");
     expect(trigger.getAttribute("href")).toBe("/settings");
+  });
+
+  test("polymorphic rendering supports intrinsic element names", () => {
+    render(() =>
+      renderPolymorphic("a", "button", {
+        children: "Settings",
+        href: "/settings",
+        "data-scope": "kernel",
+        "data-part": "trigger",
+      }),
+    );
+
+    const trigger = getByPart("kernel", "trigger");
+    expect(trigger.tagName).toBe("A");
+    expect(trigger.getAttribute("href")).toBe("/settings");
+  });
+
+  test("polymorphic rendering supports direct Solid components", () => {
+    type RouterLinkProps = JSX.AnchorHTMLAttributes<HTMLAnchorElement> & {
+      to: string;
+    };
+    function RouterLink(props: RouterLinkProps) {
+      const [local, others] = splitProps(props, ["to"]);
+
+      return <a href={local.to} {...others} />;
+    }
+
+    render(() =>
+      renderPolymorphic(RouterLink, "button", {
+        children: "Security",
+        to: "/account/security",
+        "data-scope": "kernel",
+        "data-part": "trigger",
+      }),
+    );
+
+    const trigger = getByPart("kernel", "trigger");
+    expect(trigger.tagName).toBe("A");
+    expect(trigger.getAttribute("href")).toBe("/account/security");
   });
 
   test("polymorphic rendering supports router-link-like Solid components", () => {
@@ -387,6 +550,36 @@ describe("Keystone kernel utilities", () => {
       expect(control.getLabelProps().for).toBe("project");
       expect(control.getHiddenInputProps().name).toBe("project");
       expect(control.getHiddenInputProps().value).toBe("keystone");
+      dispose();
+    });
+  });
+
+  test("form controls register dynamic descriptions and errors without duplicating ids", () => {
+    createRoot((dispose) => {
+      const [descriptionId, setDescriptionId] = createSignal<string | undefined>("project-hint");
+      const [errorId, setErrorId] = createSignal<string | undefined>("project-error");
+      const control = createFormControl({
+        id: () => "project",
+        invalid: () => true,
+      });
+      const unregisterDescription = control.registerDescription(descriptionId);
+      const unregisterError = control.registerErrorMessage(errorId);
+
+      expect(control.getControlProps()["aria-describedby"]).toBe(
+        "project-description project-hint project-error-message project-error",
+      );
+
+      setDescriptionId("project-description");
+      setErrorId(undefined);
+      expect(control.getControlProps()["aria-describedby"]).toBe(
+        "project-description project-error-message",
+      );
+
+      unregisterDescription();
+      unregisterError();
+      expect(control.getControlProps()["aria-describedby"]).toBe(
+        "project-description project-error-message",
+      );
       dispose();
     });
   });

@@ -108,14 +108,14 @@ export function createAccordion(
     value?: () => AccordionValue | undefined;
   } = {},
 ): AccordionApi {
-  let pendingDetail: AccordionValueChangeDetail | undefined;
-  const [value, setValueState] = createControllableSignal<AccordionValue>({
+  const [value, setValueState] = createControllableSignal<
+    AccordionValue,
+    AccordionValueChangeDetail
+  >({
     value: options.value,
     defaultValue: options.defaultValue ?? [],
-    onChange: (nextValue) => {
-      options.onValueChange?.(nextValue, pendingDetail ?? { reason: "programmatic" });
-      pendingDetail = undefined;
-    },
+    defaultDetail: { reason: "programmatic" },
+    onChange: options.onValueChange,
   });
   const disabled = createMemo(() => options.disabled?.() ?? false);
   const loopFocus = createMemo(() => options.loopFocus?.() ?? true);
@@ -139,7 +139,6 @@ export function createAccordion(
       };
     },
     setItemOpen: (itemValue, open, detail) => {
-      pendingDetail = detail;
       const nextValue = setValueState((currentValue) => {
         if (multiple()) {
           if (open)
@@ -149,8 +148,7 @@ export function createAccordion(
 
         if (open) return [itemValue];
         return currentValue.includes(itemValue) ? [] : currentValue;
-      });
-      pendingDetail = undefined;
+      }, detail);
       return nextValue;
     },
     triggers: () => triggerRecords,

@@ -107,15 +107,16 @@ export function createSliderController(options: SliderControllerOptions = {}): S
   const orientation = createMemo(() => options.orientation?.() ?? "horizontal");
   const readOnly = createMemo(() => options.readOnly?.() ?? false);
   const required = createMemo(() => options.required?.() ?? false);
-  let pendingDetail: SliderValueChangeDetail | undefined;
   let trackElement: HTMLDivElement | undefined;
   let activeThumbIndex: number | undefined;
-  const [value, setValueState] = createControllableSignal<readonly number[]>({
+  const [value, setValueState] = createControllableSignal<
+    readonly number[],
+    SliderValueChangeDetail
+  >({
     value: options.value,
     defaultValue: () => normalizeValues(options.defaultValue ?? [min()], min(), max(), step()),
-    onChange: (nextValue) => {
-      options.onValueChange?.(nextValue, pendingDetail ?? { reason: "programmatic" });
-    },
+    defaultDetail: { reason: "programmatic" },
+    onChange: (nextValue, detail) => options.onValueChange?.(nextValue, detail),
   });
   const normalizedValue = createMemo(() => normalizeValues(value(), min(), max(), step()));
   const getPercent = (currentValue: number) => {
@@ -130,13 +131,14 @@ export function createSliderController(options: SliderControllerOptions = {}): S
   ) => {
     if ((disabled() || readOnly()) && detail.reason !== "programmatic") return normalizedValue();
 
-    pendingDetail = { ...detail, thumbIndex };
-    const nextValues = setValueState((currentValue) => {
-      const values = normalizeValues(currentValue, min(), max(), step());
-      values[thumbIndex] = snapValue(nextValue, min(), max(), step());
-      return values.slice().sort((a, b) => a - b);
-    });
-    pendingDetail = undefined;
+    const nextValues = setValueState(
+      (currentValue) => {
+        const values = normalizeValues(currentValue, min(), max(), step());
+        values[thumbIndex] = snapValue(nextValue, min(), max(), step());
+        return values.slice().sort((a, b) => a - b);
+      },
+      { ...detail, thumbIndex },
+    );
     return nextValues;
   };
 
@@ -417,14 +419,10 @@ export function createSliderController(options: SliderControllerOptions = {}): S
     orientation,
     readOnly,
     required,
-    reset: () => {
-      pendingDetail = { reason: "programmatic" };
-      const result = setValueState(() =>
-        normalizeValues(options.defaultValue ?? [min()], min(), max(), step()),
-      );
-      pendingDetail = undefined;
-      return result;
-    },
+    reset: () =>
+      setValueState(() => normalizeValues(options.defaultValue ?? [min()], min(), max(), step()), {
+        reason: "programmatic",
+      }),
     step,
     setValueAtIndex: setThumbValue,
     value: normalizedValue,

@@ -111,14 +111,14 @@ export function createRadioGroup(
     value?: () => string | undefined;
   } = {},
 ): RadioGroupApi {
-  let pendingDetail: RadioGroupValueChangeDetail | undefined;
-  const [value, setValueState] = createControllableSignal<string | undefined>({
+  const [value, setValueState] = createControllableSignal<
+    string | undefined,
+    RadioGroupValueChangeDetail
+  >({
     value: options.value,
     defaultValue: options.defaultValue,
-    onChange: (nextValue) => {
-      options.onValueChange?.(nextValue, pendingDetail ?? { reason: "programmatic" });
-      pendingDetail = undefined;
-    },
+    defaultDetail: { reason: "programmatic" },
+    onChange: (nextValue, detail) => options.onValueChange?.(nextValue, detail),
   });
   const itemRecords: RadioItemRecord[] = [];
 
@@ -140,18 +140,8 @@ export function createRadioGroup(
       };
     },
     required: createMemo(() => options.required?.() ?? false),
-    reset: () => {
-      pendingDetail = { reason: "programmatic" };
-      const result = setValueState(options.defaultValue);
-      pendingDetail = undefined;
-      return result;
-    },
-    selectValue: (nextValue, detail) => {
-      pendingDetail = detail;
-      const result = setValueState(nextValue);
-      pendingDetail = undefined;
-      return result;
-    },
+    reset: () => setValueState(options.defaultValue, { reason: "programmatic" }),
+    selectValue: (nextValue, detail) => setValueState(nextValue, detail),
     value,
     items: () => itemRecords,
   };

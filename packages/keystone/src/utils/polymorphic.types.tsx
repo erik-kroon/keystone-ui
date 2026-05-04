@@ -11,6 +11,14 @@ const renderTriggerAsButton = (props: JSX.HTMLAttributes<HTMLButtonElement>) => 
   <button {...props} />
 );
 
+type RouterLinkProps = JSX.AnchorHTMLAttributes<HTMLAnchorElement> & {
+  to: string;
+};
+
+function RouterLink(props: RouterLinkProps) {
+  return <a href={props.to} {...props} />;
+}
+
 export const anchorPolymorphicProps = {
   as: anchorRenderer,
 } satisfies PolymorphicProps<HTMLAnchorElement>;
@@ -43,6 +51,13 @@ export function SelectTriggerAsPolymorphicCallback() {
 
 export const renderedAnchor = renderPolymorphic(anchorRenderer, "button", {
   children: "Settings",
+  "data-scope": "kernel",
+  "data-part": "trigger",
+});
+
+export const renderedRouterLink = renderPolymorphic(RouterLink, "button", {
+  children: "Security",
+  to: "/account/security",
   "data-scope": "kernel",
   "data-part": "trigger",
 });

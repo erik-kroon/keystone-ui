@@ -31,6 +31,7 @@ import {
   createStableId,
   dataBoolean,
   renderPolymorphic,
+  scheduleMicrotask,
   type PolymorphicProps,
 } from "../utils/index";
 
@@ -250,17 +251,17 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
   const [inputElement, setInputElement] = createSignal<HTMLInputElement>();
   const [contentElement, setContentElement] = createSignal<HTMLDivElement>();
   const [positionerElement, setPositionerElement] = createSignal<HTMLDivElement>();
-  let lastOpenDetail: ComboboxOpenChangeDetail = { reason: "programmatic" };
-  let lastInputDetail: ComboboxChangeDetail = { reason: "programmatic" };
-  const [open, setOpenState] = createControllableBooleanSignal({
+  const [open, setOpenState] = createControllableBooleanSignal<ComboboxOpenChangeDetail>({
     value: options.open,
     defaultValue: options.defaultOpen ?? false,
-    onChange: (next) => options.onOpenChange?.(next, lastOpenDetail),
+    defaultDetail: { reason: "programmatic" },
+    onChange: options.onOpenChange,
   });
-  const [inputValue, setInputValueState] = createControllableSignal<string>({
+  const [inputValue, setInputValueState] = createControllableSignal<string, ComboboxChangeDetail>({
     value: options.inputValue,
     defaultValue: options.defaultInputValue ?? "",
-    onChange: (next) => options.onInputValueChange?.(next, lastInputDetail),
+    defaultDetail: { reason: "programmatic" },
+    onChange: options.onInputValueChange,
   });
   const disabled = () => options.disabled?.() ?? false;
   const invalid = () => options.invalid?.() ?? false;
@@ -270,12 +271,10 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
   const groupId = (value: string) => `${listboxId()}-group-${value}`;
   const groupLabelId = (value: string) => `${listboxId()}-group-${value}-label`;
   const setOpen = (next: boolean, detail: ComboboxOpenChangeDetail) => {
-    lastOpenDetail = detail;
-    setOpenState(next);
+    setOpenState(next, detail);
   };
   const setInputValue = (next: string, detail: ComboboxChangeDetail) => {
-    lastInputDetail = detail;
-    setInputValueState(next);
+    setInputValueState(next, detail);
   };
   const listbox = createListboxInteraction<ComboboxItemData, ComboboxChangeDetail>({
     id: listboxId,
@@ -359,7 +358,7 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
         setInputValue("", { event, reason: "clear" });
         listbox.selection.setValue(undefined, { event, reason: "clear" });
         setOpen(false, { event, reason: "programmatic" });
-        queueMicrotask(() => inputElement()?.focus());
+        scheduleMicrotask(() => inputElement()?.focus());
       }),
     }),
     getContentProps: (props) => {
@@ -382,7 +381,7 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
         ref: (element: HTMLDivElement) => {
           setContentElement(element);
           assignRef(props.ref, element);
-          queueMicrotask(floating.update);
+          scheduleMicrotask(floating.update);
         },
         onKeyDown: composeEventHandlers<KeyboardEvent>(props.onKeyDown, (event) => {
           if (event.key === "Escape") {
@@ -567,7 +566,7 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
         ref: (element: HTMLDivElement) => {
           setPositionerElement(element);
           assignRef(props.ref, element);
-          queueMicrotask(floating.update);
+          scheduleMicrotask(floating.update);
         },
       };
     },
@@ -596,7 +595,7 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
         }
 
         setOpen(!open(), { event, reason: "trigger" });
-        queueMicrotask(() => inputElement()?.focus());
+        scheduleMicrotask(() => inputElement()?.focus());
       }),
     }),
     groupId,

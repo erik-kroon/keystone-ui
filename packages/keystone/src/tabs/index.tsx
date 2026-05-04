@@ -102,14 +102,16 @@ export type TabsApi = {
 const TabsContext = createContext<TabsApi>();
 
 export function createTabs(options: CreateTabsOptions = {}): TabsApi {
-  let pendingDetail: TabsValueChangeDetail | undefined;
-  const [value, setValueState] = createControllableSignal<string | undefined>({
+  const [value, setValueState] = createControllableSignal<
+    string | undefined,
+    TabsValueChangeDetail
+  >({
     value: options.value,
     defaultValue: options.defaultValue,
-    onChange: (nextValue) => {
+    defaultDetail: { reason: "programmatic" },
+    onChange: (nextValue, detail) => {
       if (nextValue === undefined) return;
-      options.onValueChange?.(nextValue, pendingDetail ?? { reason: "programmatic" });
-      pendingDetail = undefined;
+      options.onValueChange?.(nextValue, detail);
     },
   });
   const [highlightedValue, setHighlightedValue] = createSignal<string | undefined>();
@@ -148,9 +150,7 @@ export function createTabs(options: CreateTabsOptions = {}): TabsApi {
   const selectValue = (nextValue: string, detail: TabsValueChangeDetail) => {
     if (disabled() && detail.reason !== "programmatic") return selectedValue() ?? nextValue;
 
-    pendingDetail = detail;
-    const result = setValueState(nextValue);
-    pendingDetail = undefined;
+    const result = setValueState(nextValue, detail);
     return result ?? nextValue;
   };
 

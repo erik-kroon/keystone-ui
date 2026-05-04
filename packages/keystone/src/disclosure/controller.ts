@@ -4,12 +4,11 @@ import {
   createControllableBooleanSignal,
   dataBoolean,
   partDataAttributes,
+  type KeystoneChangeDetail,
 } from "../utils/index";
 
-export type DisclosureChangeDetail<TReason extends string = "trigger" | "programmatic"> = {
-  event?: Event;
-  reason: TReason;
-};
+export type DisclosureChangeDetail<TReason extends string = "trigger" | "programmatic"> =
+  KeystoneChangeDetail<TReason>;
 
 export type DisclosureControllerOptions<TReason extends string = "trigger" | "programmatic"> = {
   contentId?: () => string | undefined;
@@ -32,7 +31,7 @@ export type DisclosureContentProps = Omit<
   "children" | "ref"
 > & {
   hiddenUntilFound?: boolean;
-  onBeforeMatch?: unknown;
+  onBeforeMatch?: JSX.HTMLAttributes<HTMLDivElement>["onBeforeMatch"];
   ref?: HTMLDivElement | ((element: HTMLDivElement) => void);
 };
 
@@ -42,14 +41,11 @@ export function createDisclosureController<TReason extends string = "trigger" | 
   const fallbackContentId = `keystone-${options.scope}-content-${createUniqueId()}`;
   const contentId = createMemo(() => options.contentId?.() ?? fallbackContentId);
   const disabled = createMemo(() => options.disabled?.() ?? false);
-  let pendingDetail: DisclosureChangeDetail<TReason> | undefined;
-  const [open, setOpenState] = createControllableBooleanSignal({
+  const [open, setOpenState] = createControllableBooleanSignal<DisclosureChangeDetail<TReason>>({
     value: options.open,
     defaultValue: options.defaultOpen ?? false,
-    onChange: (nextOpen) => {
-      options.onOpenChange?.(nextOpen, pendingDetail ?? ({ reason: "programmatic" } as never));
-      pendingDetail = undefined;
-    },
+    defaultDetail: { reason: "programmatic" } as DisclosureChangeDetail<TReason>,
+    onChange: options.onOpenChange,
   });
 
   const setOpen = (nextOpen: boolean, detail: DisclosureChangeDetail<TReason>) => {
@@ -57,10 +53,7 @@ export function createDisclosureController<TReason extends string = "trigger" | 
       return open();
     }
 
-    pendingDetail = detail;
-    const result = setOpenState(nextOpen);
-    pendingDetail = undefined;
-    return result;
+    return setOpenState(nextOpen, detail);
   };
 
   const getPartProps = (part: string) => ({
@@ -117,7 +110,10 @@ export function createDisclosureController<TReason extends string = "trigger" | 
           return open();
         },
         onClick: composeEventHandlers(local.onClick, (event) =>
-          setOpen(!open(), { event, reason: "trigger" } as DisclosureChangeDetail<TReason>),
+          setOpen(!open(), {
+            event,
+            reason: "trigger",
+          } as unknown as DisclosureChangeDetail<TReason>),
         ),
         get "data-state"() {
           return open() ? "open" : "closed";

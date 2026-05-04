@@ -2,7 +2,6 @@ import {
   Show,
   createContext,
   createMemo,
-  createSignal,
   onCleanup,
   splitProps,
   useContext,
@@ -29,6 +28,7 @@ import {
   createControllableSignal,
   dataBoolean,
   renderPolymorphic,
+  scheduleMicrotask,
   type PolymorphicProps,
 } from "../utils/index";
 
@@ -413,7 +413,7 @@ function createScopedMenu(options: CreateMenuOptions, rootRole: "menu" | "menuba
           if (event.key === "Escape") {
             event.preventDefault();
             overlay.close(event, "escape");
-            queueMicrotask(() => {
+            scheduleMicrotask(() => {
               if (!overlay.open()) {
                 return;
               }
@@ -1053,7 +1053,7 @@ function createMenuNamespace(factoryOptions: MenuFactoryOptions) {
           event.preventDefault();
           submenu.parent.closeSubmenus(submenu.child.contentId);
           submenu.child.setOpen(true, { event, reason: "keyboard" });
-          queueMicrotask(() => {
+          scheduleMicrotask(() => {
             focusWithoutScrolling(
               submenu.child.contentElement() ?? submenu.child.triggerElement() ?? document.body,
             );
@@ -1137,20 +1137,16 @@ function createControllableBooleanBackedString(options: {
   onChange?: (value: string, detail: MenuSelectDetail) => void;
   value?: () => string | undefined;
 }) {
-  const [uncontrolled, setUncontrolled] = createSignal(options.defaultValue);
-  const value = createMemo(() => options.value?.() ?? uncontrolled());
-  const setValue = (next: string, detail: MenuSelectDetail) => {
-    if (Object.is(next, value())) {
-      return;
-    }
-
-    if (options.value?.() === undefined) {
-      setUncontrolled(next);
-    }
-    options.onChange?.(next, detail);
-  };
-
-  return [value, setValue] as const;
+  return createControllableSignal<string | undefined, MenuSelectDetail>({
+    value: options.value,
+    defaultValue: options.defaultValue,
+    defaultDetail: { reason: "programmatic" },
+    onChange: (next, detail) => {
+      if (next !== undefined) {
+        options.onChange?.(next, detail);
+      }
+    },
+  });
 }
 
 export const Menu = createMenuNamespace({ scope: "menu" });
