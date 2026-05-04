@@ -15,9 +15,10 @@ import {
   renderPolymorphic,
   type PolymorphicProps,
 } from "../utils/index";
+import { useDirection, type Direction as KeystoneDirection } from "../direction/index";
 
 export type ToolbarOrientation = "horizontal" | "vertical";
-export type ToolbarDirection = "ltr" | "rtl";
+export type ToolbarDirection = KeystoneDirection;
 
 export type ToolbarPartProps<T extends HTMLElement = HTMLElement> = {
   children?: JSX.Element;
@@ -171,6 +172,7 @@ function useToolbar(part: string) {
 }
 
 function Root(props: ToolbarRootProps) {
+  const inheritedDir = useDirection();
   const [local, others] = splitProps(props, [
     "children",
     "dir",
@@ -179,7 +181,7 @@ function Root(props: ToolbarRootProps) {
     "orientation",
   ]);
   const toolbar = createToolbar({
-    dir: () => local.dir,
+    dir: () => local.dir ?? inheritedDir(),
     disabled: () => local.disabled,
     loopFocus: () => local.loopFocus,
     orientation: () => local.orientation,
@@ -191,8 +193,9 @@ function Root(props: ToolbarRootProps) {
         {...others}
         aria-orientation={toolbar.orientation()}
         data-disabled={dataBoolean(toolbar.disabled())}
+        data-dir={toolbar.dir()}
         data-orientation={toolbar.orientation()}
-        dir={local.dir}
+        dir={toolbar.dir()}
         role="toolbar"
         {...partDataAttributes("toolbar", "root")}
       >
@@ -220,6 +223,7 @@ function Button(props: ToolbarButtonProps) {
     ...others,
     "aria-pressed": local.pressed,
     "data-disabled": dataBoolean(itemDisabled()),
+    "data-dir": toolbar.dir(),
     "data-orientation": toolbar.orientation(),
     "data-pressed": dataBoolean(local.pressed),
     disabled: itemDisabled(),
@@ -268,6 +272,7 @@ function Link(props: ToolbarLinkProps) {
       {...others}
       aria-disabled={itemDisabled() ? "true" : undefined}
       data-disabled={dataBoolean(itemDisabled())}
+      data-dir={toolbar.dir()}
       data-orientation={toolbar.orientation()}
       onClick={(event) => {
         callEventHandler(local.onClick, event);

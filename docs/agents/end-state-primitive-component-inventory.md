@@ -17,11 +17,11 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 - Solid polymorphic `as` rendering
 - Portal
 - Presence and `forceMount`
-- Direction provider
-- Locale/i18n provider
+- Direction provider (`proven`; see [direction-provider-vertical.md](direction-provider-vertical.md))
+- Locale/i18n provider (`proven`; see [locale-i18n-provider.md](locale-i18n-provider.md))
 - Live announcer
 - Visually hidden
-- Accessible icon
+- Accessible icon (`proven`; root/label parts, required label, SSR-safe named image contract)
 
 ### Overlay And Positioning
 

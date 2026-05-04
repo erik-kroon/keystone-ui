@@ -8,6 +8,7 @@ import {
   useContext,
   type JSX,
 } from "solid-js";
+import { useLocale, type LocaleApi, type LocaleMessageKey } from "../locale/index";
 import {
   callEventHandler,
   createControllableBooleanSignal,
@@ -119,6 +120,7 @@ export type CreateCalendarOptions = {
   unavailable?: (value: CalendarValue) => boolean;
   value?: () => CalendarValue | undefined;
   weekStartsOn?: () => number | undefined;
+  localeContext?: LocaleApi;
 };
 
 export type CreateDatePickerOptions = CreateCalendarOptions & {
@@ -144,6 +146,7 @@ export type CalendarApi = {
   disabled: () => boolean;
   focusedValue: () => CalendarValue;
   formattedHeading: () => string;
+  getMessage: (key: LocaleMessageKey) => string;
   locale: () => string;
   maxValue: () => CalendarValue | undefined;
   minValue: () => CalendarValue | undefined;
@@ -217,7 +220,7 @@ export function createCalendar(options: CreateCalendarOptions = {}): CalendarApi
     },
   );
   const disabled = createMemo(() => options.disabled?.() ?? false);
-  const locale = createMemo(() => options.locale?.() ?? "en-US");
+  const locale = createMemo(() => options.locale?.() ?? options.localeContext?.locale() ?? "en-US");
   const minValue = createMemo(() => options.minValue?.());
   const maxValue = createMemo(() => options.maxValue?.());
   const selectionMode = createMemo(() => options.selectionMode?.() ?? "single");
@@ -244,6 +247,7 @@ export function createCalendar(options: CreateCalendarOptions = {}): CalendarApi
     focusedValue,
     formattedHeading: () =>
       formatMonth(month(), locale(), { month: "long", year: "numeric", timeZone: "UTC" }),
+    getMessage: (key) => options.localeContext?.getMessage(key) ?? defaultCalendarMessage(key),
     locale,
     maxValue,
     minValue,
@@ -374,6 +378,7 @@ function CalendarRoot(props: CalendarRootProps) {
     unavailable: local.unavailable,
     value: () => local.value,
     weekStartsOn: () => local.weekStartsOn,
+    localeContext: useLocale(),
   });
 
   return (
@@ -427,7 +432,7 @@ function PreviousTrigger(props: CalendarNavigationTriggerProps) {
     <button
       {...others}
       type={local.type ?? "button"}
-      aria-label={others["aria-label"] ?? "Previous month"}
+      aria-label={others["aria-label"] ?? calendar.getMessage("calendar.previousMonth")}
       disabled={calendar.disabled() || others.disabled}
       data-disabled={dataBoolean(calendar.disabled() || others.disabled)}
       onClick={(event) => {
@@ -436,7 +441,7 @@ function PreviousTrigger(props: CalendarNavigationTriggerProps) {
       }}
       {...partDataAttributes("calendar", "prev-trigger")}
     >
-      {local.children ?? "Previous"}
+      {local.children ?? calendar.getMessage("calendar.previousMonth")}
     </button>
   );
 }
@@ -449,7 +454,7 @@ function NextTrigger(props: CalendarNavigationTriggerProps) {
     <button
       {...others}
       type={local.type ?? "button"}
-      aria-label={others["aria-label"] ?? "Next month"}
+      aria-label={others["aria-label"] ?? calendar.getMessage("calendar.nextMonth")}
       disabled={calendar.disabled() || others.disabled}
       data-disabled={dataBoolean(calendar.disabled() || others.disabled)}
       onClick={(event) => {
@@ -458,7 +463,7 @@ function NextTrigger(props: CalendarNavigationTriggerProps) {
       }}
       {...partDataAttributes("calendar", "next-trigger")}
     >
-      {local.children ?? "Next"}
+      {local.children ?? calendar.getMessage("calendar.nextMonth")}
     </button>
   );
 }
@@ -595,6 +600,7 @@ function DatePickerRoot(props: DatePickerRootProps) {
     unavailable: local.unavailable,
     value: () => local.value,
     weekStartsOn: () => local.weekStartsOn,
+    localeContext: useLocale(),
   });
 
   return (
@@ -645,7 +651,11 @@ function Trigger(props: DatePickerTriggerProps) {
       }}
       {...partDataAttributes("date-picker", "trigger")}
     >
-      {local.children ?? selectedValue() ?? rangeLabel() ?? local.placeholder ?? "Select date"}
+      {local.children ??
+        selectedValue() ??
+        rangeLabel() ??
+        local.placeholder ??
+        datePicker.calendar.getMessage("datePicker.selectDate")}
     </button>
   );
 }
@@ -862,6 +872,16 @@ function formatRangeValue(rangeValue: CalendarRangeValue | undefined) {
   if (!rangeValue?.start) return undefined;
   if (!rangeValue.end) return rangeValue.start;
   return `${rangeValue.start} - ${rangeValue.end}`;
+}
+
+function defaultCalendarMessage(key: LocaleMessageKey) {
+  const messages = {
+    "calendar.nextMonth": "Next month",
+    "calendar.previousMonth": "Previous month",
+    "datePicker.selectDate": "Select date",
+  } as const satisfies Record<LocaleMessageKey, string>;
+
+  return messages[key];
 }
 
 function focusDayButton(value: CalendarValue) {
