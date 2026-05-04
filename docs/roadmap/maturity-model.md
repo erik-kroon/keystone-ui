@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Every Keystone primitive and first-party Mason component should carry a maturity status before public preview. Maturity is a product contract: it tells users how much API stability, accessibility evidence, and test depth they can expect.
+Every Core primitive and first-party UI item should carry a maturity status before public preview. Maturity is a product contract: it tells users how much API stability, accessibility evidence, and test depth they can expect.
 
 ## Statuses
 
@@ -40,7 +40,7 @@ Requirements:
 - ARIA relationships documented.
 - Controlled and uncontrolled behavior tested where relevant.
 - SSR/hydration smoke coverage where relevant.
-- Mason wrapper works when the primitive is Keystone-backed.
+- UI wrapper works when the primitive is Core-backed.
 - Known gaps are explicit.
 
 ### Stable
@@ -54,7 +54,7 @@ Requirements:
 - SSR/hydration smoke coverage.
 - Stable styling contract: anatomy, `data-scope`, `data-part`, state attributes, and CSS variables.
 - API reviewed against Solid-native conventions.
-- Mason wrapper and docs examples verified where relevant.
+- UI wrapper and docs examples verified where relevant.
 
 ### Deprecated
 
@@ -66,7 +66,7 @@ Requirements:
 - Removal timeline documented.
 - Migration notes provided.
 
-## Current Keystone Labels
+## Current Core Labels
 
 These labels are intentionally conservative.
 
@@ -95,7 +95,7 @@ These labels are intentionally conservative.
 | Toast                                 | Experimental | Needs manager/provider/a11y evidence and pause/update policy before beta.                             |
 | Toolbar                               | Experimental | Needs composite coordination depth before beta.                                                       |
 
-## Mason Labels
+## UI Labels
 
 Mason registry items should use the same labels, but the evidence is different:
 
@@ -106,4 +106,4 @@ Mason registry items should use the same labels, but the evidence is different:
 - TanStack integration correctness where app engines are used.
 - Metadata completeness, including parity notes.
 
-Data-dense Mason components remain experimental until the underlying Keystone kernels and Mason registry lifecycle are mature enough to support them.
+Data-dense UI items remain experimental until the underlying Core kernels and Mason registry lifecycle are mature enough to support them.

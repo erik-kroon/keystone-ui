@@ -4,13 +4,13 @@
 
 This vertical applies the current primitive delivery standard to Switch, Checkbox, and RadioGroup and records closure for GitHub issue #54:
 
-- Compare the current Keystone and Mason state against Kobalte and Base UI.
-- Ship thin Keystone primitives over the shared selection-control controller first.
-- Add Mason copy-paste wrappers and registry metadata.
+- Compare the current Keystone Core and UI state against Kobalte and Base UI.
+- Ship thin Core primitives over the shared selection-control controller first.
+- Add UI copy-paste wrappers and registry metadata.
 - Add behavior tests for the core accessibility and state contract.
 - Record intentional parity choices and deferred gaps.
 
-## Current Keystone Contract
+## Current Core Contract
 
 Switch:
 
@@ -44,15 +44,15 @@ RadioGroup:
 - Checkbox, Switch, and RadioGroup hidden-input parts mirror stable checked, disabled, invalid, readonly, required, orientation, and direction data where applicable so generated source can style and test native form state without reaching into private controllers.
 - Selection-control SSR output is deterministic for root/control/input state; mount-only reset listeners do not require browser globals during server render.
 
-## Mason Surface
+## UI Surface
 
-- `registry/default/ui/switch.tsx` wraps Keystone Switch with `mason-switch-*` styling hooks.
-- `registry/default/ui/checkbox.tsx` wraps Keystone Checkbox with `mason-checkbox-*` styling hooks.
-- `registry/default/ui/radio-group.tsx` wraps Keystone RadioGroup with `mason-radio-group-*` styling hooks.
+- `registry/default/ui/switch.tsx` wraps Keystone Switch with `ui-switch-*` styling hooks.
+- `registry/default/ui/checkbox.tsx` wraps Keystone Checkbox with `ui-checkbox-*` styling hooks.
+- `registry/default/ui/radio-group.tsx` wraps Keystone RadioGroup with `ui-radio-group-*` styling hooks.
 - Registry metadata records dependencies, parts, install command, source files, customization notes, and Kobalte/Base UI parity gaps.
 
 ## Parity Notes
 
-Kobalte and Base UI still go deeper on full field primitives, press abstraction details, and nested composite coordination. Keystone intentionally keeps label and description ownership in userland or the form field layer for this milestone rather than adding selection-control-specific Label/Description parts. Cursor and touch semantics are native button/input semantics plus preventable click, keyboard, and change handlers; a dedicated press-state abstraction can be added later if Mason needs richer touch feedback without changing selection state contracts.
+Kobalte and Base UI still go deeper on full field primitives, press abstraction details, and nested composite coordination. Keystone intentionally keeps label and description ownership in userland or the form field layer for this milestone rather than adding selection-control-specific Label/Description parts. Cursor and touch semantics are native button/input semantics plus preventable click, keyboard, and change handlers; a dedicated press-state abstraction can be added later if UI needs richer touch feedback without changing selection state contracts.
 
 Nested or toolbar coordination decisions for radio groups, animation lifecycle data attributes beyond current checked/unchecked state, and manual assistive-technology evidence remain deferred.

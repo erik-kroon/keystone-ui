@@ -14,10 +14,10 @@ export function Badge(props: BadgeProps) {
   return (
     <span
       {...rest}
-      data-scope="mason-badge"
+      data-scope="ui-badge"
       data-part="root"
       data-variant={variant()}
-      class={cn("mason-badge", `mason-badge-${variant()}`, local.class)}
+      class={cn("ui-badge", `ui-badge-${variant()}`, local.class)}
     />
   );
 }

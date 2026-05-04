@@ -488,9 +488,9 @@ export async function createDoctorReport(
       Object.keys(installed).some((name) =>
         ["accordion", "dialog", "popover", "select", "sheet", "tooltip"].includes(name),
       ) &&
-      !dependencies["@keystone-ui/keystone"]
+      !dependencies["@keystone-ui/core"]
     ) {
-      issues.push("missing @keystone-ui/keystone dependency for Keystone-backed installed items");
+      issues.push("missing @keystone-ui/core dependency for Core-backed installed items");
     }
   }
 

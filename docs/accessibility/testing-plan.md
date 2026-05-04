@@ -10,18 +10,18 @@ Draft
 
 ## Related
 
-- [PRD: Keystone And Mason Foundation](../prd/keystone-mason-foundation.md)
-- [RFC: Keystone API](../rfcs/keystone-api.md)
-- [ADR 0001: Keystone And Mason Product Boundary](../adr/0001-keystone-mason-product-boundary.md)
+- [PRD: Keystone Core And UI Foundation](../prd/keystone-foundation.md)
+- [RFC: Core API](../rfcs/core-api.md)
+- [ADR 0001: Keystone Core And UI Product Boundary](../adr/0001-keystone-core-ui-boundary.md)
 - [Dialog Accessibility Spec](../specs/dialog.md)
 - [Select Accessibility Spec](../specs/select.md)
 - [Field And FormControl Accessibility Spec](../specs/field-form-control.md)
 
 ## Summary
 
-Keystone owns accessibility behavior for primitive runtime code. Mason owns styled source, previews, blocks, templates, and CLI output, but it should not reimplement Keystone accessibility behavior.
+Core owns accessibility behavior for primitive runtime code. UI owns styled source, previews, blocks, templates, and CLI output, but it should not reimplement Core accessibility behavior.
 
-This plan defines the quality gate for stable Keystone primitives and Mason items built on top of them. Automated checks are required, but they are not sufficient. Stable primitives must also pass manual keyboard and assistive technology testing against a written primitive accessibility spec.
+This plan defines the quality gate for stable Core primitives and UI items built on top of them. Automated checks are required, but they are not sufficient. Stable primitives must also pass manual keyboard and assistive technology testing against a written primitive accessibility spec.
 
 The baseline standard is WCAG 2.2 Level AA for product surfaces and generated examples, plus WAI-ARIA Authoring Practices Guide patterns when Keystone implements a custom widget pattern such as dialog, alert dialog, menu, select, combobox, tabs, tooltip, or listbox.
 
@@ -29,16 +29,16 @@ The baseline standard is WCAG 2.2 Level AA for product surfaces and generated ex
 
 - Catch regressions in keyboard, focus, labeling, state, form, SSR, and hydration behavior.
 - Make each primitive's accessibility contract reviewable before implementation stabilizes.
-- Separate Keystone behavior responsibility from Mason styling responsibility.
+- Separate Core behavior responsibility from UI styling responsibility.
 - Keep accessibility tests focused on public behavior and DOM contracts rather than private implementation details.
 - Require manual screen-reader coverage before a primitive moves to stable release.
-- Give contributors a repeatable test matrix that scales from kernel utilities to overlays, fields, selection controls, and Mason examples.
+- Give contributors a repeatable test matrix that scales from kernel utilities to overlays, fields, selection controls, and UI examples.
 
 ## Non-Goals
 
 - Guarantee legal compliance for every downstream application.
 - Replace user research or product-specific accessibility audits.
-- Test every visual permutation of Mason blocks with every assistive technology.
+- Test every visual permutation of UI blocks with every assistive technology.
 - Treat WAI-ARIA APG examples as copy-paste implementation requirements when native HTML can satisfy the interaction more simply.
 
 ## Release Gates
@@ -54,7 +54,7 @@ An experimental primitive may ship only when:
 
 ### Stable Primitive
 
-A stable Keystone primitive requires:
+A stable Core primitive requires:
 
 - A completed accessibility spec in docs.
 - Automated interaction tests for keyboard, pointer, focus, controlled/uncontrolled state, disabled behavior, and public DOM attributes.
@@ -68,7 +68,7 @@ A stable Keystone primitive requires:
 
 A Mason registry item requires:
 
-- Keystone imports for primitive behavior when a Keystone primitive exists.
+- Core imports for primitive behavior when a Core primitive exists.
 - No local reimplementation of focus traps, dismissable layers, roving focus, typeahead, select, combobox, or dialog behavior.
 - Automated install simulation into at least one example app.
 - Typecheck and build verification after install.
@@ -132,7 +132,7 @@ Tests should prefer user-observable assertions such as active element, accessibl
 
 #### Spec-To-Test Harness
 
-Keystone primitive tests should use `packages/keystone/test/accessibility.ts` for reusable accessibility contracts instead of rebuilding APG assertions in each primitive test file.
+Core primitive tests should use `packages/core/test/accessibility.ts` for reusable accessibility contracts instead of rebuilding APG assertions in each primitive test file.
 
 The harness provides:
 
@@ -160,7 +160,7 @@ Controller tests should use the same harness against prop getter return objects 
 
 ### 4. Automated Accessibility Smoke Tests
 
-Run automated accessibility checks against docs or preview examples for each stable primitive and Mason item.
+Run automated accessibility checks against docs or preview examples for each stable primitive and UI item.
 
 Automated checks should catch:
 
@@ -168,7 +168,7 @@ Automated checks should catch:
 - Invalid ARIA attributes or relationships.
 - Obvious role misuse.
 - Focusable hidden content.
-- Color contrast failures in Mason and docs surfaces.
+- Color contrast failures in UI and docs surfaces.
 - Landmark and heading mistakes in docs, blocks, and templates.
 
 Automated checks do not prove correct keyboard interaction, focus management, screen-reader announcement quality, or custom widget semantics. Those stay manual release blockers for stable primitives.
@@ -203,22 +203,22 @@ Type tests should cover:
 - Event detail types.
 - Polymorphic `as` usage for native elements, router links, and callback-style composition.
 - Ref and directive constraints that are specific to Solid.
-- Mason wrapper imports that consume Keystone primitive parts.
+- UI wrapper imports that consume Core primitive parts.
 
 ## Manual Test Matrix
 
-Stable Keystone primitives require manual coverage across:
+Stable Core primitives require manual coverage across:
 
-| Environment                 | Required Coverage                                               |
-| --------------------------- | --------------------------------------------------------------- |
-| Chrome + NVDA on Windows    | Primary desktop screen-reader path                              |
-| Firefox + NVDA on Windows   | Browser variance for ARIA and focus behavior                    |
-| Safari + VoiceOver on macOS | Apple desktop screen-reader path                                |
-| iOS Safari + VoiceOver      | Touch screen-reader path                                        |
-| Keyboard only in Chromium   | Tab order, arrow keys, Escape, Enter, Space, Home, End          |
-| Reduced motion              | Presence, transitions, and Mason preview behavior               |
-| Forced colors               | Mason styling, focus indicators, contrast, and state visibility |
-| RTL document                | Direction-aware navigation, placement, and text flow            |
+| Environment                 | Required Coverage                                            |
+| --------------------------- | ------------------------------------------------------------ |
+| Chrome + NVDA on Windows    | Primary desktop screen-reader path                           |
+| Firefox + NVDA on Windows   | Browser variance for ARIA and focus behavior                 |
+| Safari + VoiceOver on macOS | Apple desktop screen-reader path                             |
+| iOS Safari + VoiceOver      | Touch screen-reader path                                     |
+| Keyboard only in Chromium   | Tab order, arrow keys, Escape, Enter, Space, Home, End       |
+| Reduced motion              | Presence, transitions, and UI preview behavior               |
+| Forced colors               | UI styling, focus indicators, contrast, and state visibility |
+| RTL document                | Direction-aware navigation, placement, and text flow         |
 
 Manual testing should record:
 
@@ -305,11 +305,11 @@ Required checks before stable release:
 - RTL navigation and floating placement are correct.
 - Virtualization, async filtering, or creatable behavior remain experimental until separately specified.
 
-## Mason-Specific Coverage
+## UI-Specific Coverage
 
-Mason tests should verify accessibility is preserved after styling and source generation:
+UI tests should verify accessibility is preserved after styling and source generation:
 
-- Installed components import Keystone primitives for behavior.
+- Installed components import Core primitives for behavior.
 - Component source keeps labels, descriptions, and required parts visible to app authors.
 - Focus indicators are visible in default, hover, active, disabled, invalid, dark, forced-color, and high-contrast states.
 - Generated examples avoid unlabeled icon-only buttons unless an accessible name is supplied.
@@ -322,13 +322,13 @@ Mason tests should verify accessibility is preserved after styling and source ge
 The repo should introduce tooling as product modules appear. The intended stack is:
 
 - Unit tests for kernel behavior.
-- Browser interaction tests for primitives and installed Mason examples.
+- Browser interaction tests for primitives and installed UI examples.
 - Automated accessibility checks using a browser-integrated accessibility engine.
 - SSR render and hydration warning tests.
 - Type tests for public APIs.
-- Visual regression tests for Mason and docs previews.
+- Visual regression tests for UI and docs previews.
 
-Tool choices should be recorded when test infrastructure lands. The plan intentionally avoids locking a runner before Keystone and Mason packages exist.
+Tool choices should be recorded when test infrastructure lands. The plan intentionally avoids locking a runner before Keystone Core and UI packages exist.
 
 ## CI Expectations
 
@@ -336,12 +336,12 @@ CI should eventually expose these lanes:
 
 - `check-types`: public API and generated example typing.
 - `test:unit`: kernel and registry behavior.
-- `test:browser`: primitive and Mason interaction tests.
+- `test:browser`: primitive and UI interaction tests.
 - `test:a11y`: automated accessibility smoke checks.
 - `test:ssr`: server rendering and hydration checks.
-- `test:visual`: Mason and docs visual regression checks.
+- `test:visual`: UI and docs visual regression checks.
 
-Until these scripts exist, contributors should document manual verification commands in PR notes and keep accessibility evidence attached to the relevant primitive or Mason item.
+Until these scripts exist, contributors should document manual verification commands in PR notes and keep accessibility evidence attached to the relevant primitive or UI item.
 
 ## References
 

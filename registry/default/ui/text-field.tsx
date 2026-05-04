@@ -1,4 +1,4 @@
-import { createFormControl } from "@keystone-ui/keystone/form";
+import { createFormControl } from "@keystone-ui/core/form";
 import { createMemo, createSignal, Show, splitProps, type Accessor, type JSX } from "solid-js";
 import { cn } from "@/lib/cn";
 
@@ -157,15 +157,15 @@ function TextFieldControl(
   return (
     <div
       {...control.getRootProps()}
-      data-scope="mason-text-field"
+      data-scope="ui-text-field"
       data-part="root"
-      class={cn("mason-text-field", local.fieldClass)}
+      class={cn("ui-text-field", local.fieldClass)}
     >
       <label
         {...control.getLabelProps()}
-        data-scope="mason-text-field"
+        data-scope="ui-text-field"
         data-part="label"
-        class={cn("mason-text-field-label", local.labelClass)}
+        class={cn("ui-text-field-label", local.labelClass)}
       >
         {local.label}
       </label>
@@ -186,16 +186,16 @@ function TextFieldControl(
         }}
         onFocus={() => setFocused(true)}
         onInput={(event) => local.field().handleChange(event.currentTarget.value)}
-        data-scope="mason-text-field"
+        data-scope="ui-text-field"
         data-part="input"
-        class={cn("mason-text-field-input", inputProps.class, local.inputClass)}
+        class={cn("ui-text-field-input", inputProps.class, local.inputClass)}
       />
       <Show when={local.description}>
         <p
           {...control.getDescriptionProps()}
-          data-scope="mason-text-field"
+          data-scope="ui-text-field"
           data-part="description"
-          class={cn("mason-text-field-description", local.descriptionClass)}
+          class={cn("ui-text-field-description", local.descriptionClass)}
         >
           {local.description}
         </p>
@@ -205,9 +205,9 @@ function TextFieldControl(
           <p
             {...control.getErrorMessageProps()}
             role="alert"
-            data-scope="mason-text-field"
+            data-scope="ui-text-field"
             data-part="error"
-            class={cn("mason-text-field-error", local.errorClass)}
+            class={cn("ui-text-field-error", local.errorClass)}
           >
             {message()}
           </p>

@@ -13,7 +13,7 @@
   },
   "categories": ["table", "tanstack", "router", "data"],
   "keywords": ["data-table", "table", "tanstack-router", "search-params", "url-state"],
-  "docs": "https://mason.build/docs/components/data-table#tanstack-router",
+  "docs": "https://keystone-ui.dev/docs/ui/data-table#tanstack-router",
   "registryDependencies": ["data-table"],
   "filesRoot": "components/data-table",
   "targetRoot": "src/components/data-table",

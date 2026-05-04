@@ -11,11 +11,11 @@
   },
   "categories": ["form", "base"],
   "keywords": ["field", "label", "description", "error", "form"],
-  "docs": "https://mason.build/docs/components/field",
+  "docs": "https://keystone-ui.dev/docs/ui/field",
   "registryDependencies": ["cn", "label"],
   "meta": {
     "install": "mason add field",
-    "customization": "Style the shell through mason-field classes and data-part values for root, label, description, and error.",
+    "customization": "Style the shell through ui-field classes and data-part values for root, label, description, and error.",
     "sourceFiles": ["registry/default/ui/field.tsx"],
     "dependencies": ["cn", "label"],
     "parity": {

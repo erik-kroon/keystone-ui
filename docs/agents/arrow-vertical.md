@@ -1,4 +1,4 @@
-# Keystone Arrow Vertical
+# Keystone Core Arrow Vertical
 
 ## Audit
 

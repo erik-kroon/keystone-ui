@@ -32,9 +32,9 @@ Public behavior is exposed through primitives:
 
 ## Rules
 
-- Do not export `packages/keystone/src/collection/*` as public package subpaths without an ADR or RFC.
-- Do not let Mason import collection or typeahead internals.
-- Mason should not reimplement Select, Combobox, Menu, or listbox navigation when a Keystone primitive exists.
+- Do not export `packages/core/src/collection/*` as public package subpaths without an ADR or RFC.
+- Do not let UI import collection or typeahead internals.
+- UI should not reimplement Select, Combobox, Menu, or listbox navigation when a Core primitive exists.
 - Collection tests should assert observable focus, highlighted state, selection, form value, and data attributes.
 - Typeahead behavior should stay centralized so locale, timeout, disabled item, and dynamic item fixes apply across primitives.
 

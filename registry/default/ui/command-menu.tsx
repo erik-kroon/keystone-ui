@@ -1,17 +1,17 @@
 import {
-  Combobox as KeystoneCombobox,
-  type ComboboxContentProps as KeystoneComboboxContentProps,
-  type ComboboxGroupLabelProps as KeystoneComboboxGroupLabelProps,
-  type ComboboxGroupProps as KeystoneComboboxGroupProps,
-  type ComboboxInputProps as KeystoneComboboxInputProps,
-  type ComboboxItemProps as KeystoneComboboxItemProps,
-  type ComboboxItemTextProps as KeystoneComboboxItemTextProps,
-  type ComboboxListboxProps as KeystoneComboboxListboxProps,
-  type ComboboxPortalProps as KeystoneComboboxPortalProps,
-  type ComboboxPositionerProps as KeystoneComboboxPositionerProps,
-  type ComboboxRootProps as KeystoneComboboxRootProps,
-  type ComboboxTriggerProps as KeystoneComboboxTriggerProps,
-} from "@keystone-ui/keystone/combobox";
+  Combobox as CoreCombobox,
+  type ComboboxContentProps as CoreComboboxContentProps,
+  type ComboboxGroupLabelProps as CoreComboboxGroupLabelProps,
+  type ComboboxGroupProps as CoreComboboxGroupProps,
+  type ComboboxInputProps as CoreComboboxInputProps,
+  type ComboboxItemProps as CoreComboboxItemProps,
+  type ComboboxItemTextProps as CoreComboboxItemTextProps,
+  type ComboboxListboxProps as CoreComboboxListboxProps,
+  type ComboboxPortalProps as CoreComboboxPortalProps,
+  type ComboboxPositionerProps as CoreComboboxPositionerProps,
+  type ComboboxRootProps as CoreComboboxRootProps,
+  type ComboboxTriggerProps as CoreComboboxTriggerProps,
+} from "@keystone-ui/core/combobox";
 import {
   createHotkeys,
   formatForDisplay,
@@ -58,10 +58,7 @@ export type CommandMenuHotkeysOptions = Omit<CreateHotkeyOptions, "target"> & {
   target?: HTMLElement | Document | Window | null;
 };
 
-export type CommandMenuProps = Omit<
-  KeystoneComboboxRootProps,
-  "children" | "inputValue" | "open"
-> & {
+export type CommandMenuProps = Omit<CoreComboboxRootProps, "children" | "inputValue" | "open"> & {
   children?: JSX.Element;
   contentClass?: string;
   empty?: JSX.Element;
@@ -80,22 +77,22 @@ export type CommandMenuProps = Omit<
   triggerClass?: string;
 };
 
-export type CommandMenuRootProps = KeystoneComboboxRootProps;
-export type CommandMenuTriggerProps = KeystoneComboboxTriggerProps;
-export type CommandMenuInputProps = KeystoneComboboxInputProps;
-export type CommandMenuPortalProps = KeystoneComboboxPortalProps;
-export type CommandMenuPositionerProps = KeystoneComboboxPositionerProps;
-export type CommandMenuContentProps = KeystoneComboboxContentProps & {
+export type CommandMenuRootProps = CoreComboboxRootProps;
+export type CommandMenuTriggerProps = CoreComboboxTriggerProps;
+export type CommandMenuInputProps = CoreComboboxInputProps;
+export type CommandMenuPortalProps = CoreComboboxPortalProps;
+export type CommandMenuPositionerProps = CoreComboboxPositionerProps;
+export type CommandMenuContentProps = CoreComboboxContentProps & {
   portal?: CommandMenuPortalProps;
   positionerClass?: string;
 };
-export type CommandMenuListProps = KeystoneComboboxListboxProps;
-export type CommandMenuGroupProps = KeystoneComboboxGroupProps;
-export type CommandMenuGroupLabelProps = KeystoneComboboxGroupLabelProps;
-export type CommandMenuItemProps = KeystoneComboboxItemProps & {
+export type CommandMenuListProps = CoreComboboxListboxProps;
+export type CommandMenuGroupProps = CoreComboboxGroupProps;
+export type CommandMenuGroupLabelProps = CoreComboboxGroupLabelProps;
+export type CommandMenuItemProps = CoreComboboxItemProps & {
   shortcut?: JSX.Element;
 };
-export type CommandMenuItemTextProps = KeystoneComboboxItemTextProps;
+export type CommandMenuItemTextProps = CoreComboboxItemTextProps;
 export type CommandMenuShortcutProps = JSX.HTMLAttributes<HTMLSpanElement>;
 export type CommandMenuEmptyProps = JSX.HTMLAttributes<HTMLDivElement>;
 
@@ -106,7 +103,7 @@ type CommandMenuGroupModel = {
 };
 
 const defaultOpenShortcut = "Mod+K";
-const ungroupedValue = "__mason-command-menu";
+const ungroupedValue = "__ui-command-menu";
 
 export function createCommandMenuStore(initialState: Partial<CommandMenuState> = {}) {
   const store = createStore<CommandMenuState>({
@@ -287,11 +284,11 @@ export function CommandMenu(props: CommandMenuProps) {
                         }
                       >
                         <CommandMenuItemText>
-                          <span data-scope="mason-command-menu" data-part="item-label">
+                          <span data-scope="ui-command-menu" data-part="item-label">
                             {item.label}
                           </span>
                           <Show when={item.description}>
-                            <span data-scope="mason-command-menu" data-part="item-description">
+                            <span data-scope="ui-command-menu" data-part="item-description">
                               {item.description}
                             </span>
                           </Show>
@@ -311,32 +308,27 @@ export function CommandMenu(props: CommandMenuProps) {
 }
 
 export function CommandMenuRoot(props: CommandMenuRootProps) {
-  return <KeystoneCombobox.Root {...props} />;
+  return <CoreCombobox.Root {...props} />;
 }
 
 export function CommandMenuTrigger(props: CommandMenuTriggerProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneCombobox.Trigger {...rest} class={cn("mason-command-menu-trigger", local.class)} />
-  );
+  return <CoreCombobox.Trigger {...rest} class={cn("ui-command-menu-trigger", local.class)} />;
 }
 
 export function CommandMenuInput(props: CommandMenuInputProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneCombobox.Input {...rest} class={cn("mason-command-menu-input", local.class)} />;
+  return <CoreCombobox.Input {...rest} class={cn("ui-command-menu-input", local.class)} />;
 }
 
 export function CommandMenuPortal(props: CommandMenuPortalProps) {
-  return <KeystoneCombobox.Portal {...props} />;
+  return <CoreCombobox.Portal {...props} />;
 }
 
 export function CommandMenuPositioner(props: CommandMenuPositionerProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneCombobox.Positioner
-      {...rest}
-      class={cn("mason-command-menu-positioner", local.class)}
-    />
+    <CoreCombobox.Positioner {...rest} class={cn("ui-command-menu-positioner", local.class)} />
   );
 }
 
@@ -345,9 +337,9 @@ export function CommandMenuContent(props: CommandMenuContentProps) {
   return (
     <CommandMenuPortal {...local.portal}>
       <CommandMenuPositioner class={local.positionerClass}>
-        <KeystoneCombobox.Content {...rest} class={cn("mason-command-menu-content", local.class)}>
+        <CoreCombobox.Content {...rest} class={cn("ui-command-menu-content", local.class)}>
           {local.children}
-        </KeystoneCombobox.Content>
+        </CoreCombobox.Content>
       </CommandMenuPositioner>
     </CommandMenuPortal>
   );
@@ -355,39 +347,34 @@ export function CommandMenuContent(props: CommandMenuContentProps) {
 
 export function CommandMenuList(props: CommandMenuListProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneCombobox.Listbox {...rest} class={cn("mason-command-menu-list", local.class)} />;
+  return <CoreCombobox.Listbox {...rest} class={cn("ui-command-menu-list", local.class)} />;
 }
 
 export function CommandMenuGroup(props: CommandMenuGroupProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneCombobox.Group {...rest} class={cn("mason-command-menu-group", local.class)} />;
+  return <CoreCombobox.Group {...rest} class={cn("ui-command-menu-group", local.class)} />;
 }
 
 export function CommandMenuGroupLabel(props: CommandMenuGroupLabelProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneCombobox.GroupLabel
-      {...rest}
-      class={cn("mason-command-menu-group-label", local.class)}
-    />
+    <CoreCombobox.GroupLabel {...rest} class={cn("ui-command-menu-group-label", local.class)} />
   );
 }
 
 export function CommandMenuItem(props: CommandMenuItemProps) {
   const [local, rest] = splitProps(props, ["children", "class", "shortcut"]);
   return (
-    <KeystoneCombobox.Item {...rest} class={cn("mason-command-menu-item", local.class)}>
+    <CoreCombobox.Item {...rest} class={cn("ui-command-menu-item", local.class)}>
       {local.children}
       {local.shortcut}
-    </KeystoneCombobox.Item>
+    </CoreCombobox.Item>
   );
 }
 
 export function CommandMenuItemText(props: CommandMenuItemTextProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneCombobox.ItemText {...rest} class={cn("mason-command-menu-item-text", local.class)} />
-  );
+  return <CoreCombobox.ItemText {...rest} class={cn("ui-command-menu-item-text", local.class)} />;
 }
 
 export function CommandMenuShortcut(props: CommandMenuShortcutProps) {
@@ -395,9 +382,9 @@ export function CommandMenuShortcut(props: CommandMenuShortcutProps) {
   return (
     <span
       {...rest}
-      data-scope="mason-command-menu"
+      data-scope="ui-command-menu"
       data-part="shortcut"
-      class={cn("mason-command-menu-shortcut", local.class)}
+      class={cn("ui-command-menu-shortcut", local.class)}
     />
   );
 }
@@ -407,9 +394,9 @@ export function CommandMenuEmpty(props: CommandMenuEmptyProps) {
   return (
     <div
       {...rest}
-      data-scope="mason-command-menu"
+      data-scope="ui-command-menu"
       data-part="empty"
-      class={cn("mason-command-menu-empty", local.class)}
+      class={cn("ui-command-menu-empty", local.class)}
     />
   );
 }

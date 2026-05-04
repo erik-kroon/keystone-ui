@@ -1,4 +1,4 @@
-export type { MasonRegistryError, MasonRegistryErrorCode, ValidationResult } from "./errors";
+export type { UIRegistryError, UIRegistryErrorCode, ValidationResult } from "./errors";
 export { fail, ok } from "./errors";
 export {
   fileDescriptorSchema,

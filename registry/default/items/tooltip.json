@@ -5,22 +5,22 @@
   "title": "Tooltip",
   "description": "Styled Solid tooltip component backed by Keystone overlay positioning and Escape dismissal.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "dependencies": ["@keystone-ui/core@^0.0.0"],
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0"
   },
   "categories": ["overlay", "help"],
   "keywords": ["tooltip", "overlay", "floating", "keystone"],
-  "docs": "https://mason.build/docs/components/tooltip",
+  "docs": "https://keystone-ui.dev/docs/ui/tooltip",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add tooltip",
-    "customization": "Style the generated wrappers through mason-tooltip classes while Keystone owns positioning and trigger/content relationships.",
+    "customization": "Style the generated wrappers through ui-tooltip classes while Core owns positioning and trigger/content relationships.",
     "sourceFiles": ["registry/default/ui/tooltip.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "dependencies": ["@keystone-ui/core", "cn"],
     "parity": {
-      "baseUi": "Thin vertical covers trigger/content relationship, controlled open state, delay intent, Escape dismissal, floating placement, portal rendering, and Mason classes. Gaps: provider-level delay groups, arrow geometry, hoverable content policy, transition status metadata, disabled trigger handling, and full focus manager coverage remain follow-up work.",
+      "baseUi": "Thin vertical covers trigger/content relationship, controlled open state, delay intent, Escape dismissal, floating placement, portal rendering, and UI classes. Gaps: provider-level delay groups, arrow geometry, hoverable content policy, transition status metadata, disabled trigger handling, and full focus manager coverage remain follow-up work.",
       "kobalte": "Matches Solid Tooltip/Popper direction with trigger, portal/content, open delays, controlled state, and aria-describedby wiring. Gaps: skip-delay-duration groups, forceMount transition lifecycle, arrow part, and advanced pointer safe-area behavior remain follow-up work."
     }
   },

@@ -5,23 +5,23 @@
   "title": "Checkbox",
   "description": "Styled Solid checkbox component backed by Keystone selection-control behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "dependencies": ["@keystone-ui/core@^0.0.0"],
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0"
   },
   "categories": ["forms", "selection", "input"],
   "keywords": ["checkbox", "checked", "indeterminate", "keystone"],
-  "docs": "https://mason.build/docs/components/checkbox",
+  "docs": "https://keystone-ui.dev/docs/ui/checkbox",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add checkbox",
-    "customization": "Style the generated wrappers through mason-checkbox classes while Keystone keeps role=checkbox, mixed state, hidden input, and preventable toggle behavior.",
+    "customization": "Style the generated wrappers through ui-checkbox classes while Keystone keeps role=checkbox, mixed state, hidden input, and preventable toggle behavior.",
     "sourceFiles": ["registry/default/ui/checkbox.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "dependencies": ["@keystone-ui/core", "cn"],
     "parts": ["root", "control", "indicator", "hidden-input"],
     "parity": {
-      "baseUi": "Thin vertical covers controlled and uncontrolled checked state, indeterminate state, disabled/read-only guards, role=checkbox, hidden input submission, hidden-input state metadata, user-handler precedence, and Mason wrapper metadata. Gaps: cursor/touch press behavior, richer field composition, validation edge cases, animation lifecycle data, and hydration edge tests remain follow-up work.",
+      "baseUi": "Thin vertical covers controlled and uncontrolled checked state, indeterminate state, disabled/read-only guards, role=checkbox, hidden input submission, hidden-input state metadata, user-handler precedence, and UI wrapper metadata. Gaps: cursor/touch press behavior, richer field composition, validation edge cases, animation lifecycle data, and hydration edge tests remain follow-up work.",
       "kobalte": "Matches Solid Root/Input/Control/Indicator direction for checked and indeterminate state, hidden native input, preventable interaction, disabled/read-only state, and stable data attributes. Gaps: group composition, form-control registration depth, and broader SSR/form reset coverage remain follow-up work."
     }
   },

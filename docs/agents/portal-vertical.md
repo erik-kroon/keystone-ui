@@ -1,4 +1,4 @@
-# Keystone Portal Vertical
+# Keystone Core Portal Vertical
 
 ## Audit
 
@@ -8,7 +8,7 @@ Reusable proof already existed through overlay behavior tests: Dialog, Popover, 
 
 ## End-State Contract
 
-`Portal` is a Keystone kernel helper exported from `@keystone-ui/keystone` and `@keystone-ui/keystone/portal`.
+`Portal` is a Core kernel helper exported from `@keystone-ui/core` and `@keystone-ui/core/portal`.
 
 API:
 
@@ -19,19 +19,19 @@ API:
 
 Behavior:
 
-- Portal does not create a Keystone wrapper element, role, ARIA relationship, data attribute, or CSS variable. Accessibility belongs to the portalled primitive content.
+- Portal does not create a Core wrapper element, role, ARIA relationship, data attribute, or CSS variable. Accessibility belongs to the portalled primitive content.
 - Portal has no controlled/uncontrolled state. `present` is a render gate owned by the consuming primitive or user code.
 - Overlay portal parts keep their existing public props and delegate to the shared Portal helper.
 - Presence-managed overlays still pass `forceMount` through their overlay presence controller before Portal renders so close-transition retention and `onOpenChangeComplete` semantics remain owned by overlay presence.
 
 SSR and hydration:
 
-- Portal centralizes usage of Solid's native portal primitive. Keystone code should not access `document`, `window`, layout APIs, or custom mount targets before Solid's render lifecycle supplies them.
+- Portal centralizes usage of Solid's native portal primitive. Core code should not access `document`, `window`, layout APIs, or custom mount targets before Solid's render lifecycle supplies them.
 - Server and client output must be driven by the same `present`/`forceMount` values to avoid hydration mismatch.
 
 ## Proof
 
-- `packages/keystone/src/portal/portal.test.tsx` proves hidden presence, `forceMount`, custom mount targets, and cleanup when presence changes.
+- `packages/core/src/portal/portal.test.tsx` proves hidden presence, `forceMount`, custom mount targets, and cleanup when presence changes.
 - Existing public overlay tests continue to prove consumer behavior through `Dialog.Portal`, `Popover.Portal`, `Tooltip.Portal`, `Sheet.Portal`, `Select.Portal`, `Combobox.Portal`, and `Menu.Portal`.
 
 ## Known Limitations

@@ -11,15 +11,15 @@
   },
   "categories": ["form", "base"],
   "keywords": ["label", "field", "form"],
-  "docs": "https://mason.build/docs/components/label",
+  "docs": "https://keystone-ui.dev/docs/ui/label",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add label",
-    "customization": "Style labels through mason-label and compose them into field shells when helper text or errors are needed.",
+    "customization": "Style labels through ui-label and compose them into field shells when helper text or errors are needed.",
     "sourceFiles": ["registry/default/ui/label.tsx"],
     "dependencies": ["cn"],
     "parity": {
-      "baseUi": "Thin Mason label aligns with Base UI Field Label semantics by rendering a native label and styling hook. Gaps: automatic control registration, generated for/id wiring, required marker policy, and disabled propagation remain follow-up work.",
+      "baseUi": "Thin UI label aligns with Base UI Field Label semantics by rendering a native label and styling hook. Gaps: automatic control registration, generated for/id wiring, required marker policy, and disabled propagation remain follow-up work.",
       "kobalte": "Comparable to Kobalte form-control label composition when used inside Field. Gaps: context-driven ID registration and richer field state data are not owned by this standalone wrapper."
     }
   },

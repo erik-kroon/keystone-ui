@@ -4,13 +4,13 @@
 
 This vertical applies the primitive delivery standard to Tabs:
 
-- Compare current Keystone and Mason state against Kobalte and Base UI.
-- Ship a thin Keystone primitive over shared state/event utilities first.
-- Add Mason copy-paste wrappers and registry metadata.
+- Compare current Keystone Core and UI state against Kobalte and Base UI.
+- Ship a thin Core primitive over shared state/event utilities first.
+- Add UI copy-paste wrappers and registry metadata.
 - Add behavior tests for the core accessibility and state contract.
 - Record parity gaps before deepening.
 
-## Current Keystone Contract
+## Current Core Contract
 
 - `Tabs.Root` supports controlled and uncontrolled `value`, `defaultValue`, `disabled`, `orientation`, `activationMode`, `loopFocus`, and `onValueChange`.
 - `Tabs.List` renders the `tablist` role and orientation attributes.
@@ -18,9 +18,9 @@ This vertical applies the primitive delivery standard to Tabs:
 - `Tabs.Content` renders the active `tabpanel`, links back to its trigger with `aria-labelledby`, and supports `forceMount` for user-owned animation.
 - User click, focus, and keydown handlers run before internal behavior; internal selection/focus work skips when the event is default-prevented.
 
-## Mason Surface
+## UI Surface
 
-- `registry/default/ui/tabs.tsx` wraps Keystone Tabs with `mason-tabs-*` styling hooks.
+- `registry/default/ui/tabs.tsx` wraps Keystone Tabs with `ui-tabs-*` styling hooks.
 - `registry/default/items/tabs.json` records dependencies, parts, install command, source files, customization notes, and parity gaps.
 - `registry/default/registry.json` exposes `tabs` as a first-party Mason registry item.
 
@@ -28,7 +28,7 @@ This vertical applies the primitive delivery standard to Tabs:
 
 - Kobalte Tabs documents the same anatomy: root, list, trigger, indicator, and content. It also calls out controlled/uncontrolled value, disabled tabs, horizontal/vertical orientation, automatic/manual activation, RTL keyboard navigation, focus management for panels, and `forceMount`.
 - Base UI Tabs exposes root, list, tab, indicator, and panel, with controlled/uncontrolled value, orientation, disabled tabs, `keepMounted`, and measured indicator CSS variables.
-- Keystone now covers the shared core contract: value state, orientation, disabled triggers, activation mode, roving focus, trigger/panel ARIA, `forceMount`, data parts, and Mason metadata.
+- Core now covers the shared core contract: value state, orientation, disabled triggers, activation mode, roving focus, trigger/panel ARIA, `forceMount`, data parts, and UI metadata.
 - The #51 parity pass adds explicit `dir="rtl"` handling for horizontal arrow keys so `ArrowLeft` moves forward and `ArrowRight` moves backward in RTL tablists.
 
 References checked on 2026-05-03:

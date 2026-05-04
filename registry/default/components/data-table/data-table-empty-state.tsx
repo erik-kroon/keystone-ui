@@ -7,12 +7,12 @@ export function DataTableEmptyState(props: {
   class?: string;
 }) {
   return (
-    <tr data-scope="mason-data-table" data-part="empty-row">
+    <tr data-scope="ui-data-table" data-part="empty-row">
       <td
         colSpan={Math.max(props.colSpan, 1)}
-        data-scope="mason-data-table"
+        data-scope="ui-data-table"
         data-part="empty"
-        class={cn("mason-data-table-empty", props.class)}
+        class={cn("ui-data-table-empty", props.class)}
       >
         {props.label ?? "No results."}
       </td>

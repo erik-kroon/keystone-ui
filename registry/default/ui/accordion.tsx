@@ -1,38 +1,38 @@
 import {
-  Accordion as KeystoneAccordion,
-  type AccordionContentProps as KeystoneAccordionContentProps,
-  type AccordionHeaderProps as KeystoneAccordionHeaderProps,
-  type AccordionItemProps as KeystoneAccordionItemProps,
-  type AccordionRootProps as KeystoneAccordionRootProps,
-  type AccordionTriggerProps as KeystoneAccordionTriggerProps,
-} from "@keystone-ui/keystone/accordion";
+  Accordion as CoreAccordion,
+  type AccordionContentProps as CoreAccordionContentProps,
+  type AccordionHeaderProps as CoreAccordionHeaderProps,
+  type AccordionItemProps as CoreAccordionItemProps,
+  type AccordionRootProps as CoreAccordionRootProps,
+  type AccordionTriggerProps as CoreAccordionTriggerProps,
+} from "@keystone-ui/core/accordion";
 import { splitProps, type JSX } from "solid-js";
 import { cn } from "@/lib/cn";
 
-export type AccordionProps = KeystoneAccordionRootProps;
-export type AccordionItemProps = KeystoneAccordionItemProps;
-export type AccordionHeaderProps = KeystoneAccordionHeaderProps;
-export type AccordionTriggerProps = KeystoneAccordionTriggerProps & {
+export type AccordionProps = CoreAccordionRootProps;
+export type AccordionItemProps = CoreAccordionItemProps;
+export type AccordionHeaderProps = CoreAccordionHeaderProps;
+export type AccordionTriggerProps = CoreAccordionTriggerProps & {
   indicator?: JSX.Element;
 };
-export type AccordionContentProps = KeystoneAccordionContentProps;
+export type AccordionContentProps = CoreAccordionContentProps;
 
 export function Accordion(props: AccordionProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
-  return <KeystoneAccordion.Root {...rest} class={cn("mason-accordion", local.class)} />;
+  return <CoreAccordion.Root {...rest} class={cn("ui-accordion", local.class)} />;
 }
 
 export function AccordionItem(props: AccordionItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
-  return <KeystoneAccordion.Item {...rest} class={cn("mason-accordion-item", local.class)} />;
+  return <CoreAccordion.Item {...rest} class={cn("ui-accordion-item", local.class)} />;
 }
 
 export function AccordionHeader(props: AccordionHeaderProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
-  return <KeystoneAccordion.Header {...rest} class={cn("mason-accordion-header", local.class)} />;
+  return <CoreAccordion.Header {...rest} class={cn("ui-accordion-header", local.class)} />;
 }
 
 export function AccordionTrigger(props: AccordionTriggerProps) {
@@ -40,14 +40,14 @@ export function AccordionTrigger(props: AccordionTriggerProps) {
 
   return (
     <AccordionHeader>
-      <KeystoneAccordion.Trigger {...rest} class={cn("mason-accordion-trigger", local.class)}>
-        <span data-scope="mason-accordion" data-part="trigger-label">
+      <CoreAccordion.Trigger {...rest} class={cn("ui-accordion-trigger", local.class)}>
+        <span data-scope="ui-accordion" data-part="trigger-label">
           {local.children}
         </span>
-        <span class="mason-accordion-indicator" data-scope="mason-accordion" data-part="indicator">
+        <span class="ui-accordion-indicator" data-scope="ui-accordion" data-part="indicator">
           {local.indicator ?? "v"}
         </span>
-      </KeystoneAccordion.Trigger>
+      </CoreAccordion.Trigger>
     </AccordionHeader>
   );
 }
@@ -56,10 +56,10 @@ export function AccordionContent(props: AccordionContentProps) {
   const [local, rest] = splitProps(props, ["children", "class"]);
 
   return (
-    <KeystoneAccordion.Content {...rest} class={cn("mason-accordion-content", local.class)}>
-      <div data-scope="mason-accordion" data-part="content-inner">
+    <CoreAccordion.Content {...rest} class={cn("ui-accordion-content", local.class)}>
+      <div data-scope="ui-accordion" data-part="content-inner">
         {local.children}
       </div>
-    </KeystoneAccordion.Content>
+    </CoreAccordion.Content>
   );
 }

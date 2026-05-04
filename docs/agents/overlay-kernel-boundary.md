@@ -2,7 +2,7 @@
 
 ## Status
 
-Preview boundary note for Keystone overlay internals.
+Preview boundary note for Core overlay internals.
 
 ## Boundary
 
@@ -33,9 +33,9 @@ Public primitives expose overlay behavior through their own parts and state:
 
 ## Rules
 
-- Do not export `packages/keystone/src/overlay/*` as public package subpaths without an ADR or RFC.
-- Do not let Mason import overlay internals.
-- Do not duplicate focus trap, dismissable layer, outside hiding, prevent scroll, or floating metadata in Mason.
+- Do not export `packages/core/src/overlay/*` as public package subpaths without an ADR or RFC.
+- Do not let UI import overlay internals.
+- Do not duplicate focus trap, dismissable layer, outside hiding, prevent scroll, or floating metadata in UI.
 - New overlay primitives should reuse the private kernel or explicitly replace it with a shared deeper kernel.
 - Tests should assert public DOM behavior, focus, dismissal, data attributes, and CSS variables rather than private kernel object shape.
 

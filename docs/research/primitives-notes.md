@@ -10,15 +10,15 @@ Draft
 
 ## Purpose
 
-This is a working notebook for inspiration repos cloned under `inspo/`. Use it to compare API shape, primitive internals, accessibility depth, registry architecture, and data-dense app patterns before changing Keystone or Mason.
+This is a working notebook for inspiration repos cloned under `inspo/`. Use it to compare API shape, primitive internals, accessibility depth, registry architecture, and data-dense app patterns before changing Keystone or UI.
 
-Do not copy source from these repos. Extract product and architecture lessons, then implement Solid-native Keystone/Mason APIs that fit the decisions in:
+Do not copy source from these repos. Extract product and architecture lessons, then implement Solid-native Keystone Core/UI APIs that fit the decisions in:
 
 - [CONTEXT.md](../../CONTEXT.md)
-- [Keystone Internals Inspiration Map](../agents/keystone-internals-inspiration-map.md)
-- [Mason Registry Inspiration Map](mason-shadcn-coss-registry-map.md)
-- [ADR 0001: Keystone And Mason Product Boundary](../adr/0001-keystone-mason-product-boundary.md)
-- [ADR 0003: Mason TanStack App Layer](../adr/0003-mason-tanstack-app-layer.md)
+- [Core Internals Inspiration Map](../agents/core-internals-inspiration-map.md)
+- [Mason Registry Inspiration Map](ui-shadcn-coss-registry-map.md)
+- [ADR 0001: Keystone Core And UI Product Boundary](../adr/0001-keystone-core-ui-boundary.md)
+- [ADR 0003: UI TanStack App Layer](../adr/0003-ui-tanstack-app-layer.md)
 
 ## Research Priorities
 
@@ -27,7 +27,7 @@ Do not copy source from these repos. Extract product and architecture lessons, t
 3. Overlay kernel: Kobalte, Base UI, Floating UI, Radix, corvu.
 4. Collection/select/combobox kernel: Kobalte, Base UI, React Aria/Stately, Ariakit, Zag.
 5. Mason registry and generated source: shadcn registry-template and shadcn/ui.
-6. Mason app-layer components: TanStack Table, Virtual, Router, and Lightweight Charts.
+6. UI app-layer components: TanStack Table, Virtual, Router, and Lightweight Charts.
 
 ## Kobalte
 
@@ -51,15 +51,15 @@ Reference paths:
 ### What I Dislike
 
 - Broad component surface can hide which internals are essential for Keystone's first quality pass.
-- Some public APIs should be treated as precedent, not destination. Keystone needs its own naming, event details, data attribute contract, and RFC-aligned `as` shape.
+- Some public APIs should be treated as precedent, not destination. Core needs its own naming, event details, data attribute contract, and RFC-aligned `as` shape.
 - Styling/package-specific choices are not Keystone concerns.
 
 ### API Ideas For Keystone
 
 - Keep Solid accessors and setters at the API boundary: `<Dialog.Root open={open()} onOpenChange={setOpen} />` and `createDialog({ open: () => props.open })`.
-- Model Keystone internals after Kobalte's small primitive modules, but keep private until Dialog, Select, and Form prove the contracts.
+- Model Core internals after Kobalte's small primitive modules, but keep private until Dialog, Select, and Form prove the contracts.
 - Standardize `data-scope` and `data-part` at every part, with boolean/state attrs layered through a shared helper.
-- Use Kobalte as the default Solid-native parity note for Mason registry items backed by Keystone primitives.
+- Use Kobalte as the default Solid-native parity note for Mason registry items backed by Core primitives.
 
 ## corvu
 
@@ -77,7 +77,7 @@ Reference paths:
 ### What I Like
 
 - Modern Solid-specific package layout with small focused internals.
-- Useful comparison point for making Keystone APIs feel lighter than older primitive libraries.
+- Useful comparison point for making Core APIs feel lighter than older primitive libraries.
 - Separate packages for dismissible behavior, focus trap, presence, prevent scroll, list behavior, persistence, and utilities are good kernel-boundary inspiration.
 - Good reminder that SSR support and ergonomic composition should be designed into primitives early, not patched onto them.
 
@@ -88,9 +88,9 @@ Reference paths:
 
 ### API Ideas For Keystone
 
-- Keep internals small and individually testable even if they ship from one Keystone package.
+- Keep internals small and individually testable even if they ship from one Core package.
 - Compare corvu overlay ergonomics against Kobalte before committing to Dialog/Popover public props.
-- Use corvu as a pressure test for whether Keystone compound APIs are too heavy.
+- Use corvu as a pressure test for whether Core compound APIs are too heavy.
 
 ## solid-primitives
 
@@ -109,8 +109,8 @@ Reference paths:
 ### What I Like
 
 - Strong reference for small, focused Solid utility APIs.
-- Test layout is useful for Keystone kernel modules that should be proven independently from visible components.
-- Event, keyboard, active element, bounds, and controlled props utilities map directly to Keystone internals.
+- Test layout is useful for Core kernel modules that should be proven independently from visible components.
+- Event, keyboard, active element, bounds, and controlled props utilities map directly to Core internals.
 - Community package structure shows how to keep primitive utilities narrow without turning everything into a component.
 
 ### What I Dislike
@@ -145,13 +145,13 @@ Reference paths:
 ### What I Dislike
 
 - Cross-framework parity can bias APIs toward the lowest common denominator.
-- Keystone should not inherit Ark's framework-neutral shape when a Solid-native shape is better.
+- Core should not inherit Ark's framework-neutral shape when a Solid-native shape is better.
 - Machine adapters add conceptual overhead for simple primitives.
 
 ### API Ideas For Keystone
 
 - Study component anatomy naming for components such as Dialog, Menu, Select, Tooltip, Tabs, Slider, and Date Picker.
-- Use Ark as a parity reference when deciding whether Keystone public APIs should stay stable across future wrappers.
+- Use Ark as a parity reference when deciding whether Core public APIs should stay stable across future wrappers.
 - Do not expose state machine internals publicly unless Keystone users gain clear value.
 
 ## Zag.js
@@ -178,7 +178,7 @@ Reference paths:
 
 - State machine architecture can be too heavy for Keystone's smallest primitives.
 - Public machine-centric APIs may feel alien to Solid users if applied everywhere.
-- Keystone should not inherit Zag's abstraction layers wholesale before proving Dialog and Select.
+- Core should not inherit Zag's abstraction layers wholesale before proving Dialog and Select.
 
 ### API Ideas For Keystone
 
@@ -209,14 +209,14 @@ Reference paths:
 ### What I Dislike
 
 - React rendering machinery does not translate directly to Solid.
-- Stores, refs, render element helpers, and React event assumptions must not drive Keystone API shape.
+- Stores, refs, render element helpers, and React event assumptions must not drive Core API shape.
 - API sophistication can tempt overbuilding before Keystone has stable internals.
 
 ### API Ideas For Keystone
 
-- Use Base UI as the default runtime-depth parity source, especially for Mason `meta.parity`.
+- Use Base UI as the default runtime-depth parity source, especially for UI `meta.parity`.
 - Adapt event reasons/details where callbacks need structured context, while preserving the repo rule that user handlers run first and internal behavior skips on `event.defaultPrevented`.
-- Build Keystone kernel modules around the recurring Base UI internals: render/polymorphism, data attributes, composite/list, field registration, floating, transition/presence, and overlay dismissal.
+- Build Core kernel modules around the recurring Base UI internals: render/polymorphism, data attributes, composite/list, field registration, floating, transition/presence, and overlay dismissal.
 
 ## Radix Primitives
 
@@ -268,7 +268,7 @@ Reference paths:
 ### What I Like
 
 - Deepest accessibility, internationalization, collection, and interaction reference in the cloned set.
-- The split between Aria behavior, Stately state, Types, and Internationalized utilities is useful for reasoning about Keystone internals.
+- The split between Aria behavior, Stately state, Types, and Internationalized utilities is useful for reasoning about Core internals.
 - Strong source for keyboard interaction details in listbox, select, combobox, menu, table/grid, calendar, date picker, and overlays.
 - Date, number, string, locale, and selection packages are valuable when Keystone moves beyond basic primitives.
 
@@ -276,7 +276,7 @@ Reference paths:
 
 - React hook and Stately APIs do not map cleanly to Solid component ergonomics.
 - The ecosystem scale is larger than Keystone's near-term milestone.
-- Spectrum styling and product-specific assumptions are not Mason defaults.
+- Spectrum styling and product-specific assumptions are not UI defaults.
 
 ### API Ideas For Keystone
 
@@ -307,7 +307,7 @@ Reference paths:
 
 - Store-first public API may not be the right default for Keystone's ergonomic compound components.
 - React package is much deeper than Solid package, so parity conclusions need care.
-- Could pull Keystone toward app-level patterns that Mason should own.
+- Could pull Keystone toward app-level patterns that UI should own.
 
 ### API Ideas For Keystone
 
@@ -328,17 +328,17 @@ Reference paths:
 
 - Minimal registry authoring and built output model.
 - Shows static JSON distribution with file contents, dependencies, registry dependencies, and targets.
-- Good third-party registry template precedent for Mason once Mason has a registry authoring story.
+- Good third-party registry template precedent for UI once UI has a registry authoring story.
 
 ### What I Dislike
 
-- Next.js and React defaults do not fit Mason.
-- Tailwind and v0 assumptions should be optional, not core Mason contracts.
+- Next.js and React defaults do not fit UI.
+- Tailwind and v0 assumptions should be optional, not core UI contracts.
 
-### API Ideas For Mason
+### API Ideas For UI
 
 - Provide a Solid-first registry template later with `registry/default`, built JSON, preview app, and validation.
-- Keep compatibility with shadcn-style item concepts, but normalize into Mason types and Solid targets.
+- Keep compatibility with shadcn-style item concepts, but normalize into UI types and Solid targets.
 - Preserve explicit file targets and dependency metadata in Mason install transactions.
 
 ## shadcn/ui
@@ -355,16 +355,16 @@ Reference paths:
 
 - Best reference for source-first component distribution, CLI workflows, registry metadata, docs previews, examples, and templates.
 - Shows how a registry can be both product surface and install backend.
-- Template matrix is useful precedent for Mason supporting Vite Solid, SolidStart, TanStack Router, and monorepos.
+- Template matrix is useful precedent for UI supporting Vite Solid, SolidStart, TanStack Router, and monorepos.
 
 ### What I Dislike
 
-- React, Next, Radix, and Tailwind assumptions must not leak into Mason as hard requirements.
-- Registry scale can encourage broad catalogs before Keystone behavior is stable.
+- React, Next, Radix, and Tailwind assumptions must not leak into UI as hard requirements.
+- Registry scale can encourage broad catalogs before Core behavior is stable.
 
-### API Ideas For Mason
+### API Ideas For UI
 
-- Keep Mason generated components readable and owned by the user project.
+- Keep UI generated components readable and owned by the user project.
 - Mason registry items should include `meta.parity`, compatibility metadata, file tree, dependencies, registry dependencies, docs, and preview info.
 - CLI planning should stay deterministic: resolve transitive registry dependencies, detect target paths, report conflicts, and verify output.
 
@@ -408,16 +408,16 @@ Reference paths:
 
 - Strong headless core plus framework adapter architecture.
 - Feature modules make sorting, filtering, row models, column visibility, pagination, grouping, pinning, and selection inspectable.
-- Solid adapter is directly relevant for Mason data table components.
+- Solid adapter is directly relevant for UI data table components.
 
 ### What I Dislike
 
-- This is Mason app-layer inspiration, not Keystone primitive scope.
-- Data-grid behavior can become a product of its own if Mason tries to wrap too much too early.
+- This is UI app-layer inspiration, not Core primitive scope.
+- Data-grid behavior can become a product of its own if UI tries to wrap too much too early.
 
-### API Ideas For Mason
+### API Ideas For UI
 
-- Mason table components should compose `@tanstack/solid-table`, not custom table state.
+- UI table components should compose `@tanstack/solid-table`, not custom table state.
 - Registry examples should expose the table instance and column definitions plainly so user projects own the code.
 - Treat table blocks as app components with parity notes pointing to TanStack Table.
 
@@ -432,17 +432,17 @@ Reference paths:
 ### What I Like
 
 - Small core and Solid adapter are a good model for virtualization without framework lock-in.
-- Useful for Mason tables, command palettes, large lists, and eventual dense blocks.
+- Useful for UI tables, command palettes, large lists, and eventual dense blocks.
 
 ### What I Dislike
 
-- Virtualization should not be built into Keystone primitives by default.
+- Virtualization should not be built into Core primitives by default.
 - Virtual collections complicate accessibility and keyboard behavior if introduced before normal collections are stable.
 
-### API Ideas For Mason
+### API Ideas For UI
 
-- Use `@tanstack/solid-virtual` for Mason virtualized table/list examples.
-- Keep Keystone Select/Combobox collection APIs compatible with future virtualization, but do not implement virtualization in the first primitive kernel.
+- Use `@tanstack/solid-virtual` for UI virtualized table/list examples.
+- Keep Core Select/Combobox collection APIs compatible with future virtualization, but do not implement virtualization in the first primitive kernel.
 
 ## TanStack Router
 
@@ -457,20 +457,20 @@ Reference paths:
 
 ### What I Like
 
-- Directly relevant for Mason templates, page registry items, docs app routing, and generated app examples.
+- Directly relevant for UI templates, page registry items, docs app routing, and generated app examples.
 - File route generator and plugin packages are good references for route-aware Mason install targets.
-- Solid package keeps Mason aligned with a serious app-routing ecosystem.
+- Solid package keeps UI aligned with a serious app-routing ecosystem.
 
 ### What I Dislike
 
-- Router behavior belongs in Mason templates/app components, not Keystone.
+- Router behavior belongs in UI templates/app components, not Keystone.
 - Supporting every router target too early would slow down the registry CLI.
 
-### API Ideas For Mason
+### API Ideas For UI
 
 - Detect TanStack Router and SolidStart separately in `mason init` and `mason add`.
 - Make page/template registry items framework-aware instead of assuming one route directory.
-- Prefer TanStack Router for first-party Mason app templates where useful.
+- Prefer TanStack Router for first-party UI app templates where useful.
 
 ## Lightweight Charts
 
@@ -486,14 +486,14 @@ Reference paths:
 
 - Useful for data-dense visual components: series abstraction, time scale, price scale, crosshair, pane layout, renderers, and plugin boundaries.
 - Strong example of a focused public API over complex rendering internals.
-- Good inspiration for future Mason chart blocks where users need inspectable source and real app behavior.
+- Good inspiration for future UI chart blocks where users need inspectable source and real app behavior.
 
 ### What I Dislike
 
-- Chart rendering is not Keystone primitive scope.
-- Mason should not clone a charting library or ship large custom chart internals before basic app components are proven.
+- Chart rendering is not Core primitive scope.
+- UI should not clone a charting library or ship large custom chart internals before basic app components are proven.
 
-### API Ideas For Mason
+### API Ideas For UI
 
 - For finance/trading-style blocks, wrap established chart libraries rather than building chart engines.
 - Keep chart registry items honest about dependencies and ownership boundaries.
@@ -501,7 +501,7 @@ Reference paths:
 
 ## Cross-Repo Notes
 
-### Keystone Kernel Modules To Prioritize
+### Core Kernel Modules To Prioritize
 
 - Controllable state and event composition.
 - ID registration and SSR-safe DOM access.
@@ -513,7 +513,7 @@ Reference paths:
 - Form-control ARIA relationships, hidden input helpers, form reset/submission hooks.
 - Collection registration, list navigation, typeahead, and single selection.
 
-### Components That Probably Need Explicit State Modeling
+### UI That Probably Need Explicit State Modeling
 
 - Select.
 - Combobox.
@@ -524,9 +524,9 @@ Reference paths:
 - Date Picker and Calendar.
 - Navigation Menu.
 
-### Mason Parity Defaults
+### UI Parity Defaults
 
-- Keystone-backed primitive components: Base UI for runtime depth, Kobalte for Solid-native API shape.
+- Core-backed primitive components: Base UI for runtime depth, Kobalte for Solid-native API shape.
 - Registry and CLI: shadcn/ui and shadcn registry-template.
 - Data table: TanStack Table.
 - Virtualized lists/tables: TanStack Virtual.
@@ -537,6 +537,6 @@ Reference paths:
 
 - React-shaped translations of `forwardRef`, `asChild`, Slot, cloneElement, React hooks, or synthetic event assumptions.
 - TanStack dependencies inside Keystone.
-- Broad Mason component catalogs before Keystone overlay, field/form, collection, and select internals are stable.
+- Broad UI item catalogs before Core overlay, field/form, collection, and select internals are stable.
 - Copying source from inspiration repos.
-- Treating registry metadata as optional for first-party Mason items; `meta.parity` should be required.
+- Treating registry metadata as optional for first-party UI items; `meta.parity` should be required.

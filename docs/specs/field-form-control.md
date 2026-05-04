@@ -6,7 +6,7 @@ Beta accessibility spec for the 0.1 preview.
 
 ## Scope
 
-This spec covers Keystone `Field`, `Fieldset`, `FormControl`, and the standalone `Label`, `Description`, and `ErrorMessage` primitives. Mason TextField and SelectField may compose these parts for styled source, but label, description, error, validation, hidden input, reset, and ARIA wiring belong to Keystone.
+This spec covers Core `Field`, `Fieldset`, `FormControl`, and the standalone `Label`, `Description`, and `ErrorMessage` primitives. UI TextField and SelectField may compose these parts for styled source, but label, description, error, validation, hidden input, reset, and ARIA wiring belong to Keystone.
 
 ## Anatomy
 
@@ -45,7 +45,7 @@ Standalone anatomy:
 
 ## Keyboard
 
-Field and FormControl do not add custom keyboard interaction. Keyboard behavior remains native to the rendered control or to the Keystone primitive composed inside the control.
+Field and FormControl do not add custom keyboard interaction. Keyboard behavior remains native to the rendered control or to the Core primitive composed inside the control.
 
 Required behavior:
 
@@ -73,7 +73,7 @@ Validation state must be observable through data attributes and through ARIA/nat
 ## Form Participation
 
 - Native controls participate through normal browser submission.
-- Keystone primitives that need hidden inputs use `HiddenInput`.
+- Core primitives that need hidden inputs use `HiddenInput`.
 - Hidden inputs serialize the current value with the configured name.
 - Disabled controls do not submit values.
 - Form reset restores default value and default validity/touched/dirty state.
@@ -95,7 +95,7 @@ Form state attributes include:
 - `data-touched`
 - `data-validating`
 
-Mason fields should style these attributes directly instead of duplicating validation state.
+UI fields should style these attributes directly instead of duplicating validation state.
 
 Fieldset state attributes include:
 

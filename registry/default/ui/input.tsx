@@ -12,10 +12,10 @@ export function Input(props: InputProps) {
     <input
       {...rest}
       aria-invalid={local.invalid || undefined}
-      data-scope="mason-input"
+      data-scope="ui-input"
       data-part="root"
       data-invalid={local.invalid ? "" : undefined}
-      class={cn("mason-input", local.class)}
+      class={cn("ui-input", local.class)}
     />
   );
 }

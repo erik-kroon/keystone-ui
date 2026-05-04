@@ -27,9 +27,9 @@ export function DataTableFacetedFilter<TData extends RowData>(props: {
 
   return (
     <fieldset
-      data-scope="mason-data-table"
+      data-scope="ui-data-table"
       data-part="faceted-filter"
-      class={cn("mason-data-table-faceted-filter", props.class)}
+      class={cn("ui-data-table-faceted-filter", props.class)}
     >
       <legend>{props.title}</legend>
       <Show
@@ -40,7 +40,7 @@ export function DataTableFacetedFilter<TData extends RowData>(props: {
           {(option) => {
             const checked = createMemo(() => selectedValues().has(option.value));
             return (
-              <label data-scope="mason-data-table" data-part="faceted-option">
+              <label data-scope="ui-data-table" data-part="faceted-option">
                 <input
                   type={props.multiple === false ? "radio" : "checkbox"}
                   checked={checked()}
@@ -62,7 +62,7 @@ export function DataTableFacetedFilter<TData extends RowData>(props: {
                 />
                 <span>{option.label}</span>
                 <Show when={optionCount(option) !== undefined}>
-                  <span data-scope="mason-data-table" data-part="faceted-count">
+                  <span data-scope="ui-data-table" data-part="faceted-count">
                     {optionCount(option)}
                   </span>
                 </Show>
@@ -74,7 +74,7 @@ export function DataTableFacetedFilter<TData extends RowData>(props: {
       <Show when={selectedValues().size > 0}>
         <button
           type="button"
-          data-scope="mason-data-table"
+          data-scope="ui-data-table"
           data-part="faceted-clear"
           onClick={() => column()?.setFilterValue(undefined)}
         >

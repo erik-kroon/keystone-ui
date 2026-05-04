@@ -5,20 +5,20 @@
   "title": "Menu",
   "description": "Styled Solid menu component backed by Keystone menu navigation, typeahead, and overlay behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "dependencies": ["@keystone-ui/core@^0.0.0"],
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0"
   },
   "categories": ["overlay", "navigation"],
   "keywords": ["menu", "overlay", "typeahead", "keystone"],
-  "docs": "https://mason.build/docs/components/menu",
+  "docs": "https://keystone-ui.dev/docs/ui/menu",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add menu",
-    "customization": "Style the generated wrappers through mason-menu classes while Keystone owns menu roles, roving focus, typeahead, dismissal, and positioning.",
+    "customization": "Style the generated wrappers through ui-menu classes while Core owns menu roles, roving focus, typeahead, dismissal, and positioning.",
     "sourceFiles": ["registry/default/ui/menu.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "dependencies": ["@keystone-ui/core", "cn"],
     "parity": {
       "baseUi": "Thin vertical covers core Menu popup, item roles, roving focus, typeahead, disabled skipping, groups/separators, overlay positioning, and dismissal. Gaps: submenu pointer grace, checkbox/radio item groups, scroll buttons, modal backdrop nuances, and animation lifecycle metadata remain follow-up work.",
       "kobalte": "Matches Kobalte Menu direction for Solid root/content/item parts, keyboard navigation, typeahead, disabled items, and portal/popover composition. Gaps: richer item checked state, nested menu intent, and full dismissable-layer parity remain follow-up work."

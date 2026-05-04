@@ -1,4 +1,4 @@
-export type MasonRegistryErrorCode =
+export type UIRegistryErrorCode =
   | "schema.invalid"
   | "item.unsupportedForInstall"
   | "path.empty"
@@ -22,8 +22,8 @@ export type MasonRegistryErrorCode =
   | "registryDependency.missing"
   | "registryDependency.cycle";
 
-export type MasonRegistryError = {
-  code: MasonRegistryErrorCode;
+export type UIRegistryError = {
+  code: UIRegistryErrorCode;
   message: string;
   path?: Array<string | number>;
   field?: string;
@@ -33,12 +33,12 @@ export type MasonRegistryError = {
 
 export type ValidationResult<T> =
   | { ok: true; value: T; errors: [] }
-  | { ok: false; errors: MasonRegistryError[] };
+  | { ok: false; errors: UIRegistryError[] };
 
 export function ok<T>(value: T): ValidationResult<T> {
   return { ok: true, value, errors: [] };
 }
 
-export function fail<T = never>(errors: MasonRegistryError[]): ValidationResult<T> {
+export function fail<T = never>(errors: UIRegistryError[]): ValidationResult<T> {
   return { ok: false, errors };
 }

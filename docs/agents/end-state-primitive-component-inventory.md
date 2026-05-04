@@ -4,9 +4,9 @@
 
 This inventory records the desired end-state shape so future work can classify new surfaces consistently.
 
-Keystone owns headless accessible primitives and shared primitive helpers. Mason owns styled copy-paste components, TanStack-backed app components, blocks, templates, themes, registry metadata, and generated source conventions.
+Core owns headless accessible primitives and shared primitive helpers. UI owns styled copy-paste components, TanStack-backed app components, blocks, templates, themes, registry metadata, and generated source conventions.
 
-## Keystone Primitive Inventory
+## Core Primitive Inventory
 
 ### Kernel Helpers
 
@@ -127,9 +127,9 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 - ColorWheel
 - ColorSwatch
 
-## Mason Component Inventory
+## UI Component Inventory
 
-### Mason Base Components
+### UI Base UI
 
 - Button
 - ButtonGroup
@@ -152,7 +152,7 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 - CodeBlock
 - CopyButton
 
-### Styled Form Components
+### Styled Form UI
 
 - Form
 - Field
@@ -176,7 +176,7 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 - SearchInput
 - SubmitButton
 
-### TanStack Form Components
+### TanStack Form UI
 
 - TanStackForm
 - TanStackField
@@ -195,7 +195,7 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 - FormMessage
 - FormSubmit
 
-### Keystone-Backed Styled Components
+### Keystone-Backed Styled UI
 
 - Dialog
 - AlertDialog
@@ -219,7 +219,7 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 - ToggleGroup
 - SegmentedControl
 
-### TanStack Table Components
+### TanStack Table UI
 
 - DataTable
 - DataTableToolbar
@@ -231,7 +231,7 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 - DataTableEmpty
 - DataTableSkeleton
 
-### TanStack Store And Hotkeys Components
+### TanStack Store And Hotkeys UI
 
 - AppStoreProvider
 - ThemeStore
@@ -243,7 +243,7 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 - ShortcutRecorder
 - ShortcutSequenceRecorder
 
-### Later Styled Components
+### Later Styled UI
 
 - Calendar
 - DatePicker
@@ -259,7 +259,7 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 - Pagination
 - Toolbar
 
-## Mason Blocks
+## UI Blocks
 
 - Login
 - Signup
@@ -283,7 +283,7 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 - File upload flow
 - Search/results page
 
-## Mason Templates
+## UI Templates
 
 - Vite Solid basic
 - Vite Solid dashboard
@@ -300,23 +300,23 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 
 ## Preferred Build Order
 
-1. Keystone kernel helpers.
+1. Core kernel helpers.
 2. Dialog, AlertDialog, Popover, Tooltip.
 3. Field/FormControl, Checkbox, RadioGroup, Switch.
 4. Select, Listbox, Combobox.
 5. Menu, DropdownMenu, ContextMenu, Menubar.
 6. Tabs, Accordion, Collapsible.
-7. Mason base components: Button, Input, Label, Card, Badge, Separator.
-8. Mason TanStack Form field adapters.
-9. Mason Keystone-backed components: Dialog, Select, Popover, Menu.
-10. Mason TanStack Table data table components.
-11. Mason Store and Hotkeys app helpers.
-12. Mason blocks: auth, dashboard shell, settings, data table.
+7. UI base components: Button, Input, Label, Card, Badge, Separator.
+8. UI TanStack Form field adapters.
+9. UI Core-backed components: Dialog, Select, Popover, Menu.
+10. UI TanStack Table data table components.
+11. UI Store and Hotkeys app helpers.
+12. UI blocks: auth, dashboard shell, settings, data table.
 13. Date, color, rich controls, charts, and advanced templates.
 
 ## Classification Rules
 
 - If the surface owns accessibility behavior, focus, keyboard interaction inside a widget, selection semantics, positioning, dismissal, or form-control ARIA wiring, start in Keystone.
-- If the surface is visual styling, layout, tokens, app state, schema validation, data table behavior, command shortcuts, examples, blocks, or templates, start in Mason.
-- If the surface depends on TanStack Form, Table, Store, Hotkeys, Router, or Start, it belongs in Mason unless a later ADR changes Keystone's package boundary.
-- If a behavior can be shared by multiple Keystone primitives, implement it as a private Keystone kernel helper first and expose it publicly only after at least two primitives prove the API.
+- If the surface is visual styling, layout, tokens, app state, schema validation, data table behavior, command shortcuts, examples, blocks, or templates, start in UI.
+- If the surface depends on TanStack Form, Table, Store, Hotkeys, Router, or Start, it belongs in UI unless a later ADR changes Keystone's package boundary.
+- If a behavior can be shared by multiple Core primitives, implement it as a private Core kernel helper first and expose it publicly only after at least two primitives prove the API.

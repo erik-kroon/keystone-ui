@@ -10,9 +10,9 @@ export function DataTableRowActions<TData extends RowData>(props: {
 }) {
   return (
     <div
-      data-scope="mason-data-table"
+      data-scope="ui-data-table"
       data-part="row-actions"
-      class={cn("mason-data-table-row-actions", props.class)}
+      class={cn("ui-data-table-row-actions", props.class)}
     >
       <For each={props.actions}>
         {(action) => (

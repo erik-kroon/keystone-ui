@@ -6,7 +6,7 @@ Beta accessibility spec for the 0.1 preview.
 
 ## Scope
 
-This spec covers Keystone Select and Mason SelectField items that delegate selection behavior to Keystone. It applies to `Select.Root`, `Select.Trigger`, `Select.Value`, `Select.Positioner`, `Select.Content`, `Select.Listbox`, `Select.Group`, `Select.GroupLabel`, `Select.Item`, `Select.ItemText`, `Select.ItemIndicator`, and hidden form participation.
+This spec covers Core Select and UI SelectField items that delegate selection behavior to Keystone. It applies to `Select.Root`, `Select.Trigger`, `Select.Value`, `Select.Positioner`, `Select.Content`, `Select.Listbox`, `Select.Group`, `Select.GroupLabel`, `Select.Item`, `Select.ItemText`, `Select.ItemIndicator`, and hidden form participation.
 
 ## Anatomy
 
@@ -99,4 +99,4 @@ Floating parts expose Keystone geometry CSS variables.
 
 - Manual screen-reader evidence for the trigger/listbox pattern must be recorded.
 - Large collection and virtualization guidance is not stable.
-- Async item loading and filtering belong to Combobox or Mason app composition until separately specified.
+- Async item loading and filtering belong to Combobox or UI app composition until separately specified.

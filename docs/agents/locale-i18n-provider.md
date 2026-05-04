@@ -2,7 +2,7 @@
 
 ## Status
 
-Implemented for the Keystone kernel in `packages/keystone/src/locale/index.tsx`.
+Implemented for the Core kernel in `packages/core/src/locale/index.tsx`.
 
 ## Audit
 
@@ -13,7 +13,7 @@ Implemented for the Keystone kernel in `packages/keystone/src/locale/index.tsx`.
 ## API Contract
 
 - `createLocale(options)` returns Solid accessors for `locale`, `direction`, merged `messages`, and `getMessage(key)`.
-- `Locale.Provider` / `LocaleProvider` provides locale, optional text direction override, and partial localized primitive messages to child Keystone primitives.
+- `Locale.Provider` / `LocaleProvider` provides locale, optional text direction override, and partial localized primitive messages to child Core primitives.
 - `useLocale()` returns the nearest provider context or stable SSR-safe defaults.
 - Default locale is `en-US`; default direction is inferred from the locale with `Intl.Locale.textInfo` when available and an RTL language-code fallback otherwise.
 - Explicit primitive props win over provider context. For example, `Calendar.Root locale="en-GB"` formats with `en-GB` even inside a `Locale.Provider locale="fr-FR"`.
@@ -32,5 +32,5 @@ Implemented for the Keystone kernel in `packages/keystone/src/locale/index.tsx`.
 
 ## Known Limits
 
-- This is a primitive-message kernel, not a full application translation system. Mason or user apps should own route content, async dictionaries, pluralization workflows, and generated source translations.
+- This is a primitive-message kernel, not a full application translation system. UI or user apps should own route content, async dictionaries, pluralization workflows, and generated source translations.
 - Additional Keystone message keys should be added only when a primitive has user-visible fallback text or ARIA labels.

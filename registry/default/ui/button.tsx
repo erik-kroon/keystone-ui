@@ -16,11 +16,11 @@ export function Button(props: ButtonProps) {
   return (
     <button
       {...rest}
-      data-scope="mason-button"
+      data-scope="ui-button"
       data-part="root"
       data-variant={variant()}
       data-size={size()}
-      class={cn("mason-button", `mason-button-${variant()}`, `mason-button-${size()}`, local.class)}
+      class={cn("ui-button", `ui-button-${variant()}`, `ui-button-${size()}`, local.class)}
     />
   );
 }

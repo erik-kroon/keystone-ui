@@ -12,7 +12,7 @@ export function Button(props: ButtonProps) {
       {...props}
       data-scope="button"
       data-part="root"
-      class={cn("mason-button", `mason-button-${variant()}`, props.class)}
+      class={cn("ui-button", `ui-button-${variant()}`, props.class)}
     />
   );
 }

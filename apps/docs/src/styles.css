@@ -65,7 +65,7 @@ a {
 .site-header,
 .hero-section,
 .surface-band,
-.mason-section,
+.ui-section,
 .docs-band,
 .release-section,
 .doc-page {
@@ -300,7 +300,7 @@ h3 {
 }
 
 .surface-band,
-.mason-section,
+.ui-section,
 .docs-band,
 .release-section {
   padding-block: clamp(3rem, 6vw, 5rem);
@@ -489,20 +489,20 @@ h3 {
   color: #fbfaf6;
 }
 
-.mason-section {
+.ui-section {
   background: #ebe6d8;
   color: #202722;
 }
 
-.mason-section .section-heading p {
+.ui-section .section-heading p {
   color: #4e5a53;
 }
 
-.mason-section .eyebrow {
+.ui-section .eyebrow {
   color: #766036;
 }
 
-.mason-flow {
+.ui-flow {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   border-block: 1px solid rgba(32, 39, 34, 0.12);
@@ -678,7 +678,7 @@ a.doc-lane:focus-visible {
   padding-block: clamp(1.5rem, 4vw, 3.5rem) clamp(4rem, 7vw, 6rem);
 }
 
-.mason-doc-page {
+.ui-doc-page {
   background: #ebe6d8;
   color: #202722;
 }
@@ -699,7 +699,7 @@ a.doc-lane:focus-visible {
   font-weight: 600;
 }
 
-.mason-doc-page .back-link {
+.ui-doc-page .back-link {
   color: #5d665f;
 }
 
@@ -732,13 +732,13 @@ a.doc-lane:focus-visible {
   line-height: 1.65;
 }
 
-.mason-doc-page .doc-lede,
-.mason-doc-page .doc-section p,
-.mason-doc-page .doc-list {
+.ui-doc-page .doc-lede,
+.ui-doc-page .doc-section p,
+.ui-doc-page .doc-list {
   color: #4e5a53;
 }
 
-.mason-doc-page .eyebrow {
+.ui-doc-page .eyebrow {
   color: #766036;
 }
 
@@ -750,7 +750,7 @@ a.doc-lane:focus-visible {
   color: #202722;
 }
 
-.mason-doc-page .doc-fact-panel {
+.ui-doc-page .doc-fact-panel {
   background: #f7f4ec;
 }
 
@@ -809,7 +809,7 @@ a.doc-lane:focus-visible {
   border-top: 1px solid rgba(32, 39, 34, 0.14);
 }
 
-.mason-doc-page .contract-nav {
+.ui-doc-page .contract-nav {
   border-top-color: rgba(32, 39, 34, 0.14);
 }
 
@@ -826,7 +826,7 @@ a.doc-lane:focus-visible {
   text-align: left;
 }
 
-.mason-doc-page .contract-nav-item {
+.ui-doc-page .contract-nav-item {
   border-bottom-color: rgba(32, 39, 34, 0.1);
 }
 
@@ -840,7 +840,7 @@ a.doc-lane:focus-visible {
   font-size: 0.72rem;
 }
 
-.mason-doc-page .contract-nav-item small {
+.ui-doc-page .contract-nav-item small {
   color: #66716a;
 }
 
@@ -913,7 +913,7 @@ a.doc-lane:focus-visible {
   line-height: 1.6;
 }
 
-.mason-doc-page .contract-detail-header p {
+.ui-doc-page .contract-detail-header p {
   color: #4e5a53;
 }
 
@@ -935,7 +935,7 @@ a.doc-lane:focus-visible {
   border-top: 1px solid rgba(32, 39, 34, 0.12);
 }
 
-.mason-doc-page .metadata-table {
+.ui-doc-page .metadata-table {
   border-top-color: rgba(32, 39, 34, 0.12);
 }
 
@@ -948,7 +948,7 @@ a.doc-lane:focus-visible {
   padding: 0.8rem 0;
 }
 
-.mason-doc-page .metadata-row {
+.ui-doc-page .metadata-row {
   border-bottom-color: rgba(32, 39, 34, 0.1);
 }
 
@@ -959,7 +959,7 @@ a.doc-lane:focus-visible {
   text-transform: uppercase;
 }
 
-.mason-doc-page .metadata-head {
+.ui-doc-page .metadata-head {
   color: #66716a;
 }
 
@@ -974,8 +974,8 @@ a.doc-lane:focus-visible {
   padding-top: 1rem;
 }
 
-.mason-doc-page .doc-section,
-.mason-doc-page .doc-panel {
+.ui-doc-page .doc-section,
+.ui-doc-page .doc-panel {
   border-top-color: rgba(32, 39, 34, 0.14);
 }
 
@@ -1088,7 +1088,7 @@ a.doc-lane:focus-visible {
     align-items: flex-start;
   }
 
-  .mason-flow {
+  .ui-flow {
     grid-template-columns: 1fr;
   }
 

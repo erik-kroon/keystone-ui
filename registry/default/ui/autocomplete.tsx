@@ -1,75 +1,66 @@
 import {
-  Autocomplete as KeystoneAutocomplete,
-  type AutocompleteClearProps as KeystoneAutocompleteClearProps,
-  type AutocompleteContentProps as KeystoneAutocompleteContentProps,
-  type AutocompleteGroupLabelProps as KeystoneAutocompleteGroupLabelProps,
-  type AutocompleteGroupProps as KeystoneAutocompleteGroupProps,
-  type AutocompleteInputProps as KeystoneAutocompleteInputProps,
-  type AutocompleteItemIndicatorProps as KeystoneAutocompleteItemIndicatorProps,
-  type AutocompleteItemProps as KeystoneAutocompleteItemProps,
-  type AutocompleteItemTextProps as KeystoneAutocompleteItemTextProps,
-  type AutocompleteListboxProps as KeystoneAutocompleteListboxProps,
-  type AutocompletePortalProps as KeystoneAutocompletePortalProps,
-  type AutocompletePositionerProps as KeystoneAutocompletePositionerProps,
-  type AutocompleteRootProps as KeystoneAutocompleteRootProps,
-  type AutocompleteTriggerProps as KeystoneAutocompleteTriggerProps,
-} from "@keystone-ui/keystone/autocomplete";
+  Autocomplete as CoreAutocomplete,
+  type AutocompleteClearProps as CoreAutocompleteClearProps,
+  type AutocompleteContentProps as CoreAutocompleteContentProps,
+  type AutocompleteGroupLabelProps as CoreAutocompleteGroupLabelProps,
+  type AutocompleteGroupProps as CoreAutocompleteGroupProps,
+  type AutocompleteInputProps as CoreAutocompleteInputProps,
+  type AutocompleteItemIndicatorProps as CoreAutocompleteItemIndicatorProps,
+  type AutocompleteItemProps as CoreAutocompleteItemProps,
+  type AutocompleteItemTextProps as CoreAutocompleteItemTextProps,
+  type AutocompleteListboxProps as CoreAutocompleteListboxProps,
+  type AutocompletePortalProps as CoreAutocompletePortalProps,
+  type AutocompletePositionerProps as CoreAutocompletePositionerProps,
+  type AutocompleteRootProps as CoreAutocompleteRootProps,
+  type AutocompleteTriggerProps as CoreAutocompleteTriggerProps,
+} from "@keystone-ui/core/autocomplete";
 import { splitProps } from "solid-js";
 import { cn } from "@/lib/cn";
 
-export type AutocompleteProps = KeystoneAutocompleteRootProps;
-export type AutocompleteInputProps = KeystoneAutocompleteInputProps;
-export type AutocompleteTriggerProps = KeystoneAutocompleteTriggerProps;
-export type AutocompleteClearProps = KeystoneAutocompleteClearProps;
-export type AutocompletePortalProps = KeystoneAutocompletePortalProps;
-export type AutocompletePositionerProps = KeystoneAutocompletePositionerProps;
-export type AutocompleteContentProps = KeystoneAutocompleteContentProps & {
+export type AutocompleteProps = CoreAutocompleteRootProps;
+export type AutocompleteInputProps = CoreAutocompleteInputProps;
+export type AutocompleteTriggerProps = CoreAutocompleteTriggerProps;
+export type AutocompleteClearProps = CoreAutocompleteClearProps;
+export type AutocompletePortalProps = CoreAutocompletePortalProps;
+export type AutocompletePositionerProps = CoreAutocompletePositionerProps;
+export type AutocompleteContentProps = CoreAutocompleteContentProps & {
   portal?: AutocompletePortalProps;
   positionerClass?: string;
 };
-export type AutocompleteListboxProps = KeystoneAutocompleteListboxProps;
-export type AutocompleteGroupProps = KeystoneAutocompleteGroupProps;
-export type AutocompleteGroupLabelProps = KeystoneAutocompleteGroupLabelProps;
-export type AutocompleteItemProps = KeystoneAutocompleteItemProps;
-export type AutocompleteItemTextProps = KeystoneAutocompleteItemTextProps;
-export type AutocompleteItemIndicatorProps = KeystoneAutocompleteItemIndicatorProps;
+export type AutocompleteListboxProps = CoreAutocompleteListboxProps;
+export type AutocompleteGroupProps = CoreAutocompleteGroupProps;
+export type AutocompleteGroupLabelProps = CoreAutocompleteGroupLabelProps;
+export type AutocompleteItemProps = CoreAutocompleteItemProps;
+export type AutocompleteItemTextProps = CoreAutocompleteItemTextProps;
+export type AutocompleteItemIndicatorProps = CoreAutocompleteItemIndicatorProps;
 
 export function Autocomplete(props: AutocompleteProps) {
-  return <KeystoneAutocomplete.Root {...props} />;
+  return <CoreAutocomplete.Root {...props} />;
 }
 
 export function AutocompleteInput(props: AutocompleteInputProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneAutocomplete.Input {...rest} class={cn("mason-autocomplete-input", local.class)} />
-  );
+  return <CoreAutocomplete.Input {...rest} class={cn("ui-autocomplete-input", local.class)} />;
 }
 
 export function AutocompleteTrigger(props: AutocompleteTriggerProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneAutocomplete.Trigger {...rest} class={cn("mason-autocomplete-trigger", local.class)} />
-  );
+  return <CoreAutocomplete.Trigger {...rest} class={cn("ui-autocomplete-trigger", local.class)} />;
 }
 
 export function AutocompleteClear(props: AutocompleteClearProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneAutocomplete.Clear {...rest} class={cn("mason-autocomplete-clear", local.class)} />
-  );
+  return <CoreAutocomplete.Clear {...rest} class={cn("ui-autocomplete-clear", local.class)} />;
 }
 
 export function AutocompletePortal(props: AutocompletePortalProps) {
-  return <KeystoneAutocomplete.Portal {...props} />;
+  return <CoreAutocomplete.Portal {...props} />;
 }
 
 export function AutocompletePositioner(props: AutocompletePositionerProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneAutocomplete.Positioner
-      {...rest}
-      class={cn("mason-autocomplete-positioner", local.class)}
-    />
+    <CoreAutocomplete.Positioner {...rest} class={cn("ui-autocomplete-positioner", local.class)} />
   );
 }
 
@@ -78,12 +69,9 @@ export function AutocompleteContent(props: AutocompleteContentProps) {
   return (
     <AutocompletePortal {...local.portal}>
       <AutocompletePositioner class={local.positionerClass}>
-        <KeystoneAutocomplete.Content
-          {...rest}
-          class={cn("mason-autocomplete-content", local.class)}
-        >
+        <CoreAutocomplete.Content {...rest} class={cn("ui-autocomplete-content", local.class)}>
           {local.children}
-        </KeystoneAutocomplete.Content>
+        </CoreAutocomplete.Content>
       </AutocompletePositioner>
     </AutocompletePortal>
   );
@@ -91,49 +79,39 @@ export function AutocompleteContent(props: AutocompleteContentProps) {
 
 export function AutocompleteListbox(props: AutocompleteListboxProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneAutocomplete.Listbox {...rest} class={cn("mason-autocomplete-listbox", local.class)} />
-  );
+  return <CoreAutocomplete.Listbox {...rest} class={cn("ui-autocomplete-listbox", local.class)} />;
 }
 
 export function AutocompleteGroup(props: AutocompleteGroupProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneAutocomplete.Group {...rest} class={cn("mason-autocomplete-group", local.class)} />
-  );
+  return <CoreAutocomplete.Group {...rest} class={cn("ui-autocomplete-group", local.class)} />;
 }
 
 export function AutocompleteGroupLabel(props: AutocompleteGroupLabelProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneAutocomplete.GroupLabel
-      {...rest}
-      class={cn("mason-autocomplete-group-label", local.class)}
-    />
+    <CoreAutocomplete.GroupLabel {...rest} class={cn("ui-autocomplete-group-label", local.class)} />
   );
 }
 
 export function AutocompleteItem(props: AutocompleteItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneAutocomplete.Item {...rest} class={cn("mason-autocomplete-item", local.class)} />;
+  return <CoreAutocomplete.Item {...rest} class={cn("ui-autocomplete-item", local.class)} />;
 }
 
 export function AutocompleteItemText(props: AutocompleteItemTextProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneAutocomplete.ItemText
-      {...rest}
-      class={cn("mason-autocomplete-item-text", local.class)}
-    />
+    <CoreAutocomplete.ItemText {...rest} class={cn("ui-autocomplete-item-text", local.class)} />
   );
 }
 
 export function AutocompleteItemIndicator(props: AutocompleteItemIndicatorProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneAutocomplete.ItemIndicator
+    <CoreAutocomplete.ItemIndicator
       {...rest}
-      class={cn("mason-autocomplete-item-indicator", local.class)}
+      class={cn("ui-autocomplete-item-indicator", local.class)}
     />
   );
 }

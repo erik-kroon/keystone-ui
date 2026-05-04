@@ -23,9 +23,9 @@ export function DataTableToolbar<TData extends RowData>(props: {
 
   return (
     <div
-      data-scope="mason-data-table"
+      data-scope="ui-data-table"
       data-part="toolbar"
-      class={cn("mason-data-table-toolbar", props.class)}
+      class={cn("ui-data-table-toolbar", props.class)}
     >
       <For each={filterableColumns()}>
         {(column) => {
@@ -39,9 +39,9 @@ export function DataTableToolbar<TData extends RowData>(props: {
                   type="search"
                   value={String(column.getFilterValue() ?? "")}
                   placeholder={meta?.placeholder ?? `Search ${label.toLowerCase()}...`}
-                  data-scope="mason-data-table"
+                  data-scope="ui-data-table"
                   data-part="search"
-                  class="mason-data-table-search"
+                  class="ui-data-table-search"
                   onInput={(event) => {
                     column.setFilterValue(event.currentTarget.value);
                     props.table.setPageIndex(0);
@@ -63,9 +63,9 @@ export function DataTableToolbar<TData extends RowData>(props: {
       <Show when={hasFilters()}>
         <button
           type="button"
-          data-scope="mason-data-table"
+          data-scope="ui-data-table"
           data-part="reset"
-          class="mason-data-table-reset"
+          class="ui-data-table-reset"
           onClick={() => {
             props.table.resetColumnFilters();
             props.table.resetColumnVisibility();
@@ -76,7 +76,7 @@ export function DataTableToolbar<TData extends RowData>(props: {
       </Show>
       <DataTableViewOptions table={props.table} />
       <Show when={props.children}>
-        <div data-scope="mason-data-table" data-part="toolbar-actions">
+        <div data-scope="ui-data-table" data-part="toolbar-actions">
           {props.children}
         </div>
       </Show>

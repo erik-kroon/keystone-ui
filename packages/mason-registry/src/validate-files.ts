@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
-import type { MasonRegistryError } from "./errors";
+import type { UIRegistryError } from "./errors";
 import type { FileDescriptor } from "./schema";
 import { validateRegistryPath } from "./path-safety";
 
@@ -26,8 +26,8 @@ function targetFromRoot(
 export function validateFiles(
   files: FileDescriptor[],
   options: ValidateFilesOptions = {},
-): MasonRegistryError[] {
-  const errors: MasonRegistryError[] = [];
+): UIRegistryError[] {
+  const errors: UIRegistryError[] = [];
   const sourcePaths = new Set<string>();
   const targets = new Set<string>();
 

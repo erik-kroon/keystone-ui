@@ -3,7 +3,7 @@ import {
   primitiveMetadata,
   type PrimitiveMaturity,
   type PrimitiveScope,
-} from "@keystone-ui/keystone";
+} from "@keystone-ui/core";
 
 export type PrimitiveContract = {
   scope: PrimitiveScope;
@@ -53,7 +53,7 @@ export function getPrimitiveMaturityContract(
 const overlayNotes = {
   keyboardNotes: [
     "Escape dismisses the topmost dismissable layer when dismissal is enabled.",
-    "Focus entry, trap, and restore are owned by Keystone overlay internals where the primitive is modal.",
+    "Focus entry, trap, and restore are owned by Core overlay internals where the primitive is modal.",
   ],
   ssrNotes: [
     "Portal and layer behavior runs behind Solid lifecycle guards so server rendering does not touch document APIs.",
@@ -76,7 +76,7 @@ export const primitiveContracts = [
   {
     scope: "accessible-icon",
     title: "AccessibleIcon",
-    importPath: "@keystone-ui/keystone/accessible-icon",
+    importPath: "@keystone-ui/core/accessible-icon",
     roleNotes: ["Root renders a named image wrapper for icon-only visual content."],
     keyboardNotes: ["AccessibleIcon owns no keyboard behavior and does not add focusability."],
     ariaNotes: [
@@ -88,7 +88,7 @@ export const primitiveContracts = [
   {
     scope: "accordion",
     title: "Accordion",
-    importPath: "@keystone-ui/keystone/accordion",
+    importPath: "@keystone-ui/core/accordion",
     roleNotes: ["Headers wrap button triggers; content panels expose disclosure state."],
     keyboardNotes: [
       "Arrow keys move between triggers for the configured orientation.",
@@ -101,7 +101,7 @@ export const primitiveContracts = [
   {
     scope: "autocomplete",
     title: "Autocomplete",
-    importPath: "@keystone-ui/keystone/autocomplete",
+    importPath: "@keystone-ui/core/autocomplete",
     roleNotes: ["Input, listbox, option, group, and popup parts follow the combobox contract."],
     keyboardNotes: collectionNotes.keyboardNotes,
     ariaNotes: ["Input and popup relationships are owned by Keystone combobox behavior."],
@@ -111,7 +111,7 @@ export const primitiveContracts = [
   {
     scope: "calendar",
     title: "Calendar",
-    importPath: "@keystone-ui/keystone/date-picker",
+    importPath: "@keystone-ui/core/date-picker",
     roleNotes: ["Grid, row, column header, cell, and cell trigger parts model a date grid."],
     keyboardNotes: [
       "Arrow keys move by day or week; month navigation triggers move visible range.",
@@ -127,7 +127,7 @@ export const primitiveContracts = [
   {
     scope: "checkbox",
     title: "Checkbox",
-    importPath: "@keystone-ui/keystone/checkbox",
+    importPath: "@keystone-ui/core/checkbox",
     roleNotes: [
       "Root/control parts expose checkbox state and a hidden native input participates in forms.",
     ],
@@ -141,7 +141,7 @@ export const primitiveContracts = [
   {
     scope: "collapsible",
     title: "Collapsible",
-    importPath: "@keystone-ui/keystone/collapsible",
+    importPath: "@keystone-ui/core/collapsible",
     roleNotes: ["Trigger and content parts expose disclosure state."],
     keyboardNotes: ["Button activation toggles open state unless disabled or prevented."],
     ariaNotes: ["Trigger expanded state and content visibility stay coordinated."],
@@ -153,7 +153,7 @@ export const primitiveContracts = [
   {
     scope: "combobox",
     title: "Combobox",
-    importPath: "@keystone-ui/keystone/combobox",
+    importPath: "@keystone-ui/core/combobox",
     roleNotes: [
       "Input owns text entry while listbox and item parts own option navigation and selection.",
     ],
@@ -167,7 +167,7 @@ export const primitiveContracts = [
   {
     scope: "context-menu",
     title: "ContextMenu",
-    importPath: "@keystone-ui/keystone/context-menu",
+    importPath: "@keystone-ui/core/context-menu",
     roleNotes: ["Menu, group, separator, item, and indicator parts use the shared menu kernel."],
     keyboardNotes: collectionNotes.keyboardNotes,
     ariaNotes: ["Disabled, highlighted, checked, and value metadata are exposed on menu items."],
@@ -177,7 +177,7 @@ export const primitiveContracts = [
   {
     scope: "date-picker",
     title: "DatePicker",
-    importPath: "@keystone-ui/keystone/date-picker",
+    importPath: "@keystone-ui/core/date-picker",
     roleNotes: [
       "Root, trigger, content, and nested calendar parts compose date selection with popup behavior.",
     ],
@@ -195,7 +195,7 @@ export const primitiveContracts = [
   {
     scope: "description",
     title: "Description",
-    importPath: "@keystone-ui/keystone/description",
+    importPath: "@keystone-ui/core/description",
     roleNotes: ["Root renders descriptive text without adding widget semantics."],
     keyboardNotes: ["Description owns no keyboard behavior and should not add focusability."],
     ariaNotes: [
@@ -207,9 +207,9 @@ export const primitiveContracts = [
   {
     scope: "direction",
     title: "Direction",
-    importPath: "@keystone-ui/keystone/direction",
+    importPath: "@keystone-ui/core/direction",
     roleNotes: [
-      "Root provides document direction context to descendant Keystone primitives without adding widget roles.",
+      "Root provides document direction context to descendant Core primitives without adding widget roles.",
     ],
     keyboardNotes: [
       "Direction-aware primitives use the nearest provider for horizontal arrow-key order unless their own dir prop overrides it.",
@@ -225,7 +225,7 @@ export const primitiveContracts = [
   {
     scope: "dialog",
     title: "Dialog",
-    importPath: "@keystone-ui/keystone/dialog",
+    importPath: "@keystone-ui/core/dialog",
     roleNotes: [
       "Content owns dialog semantics while title and description provide accessible naming hooks.",
     ],
@@ -239,7 +239,7 @@ export const primitiveContracts = [
   {
     scope: "dropdown-menu",
     title: "DropdownMenu",
-    importPath: "@keystone-ui/keystone/dropdown-menu",
+    importPath: "@keystone-ui/core/dropdown-menu",
     roleNotes: [
       "Trigger, content, group, separator, item, and indicator parts use menu semantics.",
     ],
@@ -251,7 +251,7 @@ export const primitiveContracts = [
   {
     scope: "error-message",
     title: "ErrorMessage",
-    importPath: "@keystone-ui/keystone/error-message",
+    importPath: "@keystone-ui/core/error-message",
     roleNotes: ["Root renders validation feedback with alert semantics by default."],
     keyboardNotes: ["ErrorMessage owns no keyboard behavior and should not add focusability."],
     ariaNotes: [
@@ -263,7 +263,7 @@ export const primitiveContracts = [
   {
     scope: "field",
     title: "Field",
-    importPath: "@keystone-ui/keystone/form",
+    importPath: "@keystone-ui/core/form",
     roleNotes: [
       "Root, label, control, description, error, and hidden-input parts compose native field relationships.",
     ],
@@ -279,7 +279,7 @@ export const primitiveContracts = [
   {
     scope: "fieldset",
     title: "Fieldset",
-    importPath: "@keystone-ui/keystone/fieldset",
+    importPath: "@keystone-ui/core/fieldset",
     roleNotes: [
       "Root renders a native fieldset and Legend supplies the grouped controls' accessible name.",
     ],
@@ -295,7 +295,7 @@ export const primitiveContracts = [
   {
     scope: "form-control",
     title: "FormControl",
-    importPath: "@keystone-ui/keystone/form",
+    importPath: "@keystone-ui/core/form",
     roleNotes: [
       "Root, label, control, description, error, and hidden input parts describe form-control relationships.",
     ],
@@ -311,7 +311,7 @@ export const primitiveContracts = [
   {
     scope: "hover-card",
     title: "HoverCard",
-    importPath: "@keystone-ui/keystone/hover-card",
+    importPath: "@keystone-ui/core/hover-card",
     roleNotes: ["Trigger, positioner, and content parts expose non-modal preview behavior."],
     keyboardNotes: overlayNotes.keyboardNotes,
     ariaNotes: ["Open state, side, align, and geometry variables are exposed for preview content."],
@@ -321,7 +321,7 @@ export const primitiveContracts = [
   {
     scope: "listbox",
     title: "Listbox",
-    importPath: "@keystone-ui/keystone/select",
+    importPath: "@keystone-ui/core/select",
     roleNotes: ["Listbox, option, group, and group-label parts expose collection state."],
     keyboardNotes: collectionNotes.keyboardNotes,
     ariaNotes: ["Options expose selected, highlighted, disabled, and group metadata."],
@@ -331,7 +331,7 @@ export const primitiveContracts = [
   {
     scope: "live-announcer",
     title: "LiveAnnouncer",
-    importPath: "@keystone-ui/keystone/live-announcer",
+    importPath: "@keystone-ui/core/live-announcer",
     roleNotes: ["Live regions announce queued messages without adding interactive widget roles."],
     keyboardNotes: ["LiveAnnouncer owns no keyboard behavior and does not add focusability."],
     ariaNotes: [
@@ -345,7 +345,7 @@ export const primitiveContracts = [
   {
     scope: "label",
     title: "Label",
-    importPath: "@keystone-ui/keystone/label",
+    importPath: "@keystone-ui/core/label",
     roleNotes: ["Root renders a native label for native or custom control association."],
     keyboardNotes: ["Label activation follows native browser behavior for the associated control."],
     ariaNotes: [
@@ -357,7 +357,7 @@ export const primitiveContracts = [
   {
     scope: "locale",
     title: "Locale",
-    importPath: "@keystone-ui/keystone/locale",
+    importPath: "@keystone-ui/core/locale",
     roleNotes: [
       "Provider supplies locale and text direction context to descendants without rendering wrapper DOM or adding widget roles.",
     ],
@@ -375,7 +375,7 @@ export const primitiveContracts = [
   {
     scope: "menu",
     title: "Menu",
-    importPath: "@keystone-ui/keystone/menu",
+    importPath: "@keystone-ui/core/menu",
     roleNotes: [
       "Menu item, group, separator, checkbox/radio item, and indicator behavior share one kernel.",
     ],
@@ -387,7 +387,7 @@ export const primitiveContracts = [
   {
     scope: "menubar",
     title: "Menubar",
-    importPath: "@keystone-ui/keystone/menubar",
+    importPath: "@keystone-ui/core/menubar",
     roleNotes: ["Menubar composes menu parts with horizontal top-level navigation behavior."],
     keyboardNotes: collectionNotes.keyboardNotes,
     ariaNotes: [
@@ -399,7 +399,7 @@ export const primitiveContracts = [
   {
     scope: "navigation-menu",
     title: "NavigationMenu",
-    importPath: "@keystone-ui/keystone/navigation-menu",
+    importPath: "@keystone-ui/core/navigation-menu",
     roleNotes: [
       "Navigation menu uses menu-derived trigger, content, group, separator, and item parts.",
     ],
@@ -413,7 +413,7 @@ export const primitiveContracts = [
   {
     scope: "overlay",
     title: "Overlay",
-    importPath: "@keystone-ui/keystone/overlay",
+    importPath: "@keystone-ui/core/overlay",
     roleNotes: ["Layer parts expose modal and top-layer metadata for overlay coordination."],
     keyboardNotes: overlayNotes.keyboardNotes,
     ariaNotes: [
@@ -425,7 +425,7 @@ export const primitiveContracts = [
   {
     scope: "popover",
     title: "Popover",
-    importPath: "@keystone-ui/keystone/popover",
+    importPath: "@keystone-ui/core/popover",
     roleNotes: [
       "Trigger, positioner, and content parts expose non-modal floating disclosure behavior.",
     ],
@@ -437,7 +437,7 @@ export const primitiveContracts = [
   {
     scope: "popper",
     title: "Popper",
-    importPath: "@keystone-ui/keystone/popper",
+    importPath: "@keystone-ui/core/popper",
     roleNotes: [
       "Anchor, positioner, and arrow parts provide headless geometry without disclosure, dismissal, or focus behavior.",
     ],
@@ -455,7 +455,7 @@ export const primitiveContracts = [
   {
     scope: "portal",
     title: "Portal",
-    importPath: "@keystone-ui/keystone/portal",
+    importPath: "@keystone-ui/core/portal",
     roleNotes: [
       "Root moves rendered children to the configured mount point without changing their semantic roles.",
     ],
@@ -473,7 +473,7 @@ export const primitiveContracts = [
   {
     scope: "radio-group",
     title: "RadioGroup",
-    importPath: "@keystone-ui/keystone/radio-group",
+    importPath: "@keystone-ui/core/radio-group",
     roleNotes: ["Root, item, indicator, and hidden input parts expose one selected value."],
     keyboardNotes: [
       "Arrow keys move and select enabled radio items; horizontal movement follows LTR/RTL direction; Home and End target collection boundaries.",
@@ -487,7 +487,7 @@ export const primitiveContracts = [
   {
     scope: "select",
     title: "Select",
-    importPath: "@keystone-ui/keystone/select",
+    importPath: "@keystone-ui/core/select",
     roleNotes: [
       "Trigger, value, popup, listbox, group, item, item text, and indicator parts expose single selection.",
     ],
@@ -501,7 +501,7 @@ export const primitiveContracts = [
   {
     scope: "sheet",
     title: "Sheet",
-    importPath: "@keystone-ui/keystone/sheet",
+    importPath: "@keystone-ui/core/sheet",
     roleNotes: ["Sheet composes dialog-grade content semantics with side-aware overlay parts."],
     keyboardNotes: overlayNotes.keyboardNotes,
     ariaNotes: ["Title, description, open state, and side metadata are exposed for wrappers."],
@@ -511,7 +511,7 @@ export const primitiveContracts = [
   {
     scope: "slider",
     title: "Slider",
-    importPath: "@keystone-ui/keystone/slider",
+    importPath: "@keystone-ui/core/slider",
     roleNotes: ["Root, track, range, and thumb parts expose range input behavior."],
     keyboardNotes: [
       "Arrow keys step values with RTL-aware horizontal direction; Page, Home, and End keys adjust larger increments and bounds.",
@@ -527,7 +527,7 @@ export const primitiveContracts = [
   {
     scope: "switch",
     title: "Switch",
-    importPath: "@keystone-ui/keystone/switch",
+    importPath: "@keystone-ui/core/switch",
     roleNotes: ["Root, control, thumb, and hidden input parts expose switch state."],
     keyboardNotes: ["Space toggles checked state unless disabled, readonly, or prevented."],
     ariaNotes: ["Checked, required, invalid, readonly, disabled, and state metadata are exposed."],
@@ -537,7 +537,7 @@ export const primitiveContracts = [
   {
     scope: "tabs",
     title: "Tabs",
-    importPath: "@keystone-ui/keystone/tabs",
+    importPath: "@keystone-ui/core/tabs",
     roleNotes: [
       "Root, list, trigger, indicator, and content parts expose tablist and tabpanel relationships.",
     ],
@@ -549,7 +549,7 @@ export const primitiveContracts = [
   {
     scope: "toast",
     title: "Toast",
-    importPath: "@keystone-ui/keystone/toast",
+    importPath: "@keystone-ui/core/toast",
     roleNotes: [
       "Viewport, root, title, description, action, and close parts expose live notification behavior.",
     ],
@@ -565,7 +565,7 @@ export const primitiveContracts = [
   {
     scope: "toolbar",
     title: "Toolbar",
-    importPath: "@keystone-ui/keystone/toolbar",
+    importPath: "@keystone-ui/core/toolbar",
     roleNotes: [
       "Root, button, link, and separator parts expose toolbar orientation and item state.",
     ],
@@ -581,7 +581,7 @@ export const primitiveContracts = [
   {
     scope: "tooltip",
     title: "Tooltip",
-    importPath: "@keystone-ui/keystone/tooltip",
+    importPath: "@keystone-ui/core/tooltip",
     roleNotes: ["Trigger, positioner, and content parts expose descriptive overlay behavior."],
     keyboardNotes: overlayNotes.keyboardNotes,
     ariaNotes: [
@@ -593,7 +593,7 @@ export const primitiveContracts = [
   {
     scope: "visually-hidden",
     title: "VisuallyHidden",
-    importPath: "@keystone-ui/keystone/visually-hidden",
+    importPath: "@keystone-ui/core/visually-hidden",
     roleNotes: [
       "Root renders text or elements that remain in the accessibility tree while being visually clipped.",
     ],

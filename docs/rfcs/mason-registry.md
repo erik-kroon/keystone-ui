@@ -10,20 +10,20 @@ Draft
 
 ## Related
 
-- [ADR 0001: Keystone And Mason Product Boundary](../adr/0001-keystone-mason-product-boundary.md)
+- [ADR 0001: Keystone Core And UI Product Boundary](../adr/0001-keystone-core-ui-boundary.md)
 - [ADR 0002: Scope, Names, License, And Governance](../adr/0002-scope-names-license-governance.md)
-- [RFC: Keystone API](keystone-api.md)
-- [PRD: Keystone And Mason Foundation](../prd/keystone-mason-foundation.md)
+- [RFC: Core API](core-api.md)
+- [PRD: Keystone Core And UI Foundation](../prd/keystone-foundation.md)
 
 ## Summary
 
-Mason is the Solid-native copy-paste registry and CLI layer for Keystone-backed UI.
+UI is the Solid-native copy-paste registry and CLI layer for Core-backed UI.
 
-This RFC depends on the Keystone API RFC for primitive import shape, data attributes, CSS variables, event composition, SSR guarantees, and the first Keystone-backed component target.
+This RFC depends on the Core API RFC for primitive import shape, data attributes, CSS variables, event composition, SSR guarantees, and the first Core-backed component target.
 
-The registry distributes readable source files into user projects. Users own the installed files after installation. Mason may update, diff, and reconcile those files later, but installed source must remain ordinary project source rather than an opaque runtime package.
+The registry distributes readable source files into user projects. Users own the installed files after installation. UI may update, diff, and reconcile those files later, but installed source must remain ordinary project source rather than an opaque runtime package.
 
-Mason should be compatible with shadcn-style registry concepts where useful: registry JSON, item JSON, item types, file lists, npm dependencies, registry dependencies, target paths, namespaces, and registry indexes. Mason must not depend on React-specific assumptions or the shadcn CLI.
+UI should be compatible with shadcn-style registry concepts where useful: registry JSON, item JSON, item types, file lists, npm dependencies, registry dependencies, target paths, namespaces, and registry indexes. UI must not depend on React-specific assumptions or the shadcn CLI.
 
 Multi-file components are first-class registry items. A single item may install several component files, hooks, utilities, and adapters when that keeps generated source readable and locally owned. The CLI should plan those files as one install transaction instead of forcing large app components into one oversized file.
 
@@ -41,8 +41,8 @@ Multi-file components are first-class registry items. A single item may install 
 - Community marketplace ranking, search, reviews, or sponsorship features.
 - Private registry authentication beyond preserving a place in the model.
 - Full update conflict automation.
-- Every Mason block, template, theme, and publishing workflow.
-- Reimplementing Keystone primitive behavior inside Mason source.
+- Every UI block, template, theme, and publishing workflow.
+- Reimplementing Core primitive behavior inside UI source.
 
 ## Registry Model
 
@@ -54,7 +54,7 @@ The root registry document lists discoverable items:
 {
   "$schema": "https://mason.build/schema/registry.json",
   "name": "mason",
-  "homepage": "https://mason.build",
+  "homepage": "https://keystone-ui.dev",
   "items": []
 }
 ```
@@ -73,7 +73,7 @@ An item document describes one installable unit:
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0"
   },
-  "dependencies": ["@keystone-ui/keystone"],
+  "dependencies": ["@keystone-ui/core"],
   "devDependencies": [],
   "registryDependencies": ["button"],
   "files": [
@@ -88,7 +88,7 @@ An item document describes one installable unit:
 
 ## Item Types
 
-Mason should support these item types in the first registry schema:
+UI should support these item types in the first registry schema:
 
 - `registry:ui`: styled UI component source installed into a component directory.
 - `registry:block`: multi-file production UI composed from components.
@@ -120,14 +120,14 @@ Optional metadata:
 
 - `dependencies`: package dependencies to add to the user project.
 - `devDependencies`: package dev dependencies to add to the user project.
-- `registryDependencies`: Mason items that must be installed first.
+- `registryDependencies`: UI items that must be installed first.
 - `compatibility`: supported Mason CLI, Keystone, Solid, and framework ranges.
 - `keywords`: search and docs terms.
 - `docs`: canonical docs URL.
 - `preview`: preview URL or screenshot metadata.
 - `changelog`: human-readable item changes.
 - `integrity`: hash metadata for remote item payloads when available.
-- `meta`: Mason-owned docs and maintenance metadata. First-party default registry items use
+- `meta`: UI-owned docs and maintenance metadata. First-party default registry items use
   `meta.install`, `meta.sourceFiles`, `meta.customization` or `meta.limitations`, and
   `meta.parity`.
 
@@ -150,12 +150,12 @@ First-party Mason registry items must include `meta.parity` so docs and maintain
 
 Reference selection:
 
-- Use `baseUi` first for Keystone-backed primitive and overlay runtime depth.
+- Use `baseUi` first for Core-backed primitive and overlay runtime depth.
 - Use `kobalte` second for Solid-native primitive API shape and composition.
 - For primitive-backed UI items, include both `baseUi` and `kobalte` unless the item is not meaningfully comparable to one of them. If one default reference is skipped, the note set should include a more relevant reference and the item description or limitations should make the exception obvious.
-- TanStack-backed Mason app components may use keys such as `tanstackForm`, `tanstackTable`, `tanstackRouter`, `tanstackStore`, or `tanstackHotkeys`.
+- TanStack-backed UI app components may use keys such as `tanstackForm`, `tanstackTable`, `tanstackRouter`, `tanstackStore`, or `tanstackHotkeys`.
 - Toast behavior may include `sonner` because notification queueing, viewport behavior, and action/close ergonomics are better compared there than through primitive-only references.
-- Mason utilities, blocks, templates, and source-registry conventions may use keys such as `mason` or `shadcn`.
+- UI utilities, blocks, templates, and source-registry conventions may use keys such as `components` or `shadcn`.
 
 Expected shape:
 
@@ -185,15 +185,15 @@ Multi-file item documents may include:
 - `filesRoot`: source directory shared by the item files.
 - `targetRoot`: destination directory shared by the item files.
 
-`target` is required for `registry:page`, `registry:config`, `registry:rule`, `registry:asset`, and `registry:file` unless the item provides `filesRoot` and `targetRoot`. For `registry:ui`, `registry:hook`, `registry:lib`, and `registry:theme`, Mason may derive the target from project configuration when `target` is omitted.
+`target` is required for `registry:page`, `registry:config`, `registry:rule`, `registry:asset`, and `registry:file` unless the item provides `filesRoot` and `targetRoot`. For `registry:ui`, `registry:hook`, `registry:lib`, and `registry:theme`, UI may derive the target from project configuration when `target` is omitted.
 
 Generated targets must be deterministic. The same registry item installed into the same project config must produce the same write plan.
 
-For multi-file items, every file descriptor participates in one item-level transaction. Validation, conflict detection, dependency planning, installed metadata, diff, and update must consider the full file set. Large Mason app components such as `data-table` should prefer several focused files over a single generated module when that improves source ownership. When `filesRoot` and `targetRoot` are present, each file without an explicit `target` is installed at `targetRoot` plus its path relative to `filesRoot`; explicit file targets remain available for exceptions.
+For multi-file items, every file descriptor participates in one item-level transaction. Validation, conflict detection, dependency planning, installed metadata, diff, and update must consider the full file set. Large UI app components such as `data-table` should prefer several focused files over a single generated module when that improves source ownership. When `filesRoot` and `targetRoot` are present, each file without an explicit `target` is installed at `targetRoot` plus its path relative to `filesRoot`; explicit file targets remain available for exceptions.
 
 ## Target Resolution
 
-Mason resolves targets from project config:
+UI resolves targets from project config:
 
 - `ui` files default to the configured UI component alias, usually `src/components/ui`.
 - `hook` files default to the configured hooks directory, usually `src/hooks`.
@@ -205,7 +205,7 @@ Path aliases must be resolved through project configuration, not string guessing
 
 ## Dependency Handling
 
-Package dependencies are added to the detected package manager manifest. Mason must detect and preserve the user package manager:
+Package dependencies are added to the detected package manager manifest. UI must detect and preserve the user package manager:
 
 - Bun through `bun.lock`, `bun.lockb`, or `packageManager`.
 - pnpm through `pnpm-lock.yaml` or `packageManager`.
@@ -214,7 +214,7 @@ Package dependencies are added to the detected package manager manifest. Mason m
 
 The first implementation should write dependency changes to `package.json` and print the install command. Running package installation may be explicit or prompted; `--dry-run` must never install packages.
 
-Mason must reject invalid dependency specifiers before writing. Registry package dependencies should be exact or semver-compatible ranges chosen by registry authors. Mason should preserve existing project versions unless an item declares an incompatible required range.
+UI must reject invalid dependency specifiers before writing. Registry package dependencies should be exact or semver-compatible ranges chosen by registry authors. UI should preserve existing project versions unless an item declares an incompatible required range.
 
 ## Registry Dependencies
 
@@ -224,7 +224,7 @@ Mason must reject invalid dependency specifiers before writing. Registry package
 - Namespaced items, such as `@acme/input-form`.
 - Fully qualified item URLs.
 
-Resolution must be deterministic and cycle-safe. Mason must reject dependency cycles, missing items, unsupported item types, schema-invalid dependency payloads, and remote registry payloads that fail integrity checks when integrity metadata is available.
+Resolution must be deterministic and cycle-safe. UI must reject dependency cycles, missing items, unsupported item types, schema-invalid dependency payloads, and remote registry payloads that fail integrity checks when integrity metadata is available.
 
 Registry dependencies are installed into the same write plan as the requested item. Dry-run and diff must show the complete transitive plan.
 
@@ -240,7 +240,7 @@ The first CLI slice should define these commands:
 - `mason remove <item>`: remove clean installed files and installed metadata while keeping locally modified files unless the user explicitly forces removal.
 - `mason doctor`: validate Mason config, aliases, style entry, package manager, registry reachability, installed item metadata, and Keystone dependency health.
 
-Future commands may include `mason registry add`, `mason registry list`, `mason registry validate`, `mason registry build`, and `mason registry publish`.
+Future commands may include `components registry add`, `components registry list`, `components registry validate`, `components registry build`, and `components registry publish`.
 
 ## Install Semantics
 
@@ -255,13 +255,13 @@ Install is a planned operation:
 7. Apply writes only after validation succeeds.
 8. Record installed item metadata for future diff and update.
 
-Mason must never partially install an item after validation failure. If writes fail midway, the CLI should report which writes completed and which did not; transactional rollback is not required in the first slice.
+UI must never partially install an item after validation failure. If writes fail midway, the CLI should report which writes completed and which did not; transactional rollback is not required in the first slice.
 
 ## Diff And Update Semantics
 
-Mason treats generated files as user-owned source.
+UI treats generated files as user-owned source.
 
-For `diff`, Mason compares the planned registry output with the current project files and prints:
+For `diff`, UI compares the planned registry output with the current project files and prints:
 
 - New files.
 - Changed files.
@@ -269,13 +269,13 @@ For `diff`, Mason compares the planned registry output with the current project 
 - Dependency additions or version conflicts.
 - Registry dependency changes.
 
-For `update`, Mason must avoid silent overwrites. If an installed file has local changes since the last recorded item version, Mason should show the conflict and require explicit confirmation. The first implementation may stop at conflict reporting instead of performing three-way merges.
+For `update`, UI must avoid silent overwrites. If an installed file has local changes since the last recorded item version, UI should show the conflict and require explicit confirmation. The first implementation may stop at conflict reporting instead of performing three-way merges.
 
 Installed metadata should include item name, registry source, item version, file targets, and file hashes at install time.
 
 ## Path Safety
 
-Mason writes into user projects, so registry input is untrusted until validated.
+UI writes into user projects, so registry input is untrusted until validated.
 
 The CLI must reject:
 
@@ -290,11 +290,11 @@ The CLI must reject:
 
 All target paths must be normalized and checked against the real project root before writes. Validation must happen before any write.
 
-Invalid registries must fail closed with actionable errors. Mason should not skip invalid files and continue installing a partial item.
+Invalid registries must fail closed with actionable errors. UI should not skip invalid files and continue installing a partial item.
 
 ## Solid Project Detection
 
-Mason is Solid-specific. `mason init` and `mason doctor` should detect:
+UI is Solid-specific. `mason init` and `mason doctor` should detect:
 
 - Solid package presence and version.
 - SolidStart package presence when applicable.
@@ -304,25 +304,25 @@ Mason is Solid-specific. `mason init` and `mason doctor` should detect:
 - Package manager and workspace root.
 - Style system entry points, especially Tailwind and plain CSS.
 - Router conventions for TanStack Router and SolidStart where page items are later supported.
-- SSR capability and hydration-sensitive app shape when Keystone-backed components are installed.
+- SSR capability and hydration-sensitive app shape when Core-backed components are installed.
 
 React-specific assumptions, Next.js-only paths, and `children`/ref patterns copied from React should not shape generated Solid code.
 
 ## Generated Source Ownership
 
-Mason-installed files must be readable Solid source:
+UI files installed by Mason must be readable Solid source:
 
-- Components use Solid APIs and JSX conventions.
-- Keystone primitives provide behavior where applicable.
+- UI use Solid APIs and JSX conventions.
+- Core primitives provide behavior where applicable.
 - Styling lives in source, class names, CSS variables, or theme files the user owns.
 - Files should avoid hidden code generation comments except concise metadata when needed for update tracking.
-- Components must typecheck without depending on private registry internals.
+- UI must typecheck without depending on private registry internals.
 
-Mason components should import Keystone behavior rather than reimplementing focus traps, dialog dismissal, select typeahead, or similar primitive behavior.
+UI items should import Core behavior rather than reimplementing focus traps, dialog dismissal, select typeahead, or similar primitive behavior.
 
 ## Shadcn-Style Compatibility
 
-Mason should stay close to shadcn-style registry concepts where they improve adoption:
+UI should stay close to shadcn-style registry concepts where they improve adoption:
 
 - Root `registry.json`.
 - Per-item JSON documents.
@@ -330,10 +330,10 @@ Mason should stay close to shadcn-style registry concepts where they improve ado
 - `dependencies`, `devDependencies`, `registryDependencies`, `files`, `target`, CSS variables, and CSS patch concepts.
 - Registry namespaces and item URLs.
 
-Mason should diverge where Solid requires it:
+UI should diverge where Solid requires it:
 
 - Solid project detection and generated source.
-- Keystone-backed behavior imports.
+- Core-backed behavior imports.
 - SolidStart and TanStack Router conventions.
 - SSR and hydration checks relevant to Solid.
 - No dependence on React file layout or the shadcn CLI.
@@ -347,12 +347,12 @@ The first registry item should be `button`.
 - Installs one `registry:ui` file.
 - Exercises target resolution to `src/components/ui/button.tsx`.
 - Exercises class utility or theme dependency handling if needed.
-- Produces readable Solid source without complex Keystone behavior.
-- Can be used as a registry dependency by `dialog`, the first Keystone-backed overlay item.
+- Produces readable Solid source without complex Core behavior.
+- Can be used as a registry dependency by `dialog`, the first Core-backed overlay item.
 
-After `button`, the next proving item should be `dialog`, because it validates Mason importing Keystone primitive behavior and catches overlay, SSR, accessibility, and generated-source ownership requirements.
+After `button`, the next proving item should be `dialog`, because it validates UI importing Core primitive behavior and catches overlay, SSR, accessibility, and generated-source ownership requirements.
 
-The `dialog` item must follow the Keystone API RFC's `Dialog` import shape and public part contracts.
+The `dialog` item must follow the Core API RFC's `Dialog` import shape and public part contracts.
 
 ## Acceptance Checklist
 

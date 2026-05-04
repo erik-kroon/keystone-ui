@@ -1,8 +1,8 @@
 import type { z } from "zod";
-import { fail, ok, type MasonRegistryError, type ValidationResult } from "./errors";
+import { fail, ok, type UIRegistryError, type ValidationResult } from "./errors";
 import { rootRegistrySchema, type RootRegistry } from "./schema";
 
-function fromZodError(error: z.ZodError): MasonRegistryError[] {
+function fromZodError(error: z.ZodError): UIRegistryError[] {
   return error.issues.map((issue) => ({
     code: "schema.invalid",
     message: issue.message,

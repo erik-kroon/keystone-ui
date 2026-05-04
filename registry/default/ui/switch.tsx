@@ -1,23 +1,23 @@
 import {
-  Switch as KeystoneSwitch,
-  type SwitchControlProps as KeystoneSwitchControlProps,
-  type SwitchHiddenInputProps as KeystoneSwitchHiddenInputProps,
-  type SwitchRootProps as KeystoneSwitchRootProps,
-  type SwitchThumbProps as KeystoneSwitchThumbProps,
-} from "@keystone-ui/keystone/switch";
+  Switch as CoreSwitch,
+  type SwitchControlProps as CoreSwitchControlProps,
+  type SwitchHiddenInputProps as CoreSwitchHiddenInputProps,
+  type SwitchRootProps as CoreSwitchRootProps,
+  type SwitchThumbProps as CoreSwitchThumbProps,
+} from "@keystone-ui/core/switch";
 import { splitProps } from "solid-js";
 import { cn } from "@/lib/cn";
 
-export type SwitchProps = KeystoneSwitchRootProps;
-export type SwitchControlProps = KeystoneSwitchControlProps;
-export type SwitchThumbProps = KeystoneSwitchThumbProps;
-export type SwitchHiddenInputProps = KeystoneSwitchHiddenInputProps;
+export type SwitchProps = CoreSwitchRootProps;
+export type SwitchControlProps = CoreSwitchControlProps;
+export type SwitchThumbProps = CoreSwitchThumbProps;
+export type SwitchHiddenInputProps = CoreSwitchHiddenInputProps;
 
 export function Switch(props: SwitchProps) {
   const [local, rest] = splitProps(props, ["children", "class"]);
 
   return (
-    <KeystoneSwitch.Root {...rest} class={cn("mason-switch", local.class)}>
+    <CoreSwitch.Root {...rest} class={cn("ui-switch", local.class)}>
       {local.children ?? (
         <>
           <SwitchControl>
@@ -26,22 +26,22 @@ export function Switch(props: SwitchProps) {
           <SwitchHiddenInput />
         </>
       )}
-    </KeystoneSwitch.Root>
+    </CoreSwitch.Root>
   );
 }
 
 export function SwitchControl(props: SwitchControlProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
-  return <KeystoneSwitch.Control {...rest} class={cn("mason-switch-control", local.class)} />;
+  return <CoreSwitch.Control {...rest} class={cn("ui-switch-control", local.class)} />;
 }
 
 export function SwitchThumb(props: SwitchThumbProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
-  return <KeystoneSwitch.Thumb {...rest} class={cn("mason-switch-thumb", local.class)} />;
+  return <CoreSwitch.Thumb {...rest} class={cn("ui-switch-thumb", local.class)} />;
 }
 
 export function SwitchHiddenInput(props: SwitchHiddenInputProps) {
-  return <KeystoneSwitch.HiddenInput {...props} class="mason-switch-input" />;
+  return <CoreSwitch.HiddenInput {...props} class="ui-switch-input" />;
 }

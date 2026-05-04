@@ -1,19 +1,19 @@
-# Keystone Prevent Scroll Vertical
+# Keystone Core Prevent Scroll Vertical
 
 ## Issue
 
-- GitHub: #80, "Reach optimal end-state for Keystone Prevent scroll"
-- Layer: Keystone
+- GitHub: #80, "Reach optimal end-state for Core Prevent scroll"
+- Layer: Core
 - Category: Overlay And Positioning
 
 ## Audit
 
 Reusable implementation:
 
-- `packages/keystone/src/overlay/prevent-scroll.ts` owns the private document-level scroll lock.
-- `packages/keystone/src/overlay/layer-kernel.tsx` acquires the lock for the top active modal
+- `packages/core/src/overlay/prevent-scroll.ts` owns the private document-level scroll lock.
+- `packages/core/src/overlay/layer-kernel.tsx` acquires the lock for the top active modal
   layer and releases it when no modal layer remains.
-- `packages/keystone/src/overlay/layer-kernel.test.tsx` proves modal-layer integration.
+- `packages/core/src/overlay/layer-kernel.test.tsx` proves modal-layer integration.
 
 Gaps closed in this pass:
 
@@ -27,7 +27,7 @@ Gaps closed in this pass:
 
 ## End-State Contract
 
-Prevent scroll remains a private Keystone overlay kernel, not a public primitive anatomy.
+Prevent scroll remains a private Core overlay kernel, not a public primitive anatomy.
 
 Behavior:
 
@@ -46,9 +46,9 @@ Accessibility and SSR:
 
 ## Verification
 
-- `packages/keystone/src/overlay/prevent-scroll.test.ts`
-- `packages/keystone/src/overlay/layer-kernel.test.tsx`
-- `packages/keystone/test/dialog.behavior.test.tsx`
-- `packages/keystone/test/overlay-vertical.behavior.test.tsx`
+- `packages/core/src/overlay/prevent-scroll.test.ts`
+- `packages/core/src/overlay/layer-kernel.test.tsx`
+- `packages/core/test/dialog.behavior.test.tsx`
+- `packages/core/test/overlay-vertical.behavior.test.tsx`
 
 Status: proven as a private overlay kernel module.

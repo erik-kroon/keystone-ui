@@ -2,27 +2,27 @@
 
 ## Scope
 
-This note closes the Keystone kernel-helper inventory items for:
+This note closes the Core kernel-helper inventory items for:
 
 - GitHub #74, `Visually hidden`
 - GitHub #75, `Accessible icon`
 
 These are public utility primitives, not private kernel internals. They should stay small,
-unstyled, Solid-native, SSR-safe, and independent from Mason or TanStack app libraries.
+unstyled, Solid-native, SSR-safe, and independent from UI or TanStack app libraries.
 
 ## Current Repo Audit
 
 Reusable implementation already exists in:
 
-- `packages/keystone/src/visually-hidden/index.tsx`
-- `packages/keystone/src/accessible-icon/index.tsx`
-- `packages/keystone/src/metadata/index.ts`
+- `packages/core/src/visually-hidden/index.tsx`
+- `packages/core/src/accessible-icon/index.tsx`
+- `packages/core/src/metadata/index.ts`
 - `apps/docs/src/lib/primitive-contracts.ts`
 
 Reusable tests already exist in:
 
-- `packages/keystone/src/visually-hidden/visually-hidden.test.tsx`
-- `packages/keystone/src/accessible-icon/accessible-icon.test.tsx`
+- `packages/core/src/visually-hidden/visually-hidden.test.tsx`
+- `packages/core/src/accessible-icon/accessible-icon.test.tsx`
 
 No controlled/uncontrolled state, keyboard behavior, pointer behavior, focus management, form
 behavior, CSS variables, portals, or lifecycle effects are part of either helper. Those are
@@ -36,7 +36,7 @@ API:
 
 - `VisuallyHidden.Root`
 - `VisuallyHiddenProps`
-- Package export: `@keystone-ui/keystone/visually-hidden`
+- Package export: `@keystone-ui/core/visually-hidden`
 
 Anatomy:
 
@@ -73,7 +73,7 @@ API:
 - `AccessibleIconLabelProps`
 - `AccessibleIconPartProps`
 - `CreateAccessibleIconOptions`
-- Package export: `@keystone-ui/keystone/accessible-icon`
+- Package export: `@keystone-ui/core/accessible-icon`
 
 Anatomy:
 
@@ -123,12 +123,12 @@ Focused tests cover:
 Run:
 
 ```sh
-bun --filter @keystone-ui/keystone test -- src/visually-hidden/visually-hidden.test.tsx src/accessible-icon/accessible-icon.test.tsx
-bun --filter @keystone-ui/keystone check-types
+bun --filter @keystone-ui/core test -- src/visually-hidden/visually-hidden.test.tsx src/accessible-icon/accessible-icon.test.tsx
+bun --filter @keystone-ui/core check-types
 ```
 
 ## Known Limitations
 
 - Manual assistive-technology transcripts are still a broader accessibility-harness task.
-- Icon-library conventions remain documentation/examples work; Keystone should not couple this
+- Icon-library conventions remain documentation/examples work; Core should not couple this
   helper to a specific icon package.

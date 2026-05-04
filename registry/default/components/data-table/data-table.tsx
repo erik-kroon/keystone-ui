@@ -32,28 +32,28 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
   return (
     <div
       {...rootProps}
-      data-scope="mason-data-table"
+      data-scope="ui-data-table"
       data-part="root"
-      class={cn("mason-data-table", local.class)}
+      class={cn("ui-data-table", local.class)}
     >
       <Show when={local.children}>
-        <div data-scope="mason-data-table" data-part="header-slot">
+        <div data-scope="ui-data-table" data-part="header-slot">
           {local.children}
         </div>
       </Show>
-      <div data-scope="mason-data-table" data-part="viewport" class="mason-data-table-viewport">
-        <table data-scope="mason-data-table" data-part="table" class="mason-data-table-table">
-          <thead data-scope="mason-data-table" data-part="header" class="mason-data-table-header">
+      <div data-scope="ui-data-table" data-part="viewport" class="ui-data-table-viewport">
+        <table data-scope="ui-data-table" data-part="table" class="ui-data-table-table">
+          <thead data-scope="ui-data-table" data-part="header" class="ui-data-table-header">
             <For each={local.table.getHeaderGroups()}>
               {(headerGroup) => (
-                <tr data-scope="mason-data-table" data-part="header-row">
+                <tr data-scope="ui-data-table" data-part="header-row">
                   <For each={headerGroup.headers}>
                     {(header) => (
                       <th
                         colSpan={header.colSpan}
-                        data-scope="mason-data-table"
+                        data-scope="ui-data-table"
                         data-part="head"
-                        class="mason-data-table-head"
+                        class="ui-data-table-head"
                       >
                         <Show when={!header.isPlaceholder}>
                           {flexRender(header.column.columnDef.header, header.getContext())}
@@ -65,7 +65,7 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
               )}
             </For>
           </thead>
-          <tbody data-scope="mason-data-table" data-part="body" class="mason-data-table-body">
+          <tbody data-scope="ui-data-table" data-part="body" class="ui-data-table-body">
             <Show
               when={!local.loading}
               fallback={
@@ -87,17 +87,17 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
                 <For each={local.table.getRowModel().rows}>
                   {(row) => (
                     <tr
-                      data-scope="mason-data-table"
+                      data-scope="ui-data-table"
                       data-part="row"
                       data-state={row.getIsSelected() ? "selected" : undefined}
-                      class="mason-data-table-row"
+                      class="ui-data-table-row"
                     >
                       <For each={row.getVisibleCells()}>
                         {(cell) => (
                           <td
-                            data-scope="mason-data-table"
+                            data-scope="ui-data-table"
                             data-part="cell"
-                            class="mason-data-table-cell"
+                            class="ui-data-table-cell"
                           >
                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                           </td>

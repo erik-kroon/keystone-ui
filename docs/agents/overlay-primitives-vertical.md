@@ -1,4 +1,4 @@
-# Keystone Overlay Primitives Vertical
+# Core Core Overlay Primitives Vertical
 
 ## Issues
 
@@ -66,12 +66,12 @@ Toast:
 
 ## Verification
 
-- `packages/keystone/test/overlay-vertical.behavior.test.tsx`
-- `packages/keystone/src/popover/popover.test.tsx`
-- `packages/keystone/src/tooltip/tooltip.test.tsx`
-- `packages/keystone/test/toast.behavior.test.tsx`
-- `packages/keystone/test/dialog.behavior.test.tsx` for the modal baseline reused by Sheet
+- `packages/core/test/overlay-vertical.behavior.test.tsx`
+- `packages/core/src/popover/popover.test.tsx`
+- `packages/core/src/tooltip/tooltip.test.tsx`
+- `packages/core/test/toast.behavior.test.tsx`
+- `packages/core/test/dialog.behavior.test.tsx` for the modal baseline reused by Sheet
 - `apps/docs/src/routes/docs.overlay.popover-tooltip-sheet.tsx`
 
-Status: these overlay primitives are ready for Mason wrappers to build on without duplicating
-Keystone behavior.
+Status: these overlay primitives are ready for UI wrappers to build on without duplicating
+Core behavior.

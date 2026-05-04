@@ -1,7 +1,7 @@
 {
   "$schema": "https://mason.build/schema/registry.json",
   "name": "mason",
-  "homepage": "https://mason.build",
+  "homepage": "https://keystone-ui.dev",
   "items": [
     {
       "name": "button",
