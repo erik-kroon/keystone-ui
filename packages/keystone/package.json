@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./accessible-icon": "./src/accessible-icon/index.tsx",
     "./accordion": "./src/accordion/index.tsx",
     "./autocomplete": "./src/autocomplete/index.ts",
     "./checkbox": "./src/checkbox/index.tsx",
@@ -12,10 +13,13 @@
     "./context-menu": "./src/context-menu/index.ts",
     "./collapsible": "./src/collapsible/index.tsx",
     "./date-picker": "./src/date-picker/index.tsx",
+    "./direction": "./src/direction/index.tsx",
     "./dialog": "./src/dialog/index.tsx",
     "./dropdown-menu": "./src/dropdown-menu/index.ts",
     "./form": "./src/form/index.tsx",
     "./hover-card": "./src/hover-card/index.tsx",
+    "./locale": "./src/locale/index.tsx",
+    "./live-announcer": "./src/live-announcer/index.tsx",
     "./menu": "./src/menu/index.tsx",
     "./menubar": "./src/menubar/index.ts",
     "./navigation-menu": "./src/navigation-menu/index.ts",
@@ -30,7 +34,8 @@
     "./toolbar": "./src/toolbar/index.tsx",
     "./select": "./src/select/index.tsx",
     "./slider": "./src/slider/index.tsx",
-    "./toast": "./src/toast/index.tsx"
+    "./toast": "./src/toast/index.tsx",
+    "./visually-hidden": "./src/visually-hidden/index.tsx"
   },
   "scripts": {
     "bench:listbox": "bun scripts/bench-listbox.ts",

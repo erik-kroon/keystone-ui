@@ -76,6 +76,10 @@ const formStateAttributes = [
   { name: "data-validating" },
 ] as const satisfies readonly PartStateAttributeMetadata[];
 
+const directionStateAttributes = [
+  { name: "data-dir", values: ["ltr", "rtl"] },
+] as const satisfies readonly PartStateAttributeMetadata[];
+
 const selectStateAttributes = [
   { name: "data-disabled" },
   { name: "data-highlighted" },
@@ -139,6 +143,7 @@ const sliderCssVars = [
 
 const toolbarStateAttributes = [
   { name: "data-disabled" },
+  { name: "data-dir", values: ["ltr", "rtl"] },
   { name: "data-orientation", values: ["horizontal", "vertical"] },
 ] as const satisfies readonly PartStateAttributeMetadata[];
 
@@ -181,6 +186,7 @@ const radioItemStateAttributes = [
 ] as const satisfies readonly PartStateAttributeMetadata[];
 
 export const primitiveMetadata = {
+  "accessible-icon": definePrimitive("accessible-icon", [part("root"), part("label")]),
   accordion: definePrimitive("accordion", [
     part("root", [
       { name: "data-disabled" },
@@ -225,6 +231,7 @@ export const primitiveMetadata = {
     part("trigger", datePickerStateAttributes),
     part("content", [{ name: "data-state", values: ["open", "closed"] }]),
   ]),
+  direction: definePrimitive("direction", [part("root", directionStateAttributes)]),
   dialog: definePrimitive("dialog", [
     part("trigger", overlayStateAttributes),
     part("close", overlayStateAttributes),
@@ -247,6 +254,11 @@ export const primitiveMetadata = {
     part("positioner", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
     part("arrow", [...overlayStateAttributes, ...floatingArrowAttributes]),
     part("content", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
+  ]),
+  "live-announcer": definePrimitive("live-announcer", [
+    part("root"),
+    part("polite"),
+    part("assertive"),
   ]),
   listbox: definePrimitive("listbox", [
     part("listbox"),
@@ -336,10 +348,12 @@ export const primitiveMetadata = {
   tabs: definePrimitive("tabs", [
     part("root", [
       { name: "data-disabled" },
+      { name: "data-dir", values: ["ltr", "rtl"] },
       { name: "data-orientation", values: ["horizontal", "vertical"] },
     ]),
     part("list", [
       { name: "data-disabled" },
+      { name: "data-dir", values: ["ltr", "rtl"] },
       { name: "data-orientation", values: ["horizontal", "vertical"] },
     ]),
     part("trigger", tabsStateAttributes),
@@ -379,6 +393,7 @@ export const primitiveMetadata = {
     part("arrow", [...overlayStateAttributes, ...floatingArrowAttributes]),
     part("content", [...overlayStateAttributes, ...floatingAttributes], floatingCssVars),
   ]),
+  "visually-hidden": definePrimitive("visually-hidden", [part("root")]),
 } as const satisfies Record<string, PrimitiveMetadata>;
 
 export type PrimitiveScope = keyof typeof primitiveMetadata;

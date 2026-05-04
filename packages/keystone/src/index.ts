@@ -1,14 +1,24 @@
+export { AccessibleIcon, createAccessibleIcon } from "./accessible-icon/index";
 export { Accordion, createAccordion } from "./accordion/index";
 export { Autocomplete, createAutocomplete } from "./autocomplete/index";
 export { Checkbox, createCheckbox } from "./checkbox/index";
 export { Collapsible, createCollapsible } from "./collapsible/index";
 export { Combobox, createCombobox } from "./combobox/index";
 export { ContextMenu, createContextMenu } from "./context-menu/index";
+export { Direction, DirectionProvider, createDirection, useDirection } from "./direction/index";
 export { Calendar, DatePicker, createCalendar, createDatePicker } from "./date-picker/index";
 export { Dialog, createDialog } from "./dialog/index";
 export { DropdownMenu, createDropdownMenu } from "./dropdown-menu/index";
 export { createFieldValidity, createFormControl } from "./form/index";
 export { HoverCard, createHoverCard } from "./hover-card/index";
+export {
+  Locale,
+  LocaleProvider,
+  createLocale,
+  getLocaleDirection,
+  useLocale,
+} from "./locale/index";
+export { LiveAnnouncer, createLiveAnnouncer, useLiveAnnouncer } from "./live-announcer/index";
 export { Menu, createMenu } from "./menu/index";
 export { Menubar, createMenubar } from "./menubar/index";
 export {
@@ -31,6 +41,12 @@ export type {
   PrimitiveScope,
 } from "./metadata/index";
 export type { PortalProps } from "./portal/index";
+export type {
+  AccessibleIconLabelProps,
+  AccessibleIconPartProps,
+  AccessibleIconRootProps,
+  CreateAccessibleIconOptions,
+} from "./accessible-icon/index";
 export type {
   CreatePopperOptions,
   PopperAlign,
@@ -123,6 +139,13 @@ export type {
   CreateComboboxOptions,
 } from "./combobox/index";
 export type {
+  CreateDirectionOptions,
+  DirectionApi,
+  DirectionChangeDetail,
+  DirectionRootProps,
+  Direction as KeystoneDirection,
+} from "./direction/index";
+export type {
   DialogChangeDetail,
   DialogCloseProps,
   DialogContentProps,
@@ -156,6 +179,21 @@ export type {
   HoverCardRootProps,
   HoverCardTriggerProps,
 } from "./hover-card/index";
+export type {
+  CreateLocaleOptions,
+  LocaleApi,
+  LocaleMessageKey,
+  LocaleMessages,
+  LocaleProviderProps,
+  TextDirection,
+} from "./locale/index";
+export type {
+  LiveAnnouncerAnnounceOptions,
+  LiveAnnouncerApi,
+  LiveAnnouncerPoliteness,
+  LiveAnnouncerRegionProps,
+  LiveAnnouncerRootProps,
+} from "./live-announcer/index";
 export type {
   CreateMenuOptions,
   MenuApi,
@@ -336,3 +374,5 @@ export type {
   TooltipRootProps,
   TooltipTriggerProps,
 } from "./tooltip/index";
+export { VisuallyHidden } from "./visually-hidden/index";
+export type { VisuallyHiddenProps } from "./visually-hidden/index";
