@@ -1,11 +1,10 @@
-import { createMemo, createSignal, splitProps, type JSX } from "solid-js";
-import { createFormControl, type FormControlApi } from "../form/index";
+import { createMemo, splitProps, type JSX } from "solid-js";
+import type { FormControlApi } from "../form/index";
 import { createListboxInteraction, type ListboxInteractionApi } from "../collection/index";
 import type { ListInteractionKernelApi } from "../collection/interaction-kernel";
-import { getPartDataAttributes } from "../metadata/index";
+import { createPopupFieldKernel } from "../collection/popup-field-kernel";
 import { assignRef } from "../overlay/dom";
 import {
-  createFloatingAdapter,
   type FloatingAdapter,
   type FloatingArrowProps,
   type FloatingCollisionBoundary,
@@ -14,15 +13,7 @@ import {
   type FloatingSticky,
   type FloatingStrategy,
 } from "../overlay/index";
-import {
-  composeEventHandlers,
-  createControllableBooleanSignal,
-  createStableId,
-  dataBoolean,
-  getOpenClosedState,
-  scheduleMicrotask,
-  type PolymorphicProps,
-} from "../utils/index";
+import { composeEventHandlers, dataBoolean, type PolymorphicProps } from "../utils/index";
 
 export type SelectChangeDetail = {
   event?: Event;
@@ -290,26 +281,46 @@ function selectControlledValueArray(value: SelectValue | undefined): readonly st
 }
 
 export function createSelect(options: CreateSelectOptions = {}): SelectApi {
-  const triggerId = createStableId("select-trigger");
-  const contentId = createStableId("select-content");
-  const listboxId = createStableId("select-listbox");
-  const [triggerElement, setTriggerElement] = createSignal<HTMLButtonElement>();
-  const [contentElement, setContentElement] = createSignal<HTMLDivElement>();
-  const [positionerElement, setPositionerElement] = createSignal<HTMLDivElement>();
-  const [open, setOpenState] = createControllableBooleanSignal<SelectOpenChangeDetail>({
-    value: options.open,
-    defaultValue: options.defaultOpen ?? false,
-    defaultDetail: { reason: "programmatic" },
-    onChange: options.onOpenChange,
-  });
   const disabled = () => options.disabled?.() ?? false;
   const invalid = () => options.invalid?.() ?? false;
   const multiple = () => options.multiple?.() ?? false;
   const readOnly = () => options.readOnly?.() ?? false;
   const required = () => options.required?.() ?? false;
-  const itemId = (value: string) => `${listboxId()}-${value}`;
-  const groupId = (value: string) => `${listboxId()}-group-${value}`;
-  const groupLabelId = (value: string) => `${listboxId()}-group-${value}-label`;
+  let formValue!: SelectValueFormApi;
+  const popup = createPopupFieldKernel<
+    SelectOpenChangeDetail,
+    HTMLButtonElement,
+    SelectValue | null
+  >({
+    anchorPart: "trigger",
+    arrowPadding: options.arrowPadding,
+    collisionBoundary: options.collisionBoundary,
+    collisionPadding: options.collisionPadding,
+    disabled,
+    fitViewport: options.fitViewport,
+    gutter: options.gutter,
+    invalid,
+    open: {
+      open: options.open,
+      defaultOpen: options.defaultOpen,
+      programmaticDetail: { reason: "programmatic" },
+      onOpenChange: options.onOpenChange,
+    },
+    placement: options.placement,
+    readOnly,
+    required,
+    rootBoundary: options.rootBoundary,
+    sameWidth: options.sameWidth,
+    scope: "select",
+    sticky: options.sticky,
+    strategy: options.strategy,
+  });
+  const triggerId = () => popup.anchorId;
+  const listboxId = () => popup.listboxId;
+  const itemId = (value: string) => `${popup.listboxId}-${value}`;
+  const groupId = (value: string) => `${popup.listboxId}-group-${value}`;
+  const groupLabelId = (value: string) => `${popup.listboxId}-group-${value}-label`;
+  const setOpen = popup.setOpen;
   const listbox = createListboxInteraction<SelectItemData, SelectChangeDetail>({
     id: listboxId,
     labelledBy: triggerId,
@@ -337,7 +348,7 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
       }
     },
   });
-  const formValue = createSelectValueForm({
+  formValue = createSelectValueForm({
     defaultValue: () => options.defaultValue,
     multiple,
     name: options.name,
@@ -346,88 +357,28 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
     value: listbox.selection.value,
     values: listbox.selection.selectedValues,
   });
-  const formControl = createFormControl({
+  const formControl = popup.createFormControl({
     form: options.form,
-    id: triggerId,
     name: options.name,
-    value: () => (multiple() ? formValue.values() : (formValue.value() ?? null)),
-    disabled,
-    invalid,
-    readonly: readOnly,
-    required,
     onReset: formValue.reset,
+    value: () => (multiple() ? formValue.values() : (formValue.value() ?? null)),
   });
-  const floating = createFloatingAdapter({
-    anchor: triggerElement,
-    floating: () => positionerElement() ?? contentElement(),
-    enabled: open,
-    arrowPadding: options.arrowPadding,
-    collisionBoundary: options.collisionBoundary,
-    collisionPadding: options.collisionPadding,
-    fitViewport: () => options.fitViewport?.() ?? true,
-    gutter: options.gutter,
-    placement: options.placement,
-    rootBoundary: options.rootBoundary,
-    sameWidth: () => options.sameWidth?.() ?? true,
-    sticky: options.sticky,
-    strategy: options.strategy,
-  });
-
-  const setOpen = (next: boolean, detail: SelectOpenChangeDetail) => {
-    setOpenState(next, detail);
-  };
-  const state = () => getOpenClosedState(open());
-  const partProps = (part: string) => ({
-    ...getPartDataAttributes("select", part),
-  });
-  const floatingPartProps = (part: string) => ({
-    ...partProps(part),
-    get "data-side"() {
-      return floating.side();
-    },
-    get "data-align"() {
-      return floating.align();
-    },
-  });
+  const open = popup.open;
+  const state = popup.state;
+  const partProps = popup.getPartProps;
 
   return {
-    contentId: contentId(),
+    contentId: popup.contentId,
     disabled,
-    floating,
+    floating: popup.floating,
     formControl,
     formValue,
-    getArrowProps: (props) => ({
-      ...floating.getArrowProps(props),
-      ...floatingPartProps("arrow"),
-      "aria-hidden": "true",
-      get "data-state"() {
-        return state();
-      },
-    }),
+    getArrowProps: popup.getArrowProps,
     getContentProps: (props) => {
-      const floatingProps = floating.getFloatingProps({
-        style: props.style,
-      });
+      const contentProps = popup.getContentProps(props);
 
       return {
-        ...props,
-        id: contentId(),
-        ...partProps("content"),
-        get "data-state"() {
-          return state();
-        },
-        get "data-side"() {
-          return floating.side();
-        },
-        get "data-align"() {
-          return floating.align();
-        },
-        style: floatingProps.style,
-        ref: (element: HTMLDivElement) => {
-          setContentElement(element);
-          assignRef(props.ref, element);
-          scheduleMicrotask(floating.update);
-        },
+        ...contentProps,
         onKeyDown: composeEventHandlers<KeyboardEvent>(props.onKeyDown, (event) => {
           if (event.key === "Escape") {
             event.preventDefault();
@@ -488,34 +439,14 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
         },
       ),
     getPositionerProps: (props) => {
-      const floatingProps = floating.getFloatingProps({ style: props.style });
-
-      return {
-        ...props,
-        ...partProps("positioner"),
-        get "data-state"() {
-          return state();
-        },
-        get "data-side"() {
-          return floating.side();
-        },
-        get "data-align"() {
-          return floating.align();
-        },
-        style: floatingProps.style,
-        ref: (element: HTMLDivElement) => {
-          setPositionerElement(element);
-          assignRef(props.ref, element);
-          scheduleMicrotask(floating.update);
-        },
-      };
+      return popup.getPositionerProps(props);
     },
     getTriggerProps: (props) => ({
       ...formControl.getControlProps<HTMLButtonElement>({
         ...props,
-        id: triggerId(),
+        id: popup.anchorId,
       }),
-      "aria-controls": contentId(),
+      "aria-controls": popup.contentId,
       get "aria-expanded"() {
         return open();
       },
@@ -544,7 +475,7 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
         return dataBoolean(readOnly());
       },
       ref: (element: HTMLButtonElement) => {
-        setTriggerElement(element);
+        popup.setAnchorElement(element);
         assignRef(props.ref, element);
       },
       onClick: composeEventHandlers(props.onClick, (event) => {
@@ -586,13 +517,13 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
     groupLabelId,
     list: listbox.interaction,
     listbox,
-    listboxId: listboxId(),
+    listboxId: popup.listboxId,
     open,
     placeholder: () => options.placeholder?.(),
     readOnly,
     required,
     setOpen,
-    triggerId: triggerId(),
+    triggerId: popup.anchorId,
     value: listbox.selection.value,
     values: listbox.selection.selectedValues,
   };

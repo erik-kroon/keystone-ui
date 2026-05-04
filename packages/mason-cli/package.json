@@ -2,6 +2,7 @@
   "name": "@keystone-ui/mason-cli",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
   "bin": {
     "mason": "./src/index.ts"
   },

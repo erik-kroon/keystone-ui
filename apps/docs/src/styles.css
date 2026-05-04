@@ -824,6 +824,50 @@ a.doc-lane:focus-visible {
   font-size: clamp(1.45rem, 2.6vw, 2.6rem);
 }
 
+.maturity-badge {
+  width: fit-content;
+  border: 1px solid rgba(32, 39, 34, 0.16);
+  margin: -0.35rem 0 0.75rem;
+  padding: 0.32rem 0.48rem;
+  background: #fbfaf6;
+  color: #4e5a53;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.maturity-stable {
+  border-color: rgba(48, 106, 79, 0.26);
+  background: #edf7f0;
+  color: #306a4f;
+}
+
+.maturity-beta {
+  border-color: rgba(60, 91, 148, 0.22);
+  background: #eef3fb;
+  color: #3c5b94;
+}
+
+.maturity-experimental {
+  border-color: rgba(143, 75, 66, 0.22);
+  background: #fbefec;
+  color: #8f4b42;
+}
+
+.maturity-internal {
+  border-color: rgba(32, 39, 34, 0.18);
+  background: #efede6;
+  color: #66716a;
+}
+
+.maturity-deprecated {
+  border-color: rgba(121, 68, 54, 0.22);
+  background: #f3e7e2;
+  color: #794436;
+}
+
 .contract-detail-header p {
   max-width: 44rem;
   color: #4e5a53;

@@ -1,21 +1,13 @@
-import {
-  For,
-  Show,
-  createContext,
-  createEffect,
-  createMemo,
-  createSignal,
-  splitProps,
-  useContext,
-  type JSX,
-} from "solid-js";
-import { createFormControl, type FormControlApi } from "../form/index";
+import { For, Show, createContext, createMemo, splitProps, useContext, type JSX } from "solid-js";
+import type { FormControlApi } from "../form/index";
 import { createListboxInteraction, type ListboxInteractionApi } from "../collection/index";
 import type { ListInteractionKernelApi } from "../collection/interaction-kernel";
-import { getPartDataAttributes } from "../metadata/index";
+import {
+  createPopupFieldHiddenInputProps,
+  createPopupFieldKernel,
+} from "../collection/popup-field-kernel";
 import { assignRef } from "../overlay/dom";
 import {
-  createFloatingAdapter,
   type FloatingAdapter,
   type FloatingArrowProps,
   type FloatingCollisionBoundary,
@@ -27,11 +19,8 @@ import {
 import { Portal } from "../portal/index";
 import {
   composeEventHandlers,
-  createControllableBooleanSignal,
   createControllableSignal,
-  createStableId,
   dataBoolean,
-  getOpenClosedState,
   renderPolymorphic,
   scheduleMicrotask,
   type PolymorphicProps,
@@ -249,19 +238,6 @@ export function createAutocomplete(options: CreateComboboxOptions = {}): Combobo
 
 function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi {
   const scope = options.scope ?? "combobox";
-  const inputId = createStableId(`${scope}-input`);
-  const triggerId = createStableId(`${scope}-trigger`);
-  const contentId = createStableId(`${scope}-content`);
-  const listboxId = createStableId(`${scope}-listbox`);
-  const [inputElement, setInputElement] = createSignal<HTMLInputElement>();
-  const [contentElement, setContentElement] = createSignal<HTMLDivElement>();
-  const [positionerElement, setPositionerElement] = createSignal<HTMLDivElement>();
-  const [open, setOpenState] = createControllableBooleanSignal<ComboboxOpenChangeDetail>({
-    value: options.open,
-    defaultValue: options.defaultOpen ?? false,
-    defaultDetail: { reason: "programmatic" },
-    onChange: options.onOpenChange,
-  });
   const [inputValue, setInputValueState] = createControllableSignal<string, ComboboxChangeDetail>({
     value: options.inputValue,
     defaultValue: options.defaultInputValue ?? "",
@@ -272,12 +248,39 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
   const invalid = () => options.invalid?.() ?? false;
   const readOnly = () => options.readOnly?.() ?? false;
   const required = () => options.required?.() ?? false;
-  const itemId = (value: string) => `${listboxId()}-${value}`;
-  const groupId = (value: string) => `${listboxId()}-group-${value}`;
-  const groupLabelId = (value: string) => `${listboxId()}-group-${value}-label`;
-  const setOpen = (next: boolean, detail: ComboboxOpenChangeDetail) => {
-    setOpenState(next, detail);
-  };
+  let inputElement: HTMLInputElement | undefined;
+  let formValue!: ComboboxValueFormApi;
+  const popup = createPopupFieldKernel<ComboboxOpenChangeDetail, HTMLInputElement, string | null>({
+    anchorPart: "input",
+    arrowPadding: options.arrowPadding,
+    collisionBoundary: options.collisionBoundary,
+    collisionPadding: options.collisionPadding,
+    disabled,
+    fitViewport: options.fitViewport,
+    gutter: options.gutter,
+    invalid,
+    open: {
+      open: options.open,
+      defaultOpen: options.defaultOpen,
+      programmaticDetail: { reason: "programmatic" },
+      onOpenChange: options.onOpenChange,
+    },
+    placement: options.placement,
+    readOnly,
+    required,
+    rootBoundary: options.rootBoundary,
+    sameWidth: options.sameWidth,
+    scope,
+    sticky: options.sticky,
+    strategy: options.strategy,
+  });
+  const inputId = () => popup.anchorId;
+  const listboxId = () => popup.listboxId;
+  const triggerId = () => `${popup.anchorId}-trigger`;
+  const itemId = (value: string) => `${popup.listboxId}-${value}`;
+  const groupId = (value: string) => `${popup.listboxId}-group-${value}`;
+  const groupLabelId = (value: string) => `${popup.listboxId}-group-${value}-label`;
+  const setOpen = popup.setOpen;
   const setInputValue = (next: string, detail: ComboboxChangeDetail) => {
     setInputValueState(next, detail);
   };
@@ -304,66 +307,29 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
       });
     },
   });
-  const formValue = createComboboxValueForm({
+  formValue = createComboboxValueForm({
     defaultValue: () => options.defaultValue,
     name: options.name,
     onValueChange: (value) => listbox.selection.setValue(value, { reason: "programmatic" }),
     value: listbox.selection.value,
   });
-  const formControl = createFormControl({
+  const formControl = popup.createFormControl({
     form: options.form,
-    id: inputId,
     name: options.name,
-    value: () => formValue.value() ?? null,
-    disabled,
-    invalid,
-    readonly: readOnly,
-    required,
     onReset: formValue.reset,
+    value: () => formValue.value() ?? null,
   });
-  const floating = createFloatingAdapter({
-    anchor: inputElement,
-    floating: () => positionerElement() ?? contentElement(),
-    enabled: open,
-    arrowPadding: options.arrowPadding,
-    collisionBoundary: options.collisionBoundary,
-    collisionPadding: options.collisionPadding,
-    fitViewport: () => options.fitViewport?.() ?? true,
-    gutter: options.gutter,
-    placement: options.placement,
-    rootBoundary: options.rootBoundary,
-    sameWidth: () => options.sameWidth?.() ?? true,
-    sticky: options.sticky,
-    strategy: options.strategy,
-  });
-  const state = () => getOpenClosedState(open());
-  const partProps = (part: string) => ({
-    ...getPartDataAttributes(scope, part),
-  });
-  const floatingPartProps = (part: string) => ({
-    ...partProps(part),
-    get "data-side"() {
-      return floating.side();
-    },
-    get "data-align"() {
-      return floating.align();
-    },
-  });
+  const open = popup.open;
+  const state = popup.state;
+  const partProps = popup.getPartProps;
 
   return {
-    contentId: contentId(),
+    contentId: popup.contentId,
     disabled,
-    floating,
+    floating: popup.floating,
     formControl,
     formValue,
-    getArrowProps: (props) => ({
-      ...floating.getArrowProps(props),
-      ...floatingPartProps("arrow"),
-      "aria-hidden": "true",
-      get "data-state"() {
-        return state();
-      },
-    }),
+    getArrowProps: popup.getArrowProps,
     getClearProps: (props) => ({
       ...props,
       type: "button",
@@ -380,31 +346,14 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
         setInputValue("", { event, reason: "clear" });
         listbox.selection.setValue(undefined, { event, reason: "clear" });
         setOpen(false, { event, reason: "programmatic" });
-        scheduleMicrotask(() => inputElement()?.focus());
+        scheduleMicrotask(() => inputElement?.focus());
       }),
     }),
     getContentProps: (props) => {
-      const floatingProps = floating.getFloatingProps({ style: props.style });
+      const contentProps = popup.getContentProps(props);
 
       return {
-        ...props,
-        id: contentId(),
-        ...partProps("content"),
-        get "data-state"() {
-          return state();
-        },
-        get "data-side"() {
-          return floating.side();
-        },
-        get "data-align"() {
-          return floating.align();
-        },
-        style: floatingProps.style,
-        ref: (element: HTMLDivElement) => {
-          setContentElement(element);
-          assignRef(props.ref, element);
-          scheduleMicrotask(floating.update);
-        },
+        ...contentProps,
         onKeyDown: composeEventHandlers<KeyboardEvent>(props.onKeyDown, (event) => {
           if (event.key === "Escape") {
             event.preventDefault();
@@ -418,7 +367,7 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
     getInputProps: (props) => ({
       ...formControl.getControlProps<HTMLInputElement>({
         ...props,
-        id: inputId(),
+        id: popup.anchorId,
       }),
       role: "combobox",
       type: props.type ?? "text",
@@ -467,7 +416,8 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
         return dataBoolean(required());
       },
       ref: (element: HTMLInputElement) => {
-        setInputElement(element);
+        inputElement = element;
+        popup.setAnchorElement(element);
         assignRef(props.ref, element);
       },
       onInput: composeEventHandlers<InputEvent>(props.onInput, (event) => {
@@ -570,27 +520,7 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
         },
       ),
     getPositionerProps: (props) => {
-      const floatingProps = floating.getFloatingProps({ style: props.style });
-
-      return {
-        ...props,
-        ...partProps("positioner"),
-        get "data-state"() {
-          return state();
-        },
-        get "data-side"() {
-          return floating.side();
-        },
-        get "data-align"() {
-          return floating.align();
-        },
-        style: floatingProps.style,
-        ref: (element: HTMLDivElement) => {
-          setPositionerElement(element);
-          assignRef(props.ref, element);
-          scheduleMicrotask(floating.update);
-        },
-      };
+      return popup.getPositionerProps(props);
     },
     getTriggerProps: (props) => ({
       ...props,
@@ -617,18 +547,18 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
         }
 
         setOpen(!open(), { event, reason: "trigger" });
-        scheduleMicrotask(() => inputElement()?.focus());
+        scheduleMicrotask(() => inputElement?.focus());
       }),
     }),
     groupId,
     groupLabelId,
-    inputId: inputId(),
+    inputId: popup.anchorId,
     inputValue,
     invalid,
     itemId,
     list: listbox.interaction,
     listbox,
-    listboxId: listboxId(),
+    listboxId: popup.listboxId,
     open,
     placeholder: () => options.placeholder?.(),
     readOnly,
@@ -725,31 +655,13 @@ function createComboboxNamespace(factoryOptions: ComboboxFactoryOptions) {
     input: ReturnType<ComboboxApi["formValue"]["hiddenInputs"]>[number];
     combobox: ComboboxApi;
   }) {
-    let inputElement: HTMLInputElement | undefined;
-
-    createEffect(() => {
-      if (inputElement) {
-        inputElement.value = props.input.value;
-      }
+    const inputProps = createPopupFieldHiddenInputProps({
+      formControl: props.combobox.formControl,
+      input: () => props.input,
+      syncInputValue: props.combobox.formValue.syncInputValue,
     });
 
-    return (
-      <input
-        {...props.combobox.formControl.getHiddenInputProps({
-          name: props.input.name,
-          disabled: props.input.disabled,
-          ref: (element) => {
-            inputElement = element;
-            element.value = props.input.value;
-            props.combobox.formControl.registerFormReset(() => element);
-            props.combobox.formControl.registerFormValueSync(
-              () => element,
-              props.combobox.formValue.syncInputValue,
-            );
-          },
-        })}
-      />
-    );
+    return <input {...inputProps} />;
   }
 
   function Input(props: ComboboxInputProps) {

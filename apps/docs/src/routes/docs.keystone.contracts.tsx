@@ -2,7 +2,11 @@ import { createFileRoute, Link } from "@tanstack/solid-router";
 import { ArrowLeft, BookOpen, Code2, Keyboard, ShieldCheck } from "lucide-solid";
 import { For, createSignal } from "solid-js";
 
-import { getPrimitiveDocs, primitiveScopes } from "@/lib/primitive-contracts";
+import {
+  getPrimitiveDocs,
+  primitiveMaturityCounts,
+  primitiveScopes,
+} from "@/lib/primitive-contracts";
 
 export const Route = createFileRoute("/docs/keystone/contracts")({
   component: KeystoneContractsDocs,
@@ -36,10 +40,14 @@ function KeystoneContractsDocs() {
           <div class="doc-fact-panel" aria-label="Primitive metadata facts">
             <span>Primitive scopes</span>
             <strong>{primitiveScopes.length}</strong>
-            <span>Contract source</span>
-            <strong>@keystone-ui/keystone metadata</strong>
-            <span>Coverage check</span>
-            <strong>docs contract test</strong>
+            <span>Stable / Beta</span>
+            <strong>
+              {primitiveMaturityCounts.stable} / {primitiveMaturityCounts.beta}
+            </strong>
+            <span>Experimental</span>
+            <strong>{primitiveMaturityCounts.experimental}</strong>
+            <span>Internal</span>
+            <strong>{primitiveMaturityCounts.internal}</strong>
           </div>
         </section>
 
@@ -56,7 +64,9 @@ function KeystoneContractsDocs() {
                     onClick={() => setSelectedScope(scope)}
                   >
                     <span>{docs.contract.title}</span>
-                    <small>{docs.metadata.parts.length} parts</small>
+                    <small>
+                      {docs.maturity.label} · {docs.metadata.parts.length} parts
+                    </small>
                   </button>
                 );
               }}
@@ -68,6 +78,13 @@ function KeystoneContractsDocs() {
               <div>
                 <p class="eyebrow">{selected().metadata.scope}</p>
                 <h2>{selected().contract.title}</h2>
+                <div
+                  class={`maturity-badge maturity-${selected().metadata.maturity}`}
+                  aria-label={`Maturity: ${selected().maturity.label}`}
+                >
+                  {selected().maturity.label}
+                </div>
+                <p>{selected().maturity.summary}</p>
               </div>
               <code>{selected().contract.importPath}</code>
             </div>

@@ -5,6 +5,7 @@ import {
   getPartDataAttributes,
   getPartMetadata,
   primitiveMetadata,
+  primitiveMaturityLabels,
   type PrimitiveMaturity,
   type PrimitiveScope,
 } from "./index";
@@ -149,6 +150,7 @@ describe("primitive part metadata", () => {
 
       expect(metadata.scope).toBe(scope);
       expect(docsMetadata?.maturity).toBe(metadata.maturity);
+      expect(docsMetadata?.maturityLabel).toBe(primitiveMaturityLabels[metadata.maturity]);
       expect(metadata.parts.map((part) => part.part)).toEqual(parts);
       expect(docsMetadata?.parts.map((part) => part.selector)).toEqual(
         parts.map((part) => `[data-scope="${scope}"][data-part="${part}"]`),

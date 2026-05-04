@@ -1,0 +1,105 @@
+# Field And FormControl Accessibility Spec
+
+## Status
+
+Beta accessibility spec for the 0.1 preview.
+
+## Scope
+
+This spec covers Keystone `Field` and `FormControl` behavior. Mason TextField and SelectField may compose these parts for styled source, but label, description, error, validation, hidden input, reset, and ARIA wiring belong to Keystone.
+
+## Anatomy
+
+- `Root`: provides field context and state.
+- `Label`: labels the associated control.
+- `Control`: renders or binds the native/input-like control.
+- `Description`: provides supplemental help text.
+- `ErrorMessage`: provides validation feedback when invalid.
+- `HiddenInput`: serializes non-native primitive values.
+
+## Roles And ARIA
+
+- `Label` is associated with `Control` through native `for`/`id` or equivalent control ownership.
+- `Description` participates in `aria-describedby` when present.
+- `ErrorMessage` participates in `aria-describedby` when invalid and rendered.
+- Invalid controls expose `aria-invalid`.
+- Required controls expose native `required` where possible and ARIA required state where needed.
+- Disabled controls are removed from interaction and submission where native semantics require it.
+- Readonly controls prevent value mutation while remaining discoverable when native semantics allow it.
+
+## Keyboard
+
+Field and FormControl do not add custom keyboard interaction. Keyboard behavior remains native to the rendered control or to the Keystone primitive composed inside the control.
+
+Required behavior:
+
+- Label activation focuses or activates the associated control when native HTML supports it.
+- Disabled controls do not receive keyboard interaction.
+- Readonly controls do not mutate value through keyboard input.
+- Error and description content must not introduce unexpected tab stops.
+
+## Validation And State
+
+Field/FormControl exposes public state for:
+
+- `dirty`
+- `touched`
+- `filled`
+- `focused`
+- `invalid`
+- `validating`
+- `required`
+- `readonly`
+- `disabled`
+
+Validation state must be observable through data attributes and through ARIA/native attributes where relevant. Validation reasons should distinguish input, blur, submit, reset, programmatic value changes, and native validity where the implementation supports them.
+
+## Form Participation
+
+- Native controls participate through normal browser submission.
+- Keystone primitives that need hidden inputs use `HiddenInput`.
+- Hidden inputs serialize the current value with the configured name.
+- Disabled controls do not submit values.
+- Form reset restores default value and default validity/touched/dirty state.
+- Multiple value controls must serialize deterministically.
+
+## State And Data Attributes
+
+All public parts expose `data-scope="field"` or `data-scope="form-control"` and their `data-part`.
+
+Form state attributes include:
+
+- `data-dirty`
+- `data-disabled`
+- `data-filled`
+- `data-focused`
+- `data-invalid`
+- `data-readonly`
+- `data-required`
+- `data-touched`
+- `data-validating`
+
+Mason fields should style these attributes directly instead of duplicating validation state.
+
+## SSR And Hydration
+
+- Generated IDs must be stable across server and client rendering.
+- Description and error relationships must not change IDs during hydration.
+- Hidden input output must be deterministic from name, value, disabled, and form state.
+- Browser validation APIs should be read from lifecycle-safe effects or event paths, not during server render.
+
+## Automated Coverage
+
+| Requirement                                 | Harness interface                               |
+| ------------------------------------------- | ----------------------------------------------- |
+| Label, description, and error relationships | `expectAriaRelationship`                        |
+| Required/invalid/disabled/readonly state    | `expectAriaState`, `expectStablePartAttributes` |
+| Native submission                           | `expectFormValues`                              |
+| Reset behavior                              | `expectFormReset`                               |
+| SSR and hydration-safe IDs                  | `expectSsrSmoke`, `expectHydrationSmoke`        |
+
+## Known Gaps Before Stable
+
+- Manual screen-reader evidence for error announcement timing must be recorded.
+- Native constraint validation behavior needs broader browser matrix coverage.
+- Multi-value hidden input conventions should be finalized before stable.

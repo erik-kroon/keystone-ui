@@ -35,6 +35,11 @@ The `./overlay` and `./utils` subpaths stay private until a later API decision p
 - Do not add Mason dependencies to Keystone internals.
 - Avoid public subpath exports for private kernels until a later ADR/RFC explicitly promotes them.
 
+See also:
+
+- [Overlay Kernel Boundary Note](overlay-kernel-boundary.md)
+- [Collection And Typeahead Kernel Boundary Note](collection-typeahead-kernel-boundary.md)
+
 ## Select Baseline
 
 Select should stay on the shared kernels:
