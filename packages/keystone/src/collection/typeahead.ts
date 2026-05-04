@@ -119,7 +119,12 @@ function findTypeaheadMatch<T extends CollectionItem>(options: {
     const item = items[index];
     const label = normalizeTypeaheadText(item?.label, options.locale);
 
-    if (item && !item.disabled && startsWithTypeahead(label, normalizedSearch, options.collator)) {
+    if (
+      item &&
+      !item.disabled &&
+      !item.hidden &&
+      startsWithTypeahead(label, normalizedSearch, options.collator)
+    ) {
       return item;
     }
   }

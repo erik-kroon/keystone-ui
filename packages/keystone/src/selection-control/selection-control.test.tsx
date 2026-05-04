@@ -193,6 +193,26 @@ describe("Selection controls", () => {
     expect(changes).toEqual(["large"]);
   });
 
+  test("radio group uses RTL-aware horizontal arrow navigation", () => {
+    render(() => (
+      <RadioGroup.Root defaultValue="one" dir="rtl" orientation="horizontal">
+        <RadioGroup.Item value="one">One</RadioGroup.Item>
+        <RadioGroup.Item value="two">Two</RadioGroup.Item>
+        <RadioGroup.Item value="three">Three</RadioGroup.Item>
+      </RadioGroup.Root>
+    ));
+
+    const [one, two] = parts("radio-group", "item");
+
+    expect(getByPart("radio-group", "root").getAttribute("data-dir")).toBe("rtl");
+
+    one.focus();
+    keyDown(one, "ArrowLeft");
+
+    expect(document.activeElement).toBe(two);
+    expect(two.getAttribute("aria-checked")).toBe("true");
+  });
+
   test("radio group resets through an external form owner", async () => {
     render(() => (
       <>

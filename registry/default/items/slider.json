@@ -16,7 +16,7 @@
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add slider",
-    "customization": "Style the generated wrappers through mason-slider classes while Keystone keeps range math, thumb ARIA, controlled state, keyboard stepping, pointer commits, hidden input form serialization, data attributes, and CSS variables.",
+    "customization": "Style the generated wrappers through mason-slider classes while Keystone keeps range math, thumb ARIA, controlled state, RTL-aware keyboard and pointer math, minimum thumb distance, pointer commits, hidden input form serialization, data attributes, and CSS variables.",
     "sourceFiles": ["registry/default/ui/slider.tsx"],
     "dependencies": ["@keystone-ui/keystone", "cn"],
     "parts": ["root", "track", "range", "thumb", "hidden-input"],
@@ -26,8 +26,8 @@
       "--keystone-slider-thumb-percent"
     ],
     "parity": {
-      "baseUi": "Thin vertical covers controlled/uncontrolled values, multi-thumb sorting, thumb ARIA, orientation metadata, read-only/invalid/required state attributes, keyboard step/page/home/end, pointer track selection, hidden input form serialization/reset, data attributes, CSS variables, and Mason wrapper metadata. Gaps: minimum thumb distance, root-level focus coordination, richer field validation, and edge-case pointer capture remain follow-up work.",
-      "kobalte": "Matches Solid Slider anatomy direction for root/track/range/thumb, controlled values, orientation, keyboard stepping, hidden input form submission/reset, and data attributes. Gaps: origin/tooltip helpers, richer touch behavior, and broader SSR/form tests remain follow-up work.",
+      "baseUi": "Thin vertical covers controlled/uncontrolled values, multi-thumb sorting, minimum thumb distance, thumb ARIA, direction/orientation metadata, read-only/invalid/required state attributes, RTL-aware keyboard step/page/home/end, pointer track selection, hidden input form serialization/reset, data attributes, CSS variables, and Mason wrapper metadata. Gaps: root-level focus coordination, richer field validation, and edge-case pointer capture remain follow-up work.",
+      "kobalte": "Matches Solid Slider anatomy direction for root/track/range/thumb, controlled values, orientation and direction, keyboard stepping, hidden input form submission/reset, and data attributes. Gaps: origin/tooltip helpers, richer touch behavior, and broader SSR/form tests remain follow-up work.",
       "tanstackRanger": "TanStack Ranger remains an exception reference for range math: compare active handle lifecycle, tick helpers, interpolation, touch behavior, and commit timing before deepening Keystone beyond the current intrinsic primitive."
     }
   },

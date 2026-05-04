@@ -198,6 +198,22 @@ export const primitiveContracts = [
     example: `<DropdownMenu.Root><DropdownMenu.Trigger>Actions</DropdownMenu.Trigger><DropdownMenu.Content><DropdownMenu.Item value="edit">Edit</DropdownMenu.Item></DropdownMenu.Content></DropdownMenu.Root>`,
   },
   {
+    scope: "field",
+    title: "Field",
+    importPath: "@keystone-ui/keystone/form",
+    roleNotes: [
+      "Root, label, control, description, error, and hidden-input parts compose native field relationships.",
+    ],
+    keyboardNotes: ["Keyboard behavior remains native to the rendered control."],
+    ariaNotes: [
+      "Controls receive label, description, error, required, invalid, readonly, and disabled ARIA contracts from the field context.",
+    ],
+    ssrNotes: [
+      "Generated IDs and form-owned hidden inputs are deterministic and avoid direct browser access during render.",
+    ],
+    example: `<Field.Root name="email" required><Field.Label>Email</Field.Label><Field.Control type="email" /><Field.Description>Use your work email.</Field.Description></Field.Root>`,
+  },
+  {
     scope: "form-control",
     title: "FormControl",
     importPath: "@keystone-ui/keystone/form",
@@ -211,7 +227,7 @@ export const primitiveContracts = [
     ssrNotes: [
       "Generated IDs and hidden input props should remain stable across server and client renders.",
     ],
-    example: `const field = createFormControl({ id: "email" });`,
+    example: `<FormControl.Root name="plan"><FormControl.Label>Plan</FormControl.Label><FormControl.Control /><FormControl.HiddenInput /></FormControl.Root>`,
   },
   {
     scope: "hover-card",
@@ -333,7 +349,7 @@ export const primitiveContracts = [
     importPath: "@keystone-ui/keystone/radio-group",
     roleNotes: ["Root, item, indicator, and hidden input parts expose one selected value."],
     keyboardNotes: [
-      "Arrow keys move and select enabled radio items; Home and End target collection boundaries.",
+      "Arrow keys move and select enabled radio items; horizontal movement follows LTR/RTL direction; Home and End target collection boundaries.",
     ],
     ariaNotes: [
       "Required, invalid, readonly, disabled, orientation, checked, and state metadata are exposed.",
@@ -371,10 +387,10 @@ export const primitiveContracts = [
     importPath: "@keystone-ui/keystone/slider",
     roleNotes: ["Root, track, range, and thumb parts expose range input behavior."],
     keyboardNotes: [
-      "Arrow keys step values; Page, Home, and End keys adjust larger increments and bounds.",
+      "Arrow keys step values with RTL-aware horizontal direction; Page, Home, and End keys adjust larger increments and bounds.",
     ],
     ariaNotes: [
-      "Thumb ARIA value metadata is paired with orientation, disabled, and range CSS variables.",
+      "Thumb ARIA value metadata is paired with direction, orientation, disabled, min-distance, and range CSS variables.",
     ],
     ssrNotes: [
       "Value-derived CSS variables are deterministic from current value, min, max, and orientation.",

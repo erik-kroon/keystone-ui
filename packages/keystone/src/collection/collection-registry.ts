@@ -5,6 +5,7 @@ export type CollectionItem = {
   disabled?: boolean;
   element?: Accessor<HTMLElement | undefined>;
   group?: string;
+  hidden?: boolean;
   label?: string;
   value: string;
 };
@@ -109,6 +110,7 @@ function areSameCollectionItems<T extends CollectionItem>(current: T, next: T | 
     current.label === next.label &&
     current.group === next.group &&
     current.disabled === next.disabled &&
+    current.hidden === next.hidden &&
     untrack(() => current.element?.()) === untrack(() => next.element?.())
   );
 }

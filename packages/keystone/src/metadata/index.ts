@@ -108,6 +108,7 @@ const comboboxStateAttributes = [
 const menuItemAttributes = [
   { name: "data-checked" },
   { name: "data-disabled" },
+  { name: "data-hidden" },
   { name: "data-highlighted" },
   { name: "data-value" },
 ] as const satisfies readonly PartStateAttributeMetadata[];
@@ -134,8 +135,12 @@ const tabsStateAttributes = [
 ] as const satisfies readonly PartStateAttributeMetadata[];
 
 const sliderStateAttributes = [
+  { name: "data-dir", values: ["ltr", "rtl"] },
   { name: "data-disabled" },
+  { name: "data-invalid" },
   { name: "data-orientation", values: ["horizontal", "vertical"] },
+  { name: "data-readonly" },
+  { name: "data-required" },
 ] as const satisfies readonly PartStateAttributeMetadata[];
 
 const sliderCssVars = [
@@ -175,6 +180,7 @@ const selectionControlStateAttributes = [
 ] as const satisfies readonly PartStateAttributeMetadata[];
 
 const radioGroupStateAttributes = [
+  { name: "data-dir", values: ["ltr", "rtl"] },
   { name: "data-disabled" },
   { name: "data-invalid" },
   { name: "data-orientation", values: ["horizontal", "vertical"] },
@@ -201,6 +207,7 @@ const primitiveMaturityByScope: Record<string, PrimitiveMaturity> = {
   dialog: "beta",
   direction: "stable",
   "dropdown-menu": "experimental",
+  field: "beta",
   "form-control": "beta",
   "hover-card": "experimental",
   listbox: "internal",
@@ -242,9 +249,7 @@ export const primitiveMetadata = {
     part("root", selectionControlStateAttributes),
     part("control", selectionControlStateAttributes),
     part("indicator", selectionControlStateAttributes),
-    part("hidden-input", [
-      { name: "data-state", values: ["checked", "unchecked", "indeterminate"] },
-    ]),
+    part("hidden-input", selectionControlStateAttributes),
   ]),
   collapsible: definePrimitive("collapsible", [
     part("root", disclosureStateAttributes),
@@ -281,6 +286,14 @@ export const primitiveMetadata = {
     part("title"),
     part("description"),
   ]),
+  field: definePrimitive("field", [
+    part("root", formStateAttributes),
+    part("control", formStateAttributes),
+    part("label", formStateAttributes),
+    part("description", formStateAttributes),
+    part("error-message", formStateAttributes),
+    part("hidden-input"),
+  ]),
   "form-control": definePrimitive("form-control", [
     part("root", formStateAttributes),
     part("control", formStateAttributes),
@@ -304,6 +317,7 @@ export const primitiveMetadata = {
     part("listbox"),
     part("option", [
       { name: "data-disabled" },
+      { name: "data-hidden" },
       { name: "data-highlighted" },
       { name: "data-selected" },
       { name: "data-group" },
@@ -337,9 +351,16 @@ export const primitiveMetadata = {
   ]),
   "radio-group": definePrimitive("radio-group", [
     part("root", radioGroupStateAttributes),
-    part("item", radioItemStateAttributes),
+    part("item", [...radioItemStateAttributes, { name: "data-dir", values: ["ltr", "rtl"] }]),
     part("item-indicator", radioItemStateAttributes),
-    part("hidden-input", [{ name: "data-state", values: ["checked", "unchecked"] }]),
+    part("hidden-input", [
+      ...radioItemStateAttributes,
+      { name: "data-dir", values: ["ltr", "rtl"] },
+      { name: "data-invalid" },
+      { name: "data-orientation", values: ["horizontal", "vertical"] },
+      { name: "data-readonly" },
+      { name: "data-required" },
+    ]),
   ]),
   select: definePrimitive("select", [
     part("trigger", selectStateAttributes),
@@ -361,6 +382,7 @@ export const primitiveMetadata = {
     part("item", [
       { name: "data-disabled" },
       { name: "data-group" },
+      { name: "data-hidden" },
       { name: "data-highlighted" },
       { name: "data-selected" },
     ]),
@@ -381,6 +403,7 @@ export const primitiveMetadata = {
     part("track", sliderStateAttributes),
     part("range", sliderStateAttributes, sliderCssVars.slice(0, 2)),
     part("thumb", [...sliderStateAttributes, { name: "data-index" }], sliderCssVars.slice(2)),
+    part("hidden-input", [...sliderStateAttributes, { name: "data-index" }]),
   ]),
   tabs: definePrimitive("tabs", [
     part("root", [
@@ -422,7 +445,7 @@ export const primitiveMetadata = {
     part("root", selectionControlStateAttributes),
     part("control", selectionControlStateAttributes),
     part("thumb", selectionControlStateAttributes),
-    part("hidden-input", [{ name: "data-state", values: ["checked", "unchecked"] }]),
+    part("hidden-input", selectionControlStateAttributes),
   ]),
   tooltip: definePrimitive("tooltip", [
     part("trigger", overlayStateAttributes),

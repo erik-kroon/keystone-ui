@@ -21,7 +21,7 @@
     "dependencies": ["@keystone-ui/keystone", "cn"],
     "parts": ["root", "control", "thumb", "hidden-input"],
     "parity": {
-      "baseUi": "Thin vertical covers controlled and uncontrolled checked state, disabled/read-only guards, role=switch, hidden checkbox submission, user-handler precedence, and Mason wrapper metadata. Gaps: cursor/touch drag semantics, richer field composition, form validation edge cases, animation lifecycle data, and hydration edge tests remain follow-up work.",
+      "baseUi": "Thin vertical covers controlled and uncontrolled checked state, disabled/read-only guards, role=switch, hidden checkbox submission, hidden-input state metadata, user-handler precedence, and Mason wrapper metadata. Gaps: cursor/touch drag semantics, richer field composition, form validation edge cases, animation lifecycle data, and hydration edge tests remain follow-up work.",
       "kobalte": "Matches Solid Switch Root/Input/Control/Thumb direction with checked state, hidden native input, disabled/read-only state, preventable toggle behavior, and stable data attributes. Gaps: form-control registration depth, validation/reset semantics, and transition lifecycle helpers remain follow-up work."
     }
   },

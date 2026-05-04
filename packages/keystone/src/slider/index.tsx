@@ -1,4 +1,5 @@
 import { createContext, onCleanup, onMount, splitProps, useContext, type JSX } from "solid-js";
+import { useDirection, type Direction as KeystoneDirection } from "../i18n/direction";
 import {
   createSliderController,
   type SliderApi,
@@ -19,6 +20,7 @@ export type {
 } from "./controller";
 
 export type CreateSliderOptions = Parameters<typeof createSliderController>[0];
+export type SliderDirection = KeystoneDirection;
 
 export type SliderPartProps<T extends HTMLElement = HTMLElement> = {
   children?: JSX.Element;
@@ -31,10 +33,12 @@ export type SliderPartProps<T extends HTMLElement = HTMLElement> = {
 export type SliderRootProps = SliderPartProps<HTMLDivElement> &
   SliderRootContractProps & {
     defaultValue?: readonly number[];
+    dir?: SliderDirection;
     disabled?: boolean;
     form?: string;
     invalid?: boolean;
     max?: number;
+    minStepsBetweenThumbs?: number;
     min?: number;
     name?: string;
     onValueChange?: (value: readonly number[], detail: SliderValueChangeDetail) => void;
@@ -74,13 +78,16 @@ function useSlider(part: string) {
 }
 
 function Root(props: SliderRootProps) {
+  const inheritedDir = useDirection();
   const [local, others] = splitProps(props, [
     "children",
     "defaultValue",
+    "dir",
     "disabled",
     "form",
     "invalid",
     "max",
+    "minStepsBetweenThumbs",
     "min",
     "name",
     "onValueChange",
@@ -93,10 +100,12 @@ function Root(props: SliderRootProps) {
   ]);
   const slider = createSlider({
     defaultValue: local.defaultValue,
+    dir: () => local.dir ?? inheritedDir(),
     disabled: () => local.disabled,
     form: () => local.form,
     invalid: () => local.invalid,
     max: () => local.max,
+    minStepsBetweenThumbs: () => local.minStepsBetweenThumbs,
     min: () => local.min,
     name: () => local.name,
     onValueChange: local.onValueChange,

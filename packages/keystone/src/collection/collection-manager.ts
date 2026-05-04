@@ -51,7 +51,9 @@ export function createListCollectionManager<T extends CollectionItem>(
 
     return map;
   });
-  const enabledItems = createMemo(() => itemList().filter((item) => !item.disabled));
+  const enabledItems = createMemo(() =>
+    itemList().filter((item) => !item.disabled && !item.hidden),
+  );
   const itemByValue = (candidateValue: string | undefined) =>
     candidateValue === undefined ? undefined : itemByValueMap().get(candidateValue);
   const activeDescendant = createActiveDescendant({ itemByValue });

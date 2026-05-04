@@ -21,7 +21,7 @@
     "dependencies": ["@keystone-ui/keystone", "cn"],
     "parts": ["root", "control", "indicator", "hidden-input"],
     "parity": {
-      "baseUi": "Thin vertical covers controlled and uncontrolled checked state, indeterminate state, disabled/read-only guards, role=checkbox, hidden input submission, user-handler precedence, and Mason wrapper metadata. Gaps: cursor/touch press behavior, richer field composition, validation edge cases, animation lifecycle data, and hydration edge tests remain follow-up work.",
+      "baseUi": "Thin vertical covers controlled and uncontrolled checked state, indeterminate state, disabled/read-only guards, role=checkbox, hidden input submission, hidden-input state metadata, user-handler precedence, and Mason wrapper metadata. Gaps: cursor/touch press behavior, richer field composition, validation edge cases, animation lifecycle data, and hydration edge tests remain follow-up work.",
       "kobalte": "Matches Solid Root/Input/Control/Indicator direction for checked and indeterminate state, hidden native input, preventable interaction, disabled/read-only state, and stable data attributes. Gaps: group composition, form-control registration depth, and broader SSR/form reset coverage remain follow-up work."
     }
   },

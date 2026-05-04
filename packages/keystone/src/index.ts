@@ -9,7 +9,13 @@ export { Direction, DirectionProvider, createDirection, useDirection } from "./d
 export { Calendar, DatePicker, createCalendar, createDatePicker } from "./date-picker/index";
 export { Dialog, createDialog } from "./dialog/index";
 export { DropdownMenu, createDropdownMenu } from "./dropdown-menu/index";
-export { createFieldValidity, createFormControl } from "./form/index";
+export {
+  createFieldValidity,
+  createFormControl,
+  createHiddenInputDescriptors,
+  Field,
+  FormControl,
+} from "./form/index";
 export { HoverCard, createHoverCard } from "./hover-card/index";
 export {
   Locale,
@@ -159,14 +165,28 @@ export type {
 export type {
   CreateFieldValidityOptions,
   CreateFormControlOptions,
+  FieldControlProps,
+  FieldDescriptionProps,
+  FieldErrorMessageProps,
+  FieldHiddenInputProps,
+  FieldLabelProps,
   FieldNativeValidity,
+  FieldRootProps,
   FieldValidationContext,
   FieldValidationMode,
   FieldValidationReason,
   FieldValidationResult,
   FieldValidityApi,
   FormControlApi,
+  FormControlControlProps,
+  FormControlDescriptionProps,
+  FormControlErrorMessageProps,
+  FormControlHiddenInputProps,
+  FormControlLabelProps,
+  FormControlPartProps,
+  FormControlRootProps,
   FormControlValue,
+  HiddenInputDescriptor,
 } from "./form/index";
 export type {
   CreateHoverCardOptions,
@@ -248,6 +268,7 @@ export type {
   PopoverTriggerProps,
 } from "./popover/index";
 export type {
+  RadioGroupDirection,
   RadioGroupHiddenInputProps,
   RadioGroupItemIndicatorProps,
   RadioGroupItemProps,
@@ -282,6 +303,7 @@ export type {
 export type {
   CreateSliderOptions,
   SliderApi,
+  SliderDirection,
   SliderHiddenInputProps,
   SliderOrientation,
   SliderPartProps,

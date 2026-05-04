@@ -37,6 +37,40 @@ describe("Menu behavior harness", () => {
     expect(getByPart("menu", "trigger").getAttribute("aria-expanded")).toBe("false");
   });
 
+  test("skips hidden items during menu keyboard navigation and typeahead", async () => {
+    render(() => (
+      <Menu.Root defaultOpen>
+        <Menu.Trigger>Actions</Menu.Trigger>
+        <Menu.Content>
+          <Menu.Item value="alpha">Alpha</Menu.Item>
+          <Menu.Item value="bravo" hidden>
+            Bravo
+          </Menu.Item>
+          <Menu.Item value="beta">Beta</Menu.Item>
+        </Menu.Content>
+      </Menu.Root>
+    ));
+
+    const content = getByPart("menu", "content");
+    const hidden = document.querySelector<HTMLElement>(
+      '[data-scope="menu"][data-part="item"][data-value="bravo"]',
+    )!;
+
+    expect(hidden.getAttribute("data-hidden")).toBe("");
+
+    keyDown(content, "b");
+    expect(
+      document.querySelector('[data-scope="menu"][data-part="item"][data-highlighted]')
+        ?.textContent,
+    ).toBe("Beta");
+
+    keyDown(content, "ArrowUp");
+    expect(
+      document.querySelector('[data-scope="menu"][data-part="item"][data-highlighted]')
+        ?.textContent,
+    ).toBe("Alpha");
+  });
+
   test("tracks checkbox and radio item state with menu roles and data attributes", async () => {
     const checkedChanges: boolean[] = [];
     const radioChanges: string[] = [];
