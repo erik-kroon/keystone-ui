@@ -9,7 +9,9 @@ type PreventScrollState = {
   originalBodyWidth: string;
   scrollX: number;
   scrollY: number;
+  touchStartY?: number;
   touchMoveListener?: (event: TouchEvent) => void;
+  touchStartListener?: (event: TouchEvent) => void;
 };
 
 const preventScrollStateByDocument = new WeakMap<Document, PreventScrollState>();
@@ -60,11 +62,18 @@ export function lockPreventScroll(ownerDocument: Document) {
     body.style.right = "0";
     body.style.width = "100%";
 
+    state.touchStartListener = (event) => {
+      state.touchStartY = event.touches[0]?.clientY;
+    };
     state.touchMoveListener = (event) => {
-      if (!canScrollTouchTarget(event.target)) {
+      if (!canScrollTouchTarget(event.target, getTouchDeltaY(event, state.touchStartY))) {
         event.preventDefault();
       }
     };
+    ownerDocument.addEventListener("touchstart", state.touchStartListener, {
+      capture: true,
+      passive: true,
+    });
     ownerDocument.addEventListener("touchmove", state.touchMoveListener, {
       capture: true,
       passive: false,
@@ -98,6 +107,10 @@ function releasePreventScroll(ownerDocument: Document) {
   body.style.left = state.originalBodyLeft;
   body.style.right = state.originalBodyRight;
   body.style.width = state.originalBodyWidth;
+
+  if (state.touchStartListener) {
+    ownerDocument.removeEventListener("touchstart", state.touchStartListener, true);
+  }
 
   if (state.touchMoveListener) {
     ownerDocument.removeEventListener("touchmove", state.touchMoveListener, true);
@@ -139,7 +152,17 @@ function isIOS(ownerDocument: Document) {
   );
 }
 
-function canScrollTouchTarget(target: EventTarget | null) {
+function getTouchDeltaY(event: TouchEvent, touchStartY: number | undefined) {
+  const currentY = event.touches[0]?.clientY;
+
+  if (currentY === undefined || touchStartY === undefined) {
+    return 0;
+  }
+
+  return currentY - touchStartY;
+}
+
+function canScrollTouchTarget(target: EventTarget | null, deltaY: number) {
   if (!(target instanceof Element)) {
     return false;
   }
@@ -147,7 +170,7 @@ function canScrollTouchTarget(target: EventTarget | null) {
   let element: Element | null = target;
 
   while (element && element !== element.ownerDocument.body) {
-    if (element instanceof HTMLElement && canElementScroll(element)) {
+    if (element instanceof HTMLElement && canElementScroll(element, deltaY)) {
       return true;
     }
 
@@ -157,11 +180,27 @@ function canScrollTouchTarget(target: EventTarget | null) {
   return false;
 }
 
-function canElementScroll(element: HTMLElement) {
+function canElementScroll(element: HTMLElement, deltaY: number) {
   const style = element.ownerDocument.defaultView?.getComputedStyle(element);
   const overflowY = style?.overflowY;
 
-  return (
-    (overflowY === "auto" || overflowY === "scroll") && element.scrollHeight > element.clientHeight
-  );
+  if (overflowY !== "auto" && overflowY !== "scroll" && overflowY !== "overlay") {
+    return false;
+  }
+
+  const maxScrollTop = element.scrollHeight - element.clientHeight;
+
+  if (maxScrollTop <= 0) {
+    return false;
+  }
+
+  if (deltaY > 0) {
+    return element.scrollTop > 0;
+  }
+
+  if (deltaY < 0) {
+    return element.scrollTop < maxScrollTop;
+  }
+
+  return true;
 }

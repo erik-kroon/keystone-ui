@@ -52,10 +52,16 @@ export type ToastData = Required<
 export type ToastManager = {
   add: (toast: ToastInput | JSX.Element) => string;
   clear: () => void;
+  custom: (toast: ToastInput | JSX.Element) => string;
   dismiss: (id?: string) => void;
+  error: (toast: ToastInput | JSX.Element) => string;
   getToasts: () => readonly ToastData[];
+  info: (toast: ToastInput | JSX.Element) => string;
+  loading: (toast: ToastInput | JSX.Element) => string;
   subscribe: (listener: ToastManagerListener) => () => void;
+  success: (toast: ToastInput | JSX.Element) => string;
   update: (id: string, toast: Partial<ToastInput>) => void;
+  warning: (toast: ToastInput | JSX.Element) => string;
 };
 
 export type ToastManagerListener = (toasts: readonly ToastData[]) => void;
@@ -150,7 +156,12 @@ export function createToastManager(options: CreateToastManagerOptions = {}): Toa
     };
   };
 
-  return {
+  const addTypedToast = (type: ToastType, input: ToastInput | JSX.Element) => {
+    const toast = isToastInput(input) ? { ...input, type } : { title: input, type };
+
+    return manager.add(toast);
+  };
+  const manager: ToastManager = {
     add(input) {
       const next = normalize(input);
       const index = toasts.findIndex((toast) => toast.id === next.id);
@@ -166,17 +177,32 @@ export function createToastManager(options: CreateToastManagerOptions = {}): Toa
       toasts = [];
       emit();
     },
+    custom(input) {
+      return manager.add(input);
+    },
     dismiss(id) {
       toasts = id ? toasts.filter((toast) => toast.id !== id) : [];
       emit();
     },
+    error(input) {
+      return addTypedToast("error", input);
+    },
     getToasts() {
       return [...toasts];
+    },
+    info(input) {
+      return addTypedToast("info", input);
+    },
+    loading(input) {
+      return addTypedToast("loading", input);
     },
     subscribe(listener) {
       listeners.add(listener);
       listener([...toasts]);
       return () => listeners.delete(listener);
+    },
+    success(input) {
+      return addTypedToast("success", input);
     },
     update(id, toast) {
       toasts = toasts.map((current) =>
@@ -184,7 +210,12 @@ export function createToastManager(options: CreateToastManagerOptions = {}): Toa
       );
       emit();
     },
+    warning(input) {
+      return addTypedToast("warning", input);
+    },
   };
+
+  return manager;
 }
 
 export const toaster = defaultToastManager;

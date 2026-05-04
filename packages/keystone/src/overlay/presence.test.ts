@@ -1,5 +1,6 @@
 import { createRoot, createSignal } from "solid-js";
 import { describe, expect, test } from "vitest";
+import { getPartMetadata } from "../metadata/index";
 import { settled } from "../../test/harness";
 import { createOverlayPresence, type OverlayPresenceApi } from "./presence";
 
@@ -8,6 +9,15 @@ function animationFrame() {
 }
 
 describe("overlay presence", () => {
+  test("keeps public metadata aligned with transition status values", () => {
+    const metadata = getPartMetadata("dialog", "content");
+    const transitionStatus = metadata?.dataAttributes.find(
+      (attribute) => attribute.name === "data-transition-status",
+    );
+
+    expect(transitionStatus?.values).toEqual(["closed", "closing", "opening", "open"]);
+  });
+
   test("retains mounted content until close transitions complete", async () => {
     let dispose!: () => void;
     let presence!: OverlayPresenceApi;

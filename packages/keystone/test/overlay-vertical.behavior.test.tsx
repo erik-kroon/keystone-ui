@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+import { HoverCard } from "../src/hover-card/index";
 import { Popover } from "../src/popover/index";
 import { Sheet } from "../src/sheet/index";
 import { Tooltip } from "../src/tooltip/index";
@@ -90,6 +91,41 @@ describe("Popover, Tooltip, and Sheet overlay vertical", () => {
     keyDown(getByPart("tooltip", "content"), "Escape");
     await settled();
     expect(queryByPart("tooltip", "content")).toBeNull();
+  });
+
+  test("hover card opens from pointer with preview semantics and dismisses outside", async () => {
+    const changes: string[] = [];
+
+    render(() => (
+      <>
+        <button data-testid="outside">Outside</button>
+        <HoverCard.Root openDelay={0} onOpenChange={(_open, detail) => changes.push(detail.reason)}>
+          <HoverCard.Trigger href="/teams">Team</HoverCard.Trigger>
+          <HoverCard.Portal>
+            <HoverCard.Positioner>
+              <HoverCard.Arrow />
+              <HoverCard.Content>Team preview</HoverCard.Content>
+            </HoverCard.Positioner>
+          </HoverCard.Portal>
+        </HoverCard.Root>
+      </>
+    ));
+
+    const trigger = getByPart("hover-card", "trigger");
+    pointerEnter(trigger);
+    await settled();
+
+    const content = getByPart("hover-card", "content");
+    const arrow = getByPart("hover-card", "arrow");
+    expect(content.getAttribute("aria-hidden")).toBe("true");
+    expect(content.getAttribute("data-state")).toBe("open");
+    expect(arrow.getAttribute("aria-hidden")).toBe("true");
+
+    pointerDown(document.querySelector<HTMLElement>("[data-testid='outside']")!);
+    await settled();
+
+    expect(queryByPart("hover-card", "content")).toBeNull();
+    expect(changes).toEqual(["pointer", "outside"]);
   });
 
   test("sheet uses modal overlay behavior and side data", async () => {
