@@ -1,6 +1,7 @@
 import { createRoot, createSignal } from "solid-js";
 import { describe, expect, test } from "vitest";
 import { Calendar, DatePicker, createCalendar } from "../src/date-picker/index";
+import { Locale } from "../src/locale/index";
 import { click, getByPart, keyDown, queryByPart, render, settled } from "./harness";
 
 function getDay(value: string) {
@@ -111,6 +112,34 @@ describe("Calendar behavior", () => {
       document.body.querySelector('[data-scope="calendar"][data-part="column-header"]')
         ?.textContent,
     ).toBe("Mon");
+  });
+
+  test("inherits locale and navigation labels from Locale.Provider", () => {
+    render(() => (
+      <Locale.Provider
+        locale="fr-FR"
+        messages={{
+          "calendar.nextMonth": "Mois suivant",
+          "calendar.previousMonth": "Mois precedent",
+        }}
+      >
+        <Calendar.Root defaultMonth="2026-05" />
+      </Locale.Provider>
+    ));
+
+    expect(getByPart("calendar", "heading").textContent).toBe("mai 2026");
+    expect(getByPart("calendar", "prev-trigger").getAttribute("aria-label")).toBe("Mois precedent");
+    expect(getByPart("calendar", "next-trigger").textContent).toBe("Mois suivant");
+  });
+
+  test("keeps explicit calendar locale ahead of provider locale", () => {
+    render(() => (
+      <Locale.Provider locale="fr-FR">
+        <Calendar.Root defaultMonth="2026-05" locale="en-GB" />
+      </Locale.Provider>
+    ));
+
+    expect(getByPart("calendar", "heading").textContent).toBe("May 2026");
   });
 
   test("supports unavailable dates and range selection state", async () => {
@@ -237,5 +266,17 @@ describe("DatePicker behavior", () => {
     expect(openChanges).toEqual(["true:trigger", "false:select"]);
     expect(queryByPart("date-picker", "content")).toBeNull();
     expect(trigger.textContent).toBe("2026-05-10 - 2026-05-12");
+  });
+
+  test("uses the provider fallback label when no trigger placeholder is supplied", () => {
+    render(() => (
+      <Locale.Provider messages={{ "datePicker.selectDate": "Choisir une date" }}>
+        <DatePicker.Root defaultMonth="2026-05">
+          <DatePicker.Trigger />
+        </DatePicker.Root>
+      </Locale.Provider>
+    ));
+
+    expect(getByPart("date-picker", "trigger").textContent).toBe("Choisir une date");
   });
 });

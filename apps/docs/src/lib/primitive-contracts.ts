@@ -35,6 +35,18 @@ const collectionNotes = {
 
 export const primitiveContracts = [
   {
+    scope: "accessible-icon",
+    title: "AccessibleIcon",
+    importPath: "@keystone-ui/keystone/accessible-icon",
+    roleNotes: ["Root renders a named image wrapper for icon-only visual content."],
+    keyboardNotes: ["AccessibleIcon owns no keyboard behavior and does not add focusability."],
+    ariaNotes: [
+      "The required label becomes the root accessible name while the label part remains visually hidden.",
+    ],
+    ssrNotes: ["Output is deterministic and does not read browser globals."],
+    example: `<AccessibleIcon.Root label="Close"><CloseIcon /></AccessibleIcon.Root>`,
+  },
+  {
     scope: "accordion",
     title: "Accordion",
     importPath: "@keystone-ui/keystone/accordion",
@@ -140,6 +152,24 @@ export const primitiveContracts = [
       "Popup behavior is lifecycle guarded and calendar output is deterministic from date options.",
     ],
     example: `<DatePicker.Root><DatePicker.Trigger>Choose date</DatePicker.Trigger><DatePicker.Content><DatePicker.Calendar /></DatePicker.Content></DatePicker.Root>`,
+  },
+  {
+    scope: "direction",
+    title: "Direction",
+    importPath: "@keystone-ui/keystone/direction",
+    roleNotes: [
+      "Root provides document direction context to descendant Keystone primitives without adding widget roles.",
+    ],
+    keyboardNotes: [
+      "Direction-aware primitives use the nearest provider for horizontal arrow-key order unless their own dir prop overrides it.",
+    ],
+    ariaNotes: [
+      "The rendered root sets the native dir attribute and mirrors it through data-dir for styling and tests.",
+    ],
+    ssrNotes: [
+      "Direction defaults to ltr without reading browser globals, and explicit/default values produce deterministic server output.",
+    ],
+    example: `<Direction.Root dir="rtl"><Tabs.Root><Tabs.List /></Tabs.Root></Direction.Root>`,
   },
   {
     scope: "dialog",
@@ -384,6 +414,20 @@ export const primitiveContracts = [
     ],
     ssrNotes: overlayNotes.ssrNotes,
     example: `<Tooltip.Root><Tooltip.Trigger>Help</Tooltip.Trigger><Tooltip.Content>More detail</Tooltip.Content></Tooltip.Root>`,
+  },
+  {
+    scope: "visually-hidden",
+    title: "VisuallyHidden",
+    importPath: "@keystone-ui/keystone/visually-hidden",
+    roleNotes: [
+      "Root renders text or elements that remain in the accessibility tree while being visually clipped.",
+    ],
+    keyboardNotes: ["VisuallyHidden owns no keyboard behavior and does not add focusability."],
+    ariaNotes: [
+      "Content remains available to assistive technology; callers should avoid aria-hidden on the root.",
+    ],
+    ssrNotes: ["Output is deterministic and does not read browser globals."],
+    example: `<VisuallyHidden.Root>Unread notifications</VisuallyHidden.Root>`,
   },
 ] as const satisfies readonly PrimitiveContract[];
 

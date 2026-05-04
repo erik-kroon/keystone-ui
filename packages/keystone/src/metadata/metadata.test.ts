@@ -159,6 +159,10 @@ describe("primitive part metadata", () => {
       "data-scope": "form-control",
       "data-part": "hidden-input",
     });
+    expect(partDataAttributes("direction", "root")).toEqual({
+      "data-scope": "direction",
+      "data-part": "root",
+    });
   });
 
   test("captures styling states and floating css variables on relevant parts", () => {
@@ -182,6 +186,7 @@ describe("primitive part metadata", () => {
         "data-validating",
       ]),
     );
+    expect(attributeNames("direction", "root")).toEqual(expect.arrayContaining(["data-dir"]));
     expect(cssVarNames("popover", "positioner")).toEqual(
       expect.arrayContaining([
         "--keystone-anchor-width",

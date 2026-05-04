@@ -18,9 +18,10 @@ import {
   renderPolymorphic,
   type PolymorphicProps,
 } from "../utils/index";
+import { useDirection, type Direction as KeystoneDirection } from "../direction/index";
 
 export type TabsActivationMode = "automatic" | "manual";
-export type TabsDirection = "ltr" | "rtl";
+export type TabsDirection = KeystoneDirection;
 export type TabsOrientation = "horizontal" | "vertical";
 export type TabsValueChangeDetail = {
   event?: Event;
@@ -191,6 +192,7 @@ function useTabs(part: string) {
 }
 
 function Root(props: TabsRootProps) {
+  const inheritedDir = useDirection();
   const [local, others] = splitProps(props, [
     "activationMode",
     "children",
@@ -205,7 +207,7 @@ function Root(props: TabsRootProps) {
   const tabs = createTabs({
     activationMode: () => local.activationMode,
     defaultValue: local.defaultValue,
-    dir: () => local.dir,
+    dir: () => local.dir ?? inheritedDir(),
     disabled: () => local.disabled,
     loopFocus: () => local.loopFocus,
     onValueChange: local.onValueChange,
@@ -218,8 +220,9 @@ function Root(props: TabsRootProps) {
       <div
         {...others}
         data-disabled={dataBoolean(tabs.disabled())}
+        data-dir={tabs.dir()}
         data-orientation={tabs.orientation()}
-        dir={local.dir}
+        dir={tabs.dir()}
         {...partDataAttributes("tabs", "root")}
       >
         {local.children}
@@ -238,6 +241,7 @@ function List(props: TabsListProps) {
       role="tablist"
       aria-orientation={tabs.orientation()}
       data-disabled={dataBoolean(tabs.disabled())}
+      data-dir={tabs.dir()}
       data-orientation={tabs.orientation()}
       {...partDataAttributes("tabs", "list")}
     >
