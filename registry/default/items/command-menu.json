@@ -1,0 +1,59 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "command-menu",
+  "type": "registry:ui",
+  "title": "CommandMenu",
+  "description": "Command palette source built from Keystone Combobox behavior, TanStack Store command state, and preview TanStack Hotkeys shortcuts.",
+  "version": "0.1.0",
+  "dependencies": [
+    "@keystone-ui/keystone@^0.0.0",
+    "@tanstack/solid-store@^0.11.0",
+    "@tanstack/solid-hotkeys@^0.10.0"
+  ],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["command", "combobox", "tanstack", "hotkeys"],
+  "keywords": [
+    "command-menu",
+    "command-palette",
+    "combobox",
+    "store",
+    "hotkeys",
+    "keystone",
+    "tanstack"
+  ],
+  "docs": "https://mason.build/docs/components/command-menu",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add command-menu",
+    "commandItems": "Pass readable CommandMenuItemData objects with value, label, optional description, group, keywords, disabled state, shortcut, and per-item onSelect handlers. The generated component filters by label, value, group, description, and keywords.",
+    "searchFiltering": "The high-level CommandMenu controls Keystone Combobox inputValue from the command store and renders only matching items. Replace filterCommandItems in user-owned source for fuzzy ranking, remote search, or permission-aware item visibility.",
+    "store": "createCommandMenuStore uses TanStack Store for app-level open/query/lastSelectedValue coordination. Pass a shared store when a shell trigger, route action, and command menu need to coordinate outside one component tree.",
+    "shortcutDisplay": "Item shortcuts use TanStack Hotkeys RegisterableHotkey values and formatForDisplay for platform-aware shortcut labels. Provide shortcutLabel when product copy needs a fixed display string.",
+    "hotkeysPreview": "Shortcut registration uses @tanstack/solid-hotkeys, which is still preview/alpha in the TanStack ecosystem. Keep the generated source easy to remove or adjust if upstream APIs change.",
+    "accessibility": "Keystone Combobox owns input/listbox roles, aria-activedescendant, highlighted item state, disabled skipping, typeahead/list keyboard behavior, portal positioning, dismissal, and controlled open/input state. Mason only adds command item data, filtering, shortcut display, and app-level shortcut registration.",
+    "customization": "Use mason-command-menu classes and data-part values for trigger, input, content, list, group, group-label, item, item-text, item-label, item-description, shortcut, and empty.",
+    "limitations": "This source is a local command palette pattern. It does not include fuzzy scoring, async search, nested command pages, command history, user preference persistence, route-specific command discovery, or a final Hotkeys API guarantee.",
+    "sourceFiles": ["registry/default/ui/command-menu.tsx"],
+    "dependencies": [
+      "@keystone-ui/keystone",
+      "@tanstack/solid-store",
+      "@tanstack/solid-hotkeys",
+      "cn"
+    ],
+    "parity": {
+      "baseUi": "Runtime behavior intentionally leans on Keystone Combobox toward Base UI-style accessible combobox/listbox depth: input ownership, aria-activedescendant, item highlighting, disabled items, typeahead/list navigation, overlay positioning, and dismissal. Gaps: nested command pages, fuzzy scorer conventions, async collection loading, and command history remain app-code follow-up work.",
+      "kobalte": "Solid primitive shape tracks Kobalte-style Combobox composition through root/input/content/listbox/group/item parts. Gaps: richer command-specific examples, virtualized command lists, and route-scoped collection discovery remain follow-up work.",
+      "tanstackStore": "TanStack Store is used only for app-level command menu state that benefits from sharing across shell controls: open, query, and last selected value. It deliberately does not replace Keystone primitive state or list navigation.",
+      "tanstackHotkeys": "TanStack Hotkeys powers preview app shortcuts for opening the menu and invoking command items, with shortcut display via formatForDisplay. Caveat: Hotkeys remains preview/alpha, so Mason metadata and source comments keep this integration removable while the API stabilizes."
+    }
+  },
+  "files": [
+    {
+      "path": "ui/command-menu.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

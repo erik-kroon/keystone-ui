@@ -106,6 +106,12 @@
       "description": "Styled Solid combobox backed by Keystone input, listbox, selection, and floating behavior."
     },
     {
+      "name": "command-menu",
+      "type": "registry:ui",
+      "title": "CommandMenu",
+      "description": "Command palette source built from Keystone Combobox behavior, TanStack Store command state, and preview TanStack Hotkeys shortcuts."
+    },
+    {
       "name": "autocomplete",
       "type": "registry:ui",
       "title": "Autocomplete",

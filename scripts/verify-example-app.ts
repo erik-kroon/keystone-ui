@@ -60,9 +60,11 @@ async function main() {
       "@tanstack/form-core",
       "@tanstack/pacer-lite",
       "@tanstack/solid-form",
+      "@tanstack/solid-hotkeys",
       "@tanstack/solid-router",
       "@tanstack/solid-table",
       "@tanstack/solid-store",
+      "@tanstack/hotkeys",
       "@tanstack/router-core",
       "@tanstack/router-utils",
       "@tanstack/store",
@@ -90,6 +92,7 @@ async function main() {
     await addCommand({ cwd: app, item: "sheet", registry });
     await addCommand({ cwd: app, item: "text-field", registry });
     await addCommand({ cwd: app, item: "select-field", registry });
+    await addCommand({ cwd: app, item: "command-menu", registry });
     await addCommand({ cwd: app, item: "data-table", registry });
     await addCommand({ cwd: app, item: "data-table-tanstack-router", registry });
     await writeFile(
@@ -112,6 +115,11 @@ export default defineConfig({
     await writeFile(
       path.join(app, "src/main.tsx"),
       `import { render } from "solid-js/web";
+import {
+  CommandMenu,
+  createCommandMenuStore,
+  type CommandMenuItemData,
+} from "@/components/ui/command-menu";
 import {
   Dialog,
   DialogClose,
@@ -187,6 +195,26 @@ const invoiceColumns: ColumnDef<Invoice, unknown>[] = [
   },
 ];
 
+const commandItems: CommandMenuItemData[] = [
+  {
+    value: "open-dashboard",
+    label: "Open dashboard",
+    description: "Navigate to the dashboard overview.",
+    group: "Navigation",
+    shortcut: "Mod+D",
+    shortcutLabel: "Mod+D",
+    onSelect: (item) => item.value,
+  },
+  {
+    value: "create-invoice",
+    label: "Create invoice",
+    description: "Start a new invoice draft.",
+    group: "Actions",
+    shortcut: "Mod+I",
+    shortcutLabel: "Mod+I",
+  },
+];
+
 function App() {
   const form = createForm(() => ({
     defaultValues: {
@@ -203,6 +231,7 @@ function App() {
       pagination: { pageIndex: 0, pageSize: 2 },
     },
   });
+  const commandMenuStore = createCommandMenuStore({ open: true, query: "invoice" });
 
   return (
     <main>
@@ -239,6 +268,13 @@ function App() {
       <DataTable table={table}>
         <DataTableToolbar table={table} />
       </DataTable>
+      <CommandMenu
+        items={commandItems}
+        store={commandMenuStore}
+        hotkeys={false}
+        portal={{ forceMount: true }}
+        trigger="Open command menu"
+      />
       <Dialog>
         <DialogTrigger>Open Mason dialog</DialogTrigger>
         <DialogContent>
@@ -279,6 +315,11 @@ render(() => <App />, document.getElementById("root")!);
     await writeFile(
       path.join(app, "src/ssr.tsx"),
       `import { renderToString } from "solid-js/web";
+import {
+  CommandMenu,
+  createCommandMenuStore,
+  type CommandMenuItemData,
+} from "@/components/ui/command-menu";
 import {
   Dialog,
   DialogClose,
@@ -353,6 +394,25 @@ const invoiceColumns: ColumnDef<Invoice, unknown>[] = [
   },
 ];
 
+const commandItems: CommandMenuItemData[] = [
+  {
+    value: "open-dashboard",
+    label: "Open dashboard",
+    description: "Navigate to the dashboard overview.",
+    group: "Navigation",
+    shortcut: "Mod+D",
+    shortcutLabel: "Mod+D",
+  },
+  {
+    value: "create-invoice",
+    label: "Create invoice",
+    description: "Start a new invoice draft.",
+    group: "Actions",
+    shortcut: "Mod+I",
+    shortcutLabel: "Mod+I",
+  },
+];
+
 function App() {
   const form = createForm(() => ({
     defaultValues: {
@@ -371,6 +431,7 @@ function App() {
       sorting: [{ id: "total", desc: true }],
     },
   });
+  const commandMenuStore = createCommandMenuStore({ open: true, query: "invoice" });
 
   return (
     <main>
@@ -396,6 +457,13 @@ function App() {
       <DataTable table={table}>
         <DataTableToolbar table={table} />
       </DataTable>
+      <CommandMenu
+        items={commandItems}
+        store={commandMenuStore}
+        hotkeys={false}
+        portal={{ forceMount: true }}
+        trigger="Open command menu"
+      />
       <Dialog defaultOpen>
         <DialogTrigger>Open Mason dialog</DialogTrigger>
         <DialogContent portal={{ forceMount: true }}>
@@ -438,6 +506,7 @@ for (const expected of [
   "mason-sheet-trigger",
   "mason-text-field-input",
   "mason-select-field-trigger",
+  "mason-command-menu-trigger",
   "mason-data-table-table",
   "mason-data-table-pagination",
   "Ada Lovelace",
