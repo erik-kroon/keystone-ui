@@ -208,7 +208,7 @@ Core owns headless accessible primitives and shared primitive helpers. UI owns s
 - ContextMenu
 - Menubar
 - NavigationMenu
-- Toast
+- Toast (`proven`; see [ui-toast-vertical.md](ui-toast-vertical.md))
 - Select
 - Combobox
 - Command
@@ -221,15 +221,15 @@ Core owns headless accessible primitives and shared primitive helpers. UI owns s
 
 ### TanStack Table UI
 
-- DataTable
-- DataTableToolbar
-- DataTablePagination
-- DataTableColumnHeader
-- DataTableFacetedFilter
-- DataTableViewOptions
-- DataTableRowActions
-- DataTableEmpty
-- DataTableSkeleton
+- DataTable (`proven`; TanStack Table source kit with controlled/uncontrolled state, native table semantics, stable data parts, and Mason registry metadata; see [ui-data-table-vertical.md](ui-data-table-vertical.md))
+- DataTableToolbar (`proven`; see [ui-data-table-vertical.md](ui-data-table-vertical.md))
+- DataTablePagination (`proven`; see [ui-data-table-vertical.md](ui-data-table-vertical.md))
+- DataTableColumnHeader (`proven`; see [ui-data-table-vertical.md](ui-data-table-vertical.md))
+- DataTableFacetedFilter (`proven`; see [ui-data-table-vertical.md](ui-data-table-vertical.md))
+- DataTableViewOptions (`proven`; see [ui-data-table-vertical.md](ui-data-table-vertical.md))
+- DataTableRowActions (`proven`; see [ui-data-table-vertical.md](ui-data-table-vertical.md))
+- DataTableEmpty (`proven`; see [ui-data-table-vertical.md](ui-data-table-vertical.md))
+- DataTableSkeleton (`proven`; see [ui-data-table-vertical.md](ui-data-table-vertical.md))
 
 ### TanStack Store And Hotkeys UI
 

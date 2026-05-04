@@ -39,10 +39,12 @@ export function DataTableFacetedFilter<TData extends RowData>(props: {
         <For each={props.options}>
           {(option) => {
             const checked = createMemo(() => selectedValues().has(option.value));
+            const count = createMemo(() => optionCount(option));
             return (
               <label data-scope="ui-data-table" data-part="faceted-option">
                 <input
                   type={props.multiple === false ? "radio" : "checkbox"}
+                  name={`data-table-${props.columnId}`}
                   checked={checked()}
                   onChange={() => {
                     const next = new Set(selectedValues());
@@ -61,9 +63,9 @@ export function DataTableFacetedFilter<TData extends RowData>(props: {
                   }}
                 />
                 <span>{option.label}</span>
-                <Show when={optionCount(option) !== undefined}>
+                <Show when={count() !== undefined}>
                   <span data-scope="ui-data-table" data-part="faceted-count">
-                    {optionCount(option)}
+                    {count()}
                   </span>
                 </Show>
               </label>
@@ -74,9 +76,13 @@ export function DataTableFacetedFilter<TData extends RowData>(props: {
       <Show when={selectedValues().size > 0}>
         <button
           type="button"
+          aria-label={`Clear ${props.title} filter`}
           data-scope="ui-data-table"
           data-part="faceted-clear"
-          onClick={() => column()?.setFilterValue(undefined)}
+          onClick={() => {
+            column()?.setFilterValue(undefined);
+            props.table.setPageIndex(0);
+          }}
         >
           Clear
         </button>

@@ -97,6 +97,7 @@ async function main() {
     await addCommand({ cwd: app, item: "command-menu", registry });
     await addCommand({ cwd: app, item: "data-table", registry });
     await addCommand({ cwd: app, item: "data-table-tanstack-router", registry });
+    await addCommand({ cwd: app, item: "invoice-dashboard", registry });
     await writeFile(
       path.join(app, "vite.config.ts"),
       `import { fileURLToPath, URL } from "node:url";
@@ -139,6 +140,7 @@ import { DataTableColumnHeader } from "@/components/data-table/data-table-column
 import { DataTableRowActions } from "@/components/data-table/data-table-row-actions";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { dataTableFacetedFilter, useDataTable } from "@/components/data-table/use-data-table";
+import { InvoiceDashboardBlock } from "@/components/blocks/invoice-dashboard/invoice-dashboard";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { SelectField } from "@/components/ui/select-field";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -265,6 +267,7 @@ function App() {
       <DataTable table={table}>
         <DataTableToolbar table={table} />
       </DataTable>
+      <InvoiceDashboardBlock />
       <CommandMenu
         items={commandItems}
         store={commandMenuStore}
@@ -334,6 +337,7 @@ import { DataTableColumnHeader } from "@/components/data-table/data-table-column
 import { DataTableRowActions } from "@/components/data-table/data-table-row-actions";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { dataTableFacetedFilter, useDataTable } from "@/components/data-table/use-data-table";
+import { InvoiceDashboardBlock } from "@/components/blocks/invoice-dashboard/invoice-dashboard";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { SelectField } from "@/components/ui/select-field";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -455,6 +459,7 @@ function App() {
       <DataTable table={table}>
         <DataTableToolbar table={table} />
       </DataTable>
+      <InvoiceDashboardBlock />
       <CommandMenu
         items={commandItems}
         store={commandMenuStore}
@@ -505,8 +510,12 @@ for (const expected of [
   "ui-text-field-input",
   "ui-select-field-trigger",
   "ui-command-menu-trigger",
+  "ui-block-invoice-dashboard",
   "ui-data-table-table",
   "ui-data-table-pagination",
+  "Invoice workspace",
+  "Create draft",
+  "Northstar Labs",
   "Ada Lovelace",
   "Katherine Johnson",
   'data-scope="ui-text-field"',

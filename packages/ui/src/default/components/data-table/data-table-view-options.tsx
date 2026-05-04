@@ -21,12 +21,15 @@ export function DataTableViewOptions<TData extends RowData>(props: {
     <div
       data-scope="ui-data-table"
       data-part="view-options"
+      role="group"
+      aria-label="Column visibility"
       class={cn("ui-data-table-view-options", props.class)}
     >
       <input
         type="search"
         value={query()}
         placeholder="Search columns..."
+        aria-label="Search columns"
         data-scope="ui-data-table"
         data-part="view-options-search"
         onInput={(event) => setQuery(event.currentTarget.value)}

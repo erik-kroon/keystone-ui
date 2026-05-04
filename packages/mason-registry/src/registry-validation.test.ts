@@ -161,6 +161,7 @@ describe("Mason registry validation tracer", () => {
       "field",
       "hover-card",
       "input",
+      "invoice-dashboard",
       "label",
       "menu",
       "menubar",
@@ -176,6 +177,7 @@ describe("Mason registry validation tracer", () => {
       "tabs",
       "tanstack-field",
       "tanstack-form",
+      "tanstack-start-dashboard",
       "text-field",
       "textarea",
       "toast",
@@ -226,12 +228,79 @@ describe("Mason registry validation tracer", () => {
         result.value.files.length,
       );
       expect(result.value.meta?.columns).toBeString();
+      expect(result.value.meta?.api).toContain("accessors");
       expect(result.value.meta?.sorting).toBeString();
       expect(result.value.meta?.filtering).toBeString();
       expect(result.value.meta?.pagination).toBeString();
+      expect(result.value.meta?.state).toContain("controlled");
+      expect(result.value.meta?.accessibility).toContain("aria-sort");
+      expect(result.value.meta?.dataAttributes).toContain('data-scope="ui-data-table"');
+      expect(result.value.meta?.ssr).toContain("getRowId");
       expect(result.value.meta?.rowActions).toBeString();
       expect(result.value.meta?.limitations).toBeString();
     }
+  });
+
+  test("captures the real default data-table generated source contract", async () => {
+    const sourceRoot = resolve(uiPackageSourceRoot, "components/data-table");
+    const [
+      table,
+      useTable,
+      columnHeader,
+      toolbar,
+      facetedFilter,
+      pagination,
+      viewOptions,
+      rowActions,
+    ] = await Promise.all([
+      readFile(resolve(sourceRoot, "data-table.tsx"), "utf8"),
+      readFile(resolve(sourceRoot, "use-data-table.ts"), "utf8"),
+      readFile(resolve(sourceRoot, "data-table-column-header.tsx"), "utf8"),
+      readFile(resolve(sourceRoot, "data-table-toolbar.tsx"), "utf8"),
+      readFile(resolve(sourceRoot, "data-table-faceted-filter.tsx"), "utf8"),
+      readFile(resolve(sourceRoot, "data-table-pagination.tsx"), "utf8"),
+      readFile(resolve(sourceRoot, "data-table-view-options.tsx"), "utf8"),
+      readFile(resolve(sourceRoot, "data-table-row-actions.tsx"), "utf8"),
+    ]);
+
+    expect(table).toContain('data-scope="ui-data-table"');
+    expect(table).toContain('data-part="caption"');
+    expect(table).toContain("aria-busy={local.loading || undefined}");
+    expect(table).toContain('scope="col"');
+    expect(table).toContain("aria-sort={getAriaSort(header.column.getIsSorted())}");
+    expect(table).toContain("aria-selected={row.getIsSelected() || undefined}");
+    expect(table).toContain('data-selected={row.getIsSelected() ? "" : undefined}');
+    expect(table).toContain("function getAriaSort");
+
+    expect(useTable).toContain("type MaybeAccessor");
+    expect(useTable).toContain("state?: {");
+    expect(useTable).toContain("onSortingChange?: OnChangeFn<SortingState>");
+    expect(useTable).toContain("manualPagination?: boolean");
+    expect(useTable).toContain("resolveDataTableOption(options.data)");
+
+    expect(columnHeader).toContain("aria-label={`Sort ${label()}`}");
+    expect(columnHeader).toContain('data-part="sort-trigger"');
+    expect(columnHeader).toContain('data-part="sort-clear"');
+    expect(columnHeader).toContain('data-part="column-hide"');
+
+    expect(toolbar).toContain('type="search"');
+    expect(toolbar).toContain("aria-label={meta?.placeholder ?? `Search ${label}`}");
+    expect(toolbar).toContain("Reset table filters and column visibility");
+
+    expect(facetedFilter).toContain("<fieldset");
+    expect(facetedFilter).toContain("<legend>{props.title}</legend>");
+    expect(facetedFilter).toContain('type={props.multiple === false ? "radio" : "checkbox"}');
+    expect(facetedFilter).toContain("props.table.setPageIndex(0)");
+
+    expect(pagination).toContain('role="navigation"');
+    expect(pagination).toContain('aria-label="Table pagination"');
+    expect(pagination).toContain('aria-live="polite"');
+    expect(pagination).toContain('aria-label="Go to next page"');
+
+    expect(viewOptions).toContain('role="group"');
+    expect(viewOptions).toContain('aria-label="Column visibility"');
+    expect(rowActions).toContain('role="group"');
+    expect(rowActions).toContain('aria-label="Row actions"');
   });
 
   test("validates docs-ready metadata on the real default data-table router adapter item", async () => {
@@ -246,6 +315,111 @@ describe("Mason registry validation tracer", () => {
       expect(result.value.meta?.stateMapping).toBeString();
       expect(result.value.meta?.limitations).toBeString();
     }
+  });
+
+  test("validates docs-ready metadata on the real default invoice-dashboard block", async () => {
+    const item = await import("../../../registry/default/items/invoice-dashboard.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.type).toBe("registry:block");
+      expect(result.value.dependencies).toContain("@tanstack/solid-form@^1.29.1");
+      expect(result.value.dependencies).toContain("@tanstack/solid-table@^8.21.3");
+      expect(result.value.registryDependencies).toContain("data-table");
+      expect(result.value.registryDependencies).toContain("text-field");
+      expect(result.value.registryDependencies).toContain("toast");
+      expect(result.value.files).toHaveLength(3);
+      expect(
+        result.value.files.every((file) =>
+          file.target?.startsWith("src/components/blocks/invoice-dashboard/"),
+        ),
+      ).toBe(true);
+      expect(result.value.meta?.fileTree).toContain("invoice-dashboard-columns.tsx");
+      expect(result.value.meta?.frameworkAssumptions).toContain("Solid");
+      expect(result.value.meta?.interactions).toContain("table sorting");
+      expect(result.value.meta?.parity).toMatchObject({
+        shadcn: expect.any(String),
+        tanstackForm: expect.any(String),
+        tanstackTable: expect.any(String),
+        sonner: expect.any(String),
+      });
+    }
+  });
+
+  test("captures the real default invoice-dashboard generated source contract", async () => {
+    const sourceRoot = resolve(uiPackageSourceRoot, "blocks/invoice-dashboard");
+    const [block, columns, data] = await Promise.all([
+      readFile(resolve(sourceRoot, "invoice-dashboard.tsx"), "utf8"),
+      readFile(resolve(sourceRoot, "invoice-dashboard-columns.tsx"), "utf8"),
+      readFile(resolve(sourceRoot, "invoice-dashboard-data.ts"), "utf8"),
+    ]);
+
+    expect(block).toContain('data-part="invoice-dashboard"');
+    expect(block).toContain("createForm");
+    expect(block).toContain("CommandMenu");
+    expect(block).toContain("DataTableToolbar");
+    expect(block).toContain("TanStackFormSubmit");
+    expect(block).toContain("Toaster");
+    expect(columns).toContain("DataTableColumnHeader");
+    expect(columns).toContain("DataTableRowActions");
+    expect(columns).toContain("dataTableFacetedFilter");
+    expect(data).toContain("invoiceDashboardRows");
+    expect(data).toContain("invoiceDashboardStatusOptions");
+  });
+
+  test("validates docs-ready metadata on the real default TanStack Start dashboard template", async () => {
+    const item = await import("../../../registry/default/items/tanstack-start-dashboard.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.type).toBe("registry:template");
+      expect(result.value.registryDependencies).toEqual(["invoice-dashboard"]);
+      expect(result.value.dependencies).toContain("@tanstack/solid-start@^1.167.58");
+      expect(result.value.dependencies).toContain("@tanstack/solid-router@^1.168.20");
+      expect(result.value.files.length).toBeGreaterThanOrEqual(8);
+      expect(result.value.meta?.fileTree).toContain("src/routes/index.tsx");
+      expect(result.value.meta?.frameworkAssumptions).toContain("TanStack Start");
+      expect(result.value.meta?.verification).toContain("invoice-dashboard block is installed");
+      expect(result.value.meta?.parity).toMatchObject({
+        tanstackStart: expect.any(String),
+        shadcn: expect.any(String),
+        mason: expect.any(String),
+      });
+    }
+  });
+
+  test("captures the real default tabs generated source contract", async () => {
+    const item = await import("../../../registry/default/items/tabs.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/tabs.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.meta?.anatomy).toEqual([
+        "Tabs",
+        "TabsList",
+        "TabsTrigger",
+        "TabsIndicator",
+        "TabsContent",
+      ]);
+      expect(result.value.meta?.cssVariables).toEqual([
+        "--keystone-tabs-indicator-x",
+        "--keystone-tabs-indicator-y",
+        "--keystone-tabs-indicator-width",
+        "--keystone-tabs-indicator-height",
+      ]);
+      expect(result.value.meta?.accessibility).toContain("role=tablist/tab/tabpanel");
+    }
+
+    expect(source).toContain("tabsRootClass");
+    expect(source).toContain("tabsIndicatorClass");
+    expect(source).toContain("--keystone-tabs-indicator-x");
+    expect(source).toContain("--keystone-tabs-indicator-width");
+    expect(source).toContain("data-[orientation=vertical]:flex-col");
+    expect(source).toContain("focus-visible:ring-2");
+    expect(source).toContain("data-selected:text-foreground");
   });
 
   test("validates docs-ready metadata on the real default command-menu item", async () => {
@@ -597,7 +771,9 @@ describe("Mason registry validation tracer", () => {
       expect(result.value.dependencies).toContain("@keystone-ui/core@^0.0.0");
       expect(result.value.dependencies).toContain("@tanstack/solid-form@^1.29.1");
       expect(result.value.registryDependencies).toEqual(["cn", "select", "tanstack-field"]);
-      expect(result.value.meta?.api).toContain("TanStackField");
+      expect(result.value.meta?.api).toContain("SelectFieldOptionGroup");
+      expect(result.value.meta?.api).toContain("textValue");
+      expect(result.value.meta?.accessibility).toContain("aria-labelledby");
       expect(result.value.meta?.accessibility).toContain("hidden form value");
       expect(result.value.meta?.anatomy).toEqual([
         "field-root",
@@ -606,13 +782,20 @@ describe("Mason registry validation tracer", () => {
         "value",
         "content",
         "listbox",
+        "group",
+        "group-label",
         "item",
         "item-text",
         "item-indicator",
+        "empty",
         "field-description",
         "field-error",
       ]);
       expect(result.value.meta?.limitations).toContain("single-value");
+      expect(result.value.meta?.limitations).toContain("empty string");
+      expect(result.value.meta?.state).toContain("field.handleBlur");
+      expect(result.value.meta?.dataAttributes).toContain('data-slot="select-field-empty"');
+      expect(result.value.meta?.ssr).toContain("deterministic");
       expect(result.value.meta?.parity).toMatchObject({
         tanstackForm: expect.any(String),
         baseUi: expect.any(String),
@@ -623,12 +806,25 @@ describe("Mason registry validation tracer", () => {
     expect(source).toContain('from "@/components/ui/select"');
     expect(source).toContain('from "@/components/ui/tanstack-field"');
     expect(source).toContain("export function SelectField");
+    expect(source).toContain("export type SelectFieldOptionGroup");
     expect(source).toContain("<TanStackField<string, HTMLButtonElement>");
+    expect(source).toContain("aria-describedby={props.describedBy || undefined}");
+    expect(source).toContain("aria-labelledby={props.labelledBy}");
+    expect(source).toContain("disabled={props.disabled}");
+    expect(source).toContain("readOnly={props.readOnly}");
+    expect(source).toContain("required={props.required}");
+    expect(source).toContain("form={props.formId}");
+    expect(source).toContain("props.value.length > 0 ? props.value : undefined");
     expect(source).toContain("field().handleBlur()");
     expect(source).toContain('field().handleChange(next ?? "")');
+    expect(source).toContain("props.selectProps?.onOpenChange?.(open, detail)");
+    expect(source).toContain("label={optionText(props.option)}");
     expect(source).toContain('data-slot="select-field-trigger"');
     expect(source).toContain('data-slot="select-field-content"');
+    expect(source).toContain('data-slot="select-field-group"');
+    expect(source).toContain('data-slot="select-field-group-label"');
     expect(source).toContain('data-slot="select-field-item"');
+    expect(source).toContain('data-slot="select-field-empty"');
   });
 
   test("captures Combobox parity metadata and generated source contract", async () => {
@@ -921,17 +1117,42 @@ describe("Mason registry validation tracer", () => {
       expect(result.value.meta?.parts).toEqual([
         "viewport",
         "root",
+        "icon",
         "title",
         "description",
         "action",
         "close",
       ]);
+      expect(result.value.meta?.api).toContain("ToastPrimitive");
+      expect(result.value.meta?.anatomy).toMatchObject({
+        coreParts: expect.arrayContaining(["viewport", "root", "title", "description"]),
+        uiSlots: expect.arrayContaining(["toast-viewport", "toast-icon", "toast-close"]),
+      });
+      expect(result.value.meta?.accessibility).toEqual(
+        expect.arrayContaining([expect.any(String)]),
+      );
+      expect(result.value.meta?.cssVariables).toEqual([
+        "--toast-offset",
+        "--toast-gap",
+        "--toast-width",
+      ]);
+      expect(result.value.meta?.limitations).toEqual(expect.arrayContaining([expect.any(String)]));
       expect(result.value.meta?.parity).toMatchObject({
         baseUi: expect.any(String),
         kobalte: expect.any(String),
         sonner: expect.any(String),
       });
     }
+
+    const source = await Bun.file(join(repoRoot, "packages/ui/src/default/ui/toast.tsx")).text();
+
+    expect(source).toContain('from "@keystone-ui/core/toast"');
+    expect(source).toContain("export function ToastIcon");
+    expect(source).toContain("export const ToastPrimitive = CoreToast");
+    expect(source).toContain('data-slot="toast-viewport"');
+    expect(source).toContain('data-slot="toast-icon"');
+    expect(source).toContain("[--toast-width:24rem]");
+    expect(source).toContain("renderToast?: (toast: ToastData) => JSX.Element");
   });
 
   test("resolves dialog registry dependencies deterministically", () => {

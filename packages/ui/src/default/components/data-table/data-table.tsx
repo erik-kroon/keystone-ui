@@ -9,6 +9,7 @@ type DataTableRootProps = Omit<JSX.HTMLAttributes<HTMLDivElement>, "children">;
 
 export type DataTableProps<TData extends RowData> = DataTableRootProps & {
   table: Table<TData>;
+  caption?: JSX.Element;
   children?: JSX.Element;
   empty?: JSX.Element;
   loading?: boolean;
@@ -19,6 +20,7 @@ export type DataTableProps<TData extends RowData> = DataTableRootProps & {
 
 export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
   const [local, rootProps] = splitProps(props, [
+    "caption",
     "children",
     "class",
     "empty",
@@ -34,6 +36,9 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
       {...rootProps}
       data-scope="ui-data-table"
       data-part="root"
+      data-empty={local.table.getRowModel().rows.length === 0 ? "" : undefined}
+      data-loading={local.loading ? "" : undefined}
+      aria-busy={local.loading || undefined}
       class={cn("ui-data-table", local.class)}
     >
       <Show when={local.children}>
@@ -43,6 +48,11 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
       </Show>
       <div data-scope="ui-data-table" data-part="viewport" class="ui-data-table-viewport">
         <table data-scope="ui-data-table" data-part="table" class="ui-data-table-table">
+          <Show when={local.caption}>
+            <caption data-scope="ui-data-table" data-part="caption">
+              {local.caption}
+            </caption>
+          </Show>
           <thead data-scope="ui-data-table" data-part="header" class="ui-data-table-header">
             <For each={local.table.getHeaderGroups()}>
               {(headerGroup) => (
@@ -51,8 +61,11 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
                     {(header) => (
                       <th
                         colSpan={header.colSpan}
+                        scope="col"
+                        aria-sort={getAriaSort(header.column.getIsSorted())}
                         data-scope="ui-data-table"
                         data-part="head"
+                        data-sort={header.column.getIsSorted() || "none"}
                         class="ui-data-table-head"
                       >
                         <Show when={!header.isPlaceholder}>
@@ -89,7 +102,9 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
                     <tr
                       data-scope="ui-data-table"
                       data-part="row"
+                      aria-selected={row.getIsSelected() || undefined}
                       data-state={row.getIsSelected() ? "selected" : undefined}
+                      data-selected={row.getIsSelected() ? "" : undefined}
                       class="ui-data-table-row"
                     >
                       <For each={row.getVisibleCells()}>
@@ -116,4 +131,10 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
       </Show>
     </div>
   );
+}
+
+function getAriaSort(sort: false | "asc" | "desc"): "ascending" | "descending" | "none" {
+  if (sort === "asc") return "ascending";
+  if (sort === "desc") return "descending";
+  return "none";
 }

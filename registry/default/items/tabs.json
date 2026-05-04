@@ -16,13 +16,21 @@
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add tabs",
-    "customization": "Style the generated wrappers through ui-tabs classes while Keystone keeps tablist roles, selection state, keyboard navigation, ARIA relationships, and data attributes.",
+    "customization": "Style the generated wrappers through ui-tabs classes while Keystone keeps tablist roles, selection state, keyboard navigation, ARIA relationships, measured indicator variables, dynamic trigger removal fallback, panel focus heuristics, and data attributes.",
     "sourceFiles": ["packages/ui/src/default/ui/tabs.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
+    "anatomy": ["Tabs", "TabsList", "TabsTrigger", "TabsIndicator", "TabsContent"],
     "parts": ["root", "list", "trigger", "indicator", "content"],
+    "cssVariables": [
+      "--keystone-tabs-indicator-x",
+      "--keystone-tabs-indicator-y",
+      "--keystone-tabs-indicator-width",
+      "--keystone-tabs-indicator-height"
+    ],
+    "accessibility": "Keystone Core owns role=tablist/tab/tabpanel, aria-selected, aria-controls, aria-labelledby, horizontal and vertical keyboard navigation, RTL-aware horizontal arrows, disabled trigger semantics, and panel tabIndex heuristics.",
     "parity": {
-      "baseUi": "Thin vertical covers controlled and uncontrolled value state, disabled triggers, horizontal and vertical roving focus, RTL-aware horizontal keys, automatic/manual activation, tablist/tabpanel ARIA, UI wrapper metadata, and behavior tests. Gaps: measured indicator positioning, delete/closable tab coordination, activation latency policy, dynamic removal focus restoration, and broader touch/cursor tests remain follow-up work.",
-      "kobalte": "Matches Solid Tabs Root/List/Trigger/Content direction with controlled value, orientation, direction, activation mode, disabled triggers, and stable data attributes. Gaps: indicator measurement, create-dom-collection depth, dynamic tab lifecycle, and SSR edge-case coverage remain follow-up work."
+      "baseUi": "Covers controlled and uncontrolled value state, disabled triggers, horizontal and vertical roving focus, RTL-aware horizontal keys, automatic/manual activation, tablist/tabpanel ARIA, measured indicator CSS variables, dynamic removal focus/selection fallback, force-mounted panels, styled generated source, UI wrapper metadata, and behavior tests. Intentional gaps: app-owned delete/closable tab coordination, activation latency policy for heavy panels, and broader touch/cursor tests.",
+      "kobalte": "Matches Solid Tabs Root/List/Trigger/Content direction with controlled value, orientation, direction, activation mode, disabled triggers, forceMount, panel focus heuristics, measured indicator variables, dynamic tab lifecycle fallback, and stable data attributes. Intentional gaps: app-owned delete/closable tab coordination and deeper touch/cursor edge coverage."
     }
   },
   "files": [

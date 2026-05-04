@@ -1,6 +1,7 @@
 import {
   Show,
   createContext,
+  createEffect,
   createMemo,
   createSignal,
   createUniqueId,
@@ -25,7 +26,7 @@ export type TabsDirection = CoreDirection;
 export type TabsOrientation = "horizontal" | "vertical";
 export type TabsValueChangeDetail = {
   event?: Event;
-  reason: "trigger" | "programmatic";
+  reason: "dynamic-removal" | "trigger" | "programmatic";
 };
 
 export type TabsPartProps<T extends HTMLElement = HTMLElement> = {
@@ -68,6 +69,16 @@ type TriggerRecord = {
   element: HTMLButtonElement;
   value: string;
 };
+
+const FOCUSABLE_PANEL_CONTENT = [
+  "a[href]",
+  "button:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  "[contenteditable]",
+  '[tabindex]:not([tabindex="-1"])',
+].join(",");
 
 export type CreateTabsOptions = {
   activationMode?: () => TabsActivationMode | undefined;
@@ -130,7 +141,19 @@ export function createTabs(options: CreateTabsOptions = {}): TabsApi {
     registryVersion();
     return triggerRecords.find((record) => !record.disabled())?.value;
   });
-  const selectedValue = createMemo(() => value() ?? firstEnabledValue());
+  const selectedValue = createMemo(() => {
+    registryVersion();
+    const currentValue = value();
+    if (currentValue !== undefined && triggerRecords.length === 0) return currentValue;
+    if (
+      currentValue !== undefined &&
+      triggerRecords.some((record) => record.value === currentValue && !record.disabled())
+    ) {
+      return currentValue;
+    }
+
+    return firstEnabledValue();
+  });
 
   const getTriggerId = (triggerValue: string) => {
     const current = triggerIds.get(triggerValue);
@@ -170,9 +193,20 @@ export function createTabs(options: CreateTabsOptions = {}): TabsApi {
       setRegistryVersion((version) => version + 1);
 
       return () => {
+        const wasActive = element === element.ownerDocument.activeElement;
+        const wasSelected = selectedValue() === triggerValue;
         const index = triggerRecords.indexOf(record);
         if (index >= 0) triggerRecords.splice(index, 1);
         setRegistryVersion((version) => version + 1);
+        if (!wasActive && !wasSelected) return;
+
+        queueMicrotask(() => {
+          const enabledTriggers = triggerRecords.filter((candidate) => !candidate.disabled());
+          const fallback = enabledTriggers[Math.min(index, enabledTriggers.length - 1)];
+          if (!fallback) return;
+          if (wasSelected) setValueState(fallback.value, { reason: "dynamic-removal" });
+          if (wasActive) fallback.element.focus();
+        });
       };
     },
     selectValue,
@@ -331,14 +365,72 @@ function Trigger(props: TabsTriggerProps) {
 
 function Indicator(props: TabsIndicatorProps) {
   const tabs = useTabs("Indicator");
-  const [local, others] = splitProps(props, ["children"]);
+  const [local, others] = splitProps(props, ["children", "ref"]);
+  const [indicatorElement, setIndicatorElement] = createSignal<HTMLDivElement>();
+  let cleanupMeasurement: (() => void) | undefined;
+
+  const updateIndicator = () => {
+    const element = indicatorElement();
+    const selectedTrigger = tabs.triggers().find((record) => record.value === tabs.selectedValue());
+    const container = element?.parentElement;
+    if (!element || !selectedTrigger || !container) return;
+
+    const triggerRect = selectedTrigger.element.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    const x = triggerRect.left - containerRect.left + container.scrollLeft;
+    const y = triggerRect.top - containerRect.top + container.scrollTop;
+
+    element.style.setProperty("--keystone-tabs-indicator-x", `${x}px`);
+    element.style.setProperty("--keystone-tabs-indicator-y", `${y}px`);
+    element.style.setProperty("--keystone-tabs-indicator-width", `${triggerRect.width}px`);
+    element.style.setProperty("--keystone-tabs-indicator-height", `${triggerRect.height}px`);
+  };
+
+  createEffect(() => {
+    indicatorElement();
+    tabs.selectedValue();
+    tabs.orientation();
+    tabs.triggers();
+    queueMicrotask(updateIndicator);
+  });
+
+  createEffect(() => {
+    const element = indicatorElement();
+    cleanupMeasurement?.();
+    cleanupMeasurement = undefined;
+    if (!element) return;
+
+    const selectedTrigger = tabs.triggers().find((record) => record.value === tabs.selectedValue());
+    const resizeObserver = globalThis.ResizeObserver
+      ? new ResizeObserver(updateIndicator)
+      : undefined;
+    if (resizeObserver) {
+      resizeObserver.observe(element);
+      if (element.parentElement) resizeObserver.observe(element.parentElement);
+      if (selectedTrigger) resizeObserver.observe(selectedTrigger.element);
+    }
+
+    globalThis.addEventListener?.("resize", updateIndicator);
+    cleanupMeasurement = () => {
+      resizeObserver?.disconnect();
+      globalThis.removeEventListener?.("resize", updateIndicator);
+    };
+  });
+
+  onCleanup(() => cleanupMeasurement?.());
 
   return (
     <div
       {...others}
       data-disabled={dataBoolean(tabs.disabled())}
       data-orientation={tabs.orientation()}
+      data-state={tabs.selectedValue() ? "measured" : "idle"}
       {...partDataAttributes("tabs", "indicator")}
+      ref={(element) => {
+        setIndicatorElement(element);
+        if (typeof local.ref === "function") local.ref(element);
+        queueMicrotask(updateIndicator);
+      }}
     >
       {local.children}
     </div>
@@ -347,8 +439,40 @@ function Indicator(props: TabsIndicatorProps) {
 
 function Content(props: TabsContentProps) {
   const tabs = useTabs("Content");
-  const [local, others] = splitProps(props, ["children", "forceMount", "value"]);
+  const [local, others] = splitProps(props, ["children", "forceMount", "ref", "value"]);
   const selected = createMemo(() => tabs.selectedValue() === local.value);
+  const [tabIndex, setTabIndex] = createSignal<number | undefined>(0);
+  const [panelElement, setPanelElement] = createSignal<HTMLDivElement>();
+  let cleanupPanelObserver: (() => void) | undefined;
+
+  const updatePanelTabIndex = () => {
+    const element = panelElement();
+    if (!element) return;
+    setTabIndex(element.querySelector(FOCUSABLE_PANEL_CONTENT) ? undefined : 0);
+  };
+
+  createEffect(() => {
+    panelElement();
+    selected();
+    queueMicrotask(updatePanelTabIndex);
+  });
+
+  createEffect(() => {
+    const element = panelElement();
+    cleanupPanelObserver?.();
+    cleanupPanelObserver = undefined;
+    if (!element || !globalThis.MutationObserver) return;
+
+    const observer = new MutationObserver(updatePanelTabIndex);
+    observer.observe(element, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
+    cleanupPanelObserver = () => observer.disconnect();
+  });
+
+  onCleanup(() => cleanupPanelObserver?.());
 
   return (
     <Show when={local.forceMount || selected()}>
@@ -356,13 +480,18 @@ function Content(props: TabsContentProps) {
         {...others}
         id={tabs.getContentId(local.value)}
         role="tabpanel"
-        tabIndex={0}
+        tabIndex={tabIndex()}
         hidden={selected() ? undefined : true}
         aria-labelledby={tabs.getTriggerId(local.value)}
         data-disabled={dataBoolean(tabs.disabled())}
         data-orientation={tabs.orientation()}
         data-selected={dataBoolean(selected())}
         {...partDataAttributes("tabs", "content")}
+        ref={(element) => {
+          setPanelElement(element);
+          if (typeof local.ref === "function") local.ref(element);
+          queueMicrotask(updatePanelTabIndex);
+        }}
       >
         {local.children}
       </div>

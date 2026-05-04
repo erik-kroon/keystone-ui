@@ -12,6 +12,8 @@ export function DataTableRowActions<TData extends RowData>(props: {
     <div
       data-scope="ui-data-table"
       data-part="row-actions"
+      role="group"
+      aria-label="Row actions"
       class={cn("ui-data-table-row-actions", props.class)}
     >
       <For each={props.actions}>

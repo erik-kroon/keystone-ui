@@ -20,13 +20,18 @@
     "install": "mason add data-table",
     "dataShape": "Pass an array of row objects through data and TanStack ColumnDef<TData, unknown>[] through columns. Use getRowId when the row key is not stable by index.",
     "columns": "Columns are ordinary TanStack Table column definitions. Use DataTableColumnHeader in header renderers and column meta for toolbar filters.",
+    "api": "DataTable receives a TanStack Table instance and optional caption, toolbar slot, empty/loading slots, page size options, skeleton row count, and pagination toggle. useDataTable accepts data/columns as values or accessors for reactive row updates.",
     "sorting": "Sorting is managed locally by useDataTable with TanStack getSortedRowModel and column.getToggleSortingHandler.",
     "filtering": "Text and faceted filters are rendered by DataTableToolbar from column meta and use TanStack columnFilters state.",
     "pagination": "Pagination is local through getPaginationRowModel and DataTablePagination.",
+    "state": "useDataTable is uncontrolled by default through Solid signals initialized from initialState. Pass state plus onSortingChange, onColumnFiltersChange, onColumnVisibilityChange, onPaginationChange, or onRowSelectionChange to control individual TanStack state slices; use manualSorting, manualFiltering, manualPagination, and pageCount for server-owned row models.",
+    "accessibility": "The kit uses native table, caption, thead, tbody, th, tr, td, button, input, select, fieldset, legend, and label semantics. Headers expose scope and aria-sort, loading sets aria-busy, selected rows expose aria-selected, pagination is a labelled navigation region, and toolbar controls have programmatic labels.",
+    "dataAttributes": "Stable styling hooks use data-scope=\"ui-data-table\" and data-part values for root, header-slot, viewport, table, caption, header, header-row, head, body, row, cell, empty-row, empty, skeleton-row, skeleton-cell, column-header, sort-trigger, sort-clear, column-hide, toolbar, search, reset, toolbar-actions, faceted-filter, faceted-option, faceted-count, faceted-clear, view-options, view-options-search, view-option, row-actions, pagination, selected-summary, page-summary, page-size, and page-buttons. Root exposes data-loading and data-empty; rows expose data-selected/data-state; headers expose data-sort.",
     "rowActions": "Use DataTableRowActions in a display column. Each action receives the TanStack row.",
     "routerAdapter": "Install data-table-tanstack-router for URL-backed search param state with TanStack Router.",
     "customization": "Use ui-data-table classes and data-part values for root, toolbar, search, faceted-filter, table, header, row, cell, empty, skeleton, row-actions, and pagination.",
-    "limitations": "This source is a client-side table pattern. Server-side pagination, virtualization, persisted column preferences, and async loading orchestration should be added in app code.",
+    "ssr": "The table renders deterministic native markup and does not read browser globals during render. Hydration-sensitive row identity should come from getRowId rather than row index when data can reorder or update frequently.",
+    "limitations": "This source is a TanStack Table composition kit, not a custom table engine. Virtualization, persisted column preferences, async fetching/loading orchestration, drag column ordering/sizing, and advanced query builders should be layered in app code or future companion registry items.",
     "sourceFiles": [
       "packages/ui/src/default/components/data-table/data-table.tsx",
       "packages/ui/src/default/components/data-table/data-table-column-header.tsx",
@@ -43,7 +48,7 @@
     "dependencies": ["@tanstack/solid-table", "cn"],
     "parity": {
       "tanstackTable": "First-class comparison is TanStack Table: the kit uses Solid Table column definitions, local sorting, filtering, pagination, column visibility, row actions, and toolbar composition. Gaps: server-side orchestration, virtualization, persisted views, async loading policy, column sizing/ordering, and advanced filter builders remain app-code follow-up work.",
-      "shadcn": "Comparable to shadcn data-table source kits in copy-paste ownership and composable subcomponents. Gaps: no CLI-generated schema, no baked-in URL state without the adapter, and no opinionated server data layer."
+      "shadcn": "Comparable to shadcn data-table source kits in copy-paste ownership and composable subcomponents, with Solid-native accessors and Mason multi-file install metadata. Gaps: no CLI-generated schema, no baked-in URL state without the adapter, and no opinionated server data layer."
     }
   },
   "files": [

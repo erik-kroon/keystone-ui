@@ -1,0 +1,79 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "invoice-dashboard",
+  "type": "registry:block",
+  "title": "InvoiceDashboardBlock",
+  "description": "Multi-file invoice workspace block composed from Keystone UI source and TanStack app components.",
+  "version": "0.1.0",
+  "dependencies": ["@tanstack/solid-form@^1.29.1", "@tanstack/solid-table@^8.21.3"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "tanstack-form": ">=1.29.0 <2.0.0",
+    "tanstack-table": ">=8.21.0 <9.0.0"
+  },
+  "categories": ["dashboard", "form", "table", "block"],
+  "keywords": ["invoice-dashboard", "dashboard", "settings", "data-table", "tanstack-form"],
+  "docs": "https://keystone-ui.dev/docs/blocks/invoice-dashboard",
+  "registryDependencies": [
+    "badge",
+    "button",
+    "card",
+    "command-menu",
+    "data-table",
+    "select-field",
+    "separator",
+    "tanstack-form",
+    "text-field",
+    "toast"
+  ],
+  "meta": {
+    "install": "mason add invoice-dashboard",
+    "fileTree": "Installs invoice-dashboard.tsx, invoice-dashboard-columns.tsx, and invoice-dashboard-data.ts as user-owned source under src/components/blocks/invoice-dashboard/.",
+    "dependencies": [
+      "@tanstack/solid-form",
+      "@tanstack/solid-table",
+      "badge",
+      "button",
+      "card",
+      "command-menu",
+      "data-table",
+      "select-field",
+      "separator",
+      "tanstack-form",
+      "text-field",
+      "toast"
+    ],
+    "customization": "Replace the sample invoice data with route loader or app-store data, adjust columns in invoice-dashboard-columns.tsx, and wire submit/toast actions to real mutations.",
+    "frameworkAssumptions": "Designed for Solid apps using the Mason default @ alias, Tailwind-compatible class tokens, TanStack Form, and TanStack Table.",
+    "sourceFiles": [
+      "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard.tsx",
+      "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard-columns.tsx",
+      "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard-data.ts"
+    ],
+    "interactions": "Representative workflow covers command menu launch, draft creation form validation/submission, toast feedback, table sorting/filtering/pagination, and row actions.",
+    "parity": {
+      "shadcn": "Matches shadcn-style block ownership by composing installed UI primitives instead of duplicating their source. Gaps: no server actions, auth, persisted filters, or production data loader contract.",
+      "tanstackForm": "Uses TanStack Form for app-level draft creation while Core remains independent. Gaps: schema validators and async submit lifecycle are intentionally left to the host app.",
+      "tanstackTable": "Uses the first-party DataTable kit for a realistic management table. Gaps: server pagination, virtualization, and saved views remain follow-up work.",
+      "sonner": "Uses the Keystone Toast source for workflow feedback. Gaps: no optimistic mutation queue or undo contract yet."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard.tsx",
+      "type": "registry:block",
+      "target": "src/components/blocks/invoice-dashboard/invoice-dashboard.tsx"
+    },
+    {
+      "path": "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard-columns.tsx",
+      "type": "registry:block",
+      "target": "src/components/blocks/invoice-dashboard/invoice-dashboard-columns.tsx"
+    },
+    {
+      "path": "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard-data.ts",
+      "type": "registry:block",
+      "target": "src/components/blocks/invoice-dashboard/invoice-dashboard-data.ts"
+    }
+  ]
+}
