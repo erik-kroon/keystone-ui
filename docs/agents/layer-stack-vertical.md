@@ -51,8 +51,8 @@ Known limitations:
 
 - Outside hiding remains a private overlay helper. Public promotion should wait until portal-heavy
   mixed overlay flows and live-announcer exceptions have broader primitive coverage.
-- Scroll locking is body `overflow: hidden` only. Advanced scrollbar compensation and mobile touch
-  edge cases remain a future prevent-scroll module.
+- Scroll locking is delegated to the shared prevent-scroll helper, including scrollbar
+  compensation, nested lock ref counts, inline-style restoration, and iOS touch edge blocking.
 - The kernel remains private. Public promotion of `@keystone-ui/keystone/overlay` should wait for
   an ADR/RFC that decides which helpers are stable API.
 
@@ -106,7 +106,10 @@ CSS variables:
 Focused coverage:
 
 - `packages/keystone/src/overlay/layer-kernel.test.tsx` verifies ordering, top-layer dismissal,
-  pointer-event blocking, modal hiding, cleanup restore, and reactive modal/pointer option changes.
+  pointer-event blocking, modal hiding, prevent-scroll acquisition, cleanup restore, and reactive
+  modal/pointer option changes.
+- `packages/keystone/src/overlay/prevent-scroll.test.ts` verifies scrollbar compensation,
+  ref-counted nested locks, style restoration, and iOS touch edge blocking.
 - `packages/keystone/test/overlay-vertical.behavior.test.tsx` verifies Popover, Tooltip, and Sheet
   reuse of the layer model for outside dismissal, Escape dismissal, focus restore, and modal
   pointer blocking.

@@ -131,4 +131,20 @@ describe("Toast behavior harness", () => {
 
     expect(actionCalls).toEqual(["undo"]);
   });
+
+  test("typed toaster shortcuts preserve ids and expose type metadata", async () => {
+    const manager = renderToastHarness();
+
+    const id = manager.success({ id: "saved", title: "Saved" });
+    await settled();
+
+    expect(id).toBe("saved");
+    expect(getByPart("toast", "root").getAttribute("data-type")).toBe("success");
+
+    manager.error("Failed");
+    await settled();
+
+    const roots = document.querySelectorAll('[data-scope="toast"][data-part="root"]');
+    expect(roots[1]?.getAttribute("data-type")).toBe("error");
+  });
 });

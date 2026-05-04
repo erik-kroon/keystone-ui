@@ -15,6 +15,13 @@ const primitives = [
       "Non-modal floating disclosure with trigger, positioner, content, outside dismissal, Escape dismissal, and floating geometry variables.",
   },
   {
+    name: "HoverCard",
+    importPath: "@keystone-ui/keystone/hover-card",
+    mason: "mason add hover-card",
+    notes:
+      "Hover/focus preview surface with open and close delays, hoverable content, pointer grace area, outside dismissal, Escape dismissal, and floating geometry variables.",
+  },
+  {
     name: "Tooltip",
     importPath: "@keystone-ui/keystone/tooltip",
     mason: "mason add tooltip",
@@ -27,6 +34,13 @@ const primitives = [
     mason: "mason add sheet",
     notes:
       "Modal side panel with backdrop, focus trap, focus restore, pointer-event blocking, side data, and Dialog-grade accessibility semantics.",
+  },
+  {
+    name: "Toast",
+    importPath: "@keystone-ui/keystone/toast",
+    mason: "mason add toast",
+    notes:
+      "Live notification system with manager shortcuts, viewport pause/resume behavior, action and close controls, priority roles, and stable type/status metadata.",
   },
 ];
 
@@ -44,8 +58,8 @@ function OverlayVerticalDocs() {
             <p class="eyebrow">Overlay vertical</p>
             <h1>Popover, Tooltip, Sheet</h1>
             <p class="doc-lede">
-              Three overlay surfaces reuse Keystone's unified overlay layer model instead of owning
-              separate top-layer, dismissal, pointer-blocking, or focus lifecycles.
+              Keystone overlay surfaces reuse one layer model for modal behavior, dismissal, focus
+              lifecycles, positioning, outside hiding, prevent scroll, and notification metadata.
             </p>
           </div>
 
@@ -53,9 +67,9 @@ function OverlayVerticalDocs() {
             <span>Kernel</span>
             <strong>OverlayLayerStack</strong>
             <span>Keystone exports</span>
-            <strong>popover / tooltip / sheet</strong>
+            <strong>popover / hover-card / tooltip / sheet / toast</strong>
             <span>Mason items</span>
-            <strong>popover, tooltip, sheet</strong>
+            <strong>popover, hover-card, tooltip, sheet, toast</strong>
           </div>
         </section>
 
@@ -67,7 +81,11 @@ function OverlayVerticalDocs() {
               <li>
                 Floating surfaces expose side, align, anchor width, and transform-origin data.
               </li>
-              <li>Modal surfaces opt into pointer blocking, focus trap, and focus restore.</li>
+              <li>
+                Modal surfaces opt into pointer blocking, outside hiding, prevent scroll, focus
+                trap, and focus restore.
+              </li>
+              <li>Toast exposes live-region roles, type metadata, and pause/resume timing.</li>
             </ul>
           </article>
 
@@ -77,8 +95,10 @@ function OverlayVerticalDocs() {
               <code>{`bun add @keystone-ui/keystone solid-js
 
 bunx mason add popover
+bunx mason add hover-card
 bunx mason add tooltip
-bunx mason add sheet`}</code>
+bunx mason add sheet
+bunx mason add toast`}</code>
             </pre>
           </article>
         </section>
