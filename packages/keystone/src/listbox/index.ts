@@ -1,4 +1,4 @@
-import { createMemo, splitProps, type Accessor, type JSX } from "solid-js";
+import { createMemo, createSignal, splitProps, type Accessor, type JSX } from "solid-js";
 import { getPartDataAttributes } from "../metadata/index";
 import { composeEventHandlers, dataBoolean } from "../utils/index";
 import type { CollectionItem, CollectionRegistration } from "./collection-registry";
@@ -81,6 +81,8 @@ export type ListboxCollectionContract<T extends CollectionItem> = {
   itemByValue: (value: string | undefined) => T | undefined;
   items: Accessor<readonly T[]>;
   registerOption: (item: CollectionRegistration<T>) => () => void;
+  refreshOrder: () => void;
+  scheduleRefreshOrder: () => void;
 };
 
 export type ListboxActiveDescendantContract<T extends CollectionItem> = {
@@ -154,6 +156,8 @@ export function createListboxInteraction<T extends CollectionItem, Detail>(
     itemByValue: list.collection.itemByValue,
     items: list.collection.items,
     registerOption: list.collection.registerItem,
+    refreshOrder: list.collection.refreshOrder,
+    scheduleRefreshOrder: list.collection.scheduleRefreshOrder,
   };
   const selection: ListboxSelectionContract<T, Detail> = {
     isSelected: list.selection.isSelected,
@@ -227,11 +231,14 @@ export function createListboxInteraction<T extends CollectionItem, Detail>(
         "label",
         "onClick",
         "onPointerMove",
+        "ref",
         "value",
       ]);
+      const [element, setElement] = createSignal<HTMLDivElement>();
 
       list.collection.registerItem({
         disabled: local.disabled,
+        element,
         group: local.group,
         label: local.label,
         value: local.value,
@@ -242,6 +249,11 @@ export function createListboxInteraction<T extends CollectionItem, Detail>(
         id: options.optionId(local.value),
         role: "option",
         "aria-disabled": local.disabled ? "true" : undefined,
+        ref: (element: HTMLDivElement) => {
+          setElement(element);
+          list.collection.scheduleRefreshOrder();
+          callRef(local.ref, element);
+        },
         get "aria-selected"() {
           return list.selection.isSelected(local.value);
         },
@@ -278,4 +290,10 @@ export function createListboxInteraction<T extends CollectionItem, Detail>(
     selectionMode,
     typeahead: list.collection.typeahead,
   };
+}
+
+function callRef<T extends HTMLElement>(ref: T | ((element: T) => void) | undefined, element: T) {
+  if (typeof ref === "function") {
+    ref(element);
+  }
 }

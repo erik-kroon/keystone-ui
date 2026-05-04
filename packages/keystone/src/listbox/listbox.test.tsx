@@ -115,7 +115,43 @@ describe("Listbox interaction module", () => {
     });
   });
 
-  test("replaces duplicate option values without leaving stale collection indexes", () => {
+  test("orders registered elements by DOM position after refs attach", async () => {
+    await createRoot(async (dispose) => {
+      const listbox = createListboxInteraction<
+        {
+          disabled?: boolean;
+          element?: () => HTMLElement | undefined;
+          label: string;
+          value: string;
+        },
+        { reason: string }
+      >({
+        id: () => "project-listbox",
+        labelledBy: () => "project-trigger",
+        optionId: (value) => `project-option-${value}`,
+        optionSelectDetail: () => ({ reason: "item" }),
+        programmaticDetail: { reason: "programmatic" },
+        scope: "test-listbox",
+      });
+      const alpha = document.createElement("div");
+      const bravo = document.createElement("div");
+      const props = [
+        listbox.getOptionProps({ label: "Bravo", value: "bravo" }),
+        listbox.getOptionProps({ label: "Alpha", value: "alpha" }),
+      ];
+
+      document.body.append(alpha, bravo);
+      (props[0].ref as (element: HTMLElement) => void)(bravo);
+      (props[1].ref as (element: HTMLElement) => void)(alpha);
+
+      await Promise.resolve();
+
+      expect(listbox.collection.items().map((item) => item.value)).toEqual(["alpha", "bravo"]);
+      dispose();
+    });
+  });
+
+  test("replaces duplicate option values without letting stale cleanup remove replacements", () => {
     createRoot((dispose) => {
       const listbox = createListboxInteraction<
         { disabled?: boolean; label: string; value: string },
@@ -141,8 +177,11 @@ describe("Listbox interaction module", () => {
 
       unregisterAlpha();
 
-      expect(listbox.collection.items().map((item) => item.value)).toEqual(["bravo"]);
-      expect(listbox.collection.itemByValue("alpha")).toBeUndefined();
+      expect(listbox.collection.items().map((item) => item.label)).toEqual([
+        "Updated alpha",
+        "Bravo",
+      ]);
+      expect(listbox.collection.itemByValue("alpha")?.label).toBe("Updated alpha");
       expect(listbox.collection.itemByValue("bravo")?.label).toBe("Bravo");
       dispose();
     });

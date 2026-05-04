@@ -31,6 +31,8 @@ export type ListCollectionManagerApi<T extends CollectionItem> = {
   items: Accessor<readonly T[]>;
   isHighlighted: (value: string) => boolean;
   registerItem: (item: CollectionRegistration<T>) => () => void;
+  refreshOrder: () => void;
+  scheduleRefreshOrder: () => void;
   setHighlightedValue: (value: string | undefined) => void;
   typeahead: TypeaheadApi;
 };
@@ -114,6 +116,8 @@ export function createListCollectionManager<T extends CollectionItem>(
     items: itemList,
     isHighlighted: activeDescendant.isHighlighted,
     registerItem: collection.registerItem,
+    refreshOrder: collection.refreshOrder,
+    scheduleRefreshOrder: collection.scheduleRefreshOrder,
     setHighlightedValue: activeDescendant.setHighlightedValue,
     typeahead,
   };

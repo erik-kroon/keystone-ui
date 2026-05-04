@@ -5,10 +5,11 @@ import { createFieldValidity, createFormControl } from "./index";
 
 describe("field validity", () => {
   test("tracks focus, touch, dirty, and filled state from control events", () => {
-    const validity = createFieldValidity({ defaultValue: "" });
+    let validity!: ReturnType<typeof createFieldValidity>;
     let input!: HTMLInputElement;
 
     render(() => {
+      validity = createFieldValidity({ defaultValue: "" });
       const props = validity.getControlProps<HTMLInputElement>({
         ref: (element) => {
           input = element;
@@ -37,10 +38,11 @@ describe("field validity", () => {
   });
 
   test("captures native and custom validity without app form state", () => {
-    const validity = createFieldValidity();
+    let validity!: ReturnType<typeof createFieldValidity>;
     let input!: HTMLInputElement;
 
     render(() => {
+      validity = createFieldValidity();
       const props = validity.getControlProps<HTMLInputElement>({
         ref: (element) => {
           input = element;
@@ -69,17 +71,18 @@ describe("field validity", () => {
 
   test("runs validation in the configured mode and exposes errors", async () => {
     const calls: string[] = [];
-    const validity = createFieldValidity({
-      defaultValue: "",
-      validationMode: "blur",
-      validate: (context) => {
-        calls.push(context.reason);
-        return context.value === "ok" ? undefined : "Required";
-      },
-    });
+    let validity!: ReturnType<typeof createFieldValidity>;
     let input!: HTMLInputElement;
 
     render(() => {
+      validity = createFieldValidity({
+        defaultValue: "",
+        validationMode: "blur",
+        validate: (context) => {
+          calls.push(context.reason);
+          return context.value === "ok" ? undefined : "Required";
+        },
+      });
       const props = validity.getControlProps<HTMLInputElement>({
         ref: (element) => {
           input = element;
