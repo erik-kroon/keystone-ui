@@ -1,4 +1,4 @@
-import { createSignal, onCleanup, type Accessor } from "solid-js";
+import { createSignal, onCleanup, untrack, type Accessor } from "solid-js";
 
 export type CollectionItem = {
   disabled?: boolean;
@@ -15,46 +15,43 @@ export type CollectionRegistration<T extends CollectionItem> = T & {
 export type CollectionRegistryApi<T extends CollectionItem> = {
   items: Accessor<readonly T[]>;
   registerItem: (item: CollectionRegistration<T>) => () => void;
+  refreshOrder: () => void;
+  scheduleRefreshOrder: () => void;
+};
+
+type CollectionEntry<T extends CollectionItem> = {
+  explicitOrder: boolean;
+  id: number;
+  item: T;
+  order: number;
 };
 
 export function createCollectionRegistry<T extends CollectionItem>(): CollectionRegistryApi<T> {
   const [items, setItems] = createSignal<Array<T>>([], { equals: false });
-  const currentItems: Array<T> = [];
-  let order = 0;
-  let needsOrderedSort = false;
-  const fallbackOrder = new Map<string, number>();
-  const indexByValue = new Map<string, number>();
+  const entriesByValue = new Map<string, CollectionEntry<T>>();
+  let nextId = 0;
+  let nextOrder = 0;
+  let refreshScheduled = false;
 
   const registerItem = (item: CollectionRegistration<T>) => {
-    const registrationOrder = item.index ?? order++;
-    fallbackOrder.set(item.value, registrationOrder);
-    const nextItem = item as T;
-    const existingIndex = indexByValue.get(nextItem.value) ?? -1;
-    needsOrderedSort ||= item.index !== undefined || item.element !== undefined;
+    const previous = entriesByValue.get(item.value);
+    const entry: CollectionEntry<T> = {
+      explicitOrder: item.index !== undefined,
+      id: nextId++,
+      item: preservePreviousElement(item, previous?.item) as T,
+      order: item.index ?? previous?.order ?? nextOrder++,
+    };
 
-    if (existingIndex === -1) {
-      currentItems.push(nextItem);
-      indexByValue.set(nextItem.value, currentItems.length - 1);
-    } else {
-      currentItems[existingIndex] = nextItem;
-    }
-
-    if (needsOrderedSort) {
-      currentItems.sort((a, b) => sortCollectionItemOrder(a, b, fallbackOrder));
-      rebuildCollectionIndexes(currentItems, indexByValue);
-    }
-
-    setItems(currentItems);
+    entriesByValue.set(entry.item.value, entry);
+    refreshItems(entriesByValue);
 
     const cleanup = () => {
-      fallbackOrder.delete(nextItem.value);
-      const index = indexByValue.get(nextItem.value) ?? -1;
-
-      if (index !== -1) {
-        currentItems.splice(index, 1);
-        rebuildCollectionIndexes(currentItems, indexByValue);
-        setItems(currentItems);
+      if (entriesByValue.get(entry.item.value)?.id !== entry.id) {
+        return;
       }
+
+      entriesByValue.delete(entry.item.value);
+      refreshItems(entriesByValue);
     };
 
     onCleanup(cleanup);
@@ -64,31 +61,88 @@ export function createCollectionRegistry<T extends CollectionItem>(): Collection
   return {
     items: () => items(),
     registerItem,
+    refreshOrder: () => refreshItems(entriesByValue),
+    scheduleRefreshOrder,
   };
-}
 
-function rebuildCollectionIndexes<T extends CollectionItem>(
-  items: readonly T[],
-  indexByValue: Map<string, number>,
-) {
-  indexByValue.clear();
-  for (const [index, item] of items.entries()) {
-    indexByValue.set(item.value, index);
+  function scheduleRefreshOrder() {
+    if (refreshScheduled) {
+      return;
+    }
+
+    refreshScheduled = true;
+    queueMicrotask(() => {
+      refreshScheduled = false;
+      refreshItems(entriesByValue);
+    });
+  }
+
+  function refreshItems(entries: Map<string, CollectionEntry<T>>) {
+    const entryList = Array.from(entries.values());
+    const shouldSort = entryList.some(
+      (entry) => entry.explicitOrder || untrack(() => entry.item.element?.()),
+    );
+    const nextItems = (shouldSort ? entryList.sort(sortCollectionEntries) : entryList).map(
+      (entry) => entry.item,
+    );
+
+    if (areSameItems(untrack(items), nextItems)) {
+      return;
+    }
+
+    setItems(nextItems);
   }
 }
 
-function sortCollectionItemOrder<T extends CollectionItem>(
-  a: T,
-  b: T,
-  fallbackOrder: Map<string, number>,
+function areSameItems<T extends CollectionItem>(current: readonly T[], next: readonly T[]) {
+  return (
+    current.length === next.length &&
+    current.every((item, index) => areSameCollectionItems(item, next[index]))
+  );
+}
+
+function areSameCollectionItems<T extends CollectionItem>(current: T, next: T | undefined) {
+  return (
+    next !== undefined &&
+    current.value === next.value &&
+    current.label === next.label &&
+    current.group === next.group &&
+    current.disabled === next.disabled &&
+    untrack(() => current.element?.()) === untrack(() => next.element?.())
+  );
+}
+
+function preservePreviousElement<T extends CollectionItem>(
+  item: CollectionRegistration<T>,
+  previous: T | undefined,
+): CollectionRegistration<T> {
+  if (!item.element || !previous?.element) {
+    return item;
+  }
+
+  const nextElement = item.element;
+  const previousElement = previous.element;
+
+  return {
+    ...item,
+    element: () => nextElement() ?? previousElement(),
+  };
+}
+
+function sortCollectionEntries<T extends CollectionItem>(
+  a: CollectionEntry<T>,
+  b: CollectionEntry<T>,
 ): number {
-  const elementOrder = compareElements(a.element?.(), b.element?.());
+  const elementOrder = compareElements(
+    untrack(() => a.item.element?.()),
+    untrack(() => b.item.element?.()),
+  );
 
   if (elementOrder !== 0) {
     return elementOrder;
   }
 
-  return (fallbackOrder.get(a.value) ?? 0) - (fallbackOrder.get(b.value) ?? 0);
+  return a.order - b.order;
 }
 
 function compareElements(a: HTMLElement | undefined, b: HTMLElement | undefined) {

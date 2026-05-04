@@ -11,14 +11,8 @@ import {
   type JSX,
 } from "solid-js";
 import { getPartDataAttributes } from "../metadata/index";
-import {
-  assignRef,
-  contains,
-  focusWithoutScrolling,
-  getActiveElement,
-  getOwnerDocument,
-  getTabbableElements,
-} from "./dom";
+import { assignRef, contains, getOwnerDocument } from "./dom";
+import { mountFocusScopeLifecycle } from "./focus-scope";
 
 export type OverlayLayerOutsideEvent = CustomEvent<{
   originalEvent: Event;
@@ -87,7 +81,12 @@ type PointerEventsState = {
 };
 
 type ModalDocumentState = {
-  hiddenElements: Array<{ element: HTMLElement; value: string | null }>;
+  hiddenElements: Array<{
+    element: HTMLElement;
+    ariaHiddenValue: string | null;
+    inertAttributeValue: string | null;
+    inertValue: boolean;
+  }>;
   originalBodyOverflow: string;
   locked: boolean;
 };
@@ -150,10 +149,18 @@ export function createOverlayLayerStack(): OverlayLayerStack {
     };
 
     for (const hidden of state.hiddenElements) {
-      if (hidden.value === null) {
+      if (hidden.ariaHiddenValue === null) {
         hidden.element.removeAttribute("aria-hidden");
       } else {
-        hidden.element.setAttribute("aria-hidden", hidden.value);
+        hidden.element.setAttribute("aria-hidden", hidden.ariaHiddenValue);
+      }
+
+      hidden.element.inert = hidden.inertValue;
+
+      if (hidden.inertAttributeValue === null) {
+        hidden.element.removeAttribute("inert");
+      } else {
+        hidden.element.setAttribute("inert", hidden.inertAttributeValue);
       }
     }
 
@@ -186,9 +193,13 @@ export function createOverlayLayerStack(): OverlayLayerStack {
     for (const element of getOutsideElements(topModalElement, ownerDocument)) {
       state.hiddenElements.push({
         element,
-        value: element.getAttribute("aria-hidden"),
+        ariaHiddenValue: element.getAttribute("aria-hidden"),
+        inertAttributeValue: element.getAttribute("inert"),
+        inertValue: element.inert,
       });
       element.setAttribute("aria-hidden", "true");
+      element.inert = true;
+      element.setAttribute("inert", "");
     }
 
     modalStateByDocument.set(ownerDocument, state);
@@ -415,12 +426,6 @@ function getOutsideElements(element: HTMLElement, ownerDocument: Document) {
     current = parent;
   }
 
-  for (const child of Array.from(ownerDocument.body.children)) {
-    if (child !== current && child instanceof HTMLElement) {
-      elements.add(child);
-    }
-  }
-
   elements.delete(element);
 
   return elements;
@@ -448,83 +453,12 @@ function mountLayerFocusLifecycle(options: {
   onMountAutoFocus?: (event: Event) => void;
   onUnmountAutoFocus?: (event: Event) => void;
 }) {
-  const ownerDocument = getOwnerDocument(options.element);
-  const previouslyFocusedElement = getActiveElement(options.element);
-  const mountEvent = new CustomEvent("keystone.focusScope.mountAutoFocus", {
-    cancelable: true,
+  return mountFocusScopeLifecycle({
+    element: options.element,
+    active: options.isTopLayer,
+    restoreFocus: options.restoreFocus,
+    trapFocus: options.trapFocus,
+    onMountAutoFocus: options.onMountAutoFocus,
+    onUnmountAutoFocus: options.onUnmountAutoFocus,
   });
-
-  options.onMountAutoFocus?.(mountEvent);
-
-  if (!mountEvent.defaultPrevented && !contains(options.element, previouslyFocusedElement)) {
-    queueMicrotask(() => {
-      if (!options.isTopLayer()) {
-        return;
-      }
-
-      const firstTabbable = getTabbableElements(options.element)[0];
-      focusWithoutScrolling(firstTabbable ?? options.element);
-    });
-  }
-
-  const onFocusIn = (event: FocusEvent) => {
-    if (!options.trapFocus() || !options.isTopLayer()) {
-      return;
-    }
-
-    const target = event.target as Node | null;
-
-    if (!contains(options.element, target)) {
-      focusWithoutScrolling(getTabbableElements(options.element)[0] ?? options.element);
-    }
-  };
-
-  const onKeyDown = (event: KeyboardEvent) => {
-    if (!options.trapFocus() || !options.isTopLayer() || event.key !== "Tab") {
-      return;
-    }
-
-    const tabbables = getTabbableElements(options.element);
-
-    if (tabbables.length === 0) {
-      event.preventDefault();
-      focusWithoutScrolling(options.element);
-      return;
-    }
-
-    const first = tabbables[0];
-    const last = tabbables[tabbables.length - 1];
-    const active = getActiveElement(options.element);
-
-    if (event.shiftKey && active === first) {
-      event.preventDefault();
-      focusWithoutScrolling(last);
-    }
-
-    if (!event.shiftKey && active === last) {
-      event.preventDefault();
-      focusWithoutScrolling(first);
-    }
-  };
-
-  ownerDocument.addEventListener("focusin", onFocusIn);
-  options.element.addEventListener("keydown", onKeyDown);
-
-  return () => {
-    ownerDocument.removeEventListener("focusin", onFocusIn);
-    options.element.removeEventListener("keydown", onKeyDown);
-
-    if (!options.restoreFocus()) {
-      return;
-    }
-
-    const unmountEvent = new CustomEvent("keystone.focusScope.unmountAutoFocus", {
-      cancelable: true,
-    });
-    options.onUnmountAutoFocus?.(unmountEvent);
-
-    if (!unmountEvent.defaultPrevented) {
-      queueMicrotask(() => focusWithoutScrolling(previouslyFocusedElement ?? ownerDocument.body));
-    }
-  };
 }

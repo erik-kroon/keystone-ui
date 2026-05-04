@@ -99,6 +99,40 @@ describe("Dialog behavior harness", () => {
     expect(queryByPart("dialog", "content")).not.toBeNull();
   });
 
+  test("marks outside body content inert while modal dialogs are open and restores it on close", async () => {
+    const outsideRoot = document.createElement("main");
+    outsideRoot.setAttribute("data-testid", "outside-root");
+    outsideRoot.setAttribute("aria-hidden", "false");
+    document.body.append(outsideRoot);
+
+    render(() => (
+      <Dialog.Root>
+        <Dialog.Trigger>Open dialog</Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Content>
+            <Dialog.Title>Project settings</Dialog.Title>
+            <Dialog.Description>Change project metadata.</Dialog.Description>
+            <Dialog.Close>Close</Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+    ));
+
+    click(getByPart("dialog", "trigger"));
+    await settled();
+
+    expect(outsideRoot.getAttribute("aria-hidden")).toBe("true");
+    expect(outsideRoot.inert).toBe(true);
+    expect(outsideRoot.hasAttribute("inert")).toBe(true);
+
+    click(getByPart("dialog", "close"));
+    await settled();
+
+    expect(outsideRoot.getAttribute("aria-hidden")).toBe("false");
+    expect(outsideRoot.inert).toBe(false);
+    expect(outsideRoot.hasAttribute("inert")).toBe(false);
+  });
+
   test("excludes the trigger from outside dismissal while open", async () => {
     render(() => (
       <Dialog.Root>
@@ -216,6 +250,66 @@ describe("Dialog behavior harness", () => {
 
     expect(queryByPart("dialog", "content")).toBeNull();
     expect(complete).toEqual(["open:false", "closed:false"]);
+  });
+
+  test("keeps force-mounted content present across the closed presence lifecycle", async () => {
+    const complete: string[] = [];
+
+    render(() => {
+      const [open, setOpen] = createSignal(false);
+
+      return (
+        <Dialog.Root
+          open={open()}
+          onOpenChange={setOpen}
+          onOpenChangeComplete={(nextOpen, detail) =>
+            complete.push(`${nextOpen ? "open" : "closed"}:${detail.preventedUnmount}`)
+          }
+        >
+          <Dialog.Trigger>Open dialog</Dialog.Trigger>
+          <Dialog.Portal forceMount>
+            <Dialog.Content style="transition-duration: 100ms;">
+              <Dialog.Title>Project settings</Dialog.Title>
+              <Dialog.Description>Change project metadata.</Dialog.Description>
+              <Dialog.Close>Close</Dialog.Close>
+            </Dialog.Content>
+          </Dialog.Portal>
+        </Dialog.Root>
+      );
+    });
+
+    await settled();
+
+    const content = getByPart("dialog", "content");
+    expect(content.getAttribute("data-state")).toBe("closed");
+    expect(content.getAttribute("data-transition-status")).toBe("closed");
+
+    click(getByPart("dialog", "trigger"));
+    await settled();
+
+    expect(content.getAttribute("data-state")).toBe("open");
+    expect(content.getAttribute("data-transition-status")).toBe("opening");
+
+    await animationFrame();
+    content.dispatchEvent(new Event("transitionend"));
+    await settled();
+
+    expect(content.getAttribute("data-transition-status")).toBe("open");
+    expect(complete).toEqual(["open:false"]);
+
+    keyDown(content, "Escape");
+    await settled();
+
+    expect(content.getAttribute("data-state")).toBe("closed");
+    expect(content.getAttribute("data-transition-status")).toBe("closing");
+
+    await animationFrame();
+    content.dispatchEvent(new Event("transitionend"));
+    await settled();
+
+    expect(getByPart("dialog", "content")).toBe(content);
+    expect(content.getAttribute("data-transition-status")).toBe("closed");
+    expect(complete).toEqual(["open:false", "closed:true"]);
   });
 
   test("dismisses nested dialogs in top-layer order", async () => {
@@ -385,6 +479,98 @@ describe("Dialog behavior harness", () => {
         shiftKey: true,
       }),
     );
+
+    expect(document.activeElement).toBe(last);
+  });
+
+  test("allows mount autofocus to be prevented", async () => {
+    render(() => (
+      <Dialog.Root>
+        <Dialog.Trigger>Open dialog</Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Content onMountAutoFocus={(event) => event.preventDefault()}>
+            <Dialog.Title>Project settings</Dialog.Title>
+            <Dialog.Description>Change project metadata.</Dialog.Description>
+            <button data-testid="first-field">First</button>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+    ));
+
+    const trigger = getByPart("dialog", "trigger");
+
+    trigger.focus();
+    click(trigger);
+    await settled();
+
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  test("allows unmount autofocus to be prevented", async () => {
+    render(() => (
+      <>
+        <button data-testid="fallback-focus">Fallback</button>
+        <Dialog.Root>
+          <Dialog.Trigger>Open dialog</Dialog.Trigger>
+          <Dialog.Portal>
+            <Dialog.Content
+              onUnmountAutoFocus={(event) => {
+                event.preventDefault();
+                queueMicrotask(() =>
+                  document.querySelector<HTMLElement>("[data-testid='fallback-focus']")!.focus(),
+                );
+              }}
+            >
+              <Dialog.Title>Project settings</Dialog.Title>
+              <Dialog.Description>Change project metadata.</Dialog.Description>
+              <button data-testid="first-field">First</button>
+              <Dialog.Close>Close</Dialog.Close>
+            </Dialog.Content>
+          </Dialog.Portal>
+        </Dialog.Root>
+      </>
+    ));
+
+    const trigger = getByPart("dialog", "trigger");
+    const fallback = document.querySelector<HTMLElement>("[data-testid='fallback-focus']")!;
+
+    trigger.focus();
+    click(trigger);
+    await settled();
+
+    click(getByPart("dialog", "close"));
+    await settled();
+
+    expect(document.activeElement).toBe(fallback);
+  });
+
+  test("restores the last focused element when modal focus leaves programmatically", async () => {
+    render(() => (
+      <>
+        <button data-testid="outside">Outside</button>
+        <Dialog.Root>
+          <Dialog.Trigger>Open dialog</Dialog.Trigger>
+          <Dialog.Portal>
+            <Dialog.Content>
+              <Dialog.Title>Project settings</Dialog.Title>
+              <Dialog.Description>Change project metadata.</Dialog.Description>
+              <button data-testid="first-field">First</button>
+              <button data-testid="last-field">Last</button>
+            </Dialog.Content>
+          </Dialog.Portal>
+        </Dialog.Root>
+      </>
+    ));
+
+    click(getByPart("dialog", "trigger"));
+    await settled();
+
+    const outside = document.querySelector<HTMLElement>("[data-testid='outside']")!;
+    const last = document.querySelector<HTMLElement>("[data-testid='last-field']")!;
+
+    last.focus();
+    outside.focus();
+    await settled();
 
     expect(document.activeElement).toBe(last);
   });

@@ -1,7 +1,7 @@
 import type { JSX } from "solid-js";
 import { describe, expect, test } from "vitest";
-import { createRoot, createSignal } from "solid-js";
-import { createDialog } from "../dialog/index";
+import { createRoot, createSignal, splitProps } from "solid-js";
+import { Dialog, createDialog } from "../dialog/index";
 import { createSelect } from "../select/index";
 import {
   composeEventHandlers,
@@ -179,6 +179,31 @@ describe("Keystone kernel utilities", () => {
     const trigger = getByPart("kernel", "trigger");
     expect(trigger.tagName).toBe("A");
     expect(trigger.getAttribute("href")).toBe("/settings");
+  });
+
+  test("polymorphic rendering supports router-link-like Solid components", () => {
+    type RouterLinkProps = JSX.AnchorHTMLAttributes<HTMLAnchorElement> & {
+      to: string;
+    };
+    function RouterLink(props: RouterLinkProps) {
+      const [local, others] = splitProps(props, ["to"]);
+
+      return <a href={local.to} {...others} />;
+    }
+
+    render(() => (
+      <Dialog.Root>
+        <Dialog.Trigger as={(props) => <RouterLink to="/account/security" {...props} />}>
+          Security
+        </Dialog.Trigger>
+      </Dialog.Root>
+    ));
+
+    const trigger = getByPart("dialog", "trigger");
+    expect(trigger.tagName).toBe("A");
+    expect(trigger.getAttribute("href")).toBe("/account/security");
+    expect(trigger.getAttribute("aria-haspopup")).toBeNull();
+    expect(trigger.getAttribute("type")).toBe("button");
   });
 
   test("collections register ordered items and clean up on disposal", () => {

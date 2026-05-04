@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+import { Show, createSignal, type Setter } from "solid-js";
 import { Select } from "../src/select/index";
 import { click, getByPart, keyDown, render, settled } from "./harness";
 
@@ -234,6 +235,54 @@ describe("Select behavior harness", () => {
     expect(item.getAttribute("data-group")).toBe("recent");
     expect(item.getAttribute("data-disabled")).toBe("");
     expect(getByPart("select", "listbox").getAttribute("aria-multiselectable")).toBeNull();
+  });
+
+  test("keeps dynamic options in DOM order and removes stale unmounted items", async () => {
+    let setShowAlpha!: Setter<boolean>;
+    const changes: string[] = [];
+
+    render(() => {
+      const [showAlpha, setShowAlphaSignal] = createSignal(false);
+      setShowAlpha = setShowAlphaSignal;
+
+      return (
+        <Select.Root defaultOpen onValueChange={(value) => changes.push(value ?? "")}>
+          <Select.Trigger>Choose project</Select.Trigger>
+          <Select.Content>
+            <Select.Listbox>
+              <Show when={showAlpha()}>
+                <Select.Item value="alpha">Alpha</Select.Item>
+              </Show>
+              <Select.Item value="bravo">Bravo</Select.Item>
+            </Select.Listbox>
+          </Select.Content>
+        </Select.Root>
+      );
+    });
+
+    setShowAlpha(true);
+    await settled();
+
+    const listbox = getByPart("select", "listbox");
+    keyDown(listbox, "ArrowDown");
+
+    expect(document.querySelector('[data-part="item"][data-highlighted]')?.textContent).toBe(
+      "Alpha",
+    );
+    expect(getByPart("select", "item").getAttribute("data-scope")).toBe("select");
+
+    setShowAlpha(false);
+    await settled();
+
+    keyDown(listbox, "ArrowDown");
+    expect(document.querySelector('[data-part="item"][data-highlighted]')?.textContent).toBe(
+      "Bravo",
+    );
+
+    keyDown(listbox, "Enter");
+    await settled();
+
+    expect(changes).toEqual(["bravo"]);
   });
 
   test("exposes floating geometry variables on the positioner", async () => {

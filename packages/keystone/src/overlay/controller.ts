@@ -192,6 +192,16 @@ export function createOverlayController<Reason extends string>(
     triggerElement,
   });
   const state = () => (open() ? "open" : "closed") as "closed" | "open";
+  const shouldMount = (forceMount?: boolean) => {
+    const forced = forceMount === true;
+    const transitionStatus = presence.transitionStatus();
+
+    if (forced && transitionStatus === "closing") {
+      presence.preventUnmountOnClose();
+    }
+
+    return forced || presence.mounted();
+  };
   createEffect(() => {
     const content = contentElement();
     const status = presence.transitionStatus();
@@ -395,7 +405,7 @@ export function createOverlayController<Reason extends string>(
     presence,
     setOpen,
     setVirtualAnchor: (anchor) => setVirtualAnchor(() => anchor),
-    shouldMount: (forceMount) => forceMount === true || presence.mounted(),
+    shouldMount,
     state,
     titleId: titleId(),
     triggerElement,
