@@ -36,19 +36,20 @@ export type ListSelectionManagerApi<T extends CollectionItem, Detail> = {
 export function createListSelectionManager<T extends CollectionItem, Detail>(
   options: ListSelectionManagerOptions<T, Detail>,
 ): ListSelectionManagerApi<T, Detail> {
-  let lastSelectionDetail = options.programmaticDetail;
   const selectionMode = options.selectionMode ?? "single";
   const selectionBehavior =
     options.selectionBehavior ?? (selectionMode === "multiple" ? "toggle" : "replace");
-  const [value, setValue] = createControllableSignal<string | undefined>({
+  const [value, setValue] = createControllableSignal<string | undefined, Detail>({
     value: options.value,
     defaultValue: options.defaultValue,
-    onChange: (next) => options.onSelectionChange?.(next, lastSelectionDetail),
+    defaultDetail: options.programmaticDetail,
+    onChange: options.onSelectionChange,
   });
-  const [values, setValues] = createControllableSignal<readonly string[]>({
+  const [values, setValues] = createControllableSignal<readonly string[], Detail>({
     value: options.values,
     defaultValue: options.defaultValues ?? selectionValuesFromValue(options.defaultValue),
-    onChange: (next) => options.onSelectedValuesChange?.(next, lastSelectionDetail),
+    defaultDetail: options.programmaticDetail,
+    onChange: options.onSelectedValuesChange,
   });
   const selectedValues = createMemo(() =>
     selectionMode === "multiple" ? values() : selectionValuesFromValue(value()),
@@ -65,10 +66,9 @@ export function createListSelectionManager<T extends CollectionItem, Detail>(
   );
 
   const syncSingleSelection = (next: string | undefined, detail: Detail) => {
-    lastSelectionDetail = detail;
-    setValue(next);
+    setValue(next, detail);
     if (selectionMode === "multiple") {
-      setValues(selectionValuesFromValue(next));
+      setValues(selectionValuesFromValue(next), detail);
     }
   };
 
@@ -80,11 +80,10 @@ export function createListSelectionManager<T extends CollectionItem, Detail>(
     }
 
     if (selectionMode === "multiple") {
-      lastSelectionDetail = detail;
       const nextValues =
         selectionBehavior === "toggle" ? toggleSelectionValue(values(), next) : [next];
-      setValues(nextValues);
-      setValue(nextValues[0]);
+      setValues(nextValues, detail);
+      setValue(nextValues[0], detail);
     } else {
       syncSingleSelection(next, detail);
     }
@@ -99,14 +98,13 @@ export function createListSelectionManager<T extends CollectionItem, Detail>(
   };
 
   const setSelectionValues = (next: readonly string[], detail: Detail) => {
-    lastSelectionDetail = detail;
     const enabledValues = next.filter((candidate) => {
       const item = options.itemByValue(candidate);
       return item && !item.disabled;
     });
 
-    setValues(enabledValues);
-    setValue(enabledValues[0]);
+    setValues(enabledValues, detail);
+    setValue(enabledValues[0], detail);
     return enabledValues
       .map((candidate) => options.itemByValue(candidate))
       .filter((item): item is T => item !== undefined);
@@ -119,10 +117,9 @@ export function createListSelectionManager<T extends CollectionItem, Detail>(
       return undefined;
     }
 
-    lastSelectionDetail = detail;
     const nextValues = toggleSelectionValue(values(), next);
-    setValues(nextValues);
-    setValue(nextValues[0]);
+    setValues(nextValues, detail);
+    setValue(nextValues[0], detail);
     options.onValueSelect?.(item, detail);
     return item;
   };

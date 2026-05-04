@@ -7,6 +7,7 @@ import {
   getOwnerDocument,
   getTabbableElements,
 } from "./dom";
+import { scheduleMicrotask } from "../utils/index";
 
 export type FocusScopeOptions = {
   element: Accessor<HTMLElement | undefined>;
@@ -74,7 +75,7 @@ export function mountFocusScopeLifecycle(options: FocusScopeLifecycleOptions) {
   options.onMountAutoFocus?.(mountEvent);
 
   if (!mountEvent.defaultPrevented && !contains(options.element, previouslyFocusedElement)) {
-    queueMicrotask(() => {
+    scheduleMicrotask(() => {
       if (!active() || !options.element.isConnected) {
         return;
       }
@@ -140,7 +141,7 @@ export function mountFocusScopeLifecycle(options: FocusScopeLifecycleOptions) {
     options.onUnmountAutoFocus?.(unmountEvent);
 
     if (!unmountEvent.defaultPrevented) {
-      queueMicrotask(() => {
+      scheduleMicrotask(() => {
         const restoreTarget = previouslyFocusedElement?.isConnected
           ? previouslyFocusedElement
           : ownerDocument.body;

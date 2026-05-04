@@ -22,6 +22,8 @@ import {
   composeEventHandlers,
   createControllableBooleanSignal,
   createStableId,
+  scheduleMicrotask,
+  type KeystoneChangeDetail,
 } from "../utils/index";
 import {
   createOverlayPresence,
@@ -29,10 +31,7 @@ import {
   type OverlayPresenceCompleteDetail,
 } from "./presence";
 
-export type OverlayControllerChangeDetail<Reason extends string> = {
-  event?: Event;
-  reason: Reason;
-};
+export type OverlayControllerChangeDetail<Reason extends string> = KeystoneChangeDetail<Reason>;
 
 export type OverlayControllerContentEvents = {
   onEscapeKeyDown?: (event: KeyboardEvent) => void;
@@ -149,15 +148,13 @@ export function createOverlayController<Reason extends string>(
   const [contentElement, setContentElement] = createSignal<HTMLElement>();
   const [positionerElement, setPositionerElement] = createSignal<HTMLElement>();
   const [virtualAnchor, setVirtualAnchor] = createSignal<FloatingReferenceElement>();
-  let lastDetail: OverlayControllerChangeDetail<Reason> = {
-    reason: "programmatic" as Reason,
-  };
   let contentLayer: OverlayLayerApi | undefined;
   let currentContentEvents: OverlayControllerContentEvents | undefined;
   const [open, setOpenState] = createControllableBooleanSignal({
     value: options.open,
     defaultValue: options.defaultOpen ?? false,
-    onChange: (next) => options.onOpenChange?.(next, lastDetail),
+    defaultDetail: { reason: "programmatic" as Reason },
+    onChange: options.onOpenChange,
   });
   const presence = createOverlayPresence({
     open,
@@ -182,8 +179,7 @@ export function createOverlayController<Reason extends string>(
     : undefined;
   const modal = () => options.modal?.() ?? false;
   const setOpen = (next: boolean, detail: OverlayControllerChangeDetail<Reason>) => {
-    lastDetail = detail;
-    setOpenState(next);
+    setOpenState(next, detail);
   };
   const dismissal = createOverlayDismissalPolicy<Reason>({
     close: (event, reason) => setOpen(false, { event, reason }),
@@ -305,7 +301,7 @@ export function createOverlayController<Reason extends string>(
           setContentElement(() => element);
           presence.setElement(element);
           assignRef(props.ref, element);
-          queueMicrotask(() => floating?.update());
+          scheduleMicrotask(() => floating?.update());
         },
       };
     },
@@ -320,7 +316,7 @@ export function createOverlayController<Reason extends string>(
         ref: (element: T) => {
           setPositionerElement(() => element);
           assignRef(props.ref, element);
-          queueMicrotask(() => floating?.update());
+          scheduleMicrotask(() => floating?.update());
         },
       };
     },

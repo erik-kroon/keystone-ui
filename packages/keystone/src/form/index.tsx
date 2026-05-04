@@ -9,8 +9,10 @@ import {
 } from "solid-js";
 import {
   composeEventHandlers,
+  createRegisteredIds,
   createStableId,
   dataBoolean,
+  mergeIds,
   partDataAttributes,
 } from "../utils/index";
 
@@ -170,12 +172,8 @@ export function createFormControl(options: CreateFormControlOptions = {}): FormC
   const labelId = createMemo(() => `${controlId()}-label`);
   const descriptionId = createMemo(() => `${controlId()}-description`);
   const errorMessageId = createMemo(() => `${controlId()}-error-message`);
-  const [descriptionIds, setDescriptionIds] = createSignal<readonly Accessor<string | undefined>[]>(
-    [descriptionId],
-  );
-  const [errorMessageIds, setErrorMessageIds] = createSignal<
-    readonly Accessor<string | undefined>[]
-  >([errorMessageId]);
+  const descriptionIds = createRegisteredIds(descriptionId);
+  const errorMessageIds = createRegisteredIds(errorMessageId);
   const disabled = createMemo(() => options.disabled?.() ?? false);
   const dirty = createMemo(() => options.dirty?.() ?? false);
   const filled = createMemo(() => options.filled?.() ?? isFilledValue(options.value?.()));
@@ -187,16 +185,10 @@ export function createFormControl(options: CreateFormControlOptions = {}): FormC
   const touched = createMemo(() => options.touched?.() ?? false);
   const validating = createMemo(() => options.validating?.() ?? false);
   const describedBy = createMemo(() => {
-    const ids = descriptionIds()
-      .map((id) => id())
-      .filter(Boolean) as string[];
+    const ids = [...descriptionIds.ids()];
 
     if (invalid()) {
-      ids.push(
-        ...(errorMessageIds()
-          .map((id) => id())
-          .filter(Boolean) as string[]),
-      );
+      ids.push(...errorMessageIds.ids());
     }
 
     return mergeIds(...ids);
@@ -276,27 +268,8 @@ export function createFormControl(options: CreateFormControlOptions = {}): FormC
     validating: validating(),
   });
 
-  const registerDescription = (id: Accessor<string | undefined> = descriptionId) => {
-    setDescriptionIds((current) => [...current.filter((candidate) => candidate !== id), id]);
-
-    const unregister = () => {
-      setDescriptionIds((current) => current.filter((candidate) => candidate !== id));
-    };
-
-    onCleanup(unregister);
-    return unregister;
-  };
-
-  const registerErrorMessage = (id: Accessor<string | undefined> = errorMessageId) => {
-    setErrorMessageIds((current) => [...current.filter((candidate) => candidate !== id), id]);
-
-    const unregister = () => {
-      setErrorMessageIds((current) => current.filter((candidate) => candidate !== id));
-    };
-
-    onCleanup(unregister);
-    return unregister;
-  };
+  const registerDescription = descriptionIds.register;
+  const registerErrorMessage = errorMessageIds.register;
 
   const registerFormReset = (element: Accessor<HTMLElement | undefined>) => {
     onMount(() => {
@@ -640,10 +613,6 @@ function getStateDataAttributes(
     "data-touched": dataBoolean(state.touched),
     "data-validating": dataBoolean(state.validating),
   };
-}
-
-function mergeIds(...ids: Array<string | undefined>) {
-  return ids.filter(Boolean).join(" ") || undefined;
 }
 
 function getOwningForm(element: HTMLElement | undefined): HTMLFormElement | null | undefined {

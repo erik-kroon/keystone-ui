@@ -18,6 +18,7 @@ import {
   createControllableBooleanSignal,
   createStableId,
   dataBoolean,
+  scheduleMicrotask,
   type PolymorphicProps,
 } from "../utils/index";
 
@@ -290,11 +291,11 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
   const [triggerElement, setTriggerElement] = createSignal<HTMLButtonElement>();
   const [contentElement, setContentElement] = createSignal<HTMLDivElement>();
   const [positionerElement, setPositionerElement] = createSignal<HTMLDivElement>();
-  let lastOpenDetail: SelectOpenChangeDetail = { reason: "programmatic" };
-  const [open, setOpenState] = createControllableBooleanSignal({
+  const [open, setOpenState] = createControllableBooleanSignal<SelectOpenChangeDetail>({
     value: options.open,
     defaultValue: options.defaultOpen ?? false,
-    onChange: (next) => options.onOpenChange?.(next, lastOpenDetail),
+    defaultDetail: { reason: "programmatic" },
+    onChange: options.onOpenChange,
   });
   const disabled = () => options.disabled?.() ?? false;
   const invalid = () => options.invalid?.() ?? false;
@@ -368,8 +369,7 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
   });
 
   const setOpen = (next: boolean, detail: SelectOpenChangeDetail) => {
-    lastOpenDetail = detail;
-    setOpenState(next);
+    setOpenState(next, detail);
   };
   const state = () => (open() ? "open" : "closed");
   const partProps = (part: string) => ({
@@ -404,7 +404,7 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
         ref: (element: HTMLDivElement) => {
           setContentElement(element);
           assignRef(props.ref, element);
-          queueMicrotask(floating.update);
+          scheduleMicrotask(floating.update);
         },
         onKeyDown: composeEventHandlers<KeyboardEvent>(props.onKeyDown, (event) => {
           if (event.key === "Escape") {
@@ -484,7 +484,7 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
         ref: (element: HTMLDivElement) => {
           setPositionerElement(element);
           assignRef(props.ref, element);
-          queueMicrotask(floating.update);
+          scheduleMicrotask(floating.update);
         },
       };
     },

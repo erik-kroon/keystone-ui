@@ -3,6 +3,7 @@ import {
   createMemo,
   createSignal,
   createUniqueId,
+  onCleanup,
   untrack,
   type Accessor,
   type JSX,
@@ -12,24 +13,39 @@ import {
 import { Dynamic } from "solid-js/web";
 import { getPartDataAttributes } from "../metadata/index";
 
-export type ControllableSignalOptions<T> = {
-  value?: Accessor<T | undefined>;
-  defaultValue: T | (() => T);
-  onChange?: (value: T) => void;
+export type KeystoneChangeDetail<Reason extends string = string> = {
+  event?: Event;
+  reason: Reason;
 };
 
-export function createControllableSignal<T>(
-  options: ControllableSignalOptions<T>,
-): [get: Accessor<T>, set: (value: T | ((previous: T) => T)) => T] {
+export type ControllableSignalOptions<T, Detail = undefined> = {
+  defaultDetail?: Detail;
+  value?: Accessor<T | undefined>;
+  defaultValue: T | (() => T);
+  isControlled?: Accessor<boolean | undefined>;
+  onChange?: (value: T, detail: Detail) => void;
+};
+
+export type ControllableSignalSetter<T, Detail = undefined> = (
+  value: T | ((previous: T) => T),
+  detail?: Detail,
+) => T;
+
+export function createControllableSignal<T, Detail = undefined>(
+  options: ControllableSignalOptions<T, Detail>,
+): [get: Accessor<T>, set: ControllableSignalSetter<T, Detail>] {
   const [uncontrolled, setUncontrolled] = createSignal<T>(resolveDefault(options.defaultValue));
-  const isControlled = createMemo(() => options.value?.() !== undefined);
+  const isControlled = createMemo(
+    () => options.isControlled?.() ?? options.value?.() !== undefined,
+  );
   const get = createMemo(() => (isControlled() ? (options.value?.() as T) : uncontrolled()));
 
-  const set = (value: T | ((previous: T) => T)) => {
+  const set: ControllableSignalSetter<T, Detail> = (value, detail = options.defaultDetail) => {
     return untrack(() => {
-      const next = resolveNext(value, get());
+      const previous = get();
+      const next = resolveNext(value, previous);
 
-      if (Object.is(next, get())) {
+      if (Object.is(next, previous)) {
         return next;
       }
 
@@ -37,7 +53,7 @@ export function createControllableSignal<T>(
         (setUncontrolled as Setter<T>)(() => next);
       }
 
-      options.onChange?.(next);
+      options.onChange?.(next, detail as Detail);
       return next;
     });
   };
@@ -46,8 +62,14 @@ export function createControllableSignal<T>(
 }
 
 export function createControllableBooleanSignal(
-  options: ControllableSignalOptions<boolean>,
-): [get: Accessor<boolean>, set: (value: boolean | ((previous: boolean) => boolean)) => boolean] {
+  options: ControllableSignalOptions<boolean, undefined>,
+): [get: Accessor<boolean>, set: ControllableSignalSetter<boolean, undefined>];
+export function createControllableBooleanSignal<Detail>(
+  options: ControllableSignalOptions<boolean, Detail>,
+): [get: Accessor<boolean>, set: ControllableSignalSetter<boolean, Detail>];
+export function createControllableBooleanSignal<Detail>(
+  options: ControllableSignalOptions<boolean, Detail>,
+): [get: Accessor<boolean>, set: ControllableSignalSetter<boolean, Detail>] {
   const [value, setValue] = createControllableSignal(options);
 
   return [value, setValue];
@@ -86,10 +108,84 @@ export function callEventHandler<E extends Event>(handler: KeystoneEventHandler,
   }
 }
 
-export function createStableId(part: string, id?: Accessor<string | undefined>): Accessor<string> {
+export type RegisteredIdsApi = {
+  ids: Accessor<readonly string[]>;
+  register: (id?: Accessor<string | undefined>) => () => void;
+};
+
+export function createKeystoneId(
+  part: string,
+  id?: Accessor<string | undefined>,
+): Accessor<string> {
   const fallback = `keystone-${part}-${createUniqueId()}`;
 
   return createMemo(() => id?.() ?? fallback);
+}
+
+export const createStableId = createKeystoneId;
+
+export function createRegisteredIds(defaultId?: Accessor<string | undefined>): RegisteredIdsApi {
+  const [registeredIds, setRegisteredIds] = createSignal<readonly Accessor<string | undefined>[]>(
+    defaultId ? [defaultId] : [],
+  );
+
+  const register = (id?: Accessor<string | undefined>) => {
+    if (!id) {
+      return () => {};
+    }
+
+    setRegisteredIds((current) => [...current.filter((candidate) => candidate !== id), id]);
+
+    let active = true;
+    const unregister = () => {
+      if (!active) {
+        return;
+      }
+
+      active = false;
+      setRegisteredIds((current) => current.filter((candidate) => candidate !== id));
+    };
+
+    onCleanup(unregister);
+    return unregister;
+  };
+
+  const ids = createMemo(() => {
+    const seen = new Set<string>();
+    const next: string[] = [];
+
+    for (const id of registeredIds()) {
+      const value = id();
+
+      if (value && !seen.has(value)) {
+        seen.add(value);
+        next.push(value);
+      }
+    }
+
+    return next;
+  });
+
+  return { ids, register };
+}
+
+export function mergeIds(...ids: Array<string | undefined | null | false>): string | undefined {
+  const next = ids.filter(Boolean) as string[];
+
+  return next.length > 0 ? next.join(" ") : undefined;
+}
+
+export function canUseDOM(): boolean {
+  return typeof document !== "undefined" && typeof window !== "undefined";
+}
+
+export function scheduleMicrotask(callback: () => void) {
+  if (typeof queueMicrotask === "function") {
+    queueMicrotask(callback);
+    return;
+  }
+
+  void Promise.resolve().then(callback);
 }
 
 export function dataBoolean(value: boolean | undefined): "" | undefined {
@@ -115,7 +211,7 @@ export function renderPolymorphic<Props extends Record<string, unknown>>(
   props: Props,
 ): JSX.Element {
   if (typeof as === "function") {
-    return as(props);
+    return createComponent(as as (props: Props) => JSX.Element, props);
   }
 
   return createComponent(Dynamic, { component: as ?? fallback, ...props });

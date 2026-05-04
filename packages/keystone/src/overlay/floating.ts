@@ -15,6 +15,7 @@ import {
   type Strategy,
 } from "@floating-ui/dom";
 import { assignRef } from "./dom";
+import { scheduleMicrotask } from "../utils/index";
 import {
   createEffect,
   createMemo,
@@ -282,7 +283,7 @@ export function createFloatingAdapter(options: CreateFloatingAdapterOptions): Fl
       ref: (element: T) => {
         setOwnedArrowElement(() => element);
         assignRef(props.ref, element);
-        queueMicrotask(() => void update());
+        scheduleMicrotask(() => void update());
       },
     }),
     update,

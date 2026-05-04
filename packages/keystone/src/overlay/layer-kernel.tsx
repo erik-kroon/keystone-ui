@@ -13,6 +13,7 @@ import {
 import { getPartDataAttributes } from "../metadata/index";
 import { assignRef, contains, getOwnerDocument } from "./dom";
 import { mountFocusScopeLifecycle } from "./focus-scope";
+import { scheduleMicrotask } from "../utils/index";
 
 export type OverlayLayerOutsideEvent = CustomEvent<{
   originalEvent: Event;
@@ -249,7 +250,7 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
 
     stack.syncPointerEvents(ownerDocument);
     stack.syncModalState(ownerDocument);
-    queueMicrotask(() => {
+    scheduleMicrotask(() => {
       isReady = true;
 
       const element = options.element?.();

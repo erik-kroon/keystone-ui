@@ -14,6 +14,8 @@ Start with:
 - [Mason Registry RFC](../rfcs/mason-registry.md)
 - [End-state primitive/component inventory](./end-state-primitive-component-inventory.md)
 - [Keystone internal kernel guidance](./keystone-internal-kernel-guidance.md)
+- [Controllable state vertical](./controllable-state-vertical.md)
+- [Solid polymorphic `as` rendering](./solid-polymorphic-as-rendering.md)
 - [Accordion and Collapsible vertical](./accordion-collapsible-vertical.md)
 - [Selection controls vertical](./selection-controls-vertical.md)
 - [Slider vertical](./slider-vertical.md)

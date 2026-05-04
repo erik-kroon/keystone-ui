@@ -52,14 +52,14 @@ export type CreateSelectionControlOptions = {
 export function createSelectionControl(
   options: CreateSelectionControlOptions,
 ): SelectionControlApi {
-  let pendingDetail: SelectionControlChangeDetail | undefined;
-  const [checked, setCheckedState] = createControllableSignal<SelectionControlCheckedState>({
+  const [checked, setCheckedState] = createControllableSignal<
+    SelectionControlCheckedState,
+    SelectionControlChangeDetail
+  >({
     value: options.checked,
     defaultValue: options.defaultChecked ?? false,
-    onChange: (nextChecked) => {
-      options.onCheckedChange?.(nextChecked, pendingDetail ?? { reason: "programmatic" });
-      pendingDetail = undefined;
-    },
+    defaultDetail: { reason: "programmatic" },
+    onChange: (nextChecked, detail) => options.onCheckedChange?.(nextChecked, detail),
   });
 
   const disabled = createMemo(() => options.disabled?.() ?? false);
@@ -74,10 +74,7 @@ export function createSelectionControl(
     nextChecked: SelectionControlCheckedState,
     detail: SelectionControlChangeDetail,
   ) => {
-    pendingDetail = detail;
-    const result = setCheckedState(nextChecked);
-    pendingDetail = undefined;
-    return result;
+    return setCheckedState(nextChecked, detail);
   };
 
   return {

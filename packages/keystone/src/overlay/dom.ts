@@ -3,7 +3,15 @@ export function contains(container: Node | undefined | null, node: Node | undefi
 }
 
 export function getOwnerDocument(element: Element | undefined | null) {
-  return element?.ownerDocument ?? document;
+  if (element?.ownerDocument) {
+    return element.ownerDocument;
+  }
+
+  if (typeof document !== "undefined") {
+    return document;
+  }
+
+  throw new Error("Keystone DOM owner document is unavailable before mount");
 }
 
 export function getActiveElement(element: Element | undefined | null) {
