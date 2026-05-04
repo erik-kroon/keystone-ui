@@ -1,9 +1,9 @@
-import { Show, createContext, splitProps, useContext, type JSX } from "solid-js";
-import { Portal } from "solid-js/web";
+import { createContext, splitProps, useContext, type JSX } from "solid-js";
 import { getPartDataAttributes } from "../metadata/index";
 import { OverlayLayerProvider, type DismissableLayerOutsideEvent } from "../overlay/index";
 import { createOverlayController } from "../overlay/controller";
 import type { OverlayPresenceCompleteDetail } from "../overlay/index";
+import { Portal } from "../portal/index";
 import { renderPolymorphic, type PolymorphicProps } from "../utils/index";
 
 export type DialogChangeDetail = {
@@ -219,9 +219,13 @@ function PortalPart(props: DialogPortalProps) {
   const dialog = useDialog("Portal");
 
   return (
-    <Show when={dialog.shouldMount(props.forceMount)}>
-      <Portal mount={props.mount}>{props.children}</Portal>
-    </Show>
+    <Portal
+      forceMount={props.forceMount}
+      mount={props.mount}
+      present={dialog.shouldMount(props.forceMount)}
+    >
+      {props.children}
+    </Portal>
   );
 }
 

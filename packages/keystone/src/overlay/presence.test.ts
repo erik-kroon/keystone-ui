@@ -1,0 +1,112 @@
+import { createRoot, createSignal } from "solid-js";
+import { describe, expect, test } from "vitest";
+import { settled } from "../../test/harness";
+import { createOverlayPresence, type OverlayPresenceApi } from "./presence";
+
+function animationFrame() {
+  return new Promise((resolve) => requestAnimationFrame(resolve));
+}
+
+describe("overlay presence", () => {
+  test("retains mounted content until close transitions complete", async () => {
+    let dispose!: () => void;
+    let presence!: OverlayPresenceApi;
+    let setOpen!: (open: boolean) => boolean;
+    const complete: string[] = [];
+    const element = document.createElement("div");
+    element.style.transitionDuration = "100ms";
+
+    createRoot((rootDispose) => {
+      dispose = rootDispose;
+      const [open, nextOpen] = createSignal(false);
+      setOpen = nextOpen;
+      presence = createOverlayPresence({
+        open,
+        onOpenChangeComplete: (open) => complete.push(open ? "open" : "closed"),
+      });
+      presence.setElement(element);
+    });
+
+    expect(presence.mounted()).toBe(false);
+    expect(presence.shouldMount()).toBe(false);
+
+    setOpen(true);
+    await settled();
+
+    expect(presence.mounted()).toBe(true);
+    expect(presence.transitionStatus()).toBe("opening");
+
+    await animationFrame();
+    element.dispatchEvent(new Event("transitionend"));
+    await settled();
+
+    expect(presence.transitionStatus()).toBe("open");
+    expect(complete).toEqual(["open"]);
+
+    setOpen(false);
+    await settled();
+
+    expect(presence.mounted()).toBe(true);
+    expect(presence.shouldMount()).toBe(true);
+    expect(presence.hidden()).toBe(false);
+    expect(presence.transitionStatus()).toBe("closing");
+
+    await animationFrame();
+    element.dispatchEvent(new Event("transitionend"));
+    await settled();
+
+    expect(presence.mounted()).toBe(false);
+    expect(presence.shouldMount()).toBe(false);
+    expect(presence.hidden()).toBe(false);
+    expect(presence.transitionStatus()).toBe("closed");
+    expect(complete).toEqual(["open", "closed"]);
+
+    dispose();
+  });
+
+  test("keeps force-mounted content present and hidden after close completion", async () => {
+    let dispose!: () => void;
+    let presence!: OverlayPresenceApi;
+    let setOpen!: (open: boolean) => boolean;
+    const complete: string[] = [];
+    const element = document.createElement("div");
+    element.style.transitionDuration = "100ms";
+
+    createRoot((rootDispose) => {
+      dispose = rootDispose;
+      const [open, nextOpen] = createSignal(true);
+      setOpen = nextOpen;
+      presence = createOverlayPresence({
+        open,
+        forceMount: () => true,
+        onOpenChangeComplete: (open, detail) =>
+          complete.push(`${open ? "open" : "closed"}:${detail.preventedUnmount}`),
+      });
+      presence.setElement(element);
+    });
+
+    expect(presence.mounted()).toBe(true);
+    expect(presence.shouldMount()).toBe(true);
+    expect(presence.hidden()).toBe(false);
+    expect(presence.transitionStatus()).toBe("open");
+
+    setOpen(false);
+    await settled();
+
+    expect(presence.mounted()).toBe(true);
+    expect(presence.hidden()).toBe(false);
+    expect(presence.transitionStatus()).toBe("closing");
+
+    await animationFrame();
+    element.dispatchEvent(new Event("transitionend"));
+    await settled();
+
+    expect(presence.mounted()).toBe(true);
+    expect(presence.shouldMount()).toBe(true);
+    expect(presence.hidden()).toBe(true);
+    expect(presence.transitionStatus()).toBe("closed");
+    expect(complete).toEqual(["closed:true"]);
+
+    dispose();
+  });
+});

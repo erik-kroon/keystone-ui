@@ -6,8 +6,12 @@ import { createSelect } from "../select/index";
 import {
   composeEventHandlers,
   createControllableSignal,
+  dataBoolean,
+  getCheckedState,
   createKeystoneId,
+  getOpenClosedState,
   createRegisteredIds,
+  getSelectionState,
   createStableId,
   mergeIds,
   renderPolymorphic,
@@ -285,6 +289,21 @@ describe("Keystone kernel utilities", () => {
         value: previousQueueMicrotask,
       });
     }
+  });
+
+  test("state data helpers preserve Keystone public attribute values", () => {
+    expect(dataBoolean(true)).toBe("");
+    expect(dataBoolean(false)).toBeUndefined();
+    expect(dataBoolean(null)).toBeUndefined();
+    expect(dataBoolean(undefined)).toBeUndefined();
+
+    expect(getOpenClosedState(true)).toBe("open");
+    expect(getOpenClosedState(false)).toBe("closed");
+    expect(getCheckedState(true)).toBe("checked");
+    expect(getCheckedState(false)).toBe("unchecked");
+    expect(getSelectionState(true)).toBe("checked");
+    expect(getSelectionState(false)).toBe("unchecked");
+    expect(getSelectionState("indeterminate")).toBe("indeterminate");
   });
 
   test("polymorphic rendering supports callback-style composition", () => {

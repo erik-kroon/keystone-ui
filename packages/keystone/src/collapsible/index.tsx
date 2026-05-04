@@ -2,6 +2,7 @@ import { Show, createContext, splitProps, useContext, type JSX } from "solid-js"
 import { createDisclosureController, type DisclosureChangeDetail } from "../disclosure/controller";
 import {
   dataBoolean,
+  getOpenClosedState,
   partDataAttributes,
   renderPolymorphic,
   type PolymorphicProps,
@@ -103,7 +104,7 @@ function Root(props: CollapsibleRootProps) {
       <div
         {...others}
         data-disabled={dataBoolean(collapsible.disabled())}
-        data-state={collapsible.open() ? "open" : "closed"}
+        data-state={getOpenClosedState(collapsible.open())}
         {...partDataAttributes("collapsible", "root")}
       >
         {local.children}

@@ -1,14 +1,5 @@
-import {
-  Show,
-  createContext,
-  createMemo,
-  onCleanup,
-  splitProps,
-  useContext,
-  type JSX,
-} from "solid-js";
+import { createContext, createMemo, onCleanup, splitProps, useContext, type JSX } from "solid-js";
 import { focusWithoutScrolling } from "../overlay/dom";
-import { Portal } from "solid-js/web";
 import type { CollectionItem } from "../listbox/collection-registry";
 import { createListInteractionKernel } from "../listbox/interaction-kernel";
 import {
@@ -23,6 +14,7 @@ import {
   type OverlayPresenceCompleteDetail,
 } from "../overlay/index";
 import { createOverlayController } from "../overlay/controller";
+import { Portal } from "../portal/index";
 import {
   composeEventHandlers,
   createControllableSignal,
@@ -647,9 +639,13 @@ function createMenuNamespace(factoryOptions: MenuFactoryOptions) {
     const menu = useMenu("Portal");
 
     return (
-      <Show when={menu.shouldMount(props.forceMount)}>
-        <Portal mount={props.mount}>{props.children}</Portal>
-      </Show>
+      <Portal
+        forceMount={props.forceMount}
+        mount={props.mount}
+        present={menu.shouldMount(props.forceMount)}
+      >
+        {props.children}
+      </Portal>
     );
   }
 

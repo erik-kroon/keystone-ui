@@ -18,6 +18,7 @@ import {
   createControllableBooleanSignal,
   createStableId,
   dataBoolean,
+  getOpenClosedState,
   scheduleMicrotask,
   type PolymorphicProps,
 } from "../utils/index";
@@ -371,7 +372,7 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
   const setOpen = (next: boolean, detail: SelectOpenChangeDetail) => {
     setOpenState(next, detail);
   };
-  const state = () => (open() ? "open" : "closed");
+  const state = () => getOpenClosedState(open());
   const partProps = (part: string) => ({
     ...getPartDataAttributes("select", part),
   });

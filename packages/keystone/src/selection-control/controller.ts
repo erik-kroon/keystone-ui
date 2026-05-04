@@ -3,6 +3,7 @@ import {
   callEventHandler,
   createControllableSignal,
   dataBoolean,
+  getSelectionState as getSelectionStateFromChecked,
   partDataAttributes,
   type KeystoneEventHandler,
 } from "../utils/index";
@@ -138,7 +139,4 @@ export function getSelectionControlProps(
   };
 }
 
-export function getSelectionState(checked: SelectionControlCheckedState) {
-  if (checked === "indeterminate") return "indeterminate";
-  return checked ? "checked" : "unchecked";
-}
+export const getSelectionState = getSelectionStateFromChecked;

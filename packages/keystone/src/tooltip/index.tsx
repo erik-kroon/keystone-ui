@@ -1,5 +1,4 @@
 import {
-  Show,
   createContext,
   onCleanup,
   splitProps,
@@ -7,7 +6,6 @@ import {
   type Accessor,
   type JSX,
 } from "solid-js";
-import { Portal } from "solid-js/web";
 import {
   OverlayLayerProvider,
   type FloatingAdapter,
@@ -19,6 +17,7 @@ import {
   type OverlayPresenceCompleteDetail,
 } from "../overlay/index";
 import { createOverlayController } from "../overlay/controller";
+import { Portal } from "../portal/index";
 import {
   callEventHandler,
   composeEventHandlers,
@@ -328,9 +327,13 @@ function Trigger(props: TooltipTriggerProps) {
 function PortalPart(props: TooltipPortalProps) {
   const tooltip = useTooltip("Portal");
   return (
-    <Show when={tooltip.shouldMount(props.forceMount)}>
-      <Portal mount={props.mount}>{props.children}</Portal>
-    </Show>
+    <Portal
+      forceMount={props.forceMount}
+      mount={props.mount}
+      present={tooltip.shouldMount(props.forceMount)}
+    >
+      {props.children}
+    </Portal>
   );
 }
 

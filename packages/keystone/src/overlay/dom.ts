@@ -15,7 +15,13 @@ export function getOwnerDocument(element: Element | undefined | null) {
 }
 
 export function getActiveElement(element: Element | undefined | null) {
-  return getOwnerDocument(element).activeElement as HTMLElement | null;
+  let activeElement = getOwnerDocument(element).activeElement as HTMLElement | null;
+
+  while (activeElement?.shadowRoot?.activeElement instanceof HTMLElement) {
+    activeElement = activeElement.shadowRoot.activeElement;
+  }
+
+  return activeElement;
 }
 
 export function focusWithoutScrolling(element: HTMLElement | undefined | null) {
@@ -27,7 +33,11 @@ export function isFocusable(element: Element | undefined | null): element is HTM
     return false;
   }
 
-  if (element.hidden || element.getAttribute("aria-hidden") === "true") {
+  if (
+    element.hidden ||
+    element.getAttribute("aria-hidden") === "true" ||
+    element.getAttribute("data-keystone-focus-guard") === ""
+  ) {
     return false;
   }
 

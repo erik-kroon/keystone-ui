@@ -1,5 +1,4 @@
 import {
-  Show,
   createContext,
   onCleanup,
   splitProps,
@@ -7,7 +6,6 @@ import {
   type Accessor,
   type JSX,
 } from "solid-js";
-import { Portal } from "solid-js/web";
 import {
   OverlayLayerProvider,
   type FloatingAdapter,
@@ -20,6 +18,7 @@ import {
   type OverlayPresenceCompleteDetail,
 } from "../overlay/index";
 import { createOverlayController } from "../overlay/controller";
+import { Portal } from "../portal/index";
 import { composeEventHandlers, renderPolymorphic, type PolymorphicProps } from "../utils/index";
 
 export type HoverCardOpenChangeDetail = {
@@ -285,9 +284,13 @@ function Trigger(props: HoverCardTriggerProps) {
 function PortalPart(props: HoverCardPortalProps) {
   const hoverCard = useHoverCard("Portal");
   return (
-    <Show when={hoverCard.shouldMount(props.forceMount)}>
-      <Portal mount={props.mount}>{props.children}</Portal>
-    </Show>
+    <Portal
+      forceMount={props.forceMount}
+      mount={props.mount}
+      present={hoverCard.shouldMount(props.forceMount)}
+    >
+      {props.children}
+    </Portal>
   );
 }
 

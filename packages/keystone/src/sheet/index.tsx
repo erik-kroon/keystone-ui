@@ -1,5 +1,4 @@
-import { Show, createContext, splitProps, useContext, type JSX } from "solid-js";
-import { Portal } from "solid-js/web";
+import { createContext, splitProps, useContext, type JSX } from "solid-js";
 import { getPartDataAttributes } from "../metadata/index";
 import {
   OverlayLayerProvider,
@@ -7,6 +6,7 @@ import {
   type OverlayPresenceCompleteDetail,
 } from "../overlay/index";
 import { createOverlayController } from "../overlay/controller";
+import { Portal } from "../portal/index";
 import { renderPolymorphic, type PolymorphicProps } from "../utils/index";
 
 export type SheetChangeDetail = {
@@ -231,9 +231,13 @@ function Trigger(props: SheetTriggerProps) {
 function PortalPart(props: SheetPortalProps) {
   const sheet = useSheet("Portal");
   return (
-    <Show when={sheet.shouldMount(props.forceMount)}>
-      <Portal mount={props.mount}>{props.children}</Portal>
-    </Show>
+    <Portal
+      forceMount={props.forceMount}
+      mount={props.mount}
+      present={sheet.shouldMount(props.forceMount)}
+    >
+      {props.children}
+    </Portal>
   );
 }
 

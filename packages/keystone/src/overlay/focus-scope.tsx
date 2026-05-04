@@ -32,6 +32,7 @@ export type FocusScopeProps = Omit<JSX.HTMLAttributes<HTMLDivElement>, "children
 
 const mountAutoFocusEvent = "keystone.focusScope.mountAutoFocus";
 const unmountAutoFocusEvent = "keystone.focusScope.unmountAutoFocus";
+const focusGuardAttribute = "data-keystone-focus-guard";
 
 export function createFocusScope(options: FocusScopeOptions) {
   onMount(() => {
@@ -52,13 +53,22 @@ export function createFocusScope(options: FocusScopeOptions) {
 export function mountFocusScopeLifecycle(options: FocusScopeLifecycleOptions) {
   const ownerDocument = getOwnerDocument(options.element);
   const previouslyFocusedElement = getActiveElement(options.element);
+  const beforeGuard = createFocusGuard(ownerDocument, "before");
+  const afterGuard = createFocusGuard(ownerDocument, "after");
   let lastFocusedElement = contains(options.element, previouslyFocusedElement)
     ? previouslyFocusedElement
     : undefined;
   const active = () => options.active?.() ?? true;
   const shouldTrapFocus = () => active() && options.trapFocus?.() === true;
+  const getTabbables = () => getTabbableElements(options.element);
   const focusFirstEligibleElement = () => {
-    const fallback = getTabbableElements(options.element)[0] ?? options.element;
+    const fallback = getTabbables()[0] ?? options.element;
+
+    focusWithoutScrolling(fallback);
+  };
+  const focusLastEligibleElement = () => {
+    const tabbables = getTabbables();
+    const fallback = tabbables[tabbables.length - 1] ?? options.element;
 
     focusWithoutScrolling(fallback);
   };
@@ -87,6 +97,22 @@ export function mountFocusScopeLifecycle(options: FocusScopeLifecycleOptions) {
   const onFocusIn = (event: FocusEvent) => {
     const target = event.target as HTMLElement | null;
 
+    if (target === beforeGuard) {
+      if (shouldTrapFocus()) {
+        focusLastEligibleElement();
+      }
+
+      return;
+    }
+
+    if (target === afterGuard) {
+      if (shouldTrapFocus()) {
+        focusFirstEligibleElement();
+      }
+
+      return;
+    }
+
     if (contains(options.element, target)) {
       lastFocusedElement = target;
       return;
@@ -102,7 +128,7 @@ export function mountFocusScopeLifecycle(options: FocusScopeLifecycleOptions) {
       return;
     }
 
-    const tabbables = getTabbableElements(options.element);
+    const tabbables = getTabbables();
 
     if (tabbables.length === 0) {
       event.preventDefault();
@@ -126,12 +152,16 @@ export function mountFocusScopeLifecycle(options: FocusScopeLifecycleOptions) {
     }
   };
 
+  options.element.insertBefore(beforeGuard, options.element.firstChild);
+  options.element.append(afterGuard);
   ownerDocument.addEventListener("focusin", onFocusIn);
   options.element.addEventListener("keydown", onKeyDown);
 
   return () => {
     ownerDocument.removeEventListener("focusin", onFocusIn);
     options.element.removeEventListener("keydown", onKeyDown);
+    beforeGuard.remove();
+    afterGuard.remove();
 
     if (options.restoreFocus?.() === false) {
       return;
@@ -174,4 +204,17 @@ export function FocusScope(props: FocusScopeProps) {
       {local.children}
     </div>
   );
+}
+
+function createFocusGuard(ownerDocument: Document, position: "before" | "after") {
+  const guard = ownerDocument.createElement("span");
+
+  guard.setAttribute(focusGuardAttribute, "");
+  guard.setAttribute("data-position", position);
+  guard.setAttribute("aria-hidden", "true");
+  guard.tabIndex = 0;
+  guard.style.cssText =
+    "position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;outline:none;";
+
+  return guard;
 }

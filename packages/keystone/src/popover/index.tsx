@@ -1,5 +1,4 @@
-import { Show, createContext, splitProps, useContext, type JSX } from "solid-js";
-import { Portal } from "solid-js/web";
+import { createContext, splitProps, useContext, type JSX } from "solid-js";
 import {
   OverlayLayerProvider,
   type FloatingAdapter,
@@ -12,6 +11,7 @@ import {
   type OverlayLayerOutsideEvent,
 } from "../overlay/index";
 import { createOverlayController } from "../overlay/controller";
+import { Portal } from "../portal/index";
 import { renderPolymorphic, type PolymorphicProps } from "../utils/index";
 
 export type PopoverOpenChangeDetail = {
@@ -229,9 +229,13 @@ function Trigger(props: PopoverTriggerProps) {
 function PortalPart(props: PopoverPortalProps) {
   const popover = usePopover("Portal");
   return (
-    <Show when={popover.shouldMount(props.forceMount)}>
-      <Portal mount={props.mount}>{props.children}</Portal>
-    </Show>
+    <Portal
+      forceMount={props.forceMount}
+      mount={props.mount}
+      present={popover.shouldMount(props.forceMount)}
+    >
+      {props.children}
+    </Portal>
   );
 }
 

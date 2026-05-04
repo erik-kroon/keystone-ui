@@ -1,5 +1,5 @@
 import { For, Show, createContext, createEffect, splitProps, useContext } from "solid-js";
-import { Portal } from "solid-js/web";
+import { Portal } from "../portal/index";
 import { renderPolymorphic } from "../utils/index";
 import {
   createSelect,
@@ -140,9 +140,9 @@ function PortalPart(props: SelectPortalProps) {
   const select = useSelect("Portal");
 
   return (
-    <Show when={props.forceMount || select.open()}>
-      <Portal mount={props.mount}>{props.children}</Portal>
-    </Show>
+    <Portal forceMount={props.forceMount} mount={props.mount} present={select.open()}>
+      {props.children}
+    </Portal>
   );
 }
 

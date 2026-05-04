@@ -1,9 +1,9 @@
 import {
   createContext,
   createMemo,
+  createEffect,
   createSignal,
   onCleanup,
-  onMount,
   splitProps,
   untrack,
   useContext,
@@ -47,8 +47,10 @@ export type OverlayLayerProviderProps = {
 
 export type CreateOverlayLayerOptions = {
   id: string;
+  branchElements?: Accessor<readonly HTMLElement[]>;
   containsTarget?: (target: Node | null) => boolean;
   element?: Accessor<HTMLElement | undefined>;
+  enabled?: Accessor<boolean>;
   modal?: Accessor<boolean>;
   disableOutsidePointerEvents?: Accessor<boolean>;
   trapFocus?: Accessor<boolean>;
@@ -235,13 +237,32 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
   const stack = options.stack ?? useContext(OverlayLayerContext) ?? getDefaultOverlayLayerStack();
   const modal = () => options.modal?.() ?? false;
   const isTopLayer = createMemo(() => stack.isTopLayer(options.id));
+  let cleanupLayer: (() => void) | undefined;
+  let mountedElement: HTMLElement | undefined;
 
-  onMount(() => {
-    const ownerDocument = getOwnerDocument(options.element?.());
+  createEffect(() => {
+    const enabled = options.enabled?.() ?? true;
+    const element = options.element?.();
+
+    if (!enabled || !element) {
+      cleanupLayer?.();
+      cleanupLayer = undefined;
+      mountedElement = undefined;
+      return;
+    }
+
+    if (cleanupLayer && mountedElement === element) {
+      return;
+    }
+
+    cleanupLayer?.();
+    mountedElement = element;
+
+    const ownerDocument = getOwnerDocument(element);
     const unregister = stack.register({
       id: options.id,
       modal: modal(),
-      element: options.element?.(),
+      element,
       getElement: options.element,
       disableOutsidePointerEvents: () => options.disableOutsidePointerEvents?.() ?? modal(),
     });
@@ -252,37 +273,16 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
     stack.syncModalState(ownerDocument);
     scheduleMicrotask(() => {
       isReady = true;
-
-      const element = options.element?.();
-
-      if (!element || restoreFocus) {
-        return;
-      }
-
-      restoreFocus = mountLayerFocusLifecycle({
-        element,
-        isTopLayer,
-        restoreFocus: () => options.restoreFocus?.() ?? true,
-        trapFocus: () => options.trapFocus?.() ?? false,
-        onMountAutoFocus: options.onMountAutoFocus,
-        onUnmountAutoFocus: options.onUnmountAutoFocus,
-      });
-      stack.syncPointerEvents(getOwnerDocument(element));
-      stack.syncModalState(getOwnerDocument(element));
     });
 
-    const element = options.element?.();
-
-    if (element) {
-      restoreFocus = mountLayerFocusLifecycle({
-        element,
-        isTopLayer,
-        restoreFocus: () => options.restoreFocus?.() ?? true,
-        trapFocus: () => options.trapFocus?.() ?? false,
-        onMountAutoFocus: options.onMountAutoFocus,
-        onUnmountAutoFocus: options.onUnmountAutoFocus,
-      });
-    }
+    restoreFocus = mountLayerFocusLifecycle({
+      element,
+      isTopLayer,
+      restoreFocus: () => options.restoreFocus?.() ?? true,
+      trapFocus: () => options.trapFocus?.() ?? false,
+      onMountAutoFocus: options.onMountAutoFocus,
+      onUnmountAutoFocus: options.onUnmountAutoFocus,
+    });
 
     const onPointerDown = (event: PointerEvent) => {
       const element = options.element?.();
@@ -337,7 +337,7 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
     ownerDocument.addEventListener("focusin", onFocusIn, true);
     ownerDocument.addEventListener("keydown", onKeyDown);
 
-    onCleanup(() => {
+    cleanupLayer = () => {
       ownerDocument.removeEventListener("pointerdown", onPointerDown, true);
       ownerDocument.removeEventListener("focusin", onFocusIn, true);
       ownerDocument.removeEventListener("keydown", onKeyDown);
@@ -345,8 +345,11 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
       unregister();
       stack.syncPointerEvents(ownerDocument);
       stack.syncModalState(ownerDocument);
-    });
+      mountedElement = undefined;
+    };
   });
+
+  onCleanup(() => cleanupLayer?.());
 
   return {
     id: options.id,
@@ -404,7 +407,11 @@ function containsLayerTarget(
   target: Node | null,
   options: CreateOverlayLayerOptions,
 ) {
-  return contains(element, target) || options.containsTarget?.(target) === true;
+  return (
+    contains(element, target) ||
+    options.branchElements?.().some((branch) => contains(branch, target)) === true ||
+    options.containsTarget?.(target) === true
+  );
 }
 
 function getOutsideElements(element: HTMLElement, ownerDocument: Document) {
