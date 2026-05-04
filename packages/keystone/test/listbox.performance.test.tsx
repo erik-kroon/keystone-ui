@@ -1,6 +1,6 @@
 import { createRoot } from "solid-js";
 import { afterAll, describe, expect, test } from "vitest";
-import { createListboxInteraction } from "../src/listbox/index";
+import { createListboxInteraction } from "../src/collection/index";
 
 type ListboxPerfSample = {
   itemCount: number;

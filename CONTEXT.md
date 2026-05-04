@@ -9,6 +9,10 @@ Keystone UI aims to give Solid a serious UI ecosystem with two distinct layers:
 
 The strategic model combines a primitive layer with a source-first registry layer, implemented with Solid-native APIs rather than React-shaped translations.
 
+[Canonical Roadmap](docs/roadmap/canonical-roadmap.md) is the north-star direction for sequencing. Treat it as the durable source for Phase 0 direction, primitive breadth freeze, maturity labels, Mason registry maturity, and data-dense workspace timing.
+
+The longer-term application direction is data-dense, keyboard-first Solid product UI: dashboards, internal tools, developer tools, analytics workspaces, financial workspaces, and similar operational surfaces. Keystone stays domain-agnostic; Mason is where source-owned workspace patterns, domain packs, and app-level integrations should live.
+
 ## Domain Terms
 
 - `Keystone`: primitive runtime and APIs. Handles behavior, accessibility, focus, keyboard interaction, positioning, forms, SSR, and composition.
@@ -22,6 +26,8 @@ The strategic model combines a primitive layer with a source-first registry laye
 - `block`: production-shaped Mason UI composed from components, such as `dashboard-01`, `auth-01`, or `settings-01`.
 - `template`: starter project installed by Mason, such as `vite-solid-basic` or `solidstart-basic`.
 - `TanStack app layer`: Mason's preferred app-behavior layer for serious forms, data tables, shared app state, and keyboard shortcuts.
+- `workspace pattern`: a Mason-owned application pattern for dense product surfaces, such as command surfaces, resizable layouts, watchlists, inspection panels, data tables, chart interactions, event feeds, and rule builders.
+- `maturity status`: a stability label for primitives and registry items: `internal`, `experimental`, `beta`, `stable`, or `deprecated`; see [Maturity Model](docs/roadmap/maturity-model.md).
 
 ## Product Boundaries
 
@@ -68,8 +74,10 @@ Keystone internals -> Keystone primitives -> Mason components -> Mason blocks ->
 - Accessibility specs are product scope and should precede primitive implementation.
 - First-party Mason registry items should carry `meta.parity` notes. Base UI is the default runtime-depth reference, Kobalte is the default Solid-native primitive reference, and exceptions should use the fitting first-class reference such as TanStack, Sonner, Mason utility, or shadcn-style registry conventions.
 - Mason first-party app components should prefer TanStack libraries for app-grade behavior: `@tanstack/solid-form`, `@tanstack/solid-table`, TanStack Store, and `@tanstack/solid-hotkeys`.
+- Mason is the home for data-dense, keyboard-first workspace patterns. Keep domain-specific or finance-specific UI out of Keystone core unless it reduces to a general accessible primitive.
 - Keystone must not depend on TanStack app libraries. Keystone owns intrinsic primitive behavior; Mason owns app-level form/table/store/hotkey integration.
 - Use [ADR 0003](docs/adr/0003-mason-tanstack-app-layer.md) and [End-State Primitive And Component Inventory](docs/agents/end-state-primitive-component-inventory.md) when deciding whether a new surface belongs in Keystone or Mason.
+- Use [Do Not Reinvent Engines](docs/roadmap/do-not-reinvent.md) before adding table, virtualizer, form-state, query/cache, charting, validation, or date/i18n behavior.
 - The active design source of truth is the accepted ADRs, RFCs, PRDs, agent guidance, and end-state inventory in `docs/`.
 
 ## Current State
@@ -80,8 +88,11 @@ Keystone internals -> Keystone primitives -> Mason components -> Mason blocks ->
 - `packages/mason-registry`: registry schema, validation, dependency resolution, path safety, and tests.
 - `docs/`: ADRs, RFCs, accessibility plan, PRDs, and agent notes.
 - `registry/`: Mason registry source for first-party UI components, TanStack-backed app components, utilities, and early blocks.
+- Future Mason workspace work should emphasize data tables, command surfaces, resizable app shells, watchlists, inspection panels, numeric/financial formatting, chart interaction patterns, condition builders, and event feeds while preserving source ownership.
 
 The project is beyond a pure scaffold but still far from a mature primitive library. Mason registry and CLI tracer quality is ahead of Keystone runtime depth. Keystone needs a deeper internal kernel before broad catalog work.
+
+Phase 0 posture: consolidate direction, freeze primitive breadth, label maturity, keep private kernels private, make Mason multi-file registry items first-class, and defer data-dense workspace implementation until Keystone kernels and Mason registry/CLI are credible enough to carry it.
 
 ## Near-Term Milestone
 
@@ -96,3 +107,4 @@ The active planning baseline:
 - Write accessibility testing plan.
 - Preserve the strict Keystone/Mason product boundary.
 - Prioritize Keystone internals parity before adding more primitive surface area.
+- Treat data-dense Mason workspace patterns as a product differentiator after the primitive kernel and first app-layer components are sufficiently proven.

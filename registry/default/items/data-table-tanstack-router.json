@@ -15,6 +15,8 @@
   "keywords": ["data-table", "table", "tanstack-router", "search-params", "url-state"],
   "docs": "https://mason.build/docs/components/data-table#tanstack-router",
   "registryDependencies": ["data-table"],
+  "filesRoot": "components/data-table",
+  "targetRoot": "src/components/data-table",
   "meta": {
     "install": "mason add data-table-tanstack-router",
     "searchParams": "Use validateDataTableSearch in route validateSearch, then pass Route.useSearch() and useNavigate({ from: Route.fullPath }) to useDataTableRouter.",
@@ -33,13 +35,11 @@
   "files": [
     {
       "path": "components/data-table/data-table-search.ts",
-      "target": "src/components/data-table/data-table-search.ts",
-      "type": "registry:file"
+      "type": "registry:ui"
     },
     {
       "path": "components/data-table/use-data-table-router.ts",
-      "target": "src/components/data-table/use-data-table-router.ts",
-      "type": "registry:file"
+      "type": "registry:ui"
     }
   ]
 }

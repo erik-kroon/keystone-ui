@@ -14,9 +14,7 @@ export {
   OverlayLayer,
   OverlayLayerProvider,
 } from "./layer-kernel";
-export type {
-  FloatingArrowProps,
-} from "./arrow";
+export type { FloatingArrowProps } from "./arrow";
 export type {
   CreateOverlayDismissalPolicyOptions,
   OverlayDismissalPolicy,

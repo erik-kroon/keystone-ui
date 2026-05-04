@@ -5,6 +5,7 @@ import {
   getPartDataAttributes,
   getPartMetadata,
   primitiveMetadata,
+  type PrimitiveMaturity,
   type PrimitiveScope,
 } from "./index";
 
@@ -147,6 +148,7 @@ describe("primitive part metadata", () => {
       const docsMetadata = getDocsMetadata(scope);
 
       expect(metadata.scope).toBe(scope);
+      expect(docsMetadata?.maturity).toBe(metadata.maturity);
       expect(metadata.parts.map((part) => part.part)).toEqual(parts);
       expect(docsMetadata?.parts.map((part) => part.selector)).toEqual(
         parts.map((part) => `[data-scope="${scope}"][data-part="${part}"]`),
@@ -157,6 +159,26 @@ describe("primitive part metadata", () => {
         expect(part.dataAttributes.map((attribute) => attribute.name)).toContain("data-part");
       }
     }
+  });
+
+  test("labels every primitive with a conservative maturity status", () => {
+    const validStatuses = new Set<PrimitiveMaturity>([
+      "internal",
+      "experimental",
+      "beta",
+      "stable",
+      "deprecated",
+    ]);
+
+    for (const metadata of Object.values(primitiveMetadata)) {
+      expect(validStatuses.has(metadata.maturity)).toBe(true);
+    }
+
+    expect(primitiveMetadata.overlay.maturity).toBe("internal");
+    expect(primitiveMetadata.listbox.maturity).toBe("internal");
+    expect(primitiveMetadata.dialog.maturity).toBe("beta");
+    expect(primitiveMetadata.select.maturity).toBe("beta");
+    expect(primitiveMetadata.combobox.maturity).toBe("experimental");
   });
 
   test("routes runtime part attributes through the metadata helper", () => {

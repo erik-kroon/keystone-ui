@@ -1,6 +1,6 @@
 import { createRoot, createSignal } from "solid-js";
 import { describe, expect, test } from "vitest";
-import { createLocale, getLocaleDirection, type LocaleMessages } from "./index";
+import { createLocale, getLocaleDirection, type LocaleMessages } from "./locale";
 
 describe("Locale provider kernel", () => {
   test("creates stable locale, direction, and message accessors", () => {

@@ -13,6 +13,7 @@ export type MasonRegistryErrorCode =
   | "file.duplicatePath"
   | "file.missingSource"
   | "file.duplicateTarget"
+  | "file.outsideFilesRoot"
   | "dependency.packageName"
   | "dependency.version"
   | "registryDependency.invalidReference"

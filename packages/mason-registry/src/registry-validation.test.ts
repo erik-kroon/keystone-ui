@@ -124,6 +124,13 @@ describe("Mason registry validation tracer", () => {
     if (result.ok) {
       expect(result.value.dependencies).toContain("@tanstack/solid-table@^8.21.3");
       expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.files.length).toBeGreaterThan(1);
+      expect(
+        result.value.files.every((file) => file.target?.startsWith("src/components/data-table/")),
+      ).toBe(true);
+      expect(new Set(result.value.files.map((file) => file.target)).size).toBe(
+        result.value.files.length,
+      );
       expect(result.value.meta?.columns).toBeString();
       expect(result.value.meta?.sorting).toBeString();
       expect(result.value.meta?.filtering).toBeString();
@@ -335,6 +342,81 @@ describe("Mason registry validation tracer", () => {
     if (!result.ok) {
       expect(result.errors.map((error) => error.code)).toContain("schema.invalid");
       expect(result.errors.some((error) => error.path?.includes("target"))).toBe(true);
+    }
+  });
+
+  test("derives multi-file item targets from filesRoot and targetRoot", () => {
+    const result = validateItem(
+      {
+        ...button,
+        name: "data-table",
+        filesRoot: "components/data-table",
+        targetRoot: "src/components/data-table",
+        files: [
+          {
+            path: "components/data-table/data-table.tsx",
+            type: "registry:ui",
+          },
+          {
+            path: "components/data-table/use-data-table.ts",
+            type: "registry:ui",
+          },
+        ],
+      },
+      { registryRoot: defaultRegistryRoot },
+    );
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.files.map((file) => file.target)).toEqual([
+        "src/components/data-table/data-table.tsx",
+        "src/components/data-table/use-data-table.ts",
+      ]);
+    }
+  });
+
+  test("rejects multi-file source paths outside filesRoot", () => {
+    const result = validateItem({
+      ...button,
+      name: "bad-data-table",
+      filesRoot: "components/data-table",
+      targetRoot: "src/components/data-table",
+      files: [
+        {
+          path: "components/other/table.tsx",
+          type: "registry:ui",
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.errors.map((error) => error.code)).toContain("file.outsideFilesRoot");
+    }
+  });
+
+  test("rejects duplicate targets after multi-file root derivation", () => {
+    const result = validateItem({
+      ...button,
+      name: "duplicate-data-table",
+      filesRoot: "components/data-table",
+      targetRoot: "src/components/data-table",
+      files: [
+        {
+          path: "components/data-table/data-table.tsx",
+          type: "registry:ui",
+        },
+        {
+          path: "components/data-table/use-data-table.ts",
+          target: "src/components/data-table/data-table.tsx",
+          type: "registry:ui",
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.errors.map((error) => error.code)).toContain("file.duplicateTarget");
     }
   });
 

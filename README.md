@@ -1,13 +1,21 @@
 # Keystone UI
 
-Keystone UI is an early Solid UI workspace for accessible primitives and source-owned components.
+Keystone UI is an early Solid UI workspace for building accessible primitives and source-owned application components.
 
-It has two layers:
+It is split into two layers:
 
 - **Keystone** is the headless, unstyled primitive layer for Solid.
 - **Mason** is the copy-paste component registry and CLI layer for Solid apps.
 
 Keystone owns behavior, accessibility, state, focus, dismissal, selection, overlays, and stable styling contracts. Mason owns generated source, registry metadata, styled wrappers, blocks, templates, and app-level integrations.
+
+## Direction
+
+Keystone/Mason is aimed at Solid teams building serious, data-dense, keyboard-first applications: dashboards, internal tools, analytics workspaces, developer tools, financial workspaces, and similar operational surfaces.
+
+Keystone stays domain-agnostic. Mason is where source-owned app patterns live: TanStack-backed tables and forms, command surfaces, dense layouts, inspector panels, event feeds, and workspace blocks.
+
+The durable sequencing direction lives in the [Canonical Roadmap](docs/roadmap/canonical-roadmap.md). Engine boundaries are documented in [Do Not Reinvent Engines](docs/roadmap/do-not-reinvent.md).
 
 ## Status
 
@@ -19,7 +27,9 @@ This repository is preparing for a `0.1.0` preview. It is not a stable public re
 - Keystone internals are intentionally private while the primitive kernel is still being deepened.
 - Mason currently targets local registry development before a hosted public registry.
 
-The project direction is depth before breadth: build the shared primitive kernel first, then expand the component catalog.
+The project direction is depth before breadth: harden the shared primitive kernel first, then expand the component catalog.
+
+Primitive and registry surfaces use the maturity model in [Maturity Model](docs/roadmap/maturity-model.md): `internal`, `experimental`, `beta`, `stable`, and `deprecated`.
 
 ## Packages
 
@@ -66,7 +76,7 @@ Mason installs readable Solid source into an app. The installed files are owned 
 
 Current local registry items include:
 
-- Base UI: `button`, `badge`, `card`, `field`, `input`, `label`, `separator`, `textarea`, `cn`
+- Base components: `button`, `badge`, `card`, `field`, `input`, `label`, `separator`, `textarea`, `cn`
 - Keystone-backed UI: `accordion`, `checkbox`, `collapsible`, `combobox`, `context-menu`, `date-picker`, `dialog`, `dropdown-menu`, `hover-card`, `menu`, `menubar`, `navigation-menu`, `popover`, `radio-group`, `sheet`, `slider`, `switch`, `tabs`, `toast`, `toolbar`, `tooltip`
 - TanStack-backed app components: `data-table`, `data-table-tanstack-router`, `select-field`, `text-field`
 - Blocks: `account-settings`
@@ -81,6 +91,12 @@ mason add dialog --registry <local-registry-path>
 
 Mason install planning records target files, content hashes, existing target state, dependency changes, installed item metadata, and conflicts before writes are applied.
 
+## Data-Dense Patterns
+
+Mason is intended to grow beyond individual components into source-owned application patterns for dense product surfaces. The first direction is TanStack-backed app components such as `data-table`, command surfaces, form adapters, and route-aware data patterns.
+
+Longer-term workspace blocks such as realtime tables, watchlists, metric components, terminal layouts, chart interaction adapters, condition builders, and event feeds are aspirational until Keystone kernels and Mason registry/CLI workflows are reliable enough to support them.
+
 ## Registry Metadata
 
 Every first-party registry item carries docs-ready metadata:
@@ -90,9 +106,9 @@ Every first-party registry item carries docs-ready metadata:
 - dependencies
 - customization guidance
 - anatomy or part names where relevant
-- parity notes against the relevant references
+- maturity and implementation notes where relevant
 
-Base UI is the first reference for runtime depth. Kobalte is the first reference for Solid-native primitive shape. Some components use more specific references, such as TanStack Table, TanStack Form, TanStack Router, Sonner, or shadcn-style registry conventions.
+Registry metadata should make each item understandable without requiring readers to compare it to another component system.
 
 The registry metadata contract is documented in [Mason Registry RFC](docs/rfcs/mason-registry.md).
 
@@ -137,10 +153,14 @@ That runs formatting/linting, type checks, Keystone tests, Mason CLI tests, Maso
 - Mason components should not reimplement Keystone behavior.
 - TanStack app integrations belong in Mason, not Keystone.
 - Generated Mason code should stay readable and easy to own.
+- Data-dense components should preserve clarity under frequent updates.
+- Keyboard interaction and focus behavior should be designed as first-class product concerns.
 
-## Inspiration
+## Product Focus
 
-Keystone and Mason are informed by the ecosystem around Base UI, Kobalte, Radix Primitives, shadcn/ui, Sonner, TanStack, and copy-paste component registries. The goal is not to clone any one project. The goal is a Solid-native primitive foundation paired with a source-first component layer.
+Keystone and Mason are built around a Solid-native primitive foundation paired with a source-first component layer.
+
+For application-level patterns, the project focuses on data-dense products such as developer tools, trading terminals, analytics workspaces, and internal operations software.
 
 ## License
 

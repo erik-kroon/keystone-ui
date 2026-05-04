@@ -234,6 +234,20 @@ export const primitiveContracts = [
     example: `<Select.Listbox><Select.Item value="team">Team</Select.Item></Select.Listbox>`,
   },
   {
+    scope: "live-announcer",
+    title: "LiveAnnouncer",
+    importPath: "@keystone-ui/keystone/live-announcer",
+    roleNotes: ["Live regions announce queued messages without adding interactive widget roles."],
+    keyboardNotes: ["LiveAnnouncer owns no keyboard behavior and does not add focusability."],
+    ariaNotes: [
+      "Polite and assertive regions expose status and alert semantics for screen reader announcements.",
+    ],
+    ssrNotes: [
+      "Announcements are client-owned; live-region containers render deterministic markup.",
+    ],
+    example: `const announcer = createLiveAnnouncer(); announcer.announce("Saved");`,
+  },
+  {
     scope: "menu",
     title: "Menu",
     importPath: "@keystone-ui/keystone/menu",

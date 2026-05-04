@@ -14,6 +14,8 @@
   "keywords": ["data-table", "table", "tanstack", "sorting", "filtering", "pagination"],
   "docs": "https://mason.build/docs/components/data-table",
   "registryDependencies": ["cn"],
+  "filesRoot": "components/data-table",
+  "targetRoot": "src/components/data-table",
   "meta": {
     "install": "mason add data-table",
     "dataShape": "Pass an array of row objects through data and TanStack ColumnDef<TData, unknown>[] through columns. Use getRowId when the row key is not stable by index.",
@@ -47,58 +49,47 @@
   "files": [
     {
       "path": "components/data-table/data-table.tsx",
-      "target": "src/components/data-table/data-table.tsx",
-      "type": "registry:file"
+      "type": "registry:ui"
     },
     {
       "path": "components/data-table/data-table-column-header.tsx",
-      "target": "src/components/data-table/data-table-column-header.tsx",
-      "type": "registry:file"
+      "type": "registry:ui"
     },
     {
       "path": "components/data-table/data-table-empty-state.tsx",
-      "target": "src/components/data-table/data-table-empty-state.tsx",
-      "type": "registry:file"
+      "type": "registry:ui"
     },
     {
       "path": "components/data-table/data-table-faceted-filter.tsx",
-      "target": "src/components/data-table/data-table-faceted-filter.tsx",
-      "type": "registry:file"
+      "type": "registry:ui"
     },
     {
       "path": "components/data-table/data-table-pagination.tsx",
-      "target": "src/components/data-table/data-table-pagination.tsx",
-      "type": "registry:file"
+      "type": "registry:ui"
     },
     {
       "path": "components/data-table/data-table-row-actions.tsx",
-      "target": "src/components/data-table/data-table-row-actions.tsx",
-      "type": "registry:file"
+      "type": "registry:ui"
     },
     {
       "path": "components/data-table/data-table-skeleton.tsx",
-      "target": "src/components/data-table/data-table-skeleton.tsx",
-      "type": "registry:file"
+      "type": "registry:ui"
     },
     {
       "path": "components/data-table/data-table-toolbar.tsx",
-      "target": "src/components/data-table/data-table-toolbar.tsx",
-      "type": "registry:file"
+      "type": "registry:ui"
     },
     {
       "path": "components/data-table/data-table-view-options.tsx",
-      "target": "src/components/data-table/data-table-view-options.tsx",
-      "type": "registry:file"
+      "type": "registry:ui"
     },
     {
       "path": "components/data-table/types.ts",
-      "target": "src/components/data-table/types.ts",
-      "type": "registry:file"
+      "type": "registry:ui"
     },
     {
       "path": "components/data-table/use-data-table.ts",
-      "target": "src/components/data-table/use-data-table.ts",
-      "type": "registry:file"
+      "type": "registry:ui"
     }
   ]
 }

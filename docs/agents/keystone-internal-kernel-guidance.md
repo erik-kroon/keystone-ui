@@ -6,9 +6,11 @@ Keystone internals should deepen shared primitive behavior before new component 
 
 ## Current Kernel Modules
 
-- `packages/keystone/src/utils/index.ts`: controllable state, event composition, stable IDs, polymorphic rendering, state/data helpers, collection registration, list navigation, and typeahead.
-- `packages/keystone/src/form/index.tsx`: form-control ARIA relationships, state data attributes, hidden input props, description/error registration, and form reset hooks.
+- `packages/keystone/src/utils/*`: controllable state, event composition, stable IDs, environment guards, polymorphic rendering, and state/data helpers.
 - `packages/keystone/src/overlay/index.tsx`: focus scope, dismissable layer, layer stack, and the lightweight floating adapter.
+- `packages/keystone/src/collection/*`: collection registration, active descendant state, list navigation, typeahead, selection, and listbox-style interaction contracts.
+- `packages/keystone/src/form/*`: form-control ARIA relationships, state data attributes, hidden input props, description/error registration, field validity, and form reset hooks.
+- `packages/keystone/src/i18n/*`: locale, message, text-direction inference, and direction provider internals used by primitives.
 
 These modules are implementation kernels for the 0.1.0 preview. They are used by public primitives but are not exported as public package subpaths.
 
@@ -37,8 +39,8 @@ The `./overlay` and `./utils` subpaths stay private until a later API decision p
 
 Select should stay on the shared kernels:
 
-- Form value and reset behavior should go through `createFormControl`.
-- Item order, disabled checks, highlighted movement, and printable-key search should go through collection, navigation, and typeahead helpers.
+- Form value and reset behavior should go through the private form kernel.
+- Item order, disabled checks, highlighted movement, and printable-key search should go through the private collection, navigation, and typeahead kernel.
 - Floating content should use `createFloatingAdapter` through `Select.Positioner` when present, with `Select.Content` retaining compatibility as a directly positioned part.
 
 ## Floating Contracts

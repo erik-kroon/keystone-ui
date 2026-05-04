@@ -21,8 +21,10 @@ export function validateItem(
 
   const errors: MasonRegistryError[] = [
     ...validateFiles(parsed.data.files, {
+      filesRoot: parsed.data.filesRoot,
       projectRoot: options.projectRoot,
       registryRoot: options.registryRoot,
+      targetRoot: parsed.data.targetRoot,
     }),
     ...validateDependencies(parsed.data),
   ];

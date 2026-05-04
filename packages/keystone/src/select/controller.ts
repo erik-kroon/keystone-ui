@@ -1,7 +1,7 @@
 import { createMemo, createSignal, splitProps, type JSX } from "solid-js";
 import { createFormControl, type FormControlApi } from "../form/index";
-import { createListboxInteraction, type ListboxInteractionApi } from "../listbox/index";
-import type { ListInteractionKernelApi } from "../listbox/interaction-kernel";
+import { createListboxInteraction, type ListboxInteractionApi } from "../collection/index";
+import type { ListInteractionKernelApi } from "../collection/interaction-kernel";
 import { getPartDataAttributes } from "../metadata/index";
 import { assignRef } from "../overlay/dom";
 import {

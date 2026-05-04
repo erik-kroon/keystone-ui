@@ -1,7 +1,7 @@
 import { createContext, createMemo, onCleanup, splitProps, useContext, type JSX } from "solid-js";
 import { focusWithoutScrolling } from "../overlay/dom";
-import type { CollectionItem } from "../listbox/collection-registry";
-import { createListInteractionKernel } from "../listbox/interaction-kernel";
+import type { CollectionItem } from "../collection/collection-registry";
+import { createListInteractionKernel } from "../collection/interaction-kernel";
 import {
   OverlayLayerProvider,
   getFloatingArrowProps,

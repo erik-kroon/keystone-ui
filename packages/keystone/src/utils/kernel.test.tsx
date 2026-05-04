@@ -17,12 +17,16 @@ import {
   renderPolymorphic,
   scheduleMicrotask,
 } from "./index";
-import { createCollectionRegistry } from "../listbox/collection-registry";
-import { createListCollectionManager } from "../listbox/collection-manager";
-import { createListInteractionKernel } from "../listbox/interaction-kernel";
-import { firstEnabledItem, lastEnabledItem, nextEnabledItem } from "../listbox/keyboard-delegate";
-import { createListSelectionManager } from "../listbox/selection-manager";
-import { createTypeahead } from "../listbox/typeahead";
+import { createCollectionRegistry } from "../collection/collection-registry";
+import { createListCollectionManager } from "../collection/collection-manager";
+import { createListInteractionKernel } from "../collection/interaction-kernel";
+import {
+  firstEnabledItem,
+  lastEnabledItem,
+  nextEnabledItem,
+} from "../collection/keyboard-delegate";
+import { createListSelectionManager } from "../collection/selection-manager";
+import { createTypeahead } from "../collection/typeahead";
 import { createFormControl } from "../form/index";
 import { getByPart, render } from "../../test/harness";
 

@@ -15,7 +15,7 @@ import {
   renderPolymorphic,
   type PolymorphicProps,
 } from "../utils/index";
-import { useDirection, type Direction as KeystoneDirection } from "../direction/index";
+import { useDirection, type Direction as KeystoneDirection } from "../i18n/direction";
 
 export type ToolbarOrientation = "horizontal" | "vertical";
 export type ToolbarDirection = KeystoneDirection;

@@ -1,3 +1,4 @@
+import path from "node:path";
 import { z } from "zod";
 
 export const registryItemTypes = [
@@ -52,6 +53,8 @@ export const registryItemSchema = z
     title: z.string().min(1),
     description: z.string().min(1),
     version: z.string().min(1),
+    filesRoot: z.string().min(1).optional(),
+    targetRoot: z.string().min(1).optional(),
     files: z.array(fileDescriptorSchema).min(1),
     dependencies: z.array(z.string().min(1)).default([]),
     devDependencies: z.array(z.string().min(1)).default([]),
@@ -66,9 +69,26 @@ export const registryItemSchema = z
     meta: z.record(z.string(), z.unknown()).optional(),
   })
   .superRefine((item, context) => {
+    if (item.filesRoot && !item.targetRoot) {
+      context.addIssue({
+        code: "custom",
+        message: "targetRoot is required when filesRoot is provided",
+        path: ["targetRoot"],
+      });
+    }
+
+    if (item.targetRoot && !item.filesRoot) {
+      context.addIssue({
+        code: "custom",
+        message: "filesRoot is required when targetRoot is provided",
+        path: ["filesRoot"],
+      });
+    }
+
     for (const [index, file] of item.files.entries()) {
       if (
         targetRequiredFileTypes.includes(file.type as (typeof targetRequiredFileTypes)[number]) &&
+        !item.targetRoot &&
         !file.target
       ) {
         context.addIssue({
@@ -78,6 +98,24 @@ export const registryItemSchema = z
         });
       }
     }
+  })
+  .transform((item) => {
+    if (!item.filesRoot || !item.targetRoot) return item;
+    const filesRoot = item.filesRoot;
+    const targetRoot = item.targetRoot;
+
+    return {
+      ...item,
+      files: item.files.map((file) => {
+        if (file.target) return file;
+        const relativePath = path.posix.relative(filesRoot, file.path);
+        if (relativePath.startsWith("..") || path.posix.isAbsolute(relativePath)) return file;
+        return {
+          ...file,
+          target: path.posix.join(targetRoot, relativePath),
+        };
+      }),
+    };
   });
 
 export const registryItemSummarySchema = z.object({
