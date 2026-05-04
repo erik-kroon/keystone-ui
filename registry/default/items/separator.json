@@ -16,7 +16,7 @@
   "meta": {
     "install": "mason add separator",
     "customization": "Use data-orientation and ui-separator classes to style horizontal and vertical separators.",
-    "sourceFiles": ["registry/default/ui/separator.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/separator.tsx"],
     "dependencies": ["cn"],
     "parity": {
       "baseUi": "Thin vertical matches Base UI Separator direction for decorative or semantic separator rendering, horizontal/vertical orientation, role presentation/separator choice, and data-orientation styling hooks. Gaps: richer orientation docs and layout token presets remain follow-up work.",
@@ -25,7 +25,7 @@
   },
   "files": [
     {
-      "path": "ui/separator.tsx",
+      "path": "packages/ui/src/default/ui/separator.tsx",
       "type": "registry:ui"
     }
   ]

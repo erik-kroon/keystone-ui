@@ -70,8 +70,7 @@ async function createSourcePreviews(
   const previews: Record<string, Record<string, string>> = {};
 
   for (const item of items) {
-    const sourceFiles =
-      item.meta?.sourceFiles ?? item.files.map((file) => `registry/default/${file.path}`);
+    const sourceFiles = item.meta?.sourceFiles ?? item.files.map((file) => file.path);
 
     previews[item.name] = Object.fromEntries(
       await Promise.all(

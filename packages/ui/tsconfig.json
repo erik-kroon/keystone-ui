@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "ignoreDeprecations": "6.0",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/default/*"],
+      "@/components/ui/*": ["src/default/ui/*"],
+      "@/components/data-table/*": ["src/default/components/data-table/*"],
+      "@/lib/*": ["src/default/lib/*"]
+    },
+    "types": []
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
+}

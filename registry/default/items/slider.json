@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add slider",
     "customization": "Style the generated wrappers through ui-slider classes while Keystone keeps range math, thumb ARIA, controlled state, RTL-aware keyboard and pointer math, minimum thumb distance, pointer commits, hidden input form serialization, data attributes, and CSS variables.",
-    "sourceFiles": ["registry/default/ui/slider.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/slider.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "parts": ["root", "track", "range", "thumb", "hidden-input"],
     "cssVars": [
@@ -33,7 +33,7 @@
   },
   "files": [
     {
-      "path": "ui/slider.tsx",
+      "path": "packages/ui/src/default/ui/slider.tsx",
       "type": "registry:ui"
     }
   ]

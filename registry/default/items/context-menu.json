@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add context-menu",
     "customization": "Style the generated wrappers through ui-context-menu classes while Core owns menu roles, roving focus, typeahead, dismissal, and positioning.",
-    "sourceFiles": ["registry/default/ui/context-menu.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/context-menu.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "parity": {
       "baseUi": "Thin vertical covers menu roles, roving focus, typeahead, disabled skipping, submenu-capable item structure, context trigger positioning, dismissal, and UI classes. Gaps: pointer grace areas, collision-aware submenu placement, checkbox/radio item groups, animation status metadata, and nested layer edge tests remain follow-up work.",
@@ -26,7 +26,7 @@
   },
   "files": [
     {
-      "path": "ui/context-menu.tsx",
+      "path": "packages/ui/src/default/ui/context-menu.tsx",
       "type": "registry:ui"
     }
   ]

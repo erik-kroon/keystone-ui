@@ -16,7 +16,7 @@
   "meta": {
     "install": "mason add button",
     "customization": "Customize visual treatment through buttonClass, ui-button classes, data-variant/data-size attributes, and the root/loading part hooks.",
-    "sourceFiles": ["registry/default/ui/button.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/button.tsx"],
     "dependencies": ["cn"],
     "api": "Button supports variant default, secondary, destructive, destructive-outline, outline, ghost, link, and solid compatibility alias; size default, xs, sm, md, lg, xl, icon-xs, icon-sm, icon, icon-lg, and icon-xl; loading disables the native button and adds data-loading, aria-busy, aria-disabled, and a loading indicator.",
     "accessibility": "Renders a native button, defaults type to button, preserves explicit submit/reset types, uses native disabled for disabled and loading states, exposes aria-pressed when pressed is provided, and keeps icon-only labeling as caller-owned through aria-label.",
@@ -44,7 +44,7 @@
   },
   "files": [
     {
-      "path": "ui/button.tsx",
+      "path": "packages/ui/src/default/ui/button.tsx",
       "type": "registry:ui"
     }
   ]

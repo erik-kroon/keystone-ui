@@ -70,6 +70,18 @@
       "description": "Form field shell with label, description, and error parts."
     },
     {
+      "name": "tanstack-form",
+      "type": "registry:ui",
+      "title": "TanStackForm",
+      "description": "Source-owned Solid form shell for TanStack Form submit and form-state metadata."
+    },
+    {
+      "name": "tanstack-field",
+      "type": "registry:ui",
+      "title": "TanStackField",
+      "description": "Source-owned Solid field adapter connecting TanStack Form field state to Keystone form-control semantics."
+    },
+    {
       "name": "text-field",
       "type": "registry:ui",
       "title": "TextField",

@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add date-picker",
     "customization": "Style the generated wrappers through ui-date-picker and ui-calendar classes while Keystone keeps calendar grid generation, single-date and range state, unavailable dates, locale week starts, month navigation, keyboard movement, ARIA roles, and data attributes.",
-    "sourceFiles": ["registry/default/ui/date-picker.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/date-picker.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "parts": {
       "calendar": [
@@ -43,7 +43,7 @@
   },
   "files": [
     {
-      "path": "ui/date-picker.tsx",
+      "path": "packages/ui/src/default/ui/date-picker.tsx",
       "type": "registry:ui"
     }
   ]

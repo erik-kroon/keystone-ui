@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add navigation-menu",
     "customization": "Style the generated wrappers through ui-navigation-menu classes while Core owns menubar roles, item navigation, typeahead, overlay positioning, and item state behavior.",
-    "sourceFiles": ["registry/default/ui/navigation-menu.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/navigation-menu.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "parts": [
       "trigger",
@@ -37,7 +37,7 @@
   },
   "files": [
     {
-      "path": "ui/navigation-menu.tsx",
+      "path": "packages/ui/src/default/ui/navigation-menu.tsx",
       "type": "registry:ui"
     }
   ]

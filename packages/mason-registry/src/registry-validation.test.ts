@@ -18,7 +18,21 @@ import {
 
 const buttonItem = button as RegistryItem;
 const dialogItem = dialog as RegistryItem;
+const repoRoot = resolve(import.meta.dir, "../../..");
 const defaultRegistryRoot = resolve(import.meta.dir, "../../../registry/default");
+const uiPackageSourceRoot = resolve(import.meta.dir, "../../../packages/ui/src/default");
+
+async function listFiles(root: string, directory = ""): Promise<string[]> {
+  const entries = await readdir(join(root, directory), { withFileTypes: true });
+  const files = await Promise.all(
+    entries.map((entry) => {
+      const child = join(directory, entry.name);
+      return entry.isDirectory() ? listFiles(root, child) : Promise.resolve([child]);
+    }),
+  );
+
+  return files.flat().sort();
+}
 
 describe("Mason registry validation tracer", () => {
   test("parses a valid root registry document and lists items", () => {
@@ -41,7 +55,7 @@ describe("Mason registry validation tracer", () => {
 
   test("validates docs-ready metadata on the real default button item", async () => {
     const item = await import("../../../registry/default/items/button.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const result = validateItem(item.default, { registryRoot: repoRoot });
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -61,7 +75,7 @@ describe("Mason registry validation tracer", () => {
   });
 
   test("captures the real default button generated source contract", async () => {
-    const source = await readFile(resolve(defaultRegistryRoot, "ui/button.tsx"), "utf8");
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/button.tsx"), "utf8");
 
     expect(source).toContain('type={local.type ?? "button"}');
     expect(source).toContain("disabled={disabled()}");
@@ -82,6 +96,23 @@ describe("Mason registry validation tracer", () => {
     expect(source).toContain("pointer-coarse:after:min-h-11");
   });
 
+  test("keeps default registry source descriptors pointed at the UI package source", async () => {
+    expect(await listFiles(defaultRegistryRoot)).not.toContain("ui/button.tsx");
+
+    const itemFiles = await readdir(resolve(defaultRegistryRoot, "items"));
+    for (const file of itemFiles.sort()) {
+      const item = JSON.parse(
+        await readFile(resolve(defaultRegistryRoot, "items", file), "utf8"),
+      ) as RegistryItem;
+
+      expect(item.meta?.sourceFiles).toEqual(item.files.map((sourceFile) => sourceFile.path));
+      for (const sourceFile of item.files) {
+        expect(sourceFile.path).toStartWith("packages/ui/src/default/");
+        await expect(readFile(resolve(repoRoot, sourceFile.path), "utf8")).resolves.toBeString();
+      }
+    }
+  });
+
   test("validates every default registry item and its parity metadata contract", async () => {
     const rootRegistry = JSON.parse(
       await readFile(resolve(defaultRegistryRoot, "registry.json"), "utf8"),
@@ -96,7 +127,7 @@ describe("Mason registry validation tracer", () => {
         await readFile(resolve(defaultRegistryRoot, "items", file), "utf8"),
       ) as unknown;
       const result = validateItem(item, {
-        registryRoot: defaultRegistryRoot,
+        registryRoot: repoRoot,
         requireParityMetadata: true,
       });
       expect(result.ok).toBe(true);
@@ -143,6 +174,8 @@ describe("Mason registry validation tracer", () => {
       "slider",
       "switch",
       "tabs",
+      "tanstack-field",
+      "tanstack-form",
       "text-field",
       "textarea",
       "toast",
@@ -179,7 +212,7 @@ describe("Mason registry validation tracer", () => {
 
   test("validates docs-ready metadata on the real default data-table item", async () => {
     const item = await import("../../../registry/default/items/data-table.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const result = validateItem(item.default, { registryRoot: repoRoot });
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -203,7 +236,7 @@ describe("Mason registry validation tracer", () => {
 
   test("validates docs-ready metadata on the real default data-table router adapter item", async () => {
     const item = await import("../../../registry/default/items/data-table-tanstack-router.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const result = validateItem(item.default, { registryRoot: repoRoot });
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -217,7 +250,7 @@ describe("Mason registry validation tracer", () => {
 
   test("validates docs-ready metadata on the real default command-menu item", async () => {
     const item = await import("../../../registry/default/items/command-menu.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const result = validateItem(item.default, { registryRoot: repoRoot });
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -236,8 +269,8 @@ describe("Mason registry validation tracer", () => {
 
   test("captures Field parity metadata and generated source contract", async () => {
     const item = await import("../../../registry/default/items/field.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
-    const source = await readFile(resolve(defaultRegistryRoot, "ui/field.tsx"), "utf8");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/field.tsx"), "utf8");
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -273,8 +306,8 @@ describe("Mason registry validation tracer", () => {
 
   test("captures Input parity metadata and generated source contract", async () => {
     const item = await import("../../../registry/default/items/input.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
-    const source = await readFile(resolve(defaultRegistryRoot, "ui/input.tsx"), "utf8");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/input.tsx"), "utf8");
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -303,8 +336,8 @@ describe("Mason registry validation tracer", () => {
 
   test("captures Checkbox parity metadata and generated source contract", async () => {
     const item = await import("../../../registry/default/items/checkbox.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
-    const source = await readFile(resolve(defaultRegistryRoot, "ui/checkbox.tsx"), "utf8");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/checkbox.tsx"), "utf8");
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -342,8 +375,8 @@ describe("Mason registry validation tracer", () => {
 
   test("captures Switch parity metadata and generated source contract", async () => {
     const item = await import("../../../registry/default/items/switch.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
-    const source = await readFile(resolve(defaultRegistryRoot, "ui/switch.tsx"), "utf8");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/switch.tsx"), "utf8");
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -376,8 +409,8 @@ describe("Mason registry validation tracer", () => {
 
   test("captures Select parity metadata and generated source contract", async () => {
     const item = await import("../../../registry/default/items/select.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
-    const source = await readFile(resolve(defaultRegistryRoot, "ui/select.tsx"), "utf8");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/select.tsx"), "utf8");
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -427,10 +460,123 @@ describe("Mason registry validation tracer", () => {
     expect(source).toContain("focus-visible:ring-[3px]");
   });
 
+  test("captures TanStackForm parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/tanstack-form.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/tanstack-form.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@tanstack/solid-form@^1.29.1");
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("TanStackFormSubmit");
+      expect(result.value.meta?.accessibility).toContain("aria-busy");
+      expect(result.value.meta?.anatomy).toEqual(["root", "submit", "errors"]);
+      expect(result.value.meta?.limitations).toContain("server action");
+      expect(result.value.meta?.parity).toMatchObject({
+        tanstackForm: expect.any(String),
+        baseUi: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain("export function TanStackForm");
+    expect(source).toContain("export function TanStackFormSubmit");
+    expect(source).toContain("export function TanStackFormErrors");
+    expect(source).toContain("export function formatFieldError");
+    expect(source).toContain("form().handleSubmit()");
+    expect(source).toContain('data-slot="tanstack-form"');
+    expect(source).toContain('data-slot="tanstack-form-submit"');
+    expect(source).toContain('data-slot="tanstack-form-errors"');
+    expect(source).toContain("aria-busy");
+  });
+
+  test("captures TanStackField parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/tanstack-field.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/tanstack-field.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@keystone-ui/core@^0.0.0");
+      expect(result.value.dependencies).toContain("@tanstack/solid-form@^1.29.1");
+      expect(result.value.registryDependencies).toEqual(["cn", "tanstack-form"]);
+      expect(result.value.meta?.api).toContain("TanStackFieldRenderContext");
+      expect(result.value.meta?.accessibility).toContain("aria-describedby");
+      expect(result.value.meta?.anatomy).toEqual([
+        "root",
+        "label",
+        "control-slot",
+        "description",
+        "error",
+      ]);
+      expect(result.value.meta?.limitations).toContain("render-prop adapter");
+      expect(result.value.meta?.parity).toMatchObject({
+        tanstackForm: expect.any(String),
+        baseUi: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain('from "@keystone-ui/core/form"');
+    expect(source).toContain('from "@/components/ui/tanstack-form"');
+    expect(source).toContain("export function TanStackField");
+    expect(source).toContain("createFormControl");
+    expect(source).toContain("FormField name={props.name}");
+    expect(source).toContain('data-slot="tanstack-field"');
+    expect(source).toContain('data-slot="tanstack-field-label"');
+    expect(source).toContain('data-slot="tanstack-field-error"');
+    expect(source).toContain("setFocused");
+  });
+
+  test("captures SelectField parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/select-field.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/select-field.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@keystone-ui/core@^0.0.0");
+      expect(result.value.dependencies).toContain("@tanstack/solid-form@^1.29.1");
+      expect(result.value.registryDependencies).toEqual(["cn", "select", "tanstack-field"]);
+      expect(result.value.meta?.api).toContain("TanStackField");
+      expect(result.value.meta?.accessibility).toContain("hidden form value");
+      expect(result.value.meta?.anatomy).toEqual([
+        "field-root",
+        "field-label",
+        "trigger",
+        "value",
+        "content",
+        "listbox",
+        "item",
+        "item-text",
+        "item-indicator",
+        "field-description",
+        "field-error",
+      ]);
+      expect(result.value.meta?.limitations).toContain("single-value");
+      expect(result.value.meta?.parity).toMatchObject({
+        tanstackForm: expect.any(String),
+        baseUi: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain('from "@/components/ui/select"');
+    expect(source).toContain('from "@/components/ui/tanstack-field"');
+    expect(source).toContain("export function SelectField");
+    expect(source).toContain("<TanStackField<string, HTMLButtonElement>");
+    expect(source).toContain("field().handleBlur()");
+    expect(source).toContain('field().handleChange(next ?? "")');
+    expect(source).toContain('data-slot="select-field-trigger"');
+    expect(source).toContain('data-slot="select-field-content"');
+    expect(source).toContain('data-slot="select-field-item"');
+  });
+
   test("captures Combobox parity metadata and generated source contract", async () => {
     const item = await import("../../../registry/default/items/combobox.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
-    const source = await readFile(resolve(defaultRegistryRoot, "ui/combobox.tsx"), "utf8");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/combobox.tsx"), "utf8");
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -486,8 +632,8 @@ describe("Mason registry validation tracer", () => {
 
   test("captures Card parity metadata and generated source contract", async () => {
     const item = await import("../../../registry/default/items/card.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
-    const source = await readFile(resolve(defaultRegistryRoot, "ui/card.tsx"), "utf8");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/card.tsx"), "utf8");
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -532,8 +678,8 @@ describe("Mason registry validation tracer", () => {
 
   test("captures Dialog parity metadata and generated source contract", async () => {
     const item = await import("../../../registry/default/items/dialog.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
-    const source = await readFile(resolve(defaultRegistryRoot, "ui/dialog.tsx"), "utf8");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/dialog.tsx"), "utf8");
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -576,8 +722,8 @@ describe("Mason registry validation tracer", () => {
 
   test("captures Popover parity metadata and generated source contract", async () => {
     const item = await import("../../../registry/default/items/popover.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
-    const source = await readFile(resolve(defaultRegistryRoot, "ui/popover.tsx"), "utf8");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/popover.tsx"), "utf8");
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -618,8 +764,8 @@ describe("Mason registry validation tracer", () => {
 
   test("captures Tooltip parity metadata and generated source contract", async () => {
     const item = await import("../../../registry/default/items/tooltip.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
-    const source = await readFile(resolve(defaultRegistryRoot, "ui/tooltip.tsx"), "utf8");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/tooltip.tsx"), "utf8");
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -657,8 +803,8 @@ describe("Mason registry validation tracer", () => {
 
   test("captures DropdownMenu parity metadata and generated source contract", async () => {
     const item = await import("../../../registry/default/items/dropdown-menu.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
-    const source = await readFile(resolve(defaultRegistryRoot, "ui/dropdown-menu.tsx"), "utf8");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/dropdown-menu.tsx"), "utf8");
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -710,7 +856,7 @@ describe("Mason registry validation tracer", () => {
 
   test("captures Toast parity metadata against Kobalte, Base UI, and Sonner", async () => {
     const item = await import("../../../registry/default/items/toast.json");
-    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const result = validateItem(item.default, { registryRoot: repoRoot });
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -885,20 +1031,20 @@ describe("Mason registry validation tracer", () => {
       {
         ...button,
         name: "data-table",
-        filesRoot: "components/data-table",
+        filesRoot: "packages/ui/src/default/components/data-table",
         targetRoot: "src/components/data-table",
         files: [
           {
-            path: "components/data-table/data-table.tsx",
+            path: "packages/ui/src/default/components/data-table/data-table.tsx",
             type: "registry:ui",
           },
           {
-            path: "components/data-table/use-data-table.ts",
+            path: "packages/ui/src/default/components/data-table/use-data-table.ts",
             type: "registry:ui",
           },
         ],
       },
-      { registryRoot: defaultRegistryRoot },
+      { registryRoot: repoRoot },
     );
 
     expect(result.ok).toBe(true);
@@ -976,7 +1122,7 @@ describe("Mason registry validation tracer", () => {
         ...button,
         files: [{ path: "ui/missing.tsx", type: "registry:ui" }],
       },
-      { registryRoot: defaultRegistryRoot },
+      { registryRoot: repoRoot },
     );
 
     expect(result.ok).toBe(false);

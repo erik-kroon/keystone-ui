@@ -36,7 +36,7 @@
     "accessibility": "Keystone Combobox owns input/listbox roles, aria-activedescendant, highlighted item state, disabled skipping, typeahead/list keyboard behavior, portal positioning, dismissal, and controlled open/input state. UI only adds command item data, filtering, shortcut display, and app-level shortcut registration.",
     "customization": "Use ui-command-menu classes and data-part values for trigger, input, content, list, group, group-label, item, item-text, item-label, item-description, shortcut, and empty.",
     "limitations": "This source is a local command palette pattern. It does not include fuzzy scoring, async search, nested command pages, command history, user preference persistence, route-specific command discovery, or a final Hotkeys API guarantee.",
-    "sourceFiles": ["registry/default/ui/command-menu.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/command-menu.tsx"],
     "dependencies": ["@keystone-ui/core", "@tanstack/solid-store", "@tanstack/solid-hotkeys", "cn"],
     "parity": {
       "baseUi": "Runtime behavior intentionally leans on Keystone Combobox toward Base UI-style accessible combobox/listbox depth: input ownership, aria-activedescendant, item highlighting, disabled items, typeahead/list navigation, overlay positioning, and dismissal. Gaps: nested command pages, fuzzy scorer conventions, async collection loading, and command history remain app-code follow-up work.",
@@ -47,7 +47,7 @@
   },
   "files": [
     {
-      "path": "ui/command-menu.tsx",
+      "path": "packages/ui/src/default/ui/command-menu.tsx",
       "type": "registry:ui"
     }
   ]

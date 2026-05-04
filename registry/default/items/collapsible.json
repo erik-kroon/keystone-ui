@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add collapsible",
     "customization": "Style the generated wrappers through ui-collapsible classes while Keystone keeps open state, ARIA relationships, hidden-until-found behavior, and data attributes.",
-    "sourceFiles": ["registry/default/ui/collapsible.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/collapsible.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "parts": ["root", "trigger", "content"],
     "parity": {
@@ -27,7 +27,7 @@
   },
   "files": [
     {
-      "path": "ui/collapsible.tsx",
+      "path": "packages/ui/src/default/ui/collapsible.tsx",
       "type": "registry:ui"
     }
   ]

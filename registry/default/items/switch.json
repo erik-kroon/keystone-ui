@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add switch",
     "customization": "Style the generated root, control, thumb, and hidden input through ui-switch classes, Core data attributes, CSS thumb-size variable, and neutral data-slot hooks while Keystone keeps role=switch, checked state, hidden input, form reset, validation, and preventable toggle behavior.",
-    "sourceFiles": ["registry/default/ui/switch.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/switch.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "api": "Switch exports Switch, SwitchControl, SwitchThumb, SwitchHiddenInput, and SwitchPrimitive. The default Switch renders a styled control, animated thumb, and hidden native input when no custom children are provided; custom children can compose the same Core-backed parts directly.",
     "accessibility": "Backed by @keystone-ui/core/switch for role=switch, aria-checked, Space keyboard toggling, disabled/read-only guards, required and invalid state metadata, hidden native checkbox submission, user-handler precedence, and form reset synchronization.",
@@ -38,7 +38,7 @@
   },
   "files": [
     {
-      "path": "ui/switch.tsx",
+      "path": "packages/ui/src/default/ui/switch.tsx",
       "type": "registry:ui"
     }
   ]

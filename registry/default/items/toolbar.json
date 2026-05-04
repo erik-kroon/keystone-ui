@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add toolbar",
     "customization": "Style the generated wrappers through ui-toolbar classes while Keystone keeps toolbar roles, orientation, roving focus, disabled skipping, and data attributes.",
-    "sourceFiles": ["registry/default/ui/toolbar.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/toolbar.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "parts": ["root", "button", "link", "separator"],
     "parity": {
@@ -27,7 +27,7 @@
   },
   "files": [
     {
-      "path": "ui/toolbar.tsx",
+      "path": "packages/ui/src/default/ui/toolbar.tsx",
       "type": "registry:ui"
     }
   ]

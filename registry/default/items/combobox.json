@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add combobox",
     "customization": "Style the generated input group, input, trigger, clear action, popup surface, listbox, groups, items, indicators, empty state, status row, arrow, and separators through ui-combobox classes, Core data attributes, and neutral data-slot hooks.",
-    "sourceFiles": ["registry/default/ui/combobox.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/combobox.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "api": "Combobox exports Combobox, ComboboxInput, ComboboxChipsInput, ComboboxTrigger, ComboboxClear, ComboboxContent, ComboboxPopup, ComboboxPortal, ComboboxPositioner, ComboboxListbox, ComboboxList, ComboboxGroup, ComboboxGroupLabel, ComboboxItem, ComboboxItemText, ComboboxItemIndicator, ComboboxArrow, ComboboxSeparator, ComboboxEmpty, ComboboxStatus, ComboboxValue, and ComboboxPrimitive. Core owns input value, selected value, open state, clear action, hidden form input, keyboard navigation, collection registration, popup positioning, and state data attributes.",
     "accessibility": "Backed by @keystone-ui/core/combobox for native input behavior, listbox roles, active descendant, highlighted and selected item state, disabled item handling, Escape dismissal, clear semantics, hidden form value serialization, and native form reset support.",
@@ -70,7 +70,7 @@
   },
   "files": [
     {
-      "path": "ui/combobox.tsx",
+      "path": "packages/ui/src/default/ui/combobox.tsx",
       "type": "registry:ui"
     }
   ]

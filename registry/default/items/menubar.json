@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add menubar",
     "customization": "Style the generated wrappers through ui-menubar classes while Core owns menu roles, roving focus, typeahead, and item state behavior.",
-    "sourceFiles": ["registry/default/ui/menubar.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/menubar.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "parity": {
       "baseUi": "Thin vertical covers horizontal menubar role, roving focus, menu item activation, nested popup positioning, typeahead, disabled skipping, groups, separators, and UI classes. Gaps: complex submenu hover intent, RTL edge cases, checkbox/radio item groups, and robust pointer/keyboard modality tests remain follow-up work.",
@@ -26,7 +26,7 @@
   },
   "files": [
     {
-      "path": "ui/menubar.tsx",
+      "path": "packages/ui/src/default/ui/menubar.tsx",
       "type": "registry:ui"
     }
   ]

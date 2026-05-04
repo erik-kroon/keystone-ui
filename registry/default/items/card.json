@@ -16,7 +16,7 @@
   "meta": {
     "install": "mason add card",
     "customization": "Customize each part through ui-card classes, reference-style data-slot values, and stable data-part values across card and card-frame anatomy.",
-    "sourceFiles": ["registry/default/ui/card.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/card.tsx"],
     "dependencies": ["cn"],
     "api": "Card exports Card, CardHeader, CardTitle, CardDescription, CardAction, CardPanel, CardContent, CardFooter, CardFrame, CardFrameHeader, CardFrameTitle, CardFrameDescription, CardFrameAction, and CardFrameFooter. CardPanel is the preferred content part; CardContent remains a compatibility alias with its own content data part.",
     "accessibility": "Card remains a presentational native div surface by default. Consumers own heading levels, labelled regions, links, buttons, and form controls inside cards through native HTML and ARIA props passed to each part.",
@@ -55,7 +55,7 @@
   },
   "files": [
     {
-      "path": "ui/card.tsx",
+      "path": "packages/ui/src/default/ui/card.tsx",
       "type": "registry:ui"
     }
   ]

@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add sheet",
     "customization": "Style the generated wrappers through ui-sheet classes while Core owns focus, dismissal, pointer blocking, and side data.",
-    "sourceFiles": ["registry/default/ui/sheet.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/sheet.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "parity": {
       "baseUi": "Thin vertical composes Dialog/Drawer-style overlay behavior with side metadata, backdrop/content parts, controlled open state, focus/dismissal, pointer blocking, and UI side classes. Gaps: Base UI Drawer gesture depth, nested modal edge cases, transition status data, scroll lock polish, and responsive viewport geometry remain follow-up work.",
@@ -26,7 +26,7 @@
   },
   "files": [
     {
-      "path": "ui/sheet.tsx",
+      "path": "packages/ui/src/default/ui/sheet.tsx",
       "type": "registry:ui"
     }
   ]

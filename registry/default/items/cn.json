@@ -15,7 +15,7 @@
   "meta": {
     "install": "mason add cn",
     "customization": "Extend this helper when your project needs conditional class maps, array flattening, or conflict-aware class merging.",
-    "sourceFiles": ["registry/default/lib/cn.ts"],
+    "sourceFiles": ["packages/ui/src/default/lib/cn.ts"],
     "parity": {
       "mason": "Utility item, not a primitive. Parity is scoped to Mason registry ergonomics: one small copy-paste class composer shared by base components. Gaps: conflict-aware Tailwind merging, array/object conditional inputs, and project-specific class policy are intentionally left to user customization.",
       "shadcn": "Comparable to shadcn cn helpers in role and install shape, but currently thinner. Gaps: no clsx/tailwind-merge dependency by default and no registry option to choose a stricter merge strategy."
@@ -23,7 +23,7 @@
   },
   "files": [
     {
-      "path": "lib/cn.ts",
+      "path": "packages/ui/src/default/lib/cn.ts",
       "type": "registry:lib"
     }
   ]

@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add radio-group",
     "customization": "Style the generated wrappers through ui-radio-group classes while Keystone keeps radiogroup semantics, roving focus, RTL-aware horizontal keyboard selection, hidden radio inputs, and data attributes.",
-    "sourceFiles": ["registry/default/ui/radio-group.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/radio-group.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "parts": ["root", "item", "item-indicator", "hidden-input"],
     "parity": {
@@ -27,7 +27,7 @@
   },
   "files": [
     {
-      "path": "ui/radio-group.tsx",
+      "path": "packages/ui/src/default/ui/radio-group.tsx",
       "type": "registry:ui"
     }
   ]

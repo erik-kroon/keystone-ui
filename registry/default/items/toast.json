@@ -17,7 +17,7 @@
   "meta": {
     "install": "mason add toast",
     "customization": "Style generated ui-toast classes while Core owns manager updates, live-region roles, dismissal, timer scheduling, and stable toast part attributes.",
-    "sourceFiles": ["registry/default/ui/toast.tsx"],
+    "sourceFiles": ["packages/ui/src/default/ui/toast.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "parts": ["viewport", "root", "title", "description", "action", "close"],
     "parity": {
@@ -28,7 +28,7 @@
   },
   "files": [
     {
-      "path": "ui/toast.tsx",
+      "path": "packages/ui/src/default/ui/toast.tsx",
       "type": "registry:ui"
     }
   ]
