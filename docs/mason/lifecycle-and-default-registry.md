@@ -1,10 +1,10 @@
-# Mason Lifecycle And Default Registry
+# UI Lifecycle And Default Registry
 
 ## Status
 
 Preview documentation for the current Mason CLI and registry behavior.
 
-Mason is the source-owned component layer for Solid apps. It installs readable files into user projects and records enough metadata to support future diff, update, remove, and doctor workflows.
+UI is the source-owned component layer for Solid apps. It installs readable files into user projects and records enough metadata to support future diff, update, remove, and doctor workflows.
 
 ## Current Preview Boundary
 
@@ -127,7 +127,7 @@ mason remove dialog --force
 
 ### `mason doctor`
 
-Checks Mason project health.
+Checks UI project health.
 
 Current behavior:
 
@@ -137,7 +137,7 @@ Current behavior:
 - Reports unknown package manager detection.
 - Checks installed item metadata and recorded file hashes.
 - With `--registry <path>`, checks that registry path has a `registry.json`.
-- Reports missing `@keystone-ui/keystone` when Keystone-backed installed items require it.
+- Reports missing `@keystone-ui/core` when Core-backed installed items require it.
 
 Examples:
 
@@ -148,7 +148,7 @@ mason doctor --registry ./registry/default
 
 ## Installed Metadata
 
-Mason records installed item metadata in the user project's `package.json` under `mason.installed`.
+UI records installed item metadata in the user project's `package.json` under `mason.installed`.
 
 The current record includes:
 
@@ -177,7 +177,7 @@ Target future behavior:
 
 ## Generated-App Verification
 
-First-party Mason items should prove generated output in realistic apps before preview claims expand.
+First-party UI items should prove generated output in realistic apps before preview claims expand.
 
 Current verification covers:
 
@@ -189,12 +189,12 @@ Current verification covers:
 Current limitations:
 
 - SolidStart, TanStack Router route-file generation, Tailwind/plain CSS variants, and monorepo matrices are not all covered yet.
-- Browser interaction and accessibility smoke checks for installed Mason examples remain future preview hardening work.
+- Browser interaction and accessibility smoke checks for installed UI examples remain future preview hardening work.
 
 ## Preview Rules
 
-- Mason source is user-owned after installation.
-- Keystone-backed Mason components should import Keystone primitives for behavior.
-- Mason should not reimplement focus traps, dismissable layers, typeahead, select behavior, combobox behavior, or form-control ARIA wiring.
-- TanStack app engines belong in Mason-generated source where they provide app-grade behavior.
+- UI source is user-owned after installation.
+- Core-backed UI items should import Core primitives for behavior.
+- UI should not reimplement focus traps, dismissable layers, typeahead, select behavior, combobox behavior, or form-control ARIA wiring.
+- TanStack app engines belong in UI-generated source where they provide app-grade behavior.
 - Registry docs and metadata should state parity notes and gaps honestly.

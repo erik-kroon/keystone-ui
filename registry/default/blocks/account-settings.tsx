@@ -19,19 +19,15 @@ export type AccountSettingsBlockProps = {
 };
 
 export function AccountSettingsBlock(props: AccountSettingsBlockProps) {
-  const name = () => props.name ?? "Charlotte Mason";
+  const name = () => props.name ?? "Charlotte UI";
   const email = () => props.email ?? "charlotte@example.com";
   const plan = () => props.plan ?? "Preview";
 
   return (
-    <section
-      data-scope="mason-block"
-      data-part="account-settings"
-      class="mason-block-account-settings"
-    >
+    <section data-scope="ui-block" data-part="account-settings" class="ui-block-account-settings">
       <Card>
         <CardHeader>
-          <div class="mason-block-account-settings-heading">
+          <div class="ui-block-account-settings-heading">
             <div>
               <CardTitle>Account settings</CardTitle>
               <CardDescription>Profile details used across your workspace.</CardDescription>
@@ -40,7 +36,7 @@ export function AccountSettingsBlock(props: AccountSettingsBlockProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <div class="mason-block-account-settings-grid">
+          <div class="ui-block-account-settings-grid">
             <Field>
               <FieldLabel for="account-settings-name">Name</FieldLabel>
               <Input id="account-settings-name" value={name()} autocomplete="name" />
@@ -58,12 +54,10 @@ export function AccountSettingsBlock(props: AccountSettingsBlockProps) {
             </Field>
           </div>
           <Separator />
-          <div class="mason-block-account-settings-row">
+          <div class="ui-block-account-settings-row">
             <div>
-              <p class="mason-block-account-settings-label">Two-step verification</p>
-              <p class="mason-block-account-settings-copy">
-                Require a second factor for new devices.
-              </p>
+              <p class="ui-block-account-settings-label">Two-step verification</p>
+              <p class="ui-block-account-settings-copy">Require a second factor for new devices.</p>
             </div>
             <Badge variant="outline">Recommended</Badge>
           </div>

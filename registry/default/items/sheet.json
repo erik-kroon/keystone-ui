@@ -5,22 +5,22 @@
   "title": "Sheet",
   "description": "Styled Solid sheet component backed by Keystone modal overlay behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "dependencies": ["@keystone-ui/core@^0.0.0"],
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0"
   },
   "categories": ["overlay", "navigation"],
   "keywords": ["sheet", "drawer", "overlay", "keystone"],
-  "docs": "https://mason.build/docs/components/sheet",
+  "docs": "https://keystone-ui.dev/docs/ui/sheet",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add sheet",
-    "customization": "Style the generated wrappers through mason-sheet classes while Keystone owns focus, dismissal, pointer blocking, and side data.",
+    "customization": "Style the generated wrappers through ui-sheet classes while Core owns focus, dismissal, pointer blocking, and side data.",
     "sourceFiles": ["registry/default/ui/sheet.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "dependencies": ["@keystone-ui/core", "cn"],
     "parity": {
-      "baseUi": "Thin vertical composes Dialog/Drawer-style overlay behavior with side metadata, backdrop/content parts, controlled open state, focus/dismissal, pointer blocking, and Mason side classes. Gaps: Base UI Drawer gesture depth, nested modal edge cases, transition status data, scroll lock polish, and responsive viewport geometry remain follow-up work.",
+      "baseUi": "Thin vertical composes Dialog/Drawer-style overlay behavior with side metadata, backdrop/content parts, controlled open state, focus/dismissal, pointer blocking, and UI side classes. Gaps: Base UI Drawer gesture depth, nested modal edge cases, transition status data, scroll lock polish, and responsive viewport geometry remain follow-up work.",
       "kobalte": "Kobalte has Dialog rather than a dedicated Sheet primitive; parity is through Solid dialog/dismissable-layer/focus-scope behavior, including ref-counted outside hiding. Gaps: create-transition parity and route-navigation restoration remain follow-up work."
     }
   },

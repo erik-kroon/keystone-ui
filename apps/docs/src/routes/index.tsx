@@ -1,5 +1,5 @@
-import { Dialog } from "@keystone-ui/keystone/dialog";
-import { Select } from "@keystone-ui/keystone/select";
+import { Dialog } from "@keystone-ui/core/dialog";
+import { Select } from "@keystone-ui/core/select";
 import { createFileRoute } from "@tanstack/solid-router";
 import {
   ArrowRight,
@@ -22,16 +22,16 @@ export const Route = createFileRoute("/")({
 const entryPoints = [
   {
     icon: <Layers size={19} />,
-    title: "Use Keystone",
+    title: "Use Core",
     body: "Start with unstyled Solid primitives. Learn anatomy, behavior, accessibility, data attributes, CSS variables, and SSR constraints.",
-    href: "/docs/keystone/contracts",
+    href: "/docs/core/contracts",
     action: "Read primitive contracts",
   },
   {
     icon: <FileJson2 size={19} />,
-    title: "Use Mason",
+    title: "Use UI",
     body: "Install editable source for app UI. Inspect generated files, registry dependencies, target paths, caveats, and parity notes.",
-    href: "/docs/mason/registry",
+    href: "/docs/ui/registry",
     action: "Browse registry contracts",
   },
   {
@@ -44,45 +44,45 @@ const entryPoints = [
   {
     icon: <BookOpen size={19} />,
     title: "Read a primitive page",
-    body: "Dialog is the model page for Keystone docs: import, anatomy, controlled state, focus, dismissal, styling, and deeper references.",
-    href: "/docs/keystone/dialog",
+    body: "Dialog is the model page for Core docs: import, anatomy, controlled state, focus, dismissal, styling, and deeper references.",
+    href: "/docs/core/dialog",
     action: "Open Dialog docs",
   },
 ];
 
-const keystoneDocs = [
+const coreDocs = [
   {
     title: "Primitive contracts",
     body: "Metadata-backed parts, ARIA notes, keyboard behavior, data attributes, CSS variables, SSR notes, and examples.",
-    href: "/docs/keystone/contracts",
+    href: "/docs/core/contracts",
   },
   {
     title: "Dialog",
     body: "Modal overlay behavior: focus entry, trap, restore, outside interaction, escape dismissal, ARIA relationships, and styling hooks.",
-    href: "/docs/keystone/dialog",
+    href: "/docs/core/dialog",
   },
   {
     title: "Overlay vertical",
-    body: "Popover, Tooltip, and Sheet share the Keystone overlay layer model, geometry contracts, and modal/non-modal boundaries.",
+    body: "Popover, Tooltip, and Sheet share the Core overlay layer model, geometry contracts, and modal/non-modal boundaries.",
     href: "/docs/overlay/popover-tooltip-sheet",
   },
 ];
 
-const masonDocs = [
+const uiDocs = [
   {
     title: "Registry contracts",
     body: "Install commands, file trees, dependencies, generated-output caveats, customization notes, and parity references.",
-    href: "/docs/mason/registry",
+    href: "/docs/ui/registry",
   },
   {
     title: "TanStack Form field",
-    body: "TextField shows how Mason owns app form integration while Keystone keeps form-control behavior generic.",
-    href: "/docs/mason/text-field",
+    body: "TextField shows how UI owns app form integration while Core keeps form-control behavior generic.",
+    href: "/docs/ui/text-field",
   },
   {
     title: "TanStack DataTable",
     body: "DataTable documents the editable source layer around TanStack Table: toolbar, filters, pagination, row actions, and router state.",
-    href: "/docs/mason/data-table",
+    href: "/docs/ui/data-table",
   },
 ];
 
@@ -110,14 +110,14 @@ const registryTemplate = [
 
 const statusNotes = [
   {
-    label: "Keystone",
+    label: "Core",
     value: "behavior first",
     body: "Depth comes before catalog breadth. Dialog, Select, overlay, collection, and form-control contracts lead the docs.",
   },
   {
-    label: "Mason",
+    label: "UI",
     value: "source owned",
-    body: "Generated files are readable Solid source. Mason should explain writes, dependencies, and escape hatches before showing volume.",
+    body: "Generated files are readable Solid source. UI should explain writes, dependencies, and escape hatches before showing volume.",
   },
   {
     label: "Reference",
@@ -135,7 +135,7 @@ function App() {
             <p class="eyebrow">Keystone UI docs</p>
             <h1>Solid primitives and editable app source.</h1>
             <p class="hero-lede">
-              Keystone documents accessible, unstyled primitive behavior. Mason documents the source
+              Core documents accessible, unstyled primitive behavior. UI documents the source
               registry that installs styled Solid components, blocks, and app integrations into user
               projects.
             </p>
@@ -179,7 +179,7 @@ function App() {
           <h2>Choose the layer you are working in.</h2>
           <p>
             The first decision in these docs should be whether you need primitive behavior or
-            editable application source. That split keeps Keystone independent and Mason practical.
+            editable application source. That split keeps Core independent and UI practical.
           </p>
         </div>
 
@@ -200,20 +200,20 @@ function App() {
         </div>
       </section>
 
-      <section id="keystone" class="surface-band">
+      <section id="core" class="surface-band">
         <div class="section-heading">
-          <p class="eyebrow">Keystone</p>
+          <p class="eyebrow">Core</p>
           <h2>Primitive pages should teach behavior before props.</h2>
           <p>
-            Base UI is the runtime-depth reference and Kobalte is the Solid-shape reference.
-            Keystone docs should explain when to use a primitive, how its parts compose, and what
-            behavior it guarantees.
+            Base UI is the runtime-depth reference and Kobalte is the Solid-shape reference. Core
+            docs should explain when to use a primitive, how its parts compose, and what behavior it
+            guarantees.
           </p>
         </div>
 
         <div class="docs-track-grid">
           <div class="doc-lanes">
-            <For each={keystoneDocs}>
+            <For each={coreDocs}>
               {(item) => (
                 <DocLane
                   icon={<BookOpen size={20} />}
@@ -236,18 +236,18 @@ function App() {
         </div>
       </section>
 
-      <section id="mason" class="mason-section">
+      <section id="ui" class="ui-section">
         <div class="section-heading narrow">
-          <p class="eyebrow">Mason</p>
+          <p class="eyebrow">UI</p>
           <h2>Registry pages should explain the write plan.</h2>
           <p>
-            Mason is closer to shadcn than to a runtime component package. The docs should show the
+            UI is closer to shadcn than to a runtime component package. The docs should show the
             command, the files, the dependencies, the owned source contract, and the limits.
           </p>
         </div>
 
         <div class="docs-track-grid">
-          <div class="mason-flow" aria-label="Mason install flow">
+          <div class="ui-flow" aria-label="Mason install flow">
             <FlowStep index="01" title="Detect app" />
             <FlowStep index="02" title="Resolve registry dependencies" />
             <FlowStep index="03" title="Plan target writes" />
@@ -256,7 +256,7 @@ function App() {
           </div>
 
           <div class="doc-lanes">
-            <For each={masonDocs}>
+            <For each={uiDocs}>
               {(item) => (
                 <DocLane
                   icon={<FileJson2 size={20} />}
@@ -283,7 +283,7 @@ function App() {
           <div class="template-grid">
             <TemplateList
               icon={<Layers size={20} />}
-              title="Keystone primitive page"
+              title="Core primitive page"
               items={primitiveTemplate}
             />
             <TemplateList
@@ -302,8 +302,8 @@ function App() {
             <h2>Generated contracts stay useful, but move behind the learning path.</h2>
           </div>
           <div class="release-issues">
-            <a class="issue-link issue-green" href="/docs/keystone/contracts">
-              <span>Keystone</span>
+            <a class="issue-link issue-green" href="/docs/core/contracts">
+              <span>Core</span>
               <strong>Primitive metadata reference</strong>
               <ArrowRight size={17} />
             </a>
@@ -312,8 +312,8 @@ function App() {
               <strong>Private 0.1 release posture</strong>
               <ArrowRight size={17} />
             </a>
-            <a class="issue-link issue-blue" href="/docs/mason/registry">
-              <span>Mason</span>
+            <a class="issue-link issue-blue" href="/docs/ui/registry">
+              <span>UI</span>
               <strong>Registry metadata reference</strong>
               <ArrowRight size={17} />
             </a>
@@ -349,9 +349,9 @@ function DialogDemo() {
         <Dialog.Backdrop class="dialog-backdrop" />
         <Dialog.Positioner class="dialog-positioner">
           <Dialog.Content class="dialog-content">
-            <Dialog.Title class="dialog-title">Project behavior lives in Keystone.</Dialog.Title>
+            <Dialog.Title class="dialog-title">Project behavior lives in Core.</Dialog.Title>
             <Dialog.Description class="dialog-description">
-              This modal is rendered by the local `@keystone-ui/keystone/dialog` package.
+              This modal is rendered by the local `@keystone-ui/core/dialog` package.
             </Dialog.Description>
             <div class="dialog-actions">
               <Dialog.Close class="command-button secondary">Close</Dialog.Close>

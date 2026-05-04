@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, test } from "bun:test";
-import { primitiveMetadata } from "@keystone-ui/keystone";
+import { primitiveMetadata } from "@keystone-ui/core";
 import {
   getPrimitiveDocs,
   primitiveContracts,
@@ -13,7 +13,7 @@ import { defaultRegistry, defaultRegistryItems } from "./default-registry-items.
 import { registryItemContracts } from "./registry-contracts";
 
 describe("docs metadata contracts", () => {
-  test("covers every Keystone primitive metadata scope", () => {
+  test("covers every Core primitive metadata scope", () => {
     expect(primitiveContracts.map((contract) => contract.scope).sort()).toEqual(
       Object.keys(primitiveMetadata).sort(),
     );
@@ -92,7 +92,7 @@ describe("docs metadata contracts", () => {
   test("documents manual accessibility release gates", () => {
     const checklistPath = resolve(
       import.meta.dir,
-      "../../../../docs/keystone/accessibility-verification.md",
+      "../../../../docs/core/accessibility-verification.md",
     );
 
     expect(existsSync(checklistPath)).toBe(true);

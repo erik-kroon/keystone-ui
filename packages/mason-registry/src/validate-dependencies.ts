@@ -1,4 +1,4 @@
-import type { MasonRegistryError } from "./errors";
+import type { UIRegistryError } from "./errors";
 import type { RegistryItem } from "./schema";
 
 const packageNamePattern = /^(?:@[a-z0-9][a-z0-9._-]*\/)?[a-z0-9][a-z0-9._-]*$/;
@@ -24,9 +24,9 @@ function parseDependency(specifier: string): { name: string; version?: string } 
 function validatePackageDependency(
   specifier: string,
   path: Array<string | number>,
-): MasonRegistryError[] {
+): UIRegistryError[] {
   const { name, version } = parseDependency(specifier);
-  const errors: MasonRegistryError[] = [];
+  const errors: UIRegistryError[] = [];
 
   if (!packageNamePattern.test(name)) {
     errors.push({
@@ -57,8 +57,8 @@ export function isRegistryDependencyReference(value: string): boolean {
   );
 }
 
-export function validateDependencies(item: RegistryItem): MasonRegistryError[] {
-  const errors: MasonRegistryError[] = [];
+export function validateDependencies(item: RegistryItem): UIRegistryError[] {
+  const errors: UIRegistryError[] = [];
 
   for (const field of ["dependencies", "devDependencies"] as const) {
     for (const [index, dependency] of (item[field] ?? []).entries()) {

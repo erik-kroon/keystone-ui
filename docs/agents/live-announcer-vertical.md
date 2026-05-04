@@ -1,8 +1,8 @@
-# Keystone Live Announcer Vertical
+# Keystone Core Live Announcer Vertical
 
 ## Audit
 
-Before this pass, Keystone's end-state inventory listed a Live announcer kernel helper, but the package had no implementation, subpath export, docs metadata, or tests. Existing reusable surfaces were the small Keystone helper-component pattern from `VisuallyHidden`, `AccessibleIcon`, `Direction`, and `Locale`, plus the shared `scheduleMicrotask` SSR-safe utility.
+Before this pass, Keystone's end-state inventory listed a Live announcer kernel helper, but the package had no implementation, subpath export, docs metadata, or tests. Existing reusable surfaces were the small Core helper-component pattern from `VisuallyHidden`, `AccessibleIcon`, `Direction`, and `Locale`, plus the shared `scheduleMicrotask` SSR-safe utility.
 
 ## End-State Contract
 
@@ -28,5 +28,5 @@ The implementation does not read `window`, `document`, or layout state during re
 
 ## Verification
 
-- `packages/keystone/src/live-announcer/live-announcer.test.tsx` covers controller announcements, repeated-message clearing, rendered live-region ARIA, context usage, caller-owned regions, SSR output, and docs metadata.
-- `packages/keystone/src/metadata/index.ts` records the public docs metadata for the root and live-region parts.
+- `packages/core/src/live-announcer/live-announcer.test.tsx` covers controller announcements, repeated-message clearing, rendered live-region ARIA, context usage, caller-owned regions, SSR output, and docs metadata.
+- `packages/core/src/metadata/index.ts` records the public docs metadata for the root and live-region parts.

@@ -11,15 +11,15 @@
   },
   "categories": ["form", "base"],
   "keywords": ["input", "field", "form"],
-  "docs": "https://mason.build/docs/components/input",
+  "docs": "https://keystone-ui.dev/docs/ui/input",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add input",
-    "customization": "Use the mason-input class and data-invalid attribute for size, border, and validation-state styles.",
+    "customization": "Use the ui-input class and data-invalid attribute for size, border, and validation-state styles.",
     "sourceFiles": ["registry/default/ui/input.tsx"],
     "dependencies": ["cn"],
     "parity": {
-      "baseUi": "Thin Mason input follows Base UI Input/Field direction for native input semantics, invalid/disabled data styling, ref/prop passthrough, and form participation. Gaps: field registration, validation lifecycle, filled/focused state data, clear button helpers, and app-level masking remain follow-up work.",
+      "baseUi": "Thin UI input follows Base UI Input/Field direction for native input semantics, invalid/disabled data styling, ref/prop passthrough, and form participation. Gaps: field registration, validation lifecycle, filled/focused state data, clear button helpers, and app-level masking remain follow-up work.",
       "kobalte": "Comparable to Kobalte TextField input anatomy when composed with Field. Gaps: no standalone Keystone TextField primitive for control registration, description/error ID ownership, or form reset behavior yet."
     }
   },

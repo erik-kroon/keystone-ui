@@ -5,20 +5,20 @@
   "title": "Collapsible",
   "description": "Styled Solid collapsible component backed by Keystone disclosure behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "dependencies": ["@keystone-ui/core@^0.0.0"],
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0"
   },
   "categories": ["disclosure", "layout"],
   "keywords": ["collapsible", "disclosure", "keystone"],
-  "docs": "https://mason.build/docs/components/collapsible",
+  "docs": "https://keystone-ui.dev/docs/ui/collapsible",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add collapsible",
-    "customization": "Style the generated wrappers through mason-collapsible classes while Keystone keeps open state, ARIA relationships, hidden-until-found behavior, and data attributes.",
+    "customization": "Style the generated wrappers through ui-collapsible classes while Keystone keeps open state, ARIA relationships, hidden-until-found behavior, and data attributes.",
     "sourceFiles": ["registry/default/ui/collapsible.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "dependencies": ["@keystone-ui/core", "cn"],
     "parts": ["root", "trigger", "content"],
     "parity": {
       "baseUi": "Thin vertical covers controlled and uncontrolled disclosure state, Root/Trigger/Panel-style anatomy, trigger ARIA, data-state hooks, and hidden-until-found browser find reveal behavior. Gaps: measured height/width CSS variables, transition status metadata, and deeper browser-find coverage remain follow-up work.",

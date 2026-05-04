@@ -10,12 +10,7 @@ export function Field(props: FieldProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
   return (
-    <div
-      {...rest}
-      data-scope="mason-field"
-      data-part="root"
-      class={cn("mason-field", local.class)}
-    />
+    <div {...rest} data-scope="ui-field" data-part="root" class={cn("ui-field", local.class)} />
   );
 }
 
@@ -25,9 +20,9 @@ export function FieldLabel(props: LabelProps) {
   return (
     <Label
       {...rest}
-      data-scope="mason-field"
+      data-scope="ui-field"
       data-part="label"
-      class={cn("mason-field-label", local.class)}
+      class={cn("ui-field-label", local.class)}
     />
   );
 }
@@ -38,9 +33,9 @@ export function FieldDescription(props: FieldDescriptionProps) {
   return (
     <p
       {...rest}
-      data-scope="mason-field"
+      data-scope="ui-field"
       data-part="description"
-      class={cn("mason-field-description", local.class)}
+      class={cn("ui-field-description", local.class)}
     />
   );
 }
@@ -52,9 +47,9 @@ export function FieldError(props: FieldErrorProps) {
     <p
       {...rest}
       role="alert"
-      data-scope="mason-field"
+      data-scope="ui-field"
       data-part="error"
-      class={cn("mason-field-error", local.class)}
+      class={cn("ui-field-error", local.class)}
     />
   );
 }

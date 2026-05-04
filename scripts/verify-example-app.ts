@@ -52,9 +52,9 @@ async function main() {
       dependencies: Record<string, string>;
     };
     packageJson.name = "example-app-verification";
-    packageJson.dependencies["@keystone-ui/keystone"] = "workspace:*";
+    packageJson.dependencies["@keystone-ui/core"] = "workspace:*";
     await writeJson(packageJsonPath, packageJson);
-    await linkDependency(app, "@keystone-ui/keystone", path.join(repoRoot, "packages/keystone"));
+    await linkDependency(app, "@keystone-ui/core", path.join(repoRoot, "packages/core"));
     for (const dependency of [
       "@tanstack/devtools-event-client",
       "@tanstack/form-core",
@@ -246,7 +246,7 @@ function App() {
           form={form}
           name="email"
           label="Email"
-          description="Verified through TanStack Form and Keystone form-control."
+          description="Verified through TanStack Form and Core form-control."
           validators={{
             onChange: ({ value }) => (value.includes("@") ? undefined : "Enter an email address."),
           }}
@@ -256,7 +256,7 @@ function App() {
           name="plan"
           label="Plan"
           placeholder="Choose plan"
-          description="Verified through TanStack Form and Keystone Select."
+          description="Verified through TanStack Form and Core Select."
           options={[
             { value: "starter", label: "Starter" },
             { value: "team", label: "Team" },
@@ -276,12 +276,12 @@ function App() {
         trigger="Open command menu"
       />
       <Dialog>
-        <DialogTrigger>Open Mason dialog</DialogTrigger>
+        <DialogTrigger>Open UI dialog</DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Verified example app</DialogTitle>
             <DialogDescription>
-              Mason Dialog renders through Keystone behavior in one Solid app.
+              UI Dialog renders through Core behavior in one Solid app.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -291,16 +291,16 @@ function App() {
       </Dialog>
       <Popover>
         <PopoverTrigger>Open popover</PopoverTrigger>
-        <PopoverContent>Generated Mason popover</PopoverContent>
+        <PopoverContent>Generated UI popover</PopoverContent>
       </Popover>
       <Tooltip>
         <TooltipTrigger>More info</TooltipTrigger>
-        <TooltipContent>Generated Mason tooltip</TooltipContent>
+        <TooltipContent>Generated UI tooltip</TooltipContent>
       </Tooltip>
       <Sheet>
         <SheetTrigger>Open sheet</SheetTrigger>
         <SheetContent>
-          <SheetTitle>Generated Mason sheet</SheetTitle>
+          <SheetTitle>Generated UI sheet</SheetTitle>
           <SheetDescription>Backed by Keystone modal overlay behavior.</SheetDescription>
         </SheetContent>
       </Sheet>
@@ -465,12 +465,12 @@ function App() {
         trigger="Open command menu"
       />
       <Dialog defaultOpen>
-        <DialogTrigger>Open Mason dialog</DialogTrigger>
+        <DialogTrigger>Open UI dialog</DialogTrigger>
         <DialogContent portal={{ forceMount: true }}>
           <DialogHeader>
             <DialogTitle>Verified example app</DialogTitle>
             <DialogDescription>
-              Mason Dialog and Keystone behavior server-render together.
+              UI Dialog and Core behavior server-render together.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -480,16 +480,16 @@ function App() {
       </Dialog>
       <Popover defaultOpen>
         <PopoverTrigger>Open popover</PopoverTrigger>
-        <PopoverContent portal={{ forceMount: true }}>Generated Mason popover</PopoverContent>
+        <PopoverContent portal={{ forceMount: true }}>Generated UI popover</PopoverContent>
       </Popover>
       <Tooltip defaultOpen>
         <TooltipTrigger>More info</TooltipTrigger>
-        <TooltipContent portal={{ forceMount: true }}>Generated Mason tooltip</TooltipContent>
+        <TooltipContent portal={{ forceMount: true }}>Generated UI tooltip</TooltipContent>
       </Tooltip>
       <Sheet defaultOpen>
         <SheetTrigger>Open sheet</SheetTrigger>
         <SheetContent portal={{ forceMount: true }}>
-          <SheetTitle>Generated Mason sheet</SheetTitle>
+          <SheetTitle>Generated UI sheet</SheetTitle>
           <SheetDescription>Backed by Keystone modal overlay behavior.</SheetDescription>
         </SheetContent>
       </Sheet>
@@ -500,19 +500,19 @@ function App() {
 const html = renderToString(() => <App />);
 
 for (const expected of [
-  "mason-dialog-trigger",
-  "mason-popover-trigger",
-  "mason-tooltip-trigger",
-  "mason-sheet-trigger",
-  "mason-text-field-input",
-  "mason-select-field-trigger",
-  "mason-command-menu-trigger",
-  "mason-data-table-table",
-  "mason-data-table-pagination",
+  "ui-dialog-trigger",
+  "ui-popover-trigger",
+  "ui-tooltip-trigger",
+  "ui-sheet-trigger",
+  "ui-text-field-input",
+  "ui-select-field-trigger",
+  "ui-command-menu-trigger",
+  "ui-data-table-table",
+  "ui-data-table-pagination",
   "Ada Lovelace",
   "Katherine Johnson",
-  'data-scope="mason-text-field"',
-  'data-scope="mason-data-table"',
+  'data-scope="ui-text-field"',
+  'data-scope="ui-data-table"',
   'data-scope="select"',
   'data-part="input"',
   'data-scope="dialog"',

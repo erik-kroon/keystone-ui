@@ -16,10 +16,10 @@ export function Separator(props: SeparatorProps) {
       {...rest}
       role={decorative() ? "presentation" : "separator"}
       aria-orientation={decorative() ? undefined : orientation()}
-      data-scope="mason-separator"
+      data-scope="ui-separator"
       data-part="root"
       data-orientation={orientation()}
-      class={cn("mason-separator", `mason-separator-${orientation()}`, local.class)}
+      class={cn("ui-separator", `ui-separator-${orientation()}`, local.class)}
     />
   );
 }

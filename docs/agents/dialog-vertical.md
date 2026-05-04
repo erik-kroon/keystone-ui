@@ -1,15 +1,15 @@
-# Keystone Dialog Vertical
+# Core Core Dialog Vertical
 
 ## Scope
 
-Issue #83 covers the Keystone `Dialog` primitive from
+Issue #83 covers the Core `Dialog` primitive from
 `docs/agents/end-state-primitive-component-inventory.md`.
 
-Dialog is a Keystone primitive, not a Mason app integration. Mason may wrap it with styled
-copy-paste source, but Keystone owns the modal behavior, ARIA relationships, focus lifecycle,
+Dialog is a Core primitive, not a UI app integration. UI may wrap it with styled
+copy-paste source, but Core owns the modal behavior, ARIA relationships, focus lifecycle,
 dismissal policy, presence lifecycle, and stable part metadata.
 
-## Current Keystone Contract
+## Current Core Contract
 
 API:
 
@@ -45,9 +45,9 @@ Accessibility and DOM contract:
 - Modal outside hiding applies `aria-hidden` and native `inert` to outside body content, including
   body children inserted after the dialog opens, and restores prior values on close.
 
-## Mason Surface
+## UI Surface
 
-- `registry/default/ui/dialog.tsx` wraps Keystone Dialog with `mason-dialog-*` styling hooks.
+- `registry/default/ui/dialog.tsx` wraps Core Dialog with `ui-dialog-*` styling hooks.
 - `registry/default/items/dialog.json` records install metadata, source files, dependencies,
   customization notes, and parity status.
 
@@ -73,11 +73,11 @@ Known follow-up:
 
 Focused coverage:
 
-- `packages/keystone/test/dialog.behavior.test.tsx` covers rendering, ARIA, controlled and
+- `packages/core/test/dialog.behavior.test.tsx` covers rendering, ARIA, controlled and
   uncontrolled state, outside and Escape dismissal, preventable events, modal inert restoration,
   dynamic outside DOM inerting, force-mounted closed content, nested top-layer dismissal, focus
   entry/restore, and Tab trapping.
-- `packages/keystone/src/overlay/layer-kernel.test.tsx` covers shared stack ordering, pointer
+- `packages/core/src/overlay/layer-kernel.test.tsx` covers shared stack ordering, pointer
   blocking, modal hiding, cleanup restore, and reactive modal/pointer option changes.
 
 Status: Dialog is ready as the first Keystone modal primitive baseline, with remaining depth owned

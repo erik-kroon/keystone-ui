@@ -1,3 +1,3 @@
 export function Button() {
-  return <button data-scope="mason-button" data-part="root" />;
+  return <button data-scope="ui-button" data-part="root" />;
 }

@@ -1,34 +1,34 @@
-# Keystone Solid Polymorphic `as` Rendering
+# Keystone Core Solid Polymorphic `as` Rendering
 
 ## Status
 
 - Issue: #68
-- Layer: Keystone
+- Layer: Core
 - Inventory item: Solid polymorphic `as` rendering
-- Current status: complete for the private Keystone kernel surface
+- Current status: complete for the private Core kernel surface
 
 ## Audit
 
 Existing reusable surfaces:
 
-- `packages/keystone/src/utils/index.ts` owns `KeystoneAs`, `PolymorphicProps`, and `renderPolymorphic`.
+- `packages/core/src/utils/index.ts` owns `CoreAs`, `PolymorphicProps`, and `renderPolymorphic`.
 - Public primitive parts use that helper for trigger-like surfaces, including Dialog, Select, Accordion, Collapsible, Combobox, HoverCard, Menu, Popover, Sheet, Tabs, Toast, and Toolbar.
-- `packages/keystone/src/utils/kernel.test.tsx` already proves callback-style composition and router-link-like trigger rendering.
-- `packages/keystone/src/utils/polymorphic.types.tsx` is included in package typechecking and keeps callback renderer, primitive prop, and direct Solid component examples compiling.
-- `docs/rfcs/keystone-api.md` defines the Solid-native API direction and explicitly calls out Solid-specific constraints.
-- `docs/prd/keystone-internals-inspiration-parity.md` tracks this module in the parity ledger.
+- `packages/core/src/utils/kernel.test.tsx` already proves callback-style composition and router-link-like trigger rendering.
+- `packages/core/src/utils/polymorphic.types.tsx` is included in package typechecking and keeps callback renderer, primitive prop, and direct Solid component examples compiling.
+- `docs/rfcs/core-api.md` defines the Solid-native API direction and explicitly calls out Solid-specific constraints.
+- `docs/prd/core-internals-inspiration-parity.md` tracks this module in the parity ledger.
 
 Intentional non-goals:
 
-- Keystone does not port Base UI or Radix React `cloneElement`, element slot, or render-prop cloning behavior.
-- Keystone does not forward Solid `use:*` directives through user-defined components; consumers that need directive ownership should use callback-style composition and place directives on the final element.
-- Keystone does not make the private utility a public package subpath during the 0.1.0 kernel proving phase.
+- Core does not port Base UI or Radix React `cloneElement`, element slot, or render-prop cloning behavior.
+- Core does not forward Solid `use:*` directives through user-defined components; consumers that need directive ownership should use callback-style composition and place directives on the final element.
+- Core does not make the private utility a public package subpath during the 0.1.0 kernel proving phase.
 
 ## End-State Contract
 
 API shape:
 
-- Primitive parts expose `as?: KeystoneAs<Props>` through `PolymorphicProps`.
+- Primitive parts expose `as?: CoreAs<Props>` through `PolymorphicProps`.
 - `as` accepts intrinsic element names such as `"button"` or `"a"`.
 - `as` accepts direct Solid components when the caller can satisfy that component's props.
 - `as` accepts callback-style renderers for advanced composition:
@@ -71,16 +71,16 @@ State contract:
 
 Current proof surfaces:
 
-- `packages/keystone/src/utils/kernel.test.tsx`
+- `packages/core/src/utils/kernel.test.tsx`
   - callback-style composition
   - intrinsic element names
   - direct Solid components
   - router-link-like Dialog trigger rendering with primitive ARIA/data attributes
-- `packages/keystone/src/utils/polymorphic.types.tsx`
+- `packages/core/src/utils/polymorphic.types.tsx`
   - callback renderer type coverage
   - Dialog and Select trigger prop type coverage
   - direct Solid component render type coverage
-- `packages/keystone/test/dialog.behavior.test.tsx` and `packages/keystone/test/select.behavior.test.tsx`
+- `packages/core/test/dialog.behavior.test.tsx` and `packages/core/test/select.behavior.test.tsx`
   - user-visible primitive behavior on public trigger parts that consume polymorphic rendering
 
 Known limitations:

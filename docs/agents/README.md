@@ -7,20 +7,20 @@ Start with:
 - [AGENTS.md](../../AGENTS.md)
 - [CONTEXT.md](../../CONTEXT.md)
 - [CONTEXT-MAP.md](../../CONTEXT-MAP.md)
-- [ADR 0001](../adr/0001-keystone-mason-product-boundary.md)
+- [ADR 0001](../adr/0001-keystone-core-ui-boundary.md)
 - [ADR 0002](../adr/0002-scope-names-license-governance.md)
-- [ADR 0003](../adr/0003-mason-tanstack-app-layer.md)
-- [ADR 0004](../adr/0004-keystone-kernel-api-boundary.md)
+- [ADR 0003](../adr/0003-ui-tanstack-app-layer.md)
+- [ADR 0004](../adr/0004-core-kernel-api-boundary.md)
 - [Canonical Roadmap](../roadmap/canonical-roadmap.md)
 - [Maturity Model](../roadmap/maturity-model.md)
 - [Do Not Reinvent Engines](../roadmap/do-not-reinvent.md)
-- [Keystone API RFC](../rfcs/keystone-api.md)
+- [Core API RFC](../rfcs/core-api.md)
 - [Mason Registry RFC](../rfcs/mason-registry.md)
 - [End-state primitive/component inventory](./end-state-primitive-component-inventory.md)
-- [Keystone internal kernel guidance](./keystone-internal-kernel-guidance.md)
+- [Core internal kernel guidance](./core-internal-kernel-guidance.md)
 - [Issue triage spine](./issue-triage-spine.md)
 - [Data-dense workspace verticals](./data-dense-workspace-verticals.md)
-- [Keystone layer stack vertical](./layer-stack-vertical.md)
+- [Core layer stack vertical](./layer-stack-vertical.md)
 - [Controllable state vertical](./controllable-state-vertical.md)
 - [Solid polymorphic `as` rendering](./solid-polymorphic-as-rendering.md)
 - [Accordion and Collapsible vertical](./accordion-collapsible-vertical.md)
@@ -32,7 +32,7 @@ Start with:
 - [NavigationMenu vertical](./navigation-menu-vertical.md)
 - [VisuallyHidden and AccessibleIcon vertical](./visually-hidden-accessible-icon-vertical.md)
 
-The durable strategic PRDs are [Keystone And Mason Foundation](../prd/keystone-mason-foundation.md) and [Keystone Internals Inspiration Parity](../prd/keystone-internals-inspiration-parity.md). The [Canonical Roadmap](../roadmap/canonical-roadmap.md) is the active north-star sequencing document. Workspace-local pasted attachments may be useful source material, but durable product direction should be copied into repo docs before future agents treat it as authoritative.
+The durable strategic PRDs are [Keystone Core And UI Foundation](../prd/keystone-foundation.md) and [Core Internals Inspiration Parity](../prd/core-internals-inspiration-parity.md). The [Canonical Roadmap](../roadmap/canonical-roadmap.md) is the active north-star sequencing document. Workspace-local pasted attachments may be useful source material, but durable product direction should be copied into repo docs before future agents treat it as authoritative.
 
 ## Work Tracking
 
@@ -40,9 +40,9 @@ GitHub issues are the issue tracker for this repository.
 
 - Treat the long end-state issue list as a map, not a direct queue.
 - Work from milestone parent issues first. Do not pick directly from the full open issue list unless a parent issue or maintainer direction points there.
-- Use [#46](https://github.com/erik-kroon/keystone-ui/issues/46) as the active parent for 0.1 preview hardening.
-- Use [#271](https://github.com/erik-kroon/keystone-ui/issues/271) as the post-0.1 data-dense workspace direction parent.
-- Use [#28](https://github.com/erik-kroon/keystone-ui/issues/28) as the long-term end-state inventory/north star.
+- Use [#46](https://github.com/erik-kroon/core-ui/issues/46) as the active parent for 0.1 preview hardening.
+- Use [#271](https://github.com/erik-kroon/core-ui/issues/271) as the post-0.1 data-dense workspace direction parent.
+- Use [#28](https://github.com/erik-kroon/core-ui/issues/28) as the long-term end-state inventory/north star.
 - Keep planning notes in docs when they are durable.
 - Keep scratch notes under `.context/` when they are workspace-local.
 - Keep the active board near 12-15 issues. Everything else should be supporting work or backlog.
@@ -51,18 +51,18 @@ GitHub issues are the issue tracker for this repository.
 
 The active 0.1 spine is:
 
-- [#46](https://github.com/erik-kroon/keystone-ui/issues/46): 0.1 preview hardening.
-- [#63](https://github.com/erik-kroon/keystone-ui/issues/63): Keystone kernel API boundary.
-- [#58](https://github.com/erik-kroon/keystone-ui/issues/58), [#59](https://github.com/erik-kroon/keystone-ui/issues/59), [#61](https://github.com/erik-kroon/keystone-ui/issues/61): overlay kernel path.
-- [#60](https://github.com/erik-kroon/keystone-ui/issues/60), [#62](https://github.com/erik-kroon/keystone-ui/issues/62): collection/typeahead path.
-- [#99](https://github.com/erik-kroon/keystone-ui/issues/99): FormControl.
-- [#44](https://github.com/erik-kroon/keystone-ui/issues/44): docs metadata and primitive contracts.
-- [#45](https://github.com/erik-kroon/keystone-ui/issues/45): accessibility verification harness.
-- [#43](https://github.com/erik-kroon/keystone-ui/issues/43): Mason registry lifecycle.
-- [#52](https://github.com/erik-kroon/keystone-ui/issues/52): registry parity metadata.
-- [#233](https://github.com/erik-kroon/keystone-ui/issues/233): Mason DataTable.
-- [#246](https://github.com/erik-kroon/keystone-ui/issues/246): Mason CommandMenu.
-- [#197](https://github.com/erik-kroon/keystone-ui/issues/197) and [#198](https://github.com/erik-kroon/keystone-ui/issues/198): Mason TanStack Form proof.
+- [#46](https://github.com/erik-kroon/core-ui/issues/46): 0.1 preview hardening.
+- [#63](https://github.com/erik-kroon/core-ui/issues/63): Core kernel API boundary.
+- [#58](https://github.com/erik-kroon/core-ui/issues/58), [#59](https://github.com/erik-kroon/core-ui/issues/59), [#61](https://github.com/erik-kroon/core-ui/issues/61): overlay kernel path.
+- [#60](https://github.com/erik-kroon/core-ui/issues/60), [#62](https://github.com/erik-kroon/core-ui/issues/62): collection/typeahead path.
+- [#99](https://github.com/erik-kroon/core-ui/issues/99): FormControl.
+- [#44](https://github.com/erik-kroon/core-ui/issues/44): docs metadata and primitive contracts.
+- [#45](https://github.com/erik-kroon/core-ui/issues/45): accessibility verification harness.
+- [#43](https://github.com/erik-kroon/core-ui/issues/43): Mason registry lifecycle.
+- [#52](https://github.com/erik-kroon/core-ui/issues/52): registry parity metadata.
+- [#233](https://github.com/erik-kroon/core-ui/issues/233): UI DataTable.
+- [#246](https://github.com/erik-kroon/core-ui/issues/246): UI CommandMenu.
+- [#197](https://github.com/erik-kroon/core-ui/issues/197) and [#198](https://github.com/erik-kroon/core-ui/issues/198): UI TanStack Form proof.
 
 Issue philosophy:
 
@@ -91,7 +91,7 @@ Before treating an attachment as the next task:
 
 ## Review Checklist
 
-For Keystone work, check:
+For Core work, check:
 
 - Solid-native API shape.
 - Primitive maturity status.
@@ -99,24 +99,24 @@ For Keystone work, check:
 - Controlled/uncontrolled behavior.
 - Stable `data-scope` and `data-part` attributes.
 - SSR and hydration behavior.
-- No Mason dependency.
+- No UI dependency.
 
-For Mason work, check:
+For UI work, check:
 
 - Generated source remains readable and user-owned.
 - Multi-file registry items are treated as first-class install units when a component needs more than one file.
-- Keystone behavior is imported instead of reimplemented.
+- Core behavior is imported instead of reimplemented.
 - TanStack Form/Table/Store/Hotkeys are preferred for first-party app behavior where applicable.
-- Data-dense, keyboard-first workspace patterns belong in Mason as source-owned components, blocks, templates, and app integrations unless the behavior reduces to a general accessible primitive.
+- Data-dense, keyboard-first workspace patterns belong in UI as source-owned components, blocks, templates, and app integrations unless the behavior reduces to a general accessible primitive.
 - Registry paths are validated and deterministic.
 - CLI writes are diffable, dry-run friendly, and path traversal safe.
-- Registry item metadata includes `meta.parity` notes. Use Base UI and Kobalte for primitives by default, and use a more relevant first-class reference for exceptions such as TanStack-backed app components, Sonner-style toast behavior, Mason utilities, or shadcn-style source registry conventions.
+- Registry item metadata includes `meta.parity` notes. Use Base UI and Kobalte for primitives by default, and use a more relevant first-class reference for exceptions such as TanStack-backed app components, Sonner-style toast behavior, UI utilities, or shadcn-style source registry conventions.
 
 ## External README Hygiene
 
 The root README is the public entry point for the current project state:
 
-- Keep the opening concise: what Keystone is, what Mason is, and why the split exists.
+- Keep the opening concise: what Keystone is, what UI is, and why the split exists.
 - State preview instability plainly.
 - Describe current package and registry surface, not the ideal end-state catalog.
 - Keep roadmap, strategy, and internal sequencing in `CONTEXT.md`, `CONTEXT-MAP.md`, ADRs, RFCs, PRDs, and agent docs.

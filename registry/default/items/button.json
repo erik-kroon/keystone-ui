@@ -3,7 +3,7 @@
   "name": "button",
   "type": "registry:ui",
   "title": "Button",
-  "description": "Solid button component with Mason styling hooks and variant metadata.",
+  "description": "Solid button component with UI styling hooks and variant metadata.",
   "version": "0.1.0",
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
@@ -11,16 +11,16 @@
   },
   "categories": ["action", "base"],
   "keywords": ["button", "action", "form"],
-  "docs": "https://mason.build/docs/components/button",
+  "docs": "https://keystone-ui.dev/docs/ui/button",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add button",
-    "customization": "Customize visual treatment through the mason-button classes and data-variant/data-size attributes.",
+    "customization": "Customize visual treatment through the ui-button classes and data-variant/data-size attributes.",
     "sourceFiles": ["registry/default/ui/button.tsx"],
     "dependencies": ["cn"],
     "parity": {
-      "baseUi": "Thin Mason base button follows Base UI Button direction for native button semantics, disabled state, type passthrough, and styling hooks without adding app behavior. Gaps: loading/pending state, pressed/toggle semantics, polymorphic render helper, focus-visible data, and icon-only accessibility guardrails remain follow-up work.",
-      "kobalte": "Comparable to Kobalte Button as a Solid-native button wrapper with pass-through props and disabled handling. Gaps: no shared Keystone polymorphic primitive, no link-button composition helper, and no data-disabled normalization beyond the Mason wrapper yet."
+      "baseUi": "Thin UI base button follows Base UI Button direction for native button semantics, disabled state, type passthrough, and styling hooks without adding app behavior. Gaps: loading/pending state, pressed/toggle semantics, polymorphic render helper, focus-visible data, and icon-only accessibility guardrails remain follow-up work.",
+      "kobalte": "Comparable to Kobalte Button as a Solid-native button wrapper with pass-through props and disabled handling. Gaps: no shared Keystone polymorphic primitive, no link-button composition helper, and no data-disabled normalization beyond the UI wrapper yet."
     }
   },
   "files": [

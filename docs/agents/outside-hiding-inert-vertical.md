@@ -1,19 +1,19 @@
-# Keystone Outside Hiding/Inert Vertical
+# Keystone Core Outside Hiding/Inert Vertical
 
 ## Issue
 
-- GitHub: #79, "Reach optimal end-state for Keystone Outside hiding/inert"
-- Layer: Keystone
+- GitHub: #79, "Reach optimal end-state for Core Outside hiding/inert"
+- Layer: Core
 - Category: Overlay And Positioning
 
 ## Audit
 
 Reusable implementation:
 
-- `packages/keystone/src/overlay/hide-outside.ts` owns ref-counted outside hiding with
+- `packages/core/src/overlay/hide-outside.ts` owns ref-counted outside hiding with
   `aria-hidden`, native `inert`, mutation handling for late DOM insertion, and restoration of
   previous attributes/properties.
-- `packages/keystone/src/overlay/layer-kernel.tsx` applies outside hiding for the top active modal
+- `packages/core/src/overlay/layer-kernel.tsx` applies outside hiding for the top active modal
   layer and treats layers registered above that modal as exceptions.
 - The same layer kernel coordinates outside hiding with body pointer suppression, scroll locking,
   and registered branch exceptions so modal environment management is restored as one document-level
@@ -23,7 +23,7 @@ Reusable implementation:
 
 ## End-State Contract
 
-Outside hiding remains a private Keystone overlay kernel until an overlay API freeze decides
+Outside hiding remains a private Core overlay kernel until an overlay API freeze decides
 whether helper exports are stable.
 
 Behavior:
@@ -46,8 +46,8 @@ Accessibility and SSR:
 
 ## Verification
 
-- `packages/keystone/src/overlay/layer-kernel.test.tsx`
-- `packages/keystone/test/dialog.behavior.test.tsx`
-- `packages/keystone/test/overlay-vertical.behavior.test.tsx`
+- `packages/core/src/overlay/layer-kernel.test.tsx`
+- `packages/core/test/dialog.behavior.test.tsx`
+- `packages/core/test/overlay-vertical.behavior.test.tsx`
 
 Status: proven as a private overlay kernel module.

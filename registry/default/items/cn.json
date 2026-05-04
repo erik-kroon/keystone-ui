@@ -3,7 +3,7 @@
   "name": "cn",
   "type": "registry:lib",
   "title": "Class Name Utility",
-  "description": "Small class name composition helper shared by Mason base components.",
+  "description": "Small class name composition helper shared by UI base components.",
   "version": "0.1.0",
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
@@ -11,7 +11,7 @@
   },
   "categories": ["utility"],
   "keywords": ["classes", "utility", "styling"],
-  "docs": "https://mason.build/docs/components/cn",
+  "docs": "https://keystone-ui.dev/docs/ui/cn",
   "meta": {
     "install": "mason add cn",
     "customization": "Extend this helper when your project needs conditional class maps, array flattening, or conflict-aware class merging.",

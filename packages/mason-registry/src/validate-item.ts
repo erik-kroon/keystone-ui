@@ -1,4 +1,4 @@
-import { fail, ok, type MasonRegistryError, type ValidationResult } from "./errors";
+import { fail, ok, type UIRegistryError, type ValidationResult } from "./errors";
 import { fromZodError } from "./validate-registry";
 import {
   isInstallSupportedItemType,
@@ -25,7 +25,7 @@ export function validateItem(
     return fail(fromZodError(parsed.error));
   }
 
-  const errors: MasonRegistryError[] = [
+  const errors: UIRegistryError[] = [
     ...validateFiles(parsed.data.files, {
       filesRoot: parsed.data.filesRoot,
       projectRoot: options.projectRoot,
@@ -51,7 +51,7 @@ export function validateItem(
   return errors.length > 0 ? fail(errors) : ok(parsed.data);
 }
 
-function validateParityMetadata(item: RegistryItem): MasonRegistryError[] {
+function validateParityMetadata(item: RegistryItem): UIRegistryError[] {
   const parity = item.meta?.parity;
 
   if (parity === undefined) {

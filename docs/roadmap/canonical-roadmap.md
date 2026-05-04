@@ -2,13 +2,13 @@
 
 ## Status
 
-North-star roadmap, derived from the Keystone UI / Mason end-state PRD.
+North-star roadmap, derived from the Keystone UI / UI end-state PRD.
 
 This document is the durable product direction for sequencing work. It is intentionally more strategic than a sprint plan and should not be treated as a single implementation checklist.
 
 ## Product Direction
 
-Keystone/Mason should become the Solid-native primitive and source-owned component system for serious, data-dense, keyboard-first applications.
+Keystone Core/UI should become the Solid-native primitive and source-owned component system for serious, data-dense, keyboard-first applications.
 
 Target application classes:
 
@@ -21,21 +21,21 @@ Target application classes:
 The product split stays strict:
 
 ```txt
-Keystone = primitive behavior
-Mason    = source-owned components, registry items, app patterns, templates, and blocks
+Core = primitive behavior
+UI    = source-owned components, registry items, app patterns, templates, and blocks
 ```
 
-Keystone remains domain-agnostic. Mason may include domain-shaped blocks and examples when they prove source-owned workspace patterns.
+Core remains domain-agnostic. UI may include domain-shaped blocks and examples when they prove source-owned workspace patterns.
 
 ## Architecture Target
 
 ```txt
-Keystone private kernels
+Core private kernels
   -> Keystone Solid-native primitive creators
-    -> Keystone compound components with stable part contracts
-      -> Mason copy-paste styled components
-        -> Mason TanStack-backed application components
-          -> Mason workspace blocks and vertical templates
+    -> Core compound components with stable part contracts
+      -> UI copy-paste styled components
+        -> UI TanStack-backed application components
+          -> UI workspace blocks and vertical templates
 ```
 
 The differentiator is depth, composability, and serious application patterns. Broad component catalog parity is secondary.
@@ -49,8 +49,8 @@ Near-term constraints:
 - Freeze new primitive breadth unless a primitive directly proves overlay, collection, form, or state kernels.
 - Keep private kernels private until several primitives prove their shape.
 - Label primitive maturity honestly.
-- Keep TanStack app-layer dependencies in Mason.
-- Keep data-dense workspace blocks aspirational until Keystone kernels and Mason registry/CLI are reliable enough to support them.
+- Keep TanStack app-layer dependencies in UI.
+- Keep data-dense workspace blocks aspirational until Core kernels and Mason registry/CLI are reliable enough to support them.
 
 ## Phase 0: Consolidate Direction
 
@@ -61,10 +61,10 @@ Tasks:
 - Keep this canonical roadmap linked from active context docs.
 - Add and use the primitive/component maturity model.
 - Freeze primitive breadth.
-- Clean public positioning so Keystone/Mason is not described as a clone of Kobalte, Radix, Base UI, or shadcn.
-- Add or maintain Keystone/Mason boundary docs.
+- Clean public positioning so Keystone Core/UI is not described as a clone of Kobalte, Radix, Base UI, or shadcn.
+- Add or maintain Keystone Core/UI boundary docs.
 - Add or maintain do-not-reinvent guidance.
-- Make Mason multi-file registry items first-class in docs, tests, and metadata.
+- Make UI multi-file registry items first-class in docs, tests, and metadata.
 - Keep data-dense workspace work documented as an aspirational differentiator, not the next implementation default.
 
 Avoid:
@@ -75,7 +75,7 @@ Avoid:
 
 ## Phase 1: Kernel Hardening
 
-Goal: make Keystone internals boringly reliable.
+Goal: make Core internals boringly reliable.
 
 Tasks:
 
@@ -92,7 +92,7 @@ Avoid:
 
 ## Phase 2: Primitive API Discipline
 
-Goal: make Keystone public APIs credible.
+Goal: make Core public APIs credible.
 
 Tasks:
 
@@ -110,7 +110,7 @@ Avoid:
 
 ## Phase 3: Mason Registry Maturity
 
-Goal: make Mason feel like a serious source registry.
+Goal: make UI feel like a serious source registry.
 
 Tasks:
 
@@ -123,18 +123,18 @@ Tasks:
 
 Avoid:
 
-- Turning Mason into a hidden runtime framework.
-- Reimplementing Keystone behavior in generated wrappers.
+- Turning UI into a hidden runtime framework.
+- Reimplementing Core behavior in generated wrappers.
 
-## Phase 4: Mason App Engines
+## Phase 4: UI App Engines
 
-Goal: prove Mason can compose serious app engines.
+Goal: prove UI can compose serious app engines.
 
 Tasks:
 
 - Deepen DataTable on TanStack Table.
-- Deepen CommandMenu on Keystone Combobox plus TanStack Store/Hotkeys.
-- Build TanStack Form adapters for Mason fields.
+- Deepen CommandMenu on Core Combobox plus TanStack Store/Hotkeys.
+- Build TanStack Form adapters for UI fields.
 - Add Query/Router examples where they clarify source-owned app patterns.
 - Document where app state, server cache, and routing belong.
 
@@ -158,7 +158,7 @@ Candidates:
 - EventFeed.
 - Financial workspace, developer console, and admin control plane examples.
 
-These belong in Mason components, blocks, templates, or examples. Keystone only receives work from this phase when a behavior reduces to a general accessible primitive.
+These belong in UI items, blocks, templates, or examples. Core only receives work from this phase when a behavior reduces to a general accessible primitive.
 
 ## Phase 6: Public Preview
 
@@ -179,6 +179,6 @@ Tasks:
 ```txt
 Kernel depth
 API discipline
-Mason app-layer proof
+UI app-layer proof
 Data-dense flagship components
 ```

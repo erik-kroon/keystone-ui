@@ -1,57 +1,55 @@
 import {
-  Menubar as KeystoneMenubar,
-  type MenubarCheckboxItemProps as KeystoneMenubarCheckboxItemProps,
-  type MenubarContentProps as KeystoneMenubarContentProps,
-  type MenubarGroupLabelProps as KeystoneMenubarGroupLabelProps,
-  type MenubarGroupProps as KeystoneMenubarGroupProps,
-  type MenubarItemProps as KeystoneMenubarItemProps,
-  type MenubarPartProps as KeystoneMenubarPartProps,
-  type MenubarPortalProps as KeystoneMenubarPortalProps,
-  type MenubarPositionerProps as KeystoneMenubarPositionerProps,
-  type MenubarRadioGroupProps as KeystoneMenubarRadioGroupProps,
-  type MenubarRadioItemProps as KeystoneMenubarRadioItemProps,
-  type MenubarRootProps as KeystoneMenubarRootProps,
-  type MenubarSeparatorProps as KeystoneMenubarSeparatorProps,
-  type MenubarTriggerProps as KeystoneMenubarTriggerProps,
-} from "@keystone-ui/keystone/menubar";
+  Menubar as CoreMenubar,
+  type MenubarCheckboxItemProps as CoreMenubarCheckboxItemProps,
+  type MenubarContentProps as CoreMenubarContentProps,
+  type MenubarGroupLabelProps as CoreMenubarGroupLabelProps,
+  type MenubarGroupProps as CoreMenubarGroupProps,
+  type MenubarItemProps as CoreMenubarItemProps,
+  type MenubarPartProps as CoreMenubarPartProps,
+  type MenubarPortalProps as CoreMenubarPortalProps,
+  type MenubarPositionerProps as CoreMenubarPositionerProps,
+  type MenubarRadioGroupProps as CoreMenubarRadioGroupProps,
+  type MenubarRadioItemProps as CoreMenubarRadioItemProps,
+  type MenubarRootProps as CoreMenubarRootProps,
+  type MenubarSeparatorProps as CoreMenubarSeparatorProps,
+  type MenubarTriggerProps as CoreMenubarTriggerProps,
+} from "@keystone-ui/core/menubar";
 import { splitProps } from "solid-js";
 import { cn } from "@/lib/cn";
 
-export type MenubarProps = KeystoneMenubarRootProps;
-export type MenubarTriggerProps = KeystoneMenubarTriggerProps;
-export type MenubarPortalProps = KeystoneMenubarPortalProps;
-export type MenubarPositionerProps = KeystoneMenubarPositionerProps;
-export type MenubarContentProps = KeystoneMenubarContentProps & {
+export type MenubarProps = CoreMenubarRootProps;
+export type MenubarTriggerProps = CoreMenubarTriggerProps;
+export type MenubarPortalProps = CoreMenubarPortalProps;
+export type MenubarPositionerProps = CoreMenubarPositionerProps;
+export type MenubarContentProps = CoreMenubarContentProps & {
   portal?: MenubarPortalProps;
   positionerClass?: string;
 };
-export type MenubarGroupProps = KeystoneMenubarGroupProps;
-export type MenubarGroupLabelProps = KeystoneMenubarGroupLabelProps;
-export type MenubarSeparatorProps = KeystoneMenubarSeparatorProps;
-export type MenubarItemProps = KeystoneMenubarItemProps;
-export type MenubarCheckboxItemProps = KeystoneMenubarCheckboxItemProps;
-export type MenubarRadioGroupProps = KeystoneMenubarRadioGroupProps;
-export type MenubarRadioItemProps = KeystoneMenubarRadioItemProps;
-export type MenubarItemIndicatorProps = KeystoneMenubarPartProps<HTMLSpanElement>;
+export type MenubarGroupProps = CoreMenubarGroupProps;
+export type MenubarGroupLabelProps = CoreMenubarGroupLabelProps;
+export type MenubarSeparatorProps = CoreMenubarSeparatorProps;
+export type MenubarItemProps = CoreMenubarItemProps;
+export type MenubarCheckboxItemProps = CoreMenubarCheckboxItemProps;
+export type MenubarRadioGroupProps = CoreMenubarRadioGroupProps;
+export type MenubarRadioItemProps = CoreMenubarRadioItemProps;
+export type MenubarItemIndicatorProps = CoreMenubarPartProps<HTMLSpanElement>;
 
 export function Menubar(props: MenubarProps) {
-  return <KeystoneMenubar.Root {...props} />;
+  return <CoreMenubar.Root {...props} />;
 }
 
 export function MenubarTrigger(props: MenubarTriggerProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneMenubar.Trigger {...rest} class={cn("mason-menubar-trigger", local.class)} />;
+  return <CoreMenubar.Trigger {...rest} class={cn("ui-menubar-trigger", local.class)} />;
 }
 
 export function MenubarPortal(props: MenubarPortalProps) {
-  return <KeystoneMenubar.Portal {...props} />;
+  return <CoreMenubar.Portal {...props} />;
 }
 
 export function MenubarPositioner(props: MenubarPositionerProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneMenubar.Positioner {...rest} class={cn("mason-menubar-positioner", local.class)} />
-  );
+  return <CoreMenubar.Positioner {...rest} class={cn("ui-menubar-positioner", local.class)} />;
 }
 
 export function MenubarContent(props: MenubarContentProps) {
@@ -59,9 +57,9 @@ export function MenubarContent(props: MenubarContentProps) {
   return (
     <MenubarPortal {...local.portal}>
       <MenubarPositioner class={local.positionerClass}>
-        <KeystoneMenubar.Content {...rest} class={cn("mason-menubar-content", local.class)}>
+        <CoreMenubar.Content {...rest} class={cn("ui-menubar-content", local.class)}>
           {local.children}
-        </KeystoneMenubar.Content>
+        </CoreMenubar.Content>
       </MenubarPositioner>
     </MenubarPortal>
   );
@@ -69,46 +67,41 @@ export function MenubarContent(props: MenubarContentProps) {
 
 export function MenubarGroup(props: MenubarGroupProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneMenubar.Group {...rest} class={cn("mason-menubar-group", local.class)} />;
+  return <CoreMenubar.Group {...rest} class={cn("ui-menubar-group", local.class)} />;
 }
 
 export function MenubarGroupLabel(props: MenubarGroupLabelProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneMenubar.GroupLabel {...rest} class={cn("mason-menubar-group-label", local.class)} />
-  );
+  return <CoreMenubar.GroupLabel {...rest} class={cn("ui-menubar-group-label", local.class)} />;
 }
 
 export function MenubarSeparator(props: MenubarSeparatorProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneMenubar.Separator {...rest} class={cn("mason-menubar-separator", local.class)} />;
+  return <CoreMenubar.Separator {...rest} class={cn("ui-menubar-separator", local.class)} />;
 }
 
 export function MenubarItem(props: MenubarItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneMenubar.Item {...rest} class={cn("mason-menubar-item", local.class)} />;
+  return <CoreMenubar.Item {...rest} class={cn("ui-menubar-item", local.class)} />;
 }
 
 export function MenubarCheckboxItem(props: MenubarCheckboxItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneMenubar.CheckboxItem {...rest} class={cn("mason-menubar-item", local.class)} />;
+  return <CoreMenubar.CheckboxItem {...rest} class={cn("ui-menubar-item", local.class)} />;
 }
 
 export function MenubarRadioGroup(props: MenubarRadioGroupProps) {
-  return <KeystoneMenubar.RadioGroup {...props} />;
+  return <CoreMenubar.RadioGroup {...props} />;
 }
 
 export function MenubarRadioItem(props: MenubarRadioItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneMenubar.RadioItem {...rest} class={cn("mason-menubar-item", local.class)} />;
+  return <CoreMenubar.RadioItem {...rest} class={cn("ui-menubar-item", local.class)} />;
 }
 
 export function MenubarItemIndicator(props: MenubarItemIndicatorProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneMenubar.ItemIndicator
-      {...rest}
-      class={cn("mason-menubar-item-indicator", local.class)}
-    />
+    <CoreMenubar.ItemIndicator {...rest} class={cn("ui-menubar-item-indicator", local.class)} />
   );
 }

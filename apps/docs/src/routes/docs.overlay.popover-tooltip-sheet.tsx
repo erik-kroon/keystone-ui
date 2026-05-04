@@ -9,36 +9,36 @@ export const Route = createFileRoute("/docs/overlay/popover-tooltip-sheet")({
 const primitives = [
   {
     name: "Popover",
-    importPath: "@keystone-ui/keystone/popover",
-    mason: "mason add popover",
+    importPath: "@keystone-ui/core/popover",
+    components: "mason add popover",
     notes:
       "Non-modal floating disclosure with trigger, positioner, content, outside dismissal, Escape dismissal, and floating geometry variables.",
   },
   {
     name: "HoverCard",
-    importPath: "@keystone-ui/keystone/hover-card",
-    mason: "mason add hover-card",
+    importPath: "@keystone-ui/core/hover-card",
+    components: "mason add hover-card",
     notes:
       "Hover/focus preview surface with open and close delays, hoverable content, pointer grace area, outside dismissal, Escape dismissal, and floating geometry variables.",
   },
   {
     name: "Tooltip",
-    importPath: "@keystone-ui/keystone/tooltip",
-    mason: "mason add tooltip",
+    importPath: "@keystone-ui/core/tooltip",
+    components: "mason add tooltip",
     notes:
       "Hover and focus tooltip with trigger/content ARIA wiring, floating geometry, and Escape dismissal through the overlay layer model.",
   },
   {
     name: "Sheet",
-    importPath: "@keystone-ui/keystone/sheet",
-    mason: "mason add sheet",
+    importPath: "@keystone-ui/core/sheet",
+    components: "mason add sheet",
     notes:
       "Modal side panel with backdrop, focus trap, focus restore, pointer-event blocking, side data, and Dialog-grade accessibility semantics.",
   },
   {
     name: "Toast",
-    importPath: "@keystone-ui/keystone/toast",
-    mason: "mason add toast",
+    importPath: "@keystone-ui/core/toast",
+    components: "mason add toast",
     notes:
       "Live notification system with manager shortcuts, viewport pause/resume behavior, action and close controls, priority roles, and stable type/status metadata.",
   },
@@ -58,7 +58,7 @@ function OverlayVerticalDocs() {
             <p class="eyebrow">Overlay vertical</p>
             <h1>Popover, Tooltip, Sheet</h1>
             <p class="doc-lede">
-              Keystone overlay surfaces reuse one layer model for modal behavior, dismissal, focus
+              Core overlay surfaces reuse one layer model for modal behavior, dismissal, focus
               lifecycles, positioning, outside hiding, prevent scroll, and notification metadata.
             </p>
           </div>
@@ -66,9 +66,9 @@ function OverlayVerticalDocs() {
           <div class="doc-fact-panel" aria-label="Overlay vertical facts">
             <span>Kernel</span>
             <strong>OverlayLayerStack</strong>
-            <span>Keystone exports</span>
+            <span>Core exports</span>
             <strong>popover / hover-card / tooltip / sheet / toast</strong>
-            <span>Mason items</span>
+            <span>UI items</span>
             <strong>popover, hover-card, tooltip, sheet, toast</strong>
           </div>
         </section>
@@ -92,7 +92,7 @@ function OverlayVerticalDocs() {
           <article class="doc-panel">
             <h2>Install</h2>
             <pre>
-              <code>{`bun add @keystone-ui/keystone solid-js
+              <code>{`bun add @keystone-ui/core solid-js
 
 bunx mason add popover
 bunx mason add hover-card
@@ -114,7 +114,7 @@ bunx mason add toast`}</code>
                 <p>{primitive.notes}</p>
                 <pre>
                   <code>{`import { ${primitive.name} } from "${primitive.importPath}";
-// ${primitive.mason}`}</code>
+// ${primitive.components}`}</code>
                 </pre>
               </article>
             )}
@@ -122,17 +122,17 @@ bunx mason add toast`}</code>
         </section>
 
         <section class="doc-two-column">
-          <DocSection icon={<ShieldCheck size={19} />} title="Keystone Contract">
+          <DocSection icon={<ShieldCheck size={19} />} title="Core Contract">
             <p>
               Primitive parts expose stable <code>data-scope</code>, <code>data-part</code>,{" "}
               <code>data-state</code>, and overlay geometry attributes for wrappers and tests.
             </p>
           </DocSection>
 
-          <DocSection icon={<PackageCheck size={19} />} title="Mason Contract">
+          <DocSection icon={<PackageCheck size={19} />} title="UI Contract">
             <p>
-              Mason generated source imports Keystone behavior and adds app-owned classes only. It
-              does not copy overlay dismissal, focus, pointer blocking, or positioning logic.
+              UI generated source imports Core behavior and adds app-owned classes only. It does not
+              copy overlay dismissal, focus, pointer blocking, or positioning logic.
             </p>
           </DocSection>
         </section>

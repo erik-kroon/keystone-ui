@@ -5,20 +5,20 @@
   "title": "Dialog",
   "description": "Styled Solid dialog component backed by Keystone overlay behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "dependencies": ["@keystone-ui/core@^0.0.0"],
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0"
   },
   "categories": ["overlay", "feedback"],
   "keywords": ["dialog", "modal", "overlay", "keystone"],
-  "docs": "https://mason.build/docs/components/dialog",
+  "docs": "https://keystone-ui.dev/docs/ui/dialog",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add dialog",
-    "customization": "Style the generated wrappers through mason-dialog classes while Keystone keeps focus, dismissal, layering, and ARIA behavior.",
+    "customization": "Style the generated wrappers through ui-dialog classes while Keystone keeps focus, dismissal, layering, and ARIA behavior.",
     "sourceFiles": ["registry/default/ui/dialog.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "dependencies": ["@keystone-ui/core", "cn"],
     "parity": {
       "baseUi": "Covers Root/Trigger/Portal/Backdrop/Content anatomy, controlled and uncontrolled open state, modal dismissal, Escape handling, focus entry/restore/trap, force-mounted presence lifecycle, transition status metadata, outside pointer blocking, modal scroll lock, and stable data attributes through Keystone overlay internals. Follow-up: advanced scroll-lock compensation and broader browser accessibility tests.",
       "kobalte": "Matches Solid Dialog composition with trigger, portal, overlay/content, title, description, controlled state, dismissable-layer direction, preventable outside/autofocus events, and hide-outside behavior for existing and newly inserted outside DOM. Follow-up: extracting hide-outside as a standalone utility and deeper browser matrix coverage."

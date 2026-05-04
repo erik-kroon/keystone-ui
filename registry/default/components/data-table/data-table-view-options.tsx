@@ -19,22 +19,22 @@ export function DataTableViewOptions<TData extends RowData>(props: {
 
   return (
     <div
-      data-scope="mason-data-table"
+      data-scope="ui-data-table"
       data-part="view-options"
-      class={cn("mason-data-table-view-options", props.class)}
+      class={cn("ui-data-table-view-options", props.class)}
     >
       <input
         type="search"
         value={query()}
         placeholder="Search columns..."
-        data-scope="mason-data-table"
+        data-scope="ui-data-table"
         data-part="view-options-search"
         onInput={(event) => setQuery(event.currentTarget.value)}
       />
       <Show when={columns().length > 0} fallback={<span>No hideable columns</span>}>
         <For each={columns()}>
           {(column) => (
-            <label data-scope="mason-data-table" data-part="view-option">
+            <label data-scope="ui-data-table" data-part="view-option">
               <input
                 type="checkbox"
                 checked={column.getIsVisible()}

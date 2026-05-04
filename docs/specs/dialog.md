@@ -6,7 +6,7 @@ Beta accessibility spec for the 0.1 preview.
 
 ## Scope
 
-This spec covers Keystone Dialog and Mason Dialog items that delegate modal behavior to Keystone. It applies to `Dialog.Root`, `Dialog.Trigger`, `Dialog.Content`, `Dialog.Title`, `Dialog.Description`, `Dialog.Close`, `Dialog.Backdrop`, `Dialog.Positioner`, and `Dialog.Portal`.
+This spec covers Core Dialog and UI Dialog items that delegate modal behavior to Keystone. It applies to `Dialog.Root`, `Dialog.Trigger`, `Dialog.Content`, `Dialog.Title`, `Dialog.Description`, `Dialog.Close`, `Dialog.Backdrop`, `Dialog.Positioner`, and `Dialog.Portal`.
 
 ## Anatomy
 
@@ -39,7 +39,7 @@ This spec covers Keystone Dialog and Mason Dialog items that delegate modal beha
 | `Escape`                     | Requests dismissal of the topmost dismissable dialog when escape dismissal is enabled. |
 | `Enter` / `Space` on close   | Closes the dialog through native button activation.                                    |
 
-User event handlers run before internal behavior. If a user handler prevents default on trigger, close, outside interaction, or escape events, Keystone must skip the matching internal action.
+User event handlers run before internal behavior. If a user handler prevents default on trigger, close, outside interaction, or escape events, Core must skip the matching internal action.
 
 ## Focus
 
@@ -63,7 +63,7 @@ Dialog parts expose `data-scope="dialog"` and their `data-part` value. Overlay p
 - `data-state="open|closed"`
 - `data-transition-status="closed|closing|opening|open"`
 
-Mason Dialog styling must use these public attributes instead of private overlay internals.
+UI Dialog styling must use these public attributes instead of private overlay internals.
 
 ## SSR And Hydration
 

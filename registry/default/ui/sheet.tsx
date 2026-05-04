@@ -1,55 +1,55 @@
 import {
-  Sheet as KeystoneSheet,
-  type SheetBackdropProps as KeystoneSheetBackdropProps,
-  type SheetCloseProps as KeystoneSheetCloseProps,
-  type SheetContentProps as KeystoneSheetContentProps,
-  type SheetDescriptionProps as KeystoneSheetDescriptionProps,
-  type SheetPortalProps as KeystoneSheetPortalProps,
-  type SheetPositionerProps as KeystoneSheetPositionerProps,
-  type SheetRootProps as KeystoneSheetRootProps,
-  type SheetTitleProps as KeystoneSheetTitleProps,
-  type SheetTriggerProps as KeystoneSheetTriggerProps,
-} from "@keystone-ui/keystone/sheet";
+  Sheet as CoreSheet,
+  type SheetBackdropProps as CoreSheetBackdropProps,
+  type SheetCloseProps as CoreSheetCloseProps,
+  type SheetContentProps as CoreSheetContentProps,
+  type SheetDescriptionProps as CoreSheetDescriptionProps,
+  type SheetPortalProps as CoreSheetPortalProps,
+  type SheetPositionerProps as CoreSheetPositionerProps,
+  type SheetRootProps as CoreSheetRootProps,
+  type SheetTitleProps as CoreSheetTitleProps,
+  type SheetTriggerProps as CoreSheetTriggerProps,
+} from "@keystone-ui/core/sheet";
 import { splitProps, type JSX, type ParentProps } from "solid-js";
 import { cn } from "@/lib/cn";
 
-export type SheetProps = KeystoneSheetRootProps;
-export type SheetTriggerProps = KeystoneSheetTriggerProps;
-export type SheetPortalProps = KeystoneSheetPortalProps;
-export type SheetBackdropProps = KeystoneSheetBackdropProps;
-export type SheetPositionerProps = KeystoneSheetPositionerProps;
-export type SheetContentProps = KeystoneSheetContentProps & {
+export type SheetProps = CoreSheetRootProps;
+export type SheetTriggerProps = CoreSheetTriggerProps;
+export type SheetPortalProps = CoreSheetPortalProps;
+export type SheetBackdropProps = CoreSheetBackdropProps;
+export type SheetPositionerProps = CoreSheetPositionerProps;
+export type SheetContentProps = CoreSheetContentProps & {
   backdropClass?: string;
   portal?: SheetPortalProps;
   positionerClass?: string;
 };
 export type SheetHeaderProps = ParentProps<JSX.HTMLAttributes<HTMLDivElement>>;
 export type SheetFooterProps = ParentProps<JSX.HTMLAttributes<HTMLDivElement>>;
-export type SheetTitleProps = KeystoneSheetTitleProps;
-export type SheetDescriptionProps = KeystoneSheetDescriptionProps;
-export type SheetCloseProps = KeystoneSheetCloseProps;
+export type SheetTitleProps = CoreSheetTitleProps;
+export type SheetDescriptionProps = CoreSheetDescriptionProps;
+export type SheetCloseProps = CoreSheetCloseProps;
 
 export function Sheet(props: SheetProps) {
-  return <KeystoneSheet.Root {...props} />;
+  return <CoreSheet.Root {...props} />;
 }
 
 export function SheetTrigger(props: SheetTriggerProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneSheet.Trigger {...rest} class={cn("mason-sheet-trigger", local.class)} />;
+  return <CoreSheet.Trigger {...rest} class={cn("ui-sheet-trigger", local.class)} />;
 }
 
 export function SheetPortal(props: SheetPortalProps) {
-  return <KeystoneSheet.Portal {...props} />;
+  return <CoreSheet.Portal {...props} />;
 }
 
 export function SheetBackdrop(props: SheetBackdropProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneSheet.Backdrop {...rest} class={cn("mason-sheet-backdrop", local.class)} />;
+  return <CoreSheet.Backdrop {...rest} class={cn("ui-sheet-backdrop", local.class)} />;
 }
 
 export function SheetPositioner(props: SheetPositionerProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneSheet.Positioner {...rest} class={cn("mason-sheet-positioner", local.class)} />;
+  return <CoreSheet.Positioner {...rest} class={cn("ui-sheet-positioner", local.class)} />;
 }
 
 export function SheetContent(props: SheetContentProps) {
@@ -65,9 +65,9 @@ export function SheetContent(props: SheetContentProps) {
     <SheetPortal {...local.portal}>
       <SheetBackdrop class={local.backdropClass} />
       <SheetPositioner class={local.positionerClass}>
-        <KeystoneSheet.Content {...rest} class={cn("mason-sheet-content", local.class)}>
+        <CoreSheet.Content {...rest} class={cn("ui-sheet-content", local.class)}>
           {local.children}
-        </KeystoneSheet.Content>
+        </CoreSheet.Content>
       </SheetPositioner>
     </SheetPortal>
   );
@@ -78,9 +78,9 @@ export function SheetHeader(props: SheetHeaderProps) {
   return (
     <div
       {...rest}
-      data-scope="mason-sheet"
+      data-scope="ui-sheet"
       data-part="header"
-      class={cn("mason-sheet-header", local.class)}
+      class={cn("ui-sheet-header", local.class)}
     />
   );
 }
@@ -90,24 +90,24 @@ export function SheetFooter(props: SheetFooterProps) {
   return (
     <div
       {...rest}
-      data-scope="mason-sheet"
+      data-scope="ui-sheet"
       data-part="footer"
-      class={cn("mason-sheet-footer", local.class)}
+      class={cn("ui-sheet-footer", local.class)}
     />
   );
 }
 
 export function SheetTitle(props: SheetTitleProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneSheet.Title {...rest} class={cn("mason-sheet-title", local.class)} />;
+  return <CoreSheet.Title {...rest} class={cn("ui-sheet-title", local.class)} />;
 }
 
 export function SheetDescription(props: SheetDescriptionProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneSheet.Description {...rest} class={cn("mason-sheet-description", local.class)} />;
+  return <CoreSheet.Description {...rest} class={cn("ui-sheet-description", local.class)} />;
 }
 
 export function SheetClose(props: SheetCloseProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneSheet.Close {...rest} class={cn("mason-sheet-close", local.class)} />;
+  return <CoreSheet.Close {...rest} class={cn("ui-sheet-close", local.class)} />;
 }

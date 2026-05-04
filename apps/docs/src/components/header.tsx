@@ -6,8 +6,8 @@ export default function Header() {
   const links = [
     { to: "/", label: "Overview" },
     { to: "/docs/preview", label: "Preview" },
-    { to: "/#keystone", label: "Keystone" },
-    { to: "/#mason", label: "Mason" },
+    { to: "/#core", label: "Core" },
+    { to: "/#ui", label: "UI" },
     { to: "/#reference", label: "Reference" },
   ];
 
@@ -40,7 +40,7 @@ export default function Header() {
           </a>
           <a
             class="icon-link"
-            href="https://github.com/erik-kroon/keystone-ui"
+            href="https://github.com/erik-kroon/core-ui"
             rel="noreferrer"
             target="_blank"
             aria-label="GitHub repository"

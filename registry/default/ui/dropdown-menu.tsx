@@ -1,64 +1,56 @@
 import {
-  DropdownMenu as KeystoneDropdownMenu,
-  type DropdownMenuCheckboxItemProps as KeystoneDropdownMenuCheckboxItemProps,
-  type DropdownMenuContentProps as KeystoneDropdownMenuContentProps,
-  type DropdownMenuGroupLabelProps as KeystoneDropdownMenuGroupLabelProps,
-  type DropdownMenuGroupProps as KeystoneDropdownMenuGroupProps,
-  type DropdownMenuItemProps as KeystoneDropdownMenuItemProps,
-  type DropdownMenuPartProps as KeystoneDropdownMenuPartProps,
-  type DropdownMenuPortalProps as KeystoneDropdownMenuPortalProps,
-  type DropdownMenuPositionerProps as KeystoneDropdownMenuPositionerProps,
-  type DropdownMenuRadioGroupProps as KeystoneDropdownMenuRadioGroupProps,
-  type DropdownMenuRadioItemProps as KeystoneDropdownMenuRadioItemProps,
-  type DropdownMenuRootProps as KeystoneDropdownMenuRootProps,
-  type DropdownMenuSeparatorProps as KeystoneDropdownMenuSeparatorProps,
-  type DropdownMenuTriggerProps as KeystoneDropdownMenuTriggerProps,
-} from "@keystone-ui/keystone/dropdown-menu";
+  DropdownMenu as CoreDropdownMenu,
+  type DropdownMenuCheckboxItemProps as CoreDropdownMenuCheckboxItemProps,
+  type DropdownMenuContentProps as CoreDropdownMenuContentProps,
+  type DropdownMenuGroupLabelProps as CoreDropdownMenuGroupLabelProps,
+  type DropdownMenuGroupProps as CoreDropdownMenuGroupProps,
+  type DropdownMenuItemProps as CoreDropdownMenuItemProps,
+  type DropdownMenuPartProps as CoreDropdownMenuPartProps,
+  type DropdownMenuPortalProps as CoreDropdownMenuPortalProps,
+  type DropdownMenuPositionerProps as CoreDropdownMenuPositionerProps,
+  type DropdownMenuRadioGroupProps as CoreDropdownMenuRadioGroupProps,
+  type DropdownMenuRadioItemProps as CoreDropdownMenuRadioItemProps,
+  type DropdownMenuRootProps as CoreDropdownMenuRootProps,
+  type DropdownMenuSeparatorProps as CoreDropdownMenuSeparatorProps,
+  type DropdownMenuTriggerProps as CoreDropdownMenuTriggerProps,
+} from "@keystone-ui/core/dropdown-menu";
 import { splitProps } from "solid-js";
 import { cn } from "@/lib/cn";
 
-export type DropdownMenuProps = KeystoneDropdownMenuRootProps;
-export type DropdownMenuTriggerProps = KeystoneDropdownMenuTriggerProps;
-export type DropdownMenuPortalProps = KeystoneDropdownMenuPortalProps;
-export type DropdownMenuPositionerProps = KeystoneDropdownMenuPositionerProps;
-export type DropdownMenuContentProps = KeystoneDropdownMenuContentProps & {
+export type DropdownMenuProps = CoreDropdownMenuRootProps;
+export type DropdownMenuTriggerProps = CoreDropdownMenuTriggerProps;
+export type DropdownMenuPortalProps = CoreDropdownMenuPortalProps;
+export type DropdownMenuPositionerProps = CoreDropdownMenuPositionerProps;
+export type DropdownMenuContentProps = CoreDropdownMenuContentProps & {
   portal?: DropdownMenuPortalProps;
   positionerClass?: string;
 };
-export type DropdownMenuGroupProps = KeystoneDropdownMenuGroupProps;
-export type DropdownMenuGroupLabelProps = KeystoneDropdownMenuGroupLabelProps;
-export type DropdownMenuSeparatorProps = KeystoneDropdownMenuSeparatorProps;
-export type DropdownMenuItemProps = KeystoneDropdownMenuItemProps;
-export type DropdownMenuCheckboxItemProps = KeystoneDropdownMenuCheckboxItemProps;
-export type DropdownMenuRadioGroupProps = KeystoneDropdownMenuRadioGroupProps;
-export type DropdownMenuRadioItemProps = KeystoneDropdownMenuRadioItemProps;
-export type DropdownMenuItemIndicatorProps = KeystoneDropdownMenuPartProps<HTMLSpanElement>;
+export type DropdownMenuGroupProps = CoreDropdownMenuGroupProps;
+export type DropdownMenuGroupLabelProps = CoreDropdownMenuGroupLabelProps;
+export type DropdownMenuSeparatorProps = CoreDropdownMenuSeparatorProps;
+export type DropdownMenuItemProps = CoreDropdownMenuItemProps;
+export type DropdownMenuCheckboxItemProps = CoreDropdownMenuCheckboxItemProps;
+export type DropdownMenuRadioGroupProps = CoreDropdownMenuRadioGroupProps;
+export type DropdownMenuRadioItemProps = CoreDropdownMenuRadioItemProps;
+export type DropdownMenuItemIndicatorProps = CoreDropdownMenuPartProps<HTMLSpanElement>;
 
 export function DropdownMenu(props: DropdownMenuProps) {
-  return <KeystoneDropdownMenu.Root {...props} />;
+  return <CoreDropdownMenu.Root {...props} />;
 }
 
 export function DropdownMenuTrigger(props: DropdownMenuTriggerProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneDropdownMenu.Trigger
-      {...rest}
-      class={cn("mason-dropdown-menu-trigger", local.class)}
-    />
-  );
+  return <CoreDropdownMenu.Trigger {...rest} class={cn("ui-dropdown-menu-trigger", local.class)} />;
 }
 
 export function DropdownMenuPortal(props: DropdownMenuPortalProps) {
-  return <KeystoneDropdownMenu.Portal {...props} />;
+  return <CoreDropdownMenu.Portal {...props} />;
 }
 
 export function DropdownMenuPositioner(props: DropdownMenuPositionerProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneDropdownMenu.Positioner
-      {...rest}
-      class={cn("mason-dropdown-menu-positioner", local.class)}
-    />
+    <CoreDropdownMenu.Positioner {...rest} class={cn("ui-dropdown-menu-positioner", local.class)} />
   );
 }
 
@@ -67,12 +59,9 @@ export function DropdownMenuContent(props: DropdownMenuContentProps) {
   return (
     <DropdownMenuPortal {...local.portal}>
       <DropdownMenuPositioner class={local.positionerClass}>
-        <KeystoneDropdownMenu.Content
-          {...rest}
-          class={cn("mason-dropdown-menu-content", local.class)}
-        >
+        <CoreDropdownMenu.Content {...rest} class={cn("ui-dropdown-menu-content", local.class)}>
           {local.children}
-        </KeystoneDropdownMenu.Content>
+        </CoreDropdownMenu.Content>
       </DropdownMenuPositioner>
     </DropdownMenuPortal>
   );
@@ -80,17 +69,15 @@ export function DropdownMenuContent(props: DropdownMenuContentProps) {
 
 export function DropdownMenuGroup(props: DropdownMenuGroupProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneDropdownMenu.Group {...rest} class={cn("mason-dropdown-menu-group", local.class)} />
-  );
+  return <CoreDropdownMenu.Group {...rest} class={cn("ui-dropdown-menu-group", local.class)} />;
 }
 
 export function DropdownMenuGroupLabel(props: DropdownMenuGroupLabelProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneDropdownMenu.GroupLabel
+    <CoreDropdownMenu.GroupLabel
       {...rest}
-      class={cn("mason-dropdown-menu-group-label", local.class)}
+      class={cn("ui-dropdown-menu-group-label", local.class)}
     />
   );
 }
@@ -98,47 +85,37 @@ export function DropdownMenuGroupLabel(props: DropdownMenuGroupLabelProps) {
 export function DropdownMenuSeparator(props: DropdownMenuSeparatorProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneDropdownMenu.Separator
-      {...rest}
-      class={cn("mason-dropdown-menu-separator", local.class)}
-    />
+    <CoreDropdownMenu.Separator {...rest} class={cn("ui-dropdown-menu-separator", local.class)} />
   );
 }
 
 export function DropdownMenuItem(props: DropdownMenuItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneDropdownMenu.Item {...rest} class={cn("mason-dropdown-menu-item", local.class)} />
-  );
+  return <CoreDropdownMenu.Item {...rest} class={cn("ui-dropdown-menu-item", local.class)} />;
 }
 
 export function DropdownMenuCheckboxItem(props: DropdownMenuCheckboxItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneDropdownMenu.CheckboxItem
-      {...rest}
-      class={cn("mason-dropdown-menu-item", local.class)}
-    />
+    <CoreDropdownMenu.CheckboxItem {...rest} class={cn("ui-dropdown-menu-item", local.class)} />
   );
 }
 
 export function DropdownMenuRadioGroup(props: DropdownMenuRadioGroupProps) {
-  return <KeystoneDropdownMenu.RadioGroup {...props} />;
+  return <CoreDropdownMenu.RadioGroup {...props} />;
 }
 
 export function DropdownMenuRadioItem(props: DropdownMenuRadioItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneDropdownMenu.RadioItem {...rest} class={cn("mason-dropdown-menu-item", local.class)} />
-  );
+  return <CoreDropdownMenu.RadioItem {...rest} class={cn("ui-dropdown-menu-item", local.class)} />;
 }
 
 export function DropdownMenuItemIndicator(props: DropdownMenuItemIndicatorProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneDropdownMenu.ItemIndicator
+    <CoreDropdownMenu.ItemIndicator
       {...rest}
-      class={cn("mason-dropdown-menu-item-indicator", local.class)}
+      class={cn("ui-dropdown-menu-item-indicator", local.class)}
     />
   );
 }

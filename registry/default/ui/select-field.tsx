@@ -1,4 +1,4 @@
-import { Select as KeystoneSelect } from "@keystone-ui/keystone/select";
+import { Select as CoreSelect } from "@keystone-ui/core/select";
 import { createMemo, For, Show, type Accessor, type JSX } from "solid-js";
 import { cn } from "@/lib/cn";
 
@@ -84,12 +84,12 @@ function SelectFieldControl(props: SelectFieldProps & { field: Accessor<TanStack
 
   return (
     <div
-      data-scope="mason-select-field"
+      data-scope="ui-select-field"
       data-part="root"
       data-invalid={invalid() ? "" : undefined}
-      class={cn("mason-select-field", props.class)}
+      class={cn("ui-select-field", props.class)}
     >
-      <KeystoneSelect.Root
+      <CoreSelect.Root
         name={props.field().name}
         value={value()}
         placeholder={props.placeholder}
@@ -103,28 +103,28 @@ function SelectFieldControl(props: SelectFieldProps & { field: Accessor<TanStack
       >
         <label
           for={`keystone-select-trigger-${props.name}`}
-          data-scope="mason-select-field"
+          data-scope="ui-select-field"
           data-part="label"
-          class={cn("mason-select-field-label", props.labelClass)}
+          class={cn("ui-select-field-label", props.labelClass)}
         >
           {props.label}
         </label>
-        <KeystoneSelect.Trigger
+        <CoreSelect.Trigger
           id={`keystone-select-trigger-${props.name}`}
-          data-scope="mason-select-field"
+          data-scope="ui-select-field"
           data-part="trigger"
-          class={cn("mason-select-field-trigger", props.triggerClass)}
+          class={cn("ui-select-field-trigger", props.triggerClass)}
         >
-          <KeystoneSelect.Value placeholder={props.placeholder} />
-          <span aria-hidden="true" data-scope="mason-select-field" data-part="indicator">
+          <CoreSelect.Value placeholder={props.placeholder} />
+          <span aria-hidden="true" data-scope="ui-select-field" data-part="indicator">
             v
           </span>
-        </KeystoneSelect.Trigger>
+        </CoreSelect.Trigger>
         <Show when={props.description}>
           <p
-            data-scope="mason-select-field"
+            data-scope="ui-select-field"
             data-part="description"
-            class={cn("mason-select-field-description", props.descriptionClass)}
+            class={cn("ui-select-field-description", props.descriptionClass)}
           >
             {props.description}
           </p>
@@ -133,44 +133,44 @@ function SelectFieldControl(props: SelectFieldProps & { field: Accessor<TanStack
           {(message) => (
             <p
               role="alert"
-              data-scope="mason-select-field"
+              data-scope="ui-select-field"
               data-part="error"
-              class={cn("mason-select-field-error", props.errorClass)}
+              class={cn("ui-select-field-error", props.errorClass)}
             >
               {message()}
             </p>
           )}
         </Show>
-        <KeystoneSelect.Portal>
-          <KeystoneSelect.Positioner>
-            <KeystoneSelect.Content
-              data-scope="mason-select-field"
+        <CoreSelect.Portal>
+          <CoreSelect.Positioner>
+            <CoreSelect.Content
+              data-scope="ui-select-field"
               data-part="content"
-              class={cn("mason-select-field-content", props.contentClass)}
+              class={cn("ui-select-field-content", props.contentClass)}
             >
-              <KeystoneSelect.Listbox
-                data-scope="mason-select-field"
+              <CoreSelect.Listbox
+                data-scope="ui-select-field"
                 data-part="listbox"
-                class="mason-select-field-listbox"
+                class="ui-select-field-listbox"
               >
                 <For each={props.options}>
                   {(option) => (
-                    <KeystoneSelect.Item
+                    <CoreSelect.Item
                       value={option.value}
                       disabled={option.disabled}
-                      data-scope="mason-select-field"
+                      data-scope="ui-select-field"
                       data-part="item"
-                      class={cn("mason-select-field-item", props.itemClass)}
+                      class={cn("ui-select-field-item", props.itemClass)}
                     >
                       {option.label}
-                    </KeystoneSelect.Item>
+                    </CoreSelect.Item>
                   )}
                 </For>
-              </KeystoneSelect.Listbox>
-            </KeystoneSelect.Content>
-          </KeystoneSelect.Positioner>
-        </KeystoneSelect.Portal>
-      </KeystoneSelect.Root>
+              </CoreSelect.Listbox>
+            </CoreSelect.Content>
+          </CoreSelect.Positioner>
+        </CoreSelect.Portal>
+      </CoreSelect.Root>
     </div>
   );
 }

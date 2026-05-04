@@ -64,7 +64,7 @@ export const registryItemContracts = rawItems
     customization: String(item.meta.customization ?? item.meta.limitations ?? ""),
     caveats: String(
       item.meta.limitations ??
-        "Generated output is user-owned source. Mason may plan future diffs and updates, but app teams can edit the installed files.",
+        "Generated output is user-owned source. UI may plan future diffs and updates, but app teams can edit the installed files.",
     ),
     files: item.files.map((file) => ({
       path: file.path,

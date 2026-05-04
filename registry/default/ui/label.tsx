@@ -7,11 +7,6 @@ export function Label(props: LabelProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
   return (
-    <label
-      {...rest}
-      data-scope="mason-label"
-      data-part="root"
-      class={cn("mason-label", local.class)}
-    />
+    <label {...rest} data-scope="ui-label" data-part="root" class={cn("ui-label", local.class)} />
   );
 }

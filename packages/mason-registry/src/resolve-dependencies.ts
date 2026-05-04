@@ -1,4 +1,4 @@
-import { fail, ok, type MasonRegistryError, type ValidationResult } from "./errors";
+import { fail, ok, type UIRegistryError, type ValidationResult } from "./errors";
 import type { RegistryItem } from "./schema";
 import { validateItem } from "./validate-item";
 
@@ -24,7 +24,7 @@ export function resolveRegistryDependencies(
   items: RegistryItemMap,
 ): ValidationResult<ResolvedRegistryDependencyGraph> {
   const resolved: RegistryItem[] = [];
-  const errors: MasonRegistryError[] = [];
+  const errors: UIRegistryError[] = [];
   const temporary = new Set<string>();
   const permanent = new Set<string>();
 
@@ -89,7 +89,7 @@ export async function resolveRegistryDependencyGraph(
   options: { installSupportedOnly?: boolean } = {},
 ): Promise<ValidationResult<ResolvedRegistryDependencyGraph>> {
   const resolved: RegistryItem[] = [];
-  const errors: MasonRegistryError[] = [];
+  const errors: UIRegistryError[] = [];
   const temporary = new Set<string>();
   const permanent = new Set<string>();
 

@@ -5,20 +5,20 @@
   "title": "Toast",
   "description": "Styled Solid toast component backed by Keystone notification manager, viewport, timer, and live-region behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "dependencies": ["@keystone-ui/core@^0.0.0"],
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0"
   },
   "categories": ["feedback", "overlay", "notification"],
   "keywords": ["toast", "notification", "sonner", "keystone"],
-  "docs": "https://mason.build/docs/components/toast",
+  "docs": "https://keystone-ui.dev/docs/ui/toast",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add toast",
-    "customization": "Style generated mason-toast classes while Keystone owns manager updates, live-region roles, dismissal, timer scheduling, and stable toast part attributes.",
+    "customization": "Style generated ui-toast classes while Core owns manager updates, live-region roles, dismissal, timer scheduling, and stable toast part attributes.",
     "sourceFiles": ["registry/default/ui/toast.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "dependencies": ["@keystone-ui/core", "cn"],
     "parts": ["viewport", "root", "title", "description", "action", "close"],
     "parity": {
       "baseUi": "Matches the manager/provider/store direction with add, update, dismiss, clear, limit, timer scheduling, viewport rendering, action and close parts, and hover/focus pause behavior. Gaps: loading-to-complete promise transitions, transition status metadata, window blur pausing, viewport geometry, and advanced positioner/portal composition remain follow-up work.",

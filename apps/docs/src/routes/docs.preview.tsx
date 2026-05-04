@@ -23,7 +23,7 @@ const posture = [
   {
     label: "Names",
     value: "Codenames retained",
-    body: "Keystone and Mason remain working product names until package, trademark, domain, and handle clearance are done.",
+    body: "Keystone Core and UI remain working product names until package, trademark, domain, and handle clearance are done.",
   },
   {
     label: "Packages",
@@ -33,7 +33,7 @@ const posture = [
 ];
 
 const noBreadth = [
-  "No new Keystone primitive surface area for 0.1.",
+  "No new Core primitive surface area for 0.1.",
   "No public kernel exports beyond deliberate primitive and utility APIs.",
   "No hosted Mason registry promise until lifecycle behavior is ready.",
   "No data-dense workspace buildout until after the 0.1 hardening spine.",
@@ -57,21 +57,21 @@ const nextChecks = [
 const docsLinks = [
   {
     icon: <Layers size={18} />,
-    title: "Keystone Contracts",
+    title: "Core Contracts",
     body: "Maturity labels, parts, data attributes, roles, keyboard behavior, ARIA notes, SSR notes, and examples.",
-    href: "/docs/keystone/contracts",
+    href: "/docs/core/contracts",
   },
   {
     icon: <ShieldCheck size={18} />,
     title: "Dialog Spec",
     body: "The model stable-candidate primitive page for focus, dismissal, layering, and accessibility documentation.",
-    href: "/docs/keystone/dialog",
+    href: "/docs/core/dialog",
   },
   {
     icon: <FileJson2 size={18} />,
     title: "Mason Registry",
     body: "Generated source files, dependency plans, customization notes, caveats, and parity metadata.",
-    href: "/docs/mason/registry",
+    href: "/docs/ui/registry",
   },
   {
     icon: <Boxes size={18} />,
@@ -107,7 +107,7 @@ function PreviewDocs() {
             <span>Package posture</span>
             <strong>Private 0.0.0</strong>
             <span>Naming posture</span>
-            <strong>Keystone / Mason codenames</strong>
+            <strong>Keystone naming posture</strong>
           </div>
         </section>
 

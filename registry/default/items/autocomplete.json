@@ -5,23 +5,23 @@
   "title": "Autocomplete",
   "description": "Styled Solid autocomplete component backed by Keystone combobox behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "dependencies": ["@keystone-ui/core@^0.0.0"],
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0"
   },
   "categories": ["form", "listbox", "autocomplete"],
   "keywords": ["autocomplete", "combobox", "listbox", "keystone"],
-  "docs": "https://mason.build/docs/components/autocomplete",
+  "docs": "https://keystone-ui.dev/docs/ui/autocomplete",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add autocomplete",
-    "customization": "Style the generated wrappers through mason-autocomplete classes while Keystone owns input/listbox roles, selection, form value, and positioning.",
+    "customization": "Style the generated wrappers through ui-autocomplete classes while Core owns input/listbox roles, selection, form value, and positioning.",
     "sourceFiles": ["registry/default/ui/autocomplete.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "dependencies": ["@keystone-ui/core", "cn"],
     "parity": {
       "baseUi": "Thin vertical reuses Keystone combobox behavior for input/listbox roles, controlled value surface, option highlighting, selection, form value, and floating positioning. Gaps: Base UI depth around filtering orchestration, inline completion, detached triggers, grouped collections, virtualized lists, scroll buttons, and advanced pointer/touch behavior remain follow-up work.",
-      "kobalte": "Matches the Solid composition direction of Combobox/Listbox/Popper primitives with Mason-owned styling. Gaps: richer collection APIs, multi-select, async filtering helpers, hidden select parity, robust typeahead edge cases, and form reset coverage remain follow-up work."
+      "kobalte": "Matches the Solid composition direction of Combobox/Listbox/Popper primitives with UI-owned styling. Gaps: richer collection APIs, multi-select, async filtering helpers, hidden select parity, robust typeahead edge cases, and form reset coverage remain follow-up work."
     }
   },
   "files": [

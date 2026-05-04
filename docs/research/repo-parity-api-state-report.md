@@ -10,7 +10,7 @@ Draft
 
 ## Scope
 
-This report summarizes the current repo state, the parity state of Keystone primitives and Mason registry items, and the end-state API direction Keystone/Mason should converge on.
+This report summarizes the current repo state, the parity state of Core primitives and Mason registry items, and the end-state API direction Keystone Core/UI should converge on.
 
 It is intentionally more operational than [Primitive Research Notes](./primitives-notes.md). The research notes are a broad inspiration index. This report is a state and direction report.
 
@@ -19,10 +19,10 @@ It is intentionally more operational than [Primitive Research Notes](./primitive
 Use these documents in this order when there is a conflict:
 
 1. [CONTEXT.md](../../CONTEXT.md): product boundaries and current repo state.
-2. [ADR 0001](../adr/0001-keystone-mason-product-boundary.md): Keystone/Mason ownership boundary.
-3. [Keystone API RFC](../rfcs/keystone-api.md): public primitive API direction.
+2. [ADR 0001](../adr/0001-keystone-core-ui-boundary.md): Keystone Core/UI ownership boundary.
+3. [Core API RFC](../rfcs/core-api.md): public primitive API direction.
 4. [Mason Registry RFC](../rfcs/mason-registry.md): registry schema, install semantics, and `meta.parity`.
-5. [Keystone Internals Inspiration Parity PRD](../prd/keystone-internals-inspiration-parity.md): current kernel parity ledger.
+5. [Core Internals Inspiration Parity PRD](../prd/core-internals-inspiration-parity.md): current kernel parity ledger.
 6. [End-State Primitive And Component Inventory](../agents/end-state-primitive-component-inventory.md): target surface classification.
 7. Vertical agent notes under [docs/agents](../agents/): slice-level implementation history and remaining gaps.
 8. This report and [Primitive Research Notes](./primitives-notes.md): synthesis and research guidance.
@@ -36,7 +36,7 @@ Commands run on 2026-05-04:
 | `bun run check-types`                           | Pass              | Turbo typecheck, 3 package tasks cached and successful.                                                         |
 | `bun run check`                                 | Pass              | `oxlint && oxfmt --write`, 0 warnings/errors. Formatting churn from this command was reverted for source files. |
 | `bun run build`                                 | Pass              | Docs app Vite client and SSR builds passed.                                                                     |
-| `bun --filter @keystone-ui/keystone test`       | Pass              | 38 files, 202 tests.                                                                                            |
+| `bun --filter @keystone-ui/core test`           | Pass              | 38 files, 202 tests.                                                                                            |
 | `bun --filter @keystone-ui/mason-registry test` | Pass              | 27 tests. Includes default registry parity metadata validation.                                                 |
 | `bun --filter @keystone-ui/mason-cli test`      | Pass              | 20 tests. Includes generated app typecheck/build after add.                                                     |
 | `bun run test`                                  | Not a repo script | Root `package.json` has no `test`; Bun attempted `/bin/test` and failed. Use package filters instead.           |
@@ -51,17 +51,17 @@ Working tree after cleanup:
 
 The repo is no longer a pure scaffold. Keystone has meaningful kernel depth across controllable state, event composition, polymorphism, metadata, portal, overlay layering, focus scope, dismissable layer, outside hiding, prevent scroll, presence, floating geometry, listbox interaction, form-control, selection controls, slider, menu family, date picker, toast, direction, locale, live announcer, and utility primitives.
 
-The strategic risk has shifted. The original risk was shallow local primitive tracers. The current risk is inconsistent maturity: some areas are proven through behavior tests and shared kernels, while others are thin verticals that expose early public API and Mason metadata before reaching Base UI/Kobalte depth.
+The strategic risk has shifted. The original risk was shallow local primitive tracers. The current risk is inconsistent maturity: some areas are proven through behavior tests and shared kernels, while others are thin verticals that expose early public API and UI metadata before reaching Base UI/Kobalte depth.
 
-Mason is ahead in registry and install mechanics. It has a source-first registry, path safety, dependency resolution, lifecycle commands, installed metadata, parity metadata validation, and generated-app verification. Mason component breadth is useful, but it must continue to avoid reimplementing Keystone behavior.
+UI is ahead in registry and install mechanics. It has a source-first registry, path safety, dependency resolution, lifecycle commands, installed metadata, parity metadata validation, and generated-app verification. UI item breadth is useful, but it must continue to avoid reimplementing Core behavior.
 
-The optimal end state should not be "clone Radix for Solid" or "wrap Kobalte." Keystone should be a Solid-native primitive kernel with compound parts and low-level creators. Mason should be a copy-paste source layer that styles Keystone primitives and uses TanStack for app-grade behavior.
+The optimal end state should not be "clone Radix for Solid" or "wrap Kobalte." Core should be a Solid-native primitive kernel with compound parts and low-level creators. UI should be a copy-paste source layer that styles Core primitives and uses TanStack for app-grade behavior.
 
 ## Domain Terms
 
-- `Keystone`: headless accessible primitive runtime for Solid.
-- `Mason`: styled source registry, CLI, blocks, templates, and app-layer components.
-- `kernel`: private reusable Keystone internals such as controllable state, focus scope, collection, floating, presence, and form-control.
+- `Core`: headless accessible primitive runtime for Solid.
+- `UI`: styled source registry, CLI, blocks, templates, and app-layer components.
+- `kernel`: private reusable Core internals such as controllable state, focus scope, collection, floating, presence, and form-control.
 - `part`: named primitive anatomy exposed through `data-part`.
 - `scope`: primitive namespace exposed through `data-scope`.
 - `meta.parity`: Mason registry notes describing what a component matches and which gaps remain.
@@ -70,14 +70,14 @@ The optimal end state should not be "clone Radix for Solid" or "wrap Kobalte." K
 
 ## Current Module Map
 
-### Keystone Package
+### Core Package
 
-`packages/keystone` is private but has a realistic package shape:
+`packages/core` is private but has a realistic package shape:
 
-- Public package entry: `@keystone-ui/keystone`.
+- Public package entry: `@keystone-ui/core`.
 - Public subpath exports exist for most current primitives, for example `./dialog`, `./select`, `./popover`, `./tabs`, `./toast`, `./popper`.
 - Keystone depends only on `solid-js` and `@floating-ui/dom`.
-- It does not depend on Mason or TanStack app libraries.
+- It does not depend on UI or TanStack app libraries.
 - Internals are mostly private source modules, with public creator APIs exported through primitive subpaths.
 
 Important source clusters:
@@ -89,7 +89,7 @@ Important source clusters:
 - `src/form`: form-control ARIA, hidden input helpers, field validity.
 - Primitive folders: dialog, popover, hover-card, tooltip, sheet, select, combobox, menu, tabs, date-picker, slider, selection controls, toast, and utilities.
 
-### Mason Packages
+### UI Packages
 
 `packages/mason-registry` owns schema and validation:
 
@@ -110,8 +110,8 @@ Important source clusters:
 `registry/default` currently contains 37 first-party items:
 
 - Base components: button, badge, card, separator, input, label, textarea, cn.
-- Keystone-backed primitives: dialog, sheet, popover, hover-card, tooltip, accordion, collapsible, tabs, checkbox, switch, radio-group, slider, select/combobox/autocomplete, menu family, date-picker, toast, field.
-- Mason app-layer components: data-table, data-table-tanstack-router, command-menu, text-field, select-field.
+- Core-backed primitives: dialog, sheet, popover, hover-card, tooltip, accordion, collapsible, tabs, checkbox, switch, radio-group, slider, select/combobox/autocomplete, menu family, date-picker, toast, field.
+- UI app-layer components: data-table, data-table-tanstack-router, command-menu, text-field, select-field.
 - Block: account-settings.
 
 ## Current Call/Data Flow
@@ -119,12 +119,12 @@ Important source clusters:
 ### Primitive Flow
 
 ```txt
-Keystone compound component
+Core compound component
   -> create* controller
     -> shared kernel modules
       -> part prop getters
         -> DOM roles, ARIA, data attributes, CSS variables
-          -> Mason wrapper styling or direct app usage
+          -> UI wrapper styling or direct app usage
 ```
 
 ### Overlay Flow
@@ -154,7 +154,7 @@ Select/Combobox/Menu/Listbox
   -> hidden input/form reset where form-associated
 ```
 
-### Mason Install Flow
+### UI Install Flow
 
 ```txt
 registry item request
@@ -172,34 +172,34 @@ registry item request
 - `Proven`: implemented through shared modules and covered by behavior/focused tests.
 - `Strong vertical`: usable and tested, but not complete against Base UI/Kobalte depth.
 - `Thin vertical`: initial public surface exists with tests/metadata, but significant parity gaps remain.
-- `Mason only`: styled source or app-layer component, not Keystone primitive scope.
+- `UI only`: styled source or app-layer component, not Core primitive scope.
 - `Missing`: listed in end-state inventory but not implemented as a first-party surface yet.
 
-## Keystone Kernel State
+## Core Kernel State
 
-| Kernel surface                    | Current state                                                                                                                                                                     | Parity direction                                                                                                | End-state API direction                                                                                                                  |
-| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Controllable state                | Proven. Shared utility with controlled/uncontrolled state, explicit controlled `undefined`, updater setters, detail-aware callbacks.                                              | Base UI has mature stores; Kobalte has Solid controllable signals. Keystone should keep the Solid signal shape. | Public utility only if stable enough: `createControllableSignal({ value, defaultValue, onChange })`. Primitive creators hide most usage. |
-| Event composition                 | Proven. User handler first, internal behavior skips when `defaultPrevented`.                                                                                                      | Aligns with RFC and Kobalte/Radix precedent.                                                                    | Keep DOM `preventDefault()` as first cancellation contract. Add reason constants only when repeated strings become a problem.            |
-| Polymorphic rendering             | Proven for callback-style Solid `as`, intrinsic elements, direct components, router-link-like components.                                                                         | Intentionally rejects React clone/Slot behavior from Base UI/Radix.                                             | `<Part as="button" />` and `<Part as={(props) => <A {...props} />}/>` should remain the optimal API.                                     |
-| Stable IDs and SSR guards         | Proven through kernel and SSR tests.                                                                                                                                              | Kobalte-style Solid ID generation plus Base UI hydration awareness.                                             | Keep ID stores private. Expose IDs through creator APIs only when wrappers need ARIA relationships.                                      |
-| State/data attributes             | Proven through metadata and primitive tests.                                                                                                                                      | Keystone-owned contract, with Base UI/Kobalte as coverage references.                                           | Every part exposes `data-scope` and `data-part`; state attrs are documented in `metadata`.                                               |
-| Metadata                          | Proven for current primitive scopes and parts.                                                                                                                                    | Mason and docs depend on this for styling contracts.                                                            | Expand into docs generation, API tables, and registry preview metadata.                                                                  |
-| Portal                            | Proven. Has `present`, `forceMount`, custom target, cleanup.                                                                                                                      | Similar goal to Radix/Kobalte portal but Solid-native.                                                          | Keep simple. Portal owns placement in DOM, not focus/ARIA behavior.                                                                      |
-| Presence                          | Proven for overlay close retention and `forceMount`.                                                                                                                              | Base UI transition status depth, Kobalte transition lifecycle.                                                  | Keep private until multiple primitives settle animation APIs. Public data attrs should stay stable.                                      |
-| Layer stack and dismissable layer | Proven. Topmost dismissal, branches, preventable outside/Escape, pointer blocking, hiding.                                                                                        | Base UI/Kobalte parity target for overlays.                                                                     | Keep kernel private. Public primitives expose preventable events and modal props, not stack APIs.                                        |
-| Focus scope                       | Proven for Dialog and focused tests.                                                                                                                                              | Base UI/Kobalte focus containment and restore.                                                                  | Keep private. Public APIs should expose `initialFocus`, `restoreFocus`, `onOpenAutoFocus`, `onCloseAutoFocus` where needed.              |
-| Outside hiding/inert              | Proven. Handles dynamic outside DOM and restoration.                                                                                                                              | Base UI/Kobalte modal hiding parity.                                                                            | Keep modal-only. Ensure live announcer and top-layer exceptions stay explicit.                                                           |
-| Prevent scroll                    | Strong vertical. Tests include scrollbar compensation and nested locks, but PRD still tracks touch/iOS and primitive-specific scroll nuances as remaining depth.                  | Base UI/Kobalte plus platform behavior.                                                                         | Private utility used by modal overlays. Avoid public scroll-lock package until edge cases are proven.                                    |
-| Floating adapter                  | Proven. Wraps `@floating-ui/dom`, exposes geometry variables and arrow positioning.                                                                                               | Floating UI is first-class exception reference.                                                                 | Keep direct Floating UI dependency private. Expose placement props and CSS variables on positioners.                                     |
-| Listbox/collection                | Strong vertical. DOM order, groups, disabled skip, custom delegates, multiple selection, performance harnesses exist. Hidden item and virtualization support remain future depth. | Kobalte collection/listbox plus Base UI composite list plus React Aria selection details.                       | Keep `createListbox` private until Select/Combobox settle. Future public Listbox can expose Root/Option/Group plus `createListbox`.      |
-| Typeahead                         | Strong vertical. Printable search, disabled skip, locale collator, Space during active search. Repeated-letter cycling and hidden-item awareness remain gaps.                     | Base UI/Floating typeahead and Kobalte type select.                                                             | One shared typeahead module used by Select, Combobox, Menu, Listbox.                                                                     |
-| Form-control                      | Strong vertical. ARIA relationships, dynamic descriptions/errors, hidden input helpers, validity state. Full Field/Form primitive surface is not fully end-state.                 | Kobalte form-control for Solid shape, Base UI field/form for depth.                                             | Split low-level `FormControl` from Mason/TanStack app forms. Keystone owns native semantics and ARIA.                                    |
-| Direction provider                | Proven. Provider/controller, explicit overrides, consumer tests.                                                                                                                  | Kobalte-style direction context plus platform `dir`.                                                            | `Direction.Provider dir="rtl"` and `createDirection` are sufficient. Primitives should accept local override.                            |
-| Locale/i18n provider              | Strong vertical. Locale, inferred direction, messages, DatePicker consumers.                                                                                                      | React Aria internationalization is deeper future reference.                                                     | `Locale.Provider locale messages dir` should feed primitive strings without app i18n lock-in.                                            |
-| Live announcer                    | Proven as utility.                                                                                                                                                                | React Aria live announcer and Kobalte-style context.                                                            | `LiveAnnouncer.Provider`, `useLiveAnnouncer`, and `createLiveAnnouncer` are enough. Toast and async UI can consume it.                   |
+| Kernel surface                    | Current state                                                                                                                                                                     | Parity direction                                                                                            | End-state API direction                                                                                                                  |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Controllable state                | Proven. Shared utility with controlled/uncontrolled state, explicit controlled `undefined`, updater setters, detail-aware callbacks.                                              | Base UI has mature stores; Kobalte has Solid controllable signals. Core should keep the Solid signal shape. | Public utility only if stable enough: `createControllableSignal({ value, defaultValue, onChange })`. Primitive creators hide most usage. |
+| Event composition                 | Proven. User handler first, internal behavior skips when `defaultPrevented`.                                                                                                      | Aligns with RFC and Kobalte/Radix precedent.                                                                | Keep DOM `preventDefault()` as first cancellation contract. Add reason constants only when repeated strings become a problem.            |
+| Polymorphic rendering             | Proven for callback-style Solid `as`, intrinsic elements, direct components, router-link-like components.                                                                         | Intentionally rejects React clone/Slot behavior from Base UI/Radix.                                         | `<Part as="button" />` and `<Part as={(props) => <A {...props} />}/>` should remain the optimal API.                                     |
+| Stable IDs and SSR guards         | Proven through kernel and SSR tests.                                                                                                                                              | Kobalte-style Solid ID generation plus Base UI hydration awareness.                                         | Keep ID stores private. Expose IDs through creator APIs only when wrappers need ARIA relationships.                                      |
+| State/data attributes             | Proven through metadata and primitive tests.                                                                                                                                      | Keystone-owned contract, with Base UI/Kobalte as coverage references.                                       | Every part exposes `data-scope` and `data-part`; state attrs are documented in `metadata`.                                               |
+| Metadata                          | Proven for current primitive scopes and parts.                                                                                                                                    | UI and docs depend on this for styling contracts.                                                           | Expand into docs generation, API tables, and registry preview metadata.                                                                  |
+| Portal                            | Proven. Has `present`, `forceMount`, custom target, cleanup.                                                                                                                      | Similar goal to Radix/Kobalte portal but Solid-native.                                                      | Keep simple. Portal owns placement in DOM, not focus/ARIA behavior.                                                                      |
+| Presence                          | Proven for overlay close retention and `forceMount`.                                                                                                                              | Base UI transition status depth, Kobalte transition lifecycle.                                              | Keep private until multiple primitives settle animation APIs. Public data attrs should stay stable.                                      |
+| Layer stack and dismissable layer | Proven. Topmost dismissal, branches, preventable outside/Escape, pointer blocking, hiding.                                                                                        | Base UI/Kobalte parity target for overlays.                                                                 | Keep kernel private. Public primitives expose preventable events and modal props, not stack APIs.                                        |
+| Focus scope                       | Proven for Dialog and focused tests.                                                                                                                                              | Base UI/Kobalte focus containment and restore.                                                              | Keep private. Public APIs should expose `initialFocus`, `restoreFocus`, `onOpenAutoFocus`, `onCloseAutoFocus` where needed.              |
+| Outside hiding/inert              | Proven. Handles dynamic outside DOM and restoration.                                                                                                                              | Base UI/Kobalte modal hiding parity.                                                                        | Keep modal-only. Ensure live announcer and top-layer exceptions stay explicit.                                                           |
+| Prevent scroll                    | Strong vertical. Tests include scrollbar compensation and nested locks, but PRD still tracks touch/iOS and primitive-specific scroll nuances as remaining depth.                  | Base UI/Kobalte plus platform behavior.                                                                     | Private utility used by modal overlays. Avoid public scroll-lock package until edge cases are proven.                                    |
+| Floating adapter                  | Proven. Wraps `@floating-ui/dom`, exposes geometry variables and arrow positioning.                                                                                               | Floating UI is first-class exception reference.                                                             | Keep direct Floating UI dependency private. Expose placement props and CSS variables on positioners.                                     |
+| Listbox/collection                | Strong vertical. DOM order, groups, disabled skip, custom delegates, multiple selection, performance harnesses exist. Hidden item and virtualization support remain future depth. | Kobalte collection/listbox plus Base UI composite list plus React Aria selection details.                   | Keep `createListbox` private until Select/Combobox settle. Future public Listbox can expose Root/Option/Group plus `createListbox`.      |
+| Typeahead                         | Strong vertical. Printable search, disabled skip, locale collator, Space during active search. Repeated-letter cycling and hidden-item awareness remain gaps.                     | Base UI/Floating typeahead and Kobalte type select.                                                         | One shared typeahead module used by Select, Combobox, Menu, Listbox.                                                                     |
+| Form-control                      | Strong vertical. ARIA relationships, dynamic descriptions/errors, hidden input helpers, validity state. Full Field/Form primitive surface is not fully end-state.                 | Kobalte form-control for Solid shape, Base UI field/form for depth.                                         | Split low-level `FormControl` from UI/TanStack app forms. Core owns native semantics and ARIA.                                           |
+| Direction provider                | Proven. Provider/controller, explicit overrides, consumer tests.                                                                                                                  | Kobalte-style direction context plus platform `dir`.                                                        | `Direction.Provider dir="rtl"` and `createDirection` are sufficient. Primitives should accept local override.                            |
+| Locale/i18n provider              | Strong vertical. Locale, inferred direction, messages, DatePicker consumers.                                                                                                      | React Aria internationalization is deeper future reference.                                                 | `Locale.Provider locale messages dir` should feed primitive strings without app i18n lock-in.                                            |
+| Live announcer                    | Proven as utility.                                                                                                                                                                | React Aria live announcer and Kobalte-style context.                                                        | `LiveAnnouncer.Provider`, `useLiveAnnouncer`, and `createLiveAnnouncer` are enough. Toast and async UI can consume it.                   |
 
-## Keystone Primitive State
+## Core Primitive State
 
 ### Utilities And Providers
 
@@ -215,41 +215,41 @@ registry item request
 
 ### Overlay Primitives
 
-| Surface        | Current state                                                                                                                                                                                   | Parity and gaps                                                                                                                                       | Optimal API direction                                                                                                                                                                                               |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Dialog         | Proven baseline modal primitive. Covers open state, portal, backdrop, content, title/description, focus entry/trap/restore, preventable outside/Escape, inert outside, nested layers, presence. | Strongest Keystone primitive. Remaining depth: alert-dialog variant, richer scroll/touch edge cases, manual AT evidence, docs accessibility spec.     | Keep current anatomy: Root, Trigger, Portal, Backdrop, Positioner, Content, Title, Description, Close. Add `AlertDialog` as a stricter semantic layer, not a forked overlay system.                                 |
-| Sheet          | Strong vertical. Reuses Dialog-like modal overlay with side data.                                                                                                                               | Good modal behavior inheritance. Gaps: drawer gesture behavior, side-specific animation docs, scroll/touch depth.                                     | `Sheet.Root side`, Trigger, Portal, Backdrop, Positioner, Content, Title, Description, Close. Treat Drawer as later gesture-rich variant.                                                                           |
-| Popover        | Strong vertical. Opens from trigger, floating geometry, outside dismissal, arrow.                                                                                                               | Needs deeper non-modal focus policy, nested mixed overlays, modal option decisions, collision docs.                                                   | `Popover.Root open/defaultOpen modal?`, Trigger, Portal, Positioner, Arrow, Content. Keep non-modal default.                                                                                                        |
-| HoverCard      | Strong/thin vertical. Has open delay/close delay, hover/focus behavior, pointer grace area, floating parts.                                                                                     | Gaps: touch policy, nested hoverable content edge cases, richer preview-card semantics.                                                               | `HoverCard.Root openDelay closeDelay`, Trigger as anchor, Portal/Positioner/Arrow/Content. Keep it separate from Tooltip because content can be interactive.                                                        |
-| Tooltip        | Strong vertical. Provider delay, skip-delay after close, hoverable content grace polygon, aria-describedby, Escape.                                                                             | Gaps: complete provider grouping docs, touch/long-press policy, disabled trigger guidance, manual AT evidence.                                        | `Tooltip.Provider delayDuration skipDelayDuration`, `Tooltip.Root`, Trigger, Portal, Positioner, Arrow, Content. Keep non-interactive semantics by default.                                                         |
-| Menu           | Strong vertical. Keyboard navigation, typeahead, item roles, checkbox/radio items, groups, separators, submenus, Escape, floating.                                                              | Gaps: submenu pointer grace, scroll buttons, modal nuances, checked item APIs, touch behavior.                                                        | `Menu.Root`, Trigger, Portal, Positioner, Content, Group, GroupLabel, Separator, Item, ItemIndicator, CheckboxItem, RadioGroup, RadioItem, SubmenuRoot/SubmenuTrigger/SubmenuContent eventually.                    |
-| DropdownMenu   | Strong vertical as scoped Menu alias.                                                                                                                                                           | Shares Menu strengths and gaps. Needs docs to distinguish trigger-driven menu from generic Menu.                                                      | Re-export Menu namespace with dropdown scope and default trigger semantics.                                                                                                                                         |
-| ContextMenu    | Strong vertical as scoped Menu alias with virtual anchor.                                                                                                                                       | Native `contextmenu` tested. Needs touch/long-press and collision/nested menu depth.                                                                  | `ContextMenu.Root`, Trigger, Portal/Content. Keep virtual anchor private.                                                                                                                                           |
-| Menubar        | Strong vertical as scoped Menu alias with `menubar` root role.                                                                                                                                  | Needs deeper menubar-specific roving root, submenu intent, disabled focus policy.                                                                     | `Menubar.Root`, Menu-like item/submenu parts. Should share collection/list navigation but own root orientation semantics.                                                                                           |
-| NavigationMenu | Thin to strong vertical. It reuses menu kernel and has navigation scope, routed link behavior, typeahead, items.                                                                                | Remaining gaps: viewport, popup-specific layout APIs, animation metadata, touch pointer intent, richer navigation content composition.                | Should not just be Menu forever. End-state needs Root/List/Item/Trigger/Content/Viewport/Indicator/Link plus overlay positioning where content is floating.                                                         |
-| Toast          | Strong vertical. Manager/provider/store, viewport, root/title/description/action/close, duration, limit, update/dismiss, live regions, pause on interaction.                                    | Gaps: promise/loading transitions, swipe gestures, viewport hotkey, progress track, window blur pause, geometry/placement variants, manual SR checks. | `createToastManager`, `toaster`, `Toast.Provider`, `Toast.Viewport`, `Toast.Root`, Title, Description, Action, Close. Add `toast.promise` style helpers in Mason or Keystone only after lifecycle semantics settle. |
-| AlertDialog    | Missing.                                                                                                                                                                                        | Should build on Dialog but require title/description and initial least-destructive action semantics.                                                  | `AlertDialog.Root`, Trigger, Portal, Backdrop, Positioner, Content, Title, Description, Action, Cancel. Use Dialog kernel.                                                                                          |
-| Drawer         | Missing as gesture-rich primitive.                                                                                                                                                              | Sheet covers side modal today. Drawer should add drag/swipe and responsive edge behavior later.                                                       | Either alias Sheet initially or introduce `Drawer.Root` only when pointer gesture engine exists.                                                                                                                    |
-| PreviewCard    | Missing.                                                                                                                                                                                        | Likely similar to HoverCard with richer preview semantics.                                                                                            | Defer until HoverCard and Popover are stable.                                                                                                                                                                       |
+| Surface        | Current state                                                                                                                                                                                   | Parity and gaps                                                                                                                                       | Optimal API direction                                                                                                                                                                                        |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Dialog         | Proven baseline modal primitive. Covers open state, portal, backdrop, content, title/description, focus entry/trap/restore, preventable outside/Escape, inert outside, nested layers, presence. | Strongest Core primitive. Remaining depth: alert-dialog variant, richer scroll/touch edge cases, manual AT evidence, docs accessibility spec.         | Keep current anatomy: Root, Trigger, Portal, Backdrop, Positioner, Content, Title, Description, Close. Add `AlertDialog` as a stricter semantic layer, not a forked overlay system.                          |
+| Sheet          | Strong vertical. Reuses Dialog-like modal overlay with side data.                                                                                                                               | Good modal behavior inheritance. Gaps: drawer gesture behavior, side-specific animation docs, scroll/touch depth.                                     | `Sheet.Root side`, Trigger, Portal, Backdrop, Positioner, Content, Title, Description, Close. Treat Drawer as later gesture-rich variant.                                                                    |
+| Popover        | Strong vertical. Opens from trigger, floating geometry, outside dismissal, arrow.                                                                                                               | Needs deeper non-modal focus policy, nested mixed overlays, modal option decisions, collision docs.                                                   | `Popover.Root open/defaultOpen modal?`, Trigger, Portal, Positioner, Arrow, Content. Keep non-modal default.                                                                                                 |
+| HoverCard      | Strong/thin vertical. Has open delay/close delay, hover/focus behavior, pointer grace area, floating parts.                                                                                     | Gaps: touch policy, nested hoverable content edge cases, richer preview-card semantics.                                                               | `HoverCard.Root openDelay closeDelay`, Trigger as anchor, Portal/Positioner/Arrow/Content. Keep it separate from Tooltip because content can be interactive.                                                 |
+| Tooltip        | Strong vertical. Provider delay, skip-delay after close, hoverable content grace polygon, aria-describedby, Escape.                                                                             | Gaps: complete provider grouping docs, touch/long-press policy, disabled trigger guidance, manual AT evidence.                                        | `Tooltip.Provider delayDuration skipDelayDuration`, `Tooltip.Root`, Trigger, Portal, Positioner, Arrow, Content. Keep non-interactive semantics by default.                                                  |
+| Menu           | Strong vertical. Keyboard navigation, typeahead, item roles, checkbox/radio items, groups, separators, submenus, Escape, floating.                                                              | Gaps: submenu pointer grace, scroll buttons, modal nuances, checked item APIs, touch behavior.                                                        | `Menu.Root`, Trigger, Portal, Positioner, Content, Group, GroupLabel, Separator, Item, ItemIndicator, CheckboxItem, RadioGroup, RadioItem, SubmenuRoot/SubmenuTrigger/SubmenuContent eventually.             |
+| DropdownMenu   | Strong vertical as scoped Menu alias.                                                                                                                                                           | Shares Menu strengths and gaps. Needs docs to distinguish trigger-driven menu from generic Menu.                                                      | Re-export Menu namespace with dropdown scope and default trigger semantics.                                                                                                                                  |
+| ContextMenu    | Strong vertical as scoped Menu alias with virtual anchor.                                                                                                                                       | Native `contextmenu` tested. Needs touch/long-press and collision/nested menu depth.                                                                  | `ContextMenu.Root`, Trigger, Portal/Content. Keep virtual anchor private.                                                                                                                                    |
+| Menubar        | Strong vertical as scoped Menu alias with `menubar` root role.                                                                                                                                  | Needs deeper menubar-specific roving root, submenu intent, disabled focus policy.                                                                     | `Menubar.Root`, Menu-like item/submenu parts. Should share collection/list navigation but own root orientation semantics.                                                                                    |
+| NavigationMenu | Thin to strong vertical. It reuses menu kernel and has navigation scope, routed link behavior, typeahead, items.                                                                                | Remaining gaps: viewport, popup-specific layout APIs, animation metadata, touch pointer intent, richer navigation content composition.                | Should not just be Menu forever. End-state needs Root/List/Item/Trigger/Content/Viewport/Indicator/Link plus overlay positioning where content is floating.                                                  |
+| Toast          | Strong vertical. Manager/provider/store, viewport, root/title/description/action/close, duration, limit, update/dismiss, live regions, pause on interaction.                                    | Gaps: promise/loading transitions, swipe gestures, viewport hotkey, progress track, window blur pause, geometry/placement variants, manual SR checks. | `createToastManager`, `toaster`, `Toast.Provider`, `Toast.Viewport`, `Toast.Root`, Title, Description, Action, Close. Add `toast.promise` style helpers in UI or Core only after lifecycle semantics settle. |
+| AlertDialog    | Missing.                                                                                                                                                                                        | Should build on Dialog but require title/description and initial least-destructive action semantics.                                                  | `AlertDialog.Root`, Trigger, Portal, Backdrop, Positioner, Content, Title, Description, Action, Cancel. Use Dialog kernel.                                                                                   |
+| Drawer         | Missing as gesture-rich primitive.                                                                                                                                                              | Sheet covers side modal today. Drawer should add drag/swipe and responsive edge behavior later.                                                       | Either alias Sheet initially or introduce `Drawer.Root` only when pointer gesture engine exists.                                                                                                             |
+| PreviewCard    | Missing.                                                                                                                                                                                        | Likely similar to HoverCard with richer preview semantics.                                                                                            | Defer until HoverCard and Popover are stable.                                                                                                                                                                |
 
 ### Collection And Choice Primitives
 
-| Surface           | Current state                                                                                                                                                                                                 | Parity and gaps                                                                                                                                                                  | Optimal API direction                                                                                                                                                                                                |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Select            | Strong vertical. Controlled/uncontrolled open/value, multiple values, hidden inputs, form reset/external owner/sync, readonly, groups, dynamic DOM order, keyboard navigation, typeahead, floating variables. | Gaps: scroll arrows, richer section APIs, hidden item awareness, virtualization hooks, item equality customization, more modal/non-modal popup policy, deeper focus restoration. | `Select.Root`, Trigger, Value, Portal, Positioner, Arrow, Content, Listbox, Group, GroupLabel, Item, ItemText, ItemIndicator, HiddenInput internal. Creator returns prop getters and list/form APIs.                 |
-| Combobox          | Strong vertical. Input open/highlight/select, hidden input and reset, clear button, Autocomplete scoped alias.                                                                                                | Gaps: async filtering helpers, inline completion, detached trigger policies, virtualized lists, multi-select/chips, grouped filtering, active descendant edge cases.             | `Combobox.Root inputValue/value`, Input, Trigger, Clear, Portal, Positioner, Arrow, Content, Listbox, Group, Item, ItemText, ItemIndicator. Filtering should be user-owned unless Keystone needs accessibility glue. |
-| Autocomplete      | Strong vertical as Combobox-scoped alias.                                                                                                                                                                     | Needs product distinction from Combobox. If behavior is identical, Mason may own styled naming.                                                                                  | Keep as `createAutocomplete` only if ARIA semantics or docs differ. Otherwise prefer Combobox with Mason Autocomplete wrapper.                                                                                       |
-| Listbox           | Internal strong vertical, metadata exists but no public subpath export.                                                                                                                                       | Gaps: hidden item awareness, virtualization, stable public API decision.                                                                                                         | Eventually public: `Listbox.Root`, Option, Group, GroupLabel; `createListbox`. It should be the base for Select/Combobox/Menu where roles align.                                                                     |
-| Command primitive | Missing in Keystone; Mason has command-menu using Combobox plus TanStack Store/Hotkeys.                                                                                                                       | Good boundary: app-level command orchestration belongs to Mason.                                                                                                                 | Add Keystone Command only if Combobox/Listbox cannot express command accessibility. Otherwise Mason CommandMenu should remain composed source.                                                                       |
+| Surface           | Current state                                                                                                                                                                                                 | Parity and gaps                                                                                                                                                                  | Optimal API direction                                                                                                                                                                                            |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Select            | Strong vertical. Controlled/uncontrolled open/value, multiple values, hidden inputs, form reset/external owner/sync, readonly, groups, dynamic DOM order, keyboard navigation, typeahead, floating variables. | Gaps: scroll arrows, richer section APIs, hidden item awareness, virtualization hooks, item equality customization, more modal/non-modal popup policy, deeper focus restoration. | `Select.Root`, Trigger, Value, Portal, Positioner, Arrow, Content, Listbox, Group, GroupLabel, Item, ItemText, ItemIndicator, HiddenInput internal. Creator returns prop getters and list/form APIs.             |
+| Combobox          | Strong vertical. Input open/highlight/select, hidden input and reset, clear button, Autocomplete scoped alias.                                                                                                | Gaps: async filtering helpers, inline completion, detached trigger policies, virtualized lists, multi-select/chips, grouped filtering, active descendant edge cases.             | `Combobox.Root inputValue/value`, Input, Trigger, Clear, Portal, Positioner, Arrow, Content, Listbox, Group, Item, ItemText, ItemIndicator. Filtering should be user-owned unless Core needs accessibility glue. |
+| Autocomplete      | Strong vertical as Combobox-scoped alias.                                                                                                                                                                     | Needs product distinction from Combobox. If behavior is identical, UI may own styled naming.                                                                                     | Keep as `createAutocomplete` only if ARIA semantics or docs differ. Otherwise prefer Combobox with UI Autocomplete wrapper.                                                                                      |
+| Listbox           | Internal strong vertical, metadata exists but no public subpath export.                                                                                                                                       | Gaps: hidden item awareness, virtualization, stable public API decision.                                                                                                         | Eventually public: `Listbox.Root`, Option, Group, GroupLabel; `createListbox`. It should be the base for Select/Combobox/Menu where roles align.                                                                 |
+| Command primitive | Missing in Keystone; UI has command-menu using Combobox plus TanStack Store/Hotkeys.                                                                                                                          | Good boundary: app-level command orchestration belongs to UI.                                                                                                                    | Add Core Command only if Combobox/Listbox cannot express command accessibility. Otherwise UI CommandMenu should remain composed source.                                                                          |
 
 ### Forms And Fields
 
 | Surface                            | Current state                                                                                                                  | Parity and gaps                                                                                              | Optimal API direction                                                                                                                    |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | FormControl                        | Strong vertical in `form` module. ARIA label/description/error relationships, hidden input props, state data, validity helper. | Gaps: full public compound anatomy, fieldset grouping, reset listener depth, full validation lifecycle docs. | Expose `FormControl.Root`, Label, Control, Description, ErrorMessage, HiddenInput only when API is stable. Keep validation native-first. |
-| Field                              | Mason item exists, Keystone form-control exists.                                                                               | Mason styled field is useful, but Keystone Field primitive needs clearer public package shape.               | Keystone Field should be a semantic wrapper around FormControl, not TanStack Form. Mason Form/TanStackField own app validation.          |
-| Label                              | Mason base item exists. Keystone label behavior is part of form-control, not standalone yet.                                   | Standalone Keystone Label may be useful for native controls.                                                 | `Label.Root for` can exist as a tiny primitive if composition proves need.                                                               |
-| TextField / TextArea / SearchField | Mason items exist for input/textarea/text-field; Keystone TextField not implemented as separate primitive.                     | Keystone should avoid replacing native input unless it adds ARIA/form behavior.                              | Mason should provide styled source. Keystone should provide FormControl and maybe TextField only for cross-part relationships.           |
+| Field                              | UI item exists, Core form-control exists.                                                                                      | UI styled field is useful, but Core Field primitive needs clearer public package shape.                      | Core Field should be a semantic wrapper around FormControl, not TanStack Form. UI Form/TanStackField own app validation.                 |
+| Label                              | UI base item exists. Keystone label behavior is part of form-control, not standalone yet.                                      | Standalone Keystone Label may be useful for native controls.                                                 | `Label.Root for` can exist as a tiny primitive if composition proves need.                                                               |
+| TextField / TextArea / SearchField | UI items exist for input/textarea/text-field; Keystone TextField not implemented as separate primitive.                        | Core should avoid replacing native input unless it adds ARIA/form behavior.                                  | UI should provide styled source. Core should provide FormControl and maybe TextField only for cross-part relationships.                  |
 | Fieldset                           | Missing.                                                                                                                       | Needed for grouped fields and radio/checkbox groups.                                                         | `Fieldset.Root`, Legend, Description, ErrorMessage with shared form-control state.                                                       |
 | ErrorMessage / Description         | Present as form-control concepts.                                                                                              | Needs public component surface if Field becomes public.                                                      | Keep ID registration and `aria-describedby` composition in Keystone.                                                                     |
 
@@ -269,22 +269,22 @@ registry item request
 | Switch               | Strong vertical. Checked state, role, hidden input, reset, preventable toggle.                                     | Gaps similar to Checkbox, plus clearer switch vs checkbox semantics in docs.                                       | `Switch.Root`, Control, Thumb, HiddenInput.                                                                                                        |
 | RadioGroup           | Strong vertical. Roving focus, keyboard selection, disabled skip, hidden inputs, external reset.                   | Gaps: RTL horizontal behavior, toolbar/nested coordination, richer label composition.                              | `RadioGroup.Root`, Item, ItemIndicator, HiddenInput. Consider `Radio` standalone only if needed.                                                   |
 | Slider               | Strong vertical. Keyboard, pointer track, controlled/uncontrolled, hidden input, readonly, CSS vars.               | Gaps: advanced pointer/touch, min thumb distance, multi-thumb lifecycle, field/validation semantics, tick helpers. | `Slider.Root`, Track, Range, Thumb, HiddenInput. API should support `value: number[]`, min/max/step/orientation, `onValueChange`, `onValueCommit`. |
-| Toolbar              | Strong vertical. Root role/orientation, roving focus, RTL arrows, disabled skip, pressed button state, separators. | Gaps: richer item registration, nested composite coordination, toggle groups.                                      | `Toolbar.Root`, Button, Link, Separator. Keep behavior primitive-level and styling Mason-owned.                                                    |
+| Toolbar              | Strong vertical. Root role/orientation, roving focus, RTL arrows, disabled skip, pressed button state, separators. | Gaps: richer item registration, nested composite coordination, toggle groups.                                      | `Toolbar.Root`, Button, Link, Separator. Keep behavior primitive-level and styling UI-owned.                                                       |
 | NumberField          | Missing.                                                                                                           | Needs spinbutton semantics, parser/formatter, locale, increment/decrement, form integration.                       | `NumberField.Root`, Label via FormControl, Input, IncrementTrigger, DecrementTrigger, ScrubArea later.                                             |
 | Toggle / ToggleGroup | Missing.                                                                                                           | Can reuse selection-control and toolbar/list navigation kernels.                                                   | `Toggle.Root pressed/defaultPressed`; `ToggleGroup.Root type value`, Item.                                                                         |
-| SegmentedControl     | Missing.                                                                                                           | Related to ToggleGroup/RadioGroup.                                                                                 | Likely Mason styled component over RadioGroup or ToggleGroup unless unique behavior appears.                                                       |
+| SegmentedControl     | Missing.                                                                                                           | Related to ToggleGroup/RadioGroup.                                                                                 | Likely UI styled component over RadioGroup or ToggleGroup unless unique behavior appears.                                                          |
 | OTPField             | Missing.                                                                                                           | Needs focus management, paste handling, hidden value, form integration.                                            | `OTPField.Root`, Input slots, HiddenInput. Use proven library references before custom behavior.                                                   |
-| FileField            | Missing.                                                                                                           | Native file input wrapper plus drag/drop later.                                                                    | Keep native input behavior. Mason can style.                                                                                                       |
+| FileField            | Missing.                                                                                                           | Native file input wrapper plus drag/drop later.                                                                    | Keep native input behavior. UI can style.                                                                                                          |
 | RatingGroup          | Missing.                                                                                                           | Needs radio-like semantics and pointer/keyboard behavior.                                                          | Build over single selection and roving focus.                                                                                                      |
 
 ### Feedback And Display
 
-| Surface                      | Current state                                                            | Parity and gaps                                                                                  | Optimal API direction                                                                                   |
-| ---------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| Separator                    | Mason item exists, Keystone metadata does not list standalone separator. | Simple enough for Mason/native element unless Keystone direction/orientation contract is needed. | Keystone `Separator.Root orientation decorative?` can be tiny. Mason should style it.                   |
-| Progress / Meter             | Missing.                                                                 | Native roles and value semantics.                                                                | `Progress.Root`, Track, Range, Label/ValueText maybe. `Meter` similar but semantic distinctions matter. |
-| ScrollArea                   | Missing.                                                                 | Needs strong accessibility and pointer behavior.                                                 | Defer. Prefer native overflow unless custom scrollbars are necessary.                                   |
-| Avatar / Image / AspectRatio | Mason inventory, Keystone missing.                                       | Display utilities, not kernel priorities.                                                        | Mason can own styled display. Keystone only if fallback/loading accessibility behavior is non-trivial.  |
+| Surface                      | Current state                                                     | Parity and gaps                                                                               | Optimal API direction                                                                                   |
+| ---------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Separator                    | UI item exists, Core metadata does not list standalone separator. | Simple enough for UI/native element unless Keystone direction/orientation contract is needed. | Core `Separator.Root orientation decorative?` can be tiny. UI should style it.                          |
+| Progress / Meter             | Missing.                                                          | Native roles and value semantics.                                                             | `Progress.Root`, Track, Range, Label/ValueText maybe. `Meter` similar but semantic distinctions matter. |
+| ScrollArea                   | Missing.                                                          | Needs strong accessibility and pointer behavior.                                              | Defer. Prefer native overflow unless custom scrollbars are necessary.                                   |
+| Avatar / Image / AspectRatio | UI inventory, Keystone missing.                                   | Display utilities, not kernel priorities.                                                     | UI can own styled display. Core only if fallback/loading accessibility behavior is non-trivial.         |
 
 ### Complex Later Primitives
 
@@ -309,36 +309,36 @@ Mason registry infrastructure is comparatively mature for this stage:
 
 Primary gap: docs and registry preview are ahead of package publication, but not yet a full public distribution story.
 
-### Mason Item Parity Table
+### UI Item Parity Table
 
-| Item                                                                  | Kind                 | Current parity reference                           | State                                                                               |
-| --------------------------------------------------------------------- | -------------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `button`                                                              | base UI source       | Base UI, Kobalte                                   | Mason only. Good starter source item, no Keystone behavior needed yet.              |
-| `badge`                                                               | display              | Base UI, Kobalte                                   | Mason only. Parity is anatomy/styling, not runtime behavior.                        |
-| `card`                                                                | layout               | Base UI, Kobalte                                   | Mason only. Should stay styled source.                                              |
-| `separator`                                                           | layout               | Base UI, Kobalte                                   | Mason only or tiny Keystone later.                                                  |
-| `input`, `textarea`, `label`                                          | base form            | Base UI, Kobalte                                   | Mason native wrappers. Should compose Field/FormControl where needed.               |
-| `field`                                                               | form composition     | Base UI, Kobalte                                   | Mason styled wrapper over Keystone form-control concepts.                           |
-| `dialog`, `sheet`, `popover`, `hover-card`, `tooltip`                 | overlay              | Base UI, Kobalte                                   | Good Keystone-backed direction. Must not reimplement focus/dismissal.               |
-| `accordion`, `collapsible`, `tabs`                                    | structure/disclosure | Base UI, Kobalte                                   | Useful thin wrappers. Need deeper primitive parity before heavy block usage.        |
-| `checkbox`, `switch`, `radio-group`, `slider`                         | input                | Base UI, Kobalte, TanStack Ranger for slider       | Good Keystone-backed wrappers. Need field integration and validation examples.      |
-| `select-field`, `text-field`                                          | TanStack form fields | TanStack Form plus primitive references            | Correct Mason app-layer ownership. Should stay generated source, not Keystone.      |
-| `combobox`, `autocomplete`                                            | listbox/input        | Base UI, Kobalte                                   | Good wrapper direction. Filtering/app search helpers should be Mason or user-owned. |
-| `menu`, `dropdown-menu`, `context-menu`, `menubar`, `navigation-menu` | overlay/navigation   | Base UI, Kobalte                                   | Good coverage, but NavigationMenu needs its own richer anatomy later.               |
-| `date-picker`                                                         | form/calendar        | Base UI, Kobalte                                   | Useful early wrapper. Needs deeper date field and validation before stable.         |
-| `toast`                                                               | notification         | Base UI, Kobalte, Sonner                           | Good source item. Promise/swipe/progress behavior remains future.                   |
-| `toolbar`                                                             | actions/composite    | Base UI, Kobalte                                   | Good wrapper over Keystone toolbar.                                                 |
-| `command-menu`                                                        | app command surface  | Base UI, Kobalte, TanStack Store, TanStack Hotkeys | Correctly Mason app-layer. Should remain source-owned by app.                       |
-| `data-table`                                                          | app table            | TanStack Table, shadcn                             | Correct Mason app-layer. No Keystone dependency expected.                           |
-| `data-table-tanstack-router`                                          | table/router adapter | TanStack Router, TanStack Table                    | Correct as optional app integration item.                                           |
-| `account-settings`                                                    | block                | Mason, shadcn                                      | Good first block proving dependency composition.                                    |
-| `cn`                                                                  | utility              | Mason, shadcn                                      | Good registry primitive utility.                                                    |
+| Item                                                                  | Kind                 | Current parity reference                           | State                                                                            |
+| --------------------------------------------------------------------- | -------------------- | -------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `button`                                                              | base UI source       | Base UI, Kobalte                                   | UI only. Good starter source item, no Core behavior needed yet.                  |
+| `badge`                                                               | display              | Base UI, Kobalte                                   | UI only. Parity is anatomy/styling, not runtime behavior.                        |
+| `card`                                                                | layout               | Base UI, Kobalte                                   | UI only. Should stay styled source.                                              |
+| `separator`                                                           | layout               | Base UI, Kobalte                                   | UI only or tiny Keystone later.                                                  |
+| `input`, `textarea`, `label`                                          | base form            | Base UI, Kobalte                                   | UI native wrappers. Should compose Field/FormControl where needed.               |
+| `field`                                                               | form composition     | Base UI, Kobalte                                   | UI styled wrapper over Core form-control concepts.                               |
+| `dialog`, `sheet`, `popover`, `hover-card`, `tooltip`                 | overlay              | Base UI, Kobalte                                   | Good Core-backed direction. Must not reimplement focus/dismissal.                |
+| `accordion`, `collapsible`, `tabs`                                    | structure/disclosure | Base UI, Kobalte                                   | Useful thin wrappers. Need deeper primitive parity before heavy block usage.     |
+| `checkbox`, `switch`, `radio-group`, `slider`                         | input                | Base UI, Kobalte, TanStack Ranger for slider       | Good Core-backed wrappers. Need field integration and validation examples.       |
+| `select-field`, `text-field`                                          | TanStack form fields | TanStack Form plus primitive references            | Correct UI app-layer ownership. Should stay generated source, not Keystone.      |
+| `combobox`, `autocomplete`                                            | listbox/input        | Base UI, Kobalte                                   | Good wrapper direction. Filtering/app search helpers should be UI or user-owned. |
+| `menu`, `dropdown-menu`, `context-menu`, `menubar`, `navigation-menu` | overlay/navigation   | Base UI, Kobalte                                   | Good coverage, but NavigationMenu needs its own richer anatomy later.            |
+| `date-picker`                                                         | form/calendar        | Base UI, Kobalte                                   | Useful early wrapper. Needs deeper date field and validation before stable.      |
+| `toast`                                                               | notification         | Base UI, Kobalte, Sonner                           | Good source item. Promise/swipe/progress behavior remains future.                |
+| `toolbar`                                                             | actions/composite    | Base UI, Kobalte                                   | Good wrapper over Keystone toolbar.                                              |
+| `command-menu`                                                        | app command surface  | Base UI, Kobalte, TanStack Store, TanStack Hotkeys | Correctly UI app-layer. Should remain source-owned by app.                       |
+| `data-table`                                                          | app table            | TanStack Table, shadcn                             | Correct UI app-layer. No Keystone dependency expected.                           |
+| `data-table-tanstack-router`                                          | table/router adapter | TanStack Router, TanStack Table                    | Correct as optional app integration item.                                        |
+| `account-settings`                                                    | block                | UI, shadcn                                         | Good first block proving dependency composition.                                 |
+| `cn`                                                                  | utility              | UI, shadcn                                         | Good registry primitive utility.                                                 |
 
 ## End-State API Principles
 
-### 1. Compound Components Plus Creators
+### 1. Compound UI Plus Creators
 
-Every meaningful Keystone primitive should expose both:
+Every meaningful Core primitive should expose both:
 
 ```tsx
 <Dialog.Root open={open()} onOpenChange={setOpen}>
@@ -455,12 +455,12 @@ Geometry:
 
 This contract is Keystone-owned. Inspiration libraries guide coverage, not naming.
 
-### 6. Mason Source Ownership
+### 6. UI Source Ownership
 
-Mason should generate readable source:
+UI should generate readable source:
 
 ```tsx
-import { Dialog as DialogPrimitive } from "@keystone-ui/keystone/dialog";
+import { Dialog as DialogPrimitive } from "@keystone-ui/core/dialog";
 import { splitProps } from "solid-js";
 import { cn } from "~/lib/cn";
 
@@ -478,7 +478,7 @@ export function DialogContent(props: DialogPrimitive.DialogContentProps) {
 }
 ```
 
-Mason should not hide behavior in a Mason runtime package when source ownership is the product promise.
+UI should not hide behavior in a UI runtime package when source ownership is the product promise.
 
 ### 7. TanStack Boundary
 
@@ -487,7 +487,7 @@ Keystone:
 - No TanStack Form/Table/Store/Hotkeys.
 - Owns intrinsic primitive behavior.
 
-Mason:
+UI:
 
 - Uses TanStack Form for app-grade form state.
 - Uses TanStack Table for data tables.
@@ -629,7 +629,7 @@ Target:
 </Combobox.Root>
 ```
 
-Filtering should remain user-owned by default. Keystone should own ARIA, focus, active descendant, listbox relationship, selection, and form serialization.
+Filtering should remain user-owned by default. Core should own ARIA, focus, active descendant, listbox relationship, selection, and form serialization.
 
 ### Menu Family
 
@@ -667,7 +667,7 @@ Target:
 </Field.Root>
 ```
 
-Keystone should own ARIA and native form semantics. Mason should own styled field layout and TanStack Form integration:
+Core should own ARIA and native form semantics. UI should own styled field layout and TanStack Form integration:
 
 ```tsx
 <TanStackField name="email">{(field) => <TextField field={field} label="Email" />}</TanStackField>
@@ -739,16 +739,16 @@ Only add this after lifecycle, update, dismiss, and live-region semantics are st
 3. Promote or explicitly keep private the internal Listbox API.
 4. Deepen Select and Combobox: hidden items, virtualization strategy, scroll affordances, repeated-letter typeahead, focus restoration, async filtering examples.
 5. Split NavigationMenu from generic Menu where viewport/content/link anatomy requires it.
-6. Make Field/FormControl public shape clearer before building more Mason field wrappers.
+6. Make Field/FormControl public shape clearer before building more UI field wrappers.
 7. Decide AlertDialog API and implement it on Dialog internals.
 8. Deepen date work only after deciding DateField segment APIs and calendar locale scope.
 9. Add manual accessibility evidence process before any "stable" claim.
-10. Keep Mason registry breadth subordinate to Keystone runtime depth.
+10. Keep Mason registry breadth subordinate to Core runtime depth.
 
 ## What To Avoid
 
 - Treating `meta.parity` as compatibility with Base UI/Kobalte. It is a concise coverage and gap note.
-- Adding Mason wrappers that duplicate focus traps, typeahead, select, combobox, menu, dialog, or listbox behavior.
+- Adding UI wrappers that duplicate focus traps, typeahead, select, combobox, menu, dialog, or listbox behavior.
 - Exporting private kernel modules as public API before two or more primitives prove the shape.
 - Letting TanStack app-layer dependencies enter Keystone.
 - Treating React Aria, Radix, Base UI, or Zag APIs as copy targets. They are reference systems.
@@ -756,16 +756,16 @@ Only add this after lifecycle, update, dismiss, and live-region semantics are st
 
 ## Bottom Line
 
-The repo is in a credible early-alpha state. Keystone has enough shared kernel to justify continuing depth work rather than restarting architecture. Mason has a solid registry/CLI foundation and enough first-party items to prove the distribution model.
+The repo is in a credible early-alpha state. Keystone has enough shared kernel to justify continuing depth work rather than restarting architecture. UI has a solid registry/CLI foundation and enough first-party items to prove the distribution model.
 
 The optimal solution is to keep converging on this shape:
 
 ```txt
-Keystone private kernel
+Core private kernel
   -> Keystone Solid-native primitive creators
-    -> Keystone compound parts with stable data/CSS contracts
-      -> Mason copy-paste styled source
-        -> Mason TanStack-backed app components and blocks
+    -> Core compound parts with stable data/CSS contracts
+      -> UI copy-paste styled source
+        -> UI TanStack-backed app components and blocks
 ```
 
 The next high-leverage work is not more catalog breadth. It is parity closure and specification for the primitives that already prove the architecture.

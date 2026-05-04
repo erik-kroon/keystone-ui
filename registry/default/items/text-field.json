@@ -3,24 +3,24 @@
   "name": "text-field",
   "type": "registry:ui",
   "title": "TextField",
-  "description": "TanStack Form text field composed with Keystone form-control semantics and Mason styling hooks.",
+  "description": "TanStack Form text field composed with Keystone form-control semantics and UI styling hooks.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/keystone@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.9 <2.0.0"
   },
   "categories": ["form", "tanstack"],
   "keywords": ["text-field", "field", "form", "tanstack", "keystone"],
-  "docs": "https://mason.build/docs/components/text-field",
+  "docs": "https://keystone-ui.dev/docs/ui/text-field",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add text-field",
-    "customization": "Use mason-text-field classes and data-part values for root, label, input, description, and error while TanStack Form owns field state.",
+    "customization": "Use ui-text-field classes and data-part values for root, label, input, description, and error while TanStack Form owns field state.",
     "sourceFiles": ["registry/default/ui/text-field.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "@tanstack/solid-form", "cn"],
+    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn"],
     "parity": {
-      "tanstackForm": "First-class comparison is TanStack Form: the component binds field state to an input with Mason label/description/error parts. Gaps: async validation examples, schema adapters, field arrays, submit lifecycle helpers, and masked/parsed value patterns remain follow-up work.",
+      "tanstackForm": "First-class comparison is TanStack Form: the component binds field state to an input with UI label/description/error parts. Gaps: async validation examples, schema adapters, field arrays, submit lifecycle helpers, and masked/parsed value patterns remain follow-up work.",
       "baseUi": "Tracks Base UI Field/Input depth for ARIA relationships, invalid/required/disabled state, native form participation, and validation messaging. Gaps: touched/dirty/filled/focused state, form-level validation orchestration, and control registration depth remain follow-up work.",
       "kobalte": "Solid reference is Kobalte TextField/FormControl composition. Gaps: context-driven ID registration depth, reset listener behavior, and richer description/error composition remain follow-up work."
     }

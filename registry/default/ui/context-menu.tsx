@@ -1,61 +1,56 @@
 import {
-  ContextMenu as KeystoneContextMenu,
-  type ContextMenuCheckboxItemProps as KeystoneContextMenuCheckboxItemProps,
-  type ContextMenuContentProps as KeystoneContextMenuContentProps,
-  type ContextMenuGroupLabelProps as KeystoneContextMenuGroupLabelProps,
-  type ContextMenuGroupProps as KeystoneContextMenuGroupProps,
-  type ContextMenuItemProps as KeystoneContextMenuItemProps,
-  type ContextMenuPartProps as KeystoneContextMenuPartProps,
-  type ContextMenuPortalProps as KeystoneContextMenuPortalProps,
-  type ContextMenuPositionerProps as KeystoneContextMenuPositionerProps,
-  type ContextMenuRadioGroupProps as KeystoneContextMenuRadioGroupProps,
-  type ContextMenuRadioItemProps as KeystoneContextMenuRadioItemProps,
-  type ContextMenuRootProps as KeystoneContextMenuRootProps,
-  type ContextMenuSeparatorProps as KeystoneContextMenuSeparatorProps,
-  type ContextMenuTriggerProps as KeystoneContextMenuTriggerProps,
-} from "@keystone-ui/keystone/context-menu";
+  ContextMenu as CoreContextMenu,
+  type ContextMenuCheckboxItemProps as CoreContextMenuCheckboxItemProps,
+  type ContextMenuContentProps as CoreContextMenuContentProps,
+  type ContextMenuGroupLabelProps as CoreContextMenuGroupLabelProps,
+  type ContextMenuGroupProps as CoreContextMenuGroupProps,
+  type ContextMenuItemProps as CoreContextMenuItemProps,
+  type ContextMenuPartProps as CoreContextMenuPartProps,
+  type ContextMenuPortalProps as CoreContextMenuPortalProps,
+  type ContextMenuPositionerProps as CoreContextMenuPositionerProps,
+  type ContextMenuRadioGroupProps as CoreContextMenuRadioGroupProps,
+  type ContextMenuRadioItemProps as CoreContextMenuRadioItemProps,
+  type ContextMenuRootProps as CoreContextMenuRootProps,
+  type ContextMenuSeparatorProps as CoreContextMenuSeparatorProps,
+  type ContextMenuTriggerProps as CoreContextMenuTriggerProps,
+} from "@keystone-ui/core/context-menu";
 import { splitProps } from "solid-js";
 import { cn } from "@/lib/cn";
 
-export type ContextMenuProps = KeystoneContextMenuRootProps;
-export type ContextMenuTriggerProps = KeystoneContextMenuTriggerProps;
-export type ContextMenuPortalProps = KeystoneContextMenuPortalProps;
-export type ContextMenuPositionerProps = KeystoneContextMenuPositionerProps;
-export type ContextMenuContentProps = KeystoneContextMenuContentProps & {
+export type ContextMenuProps = CoreContextMenuRootProps;
+export type ContextMenuTriggerProps = CoreContextMenuTriggerProps;
+export type ContextMenuPortalProps = CoreContextMenuPortalProps;
+export type ContextMenuPositionerProps = CoreContextMenuPositionerProps;
+export type ContextMenuContentProps = CoreContextMenuContentProps & {
   portal?: ContextMenuPortalProps;
   positionerClass?: string;
 };
-export type ContextMenuGroupProps = KeystoneContextMenuGroupProps;
-export type ContextMenuGroupLabelProps = KeystoneContextMenuGroupLabelProps;
-export type ContextMenuSeparatorProps = KeystoneContextMenuSeparatorProps;
-export type ContextMenuItemProps = KeystoneContextMenuItemProps;
-export type ContextMenuCheckboxItemProps = KeystoneContextMenuCheckboxItemProps;
-export type ContextMenuRadioGroupProps = KeystoneContextMenuRadioGroupProps;
-export type ContextMenuRadioItemProps = KeystoneContextMenuRadioItemProps;
-export type ContextMenuItemIndicatorProps = KeystoneContextMenuPartProps<HTMLSpanElement>;
+export type ContextMenuGroupProps = CoreContextMenuGroupProps;
+export type ContextMenuGroupLabelProps = CoreContextMenuGroupLabelProps;
+export type ContextMenuSeparatorProps = CoreContextMenuSeparatorProps;
+export type ContextMenuItemProps = CoreContextMenuItemProps;
+export type ContextMenuCheckboxItemProps = CoreContextMenuCheckboxItemProps;
+export type ContextMenuRadioGroupProps = CoreContextMenuRadioGroupProps;
+export type ContextMenuRadioItemProps = CoreContextMenuRadioItemProps;
+export type ContextMenuItemIndicatorProps = CoreContextMenuPartProps<HTMLSpanElement>;
 
 export function ContextMenu(props: ContextMenuProps) {
-  return <KeystoneContextMenu.Root {...props} />;
+  return <CoreContextMenu.Root {...props} />;
 }
 
 export function ContextMenuTrigger(props: ContextMenuTriggerProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneContextMenu.Trigger {...rest} class={cn("mason-context-menu-trigger", local.class)} />
-  );
+  return <CoreContextMenu.Trigger {...rest} class={cn("ui-context-menu-trigger", local.class)} />;
 }
 
 export function ContextMenuPortal(props: ContextMenuPortalProps) {
-  return <KeystoneContextMenu.Portal {...props} />;
+  return <CoreContextMenu.Portal {...props} />;
 }
 
 export function ContextMenuPositioner(props: ContextMenuPositionerProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneContextMenu.Positioner
-      {...rest}
-      class={cn("mason-context-menu-positioner", local.class)}
-    />
+    <CoreContextMenu.Positioner {...rest} class={cn("ui-context-menu-positioner", local.class)} />
   );
 }
 
@@ -64,12 +59,9 @@ export function ContextMenuContent(props: ContextMenuContentProps) {
   return (
     <ContextMenuPortal {...local.portal}>
       <ContextMenuPositioner class={local.positionerClass}>
-        <KeystoneContextMenu.Content
-          {...rest}
-          class={cn("mason-context-menu-content", local.class)}
-        >
+        <CoreContextMenu.Content {...rest} class={cn("ui-context-menu-content", local.class)}>
           {local.children}
-        </KeystoneContextMenu.Content>
+        </CoreContextMenu.Content>
       </ContextMenuPositioner>
     </ContextMenuPortal>
   );
@@ -77,63 +69,48 @@ export function ContextMenuContent(props: ContextMenuContentProps) {
 
 export function ContextMenuGroup(props: ContextMenuGroupProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneContextMenu.Group {...rest} class={cn("mason-context-menu-group", local.class)} />
-  );
+  return <CoreContextMenu.Group {...rest} class={cn("ui-context-menu-group", local.class)} />;
 }
 
 export function ContextMenuGroupLabel(props: ContextMenuGroupLabelProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneContextMenu.GroupLabel
-      {...rest}
-      class={cn("mason-context-menu-group-label", local.class)}
-    />
+    <CoreContextMenu.GroupLabel {...rest} class={cn("ui-context-menu-group-label", local.class)} />
   );
 }
 
 export function ContextMenuSeparator(props: ContextMenuSeparatorProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneContextMenu.Separator
-      {...rest}
-      class={cn("mason-context-menu-separator", local.class)}
-    />
+    <CoreContextMenu.Separator {...rest} class={cn("ui-context-menu-separator", local.class)} />
   );
 }
 
 export function ContextMenuItem(props: ContextMenuItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <KeystoneContextMenu.Item {...rest} class={cn("mason-context-menu-item", local.class)} />;
+  return <CoreContextMenu.Item {...rest} class={cn("ui-context-menu-item", local.class)} />;
 }
 
 export function ContextMenuCheckboxItem(props: ContextMenuCheckboxItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneContextMenu.CheckboxItem
-      {...rest}
-      class={cn("mason-context-menu-item", local.class)}
-    />
-  );
+  return <CoreContextMenu.CheckboxItem {...rest} class={cn("ui-context-menu-item", local.class)} />;
 }
 
 export function ContextMenuRadioGroup(props: ContextMenuRadioGroupProps) {
-  return <KeystoneContextMenu.RadioGroup {...props} />;
+  return <CoreContextMenu.RadioGroup {...props} />;
 }
 
 export function ContextMenuRadioItem(props: ContextMenuRadioItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return (
-    <KeystoneContextMenu.RadioItem {...rest} class={cn("mason-context-menu-item", local.class)} />
-  );
+  return <CoreContextMenu.RadioItem {...rest} class={cn("ui-context-menu-item", local.class)} />;
 }
 
 export function ContextMenuItemIndicator(props: ContextMenuItemIndicatorProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <KeystoneContextMenu.ItemIndicator
+    <CoreContextMenu.ItemIndicator
       {...rest}
-      class={cn("mason-context-menu-item-indicator", local.class)}
+      class={cn("ui-context-menu-item-indicator", local.class)}
     />
   );
 }

@@ -1,7 +1,7 @@
 {
   "$schema": "https://mason.build/schema/registry.json",
-  "name": "mason-default",
-  "homepage": "https://mason.build",
+  "name": "ui-default",
+  "homepage": "https://keystone-ui.dev",
   "items": [
     {
       "name": "accordion",
@@ -13,19 +13,19 @@
       "name": "account-settings",
       "type": "registry:block",
       "title": "AccountSettingsBlock",
-      "description": "Account settings form block composed from Mason base components."
+      "description": "Account settings form block composed from UI base components."
     },
     {
       "name": "cn",
       "type": "registry:lib",
       "title": "Class Name Utility",
-      "description": "Small class name composition helper shared by Mason base components."
+      "description": "Small class name composition helper shared by UI base components."
     },
     {
       "name": "button",
       "type": "registry:ui",
       "title": "Button",
-      "description": "Solid button component with Mason styling hooks and variant metadata."
+      "description": "Solid button component with UI styling hooks and variant metadata."
     },
     {
       "name": "switch",
@@ -73,13 +73,13 @@
       "name": "text-field",
       "type": "registry:ui",
       "title": "TextField",
-      "description": "TanStack Form text field composed with Keystone form-control semantics and Mason styling hooks."
+      "description": "TanStack Form text field composed with Keystone form-control semantics and UI styling hooks."
     },
     {
       "name": "select-field",
       "type": "registry:ui",
       "title": "SelectField",
-      "description": "TanStack Form select field composed with Keystone Select behavior and Mason styling hooks."
+      "description": "TanStack Form select field composed with Keystone Select behavior and UI styling hooks."
     },
     {
       "name": "slider",
@@ -139,7 +139,7 @@
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",
-      "description": "Inline status badge with Mason variant styling hooks."
+      "description": "Inline status badge with UI variant styling hooks."
     },
     {
       "name": "separator",

@@ -4,13 +4,13 @@
 
 This vertical establishes the delivery standard for disclosure primitives:
 
-- Compare Keystone and Mason against Kobalte and Base UI.
-- Ship the thin Keystone primitive over a shared disclosure controller.
-- Add Mason copy-paste wrappers and registry metadata.
+- Compare Keystone Core and UI against Kobalte and Base UI.
+- Ship the thin Core primitive over a shared disclosure controller.
+- Add UI copy-paste wrappers and registry metadata.
 - Add behavior tests for the core accessibility and state contract.
 - Record parity gaps before deepening.
 
-## Current Keystone Contract
+## Current Core Contract
 
 Collapsible:
 
@@ -29,10 +29,10 @@ Accordion:
 - `Accordion.Content` renders a region labelled by the trigger.
 - `Accordion.Content hiddenUntilFound` keeps closed panels discoverable by browser find and opens the item when the browser reveals the panel.
 
-## Mason Surface
+## UI Surface
 
-- `registry/default/ui/collapsible.tsx` wraps Keystone Collapsible with `mason-collapsible-*` styling hooks.
-- `registry/default/ui/accordion.tsx` wraps Keystone Accordion with `mason-accordion-*` styling hooks and app-owned content markup.
+- `registry/default/ui/collapsible.tsx` wraps Keystone Collapsible with `ui-collapsible-*` styling hooks.
+- `registry/default/ui/accordion.tsx` wraps Keystone Accordion with `ui-accordion-*` styling hooks and app-owned content markup.
 - Registry metadata records dependencies, parts, install command, source files, customization notes, and parity gaps.
 
 ## Parity Notes

@@ -12,10 +12,10 @@ export function Textarea(props: TextareaProps) {
     <textarea
       {...rest}
       aria-invalid={local.invalid || undefined}
-      data-scope="mason-textarea"
+      data-scope="ui-textarea"
       data-part="root"
       data-invalid={local.invalid ? "" : undefined}
-      class={cn("mason-textarea", local.class)}
+      class={cn("ui-textarea", local.class)}
     />
   );
 }

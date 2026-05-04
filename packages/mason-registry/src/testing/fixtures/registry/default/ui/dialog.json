@@ -5,7 +5,7 @@
   "title": "Dialog",
   "description": "A styled Solid dialog component backed by Keystone.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/keystone@^0.0.0", "solid-js@>=1.9.0 <2.0.0"],
+  "dependencies": ["@keystone-ui/core@^0.0.0", "solid-js@>=1.9.0 <2.0.0"],
   "registryDependencies": ["button"],
   "files": [
     {

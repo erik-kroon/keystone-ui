@@ -11,18 +11,18 @@ export function DataTablePagination<TData extends RowData>(props: {
 
   return (
     <div
-      data-scope="mason-data-table"
+      data-scope="ui-data-table"
       data-part="pagination"
-      class={cn("mason-data-table-pagination", props.class)}
+      class={cn("ui-data-table-pagination", props.class)}
     >
-      <span data-scope="mason-data-table" data-part="selected-summary">
+      <span data-scope="ui-data-table" data-part="selected-summary">
         {props.table.getFilteredSelectedRowModel().rows.length} of{" "}
         {props.table.getFilteredRowModel().rows.length} selected
       </span>
-      <span data-scope="mason-data-table" data-part="page-summary">
+      <span data-scope="ui-data-table" data-part="page-summary">
         Page {props.table.getState().pagination.pageIndex + 1} of {props.table.getPageCount() || 1}
       </span>
-      <label data-scope="mason-data-table" data-part="page-size">
+      <label data-scope="ui-data-table" data-part="page-size">
         <span>Rows</span>
         <select
           value={String(props.table.getState().pagination.pageSize)}
@@ -33,7 +33,7 @@ export function DataTablePagination<TData extends RowData>(props: {
           </For>
         </select>
       </label>
-      <div data-scope="mason-data-table" data-part="page-buttons">
+      <div data-scope="ui-data-table" data-part="page-buttons">
         <button
           type="button"
           onClick={() => props.table.setPageIndex(0)}

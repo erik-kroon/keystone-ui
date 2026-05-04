@@ -12,7 +12,7 @@
   },
   "categories": ["table", "tanstack", "data"],
   "keywords": ["data-table", "table", "tanstack", "sorting", "filtering", "pagination"],
-  "docs": "https://mason.build/docs/components/data-table",
+  "docs": "https://keystone-ui.dev/docs/ui/data-table",
   "registryDependencies": ["cn"],
   "filesRoot": "components/data-table",
   "targetRoot": "src/components/data-table",
@@ -25,7 +25,7 @@
     "pagination": "Pagination is local through getPaginationRowModel and DataTablePagination.",
     "rowActions": "Use DataTableRowActions in a display column. Each action receives the TanStack row.",
     "routerAdapter": "Install data-table-tanstack-router for URL-backed search param state with TanStack Router.",
-    "customization": "Use mason-data-table classes and data-part values for root, toolbar, search, faceted-filter, table, header, row, cell, empty, skeleton, row-actions, and pagination.",
+    "customization": "Use ui-data-table classes and data-part values for root, toolbar, search, faceted-filter, table, header, row, cell, empty, skeleton, row-actions, and pagination.",
     "limitations": "This source is a client-side table pattern. Server-side pagination, virtualization, persisted column preferences, and async loading orchestration should be added in app code.",
     "sourceFiles": [
       "registry/default/components/data-table/data-table.tsx",

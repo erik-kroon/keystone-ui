@@ -1,48 +1,48 @@
 import {
-  Slider as KeystoneSlider,
-  type SliderHiddenInputProps as KeystoneSliderHiddenInputProps,
-  type SliderRangeProps as KeystoneSliderRangeProps,
-  type SliderRootProps as KeystoneSliderRootProps,
-  type SliderThumbProps as KeystoneSliderThumbProps,
-  type SliderTrackProps as KeystoneSliderTrackProps,
-} from "@keystone-ui/keystone/slider";
+  Slider as CoreSlider,
+  type SliderHiddenInputProps as CoreSliderHiddenInputProps,
+  type SliderRangeProps as CoreSliderRangeProps,
+  type SliderRootProps as CoreSliderRootProps,
+  type SliderThumbProps as CoreSliderThumbProps,
+  type SliderTrackProps as CoreSliderTrackProps,
+} from "@keystone-ui/core/slider";
 import { splitProps } from "solid-js";
 import { cn } from "@/lib/cn";
 
-export type SliderProps = KeystoneSliderRootProps;
-export type SliderTrackProps = KeystoneSliderTrackProps;
-export type SliderRangeProps = KeystoneSliderRangeProps;
-export type SliderThumbProps = KeystoneSliderThumbProps;
-export type SliderHiddenInputProps = KeystoneSliderHiddenInputProps;
+export type SliderProps = CoreSliderRootProps;
+export type SliderTrackProps = CoreSliderTrackProps;
+export type SliderRangeProps = CoreSliderRangeProps;
+export type SliderThumbProps = CoreSliderThumbProps;
+export type SliderHiddenInputProps = CoreSliderHiddenInputProps;
 
 export function Slider(props: SliderProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
-  return <KeystoneSlider.Root {...rest} class={cn("mason-slider", local.class)} />;
+  return <CoreSlider.Root {...rest} class={cn("ui-slider", local.class)} />;
 }
 
 export function SliderTrack(props: SliderTrackProps) {
   const [local, rest] = splitProps(props, ["children", "class"]);
 
   return (
-    <KeystoneSlider.Track {...rest} class={cn("mason-slider-track", local.class)}>
+    <CoreSlider.Track {...rest} class={cn("ui-slider-track", local.class)}>
       {local.children ?? <SliderRange />}
-    </KeystoneSlider.Track>
+    </CoreSlider.Track>
   );
 }
 
 export function SliderRange(props: SliderRangeProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
-  return <KeystoneSlider.Range {...rest} class={cn("mason-slider-range", local.class)} />;
+  return <CoreSlider.Range {...rest} class={cn("ui-slider-range", local.class)} />;
 }
 
 export function SliderThumb(props: SliderThumbProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
-  return <KeystoneSlider.Thumb {...rest} class={cn("mason-slider-thumb", local.class)} />;
+  return <CoreSlider.Thumb {...rest} class={cn("ui-slider-thumb", local.class)} />;
 }
 
 export function SliderHiddenInput(props: SliderHiddenInputProps) {
-  return <KeystoneSlider.HiddenInput {...props} />;
+  return <CoreSlider.HiddenInput {...props} />;
 }

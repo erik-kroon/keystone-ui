@@ -1,6 +1,6 @@
 import { existsSync, realpathSync } from "node:fs";
 import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
-import type { MasonRegistryError } from "./errors";
+import type { UIRegistryError } from "./errors";
 
 export type PathSafetyOptions = {
   field?: string;
@@ -10,11 +10,11 @@ export type PathSafetyOptions = {
 };
 
 function error(
-  code: MasonRegistryError["code"],
+  code: UIRegistryError["code"],
   message: string,
   value: string,
   options: PathSafetyOptions,
-): MasonRegistryError {
+): UIRegistryError {
   return { code, message, value, field: options.field, path: options.path };
 }
 
@@ -50,8 +50,8 @@ function nearestExistingPath(path: string): string | undefined {
 export function validateRegistryPath(
   value: string,
   options: PathSafetyOptions = {},
-): MasonRegistryError[] {
-  const errors: MasonRegistryError[] = [];
+): UIRegistryError[] {
+  const errors: UIRegistryError[] = [];
 
   if (value.length === 0) {
     errors.push(error("path.empty", "Path must not be empty.", value, options));

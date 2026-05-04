@@ -11,10 +11,10 @@ export function DataTableColumnHeader<TData extends RowData, TValue>(props: {
 
   return (
     <div
-      data-scope="mason-data-table"
+      data-scope="ui-data-table"
       data-part="column-header"
       data-sort={sorted() || "none"}
-      class={cn("mason-data-table-column-header", props.class)}
+      class={cn("ui-data-table-column-header", props.class)}
     >
       <button
         type="button"

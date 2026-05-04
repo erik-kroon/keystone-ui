@@ -1,30 +1,30 @@
-# Keystone Layer Stack Vertical
+# Keystone Core Layer Stack Vertical
 
 ## Scope
 
-Issue #78 covers the Keystone `Layer stack` inventory item from
+Issue #78 covers the Core `Layer stack` inventory item from
 `docs/agents/end-state-primitive-component-inventory.md`.
 
-The layer stack is a private Keystone overlay kernel. It is consumed by Dialog, Popover,
+The layer stack is a private Core overlay kernel. It is consumed by Dialog, Popover,
 Tooltip, Sheet, menu-derived primitives, and `DismissableLayer`; it is not a promoted public
-package subpath yet. That matches `docs/agents/keystone-internal-kernel-guidance.md`, which keeps
+package subpath yet. That matches `docs/agents/core-internal-kernel-guidance.md`, which keeps
 overlay internals private until a later API decision freezes selected helpers.
 
 ## Current Audit
 
 Reusable implementation:
 
-- `packages/keystone/src/overlay/layer-kernel.tsx` owns stack registration, top-layer checks,
+- `packages/core/src/overlay/layer-kernel.tsx` owns stack registration, top-layer checks,
   outside pointer/focus dismissal, Escape routing, modal outside hiding, inert application, body
   scroll locking, body pointer-event blocking, and focus lifecycle integration.
-- `packages/keystone/src/overlay/focus-scope.tsx` owns preventable mount/unmount autofocus,
+- `packages/core/src/overlay/focus-scope.tsx` owns preventable mount/unmount autofocus,
   focus trapping, and focus restore.
-- `packages/keystone/src/overlay/dismissal-policy.ts` centralizes modal/non-modal dismissal policy
+- `packages/core/src/overlay/dismissal-policy.ts` centralizes modal/non-modal dismissal policy
   and trigger containment.
-- `packages/keystone/src/overlay/controller.ts` adapts the stack to public primitive parts and
+- `packages/core/src/overlay/controller.ts` adapts the stack to public primitive parts and
   exposes `data-layer-id`, `data-layer-index`, and `data-top-layer`.
-- `packages/keystone/src/overlay/layer-kernel.test.tsx` and
-  `packages/keystone/test/overlay-vertical.behavior.test.tsx` cover observable stack behavior.
+- `packages/core/src/overlay/layer-kernel.test.tsx` and
+  `packages/core/test/overlay-vertical.behavior.test.tsx` cover observable stack behavior.
 
 Reusable docs:
 
@@ -32,7 +32,7 @@ Reusable docs:
   vertical through Popover, Tooltip, and Sheet.
 - `apps/docs/src/lib/primitive-contracts.ts` includes the overlay contract summary used by the
   docs app.
-- `docs/agents/keystone-internals-inspiration-map.md` records the Base UI/Kobalte/Radix parity
+- `docs/agents/core-internals-inspiration-map.md` records the Base UI/Kobalte/Radix parity
   references that shaped this kernel.
 
 Gaps closed in this pass:
@@ -55,7 +55,7 @@ Known limitations:
   mixed overlay flows and live-announcer exceptions have broader primitive coverage.
 - Scroll locking is delegated to the shared prevent-scroll helper, including scrollbar
   compensation, nested lock ref counts, inline-style restoration, and iOS touch edge blocking.
-- The kernel remains private. Public promotion of `@keystone-ui/keystone/overlay` should wait for
+- The kernel remains private. Public promotion of `@keystone-ui/core/overlay` should wait for
   an ADR/RFC that decides which helpers are stable API.
 
 ## End-State Contract
@@ -109,12 +109,12 @@ CSS variables:
 
 Focused coverage:
 
-- `packages/keystone/src/overlay/layer-kernel.test.tsx` verifies ordering, top-layer dismissal,
+- `packages/core/src/overlay/layer-kernel.test.tsx` verifies ordering, top-layer dismissal,
   pointer-event blocking, registered branch pointer re-enabling, modal hiding, prevent-scroll
   acquisition, cleanup restore, and reactive modal/pointer option changes.
-- `packages/keystone/src/overlay/prevent-scroll.test.ts` verifies scrollbar compensation,
+- `packages/core/src/overlay/prevent-scroll.test.ts` verifies scrollbar compensation,
   ref-counted nested locks, style restoration, and iOS touch edge blocking.
-- `packages/keystone/test/overlay-vertical.behavior.test.tsx` verifies Popover, Tooltip, and Sheet
+- `packages/core/test/overlay-vertical.behavior.test.tsx` verifies Popover, Tooltip, and Sheet
   reuse of the layer model for outside dismissal, Escape dismissal, focus restore, and modal
   pointer blocking.
 

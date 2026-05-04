@@ -5,20 +5,20 @@
   "title": "HoverCard",
   "description": "Styled Solid hover card component backed by Keystone overlay positioning and pointer/focus preview behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/keystone@^0.0.0"],
+  "dependencies": ["@keystone-ui/core@^0.0.0"],
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0"
   },
   "categories": ["overlay", "preview"],
   "keywords": ["hover-card", "preview", "overlay", "floating", "keystone"],
-  "docs": "https://mason.build/docs/components/hover-card",
+  "docs": "https://keystone-ui.dev/docs/ui/hover-card",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add hover-card",
-    "customization": "Style the generated wrappers through mason-hover-card classes while Keystone owns preview timing, positioning, and dismissal.",
+    "customization": "Style the generated wrappers through ui-hover-card classes while Core owns preview timing, positioning, and dismissal.",
     "sourceFiles": ["registry/default/ui/hover-card.tsx"],
-    "dependencies": ["@keystone-ui/keystone", "cn"],
+    "dependencies": ["@keystone-ui/core", "cn"],
     "parts": ["trigger", "positioner", "content"],
     "parity": {
       "baseUi": "Matches PreviewCard Root/Trigger/Portal/Positioner/Popup-style contract through Keystone trigger, positioner, and content parts. Gaps: detached triggers, multiple trigger payloads, Backdrop, Viewport, Arrow, and trigger-id coordination remain follow-up work.",

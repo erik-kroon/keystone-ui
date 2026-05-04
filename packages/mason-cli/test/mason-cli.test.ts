@@ -126,7 +126,7 @@ describe("add planning and writes", () => {
       dependencies: Record<string, string>;
       mason: { installed: Record<string, { files: string[] }> };
     };
-    expect(packageJson.dependencies["@keystone-ui/keystone"]).toBeUndefined();
+    expect(packageJson.dependencies["@keystone-ui/core"]).toBeUndefined();
     expect(packageJson.mason.installed.button?.files).toEqual(["src/components/ui/button.tsx"]);
   });
 
@@ -219,7 +219,7 @@ describe("add planning and writes", () => {
     await runAppScript(app, "build");
   });
 
-  test("real default registry dialog plans Keystone-backed generated source", async () => {
+  test("real default registry dialog plans Core-backed generated source", async () => {
     const app = await fixtureApp();
     await initCommand({ cwd: app, yes: true });
     const output = await addCommand({
@@ -234,8 +234,8 @@ describe("add planning and writes", () => {
         "Mason dry run plan for dialog:",
         "create src/components/ui/dialog.tsx",
         "create src/lib/cn.ts",
-        "add @keystone-ui/keystone@^0.0.0",
-        "install command: bun add @keystone-ui/keystone@^0.0.0",
+        "add @keystone-ui/core@^0.0.0",
+        "install command: bun add @keystone-ui/core@^0.0.0",
       ].join("\n"),
     );
   });
@@ -344,7 +344,7 @@ describe("add planning and writes", () => {
           source: "registry/default/theme.css",
           target: "src/styles.css",
           absoluteTarget: path.join(app, "src/styles.css"),
-          content: ".mason-button { color: red; }\n",
+          content: ".ui-button { color: red; }\n",
           contentHash: "sha256:test-theme",
           existing: { exists: true, hash: null, size: null },
           conflict: null,
@@ -376,7 +376,7 @@ describe("add planning and writes", () => {
     });
 
     expect(await readFile(path.join(app, "src/styles.css"), "utf8")).toContain(
-      ".mason-button { color: red; }",
+      ".ui-button { color: red; }",
     );
     expect(JSON.parse(await readFile(path.join(app, "src/settings.json"), "utf8"))).toEqual({
       theme: { color: "blue", radius: "8px" },
