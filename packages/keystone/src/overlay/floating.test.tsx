@@ -84,6 +84,69 @@ describe("Keystone floating adapter", () => {
     });
   });
 
+  test("positions an owned arrow element and preserves user props", async () => {
+    await withRoot(async (dispose) => {
+      const anchor = document.createElement("button");
+      const floatingElement = document.createElement("div");
+      const arrowElement = document.createElement("span");
+      const cleanupDom = mountPair(anchor, floatingElement);
+      floatingElement.append(arrowElement);
+
+      setViewport(1024, 768);
+      anchor.getBoundingClientRect = () =>
+        ({
+          bottom: 70,
+          height: 40,
+          left: 20,
+          right: 140,
+          top: 30,
+          width: 120,
+        }) as DOMRect;
+      floatingElement.getBoundingClientRect = () =>
+        ({
+          bottom: 0,
+          height: 80,
+          left: 0,
+          right: 0,
+          top: 0,
+          width: 200,
+        }) as DOMRect;
+      arrowElement.getBoundingClientRect = () =>
+        ({
+          bottom: 0,
+          height: 10,
+          left: 0,
+          right: 0,
+          top: 0,
+          width: 10,
+        }) as DOMRect;
+
+      const floating = createFloatingAdapter({
+        anchor: () => anchor,
+        floating: () => floatingElement,
+        gutter: () => 8,
+        placement: () => "bottom-start",
+      });
+      const arrowProps = floating.getArrowProps<HTMLSpanElement>({
+        class: "arrow",
+        style: { width: "10px", height: "10px" },
+      });
+
+      arrowProps.ref(arrowElement);
+      await floating.update();
+      const resolvedArrowProps = floating.getArrowProps<HTMLSpanElement>({ class: "arrow" });
+
+      expect(resolvedArrowProps.class).toBe("arrow");
+      expect(resolvedArrowProps["data-side"]).toBe("bottom");
+      expect(resolvedArrowProps["data-align"]).toBe("start");
+      expect(arrowElement.style.position).toBe("absolute");
+      expect(arrowElement.style.left).toBe("55px");
+      expect(arrowElement.style.top).toBe("0px");
+      cleanupDom();
+      dispose();
+    });
+  });
+
   test("flips placement when the requested side collides with the viewport", async () => {
     await withRoot(async (dispose) => {
       const anchor = document.createElement("button");

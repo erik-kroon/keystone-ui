@@ -4,7 +4,9 @@ import type { CollectionItem } from "../listbox/collection-registry";
 import { createListInteractionKernel } from "../listbox/interaction-kernel";
 import {
   OverlayLayerProvider,
+  getFloatingArrowProps,
   type FloatingAdapter,
+  type FloatingArrowProps,
   type FloatingCollisionBoundary,
   type FloatingPlacement,
   type FloatingRootBoundary,
@@ -78,6 +80,7 @@ export type MenuPortalProps = {
 };
 export type MenuPositionerProps = MenuPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
+export type MenuArrowProps = FloatingArrowProps<HTMLSpanElement>;
 export type MenuContentProps = MenuPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> & {
     onEscapeKeyDown?: (event: KeyboardEvent) => void;
@@ -154,6 +157,7 @@ export type MenuApi = {
   contentElement: () => HTMLElement | undefined;
   focusTrigger: () => void;
   floating: FloatingAdapter;
+  getArrowProps: (props: Omit<MenuArrowProps, "children">) => Record<string, unknown>;
   getContentProps: (props: Omit<MenuContentProps, "children">) => Record<string, unknown>;
   getGroupLabelProps: (props: Omit<MenuGroupLabelProps, "children">) => Record<string, unknown>;
   getGroupProps: (props: Omit<MenuGroupProps, "children">) => Record<string, unknown>;
@@ -355,6 +359,7 @@ function createScopedMenu(options: CreateMenuOptions, rootRole: "menu" | "menuba
       }
     },
     floating,
+    getArrowProps: (props) => getFloatingArrowProps(floating, props, floatingPartProps("arrow")),
     getContentProps: (props) => {
       const [local, others] = splitProps(props, [
         "onEscapeKeyDown",
@@ -693,6 +698,18 @@ function createMenuNamespace(factoryOptions: MenuFactoryOptions) {
         {local.children}
       </div>
     );
+  }
+
+  function Arrow(props: MenuArrowProps) {
+    const menu = useMenu("Arrow");
+    const [local, others] = splitProps(props, ["children", "ref", "style"]);
+    const arrowProps = menu.getArrowProps({
+      ...others,
+      ref: local.ref,
+      style: local.style,
+    });
+
+    return <span {...arrowProps}>{local.children}</span>;
   }
 
   function Group(props: MenuGroupProps) {
@@ -1110,6 +1127,7 @@ function createMenuNamespace(factoryOptions: MenuFactoryOptions) {
     Trigger,
     Portal: PortalPart,
     Positioner,
+    Arrow,
     Content,
     Group,
     GroupLabel,

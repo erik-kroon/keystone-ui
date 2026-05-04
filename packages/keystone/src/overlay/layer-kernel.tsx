@@ -13,6 +13,8 @@ import {
 import { getPartDataAttributes } from "../metadata/index";
 import { assignRef, contains, getOwnerDocument } from "./dom";
 import { mountFocusScopeLifecycle } from "./focus-scope";
+import { hideOutside } from "./hide-outside";
+import { lockPreventScroll } from "./prevent-scroll";
 import { scheduleMicrotask } from "../utils/index";
 
 export type OverlayLayerOutsideEvent = CustomEvent<{
@@ -29,6 +31,7 @@ type OverlayLayerRegistration = {
   id: string;
   element?: HTMLElement;
   getElement?: Accessor<HTMLElement | undefined>;
+  getBranchElements?: Accessor<readonly HTMLElement[]>;
   modal: Accessor<boolean>;
   disableOutsidePointerEvents: Accessor<boolean>;
 };
@@ -86,23 +89,17 @@ type PointerEventsState = {
 };
 
 type ModalDocumentState = {
-  hiddenElements: Array<{
-    element: HTMLElement;
-    ariaHiddenValue: string | null;
-    inertAttributeValue: string | null;
-    inertValue: boolean;
-  }>;
-  originalBodyOverflow: string;
-  locked: boolean;
+  cleanupHideOutside?: () => void;
+  releasePreventScroll?: () => void;
 };
 
 const OverlayLayerContext = createContext<OverlayLayerStack>();
-const modalStateByDocument = new WeakMap<Document, ModalDocumentState>();
 const pointerEventsByDocument = new WeakMap<Document, PointerEventsState>();
 const handledOutsideEvents = new WeakSet<Event>();
 let defaultOverlayLayerStack: OverlayLayerStack | undefined;
 
 export function createOverlayLayerStack(): OverlayLayerStack {
+  const modalStateByDocument = new WeakMap<Document, ModalDocumentState>();
   const [registrations, setRegistrations] = createSignal<readonly OverlayLayerRegistration[]>([]);
   const layers = createMemo(() =>
     registrations().map((layer) => ({
@@ -147,65 +144,37 @@ export function createOverlayLayerStack(): OverlayLayerStack {
   };
 
   const syncModalState = (ownerDocument: Document) => {
-    const state = modalStateByDocument.get(ownerDocument) ?? {
-      hiddenElements: [],
-      originalBodyOverflow: "",
-      locked: false,
-    };
+    const state = modalStateByDocument.get(ownerDocument) ?? {};
 
-    for (const hidden of state.hiddenElements) {
-      if (hidden.ariaHiddenValue === null) {
-        hidden.element.removeAttribute("aria-hidden");
-      } else {
-        hidden.element.setAttribute("aria-hidden", hidden.ariaHiddenValue);
-      }
+    state.cleanupHideOutside?.();
+    state.cleanupHideOutside = undefined;
 
-      hidden.element.inert = hidden.inertValue;
-
-      if (hidden.inertAttributeValue === null) {
-        hidden.element.removeAttribute("inert");
-      } else {
-        hidden.element.setAttribute("inert", hidden.inertAttributeValue);
-      }
-    }
-
-    state.hiddenElements = [];
-
-    const modalLayers = registrations().filter((layer) => layer.modal());
+    const current = registrations();
+    const modalLayers = current.filter((layer) => layer.modal());
     const topModal = modalLayers[modalLayers.length - 1];
     const topModalElement = untrack(() => topModal?.getElement?.() ?? topModal?.element);
 
     if (!topModalElement) {
-      if (state.locked) {
-        ownerDocument.body.style.overflow = state.originalBodyOverflow;
-        state.locked = false;
-
-        if (!ownerDocument.body.getAttribute("style")) {
-          ownerDocument.body.removeAttribute("style");
-        }
-      }
+      state.releasePreventScroll?.();
+      state.releasePreventScroll = undefined;
 
       modalStateByDocument.set(ownerDocument, state);
       return;
     }
 
-    if (!state.locked) {
-      state.originalBodyOverflow = ownerDocument.body.style.overflow;
-      ownerDocument.body.style.overflow = "hidden";
-      state.locked = true;
-    }
+    state.releasePreventScroll ??= lockPreventScroll(ownerDocument);
 
-    for (const element of getOutsideElements(topModalElement, ownerDocument)) {
-      state.hiddenElements.push({
-        element,
-        ariaHiddenValue: element.getAttribute("aria-hidden"),
-        inertAttributeValue: element.getAttribute("inert"),
-        inertValue: element.inert,
-      });
-      element.setAttribute("aria-hidden", "true");
-      element.inert = true;
-      element.setAttribute("inert", "");
-    }
+    const topModalIndex = topModal ? current.indexOf(topModal) : -1;
+    const layerExceptions = current
+      .slice(topModalIndex + 1)
+      .flatMap((layer) => getRegistrationElements(layer, ownerDocument));
+    const topModalBranches = topModal ? getRegistrationBranchElements(topModal, ownerDocument) : [];
+
+    state.cleanupHideOutside = hideOutside({
+      ownerDocument,
+      targets: [topModalElement, ...topModalBranches],
+      exceptions: layerExceptions,
+    });
 
     modalStateByDocument.set(ownerDocument, state);
   };
@@ -290,6 +259,7 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
       modal,
       element,
       getElement: options.element,
+      getBranchElements: options.branchElements,
       disableOutsidePointerEvents: () => options.disableOutsidePointerEvents?.() ?? modal(),
     });
     let isReady = false;
@@ -440,31 +410,6 @@ function containsLayerTarget(
   );
 }
 
-function getOutsideElements(element: HTMLElement, ownerDocument: Document) {
-  const elements = new Set<HTMLElement>();
-  let current: HTMLElement | null = element;
-
-  while (current && current !== ownerDocument.body) {
-    const parent: HTMLElement | null = current.parentElement;
-
-    if (!parent) {
-      break;
-    }
-
-    for (const child of Array.from(parent.children)) {
-      if (child !== current && child instanceof HTMLElement) {
-        elements.add(child);
-      }
-    }
-
-    current = parent;
-  }
-
-  elements.delete(element);
-
-  return elements;
-}
-
 function dismissFromOutside(
   originalEvent: Event,
   outsideEvent: OverlayLayerOutsideEvent,
@@ -477,6 +422,21 @@ function dismissFromOutside(
   if (!outsideEvent.defaultPrevented) {
     options.onDismiss?.(originalEvent);
   }
+}
+
+function getRegistrationElements(layer: OverlayLayerRegistration, ownerDocument: Document) {
+  const element = untrack(() => layer.getElement?.() ?? layer.element);
+
+  return [element, ...getRegistrationBranchElements(layer, ownerDocument)].filter(
+    (candidate): candidate is HTMLElement =>
+      candidate instanceof HTMLElement && getOwnerDocument(candidate) === ownerDocument,
+  );
+}
+
+function getRegistrationBranchElements(layer: OverlayLayerRegistration, ownerDocument: Document) {
+  return untrack(() => layer.getBranchElements?.() ?? []).filter(
+    (candidate) => getOwnerDocument(candidate) === ownerDocument,
+  );
 }
 
 function mountLayerFocusLifecycle(options: {

@@ -30,8 +30,8 @@ Keystone owns headless accessible primitives and shared primitive helpers. Mason
 - Layer stack
 - Outside hiding/inert
 - Prevent scroll
-- Popper/positioner
-- Arrow
+- Popper/positioner (`proven`; see [popper-positioner-vertical.md](popper-positioner-vertical.md))
+- Arrow (`proven`; see [arrow-vertical.md](arrow-vertical.md))
 - Dialog
 - AlertDialog
 - Popover

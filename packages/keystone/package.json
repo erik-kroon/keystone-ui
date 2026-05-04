@@ -19,6 +19,7 @@
     "./menu": "./src/menu/index.tsx",
     "./menubar": "./src/menubar/index.ts",
     "./navigation-menu": "./src/navigation-menu/index.ts",
+    "./popper": "./src/popper/index.tsx",
     "./portal": "./src/portal/index.tsx",
     "./popover": "./src/popover/index.tsx",
     "./radio-group": "./src/radio-group/index.tsx",

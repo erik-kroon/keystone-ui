@@ -73,4 +73,5 @@ afterEach(() => {
   }
 
   document.body.replaceChildren();
+  document.body.removeAttribute("style");
 });

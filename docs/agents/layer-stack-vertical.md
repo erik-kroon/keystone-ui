@@ -41,14 +41,16 @@ Gaps closed in this pass:
   mount-time snapshots.
 - The stack now resyncs modal hiding, inert state, scroll lock, and pointer blocking when a
   controlled primitive changes modal behavior after mount.
+- Outside hiding now uses the private hide-outside helper with `aria-hidden`, native `inert`,
+  ref-counted cleanup, mutation handling for newly inserted outside DOM, and exceptions for layers
+  registered above the active modal.
 - Cleanup now resyncs every document touched by a layer, including the fallback owner document and
   the eventual mounted element document.
 
 Known limitations:
 
-- Outside hiding uses a direct sibling walk plus native `inert` and `aria-hidden`. It does not yet
-  implement a mutation observer/ref-counted hide-outside utility for nodes inserted while a modal
-  layer is open.
+- Outside hiding remains a private overlay helper. Public promotion should wait until portal-heavy
+  mixed overlay flows and live-announcer exceptions have broader primitive coverage.
 - Scroll locking is body `overflow: hidden` only. Advanced scrollbar compensation and mobile touch
   edge cases remain a future prevent-scroll module.
 - The kernel remains private. Public promotion of `@keystone-ui/keystone/overlay` should wait for

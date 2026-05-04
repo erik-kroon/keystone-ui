@@ -2,6 +2,7 @@ export { createSelect } from "./controller";
 export type {
   CreateSelectOptions,
   SelectApi,
+  SelectArrowProps,
   SelectChangeDetail,
   SelectContentContractProps,
   SelectContentProps,

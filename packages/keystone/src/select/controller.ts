@@ -7,6 +7,7 @@ import { assignRef } from "../overlay/dom";
 import {
   createFloatingAdapter,
   type FloatingAdapter,
+  type FloatingArrowProps,
   type FloatingCollisionBoundary,
   type FloatingPlacement,
   type FloatingRootBoundary,
@@ -95,6 +96,7 @@ export type SelectContentProps = SelectPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
 export type SelectPositionerProps = SelectPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
+export type SelectArrowProps = FloatingArrowProps<HTMLSpanElement>;
 export type SelectListboxProps = SelectPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
 export type SelectGroupProps = SelectPartProps<HTMLDivElement> &
@@ -121,6 +123,7 @@ export type SelectTriggerContractProps = Omit<SelectTriggerProps, "as" | "childr
 export type SelectValueContractProps = Omit<SelectValueProps, "children" | "placeholder">;
 export type SelectContentContractProps = Omit<SelectContentProps, "children">;
 export type SelectPositionerContractProps = Omit<SelectPositionerProps, "children">;
+export type SelectArrowContractProps = Omit<SelectArrowProps, "children">;
 export type SelectListboxContractProps = Omit<SelectListboxProps, "children">;
 export type SelectGroupContractProps = Omit<SelectGroupProps, "children" | "label"> & {
   label?: string;
@@ -167,6 +170,7 @@ export type SelectApi = {
   floating: FloatingAdapter;
   formControl: FormControlApi;
   formValue: SelectValueFormApi;
+  getArrowProps: (props: SelectArrowContractProps) => Record<string, unknown>;
   getContentProps: (props: SelectContentContractProps) => Record<string, unknown>;
   getItemIndicatorProps: (props: SelectItemIndicatorContractProps) => Record<string, unknown>;
   getGroupProps: (props: SelectGroupContractProps) => Record<string, unknown>;
@@ -376,6 +380,15 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
   const partProps = (part: string) => ({
     ...getPartDataAttributes("select", part),
   });
+  const floatingPartProps = (part: string) => ({
+    ...partProps(part),
+    get "data-side"() {
+      return floating.side();
+    },
+    get "data-align"() {
+      return floating.align();
+    },
+  });
 
   return {
     contentId: contentId(),
@@ -383,6 +396,14 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
     floating,
     formControl,
     formValue,
+    getArrowProps: (props) => ({
+      ...floating.getArrowProps(props),
+      ...floatingPartProps("arrow"),
+      "aria-hidden": "true",
+      get "data-state"() {
+        return state();
+      },
+    }),
     getContentProps: (props) => {
       const floatingProps = floating.getFloatingProps({
         style: props.style,

@@ -21,7 +21,7 @@ The 0.1.0 preview exposes:
 - `@keystone-ui/keystone/form`
 - `@keystone-ui/keystone/select`
 
-The `./overlay` and `./utils` subpaths stay private until a later API decision promotes specific utilities. The goal is to let Dialog and Select prove kernel behavior without freezing every helper as public API.
+The `./overlay` and `./utils` subpaths stay private until a later API decision promotes specific utilities. `./popper` is the public low-level positioning primitive; it wraps the private floating adapter without exposing the full overlay kernel. The goal is to let Dialog, Select, and Popper prove kernel behavior without freezing every helper as public API.
 
 ## Implementation Rules
 
@@ -54,6 +54,13 @@ The floating adapter currently provides first-pass geometry without committing t
 - `--keystone-transform-origin`
 
 Future Popover, Menu, Tooltip, Combobox, and Select work should reuse this adapter or deliberately replace it with a deeper adapter, not add local positioning code.
+
+`@keystone-ui/keystone/popper` is the public composition surface for code that needs positioning without disclosure state, dismissal, focus management, portals, or roles. Its anatomy is:
+
+- `Popper.Root`: provider only; no DOM and no controlled/uncontrolled state.
+- `Popper.Anchor`: measured reference element.
+- `Popper.Positioner`: measured floating element with `data-side`, `data-align`, and geometry CSS variables.
+- `Popper.Arrow`: optional arrow element with side/align metadata and arrow offset CSS variables.
 
 ## Testing Guidance
 

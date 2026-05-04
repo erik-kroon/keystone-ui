@@ -4,6 +4,7 @@ import { renderPolymorphic } from "../utils/index";
 import {
   createSelect,
   type SelectApi,
+  type SelectArrowProps,
   type SelectContentProps,
   type SelectGroupLabelProps,
   type SelectGroupProps,
@@ -181,6 +182,23 @@ function Positioner(props: SelectPositionerProps) {
   );
 }
 
+function Arrow(props: SelectArrowProps) {
+  const select = useSelect("Arrow");
+  const [local, others] = splitProps(props, ["children", "ref", "style"]);
+
+  return (
+    <span
+      {...select.getArrowProps({
+        ...others,
+        ref: local.ref,
+        style: local.style,
+      })}
+    >
+      {local.children}
+    </span>
+  );
+}
+
 function Listbox(props: SelectListboxProps) {
   const select = useSelect("Listbox");
   const [local, others] = splitProps(props, ["children", "onKeyDown"]);
@@ -281,6 +299,7 @@ export const Select = {
   Value,
   Portal: PortalPart,
   Positioner,
+  Arrow,
   Content,
   Listbox,
   Group,

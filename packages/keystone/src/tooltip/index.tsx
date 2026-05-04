@@ -8,7 +8,9 @@ import {
 } from "solid-js";
 import {
   OverlayLayerProvider,
+  getFloatingArrowProps,
   type FloatingAdapter,
+  type FloatingArrowProps,
   type FloatingCollisionBoundary,
   type FloatingPlacement,
   type FloatingRootBoundary,
@@ -71,6 +73,7 @@ export type TooltipPortalProps = {
 };
 export type TooltipPositionerProps = TooltipPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
+export type TooltipArrowProps = FloatingArrowProps<HTMLSpanElement>;
 export type TooltipContentProps = TooltipPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
 
@@ -86,6 +89,7 @@ export type TooltipProviderProps = {
 type TooltipApi = {
   contentId: string;
   floating: FloatingAdapter;
+  getArrowProps: (props: Omit<TooltipArrowProps, "children">) => Record<string, unknown>;
   getContentProps: (props: Omit<TooltipContentProps, "children">) => Record<string, unknown>;
   getPositionerProps: (props: Omit<TooltipPositionerProps, "children">) => Record<string, unknown>;
   getTriggerProps: (props: Omit<TooltipTriggerProps, "as" | "children">) => Record<string, unknown>;
@@ -185,6 +189,7 @@ export function createTooltip(options: CreateTooltipOptions = {}): TooltipApi {
   return {
     contentId: overlay.contentId,
     floating,
+    getArrowProps: (props) => getFloatingArrowProps(floating, props, partProps("arrow")),
     getContentProps: (props) => {
       overlay.getContentLayerProps<HTMLDivElement>(
         {},
@@ -355,12 +360,24 @@ function Content(props: TooltipContentProps) {
   return <div {...contentProps}>{local.children}</div>;
 }
 
+function Arrow(props: TooltipArrowProps) {
+  const tooltip = useTooltip("Arrow");
+  const [local, others] = splitProps(props, ["children", "ref", "style"]);
+  const arrowProps = tooltip.getArrowProps({
+    ...others,
+    ref: local.ref,
+    style: local.style,
+  });
+  return <span {...arrowProps}>{local.children}</span>;
+}
+
 export const Tooltip = {
   Provider,
   Root,
   Trigger,
   Portal: PortalPart,
   Positioner,
+  Arrow,
   Content,
 };
 

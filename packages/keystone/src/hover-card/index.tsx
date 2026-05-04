@@ -8,7 +8,9 @@ import {
 } from "solid-js";
 import {
   OverlayLayerProvider,
+  getFloatingArrowProps,
   type FloatingAdapter,
+  type FloatingArrowProps,
   type FloatingCollisionBoundary,
   type FloatingPlacement,
   type FloatingRootBoundary,
@@ -66,6 +68,7 @@ export type HoverCardPortalProps = {
 };
 export type HoverCardPositionerProps = HoverCardPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
+export type HoverCardArrowProps = FloatingArrowProps<HTMLSpanElement>;
 export type HoverCardContentProps = HoverCardPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> & {
     onEscapeKeyDown?: (event: KeyboardEvent) => void;
@@ -77,6 +80,7 @@ export type HoverCardContentProps = HoverCardPartProps<HTMLDivElement> &
 type HoverCardApi = {
   contentId: string;
   floating: FloatingAdapter;
+  getArrowProps: (props: Omit<HoverCardArrowProps, "children">) => Record<string, unknown>;
   getContentProps: (props: Omit<HoverCardContentProps, "children">) => Record<string, unknown>;
   getPositionerProps: (
     props: Omit<HoverCardPositionerProps, "children">,
@@ -152,6 +156,7 @@ export function createHoverCard(options: CreateHoverCardOptions = {}): HoverCard
   return {
     contentId: overlay.contentId,
     floating,
+    getArrowProps: (props) => getFloatingArrowProps(floating, props, partProps("arrow")),
     getContentProps: (props) => {
       const [local, others] = splitProps(props, [
         "ref",
@@ -328,11 +333,23 @@ function Content(props: HoverCardContentProps) {
   return <div {...contentProps}>{local.children}</div>;
 }
 
+function Arrow(props: HoverCardArrowProps) {
+  const hoverCard = useHoverCard("Arrow");
+  const [local, others] = splitProps(props, ["children", "ref", "style"]);
+  const arrowProps = hoverCard.getArrowProps({
+    ...others,
+    ref: local.ref,
+    style: local.style,
+  });
+  return <span {...arrowProps}>{local.children}</span>;
+}
+
 export const HoverCard = {
   Root,
   Trigger,
   Portal: PortalPart,
   Positioner,
+  Arrow,
   Content,
 };
 

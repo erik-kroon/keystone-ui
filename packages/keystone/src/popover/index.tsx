@@ -1,7 +1,9 @@
 import { createContext, splitProps, useContext, type JSX } from "solid-js";
 import {
   OverlayLayerProvider,
+  getFloatingArrowProps,
   type FloatingAdapter,
+  type FloatingArrowProps,
   type FloatingCollisionBoundary,
   type FloatingPlacement,
   type FloatingRootBoundary,
@@ -56,6 +58,7 @@ export type PopoverPortalProps = {
 };
 export type PopoverPositionerProps = PopoverPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
+export type PopoverArrowProps = FloatingArrowProps<HTMLSpanElement>;
 export type PopoverContentProps = PopoverPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> & {
     onEscapeKeyDown?: (event: KeyboardEvent) => void;
@@ -67,6 +70,7 @@ export type PopoverContentProps = PopoverPartProps<HTMLDivElement> &
 type PopoverApi = {
   contentId: string;
   floating: FloatingAdapter;
+  getArrowProps: (props: Omit<PopoverArrowProps, "children">) => Record<string, unknown>;
   getContentProps: (props: Omit<PopoverContentProps, "children">) => Record<string, unknown>;
   getPositionerProps: (props: Omit<PopoverPositionerProps, "children">) => Record<string, unknown>;
   getTriggerProps: (props: Omit<PopoverTriggerProps, "as" | "children">) => Record<string, unknown>;
@@ -125,6 +129,7 @@ export function createPopover(options: CreatePopoverOptions = {}): PopoverApi {
   return {
     contentId: overlay.contentId,
     floating,
+    getArrowProps: (props) => getFloatingArrowProps(floating, props, partProps("arrow")),
     getContentProps: (props) => {
       const [local, others] = splitProps(props, [
         "ref",
@@ -273,10 +278,22 @@ function Content(props: PopoverContentProps) {
   return <div {...contentProps}>{local.children}</div>;
 }
 
+function Arrow(props: PopoverArrowProps) {
+  const popover = usePopover("Arrow");
+  const [local, others] = splitProps(props, ["children", "ref", "style"]);
+  const arrowProps = popover.getArrowProps({
+    ...others,
+    ref: local.ref,
+    style: local.style,
+  });
+  return <span {...arrowProps}>{local.children}</span>;
+}
+
 export const Popover = {
   Root,
   Trigger,
   Portal: PortalPart,
   Positioner,
+  Arrow,
   Content,
 };

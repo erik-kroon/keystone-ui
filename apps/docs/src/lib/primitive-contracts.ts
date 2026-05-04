@@ -266,6 +266,24 @@ export const primitiveContracts = [
     example: `<Popover.Root><Popover.Trigger>Open</Popover.Trigger><Popover.Content>Panel</Popover.Content></Popover.Root>`,
   },
   {
+    scope: "popper",
+    title: "Popper",
+    importPath: "@keystone-ui/keystone/popper",
+    roleNotes: [
+      "Anchor, positioner, and arrow parts provide headless geometry without disclosure, dismissal, or focus behavior.",
+    ],
+    keyboardNotes: [
+      "Popper does not add keyboard behavior; composed primitives own trigger and content interactions.",
+    ],
+    ariaNotes: [
+      "Positioning metadata is exposed through side, align, anchor size, available size, arrow offset, and transform-origin contracts.",
+    ],
+    ssrNotes: [
+      "Browser measurement is guarded behind Solid effects and no document or window APIs are required during server render.",
+    ],
+    example: `<Popper.Root placement="bottom-start"><Popper.Anchor>Anchor</Popper.Anchor><Popper.Positioner><Popper.Arrow />Content</Popper.Positioner></Popper.Root>`,
+  },
+  {
     scope: "radio-group",
     title: "RadioGroup",
     importPath: "@keystone-ui/keystone/radio-group",

@@ -78,7 +78,9 @@ export type FloatingAdapter = {
   ) => JSX.HTMLAttributes<T>;
   getArrowProps: <T extends HTMLElement = HTMLElement>(
     props?: JSX.HTMLAttributes<T>,
-  ) => JSX.HTMLAttributes<T>;
+  ) => JSX.HTMLAttributes<T> & {
+    ref: (element: T) => void;
+  };
   update: () => Promise<void>;
 };
 
@@ -214,6 +216,9 @@ export function createFloatingAdapter(options: CreateFloatingAdapterOptions): Fl
     );
 
     applyFloatingGeometry(floating, geometry);
+    if (arrowElement) {
+      applyArrowGeometry(arrowElement, geometry);
+    }
   };
 
   createEffect(() => {
@@ -279,11 +284,18 @@ export function createFloatingAdapter(options: CreateFloatingAdapterOptions): Fl
     }),
     getArrowProps: <T extends HTMLElement = HTMLElement>(props: JSX.HTMLAttributes<T> = {}) => ({
       ...props,
+      "data-side": side(),
+      "data-align": align(),
       style: mergeArrowStyle(props.style, side(), geometry),
       ref: (element: T) => {
+        const scheduledVersion = updateVersion;
         setOwnedArrowElement(() => element);
         assignRef(props.ref, element);
-        scheduleMicrotask(() => void update());
+        scheduleMicrotask(() => {
+          if (scheduledVersion === updateVersion) {
+            void update();
+          }
+        });
       },
     }),
     update,
@@ -386,6 +398,23 @@ function applyFloatingGeometry(element: HTMLElement, geometry: FloatingGeometry)
   setOptionalElementStyleValue(element, "width", geometry.widthStyle);
 }
 
+function applyArrowGeometry(element: HTMLElement, geometry: FloatingGeometry) {
+  setAttribute(element, "data-align", geometry.align);
+  setAttribute(element, "data-side", geometry.side);
+  setElementStyleValue(element, "position", "absolute");
+  setOptionalElementStyleValue(element, "left", geometry.arrowX);
+  setOptionalElementStyleValue(element, "top", geometry.arrowY);
+
+  const staticSides =
+    geometry.side === "bottom" || geometry.side === "top"
+      ? (["bottom", "top"] as const)
+      : (["left", "right"] as const);
+
+  for (const side of staticSides) {
+    element.style[side] = side === getOppositeSide(geometry.side) ? "0px" : "";
+  }
+}
+
 function setAttribute(element: HTMLElement, name: string, value: string | undefined) {
   if (value === undefined) {
     element.removeAttribute(name);
@@ -403,7 +432,11 @@ function setStyleProperty(element: HTMLElement, property: string, value: string)
   }
 }
 
-function setElementStyleValue(element: HTMLElement, property: "left" | "top", value: string) {
+function setElementStyleValue(
+  element: HTMLElement,
+  property: "left" | "position" | "top",
+  value: string,
+) {
   if (element.style[property] !== value) {
     element.style[property] = value;
   }
@@ -411,7 +444,7 @@ function setElementStyleValue(element: HTMLElement, property: "left" | "top", va
 
 function setOptionalElementStyleValue(
   element: HTMLElement,
-  property: "maxHeight" | "maxWidth" | "width",
+  property: "left" | "maxHeight" | "maxWidth" | "top" | "width",
   value: number | undefined,
 ) {
   const next = value === undefined ? "" : `${value}px`;
