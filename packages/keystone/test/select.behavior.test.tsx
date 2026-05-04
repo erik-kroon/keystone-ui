@@ -237,6 +237,109 @@ describe("Select behavior harness", () => {
     expect(getByPart("select", "listbox").getAttribute("aria-multiselectable")).toBeNull();
   });
 
+  test("exposes selected state and protects disabled and hidden options", async () => {
+    const changes: string[] = [];
+
+    render(() => (
+      <Select.Root
+        defaultOpen
+        defaultValue="alpha"
+        onValueChange={(value) => changes.push(value ?? "")}
+      >
+        <Select.Trigger>Choose project</Select.Trigger>
+        <Select.Value />
+        <Select.Content>
+          <Select.Listbox>
+            <Select.Item value="alpha">Alpha</Select.Item>
+            <Select.Item value="beta" disabled>
+              Beta
+            </Select.Item>
+            <Select.Item value="bravo" hidden>
+              Bravo
+            </Select.Item>
+            <Select.Item value="charlie">Charlie</Select.Item>
+          </Select.Listbox>
+        </Select.Content>
+      </Select.Root>
+    ));
+
+    const items = Array.from(document.querySelectorAll<HTMLElement>('[data-part="item"]'));
+    const alpha = items.find((item) => item.textContent === "Alpha")!;
+    const beta = items.find((item) => item.textContent === "Beta")!;
+    const bravo = items.find((item) => item.textContent === "Bravo")!;
+    const charlie = items.find((item) => item.textContent === "Charlie")!;
+
+    expect(alpha.getAttribute("aria-selected")).toBe("true");
+    expect(alpha.getAttribute("data-selected")).toBe("");
+    expect(beta.getAttribute("aria-disabled")).toBe("true");
+    expect(beta.getAttribute("data-disabled")).toBe("");
+    expect(bravo.hidden).toBe(true);
+    expect(bravo.getAttribute("data-hidden")).toBe("");
+
+    click(beta);
+    await settled();
+    expect(getByPart("select", "value").textContent).toBe("Alpha");
+    expect(changes).toEqual([]);
+
+    const listbox = getByPart("select", "listbox");
+    keyDown(listbox, "ArrowDown");
+    expect(document.querySelector('[data-part="item"][data-highlighted]')?.textContent).toBe(
+      "Alpha",
+    );
+
+    keyDown(listbox, "b");
+    expect(document.querySelector('[data-part="item"][data-highlighted]')?.textContent).toBe(
+      "Alpha",
+    );
+
+    keyDown(listbox, "ArrowDown");
+    expect(document.querySelector('[data-part="item"][data-highlighted]')?.textContent).toBe(
+      "Charlie",
+    );
+
+    keyDown(listbox, "Enter");
+    await settled();
+
+    expect(charlie.getAttribute("aria-selected")).toBe("true");
+    expect(charlie.getAttribute("data-selected")).toBe("");
+    expect(getByPart("select", "value").textContent).toBe("Charlie");
+    expect(changes).toEqual(["charlie"]);
+  });
+
+  test("keeps duplicate value replacements after stale option cleanup", async () => {
+    let setShowOldAlpha!: Setter<boolean>;
+
+    render(() => {
+      const [showOldAlpha, setShowOldAlphaSignal] = createSignal(true);
+      setShowOldAlpha = setShowOldAlphaSignal;
+
+      return (
+        <Select.Root defaultValue="alpha">
+          <Select.Trigger>Choose project</Select.Trigger>
+          <Select.Value />
+          <Select.Content>
+            <Select.Listbox>
+              <Show when={showOldAlpha()}>
+                <Select.Item value="alpha">Old Alpha</Select.Item>
+              </Show>
+              <Select.Item value="alpha">Updated Alpha</Select.Item>
+              <Select.Item value="bravo">Bravo</Select.Item>
+            </Select.Listbox>
+          </Select.Content>
+        </Select.Root>
+      );
+    });
+
+    await settled();
+
+    expect(getByPart("select", "value").textContent).toBe("Updated Alpha");
+
+    setShowOldAlpha(false);
+    await settled();
+
+    expect(getByPart("select", "value").textContent).toBe("Updated Alpha");
+  });
+
   test("keeps dynamic options in DOM order and removes stale unmounted items", async () => {
     let setShowAlpha!: Setter<boolean>;
     const changes: string[] = [];

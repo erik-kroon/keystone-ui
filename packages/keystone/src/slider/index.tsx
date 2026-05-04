@@ -144,9 +144,14 @@ function Range(props: SliderRangeProps) {
 function Thumb(props: SliderThumbProps) {
   const slider = useSlider("Thumb");
   const [local, others] = splitProps(props, ["children", "index"]);
-  const thumbProps = slider.getThumbProps({ ...others, index: local.index ?? 0 });
+  const index = () => local.index ?? 0;
+  const thumbProps = slider.getThumbProps({ ...others, index: index() });
 
-  return <button {...thumbProps}>{local.children}</button>;
+  return (
+    <button {...thumbProps} data-active={slider.activeThumbIndex() === index() ? "" : undefined}>
+      {local.children}
+    </button>
+  );
 }
 
 function HiddenInput(props: SliderHiddenInputProps) {

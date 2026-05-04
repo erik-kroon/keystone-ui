@@ -153,6 +153,84 @@ describe("Listbox interaction module", () => {
     });
   });
 
+  test("typeahead keeps cycling repeated keys when repeated-prefix items are not enabled", () => {
+    createRoot((dispose) => {
+      const listbox = createListboxInteraction<
+        { disabled?: boolean; hidden?: boolean; label: string; value: string },
+        { reason: string }
+      >({
+        id: () => "project-listbox",
+        labelledBy: () => "project-trigger",
+        optionId: (value) => `project-option-${value}`,
+        optionSelectDetail: () => ({ reason: "item" }),
+        programmaticDetail: { reason: "programmatic" },
+        scope: "test-listbox",
+      });
+
+      listbox.getOptionProps({ label: "Alpha", value: "alpha" });
+      listbox.getOptionProps({ label: "Alpine", value: "alpine" });
+      listbox.getOptionProps({ hidden: true, label: "Aardvark", value: "aardvark" });
+      listbox.getOptionProps({ disabled: true, label: "Aaron", value: "aaron" });
+      const props = listbox.getListboxProps(
+        {},
+        {
+          selectDetail: () => ({ reason: "keyboard" }),
+        },
+      );
+
+      for (const key of ["a", "a", "a"]) {
+        (props.onKeyDown as (event: KeyboardEvent) => void)(
+          new KeyboardEvent("keydown", { cancelable: true, key }),
+        );
+      }
+
+      expect(listbox.activeDescendant.highlightedValue()).toBe("alpha");
+      dispose();
+    });
+  });
+
+  test("typeahead allows enabled repeated-prefix items without blocking later cycling", () => {
+    createRoot((dispose) => {
+      const listbox = createListboxInteraction<
+        { disabled?: boolean; label: string; value: string },
+        { reason: string }
+      >({
+        id: () => "project-listbox",
+        labelledBy: () => "project-trigger",
+        optionId: (value) => `project-option-${value}`,
+        optionSelectDetail: () => ({ reason: "item" }),
+        programmaticDetail: { reason: "programmatic" },
+        scope: "test-listbox",
+      });
+
+      listbox.getOptionProps({ label: "Aardvark", value: "aardvark" });
+      listbox.getOptionProps({ label: "Alpha", value: "alpha" });
+      listbox.getOptionProps({ label: "Alpine", value: "alpine" });
+      const props = listbox.getListboxProps(
+        {},
+        {
+          selectDetail: () => ({ reason: "keyboard" }),
+        },
+      );
+
+      (props.onKeyDown as (event: KeyboardEvent) => void)(
+        new KeyboardEvent("keydown", { cancelable: true, key: "a" }),
+      );
+      expect(listbox.activeDescendant.highlightedValue()).toBe("aardvark");
+
+      (props.onKeyDown as (event: KeyboardEvent) => void)(
+        new KeyboardEvent("keydown", { cancelable: true, key: "a" }),
+      );
+      expect(listbox.activeDescendant.highlightedValue()).toBe("aardvark");
+
+      (props.onKeyDown as (event: KeyboardEvent) => void)(
+        new KeyboardEvent("keydown", { cancelable: true, key: "a" }),
+      );
+      expect(listbox.activeDescendant.highlightedValue()).toBe("alpha");
+      dispose();
+    });
+  });
+
   test("navigation and typeahead skip hidden options while preserving collection lookup", () => {
     createRoot((dispose) => {
       const listbox = createListboxInteraction<
@@ -190,6 +268,31 @@ describe("Listbox interaction module", () => {
         new KeyboardEvent("keydown", { cancelable: true, key: "ArrowDown" }),
       );
       expect(listbox.activeDescendant.highlightedValue()).toBe("beta");
+      dispose();
+    });
+  });
+
+  test("selected-or-first falls back when the selected option is hidden", () => {
+    createRoot((dispose) => {
+      const listbox = createListboxInteraction<
+        { disabled?: boolean; hidden?: boolean; label: string; value: string },
+        { reason: string }
+      >({
+        defaultValue: "alpha",
+        id: () => "project-listbox",
+        labelledBy: () => "project-trigger",
+        optionId: (value) => `project-option-${value}`,
+        optionSelectDetail: () => ({ reason: "item" }),
+        programmaticDetail: { reason: "programmatic" },
+        scope: "test-listbox",
+      });
+
+      listbox.getOptionProps({ hidden: true, label: "Alpha", value: "alpha" });
+      listbox.getOptionProps({ label: "Bravo", value: "bravo" });
+
+      listbox.keyboard.highlight("selected-or-first");
+
+      expect(listbox.activeDescendant.highlightedValue()).toBe("bravo");
       dispose();
     });
   });

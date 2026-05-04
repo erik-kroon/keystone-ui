@@ -1,6 +1,7 @@
 import { createMemo, type Accessor } from "solid-js";
 import type { CollectionItem } from "./collection-registry";
 import {
+  isCollectionItemEnabled,
   nextEnabledFromEnabledItems,
   type ListInteractionNavigationIntent,
 } from "./keyboard-delegate";
@@ -29,9 +30,7 @@ export function createRovingFocus<T extends RovingFocusItem>(
   options: RovingFocusOptions<T>,
 ): RovingFocusApi<T> {
   let fallbackCurrent: string | undefined;
-  const enabledItems = createMemo(() =>
-    options.items().filter((item) => !item.disabled && !item.hidden),
-  );
+  const enabledItems = createMemo(() => options.items().filter(isCollectionItemEnabled));
   const currentValue = () => options.current?.() ?? fallbackCurrent ?? enabledItems()[0]?.value;
   const currentItem = createMemo(() =>
     enabledItems().find((item) => item.value === currentValue()),

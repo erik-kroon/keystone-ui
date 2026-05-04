@@ -15,6 +15,9 @@ Reusable implementation:
   previous attributes/properties.
 - `packages/keystone/src/overlay/layer-kernel.tsx` applies outside hiding for the top active modal
   layer and treats layers registered above that modal as exceptions.
+- The same layer kernel coordinates outside hiding with body pointer suppression, scroll locking,
+  and registered branch exceptions so modal environment management is restored as one document-level
+  concern.
 - Dialog, Sheet, and other modal-capable overlays consume the behavior through the shared layer
   stack.
 

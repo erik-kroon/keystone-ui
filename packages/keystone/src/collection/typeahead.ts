@@ -1,5 +1,6 @@
 import { createSignal, onCleanup, type Accessor } from "solid-js";
 import type { CollectionItem } from "./collection-registry";
+import { isCollectionItemEnabled } from "./keyboard-delegate";
 
 export type TypeaheadOptions<T extends CollectionItem> = {
   collator?: Intl.Collator;
@@ -88,13 +89,24 @@ function normalizeTypeaheadSearch<T extends CollectionItem>(
   items: readonly T[],
   locale?: string,
 ) {
-  const repeatedCharacter = currentSearch.length === 1 && currentSearch === key;
-  const canCycleRepeatedCharacter = items.every((item) => {
-    const normalized = normalizeTypeaheadText(item.label, locale);
-    return !normalized || normalized[0] !== normalized[1];
-  });
+  const nextSearch = currentSearch + key;
+  const isRepeatedSearch = Array.from(nextSearch).every((character) => character === key);
 
-  return repeatedCharacter && canCycleRepeatedCharacter ? key : currentSearch + key;
+  if (!isRepeatedSearch) {
+    return nextSearch;
+  }
+
+  const hasRepeatedPrefixMatch = items
+    .filter(isCollectionItemEnabled)
+    .some((item) =>
+      startsWithTypeahead(
+        normalizeTypeaheadText(item.label, locale),
+        normalizeTypeaheadSearchText(nextSearch, locale),
+        undefined,
+      ),
+    );
+
+  return hasRepeatedPrefixMatch ? nextSearch : key;
 }
 
 function findTypeaheadMatch<T extends CollectionItem>(options: {

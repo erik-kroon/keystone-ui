@@ -76,7 +76,9 @@ Keystone internals -> Keystone primitives -> Mason components -> Mason blocks ->
 - Mason first-party app components should prefer TanStack libraries for app-grade behavior: `@tanstack/solid-form`, `@tanstack/solid-table`, TanStack Store, and `@tanstack/solid-hotkeys`.
 - Mason is the home for data-dense, keyboard-first workspace patterns. Keep domain-specific or finance-specific UI out of Keystone core unless it reduces to a general accessible primitive.
 - Keystone must not depend on TanStack app libraries. Keystone owns intrinsic primitive behavior; Mason owns app-level form/table/store/hotkey integration.
+- Keystone kernels stay private by default. Public API is promoted through primitive subpaths, primitive-specific creators, explicitly public utility primitives such as Portal/Popper/Direction/Locale/LiveAnnouncer, form support APIs, and metadata support APIs; generic `utils`, overlay, and collection kernels stay private until an ADR or accepted RFC promotes them.
 - Use [ADR 0003](docs/adr/0003-mason-tanstack-app-layer.md) and [End-State Primitive And Component Inventory](docs/agents/end-state-primitive-component-inventory.md) when deciding whether a new surface belongs in Keystone or Mason.
+- Use [ADR 0004](docs/adr/0004-keystone-kernel-api-boundary.md) before exporting a Keystone internal helper or letting Mason depend on anything below a public primitive or utility subpath.
 - Use [Do Not Reinvent Engines](docs/roadmap/do-not-reinvent.md) before adding table, virtualizer, form-state, query/cache, charting, validation, or date/i18n behavior.
 - The active design source of truth is the accepted ADRs, RFCs, PRDs, agent guidance, and end-state inventory in `docs/`.
 

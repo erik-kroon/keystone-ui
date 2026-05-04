@@ -74,6 +74,45 @@ describe("overlay presence", () => {
     dispose();
   });
 
+  test("completes immediate open and close paths when no transition is present", async () => {
+    let dispose!: () => void;
+    let presence!: OverlayPresenceApi;
+    let setOpen!: (open: boolean) => boolean;
+    const complete: string[] = [];
+    const element = document.createElement("div");
+
+    createRoot((rootDispose) => {
+      dispose = rootDispose;
+      const [open, nextOpen] = createSignal(false);
+      setOpen = nextOpen;
+      presence = createOverlayPresence({
+        open,
+        onOpenChangeComplete: (open, detail) =>
+          complete.push(`${open ? "open" : "closed"}:${detail.preventedUnmount}`),
+      });
+      presence.setElement(element);
+    });
+
+    setOpen(true);
+    await animationFrame();
+    await settled();
+
+    expect(presence.mounted()).toBe(true);
+    expect(presence.transitionStatus()).toBe("open");
+    expect(complete).toEqual(["open:false"]);
+
+    setOpen(false);
+    await animationFrame();
+    await settled();
+
+    expect(presence.mounted()).toBe(false);
+    expect(presence.shouldMount()).toBe(false);
+    expect(presence.transitionStatus()).toBe("closed");
+    expect(complete).toEqual(["open:false", "closed:false"]);
+
+    dispose();
+  });
+
   test("keeps force-mounted content present and hidden after close completion", async () => {
     let dispose!: () => void;
     let presence!: OverlayPresenceApi;

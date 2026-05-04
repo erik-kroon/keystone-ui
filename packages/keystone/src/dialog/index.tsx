@@ -74,6 +74,7 @@ export type DialogApi = {
   modal: () => boolean;
   open: () => boolean;
   setOpen: (open: boolean, detail: DialogChangeDetail) => void;
+  hidden: (forceMount?: boolean) => boolean;
   shouldMount: (forceMount?: boolean) => boolean;
   titleId: string;
 };
@@ -103,6 +104,9 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
     descriptionId: overlay.descriptionId,
     getBackdropProps: (props) => ({
       ...props,
+      get hidden() {
+        return overlay.hidden();
+      },
       ...overlay.getPartProps("backdrop"),
     }),
     getCloseProps: (props) => overlay.getCloseProps(props, "close") as Record<string, unknown>,
@@ -139,6 +143,9 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
         ...others,
         ...layerProps,
         id: overlay.contentId,
+        get hidden() {
+          return overlay.hidden();
+        },
         tabIndex: -1,
         role: "dialog",
         "aria-modal": overlay.modal() ? "true" : undefined,
@@ -154,6 +161,9 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
     }),
     getPositionerProps: (props) => ({
       ...props,
+      get hidden() {
+        return overlay.hidden();
+      },
       ...overlay.getPartProps("positioner"),
     }),
     getTitleProps: (props) => ({
@@ -169,6 +179,7 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
     modal: overlay.modal,
     open: overlay.open,
     setOpen: overlay.setOpen,
+    hidden: overlay.hidden,
     shouldMount: overlay.shouldMount,
     titleId: overlay.titleId,
   };

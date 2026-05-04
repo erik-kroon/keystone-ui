@@ -170,13 +170,15 @@ describe("Slider", () => {
     expect(thumb.getAttribute("aria-valuenow")).toBe("30");
   });
 
-  test("updates the closest thumb from track pointer input and commits on release", () => {
+  test("updates the closest thumb from track pointer input, captures pointer, and commits on release", async () => {
     const changes: Array<{ reason: string; value: readonly number[] }> = [];
     const commits: Array<{
       reason: string;
       thumbIndex: number | undefined;
       value: readonly number[];
     }> = [];
+    const captures: number[] = [];
+    const releases: number[] = [];
 
     render(() => (
       <Slider.Root
@@ -200,13 +202,23 @@ describe("Slider", () => {
     const track = getByPart("slider", "track");
     track.getBoundingClientRect = () =>
       ({ bottom: 20, height: 20, left: 0, right: 100, top: 0, width: 100 }) as DOMRect;
+    track.setPointerCapture = (pointerId: number) => captures.push(pointerId);
+    track.releasePointerCapture = (pointerId: number) => releases.push(pointerId);
 
     pointerDown(track, { clientX: 70, clientY: 10 });
+    await settled();
+    const [, activeThumb] = parts("thumb");
+    expect(activeThumb?.getAttribute("data-active")).toBe("");
+
     pointerMove({ clientX: 60, clientY: 10 });
     pointerUp({ clientX: 60, clientY: 10 });
+    await settled();
 
     const [, secondThumb] = parts("thumb");
     expect(secondThumb?.getAttribute("aria-valuenow")).toBe("60");
+    expect(secondThumb?.hasAttribute("data-active")).toBe(false);
+    expect(captures).toEqual([1]);
+    expect(releases).toEqual([1]);
     expect(changes.map((change) => change.reason)).toEqual(["track", "pointer"]);
     expect(commits).toEqual([{ reason: "pointer", thumbIndex: 1, value: [20, 60] }]);
   });
@@ -272,6 +284,25 @@ describe("Slider", () => {
 
     expect(thumb.getAttribute("aria-valuenow")).toBe("20");
     expect(new FormData(form).get("price")).toBe("20");
+  });
+
+  test("serializes multi-thumb values as repeated hidden inputs", () => {
+    render(() => (
+      <form>
+        <Slider.Root defaultValue={[20, 80]} name="price" min={0} max={100} step={10}>
+          <Slider.Track>
+            <Slider.Range />
+            <Slider.Thumb index={0} />
+            <Slider.Thumb index={1} />
+          </Slider.Track>
+          <Slider.HiddenInput index={0} />
+          <Slider.HiddenInput index={1} />
+        </Slider.Root>
+      </form>
+    ));
+
+    const form = document.querySelector<HTMLFormElement>("form")!;
+    expect(new FormData(form).getAll("price")).toEqual(["20", "80"]);
   });
 
   test("read-only slider exposes state and blocks keyboard and pointer changes", () => {

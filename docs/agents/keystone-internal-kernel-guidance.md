@@ -4,6 +4,8 @@
 
 Keystone internals should deepen shared primitive behavior before new component breadth. Dialog and Select are the proving primitives for the first kernel pass.
 
+The durable API boundary is [ADR 0004: Keystone Kernel API Boundary](../adr/0004-keystone-kernel-api-boundary.md). This note is operational guidance for contributors; ADR 0004 wins if the two documents conflict.
+
 ## Current Kernel Modules
 
 - `packages/keystone/src/utils/*`: controllable state, event composition, stable IDs, environment guards, polymorphic rendering, and state/data helpers.
@@ -12,18 +14,20 @@ Keystone internals should deepen shared primitive behavior before new component 
 - `packages/keystone/src/form/*`: form-control ARIA relationships, state data attributes, hidden input props, description/error registration, field validity, and form reset hooks.
 - `packages/keystone/src/i18n/*`: locale, message, text-direction inference, and direction provider internals used by primitives.
 
-These modules are implementation kernels for the 0.1.0 preview. They are used by public primitives but are not exported as public package subpaths.
+These modules are implementation kernels for the 0.1.0 preview. They are used by public primitives but are not exported as public package subpaths unless ADR 0004 explicitly classifies the surface as public.
 
-## 0.1.0 Public Surface
+## Public Surface Boundary
 
-The 0.1.0 preview exposes:
+The preview package exposes primitive and utility subpaths, including:
 
 - `@keystone-ui/keystone`
-- `@keystone-ui/keystone/dialog`
-- `@keystone-ui/keystone/form`
-- `@keystone-ui/keystone/select`
+- Primitive subpaths such as `@keystone-ui/keystone/dialog`, `@keystone-ui/keystone/select`, `@keystone-ui/keystone/combobox`, `@keystone-ui/keystone/menu`, `@keystone-ui/keystone/tabs`, and other current primitive exports.
+- Utility primitive subpaths such as `@keystone-ui/keystone/portal`, `@keystone-ui/keystone/popper`, `@keystone-ui/keystone/direction`, `@keystone-ui/keystone/locale`, and `@keystone-ui/keystone/live-announcer`.
+- `@keystone-ui/keystone/form` for native-form and ARIA-focused form-control support.
 
-The `./overlay` and `./utils` subpaths stay private until a later API decision promotes specific utilities. `./popper` is the public low-level positioning primitive; it wraps the private floating adapter without exposing the full overlay kernel. The goal is to let Dialog, Select, and Popper prove kernel behavior without freezing every helper as public API.
+The `./overlay`, `./collection`, and `./utils` subpaths stay private until a later ADR or accepted RFC promotes specific utilities. `./popper` is the public low-level positioning primitive; it wraps the private floating adapter without exposing the full overlay kernel. Metadata getters and types are public support APIs for docs and Mason validation, but metadata helper internals remain implementation detail.
+
+The goal is to let public primitives and narrow utility primitives prove kernel behavior without freezing every helper as public API.
 
 ## Implementation Rules
 
@@ -33,10 +37,12 @@ The `./overlay` and `./utils` subpaths stay private until a later API decision p
 - Keep reason details on the shared controllable-state setter path. Use `KeystoneChangeDetail`-shaped details and `defaultDetail` for programmatic changes instead of controller-local `lastDetail` or `pendingDetail` side channels.
 - Keep `data-scope` and `data-part` on every public primitive part. State attributes and floating CSS variables are styling contracts.
 - Do not add Mason dependencies to Keystone internals.
-- Avoid public subpath exports for private kernels until a later ADR/RFC explicitly promotes them.
+- Avoid public subpath exports for private kernels until a later ADR or accepted RFC explicitly promotes them.
+- Treat private kernel file paths, function names, and return shapes as non-contractual. Public contracts are primitive subpaths, namespace parts, creator APIs, exported types, data attributes, CSS variables, documented ARIA/form behavior, and explicitly public utility primitives.
 
 See also:
 
+- [ADR 0004: Keystone Kernel API Boundary](../adr/0004-keystone-kernel-api-boundary.md)
 - [Overlay Kernel Boundary Note](overlay-kernel-boundary.md)
 - [Collection And Typeahead Kernel Boundary Note](collection-typeahead-kernel-boundary.md)
 

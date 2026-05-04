@@ -190,6 +190,9 @@ export function createHoverCard(options: CreateHoverCardOptions = {}): HoverCard
         ...layerProps,
         ...floatingProps,
         id: overlay.contentId,
+        get hidden() {
+          return overlay.hidden();
+        },
         "aria-hidden": "true",
         tabindex: -1,
         ...partProps("content"),
@@ -199,6 +202,9 @@ export function createHoverCard(options: CreateHoverCardOptions = {}): HoverCard
       const floatingProps = overlay.getFloatingPositionerProps<HTMLDivElement>(props);
       return {
         ...floatingProps,
+        get hidden() {
+          return overlay.hidden();
+        },
         ...partProps("positioner"),
       };
     },

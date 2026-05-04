@@ -14,6 +14,8 @@ Shared implementation:
 
 - Popover, HoverCard, Tooltip, and Sheet use `createOverlayController` for controlled/uncontrolled
   state, presence, stable IDs, trigger wiring, dismissal, and floating geometry where applicable.
+- Shared overlay presence exposes the closed force-mounted hidden state to overlay surfaces so
+  content can stay mounted for styling without remaining in the accessibility tree.
 - Modal Sheet uses the shared layer stack for focus trap, focus restore, outside hiding/inert,
   prevent scroll, and outside pointer blocking.
 - Popover, HoverCard, and Tooltip use the shared floating adapter and Arrow part contract.

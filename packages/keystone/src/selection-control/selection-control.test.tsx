@@ -65,6 +65,22 @@ describe("Selection controls", () => {
     expect(new FormData(form).get("notifications")).toBe("on");
   });
 
+  test("switch supports user-owned label and description composition", () => {
+    render(() => (
+      <Switch.Root>
+        <span id="switch-label">Notifications</span>
+        <span id="switch-description">Send activity updates.</span>
+        <Switch.Control aria-describedby="switch-description" aria-labelledby="switch-label" />
+        <Switch.HiddenInput />
+      </Switch.Root>
+    ));
+
+    const control = getByPart("switch", "control");
+
+    expect(control.getAttribute("aria-labelledby")).toBe("switch-label");
+    expect(control.getAttribute("aria-describedby")).toBe("switch-description");
+  });
+
   test("checkbox supports indeterminate state and keyboard toggling", () => {
     const changes: Array<boolean | "indeterminate"> = [];
 
@@ -147,6 +163,59 @@ describe("Selection controls", () => {
 
     expect(getByPart("checkbox", "control").getAttribute("aria-checked")).toBe("true");
     expect(new FormData(form).get("terms")).toBe("on");
+  });
+
+  test("checkbox required validation and external form reset use the native input", async () => {
+    render(() => (
+      <>
+        <form id="legal" />
+        <Checkbox.Root form="legal" name="terms" required>
+          <span id="terms-label">Terms</span>
+          <span id="terms-description">Required before continuing.</span>
+          <Checkbox.Control aria-describedby="terms-description" aria-labelledby="terms-label" />
+          <Checkbox.HiddenInput />
+        </Checkbox.Root>
+      </>
+    ));
+
+    const form = document.querySelector<HTMLFormElement>("#legal")!;
+    const control = getByPart("checkbox", "control");
+    const input = getByPart("checkbox", "hidden-input") as HTMLInputElement;
+
+    expect(control.getAttribute("aria-labelledby")).toBe("terms-label");
+    expect(control.getAttribute("aria-describedby")).toBe("terms-description");
+    expect(input.form).toBe(form);
+    expect(input.required).toBe(true);
+    expect(input.checkValidity()).toBe(false);
+
+    click(control);
+    expect(input.checkValidity()).toBe(true);
+    expect(new FormData(form).get("terms")).toBe("on");
+
+    form.reset();
+    await settled();
+
+    expect(input.checkValidity()).toBe(false);
+    expect(new FormData(form).get("terms")).toBeNull();
+  });
+
+  test("checkbox native input changes are preventable", async () => {
+    const changes: Array<boolean | "indeterminate"> = [];
+
+    render(() => (
+      <Checkbox.Root onCheckedChange={(checked) => changes.push(checked)}>
+        <Checkbox.Control />
+        <Checkbox.HiddenInput onChange={(event) => event.preventDefault()} />
+      </Checkbox.Root>
+    ));
+
+    const input = getByPart("checkbox", "hidden-input") as HTMLInputElement;
+    input.checked = true;
+    input.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
+    await settled();
+
+    expect(getByPart("checkbox", "control").getAttribute("aria-checked")).toBe("false");
+    expect(changes).toEqual([]);
   });
 
   test("radio group roves focus and selects with keyboard while skipping disabled items", () => {
@@ -241,5 +310,56 @@ describe("Selection controls", () => {
 
     expect(new FormData(form).get("size")).toBe("small");
     expect(parts("radio-group", "item")[0].getAttribute("aria-checked")).toBe("true");
+  });
+
+  test("radio group exposes label composition, required validation, and preventable item input", async () => {
+    const changes: string[] = [];
+
+    render(() => (
+      <>
+        <form id="profile" />
+        <RadioGroup.Root
+          aria-describedby="size-description"
+          aria-labelledby="size-label"
+          form="profile"
+          name="size"
+          required
+          onValueChange={(value) => changes.push(value ?? "")}
+        >
+          <span id="size-label">Size</span>
+          <span id="size-description">Choose one size.</span>
+          <RadioGroup.Item value="small">
+            Small
+            <RadioGroup.HiddenInput onChange={(event) => event.preventDefault()} />
+          </RadioGroup.Item>
+          <RadioGroup.Item value="large">
+            Large
+            <RadioGroup.HiddenInput />
+          </RadioGroup.Item>
+        </RadioGroup.Root>
+      </>
+    ));
+
+    const form = document.querySelector<HTMLFormElement>("#profile")!;
+    const root = getByPart("radio-group", "root");
+    const [smallInput, largeInput] = parts("radio-group", "hidden-input") as HTMLInputElement[];
+
+    expect(root.getAttribute("aria-labelledby")).toBe("size-label");
+    expect(root.getAttribute("aria-describedby")).toBe("size-description");
+    expect(smallInput?.form).toBe(form);
+    expect(smallInput?.required).toBe(true);
+    expect(largeInput?.required).toBe(true);
+    expect(smallInput?.checkValidity()).toBe(false);
+
+    smallInput!.checked = true;
+    smallInput!.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
+    await settled();
+    expect(parts("radio-group", "item")[0]?.getAttribute("aria-checked")).toBe("false");
+    expect(changes).toEqual([]);
+
+    click(parts("radio-group", "item")[1]!);
+    expect(new FormData(form).get("size")).toBe("large");
+    expect(largeInput?.checkValidity()).toBe(true);
+    expect(changes).toEqual(["large"]);
   });
 });

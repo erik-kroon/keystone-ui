@@ -71,7 +71,7 @@ Existing Dialog, Overlay, Form, and Select tracers should be refactored onto the
 - Keystone should not add broad new primitives until Dialog and Select are refactored onto shared internals.
 - Internal modules should be designed as deep modules: small stable interfaces, substantial encapsulated behavior, and focused tests.
 - Public primitive behavior should be the verification surface for internals whenever possible.
-- Private internals should not become public subpath exports until a deliberate API decision is made.
+- Private internals should not become public subpath exports until a deliberate API decision is made. [ADR 0004](../adr/0004-keystone-kernel-api-boundary.md) records the current boundary: primitive subpaths, primitive creators, selected utility primitives, form support, and metadata are public support surfaces; generic utilities, overlay kernels, and collection kernels remain private by default.
 - Existing utility and primitive files may be reorganized when it reduces duplication and improves testability.
 - Kernel modules must remain Keystone-only and must not depend on Mason.
 - Data attributes and CSS variables remain public styling contracts and should be documented when internals affect them.

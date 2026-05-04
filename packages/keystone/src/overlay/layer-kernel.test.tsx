@@ -34,6 +34,42 @@ function TestLayer(props: {
   );
 }
 
+function TestLayerWithBranch(props: {
+  id: string;
+  branchPointerEvents?: string;
+  layerPointerEvents?: string;
+  modal?: boolean;
+}) {
+  const [element, setElement] = createSignal<HTMLDivElement>();
+  const [branch, setBranch] = createSignal<HTMLDivElement>();
+  const layer = createOverlayLayer({
+    id: props.id,
+    element,
+    branchElements: () => {
+      const current = branch();
+      return current ? [current] : [];
+    },
+    modal: () => props.modal ?? false,
+    disableOutsidePointerEvents: () => props.modal ?? false,
+  });
+
+  return (
+    <>
+      <div
+        data-testid={props.id}
+        data-layer-index={layer.index()}
+        ref={setElement}
+        style={{ "pointer-events": props.layerPointerEvents }}
+      />
+      <div
+        data-testid={`${props.id}-branch`}
+        ref={setBranch}
+        style={{ "pointer-events": props.branchPointerEvents }}
+      />
+    </>
+  );
+}
+
 describe("Overlay layer kernel", () => {
   test("orders layers, blocks pointer events, and dismisses only the top layer through one stack", async () => {
     let stack!: ReturnType<typeof createOverlayLayerStack>;
@@ -198,6 +234,49 @@ describe("Overlay layer kernel", () => {
 
     expect(document.body.style.pointerEvents).toBe("none");
     expect(outside.getAttribute("aria-hidden")).toBe("true");
+  });
+
+  test("re-enables registered branches during pointer suppression and restores inline styles", async () => {
+    let setModal!: (modal: boolean) => void;
+
+    render(() => {
+      const [modal, updateModal] = createSignal(true);
+      setModal = updateModal;
+
+      return (
+        <OverlayLayerProvider stack={createOverlayLayerStack()}>
+          <button data-testid="outside">Outside</button>
+          <TestLayerWithBranch
+            id="layer"
+            modal={modal()}
+            branchPointerEvents="none"
+            layerPointerEvents="none"
+          />
+        </OverlayLayerProvider>
+      );
+    });
+    await settled();
+
+    const layer = document.querySelector<HTMLElement>("[data-testid='layer']")!;
+    const branch = document.querySelector<HTMLElement>("[data-testid='layer-branch']")!;
+
+    expect(document.body.style.pointerEvents).toBe("none");
+    expect(layer.style.pointerEvents).toBe("auto");
+    expect(branch.style.pointerEvents).toBe("auto");
+
+    setModal(false);
+    await settled();
+
+    expect(document.body.style.pointerEvents).toBe("");
+    expect(layer.style.pointerEvents).toBe("none");
+    expect(branch.style.pointerEvents).toBe("none");
+
+    setModal(true);
+    await settled();
+
+    expect(document.body.style.pointerEvents).toBe("none");
+    expect(layer.style.pointerEvents).toBe("auto");
+    expect(branch.style.pointerEvents).toBe("auto");
   });
 
   test("hides outside content added while a modal layer is open and restores it on close", async () => {

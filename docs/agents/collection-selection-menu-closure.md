@@ -2,7 +2,7 @@
 
 ## Scope
 
-This note records the closure contract for GitHub issues #92, #93, #94, #96, #97, #98, #111, #112, #113, #116, #117, #118, and #119.
+This note records the closure contract for GitHub issues #60, #92, #93, #94, #96, #97, #98, #111, #112, #113, #116, #117, #118, and #119.
 
 The implemented Keystone layer is a shared collection/navigation kernel consumed by Select, Combobox, Menu, DropdownMenu, ContextMenu, and Menubar. Listbox remains an internal primitive facade for the 0.1 preview rather than a public subpath.
 

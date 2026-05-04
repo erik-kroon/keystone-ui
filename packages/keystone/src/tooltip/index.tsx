@@ -207,6 +207,9 @@ export function createTooltip(options: CreateTooltipOptions = {}): TooltipApi {
       return {
         ...floatingProps,
         id: overlay.contentId,
+        get hidden() {
+          return overlay.hidden();
+        },
         role: "tooltip",
         ...partProps("content"),
         onKeyDown: (event: KeyboardEvent) => {
@@ -225,6 +228,9 @@ export function createTooltip(options: CreateTooltipOptions = {}): TooltipApi {
       const floatingProps = overlay.getFloatingPositionerProps<HTMLDivElement>(props);
       return {
         ...floatingProps,
+        get hidden() {
+          return overlay.hidden();
+        },
         ...partProps("positioner"),
       };
     },

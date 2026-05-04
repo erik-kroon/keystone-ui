@@ -7,6 +7,7 @@ import {
 } from "./collection-registry";
 import {
   firstEnabledItem,
+  isCollectionItemEnabled,
   lastEnabledItem,
   nextEnabledFromEnabledItems,
   type ListInteractionNavigationIntent,
@@ -51,9 +52,7 @@ export function createListCollectionManager<T extends CollectionItem>(
 
     return map;
   });
-  const enabledItems = createMemo(() =>
-    itemList().filter((item) => !item.disabled && !item.hidden),
-  );
+  const enabledItems = createMemo(() => itemList().filter(isCollectionItemEnabled));
   const itemByValue = (candidateValue: string | undefined) =>
     candidateValue === undefined ? undefined : itemByValueMap().get(candidateValue);
   const activeDescendant = createActiveDescendant({ itemByValue });
@@ -86,7 +85,7 @@ export function createListCollectionManager<T extends CollectionItem>(
 
     if (intent === "selected-or-first") {
       return highlightItem(
-        selected && !selected.disabled ? selected : firstEnabledItem(enabledItems()),
+        selected && isCollectionItemEnabled(selected) ? selected : firstEnabledItem(enabledItems()),
       );
     }
 

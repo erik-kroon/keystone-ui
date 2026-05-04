@@ -133,6 +133,41 @@ describe("Dialog behavior harness", () => {
     expect(outsideRoot.hasAttribute("inert")).toBe(false);
   });
 
+  test("suppresses outside pointer events while keeping dialog content interactive", async () => {
+    document.body.style.pointerEvents = "all";
+    const outsideRoot = document.createElement("main");
+    outsideRoot.setAttribute("data-testid", "outside-root");
+    document.body.append(outsideRoot);
+
+    render(() => (
+      <Dialog.Root>
+        <Dialog.Trigger>Open dialog</Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Content>
+            <Dialog.Title>Project settings</Dialog.Title>
+            <Dialog.Description>Change project metadata.</Dialog.Description>
+            <Dialog.Close>Close</Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+    ));
+
+    click(getByPart("dialog", "trigger"));
+    await settled();
+
+    const content = getByPart("dialog", "content");
+
+    expect(document.body.style.pointerEvents).toBe("none");
+    expect(content.style.pointerEvents).toBe("auto");
+    expect(outsideRoot.getAttribute("aria-hidden")).toBe("true");
+    expect(outsideRoot.inert).toBe(true);
+
+    click(getByPart("dialog", "close"));
+    await settled();
+
+    expect(document.body.style.pointerEvents).toBe("all");
+  });
+
   test("marks outside body content added after opening inert and restores it on close", async () => {
     render(() => (
       <Dialog.Root>
@@ -286,6 +321,40 @@ describe("Dialog behavior harness", () => {
     expect(complete).toEqual(["open:false", "closed:false"]);
   });
 
+  test("reports open-change completion for immediate lifecycle paths", async () => {
+    const complete: string[] = [];
+
+    render(() => (
+      <Dialog.Root
+        onOpenChangeComplete={(open, detail) =>
+          complete.push(`${open ? "open" : "closed"}:${detail.preventedUnmount}`)
+        }
+      >
+        <Dialog.Trigger>Open dialog</Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Content>
+            <Dialog.Title>Project settings</Dialog.Title>
+            <Dialog.Description>Change project metadata.</Dialog.Description>
+            <Dialog.Close>Close</Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+    ));
+
+    click(getByPart("dialog", "trigger"));
+    await animationFrame();
+    await settled();
+
+    expect(complete).toEqual(["open:false"]);
+
+    click(getByPart("dialog", "close"));
+    await animationFrame();
+    await settled();
+
+    expect(queryByPart("dialog", "content")).toBeNull();
+    expect(complete).toEqual(["open:false", "closed:false"]);
+  });
+
   test("keeps force-mounted content present across the closed presence lifecycle", async () => {
     const complete: string[] = [];
     const outsideRoot = document.createElement("main");
@@ -305,11 +374,14 @@ describe("Dialog behavior harness", () => {
         >
           <Dialog.Trigger>Open dialog</Dialog.Trigger>
           <Dialog.Portal forceMount>
-            <Dialog.Content style="transition-duration: 100ms;">
-              <Dialog.Title>Project settings</Dialog.Title>
-              <Dialog.Description>Change project metadata.</Dialog.Description>
-              <Dialog.Close>Close</Dialog.Close>
-            </Dialog.Content>
+            <Dialog.Backdrop />
+            <Dialog.Positioner>
+              <Dialog.Content style="transition-duration: 100ms;">
+                <Dialog.Title>Project settings</Dialog.Title>
+                <Dialog.Description>Change project metadata.</Dialog.Description>
+                <Dialog.Close>Close</Dialog.Close>
+              </Dialog.Content>
+            </Dialog.Positioner>
           </Dialog.Portal>
         </Dialog.Root>
       );
@@ -318,8 +390,13 @@ describe("Dialog behavior harness", () => {
     await settled();
 
     const content = getByPart("dialog", "content");
+    const backdrop = getByPart("dialog", "backdrop");
+    const positioner = getByPart("dialog", "positioner");
     expect(content.getAttribute("data-state")).toBe("closed");
     expect(content.getAttribute("data-transition-status")).toBe("closed");
+    expect(content.hidden).toBe(true);
+    expect(backdrop.hidden).toBe(true);
+    expect(positioner.hidden).toBe(true);
     expect(outsideRoot.getAttribute("aria-hidden")).toBeNull();
     expect(outsideRoot.inert).toBe(false);
 
@@ -328,6 +405,9 @@ describe("Dialog behavior harness", () => {
 
     expect(content.getAttribute("data-state")).toBe("open");
     expect(content.getAttribute("data-transition-status")).toBe("opening");
+    expect(content.hidden).toBe(false);
+    expect(backdrop.hidden).toBe(false);
+    expect(positioner.hidden).toBe(false);
     expect(outsideRoot.getAttribute("aria-hidden")).toBe("true");
     expect(outsideRoot.inert).toBe(true);
 
@@ -343,6 +423,7 @@ describe("Dialog behavior harness", () => {
 
     expect(content.getAttribute("data-state")).toBe("closed");
     expect(content.getAttribute("data-transition-status")).toBe("closing");
+    expect(content.hidden).toBe(false);
 
     await animationFrame();
     content.dispatchEvent(new Event("transitionend"));
@@ -350,6 +431,9 @@ describe("Dialog behavior harness", () => {
 
     expect(getByPart("dialog", "content")).toBe(content);
     expect(content.getAttribute("data-transition-status")).toBe("closed");
+    expect(content.hidden).toBe(true);
+    expect(backdrop.hidden).toBe(true);
+    expect(positioner.hidden).toBe(true);
     expect(outsideRoot.getAttribute("aria-hidden")).toBeNull();
     expect(outsideRoot.inert).toBe(false);
     expect(complete).toEqual(["open:false", "closed:true"]);

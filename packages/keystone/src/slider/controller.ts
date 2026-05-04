@@ -1,4 +1,4 @@
-import { createMemo, untrack, type Accessor, type JSX } from "solid-js";
+import { createMemo, createSignal, onCleanup, untrack, type Accessor, type JSX } from "solid-js";
 import {
   callEventHandler,
   createControllableSignal,
@@ -74,6 +74,7 @@ export type SliderHiddenInputContractProps = Omit<
 };
 
 export type SliderApi = {
+  activeThumbIndex: Accessor<number | undefined>;
   dir: Accessor<Direction>;
   disabled: Accessor<boolean>;
   form: Accessor<string | undefined>;
@@ -117,7 +118,8 @@ export function createSliderController(options: SliderControllerOptions = {}): S
   const readOnly = createMemo(() => options.readOnly?.() ?? false);
   const required = createMemo(() => options.required?.() ?? false);
   let trackElement: HTMLDivElement | undefined;
-  let activeThumbIndex: number | undefined;
+  const [activeThumbIndex, setActiveThumbIndex] = createSignal<number>();
+  let captureElement: HTMLElement | undefined;
   const [value, setValueState] = createControllableSignal<
     readonly number[],
     SliderValueChangeDetail
@@ -177,18 +179,21 @@ export function createSliderController(options: SliderControllerOptions = {}): S
       orientation(),
       dir(),
     );
-    const thumbIndex = activeThumbIndex ?? getClosestThumbIndex(normalizedValue(), valueFromPoint);
-    activeThumbIndex = thumbIndex;
+    const thumbIndex =
+      activeThumbIndex() ?? getClosestThumbIndex(normalizedValue(), valueFromPoint);
+    setActiveThumbIndex(thumbIndex);
     setThumbValue(thumbIndex, valueFromPoint, { event, reason });
   };
 
   const stopDragging = (event: PointerEvent) => {
-    if (activeThumbIndex === undefined) return;
+    if (activeThumbIndex() === undefined) return;
 
-    const thumbIndex = activeThumbIndex;
-    activeThumbIndex = undefined;
+    const thumbIndex = activeThumbIndex();
+    setActiveThumbIndex(undefined);
     document.removeEventListener("pointermove", moveDragging);
     document.removeEventListener("pointerup", stopDragging);
+    releasePointerCapture(captureElement, event.pointerId);
+    captureElement = undefined;
     commitValue({ event, reason: "pointer", thumbIndex });
   };
 
@@ -200,13 +205,21 @@ export function createSliderController(options: SliderControllerOptions = {}): S
   const startDragging = (event: PointerEvent, thumbIndex?: number) => {
     if (disabled() || readOnly()) return;
 
-    activeThumbIndex = thumbIndex;
+    setActiveThumbIndex(thumbIndex);
+    captureElement = event.currentTarget instanceof HTMLElement ? event.currentTarget : undefined;
+    setPointerCapture(captureElement, event.pointerId);
     setValueFromPoint(event, thumbIndex === undefined ? "track" : "pointer");
     document.addEventListener("pointermove", moveDragging);
     document.addEventListener("pointerup", stopDragging);
   };
 
+  onCleanup(() => {
+    document.removeEventListener("pointermove", moveDragging);
+    document.removeEventListener("pointerup", stopDragging);
+  });
+
   return {
+    activeThumbIndex,
     dir,
     disabled,
     form,
@@ -234,6 +247,9 @@ export function createSliderController(options: SliderControllerOptions = {}): S
         },
         get "data-disabled"() {
           return dataBoolean(disabled());
+        },
+        get "data-active"() {
+          return dataBoolean(activeThumbIndex() === index);
         },
         get "data-invalid"() {
           return dataBoolean(invalid());
@@ -514,6 +530,18 @@ function getClosestThumbIndex(values: readonly number[], nextValue: number) {
   });
 
   return closestIndex;
+}
+
+function setPointerCapture(element: HTMLElement | undefined, pointerId: number) {
+  if (element && "setPointerCapture" in element) {
+    element.setPointerCapture(pointerId);
+  }
+}
+
+function releasePointerCapture(element: HTMLElement | undefined, pointerId: number) {
+  if (element && "releasePointerCapture" in element) {
+    element.releasePointerCapture(pointerId);
+  }
 }
 
 function getValueFromPointer(

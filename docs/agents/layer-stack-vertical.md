@@ -44,6 +44,8 @@ Gaps closed in this pass:
 - Outside hiding now uses the private hide-outside helper with `aria-hidden`, native `inert`,
   ref-counted cleanup, mutation handling for newly inserted outside DOM, and exceptions for layers
   registered above the active modal.
+- Pointer blocking now restores prior inline `pointer-events` values and re-enables registered
+  branch elements, not just layer roots, while body-level pointer suppression is active.
 - Cleanup now resyncs every document touched by a layer, including the fallback owner document and
   the eventual mounted element document.
 
@@ -74,6 +76,8 @@ Behavior:
 - Modal layers hide/inert outside elements, lock body scroll, and default to outside pointer-event
   blocking.
 - Non-modal layers may still opt into outside pointer-event blocking.
+- Body pointer-event blocking preserves existing inline body, layer, and branch pointer styles and
+  restores them when blocking is disabled or the layer unregisters.
 - Nested overlays share stack state through Solid context, including across portals.
 - Controlled option changes after mount update the stack's modal and pointer-blocking effects.
 - Cleanup restores body styles and outside element attributes to their prior values.
@@ -106,8 +110,8 @@ CSS variables:
 Focused coverage:
 
 - `packages/keystone/src/overlay/layer-kernel.test.tsx` verifies ordering, top-layer dismissal,
-  pointer-event blocking, modal hiding, prevent-scroll acquisition, cleanup restore, and reactive
-  modal/pointer option changes.
+  pointer-event blocking, registered branch pointer re-enabling, modal hiding, prevent-scroll
+  acquisition, cleanup restore, and reactive modal/pointer option changes.
 - `packages/keystone/src/overlay/prevent-scroll.test.ts` verifies scrollbar compensation,
   ref-counted nested locks, style restoration, and iOS touch edge blocking.
 - `packages/keystone/test/overlay-vertical.behavior.test.tsx` verifies Popover, Tooltip, and Sheet

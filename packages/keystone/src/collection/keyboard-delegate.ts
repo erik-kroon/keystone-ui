@@ -20,18 +20,22 @@ export type ListKeyboardDelegate<T extends CollectionItem> = {
   previous?: (options: CollectionNavigationOptions<T>) => T | undefined;
 };
 
+export function isCollectionItemEnabled(item: CollectionItem): boolean {
+  return !item.disabled && !item.hidden;
+}
+
 export function firstEnabledItem<T extends CollectionItem>(items: readonly T[]): T | undefined {
-  return items.find((item) => !item.disabled);
+  return items.find(isCollectionItemEnabled);
 }
 
 export function lastEnabledItem<T extends CollectionItem>(items: readonly T[]): T | undefined {
-  return items.findLast((item) => !item.disabled);
+  return items.findLast(isCollectionItemEnabled);
 }
 
 export function nextEnabledItem<T extends CollectionItem>(
   options: CollectionNavigationOptions<T> & { direction: 1 | -1 },
 ): T | undefined {
-  const enabled = options.items.filter((item) => !item.disabled);
+  const enabled = options.items.filter(isCollectionItemEnabled);
 
   return nextEnabledFromEnabledItems({
     ...options,
