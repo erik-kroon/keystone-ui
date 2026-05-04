@@ -1,7 +1,7 @@
 import {
   createContext,
-  createMemo,
   createEffect,
+  createMemo,
   createSignal,
   onCleanup,
   splitProps,
@@ -25,9 +25,11 @@ export type OverlayLayerEntry = {
   modal: boolean;
 };
 
-type OverlayLayerRegistration = OverlayLayerEntry & {
+type OverlayLayerRegistration = {
+  id: string;
   element?: HTMLElement;
   getElement?: Accessor<HTMLElement | undefined>;
+  modal: Accessor<boolean>;
   disableOutsidePointerEvents: Accessor<boolean>;
 };
 
@@ -105,7 +107,7 @@ export function createOverlayLayerStack(): OverlayLayerStack {
   const layers = createMemo(() =>
     registrations().map((layer) => ({
       id: layer.id,
-      modal: layer.modal,
+      modal: layer.modal(),
     })),
   );
   const indexOf = (id: string) => registrations().findIndex((layer) => layer.id === id);
@@ -169,7 +171,7 @@ export function createOverlayLayerStack(): OverlayLayerStack {
 
     state.hiddenElements = [];
 
-    const modalLayers = registrations().filter((layer) => layer.modal);
+    const modalLayers = registrations().filter((layer) => layer.modal());
     const topModal = modalLayers[modalLayers.length - 1];
     const topModalElement = untrack(() => topModal?.getElement?.() ?? topModal?.element);
 
@@ -237,31 +239,55 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
   const stack = options.stack ?? useContext(OverlayLayerContext) ?? getDefaultOverlayLayerStack();
   const modal = () => options.modal?.() ?? false;
   const isTopLayer = createMemo(() => stack.isTopLayer(options.id));
+  const ownerDocuments = new Set<Document>();
   let cleanupLayer: (() => void) | undefined;
   let mountedElement: HTMLElement | undefined;
+  let syncLayerDocument: ((document: Document) => void) | undefined;
+
+  const syncRegisteredDocuments = () => {
+    for (const document of ownerDocuments) {
+      stack.syncPointerEvents(document);
+      stack.syncModalState(document);
+    }
+  };
+
+  const cleanupRegisteredLayer = () => {
+    cleanupLayer?.();
+    cleanupLayer = undefined;
+    mountedElement = undefined;
+  };
 
   createEffect(() => {
     const enabled = options.enabled?.() ?? true;
     const element = options.element?.();
+    modal();
+    options.disableOutsidePointerEvents?.();
 
     if (!enabled || !element) {
-      cleanupLayer?.();
-      cleanupLayer = undefined;
-      mountedElement = undefined;
+      cleanupRegisteredLayer();
       return;
+    }
+
+    if (syncLayerDocument) {
+      syncLayerDocument(getOwnerDocument(element));
     }
 
     if (cleanupLayer && mountedElement === element) {
       return;
     }
 
-    cleanupLayer?.();
+    cleanupRegisteredLayer();
     mountedElement = element;
 
     const ownerDocument = getOwnerDocument(element);
+    syncLayerDocument = (document: Document) => {
+      ownerDocuments.add(document);
+      stack.syncPointerEvents(document);
+      stack.syncModalState(document);
+    };
     const unregister = stack.register({
       id: options.id,
-      modal: modal(),
+      modal,
       element,
       getElement: options.element,
       disableOutsidePointerEvents: () => options.disableOutsidePointerEvents?.() ?? modal(),
@@ -269,8 +295,7 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
     let isReady = false;
     let restoreFocus: (() => void) | undefined;
 
-    stack.syncPointerEvents(ownerDocument);
-    stack.syncModalState(ownerDocument);
+    syncLayerDocument(ownerDocument);
     scheduleMicrotask(() => {
       isReady = true;
     });
@@ -343,13 +368,14 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
       ownerDocument.removeEventListener("keydown", onKeyDown);
       restoreFocus?.();
       unregister();
-      stack.syncPointerEvents(ownerDocument);
-      stack.syncModalState(ownerDocument);
+      ownerDocuments.add(ownerDocument);
+      syncRegisteredDocuments();
       mountedElement = undefined;
+      syncLayerDocument = undefined;
     };
   });
 
-  onCleanup(() => cleanupLayer?.());
+  onCleanup(cleanupRegisteredLayer);
 
   return {
     id: options.id,
