@@ -19,8 +19,36 @@
     "customization": "Style the generated wrappers through ui-dialog classes while Keystone keeps focus, dismissal, layering, and ARIA behavior.",
     "sourceFiles": ["registry/default/ui/dialog.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
+    "api": "Dialog exports Dialog, DialogTrigger, DialogPortal, DialogBackdrop, DialogPositioner, DialogContent, DialogPanel, DialogHeader, DialogFooter, DialogTitle, DialogDescription, DialogClose, and DialogPrimitive. DialogContent composes portal, backdrop, positioner, content, an optional close button, mobile bottom-stick behavior, and class escape hatches while Core owns open state, modal behavior, focus, dismissal, presence, and ARIA.",
+    "accessibility": "Backed by @keystone-ui/core/dialog for role=dialog, aria-modal, title and description relationships, controlled and uncontrolled open state, Escape and outside dismissal, focus entry, focus trap, focus restore, modal outside hiding, scroll lock, preventable events, and hidden force-mounted content semantics.",
+    "anatomy": [
+      "root",
+      "trigger",
+      "portal",
+      "backdrop",
+      "positioner",
+      "content",
+      "panel",
+      "header",
+      "footer",
+      "title",
+      "description",
+      "close"
+    ],
+    "cssVariables": [
+      "--radius-2xl",
+      "--color-popover",
+      "--color-popover-foreground",
+      "--color-muted",
+      "--color-muted-foreground",
+      "--color-accent",
+      "--color-ring",
+      "--color-background"
+    ],
+    "limitations": "Scrollable body composition is provided through DialogPanel rather than a dedicated ScrollArea dependency, and alert-dialog semantics remain a separate future UI item. Overlay behavior stays in Keystone Core.",
     "parity": {
-      "baseUi": "Covers Root/Trigger/Portal/Backdrop/Content anatomy, controlled and uncontrolled open state, modal dismissal, Escape handling, focus entry/restore/trap, force-mounted presence lifecycle, transition status metadata, outside pointer blocking, modal scroll lock, and stable data attributes through Keystone overlay internals. Follow-up: advanced scroll-lock compensation and broader browser accessibility tests.",
+      "visualReference": "Matches the reference dialog visual shape in Solid source form: blurred backdrop, centered desktop popup, bottom-stuck mobile sheet behavior, rounded popover surface, close affordance, header/footer/panel spacing, transition status styling, and neutral data-slot hooks.",
+      "baseUi": "Covers Root/Trigger/Portal/Backdrop/Content anatomy, controlled and uncontrolled open state, modal dismissal, Escape handling, focus entry/restore/trap, force-mounted presence lifecycle, transition status metadata, outside pointer blocking, modal scroll lock, and stable data attributes through Keystone overlay internals.",
       "kobalte": "Matches Solid Dialog composition with trigger, portal, overlay/content, title, description, controlled state, dismissable-layer direction, preventable outside/autofocus events, and hide-outside behavior for existing and newly inserted outside DOM. Follow-up: extracting hide-outside as a standalone utility and deeper browser matrix coverage."
     }
   },

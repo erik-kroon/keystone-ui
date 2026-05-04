@@ -1,0 +1,72 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "select",
+  "type": "registry:ui",
+  "title": "Select",
+  "description": "Keystone-backed styled select with trigger, value, popup, listbox, group, item, and form-value behavior.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["form", "listbox", "select"],
+  "keywords": ["select", "listbox", "form", "keystone"],
+  "docs": "https://keystone-ui.dev/docs/ui/select",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add select",
+    "customization": "Style trigger, value, popup surface, listbox, groups, items, indicators, labels, and separators through ui-select classes, Core data attributes, and neutral data-slot hooks.",
+    "sourceFiles": ["registry/default/ui/select.tsx"],
+    "dependencies": ["@keystone-ui/core", "cn"],
+    "api": "Select exports Select, SelectButton, SelectTrigger, SelectValue, SelectContent, SelectPopup, SelectPortal, SelectPositioner, SelectListbox, SelectGroup, SelectGroupLabel, SelectLabel, SelectItem, SelectItemText, SelectItemIndicator, SelectArrow, SelectSeparator, and SelectPrimitive. Core owns open/value state, controlled and uncontrolled values, multiple values, hidden form inputs, keyboard navigation, typeahead, collection registration, popup positioning, and data attributes.",
+    "accessibility": "Backed by @keystone-ui/core/select for button/listbox roles, active descendant, highlighted and selected item state, disabled item handling, Escape dismissal, typeahead, hidden form value serialization, and native form reset support.",
+    "anatomy": [
+      "root",
+      "button",
+      "button-label",
+      "trigger",
+      "value",
+      "icon",
+      "positioner",
+      "content",
+      "surface",
+      "listbox",
+      "group",
+      "group-label",
+      "label",
+      "item",
+      "item-text",
+      "item-indicator",
+      "arrow",
+      "separator"
+    ],
+    "cssVariables": [
+      "--radius-lg",
+      "--anchor-width",
+      "--available-height",
+      "--transform-origin",
+      "--color-input",
+      "--color-background",
+      "--color-popover",
+      "--color-foreground",
+      "--color-muted-foreground",
+      "--color-accent",
+      "--color-accent-foreground",
+      "--color-destructive",
+      "--color-ring"
+    ],
+    "limitations": "Scroll arrow affordances and object-value item helpers are not reimplemented in UI; Keystone Core owns the primitive contract and UI keeps those as future Core/API decisions.",
+    "parity": {
+      "visualReference": "Matches the reference select visual shape in Solid source form: dense trigger sizing, value truncation, popup surface, listbox padding, grouped options, item indicator column, separator, labels, data-slot hooks, and pointer/focus/invalid styling.",
+      "baseUi": "Behavior parity is inherited through Keystone Core Select: collection registration, keyboard navigation, typeahead, hidden inputs, controlled/uncontrolled open and value, multiple value support, positioning, and state data attributes.",
+      "kobalte": "Solid parity follows Keystone Core Select composition with trigger, value, portal, positioner, content, listbox, groups, group labels, items, item text, item indicators, and form participation."
+    }
+  },
+  "files": [
+    {
+      "path": "ui/select.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

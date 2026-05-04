@@ -48,7 +48,38 @@ describe("Mason registry validation tracer", () => {
       expect(result.value.categories).toContain("base");
       expect(result.value.meta?.install).toBe("mason add button");
       expect(result.value.meta?.customization).toBeString();
+      expect(result.value.meta?.api).toContain("loading disables");
+      expect(result.value.meta?.accessibility).toContain("defaults type to button");
+      expect(result.value.meta?.anatomy).toEqual(["root", "loading-indicator", "loading-label"]);
+      expect(result.value.meta?.limitations).toContain("LinkButton");
+      expect(result.value.meta?.parity).toMatchObject({
+        baseUi: expect.any(String),
+        visualReference: expect.any(String),
+        kobalte: expect.any(String),
+      });
     }
+  });
+
+  test("captures the real default button generated source contract", async () => {
+    const source = await readFile(resolve(defaultRegistryRoot, "ui/button.tsx"), "utf8");
+
+    expect(source).toContain('type={local.type ?? "button"}');
+    expect(source).toContain("disabled={disabled()}");
+    expect(source).toContain("aria-busy={loading() || undefined}");
+    expect(source).toContain("aria-disabled={loading() || undefined}");
+    expect(source).toContain("aria-pressed={local.pressed ?? undefined}");
+    expect(source).toContain('data-scope="ui-button"');
+    expect(source).toContain('data-part="root"');
+    expect(source).toContain('data-part="loading-indicator"');
+    expect(source).toContain('data-part="loading-label"');
+    expect(source).toContain('data-slot="button-loading-indicator"');
+    expect(source).toContain('default: classes("h-9"');
+    expect(source).toContain('"px-[calc(--spacing(3)-1px)]"');
+    expect(source).toContain('"icon-xl"');
+    expect(source).toContain('"destructive-outline"');
+    expect(source).toContain("data-loading:text-transparent");
+    expect(source).toContain("focus-visible:ring-2");
+    expect(source).toContain("pointer-coarse:after:min-h-11");
   });
 
   test("validates every default registry item and its parity metadata contract", async () => {
@@ -106,6 +137,7 @@ describe("Mason registry validation tracer", () => {
       "popover",
       "radio-group",
       "select-field",
+      "select",
       "separator",
       "sheet",
       "slider",
@@ -200,6 +232,480 @@ describe("Mason registry validation tracer", () => {
       expect(result.value.meta?.accessibility).toContain("Keystone Combobox");
       expect(result.value.meta?.limitations).toBeString();
     }
+  });
+
+  test("captures Field parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/field.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const source = await readFile(resolve(defaultRegistryRoot, "ui/field.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@keystone-ui/core@^0.0.0");
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("FieldControl");
+      expect(result.value.meta?.accessibility).toContain("Keystone Core Field semantics");
+      expect(result.value.meta?.anatomy).toEqual([
+        "root",
+        "label",
+        "item",
+        "control",
+        "description",
+        "error-message",
+        "hidden-input",
+      ]);
+      expect(result.value.meta?.limitations).toContain("standalone Input");
+      expect(result.value.meta?.parity).toMatchObject({
+        baseUi: expect.any(String),
+        visualReference: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain('from "@keystone-ui/core/form"');
+    expect(source).toContain("export function FieldControl");
+    expect(source).toContain("export function FieldHiddenInput");
+    expect(source).toContain("export const FieldPrimitive = CoreField");
+    expect(source).toContain('data-slot="field-label"');
+    expect(source).toContain('data-slot="field-control"');
+    expect(source).toContain("data-invalid:border-destructive/36");
+  });
+
+  test("captures Input parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/input.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const source = await readFile(resolve(defaultRegistryRoot, "ui/input.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.meta?.api).toContain("numeric native size");
+      expect(result.value.meta?.accessibility).toContain("native input");
+      expect(result.value.meta?.anatomy).toEqual(["root", "input"]);
+      expect(result.value.meta?.limitations).toContain("FieldControl");
+      expect(result.value.meta?.parity).toMatchObject({
+        baseUi: expect.any(String),
+        visualReference: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain("export type InputSize");
+    expect(source).toContain('data-scope="ui-input"');
+    expect(source).toContain('data-part="root"');
+    expect(source).toContain('data-part="input"');
+    expect(source).toContain('data-slot="input-control"');
+    expect(source).toContain('data-slot="input"');
+    expect(source).toContain('local.type === "search"');
+    expect(source).toContain('local.type === "file"');
+    expect(source).toContain('size={typeof size() === "number" ? size() : undefined}');
+    expect(source).toContain("has-focus-visible:ring-[3px]");
+  });
+
+  test("captures Checkbox parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/checkbox.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const source = await readFile(resolve(defaultRegistryRoot, "ui/checkbox.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@keystone-ui/core@^0.0.0");
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("CheckboxPrimitive");
+      expect(result.value.meta?.accessibility).toContain("aria-checked including mixed state");
+      expect(result.value.meta?.anatomy).toEqual([
+        "root",
+        "control",
+        "indicator",
+        "indicator-icon",
+        "hidden-input",
+      ]);
+      expect(result.value.meta?.limitations).toContain("Group-level checkbox coordination");
+      expect(result.value.meta?.parity).toMatchObject({
+        baseUi: expect.any(String),
+        visualReference: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain('from "@keystone-ui/core/checkbox"');
+    expect(source).toContain("export function CheckboxControl");
+    expect(source).toContain("export function CheckboxIndicatorIcon");
+    expect(source).toContain("export function CheckboxHiddenInput");
+    expect(source).toContain("export const CheckboxPrimitive = CoreCheckbox");
+    expect(source).toContain('data-slot="checkbox"');
+    expect(source).toContain('data-slot="checkbox-indicator"');
+    expect(source).toContain('data-slot="checkbox-input"');
+    expect(source).toContain('"size-4.5"');
+    expect(source).toContain("focus-visible:ring-2");
+    expect(source).toContain("in-data-[state=indeterminate]");
+  });
+
+  test("captures Switch parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/switch.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const source = await readFile(resolve(defaultRegistryRoot, "ui/switch.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@keystone-ui/core@^0.0.0");
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("SwitchPrimitive");
+      expect(result.value.meta?.accessibility).toContain("role=switch");
+      expect(result.value.meta?.anatomy).toEqual(["root", "control", "thumb", "hidden-input"]);
+      expect(result.value.meta?.cssVariables).toContain("--thumb-size");
+      expect(result.value.meta?.limitations).toContain("Drag gestures");
+      expect(result.value.meta?.parity).toMatchObject({
+        baseUi: expect.any(String),
+        visualReference: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain('from "@keystone-ui/core/switch"');
+    expect(source).toContain("export function SwitchControl");
+    expect(source).toContain("export function SwitchThumb");
+    expect(source).toContain("export function SwitchHiddenInput");
+    expect(source).toContain("export const SwitchPrimitive = CoreSwitch");
+    expect(source).toContain('data-slot="switch"');
+    expect(source).toContain('data-slot="switch-thumb"');
+    expect(source).toContain('data-slot="switch-input"');
+    expect(source).toContain("[--thumb-size:--spacing(5)]");
+    expect(source).toContain("data-checked:translate-x");
+    expect(source).toContain("focus-visible:ring-2");
+  });
+
+  test("captures Select parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/select.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const source = await readFile(resolve(defaultRegistryRoot, "ui/select.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@keystone-ui/core@^0.0.0");
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("SelectPrimitive");
+      expect(result.value.meta?.accessibility).toContain("hidden form value");
+      expect(result.value.meta?.anatomy).toEqual([
+        "root",
+        "button",
+        "button-label",
+        "trigger",
+        "value",
+        "icon",
+        "positioner",
+        "content",
+        "surface",
+        "listbox",
+        "group",
+        "group-label",
+        "label",
+        "item",
+        "item-text",
+        "item-indicator",
+        "arrow",
+        "separator",
+      ]);
+      expect(result.value.meta?.limitations).toContain("Scroll arrow affordances");
+      expect(result.value.meta?.parity).toMatchObject({
+        baseUi: expect.any(String),
+        visualReference: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain('from "@keystone-ui/core/select"');
+    expect(source).toContain("export function SelectTrigger");
+    expect(source).toContain("export function SelectContent");
+    expect(source).toContain("export function SelectItem");
+    expect(source).toContain("export const SelectPopup = SelectContent");
+    expect(source).toContain("export const SelectPrimitive = CoreSelect");
+    expect(source).toContain('data-scope="ui-select"');
+    expect(source).toContain('data-slot="select-trigger"');
+    expect(source).toContain('data-slot="select-content"');
+    expect(source).toContain('data-slot="select-item-indicator"');
+    expect(source).toContain('"min-w-(--anchor-width)"');
+    expect(source).toContain("focus-visible:ring-[3px]");
+  });
+
+  test("captures Combobox parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/combobox.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const source = await readFile(resolve(defaultRegistryRoot, "ui/combobox.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@keystone-ui/core@^0.0.0");
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("ComboboxPrimitive");
+      expect(result.value.meta?.accessibility).toContain("clear semantics");
+      expect(result.value.meta?.anatomy).toEqual([
+        "root",
+        "input-group",
+        "start-addon",
+        "input",
+        "chips-input",
+        "trigger",
+        "clear",
+        "icon",
+        "positioner",
+        "surface",
+        "content",
+        "listbox",
+        "group",
+        "group-label",
+        "item",
+        "item-text",
+        "item-indicator",
+        "arrow",
+        "separator",
+        "empty",
+        "status",
+        "value",
+      ]);
+      expect(result.value.meta?.limitations).toContain("async loading state");
+      expect(result.value.meta?.parity).toMatchObject({
+        baseUi: expect.any(String),
+        visualReference: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain('from "@keystone-ui/core/combobox"');
+    expect(source).toContain("export function ComboboxInput");
+    expect(source).toContain("export function ComboboxClear");
+    expect(source).toContain("export function ComboboxContent");
+    expect(source).toContain("export function ComboboxEmpty");
+    expect(source).toContain("export const ComboboxPopup = ComboboxContent");
+    expect(source).toContain("export const ComboboxPrimitive = CoreCombobox");
+    expect(source).toContain('data-scope="ui-combobox"');
+    expect(source).toContain('data-slot="combobox-input-group"');
+    expect(source).toContain('data-slot="combobox-clear"');
+    expect(source).toContain('"max-w-(--available-width)"');
+    expect(source).toContain("focus-visible:ring-[3px]");
+  });
+
+  test("captures Card parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/card.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const source = await readFile(resolve(defaultRegistryRoot, "ui/card.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.meta?.api).toContain("CardFrame");
+      expect(result.value.meta?.accessibility).toContain("presentational native div");
+      expect(result.value.meta?.anatomy).toEqual([
+        "root",
+        "header",
+        "title",
+        "description",
+        "action",
+        "panel",
+        "content",
+        "footer",
+        "frame",
+        "frame-header",
+        "frame-title",
+        "frame-description",
+        "frame-action",
+        "frame-footer",
+      ]);
+      expect(result.value.meta?.limitations).toContain("interactive-card semantics");
+      expect(result.value.meta?.parity).toMatchObject({
+        baseUi: expect.any(String),
+        visualReference: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain('data-scope="ui-card"');
+    expect(source).toContain('data-slot={slot ?? (part === "root" ? "card" : `card-${part}`)}');
+    expect(source).toContain("export function CardFrame");
+    expect(source).toContain("export function CardAction");
+    expect(source).toContain("export function CardPanel");
+    expect(source).toContain("export function CardContent");
+    expect(source).toContain('"rounded-2xl"');
+    expect(source).toContain('"bg-card"');
+    expect(source).toContain("[--clip-bottom:-1rem]");
+    expect(source).toContain("has-data-[slot=card-action]");
+    expect(source).toContain("data-[slot=table-container]");
+  });
+
+  test("captures Dialog parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/dialog.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const source = await readFile(resolve(defaultRegistryRoot, "ui/dialog.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@keystone-ui/core@^0.0.0");
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("DialogPanel");
+      expect(result.value.meta?.accessibility).toContain("focus trap");
+      expect(result.value.meta?.anatomy).toEqual([
+        "root",
+        "trigger",
+        "portal",
+        "backdrop",
+        "positioner",
+        "content",
+        "panel",
+        "header",
+        "footer",
+        "title",
+        "description",
+        "close",
+      ]);
+      expect(result.value.meta?.limitations).toContain("DialogPanel");
+      expect(result.value.meta?.parity).toMatchObject({
+        visualReference: expect.any(String),
+        baseUi: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain('from "@keystone-ui/core/dialog"');
+    expect(source).toContain("export function DialogContent");
+    expect(source).toContain("export function DialogPanel");
+    expect(source).toContain("export const DialogPrimitive = CoreDialog");
+    expect(source).toContain('data-slot="dialog-content"');
+    expect(source).toContain('data-slot="dialog-panel"');
+    expect(source).toContain('"backdrop-blur-sm"');
+    expect(source).toContain('"max-sm:origin-bottom"');
+    expect(source).toContain("focus-visible:ring-2");
+  });
+
+  test("captures Popover parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/popover.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const source = await readFile(resolve(defaultRegistryRoot, "ui/popover.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@keystone-ui/core@^0.0.0");
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("PopoverArrow");
+      expect(result.value.meta?.accessibility).toContain("role=dialog");
+      expect(result.value.meta?.anatomy).toEqual([
+        "root",
+        "trigger",
+        "portal",
+        "positioner",
+        "content",
+        "viewport",
+        "arrow",
+        "header",
+        "footer",
+        "title",
+        "description",
+      ]);
+      expect(result.value.meta?.limitations).toContain("Close controls");
+      expect(result.value.meta?.parity).toMatchObject({
+        visualReference: expect.any(String),
+        baseUi: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain('from "@keystone-ui/core/popover"');
+    expect(source).toContain("export function PopoverArrow");
+    expect(source).toContain("export const PopoverPopup = PopoverContent");
+    expect(source).toContain("export const PopoverPrimitive = CorePopover");
+    expect(source).toContain('data-slot="popover-viewport"');
+    expect(source).toContain('"max-w-(--available-width)"');
+    expect(source).toContain('"origin-(--transform-origin)"');
+    expect(source).toContain("tooltipStyle");
+  });
+
+  test("captures Tooltip parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/tooltip.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const source = await readFile(resolve(defaultRegistryRoot, "ui/tooltip.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@keystone-ui/core@^0.0.0");
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("TooltipProvider");
+      expect(result.value.meta?.accessibility).toContain("aria-describedby");
+      expect(result.value.meta?.anatomy).toEqual([
+        "provider",
+        "root",
+        "trigger",
+        "portal",
+        "positioner",
+        "content",
+        "viewport",
+        "arrow",
+      ]);
+      expect(result.value.meta?.limitations).toContain("custom arrow");
+      expect(result.value.meta?.parity).toMatchObject({
+        visualReference: expect.any(String),
+        baseUi: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain('from "@keystone-ui/core/tooltip"');
+    expect(source).toContain("export function TooltipProvider");
+    expect(source).toContain("export function TooltipArrow");
+    expect(source).toContain("export const TooltipPopup = TooltipContent");
+    expect(source).toContain("export const TooltipPrimitive = CoreTooltip");
+    expect(source).toContain('data-slot="tooltip-viewport"');
+    expect(source).toContain('"text-balance"');
+    expect(source).toContain('"data-instant:duration-0"');
+  });
+
+  test("captures DropdownMenu parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/dropdown-menu.json");
+    const result = validateItem(item.default, { registryRoot: defaultRegistryRoot });
+    const source = await readFile(resolve(defaultRegistryRoot, "ui/dropdown-menu.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@keystone-ui/core@^0.0.0");
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("DropdownMenuSubContent");
+      expect(result.value.meta?.accessibility).toContain("typeahead");
+      expect(result.value.meta?.anatomy).toEqual([
+        "root",
+        "trigger",
+        "portal",
+        "positioner",
+        "content",
+        "viewport",
+        "arrow",
+        "group",
+        "label",
+        "separator",
+        "item",
+        "link",
+        "checkbox-item",
+        "radio-group",
+        "radio-item",
+        "item-indicator",
+        "item-label",
+        "item-description",
+        "shortcut",
+        "sub",
+        "sub-trigger",
+        "sub-content",
+      ]);
+      expect(result.value.meta?.limitations).toContain("Submenu pointer grace");
+      expect(result.value.meta?.parity).toMatchObject({
+        visualReference: expect.any(String),
+        baseUi: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain('from "@keystone-ui/core/dropdown-menu"');
+    expect(source).toContain("export function DropdownMenuCheckboxItem");
+    expect(source).toContain("export function DropdownMenuSubTrigger");
+    expect(source).toContain("export const DropdownMenuPrimitive = CoreDropdownMenu");
+    expect(source).toContain('data-slot="dropdown-menu-viewport"');
+    expect(source).toContain('"grid-cols-[1fr_auto]"');
+    expect(source).toContain("[--thumb-size:--spacing(4)]");
+    expect(source).toContain("ChevronRightIcon");
   });
 
   test("captures Toast parity metadata against Kobalte, Base UI, and Sonner", async () => {

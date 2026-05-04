@@ -3,24 +3,38 @@
   "name": "input",
   "type": "registry:ui",
   "title": "Input",
-  "description": "Solid text input component with invalid state styling hooks.",
+  "description": "Reference-inspired Solid input control with wrapper styling, sizes, invalid state, and native input semantics.",
   "version": "0.1.0",
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0"
   },
   "categories": ["form", "base"],
-  "keywords": ["input", "field", "form"],
+  "keywords": ["input", "field", "form", "search", "file"],
   "docs": "https://keystone-ui.dev/docs/ui/input",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add input",
-    "customization": "Use the ui-input class and data-invalid attribute for size, border, and validation-state styles.",
+    "customization": "Use ui-input-control, ui-input, data-size, data-invalid, data-disabled, and reference-style data-slot hooks for wrapper and native input styling.",
     "sourceFiles": ["registry/default/ui/input.tsx"],
     "dependencies": ["cn"],
+    "api": "Input supports size sm, default, lg, or a numeric native size attribute; invalid mirrors aria-invalid and data-invalid; unstyled removes the wrapper surface classes; nativeInput is accepted as a compatibility no-op because this Solid implementation always renders a native input.",
+    "accessibility": "Input renders a native input inside a presentational span wrapper. Type, name, value, disabled, required, autocomplete, placeholder, aria-* attributes, events, and form participation pass through to the native input. For labelled form flows, compose with FieldControl or wire labels/descriptions manually.",
+    "anatomy": ["root", "input"],
+    "cssVariables": [
+      "--radius-lg",
+      "--color-input",
+      "--color-background",
+      "--color-foreground",
+      "--color-muted-foreground",
+      "--color-destructive",
+      "--color-ring"
+    ],
+    "limitations": "Standalone Input does not register with Core Field context. Use FieldControl for automatic Field label, description, error, validation, reset, and state wiring.",
     "parity": {
-      "baseUi": "Thin UI input follows Base UI Input/Field direction for native input semantics, invalid/disabled data styling, ref/prop passthrough, and form participation. Gaps: field registration, validation lifecycle, filled/focused state data, clear button helpers, and app-level masking remain follow-up work.",
-      "kobalte": "Comparable to Kobalte TextField input anatomy when composed with Field. Gaps: no standalone Keystone TextField primitive for control registration, description/error ID ownership, or form reset behavior yet."
+      "visualReference": "Matches reference Input visual shape in Solid source form: control wrapper, native input part, sm/default/lg sizes, numeric native size passthrough, invalid/focus/disabled wrapper selectors, search decoration reset classes, and file input text/file styling. Intentional difference: no Base UI Input primitive dependency because the native input provides the needed semantics.",
+      "baseUi": "Keeps Base UI-aligned native input semantics through a real input element, pass-through form props/events, aria-invalid, disabled handling, and FieldControl as the Core-backed path for registration and validation.",
+      "kobalte": "Comparable to Kobalte TextField input anatomy when composed with FieldControl. Standalone Input remains a styled native control and intentionally does not own label/description/error IDs."
     }
   },
   "files": [

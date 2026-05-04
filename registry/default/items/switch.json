@@ -16,13 +16,24 @@
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add switch",
-    "customization": "Style the generated wrappers through ui-switch classes while Keystone keeps role=switch, checked state, hidden input, and preventable toggle behavior.",
+    "customization": "Style the generated root, control, thumb, and hidden input through ui-switch classes, Core data attributes, CSS thumb-size variable, and neutral data-slot hooks while Keystone keeps role=switch, checked state, hidden input, form reset, validation, and preventable toggle behavior.",
     "sourceFiles": ["registry/default/ui/switch.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
-    "parts": ["root", "control", "thumb", "hidden-input"],
+    "api": "Switch exports Switch, SwitchControl, SwitchThumb, SwitchHiddenInput, and SwitchPrimitive. The default Switch renders a styled control, animated thumb, and hidden native input when no custom children are provided; custom children can compose the same Core-backed parts directly.",
+    "accessibility": "Backed by @keystone-ui/core/switch for role=switch, aria-checked, Space keyboard toggling, disabled/read-only guards, required and invalid state metadata, hidden native checkbox submission, user-handler precedence, and form reset synchronization.",
+    "anatomy": ["root", "control", "thumb", "hidden-input"],
+    "cssVariables": [
+      "--thumb-size",
+      "--color-input",
+      "--color-background",
+      "--color-primary",
+      "--color-ring"
+    ],
+    "limitations": "Drag gestures and app-specific field copy remain composition concerns; Keystone Core owns the primitive state and form contract while UI owns the generated visual shell.",
     "parity": {
-      "baseUi": "Thin vertical covers controlled and uncontrolled checked state, disabled/read-only guards, role=switch, hidden checkbox submission, hidden-input state metadata, user-handler precedence, and UI wrapper metadata. Gaps: cursor/touch drag semantics, richer field composition, form validation edge cases, animation lifecycle data, and hydration edge tests remain follow-up work.",
-      "kobalte": "Matches Solid Switch Root/Input/Control/Thumb direction with checked state, hidden native input, disabled/read-only state, preventable toggle behavior, and stable data attributes. Gaps: form-control registration depth, validation/reset semantics, and transition lifecycle helpers remain follow-up work."
+      "visualReference": "Matches the reference switch visual shape in Solid source form: compact track, thumb-size CSS variable, checked/unchecked track colors, animated thumb translation, active thumb stretch, focus ring, disabled opacity, and data-slot hooks.",
+      "baseUi": "Behavior parity is inherited through Keystone Core Switch: controlled/uncontrolled checked state, disabled/read-only guards, role=switch, hidden checkbox submission, validation metadata, form reset, and preventable user handlers.",
+      "kobalte": "Solid parity follows Keystone Core Switch composition with Root, Control, Thumb, HiddenInput, stable data attributes, native form participation, and user-owned label/description composition."
     }
   },
   "files": [

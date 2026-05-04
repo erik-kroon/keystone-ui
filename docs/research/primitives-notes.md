@@ -16,7 +16,7 @@ Do not copy source from these repos. Extract product and architecture lessons, t
 
 - [CONTEXT.md](../../CONTEXT.md)
 - [Core Internals Inspiration Map](../agents/core-internals-inspiration-map.md)
-- [Mason Registry Inspiration Map](ui-shadcn-coss-registry-map.md)
+- [Mason Registry Inspiration Map](ui-shadcn-reference-registry-map.md)
 - [ADR 0001: Keystone Core And UI Product Boundary](../adr/0001-keystone-core-ui-boundary.md)
 - [ADR 0003: UI TanStack App Layer](../adr/0003-ui-tanstack-app-layer.md)
 

@@ -215,7 +215,7 @@ Keystone parity policy:
 UI parity policy:
 
 - shadcn is the primary registry/CLI/docs mental model reference.
-- coss is a later styling/component-inventory reference, not a runtime or schema authority.
+- external UI reference is a later styling/component-inventory reference, not a runtime or schema authority.
 - TanStack libraries are first-class references for app engines.
 - Sonner is a first-class reference for toast ergonomics.
 - Parity notes are explicit gap statements, not compatibility claims.

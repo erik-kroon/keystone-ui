@@ -3,24 +3,38 @@
   "name": "field",
   "type": "registry:ui",
   "title": "Field",
-  "description": "Form field shell with label, description, and error parts.",
+  "description": "Core-backed reference-inspired form field shell with label, control, description, error, and hidden-input parts.",
   "version": "0.1.0",
+  "dependencies": ["@keystone-ui/core@^0.0.0"],
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0"
   },
   "categories": ["form", "base"],
-  "keywords": ["field", "label", "description", "error", "form"],
+  "keywords": ["field", "label", "description", "error", "form", "validation"],
   "docs": "https://keystone-ui.dev/docs/ui/field",
-  "registryDependencies": ["cn", "label"],
+  "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add field",
-    "customization": "Style the shell through ui-field classes and data-part values for root, label, description, and error.",
+    "customization": "Style the shell through ui-field classes, reference-style data-slot values, and Core data attributes for field state on root, label, control, description, error-message, and hidden-input parts.",
     "sourceFiles": ["registry/default/ui/field.tsx"],
-    "dependencies": ["cn", "label"],
+    "dependencies": ["@keystone-ui/core", "cn"],
+    "api": "Field exports Field, FieldLabel, FieldItem, FieldControl, FieldDescription, FieldError, FieldHiddenInput, and FieldPrimitive. Field and its semantic parts are backed by @keystone-ui/core/form for generated IDs, label/control relationships, aria-describedby, aria-invalid, required/disabled/readonly state, validation state, hidden inputs, and native reset handling.",
+    "accessibility": "Field uses Keystone Core Field semantics. FieldLabel labels FieldControl, FieldDescription and FieldError participate in aria-describedby, FieldError uses alert semantics through Core, and FieldControl receives aria-invalid, aria-required, aria-readonly, aria-disabled, and state data attributes from Core.",
+    "anatomy": ["root", "label", "item", "control", "description", "error-message", "hidden-input"],
+    "cssVariables": [
+      "--color-foreground",
+      "--color-muted-foreground",
+      "--color-destructive-foreground",
+      "--color-input",
+      "--color-background",
+      "--color-ring"
+    ],
+    "limitations": "FieldControl is the fully wired control part. A standalone Input nested directly under Field remains native/styled but cannot consume Core Field context until Keystone exposes a public UI field-control context bridge.",
     "parity": {
-      "baseUi": "Thin vertical covers label/control/description/error relationships, required/disabled/invalid/read-only data, and field-oriented ARIA wiring. Gaps: Base UI form context, touched/dirty/filled/focused state, validation lifecycle, submit coordination, and control registration depth remain follow-up work.",
-      "kobalte": "Follows Kobalte form-control direction with Solid context, generated IDs, aria-labelledby/describedby wiring, and data attributes. Gaps: form reset listener integration, native validation policy, grouped fieldsets, and richer error message registration remain follow-up work."
+      "visualReference": "Matches reference Field anatomy and styling direction in Solid source form: root, label, item, description, error, reference data-slot hooks, and compact form typography. Intentional difference: Keystone uses @keystone-ui/core/form instead of Base UI React, and exposes FieldControl/FieldHiddenInput rather than Base UI Control/Validity re-exports.",
+      "baseUi": "Meets the Base UI Field behavior target through Keystone Core Field: label/control relationships, description/error registration, required/disabled/invalid/read-only data, touched/dirty/filled/focused/validating state attributes, validation lifecycle, submit/reset hooks, and hidden-input support.",
+      "kobalte": "Follows Kobalte form-control direction with Solid context, generated IDs, aria-labelledby/describedby wiring, error alert semantics, data attributes, native reset integration, and control registration through Core Field."
     }
   },
   "files": [

@@ -76,6 +76,12 @@
       "description": "TanStack Form text field composed with Keystone form-control semantics and UI styling hooks."
     },
     {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "Keystone-backed styled select with trigger, popup, listbox, item, and form-value behavior."
+    },
+    {
       "name": "select-field",
       "type": "registry:ui",
       "title": "SelectField",
