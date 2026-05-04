@@ -82,6 +82,13 @@ const formStateAttributes = [
   { name: "data-validating" },
 ] as const satisfies readonly PartStateAttributeMetadata[];
 
+const fieldsetStateAttributes = [
+  { name: "data-disabled" },
+  { name: "data-invalid" },
+  { name: "data-readonly" },
+  { name: "data-required" },
+] as const satisfies readonly PartStateAttributeMetadata[];
+
 const directionStateAttributes = [
   { name: "data-dir", values: ["ltr", "rtl"] },
 ] as const satisfies readonly PartStateAttributeMetadata[];
@@ -207,12 +214,16 @@ const primitiveMaturityByScope: Record<string, PrimitiveMaturity> = {
   combobox: "experimental",
   "context-menu": "experimental",
   "date-picker": "experimental",
+  description: "beta",
   dialog: "beta",
   direction: "stable",
   "dropdown-menu": "experimental",
+  "error-message": "beta",
   field: "beta",
+  fieldset: "beta",
   "form-control": "beta",
   "hover-card": "experimental",
+  label: "beta",
   listbox: "internal",
   "live-announcer": "beta",
   locale: "beta",
@@ -287,6 +298,7 @@ export const primitiveMetadata = {
     part("trigger", datePickerStateAttributes),
     part("content", [{ name: "data-state", values: ["open", "closed"] }]),
   ]),
+  description: definePrimitive("description", [part("root")]),
   direction: definePrimitive("direction", [part("root", directionStateAttributes)]),
   dialog: definePrimitive("dialog", [
     part("trigger", overlayStateAttributes),
@@ -297,6 +309,7 @@ export const primitiveMetadata = {
     part("title"),
     part("description"),
   ]),
+  "error-message": definePrimitive("error-message", [part("root")]),
   field: definePrimitive("field", [
     part("root", formStateAttributes),
     part("control", formStateAttributes),
@@ -304,6 +317,12 @@ export const primitiveMetadata = {
     part("description", formStateAttributes),
     part("error-message", formStateAttributes),
     part("hidden-input"),
+  ]),
+  fieldset: definePrimitive("fieldset", [
+    part("root", fieldsetStateAttributes),
+    part("legend", fieldsetStateAttributes),
+    part("description", fieldsetStateAttributes),
+    part("error-message", fieldsetStateAttributes),
   ]),
   "form-control": definePrimitive("form-control", [
     part("root", formStateAttributes),
@@ -324,6 +343,8 @@ export const primitiveMetadata = {
     part("polite"),
     part("assertive"),
   ]),
+  label: definePrimitive("label", [part("root")]),
+  locale: definePrimitive("locale", []),
   listbox: definePrimitive("listbox", [
     part("listbox"),
     part("option", [
@@ -360,6 +381,7 @@ export const primitiveMetadata = {
     part("positioner", floatingAttributes, floatingCssVars),
     part("arrow", floatingArrowAttributes),
   ]),
+  portal: definePrimitive("portal", [part("root")]),
   "radio-group": definePrimitive("radio-group", [
     part("root", radioGroupStateAttributes),
     part("item", [...radioItemStateAttributes, { name: "data-dir", values: ["ltr", "rtl"] }]),

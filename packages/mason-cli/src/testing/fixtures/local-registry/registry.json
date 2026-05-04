@@ -1,5 +1,13 @@
 {
   "$schema": "https://mason.build/schema/registry.json",
   "name": "local",
-  "items": ["button"]
+  "homepage": "https://mason.build",
+  "items": [
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Solid button fixture for Mason CLI tests."
+    }
+  ]
 }

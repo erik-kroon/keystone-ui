@@ -8,7 +8,10 @@ export { ContextMenu, createContextMenu } from "./context-menu/index";
 export { Direction, DirectionProvider, createDirection, useDirection } from "./direction/index";
 export { Calendar, DatePicker, createCalendar, createDatePicker } from "./date-picker/index";
 export { Dialog, createDialog } from "./dialog/index";
+export { Description, createDescription } from "./description/index";
 export { DropdownMenu, createDropdownMenu } from "./dropdown-menu/index";
+export { ErrorMessage, createErrorMessage } from "./error-message/index";
+export { Fieldset, createFieldset } from "./fieldset/index";
 export {
   createFieldValidity,
   createFormControl,
@@ -17,6 +20,7 @@ export {
   FormControl,
 } from "./form/index";
 export { HoverCard, createHoverCard } from "./hover-card/index";
+export { Label, createLabel } from "./label/index";
 export {
   Locale,
   LocaleProvider,
@@ -166,6 +170,25 @@ export type {
   DialogTriggerProps,
 } from "./dialog/index";
 export type {
+  CreateDescriptionOptions,
+  DescriptionPartProps,
+  DescriptionRootProps,
+} from "./description/index";
+export type {
+  CreateErrorMessageOptions,
+  ErrorMessagePartProps,
+  ErrorMessageRootProps,
+} from "./error-message/index";
+export type {
+  CreateFieldsetOptions,
+  FieldsetApi,
+  FieldsetDescriptionProps,
+  FieldsetErrorMessageProps,
+  FieldsetLegendProps,
+  FieldsetPartProps,
+  FieldsetRootProps,
+} from "./fieldset/index";
+export type {
   CreateFieldValidityOptions,
   CreateFormControlOptions,
   FieldControlProps,
@@ -202,6 +225,7 @@ export type {
   HoverCardRootProps,
   HoverCardTriggerProps,
 } from "./hover-card/index";
+export type { CreateLabelOptions, LabelPartProps, LabelRootProps } from "./label/index";
 export type {
   CreateLocaleOptions,
   LocaleApi,

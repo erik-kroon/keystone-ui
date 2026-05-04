@@ -16,6 +16,8 @@ export type MasonRegistryErrorCode =
   | "file.outsideFilesRoot"
   | "dependency.packageName"
   | "dependency.version"
+  | "parity.missing"
+  | "parity.invalid"
   | "registryDependency.invalidReference"
   | "registryDependency.missing"
   | "registryDependency.cycle";

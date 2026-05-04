@@ -123,6 +123,16 @@ function MasonRegistryDocs() {
               </div>
             </section>
 
+            <section class="doc-section">
+              <div class="doc-section-title">
+                <FileJson2 size={18} />
+                <h2>Source Preview</h2>
+              </div>
+              <pre>
+                <code>{selected().sourcePreview}</code>
+              </pre>
+            </section>
+
             <section class="doc-panel-grid compact">
               <article class="doc-panel">
                 <div class="doc-section-title">

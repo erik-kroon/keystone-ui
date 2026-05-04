@@ -7,6 +7,19 @@ type RegistryIndex = {
   }[];
 };
 
+type RegistryFile = {
+  path: string;
+  type: string;
+};
+
+type RegistryItem = {
+  files: readonly RegistryFile[];
+  meta?: {
+    sourceFiles?: readonly string[];
+  };
+  name: string;
+};
+
 const repoRoot = path.resolve(import.meta.dir, "..");
 const registryIndexPath = path.join(repoRoot, "registry/default/registry.json");
 const outputPath = path.join(repoRoot, "apps/docs/src/lib/default-registry-items.gen.ts");
@@ -21,6 +34,13 @@ function variableName(name: string): string {
 
 async function main() {
   const registry = JSON.parse(await readFile(registryIndexPath, "utf8")) as RegistryIndex;
+  const items = await Promise.all(
+    registry.items.map(async (item) => {
+      const itemPath = path.join(repoRoot, "registry/default/items", `${item.name}.json`);
+      return JSON.parse(await readFile(itemPath, "utf8")) as RegistryItem;
+    }),
+  );
+  const sourcePreviews = await createSourcePreviews(items);
   const imports = [
     `import registry from "../../../../registry/default/registry.json";`,
     ...registry.items.map((item) => {
@@ -37,9 +57,33 @@ export const defaultRegistry = registry;
 export const defaultRegistryItems = [
 ${itemBindings}
 ] as const;
+
+export const defaultRegistrySourcePreviews = ${JSON.stringify(sourcePreviews, null, 2)} as const;
 `;
 
   await writeFile(outputPath, contents);
+}
+
+async function createSourcePreviews(
+  items: readonly RegistryItem[],
+): Promise<Record<string, Record<string, string>>> {
+  const previews: Record<string, Record<string, string>> = {};
+
+  for (const item of items) {
+    const sourceFiles =
+      item.meta?.sourceFiles ?? item.files.map((file) => `registry/default/${file.path}`);
+
+    previews[item.name] = Object.fromEntries(
+      await Promise.all(
+        sourceFiles.map(async (sourceFile) => {
+          const absolutePath = path.join(repoRoot, sourceFile);
+          return [sourceFile, await readFile(absolutePath, "utf8")];
+        }),
+      ),
+    );
+  }
+
+  return previews;
 }
 
 await main();

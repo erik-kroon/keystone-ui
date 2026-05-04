@@ -1,4 +1,4 @@
-import { readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, test } from "bun:test";
 import { primitiveMetadata } from "@keystone-ui/keystone";
@@ -35,7 +35,6 @@ describe("docs metadata contracts", () => {
       expect(docs.metadata.maturityLabel).toBe(maturity.label);
       expect(maturity.label).toBeString();
       expect(maturity.summary).toBeString();
-      expect(metadata.parts.length).toBeGreaterThan(0);
       for (const part of metadata.parts) {
         expect(part.dataAttributes.map((attribute) => attribute.name)).toContain("data-scope");
         expect(part.dataAttributes.map((attribute) => attribute.name)).toContain("data-part");
@@ -58,6 +57,9 @@ describe("docs metadata contracts", () => {
     for (const item of registryItemContracts) {
       expect(item.install).toStartWith("mason add ");
       expect(item.files.length).toBeGreaterThan(0);
+      expect(item.sourceFiles.length).toBeGreaterThan(0);
+      expect(item.sourcePreview).toContain("registry/default/");
+      expect(item.sourcePreview).toContain("export ");
       expect(item.customization).toBeString();
       expect(item.caveats).toBeString();
       expect(Object.keys(item.parity).length).toBeGreaterThan(0);
@@ -85,5 +87,22 @@ describe("docs metadata contracts", () => {
     expect(registryItemContracts.map((item) => item.name)).toEqual(
       expect.arrayContaining(["text-field", "select-field", "account-settings"]),
     );
+  });
+
+  test("documents manual accessibility release gates", () => {
+    const checklistPath = resolve(
+      import.meta.dir,
+      "../../../../docs/keystone/accessibility-verification.md",
+    );
+
+    expect(existsSync(checklistPath)).toBe(true);
+
+    const checklist = readFileSync(checklistPath, "utf8");
+    expect(checklist).toContain("Keyboard");
+    expect(checklist).toContain("Screen reader");
+    expect(checklist).toContain("Focus");
+    expect(checklist).toContain("Forms");
+    expect(checklist).toContain("SSR");
+    expect(checklist).toContain("forced colors");
   });
 });

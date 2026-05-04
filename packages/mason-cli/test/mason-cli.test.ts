@@ -433,6 +433,16 @@ describe("registry lifecycle commands", () => {
     );
   });
 
+  test("diff reports missing registry items without writes", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+
+    await expect(diffCommand({ cwd: app, item: "missing", registry })).rejects.toThrow(
+      "Registry dependency 'missing' was not found.",
+    );
+    await expect(stat(path.join(app, "src/components/ui/missing.tsx"))).rejects.toThrow();
+  });
+
   test("update blocks local edits unless forced and refreshes recorded hashes", async () => {
     const app = await fixtureApp();
     await initCommand({ cwd: app, yes: true });
@@ -456,6 +466,29 @@ describe("registry lifecycle commands", () => {
     );
   });
 
+  test("update dry-run reports changes without writing files or metadata", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+    await addCommand({ cwd: app, item: "button", registry });
+    await writeFile(path.join(app, "src/components/ui/button.tsx"), "user edit\n");
+    const beforePackage = await readFile(path.join(app, "package.json"), "utf8");
+
+    const output = await updateCommand({
+      cwd: app,
+      item: "button",
+      registry,
+      dryRun: true,
+      force: true,
+    });
+
+    expect(output).toContain("Mason update dry run plan for button:");
+    expect(output).toContain("update src/components/ui/button.tsx (local changes)");
+    expect(await readFile(path.join(app, "src/components/ui/button.tsx"), "utf8")).toBe(
+      "user edit\n",
+    );
+    expect(await readFile(path.join(app, "package.json"), "utf8")).toBe(beforePackage);
+  });
+
   test("remove deletes clean installed files and clears installed metadata", async () => {
     const app = await fixtureApp();
     await initCommand({ cwd: app, yes: true });
@@ -466,6 +499,33 @@ describe("registry lifecycle commands", () => {
     );
 
     await removeCommand({ cwd: app, item: "button" });
+
+    await expect(stat(path.join(app, "src/components/ui/button.tsx"))).rejects.toThrow();
+    const packageJson = JSON.parse(await readFile(path.join(app, "package.json"), "utf8")) as {
+      mason: { installed: Record<string, unknown> };
+    };
+    expect(packageJson.mason.installed.button).toBeUndefined();
+  });
+
+  test("remove keeps locally modified files and metadata unless forced", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+    await addCommand({ cwd: app, item: "button", registry });
+    await writeFile(path.join(app, "src/components/ui/button.tsx"), "user edit\n");
+
+    const blocked = await removeCommand({ cwd: app, item: "button" });
+    expect(blocked).toBe(
+      [
+        "Mason remove plan for button:",
+        "keep src/components/ui/button.tsx (local changes)",
+        "blocked: local changes detected; rerun with --force to delete",
+      ].join("\n"),
+    );
+    expect(await readFile(path.join(app, "src/components/ui/button.tsx"), "utf8")).toBe(
+      "user edit\n",
+    );
+
+    await removeCommand({ cwd: app, item: "button", force: true });
 
     await expect(stat(path.join(app, "src/components/ui/button.tsx"))).rejects.toThrow();
     const packageJson = JSON.parse(await readFile(path.join(app, "package.json"), "utf8")) as {
@@ -486,6 +546,20 @@ describe("registry lifecycle commands", () => {
     expect(await doctorCommand({ cwd: app, registry })).toContain(
       "issue missing installed file for button: src/components/ui/button.tsx",
     );
+  });
+
+  test("doctor reports bad config and invalid registry documents", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+    await writeFile(path.join(app, "mason.config.json"), "{bad json");
+    const badRegistry = path.join(app, "bad-registry");
+    await mkdir(badRegistry);
+    await writeFile(path.join(badRegistry, "registry.json"), '{"items":[]}');
+
+    const output = await doctorCommand({ cwd: app, registry: badRegistry });
+
+    expect(output).toContain("issue invalid mason.config.json:");
+    expect(output).toContain("issue invalid registry:");
   });
 
   test("CLI routes lifecycle commands", async () => {

@@ -127,10 +127,13 @@ Optional metadata:
 - `preview`: preview URL or screenshot metadata.
 - `changelog`: human-readable item changes.
 - `integrity`: hash metadata for remote item payloads when available.
+- `meta`: Mason-owned docs and maintenance metadata. First-party default registry items use
+  `meta.install`, `meta.sourceFiles`, `meta.customization` or `meta.limitations`, and
+  `meta.parity`.
 
 ## Parity Metadata
 
-First-party Mason registry items should include `meta.parity` so docs and maintainers can see what each item currently matches, which references were used, and which gaps are intentionally left for later work.
+First-party Mason registry items must include `meta.parity` so docs and maintainers can see what each item currently matches, which references were used, and which gaps are intentionally left for later work. The CLI and registry package keep this as a first-party validation option rather than a universal requirement for every third-party registry.
 
 `meta.parity` is an object whose keys name reference systems and whose values are concise notes:
 
@@ -149,12 +152,20 @@ Reference selection:
 
 - Use `baseUi` first for Keystone-backed primitive and overlay runtime depth.
 - Use `kobalte` second for Solid-native primitive API shape and composition.
-- Use a more specific first-class reference when Base UI or Kobalte is not the right comparison.
-- TanStack-backed Mason app components may use keys such as `tanstackForm`, `tanstackTable`, or `tanstackRouter`.
-- Toast behavior may include `sonner`.
-- Mason utilities, blocks, and source-registry conventions may use keys such as `mason` or `shadcn`.
+- For primitive-backed UI items, include both `baseUi` and `kobalte` unless the item is not meaningfully comparable to one of them. If one default reference is skipped, the note set should include a more relevant reference and the item description or limitations should make the exception obvious.
+- TanStack-backed Mason app components may use keys such as `tanstackForm`, `tanstackTable`, `tanstackRouter`, `tanstackStore`, or `tanstackHotkeys`.
+- Toast behavior may include `sonner` because notification queueing, viewport behavior, and action/close ergonomics are better compared there than through primitive-only references.
+- Mason utilities, blocks, templates, and source-registry conventions may use keys such as `mason` or `shadcn`.
 
-Parity notes are not a claim of complete compatibility. They should state what the current item covers and name important gaps. For the default first-party registry, tests should fail when parity notes are missing, empty, or not string-valued. Third-party registries may adopt the same convention, but this RFC does not make parity metadata a public compatibility guarantee for all external registries yet.
+Expected shape:
+
+- Each key is a non-empty reference id written in lower camel case.
+- Each value is a non-empty string.
+- Notes should state covered behavior first and known gaps second.
+- Notes should avoid vague claims such as "matches upstream" without naming the matched behavior.
+- Notes should not promise public compatibility with the reference library.
+
+Parity notes are not a claim of complete compatibility. They should state what the current item covers and name important gaps. For the default first-party registry, tests and the registry validation option fail when parity notes are missing, empty, or not string-valued. Third-party registries may adopt the same convention, but this RFC does not make parity metadata a public compatibility guarantee for all external registries yet.
 
 ## File Descriptors
 
@@ -226,9 +237,10 @@ The first CLI slice should define these commands:
 - `mason add <item> --dry-run`: print the planned file and dependency changes without writing.
 - `mason diff <item>`: show file diffs and dependency changes for an install or update plan.
 - `mason update <item>`: re-resolve an installed item, compare local files, and apply or present updates without deleting user-owned edits silently.
+- `mason remove <item>`: remove clean installed files and installed metadata while keeping locally modified files unless the user explicitly forces removal.
 - `mason doctor`: validate Mason config, aliases, style entry, package manager, registry reachability, installed item metadata, and Keystone dependency health.
 
-Future commands may include `mason remove`, `mason registry add`, `mason registry list`, `mason registry validate`, `mason registry build`, and `mason registry publish`.
+Future commands may include `mason registry add`, `mason registry list`, `mason registry validate`, `mason registry build`, and `mason registry publish`.
 
 ## Install Semantics
 

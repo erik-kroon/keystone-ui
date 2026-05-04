@@ -23,6 +23,7 @@ describe("AccessibleIcon", () => {
     expect(label.textContent).toBe("Close");
     expect(label.style.position).toBe("absolute");
     expect(label.style.width).toBe("1px");
+    expect(label.style.clipPath).toBe("inset(50%)");
     expect(container.querySelector("svg")).not.toBeNull();
   });
 
@@ -56,6 +57,19 @@ describe("AccessibleIcon", () => {
       });
       expect(label["data-scope"]).toBe("accessible-icon");
       expect(label["data-part"]).toBe("label");
+
+      dispose();
+    });
+  });
+
+  test("keeps label hidden styles when caller styles are strings", () => {
+    createRoot((dispose) => {
+      const icon = createAccessibleIcon({ label: () => "Search" });
+      const label = icon.getLabelProps({ style: "color:red;" });
+
+      expect(label.style).toContain("position:absolute;");
+      expect(label.style).toContain("clip-path:inset(50%);");
+      expect(label.style).toContain("color:red;");
 
       dispose();
     });

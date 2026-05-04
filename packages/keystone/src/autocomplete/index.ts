@@ -1,6 +1,7 @@
 export { Autocomplete, createAutocomplete } from "../combobox/index";
 export type {
   ComboboxApi as AutocompleteApi,
+  ComboboxArrowProps as AutocompleteArrowProps,
   ComboboxChangeDetail as AutocompleteChangeDetail,
   ComboboxClearProps as AutocompleteClearProps,
   ComboboxContentProps as AutocompleteContentProps,

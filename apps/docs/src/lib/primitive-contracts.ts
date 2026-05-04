@@ -193,6 +193,18 @@ export const primitiveContracts = [
     example: `<DatePicker.Root><DatePicker.Trigger>Choose date</DatePicker.Trigger><DatePicker.Content><DatePicker.Calendar /></DatePicker.Content></DatePicker.Root>`,
   },
   {
+    scope: "description",
+    title: "Description",
+    importPath: "@keystone-ui/keystone/description",
+    roleNotes: ["Root renders descriptive text without adding widget semantics."],
+    keyboardNotes: ["Description owns no keyboard behavior and should not add focusability."],
+    ariaNotes: [
+      "Use the root id from consuming controls or Fieldset.Description for automatic aria-describedby wiring.",
+    ],
+    ssrNotes: ["Output is deterministic and does not read browser globals."],
+    example: `<Description.Root id="email-help">Use your work email.</Description.Root>`,
+  },
+  {
     scope: "direction",
     title: "Direction",
     importPath: "@keystone-ui/keystone/direction",
@@ -237,6 +249,18 @@ export const primitiveContracts = [
     example: `<DropdownMenu.Root><DropdownMenu.Trigger>Actions</DropdownMenu.Trigger><DropdownMenu.Content><DropdownMenu.Item value="edit">Edit</DropdownMenu.Item></DropdownMenu.Content></DropdownMenu.Root>`,
   },
   {
+    scope: "error-message",
+    title: "ErrorMessage",
+    importPath: "@keystone-ui/keystone/error-message",
+    roleNotes: ["Root renders validation feedback with alert semantics by default."],
+    keyboardNotes: ["ErrorMessage owns no keyboard behavior and should not add focusability."],
+    ariaNotes: [
+      "Use the root id from consuming controls or Fieldset.ErrorMessage for automatic invalid-state description wiring.",
+    ],
+    ssrNotes: ["Output is deterministic and does not read browser globals."],
+    example: `<ErrorMessage.Root id="email-error">Use a work email.</ErrorMessage.Root>`,
+  },
+  {
     scope: "field",
     title: "Field",
     importPath: "@keystone-ui/keystone/form",
@@ -251,6 +275,22 @@ export const primitiveContracts = [
       "Generated IDs and form-owned hidden inputs are deterministic and avoid direct browser access during render.",
     ],
     example: `<Field.Root name="email" required><Field.Label>Email</Field.Label><Field.Control type="email" /><Field.Description>Use your work email.</Field.Description></Field.Root>`,
+  },
+  {
+    scope: "fieldset",
+    title: "Fieldset",
+    importPath: "@keystone-ui/keystone/fieldset",
+    roleNotes: [
+      "Root renders a native fieldset and Legend supplies the grouped controls' accessible name.",
+    ],
+    keyboardNotes: ["Keyboard behavior remains native to descendant controls."],
+    ariaNotes: [
+      "Description and error-message ids are registered into aria-describedby, with errors included when invalid.",
+    ],
+    ssrNotes: [
+      "Generated legend, description, and error ids are deterministic and avoid browser access during render.",
+    ],
+    example: `<Fieldset.Root required><Fieldset.Legend>Notifications</Fieldset.Legend><Fieldset.Description>Choose channels.</Fieldset.Description></Fieldset.Root>`,
   },
   {
     scope: "form-control",
@@ -301,6 +341,36 @@ export const primitiveContracts = [
       "Announcements are client-owned; live-region containers render deterministic markup.",
     ],
     example: `const announcer = createLiveAnnouncer(); announcer.announce("Saved");`,
+  },
+  {
+    scope: "label",
+    title: "Label",
+    importPath: "@keystone-ui/keystone/label",
+    roleNotes: ["Root renders a native label for native or custom control association."],
+    keyboardNotes: ["Label activation follows native browser behavior for the associated control."],
+    ariaNotes: [
+      "Use the native for/id relationship or compose with Field.Label when context is needed.",
+    ],
+    ssrNotes: ["Output is deterministic and does not read browser globals."],
+    example: `<Label.Root for="email">Email</Label.Root>`,
+  },
+  {
+    scope: "locale",
+    title: "Locale",
+    importPath: "@keystone-ui/keystone/locale",
+    roleNotes: [
+      "Provider supplies locale and text direction context to descendants without rendering wrapper DOM or adding widget roles.",
+    ],
+    keyboardNotes: [
+      "Locale does not handle keys directly; direction-aware primitives read the provider for horizontal navigation.",
+    ],
+    ariaNotes: [
+      "Applications remain responsible for native lang and dir attributes on their document or app shell.",
+    ],
+    ssrNotes: [
+      "Locale and direction defaults are deterministic and do not require browser globals during render.",
+    ],
+    example: `<Locale.Provider locale="sv-SE" direction="ltr"><DatePicker.Root /></Locale.Provider>`,
   },
   {
     scope: "menu",
@@ -381,6 +451,24 @@ export const primitiveContracts = [
       "Browser measurement is guarded behind Solid effects and no document or window APIs are required during server render.",
     ],
     example: `<Popper.Root placement="bottom-start"><Popper.Anchor>Anchor</Popper.Anchor><Popper.Positioner><Popper.Arrow />Content</Popper.Positioner></Popper.Root>`,
+  },
+  {
+    scope: "portal",
+    title: "Portal",
+    importPath: "@keystone-ui/keystone/portal",
+    roleNotes: [
+      "Root moves rendered children to the configured mount point without changing their semantic roles.",
+    ],
+    keyboardNotes: [
+      "Portal does not own keyboard behavior; composed overlay content remains responsible for focus and dismissal.",
+    ],
+    ariaNotes: [
+      "Portal preserves child ARIA relationships and should be paired with stable IDs on content primitives.",
+    ],
+    ssrNotes: [
+      "Portal output is lifecycle guarded so server rendering and hydration can render deterministic fallback markup.",
+    ],
+    example: `<Portal><Dialog.Content /></Portal>`,
   },
   {
     scope: "radio-group",

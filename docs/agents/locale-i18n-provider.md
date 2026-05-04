@@ -23,6 +23,7 @@ Implemented for the Keystone kernel in `packages/keystone/src/locale/index.tsx`.
 - The provider does not render DOM, expose anatomy, require CSS variables, or add data attributes.
 - Applications remain responsible for setting `lang` and `dir` attributes on their app shell or document root. `useLocale()` exposes both values so portaled and app-level wrappers can do that consistently.
 - The default context is deterministic during SSR and hydration; it does not read `navigator.language`.
+- Primitive metadata intentionally records `locale` with no parts because the provider is context-only.
 
 ## Current Consumers
 
