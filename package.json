@@ -23,7 +23,7 @@
     "test:mason-registry": "bun --filter @keystone-ui/mason-registry test",
     "verify:example-app": "bun scripts/verify-example-app.ts",
     "verify:release": "bun run check && bun run check-types && bun run test:core && bun run test:docs && bun run test:mason-cli && bun run test:mason-registry && bun run verify:example-app && bun run build",
-    "dev:docs": "turbo -F docs dev",
+    "dev:docs": "turbo -F web dev",
     "check": "oxlint && oxfmt --write"
   },
   "devDependencies": {

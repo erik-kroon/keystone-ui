@@ -1,117 +1,107 @@
 # Keystone UI
 
-Keystone UI is an early Solid UI workspace for building accessible primitives and source-owned application components.
+Keystone UI is an early Solid UI monorepo for accessible headless primitives, editable application UI source, and the Mason registry workflow that installs that source into user projects.
 
-It is split into two layers:
+This repository is currently at the `0.1.0` private preview stage. It is useful for evaluation and development, but it is not a stable public package release and the packages are not published to npm.
 
-- **Core** is the headless, unstyled primitive layer for Solid.
-- **UI components** are the copy-paste styled component, block, and template source for Solid apps.
+## What Is Here
 
-Core owns behavior, accessibility, state, focus, dismissal, selection, overlays, and stable styling contracts. UI components own generated source, styled wrappers, blocks, templates, and app-level integrations. Mason owns the registry and CLI that install those files.
+Keystone has three product layers:
 
-## Direction
+- **Core**: headless, accessible, unstyled Solid primitives.
+- **UI**: copy-paste styled components, app components, blocks, and templates for Solid.
+- **Mason**: registry schema, validation, and CLI workflows for installing UI source.
 
-Keystone Core/UI is aimed at Solid teams building serious, data-dense, keyboard-first applications: dashboards, internal tools, analytics workspaces, developer tools, financial workspaces, and similar operational surfaces.
+Core owns intrinsic behavior: accessibility, focus, keyboard interaction, controlled state, dismissal, overlays, positioning, forms, collections, SSR, and stable DOM contracts.
 
-Core stays domain-agnostic. UI is where source-owned app patterns live: TanStack-backed tables and forms, command surfaces, dense layouts, inspector panels, event feeds, and workspace blocks.
+UI owns generated source: styled wrappers, app components, blocks, templates, and TanStack-backed integrations. UI may depend on Core. Core must not depend on UI.
 
-The durable sequencing direction lives in the [Canonical Roadmap](docs/roadmap/canonical-roadmap.md). Engine boundaries are documented in [Do Not Reinvent Engines](docs/roadmap/do-not-reinvent.md).
+Mason owns source installation: project detection, install planning, dependency resolution, path safety, diff/update/remove/doctor workflows, and installed item metadata.
 
-## Status
+## Preview Status
 
-This repository is preparing for a `0.1.0` preview. It is not a stable public release yet.
+The current preview is intentionally conservative:
 
-- Package names, product names, domains, and trademark positioning are still provisional.
-- Workspace packages are currently private.
-- The current public package scope is an internal workspace scope, not a cleared release scope.
-- Core internals are intentionally private while the primitive kernel is still being deepened.
-- Mason currently targets local registry development before a hosted public registry.
+- Packages remain private and versioned `0.0.0`.
+- `Keystone` and `@keystone-ui` are provisional names until package, trademark, domain, and handle clearance are complete.
+- The root license is MIT.
+- No hosted default Mason registry is published yet.
+- Mason commands use an explicit local registry path in this preview.
+- Most primitives are `beta` or `experimental`, not stable.
+- Manual assistive-technology evidence is still incomplete.
 
-The project direction is depth before breadth: harden the shared primitive kernel first, then expand the component catalog.
+Release notes for the current preview are in [docs/releases/0.1.0-preview.md](docs/releases/0.1.0-preview.md).
 
-Primitive and registry surfaces use the maturity model in [Maturity Model](docs/roadmap/maturity-model.md): `internal`, `experimental`, `beta`, `stable`, and `deprecated`.
-
-## Packages
+## Repository Layout
 
 ```txt
-packages/
-  core/                 Solid primitives
-  mason-cli/            init/add CLI for installing registry source
-  mason-registry/       registry schema, validation, dependency resolution, and path safety
-
 apps/
-  docs/            Solid docs and product surface
+  web/                  Solid + TanStack Router docs/product surface
+
+packages/
+  core/                 Headless Solid primitive package
+  ui/                   First-party source-owned UI components and blocks
+  mason-cli/            Mason CLI for registry init/add/diff/update/remove/doctor
+  mason-registry/       Registry schema, validation, dependency resolution, and path safety
 
 registry/
-  default/         first-party Mason registry items
+  default/items/        First-party Mason registry item metadata
+
+docs/
+  adr/                  Durable architecture decisions
+  releases/             Preview release notes and checklist
+  roadmap/              Sequencing, maturity, and engine-boundary notes
+  rfcs/                 Core API and Mason registry contracts
 ```
 
 ## Core
 
-Core primitives are Solid-native and unstyled. They expose stable `data-scope` and `data-part` attributes so design systems can style behavior without depending on private internals.
+Core primitives are Solid-native and unstyled. They expose stable styling hooks such as `data-scope`, `data-part`, state attributes, and documented CSS variables where relevant.
 
-Current preview imports include:
+Example imports:
 
 ```ts
-import { Accordion } from "@keystone-ui/core/accordion";
-import { Checkbox } from "@keystone-ui/core/checkbox";
 import { Dialog } from "@keystone-ui/core/dialog";
-import { DropdownMenu } from "@keystone-ui/core/dropdown-menu";
-import { Menu } from "@keystone-ui/core/menu";
 import { Popover } from "@keystone-ui/core/popover";
-import { RadioGroup } from "@keystone-ui/core/radio-group";
 import { Select } from "@keystone-ui/core/select";
-import { Slider } from "@keystone-ui/core/slider";
-import { Switch } from "@keystone-ui/core/switch";
 import { Tabs } from "@keystone-ui/core/tabs";
 import { Toast, toaster } from "@keystone-ui/core/toast";
 import { Tooltip } from "@keystone-ui/core/tooltip";
 ```
 
-The current work emphasizes overlays, disclosure, menus, fields, selection controls, tabs, toolbar, slider, date picker, toast, and shared metadata for docs.
+Current preview coverage includes overlays, dialogs, popovers, tooltips, menus, select/combobox, form control, selection controls, tabs, toolbar, slider, date picker/calendar, toast, and supporting utilities.
 
-## UI
+Core kernel utilities stay private unless an ADR or accepted RFC promotes them into public API.
 
-Mason installs readable Solid source into an app. The installed files are owned by the app, while Core-backed components delegate intrinsic behavior to Core primitives.
+## UI And Mason
 
-Current local registry items include:
+UI source is distributed through Mason registry items. Installed files are normal Solid source owned by the target application.
 
-- Base components: `button`, `badge`, `card`, `field`, `input`, `label`, `separator`, `textarea`, `cn`
-- Core-backed UI: `accordion`, `checkbox`, `collapsible`, `combobox`, `context-menu`, `date-picker`, `dialog`, `dropdown-menu`, `hover-card`, `menu`, `menubar`, `navigation-menu`, `popover`, `radio-group`, `sheet`, `slider`, `switch`, `tabs`, `toast`, `toolbar`, `tooltip`
-- TanStack-backed app components: `data-table`, `data-table-tanstack-router`, `select-field`, `text-field`
-- Blocks: `account-settings`
+The default local registry currently includes 42 items, including:
 
-Example local registry usage:
+- Basic UI: `button`, `badge`, `card`, `field`, `input`, `label`, `separator`, `textarea`, `cn`
+- Core-backed UI: `accordion`, `checkbox`, `collapsible`, `combobox`, `dialog`, `dropdown-menu`, `menu`, `popover`, `select`, `sheet`, `slider`, `switch`, `tabs`, `toast`, `toolbar`, `tooltip`
+- TanStack-backed app components: `data-table`, `data-table-tanstack-router`, `tanstack-form`, `tanstack-field`, `select-field`, `text-field`, `command-menu`
+- Blocks and templates: `account-settings`, `invoice-dashboard`, `tanstack-start-dashboard`
+
+Example local registry usage from a Solid app, once the preview CLI is available as `mason`:
 
 ```bash
 mason init
-mason add button --registry <local-registry-path>
-mason add dialog --registry <local-registry-path>
+mason add button --registry <path-to-keystone>/registry/default
+mason add dialog --registry <path-to-keystone>/registry/default
 ```
 
-Mason install planning records target files, content hashes, existing target state, dependency changes, installed item metadata, and conflicts before writes are applied.
+In this repository, the CLI source can be run directly:
 
-## Data-Dense Patterns
+```bash
+bun packages/mason-cli/src/index.ts init --cwd <solid-app-path>
+bun packages/mason-cli/src/index.ts add button --cwd <solid-app-path> --registry ./registry/default
+```
 
-UI is intended to grow beyond individual components into source-owned application patterns for dense product surfaces. The first direction is TanStack-backed app components such as `data-table`, command surfaces, form adapters, and route-aware data patterns.
+Every first-party registry item should carry docs-ready metadata, source file references, dependencies, customization notes, and `meta.parity` notes.
 
-Longer-term workspace blocks such as realtime tables, watchlists, metric components, terminal layouts, chart interaction adapters, condition builders, and event feeds are aspirational until Core kernels and Mason registry/CLI workflows are reliable enough to support them.
-
-## Registry Metadata
-
-Every first-party registry item carries docs-ready metadata:
-
-- install command
-- source files
-- dependencies
-- customization guidance
-- anatomy or part names where relevant
-- maturity and implementation notes where relevant
-- `meta.parity` notes for first-party reference coverage and known gaps
-
-Registry metadata should make each item understandable without requiring readers to compare it to another component system.
-
-The registry metadata contract is documented in [Mason Registry RFC](docs/rfcs/mason-registry.md).
+The registry contract is documented in [docs/rfcs/mason-registry.md](docs/rfcs/mason-registry.md).
 
 ## Development
 
@@ -121,7 +111,7 @@ Install dependencies:
 bun install
 ```
 
-Run the docs app:
+Run the web app:
 
 ```bash
 bun run dev:docs
@@ -133,36 +123,39 @@ Run the main checks:
 bun run check
 bun run check-types
 bun run test:core
+bun run test:docs
 bun run test:mason-cli
 bun run test:mason-registry
 ```
 
-Run the release verification gate:
+Run the full release gate:
 
 ```bash
 bun run verify:release
 ```
 
-That runs formatting/linting, type checks, Core tests, Mason CLI tests, Mason registry tests, example app verification, and the docs build.
+The release gate runs formatting/linting, type checks, Core tests, the web test step, Mason CLI tests, Mason registry tests, example app verification, and the web build.
 
-## Principles
+## Design Principles
 
-- Solid APIs should not be React-shaped ports.
-- Accessible behavior is core product scope.
-- Core must not depend on UI components.
-- UI components may depend on Core primitives.
-- UI items should not reimplement Core behavior.
-- TanStack app integrations belong in UI components, not Core.
-- Generated UI code should stay readable and easy to own.
-- Data-dense components should preserve clarity under frequent updates.
-- Keyboard interaction and focus behavior should be designed as first-class product concerns.
+- Prefer Solid-native APIs over React-shaped ports.
+- Keep Core behavior unstyled and accessible by default.
+- Keep Core independent from UI and TanStack app libraries.
+- Put TanStack app integrations in UI source, not Core primitives.
+- Make generated UI source readable, editable, and owned by the user project.
+- Treat keyboard interaction, focus management, SSR, and hydration as product requirements.
+- Build depth before breadth.
 
-## Product Focus
+## Documentation
 
-Keystone Core and UI are built around a Solid-native primitive foundation paired with a source-first component layer.
+Useful starting points:
 
-For application-level patterns, the project focuses on data-dense products such as developer tools, trading terminals, analytics workspaces, and internal operations software.
+- [CONTEXT.md](CONTEXT.md): domain terms and product boundaries.
+- [docs/roadmap/maturity-model.md](docs/roadmap/maturity-model.md): maturity labels.
+- [docs/roadmap/do-not-reinvent.md](docs/roadmap/do-not-reinvent.md): engine-boundary guidance.
+- [docs/adr/0003-ui-tanstack-app-layer.md](docs/adr/0003-ui-tanstack-app-layer.md): TanStack app-layer decision.
+- [docs/adr/0004-core-kernel-api-boundary.md](docs/adr/0004-core-kernel-api-boundary.md): Core public/private kernel boundary.
 
 ## License
 
-MIT is the intended license before public release. A root `LICENSE` file still needs to be added before publication.
+MIT. See [LICENSE](LICENSE).
