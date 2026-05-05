@@ -292,11 +292,13 @@ Required checks:
 
 Required checks:
 
-- Content uses alert dialog semantics.
-- Focus lands on the least destructive or spec-defined action.
-- Escape, outside interaction, and cancellation behavior match the spec.
-- Screen readers announce title, description, and urgency appropriately.
-- Destructive action and cancel action are distinguishable by name and focus order.
+- Content uses `role="alertdialog"`, `aria-modal="true"`, and title/description relationships.
+- Focus lands on `AlertDialog.Cancel` by default as the least destructive action; `onMountAutoFocus` can prevent that default.
+- Escape closes through the `escape` reason when not prevented by `onEscapeKeyDown`.
+- Outside pointer and focus interactions call the outside hooks but are prevented by default and do not close the alert dialog.
+- `AlertDialog.Cancel` and `AlertDialog.Action` are explicit close parts with distinguishable accessible names, `type="button"`, and `cancel`/`action` close reasons.
+- Modal outside hiding, pointer blocking, focus trap, focus restore, forced mounting, and SSR/hydration behavior match Dialog unless documented otherwise.
+- Screen readers announce title, description, and urgency appropriately; manual AT evidence is required before stable maturity.
 
 ### Field And Form Control
 

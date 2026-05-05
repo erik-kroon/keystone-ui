@@ -19,10 +19,10 @@
     "customization": "Style the generated wrappers through ui-hover-card classes while Core owns preview timing, positioning, and dismissal.",
     "sourceFiles": ["packages/ui/src/default/ui/hover-card.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
-    "parts": ["trigger", "positioner", "content"],
+    "parts": ["trigger", "positioner", "arrow", "content"],
     "parity": {
-      "baseUi": "Matches PreviewCard Root/Trigger/Portal/Positioner/Popup-style contract through Keystone trigger, positioner, and content parts. Gaps: detached triggers, multiple trigger payloads, Backdrop, Viewport, Arrow, and trigger-id coordination remain follow-up work.",
-      "kobalte": "Matches HoverCard Root/Trigger/Portal/Content shape, custom open/close delays, controlled state, forceMount direction, and screen-reader-hidden preview intent. Gaps: optional Arrow part and deeper safe-area tuning remain follow-up work."
+      "baseUi": "Matches the PreviewCard Root/Trigger/Portal/Positioner/Popup/Arrow baseline through Keystone Root, Trigger, Portal, Positioner, Content, and Arrow parts. Keystone intentionally names the primitive HoverCard for Solid/Kobalte familiarity. Gaps: detached triggers, multiple trigger payloads, Backdrop, Viewport, and trigger-id coordination remain follow-up work.",
+      "kobalte": "Matches HoverCard Root/Trigger/Portal/Content/Arrow shape, custom open/close delays, controlled state, forceMount direction, safe-area hover traversal, and screen-reader-hidden preview intent."
     }
   },
   "files": [

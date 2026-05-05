@@ -207,11 +207,13 @@ const radioItemStateAttributes = [
 const primitiveMaturityByScope: Record<string, PrimitiveMaturity> = {
   "accessible-icon": "beta",
   accordion: "beta",
+  "alert-dialog": "beta",
   autocomplete: "experimental",
   calendar: "experimental",
   checkbox: "beta",
   collapsible: "beta",
   combobox: "experimental",
+  command: "experimental",
   "context-menu": "experimental",
   "date-picker": "experimental",
   description: "beta",
@@ -266,6 +268,16 @@ export const primitiveMetadata = {
     part("trigger", accordionStateAttributes),
     part("content", accordionStateAttributes),
   ]),
+  "alert-dialog": definePrimitive("alert-dialog", [
+    part("trigger", overlayStateAttributes),
+    part("cancel", overlayStateAttributes),
+    part("action", overlayStateAttributes),
+    part("backdrop", overlayStateAttributes),
+    part("positioner", overlayStateAttributes),
+    part("content", overlayStateAttributes),
+    part("title"),
+    part("description"),
+  ]),
   autocomplete: comboboxPrimitive("autocomplete"),
   checkbox: definePrimitive("checkbox", [
     part("root", selectionControlStateAttributes),
@@ -279,6 +291,7 @@ export const primitiveMetadata = {
     part("content", disclosureStateAttributes),
   ]),
   combobox: comboboxPrimitive("combobox"),
+  command: comboboxPrimitive("command"),
   calendar: definePrimitive("calendar", [
     part("root", [{ name: "data-disabled" }, { name: "data-value" }]),
     part("header", [{ name: "data-disabled" }]),

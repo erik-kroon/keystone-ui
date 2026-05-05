@@ -1,9 +1,11 @@
 export { AccessibleIcon, createAccessibleIcon } from "./accessible-icon/index";
 export { Accordion, createAccordion } from "./accordion/index";
+export { AlertDialog, createAlertDialog } from "./alert-dialog/index";
 export { Autocomplete, createAutocomplete } from "./autocomplete/index";
 export { Checkbox, createCheckbox } from "./checkbox/index";
 export { Collapsible, createCollapsible } from "./collapsible/index";
 export { Combobox, createCombobox } from "./combobox/index";
+export { Command, createCommand } from "./command/index";
 export { ContextMenu, createContextMenu } from "./context-menu/index";
 export { Direction, DirectionProvider, createDirection, useDirection } from "./direction/index";
 export { Calendar, DatePicker, createCalendar, createDatePicker } from "./date-picker/index";
@@ -89,6 +91,26 @@ export type {
   AccordionValueChangeDetail,
 } from "./accordion/index";
 export type {
+  AlertDialogActionProps,
+  AlertDialogApi,
+  AlertDialogBackdropContractProps,
+  AlertDialogCancelProps,
+  AlertDialogChangeDetail,
+  AlertDialogContentContractProps,
+  AlertDialogContentProps,
+  AlertDialogDescriptionContractProps,
+  AlertDialogDescriptionProps,
+  AlertDialogPartProps,
+  AlertDialogPortalProps,
+  AlertDialogPositionerContractProps,
+  AlertDialogRootProps,
+  AlertDialogTitleContractProps,
+  AlertDialogTitleProps,
+  AlertDialogTriggerContractProps,
+  AlertDialogTriggerProps,
+  CreateAlertDialogOptions,
+} from "./alert-dialog/index";
+export type {
   CheckboxCheckedChangeDetail,
   CheckboxCheckedState,
   CheckboxControlProps,
@@ -151,6 +173,28 @@ export type {
   ComboboxTriggerProps,
   CreateComboboxOptions,
 } from "./combobox/index";
+export type {
+  CommandApi,
+  CommandArrowProps,
+  CommandChangeDetail,
+  CommandClearProps,
+  CommandContentProps,
+  CommandGroupLabelProps,
+  CommandGroupProps,
+  CommandInputProps,
+  CommandItemData,
+  CommandItemIndicatorProps,
+  CommandItemProps,
+  CommandItemTextProps,
+  CommandListboxProps,
+  CommandOpenChangeDetail,
+  CommandPartProps,
+  CommandPortalProps,
+  CommandPositionerProps,
+  CommandRootProps,
+  CommandTriggerProps,
+  CreateCommandOptions,
+} from "./command/index";
 export type {
   CreateDirectionOptions,
   DirectionApi,

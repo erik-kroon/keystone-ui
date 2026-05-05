@@ -236,6 +236,10 @@ export function createAutocomplete(options: CreateComboboxOptions = {}): Combobo
   return createScopedCombobox({ ...options, scope: options.scope ?? "autocomplete" });
 }
 
+export function createCommand(options: CreateComboboxOptions = {}): ComboboxApi {
+  return createScopedCombobox({ ...options, scope: options.scope ?? "command" });
+}
+
 function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi {
   const scope = options.scope ?? "combobox";
   const [inputValue, setInputValueState] = createControllableSignal<string, ComboboxChangeDetail>({
@@ -890,3 +894,4 @@ function createComboboxNamespace(factoryOptions: ComboboxFactoryOptions) {
 
 export const Combobox = createComboboxNamespace({ scope: "combobox" });
 export const Autocomplete = createComboboxNamespace({ scope: "autocomplete" });
+export const Command = createComboboxNamespace({ scope: "command" });
