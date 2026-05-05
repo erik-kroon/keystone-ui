@@ -1,0 +1,44 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "empty",
+  "type": "registry:ui",
+  "title": "Empty",
+  "description": "Source-owned Solid empty state surface with icon/media, title, description, and action anatomy for panels, tables, search results, and onboarding gaps.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["base", "feedback", "layout"],
+  "keywords": ["empty", "empty-state", "blank-slate", "status", "no-results", "onboarding"],
+  "docs": "https://keystone-ui.dev/docs/ui/empty",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add empty",
+    "audit": "No standalone Empty registry item existed. Reusable prior art was FrameEmpty for frame fallback content and DataTableEmpty for table rows; both are narrower than a general UI empty state. This item introduces the reusable base surface without changing those specialized components.",
+    "api": "Exports Empty plus EmptyRoot, EmptyMedia, EmptyIcon, EmptyBody, EmptyTitle, EmptyDescription, and EmptyAction. Empty accepts icon, media, title, description, action, variant bordered|plain|surface, and size compact|default|lg.",
+    "anatomy": ["root", "media", "icon", "body", "title", "description", "action"],
+    "behavior": "Empty is presentational generated source. It does not manage dismissal, loading, selection, keyboard navigation, focus trapping, form state, routing, or controlled/uncontrolled state.",
+    "accessibility": "EmptyRoot defaults to role=status so newly rendered empty states can be announced politely by assistive technology. Consumers may override role, aria-label, aria-labelledby, or aria-describedby when the empty state is a static note, labelled region, table fallback, or onboarding prompt. Icon and media slots are aria-hidden by default unless callers opt into meaningful accessible content.",
+    "keyboard": "No keyboard behavior is introduced. Actions are caller-supplied native buttons or links and keep their own focus, pointer, disabled, and keyboard semantics.",
+    "state": "No controlled or uncontrolled state. Stable data attributes expose size and variant only: data-size=compact|default|lg and data-variant=bordered|plain|surface.",
+    "ssr": "SSR and hydration are deterministic because the component renders native elements, static attributes, and caller-supplied children without browser-only effects.",
+    "cssVariables": "No component-specific CSS variables. Styling uses existing Keystone UI tokens for border, input, card, background, foreground, muted, and shadow.",
+    "customization": "Use data-scope=\"ui-empty\" and data-part hooks for root, media, icon, body, title, description, and action. Replace icon/media/action slots for table empty states, inspector panels, terminal logs, onboarding prompts, search no-results, or permission-limited views.",
+    "limitations": "Empty does not own illustration generation, analytics, retry behavior, pagination reset, route links, table colSpan, or form reset behavior. Specialized surfaces such as DataTableEmpty may wrap this item later when table semantics need to be preserved.",
+    "sourceFiles": ["packages/ui/src/default/ui/empty.tsx"],
+    "tests": ["packages/ui/src/default/ui/empty.test.tsx"],
+    "parity": {
+      "shadcn": "Matches shadcn-style copy-paste source ownership and empty state anatomy with editable classes, stable data-slot/data-part hooks, icon/media/title/description/action slots, and variant/size styling.",
+      "baseUi": "No Base UI/Core primitive is needed because Empty has no intrinsic widget behavior beyond native status/section semantics and caller-owned actions.",
+      "kobalte": "Kobalte has no direct Empty primitive; Keystone keeps this as Solid source composition with native ARIA pass-through and no state machine.",
+      "keystoneUi": "Complements existing FrameEmpty and DataTableEmpty by providing the reusable base item those specialized surfaces can compose in future work."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/empty.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

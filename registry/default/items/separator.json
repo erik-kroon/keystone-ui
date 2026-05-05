@@ -3,7 +3,7 @@
   "name": "separator",
   "type": "registry:ui",
   "title": "Separator",
-  "description": "Decorative or semantic separator component.",
+  "description": "Decorative or semantic Solid separator with horizontal and vertical layout styling.",
   "version": "0.1.0",
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
@@ -15,12 +15,21 @@
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add separator",
-    "customization": "Use data-orientation and ui-separator classes to style horizontal and vertical separators.",
+    "customization": "Use separatorClass, data-orientation, data-decorative, and ui-separator classes to style horizontal and vertical separators.",
     "sourceFiles": ["packages/ui/src/default/ui/separator.tsx"],
     "dependencies": ["cn"],
+    "api": "Separator accepts orientation horizontal|vertical and decorative boolean. decorative defaults to true; set decorative={false} when the separator conveys structure that should be exposed to assistive technology.",
+    "accessibility": "Decorative separators render role=presentation with no aria-orientation. Semantic separators render role=separator and aria-orientation matching the orientation prop. Separator has no keyboard, pointer, focus, form, or live-region behavior.",
+    "anatomy": ["root"],
+    "dataAttributes": "Root exposes data-scope=\"ui-separator\", data-part=\"root\", data-slot=\"separator\", data-orientation, and data-decorative when decorative.",
+    "state": "No controlled or uncontrolled state contract applies; Separator is a stateless native layout and semantics surface.",
+    "ssr": "SSR and hydration are stable because the component renders deterministic native markup with no effects, browser APIs, ids, portals, or measurement.",
+    "cssVariables": "No component-specific CSS variables are required; styling uses Keystone semantic Tailwind tokens and caller-owned classes.",
+    "limitations": "Separator does not implement resizable splitters or focusable handles. Use a dedicated splitter/resizable primitive for adjustable panes.",
     "parity": {
-      "baseUi": "Thin vertical matches Base UI Separator direction for decorative or semantic separator rendering, horizontal/vertical orientation, role presentation/separator choice, and data-orientation styling hooks. Gaps: richer orientation docs and layout token presets remain follow-up work.",
-      "kobalte": "Comparable to Kobalte Separator with Solid pass-through props and orientation metadata. Gaps: no Core primitive dependency yet and no shared direction/RTL provider integration needed for this simple surface."
+      "visualReference": "Matches the Keystone base component direction: a compact border-color rule, horizontal h-px/w-full default, vertical h-full/w-px option, and stable data hooks for source-owned customization.",
+      "baseUi": "Matches Base UI Separator's decorative-by-default orientation model and native semantic fallback without adding unnecessary Core behavior.",
+      "kobalte": "Comparable to Kobalte Separator with Solid pass-through props, orientation metadata, and decorative-vs-semantic accessibility. No Core primitive dependency is needed for this simple native surface."
     }
   },
   "files": [

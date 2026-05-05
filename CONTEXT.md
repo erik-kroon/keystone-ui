@@ -115,3 +115,13 @@ The active planning baseline:
 - Preserve the strict Keystone Core/UI product boundary.
 - Prioritize Core internals parity before adding more primitive surface area.
 - Treat data-dense UI workspace patterns as a product differentiator after the primitive kernel and first app-layer components are sufficiently proven.
+
+## Issue Milestone Mapping
+
+Current GitHub issue milestones use this ladder:
+
+- `0.3 Later Core`: later Core primitive/runtime backlog.
+- `0.4 Later UI`: later UI component, registry, block, and app-source backlog.
+- `0.5 Data-Dense Workspace`: data-dense, keyboard-first workspace patterns.
+
+Do not use `phase:later` for newly triaged Core or UI backlog. Use `phase:0.3` for later Core, `phase:0.4` for later UI, and `phase:0.5` for data-dense workspace work.

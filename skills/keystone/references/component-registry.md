@@ -5,8 +5,11 @@ Use this file to choose the right Keystone UI source item and inspect its files 
 ## Actions And Display
 
 - **Button**: `packages/ui/src/default/ui/button.tsx`, registry `button`
+- **Alert**: `packages/ui/src/default/ui/alert.tsx`, registry `alert`
 - **Badge**: `packages/ui/src/default/ui/badge.tsx`, registry `badge`
+- **Kbd**: `packages/ui/src/default/ui/kbd.tsx`, registry `kbd`
 - **Card**: `packages/ui/src/default/ui/card.tsx`, registry `card`
+- **Empty**: `packages/ui/src/default/ui/empty.tsx`, registry `empty`
 - **Separator**: `packages/ui/src/default/ui/separator.tsx`, registry `separator`
 
 ## Fields And Forms
@@ -62,6 +65,7 @@ Use this file to choose the right Keystone UI source item and inspect its files 
 - **Collapsible**: registry `collapsible`
 - **Tabs**: registry `tabs`
 - **Toolbar**: registry `toolbar`
+- **ScrollArea**: `packages/ui/src/default/ui/scroll-area.tsx`, registry `scroll-area`
 - **CommandMenu**: registry `command-menu`
 - **DataTable**: registry `data-table`
 - **DataTableTanStackRouter**: registry `data-table-tanstack-router`

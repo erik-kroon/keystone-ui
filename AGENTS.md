@@ -12,6 +12,7 @@ This repository is the early Keystone UI monorepo. Treat `Keystone` as the provi
 - UI first-party app components are TanStack-native where useful: Form for forms, Table for data tables, Store for shared app state, and Hotkeys for app-level shortcuts.
 - Core must remain independent from TanStack app libraries; Core owns intrinsic primitive behavior and UI owns app integrations.
 - Durable product decisions, API shape, registry shape, component inventory, and sequencing now live in repo docs; use those docs as the active source of truth.
+- Current backlog milestones are `0.3 Later Core`, `0.4 Later UI`, and `0.5 Data-Dense Workspace`; do not classify new Core/UI backlog with generic `phase:later`.
 
 ## Repo Workflow
 

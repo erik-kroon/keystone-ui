@@ -52,6 +52,16 @@ Near-term constraints:
 - Keep TanStack app-layer dependencies in UI.
 - Keep data-dense workspace blocks aspirational until Core kernels and Mason registry/CLI are reliable enough to support them.
 
+## Issue Milestones
+
+The GitHub issue milestones now use this sequencing:
+
+- `0.3 Later Core`: Core primitive/runtime backlog after preview hardening. Work here must stay domain-agnostic and should only add behavior that reduces to a general accessible primitive.
+- `0.4 Later UI`: broad UI component, registry, block, and app-source backlog after docs foundation and app-layer proof. Work here may compose Core primitives and TanStack app libraries, but should not add Core behavior.
+- `0.5 Data-Dense Workspace`: workspace-grade UI patterns such as realtime tables, watchlists, metrics, inspector rails, event feeds, condition builders, terminals, and chart inspection. Work here remains UI-owned unless it reveals a general Core primitive need.
+
+`phase:later` is no longer the default label for open Core or UI backlog. Use `phase:0.3` for later Core, `phase:0.4` for later UI, and `phase:0.5` for data-dense workspace issues.
+
 ## Phase 0: Consolidate Direction
 
 Goal: make the repo unambiguous about what it is and is not.
@@ -142,7 +152,7 @@ Avoid:
 
 - Custom table, form, query, or hotkey engines.
 
-## Phase 5: Data-Dense Flagship
+## Phase 5 / Milestone 0.5: Data-Dense Flagship
 
 Goal: differentiate through workspace-grade source patterns.
 

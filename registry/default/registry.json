@@ -34,6 +34,12 @@
       "description": "TanStack-backed realtime data table pattern for frequent row and cell updates."
     },
     {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "Presentational Solid alert/callout surface with semantic status and error roles."
+    },
+    {
       "name": "resizable-workspace-shell",
       "type": "registry:block",
       "title": "ResizableWorkspaceShellBlock",
@@ -358,10 +364,28 @@
       "description": "Source-owned framed preview and embedded panel container with header, viewport, status, and aspect-ratio anatomy."
     },
     {
+      "name": "empty",
+      "type": "registry:ui",
+      "title": "Empty",
+      "description": "Source-owned Solid empty state surface with icon/media, title, description, and action anatomy."
+    },
+    {
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",
-      "description": "Inline status badge with UI variant styling hooks."
+      "description": "Presentational Solid badge for inline labels, statuses, counts, and compact metadata."
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "Display-only keyboard input token with group and separator parts for shortcut labels."
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "ScrollArea",
+      "description": "Native Solid scroll container with styled overflow hooks and root/viewport/scrollbar/thumb/corner anatomy."
     },
     {
       "name": "copy-button",

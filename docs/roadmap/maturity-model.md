@@ -145,3 +145,13 @@ Mason registry items should use the same labels, but the evidence is different:
 - Metadata completeness, including parity notes.
 
 Data-dense UI items remain experimental until the underlying Core kernels and Mason registry lifecycle are mature enough to support them.
+
+## Backlog Milestones
+
+Backlog maturity is separate from issue milestone sequencing. Current open backlog should be triaged into:
+
+- `0.3 Later Core`: Core primitive/runtime backlog.
+- `0.4 Later UI`: UI component, registry, block, and app-source backlog.
+- `0.5 Data-Dense Workspace`: data-dense workspace patterns.
+
+Use these milestone labels instead of the generic `phase:later` label for new open Core/UI backlog items.
