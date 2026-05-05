@@ -15,21 +15,90 @@ export type RadioGroupItemProps = CoreRadioGroupItemProps & {
 export type RadioGroupItemIndicatorProps = CoreRadioGroupItemIndicatorProps;
 export type RadioGroupHiddenInputProps = CoreRadioGroupHiddenInputProps;
 
+const classes = (...tokens: string[]) => tokens.join(" ");
+
+const radioClass = classes(
+  "relative",
+  "inline-flex",
+  "size-4.5",
+  "shrink-0",
+  "items-center",
+  "justify-center",
+  "rounded-full",
+  "border",
+  "border-input",
+  "bg-background",
+  "not-dark:bg-clip-padding",
+  "shadow-xs/5",
+  "outline-none",
+  "transition-shadow",
+  "before:pointer-events-none",
+  "before:absolute",
+  "before:inset-0",
+  "before:rounded-full",
+  "not-data-disabled:not-data-checked:not-aria-invalid:before:shadow-[0_1px_--theme(--color-black/4%)]",
+  "focus-visible:ring-2",
+  "focus-visible:ring-ring",
+  "focus-visible:ring-offset-1",
+  "focus-visible:ring-offset-background",
+  "aria-invalid:border-destructive/36",
+  "focus-visible:aria-invalid:border-destructive/64",
+  "focus-visible:aria-invalid:ring-destructive/48",
+  "data-disabled:cursor-not-allowed",
+  "data-disabled:opacity-64",
+  "sm:size-4",
+  "dark:not-data-checked:bg-input/32",
+  "dark:aria-invalid:ring-destructive/24",
+  "dark:not-data-disabled:not-data-checked:not-aria-invalid:before:shadow-[0_-1px_--theme(--color-white/6%)]",
+  "[[data-disabled],[data-checked],[aria-invalid]]:shadow-none",
+);
+
+const radioIndicatorClass = classes(
+  "absolute",
+  "-inset-px",
+  "flex",
+  "size-4.5",
+  "items-center",
+  "justify-center",
+  "rounded-full",
+  "before:size-2",
+  "before:rounded-full",
+  "before:bg-primary-foreground",
+  "data-checked:bg-primary",
+  "sm:size-4",
+  "sm:before:size-1.5",
+);
+
 export function RadioGroup(props: RadioGroupProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
-  return <CoreRadioGroup.Root {...rest} class={cn("ui-radio-group", local.class)} />;
+  return (
+    <CoreRadioGroup.Root
+      {...rest}
+      data-slot="radio-group"
+      class={cn("ui-radio-group flex flex-col gap-3", local.class)}
+    />
+  );
 }
 
 export function RadioGroupItem(props: RadioGroupItemProps) {
   const [local, rest] = splitProps(props, ["children", "class", "indicator"]);
 
   return (
-    <CoreRadioGroup.Item {...rest} class={cn("ui-radio-group-item", local.class)}>
-      <span data-scope="ui-radio-group" data-part="item-control">
+    <CoreRadioGroup.Item
+      {...rest}
+      data-slot="radio-group-item"
+      class={cn("ui-radio-group-item inline-flex items-center gap-2 text-sm", local.class)}
+    >
+      <span
+        data-scope="ui-radio-group"
+        data-part="item-control"
+        data-slot="radio"
+        class={cn(radioClass, "ui-radio-group-item-control")}
+      >
         <RadioGroupItemIndicator>{local.indicator ?? ""}</RadioGroupItemIndicator>
       </span>
-      <span data-scope="ui-radio-group" data-part="item-label">
+      <span data-scope="ui-radio-group" data-part="item-label" data-slot="radio-label">
         {local.children}
       </span>
       <RadioGroupHiddenInput />
@@ -43,7 +112,8 @@ export function RadioGroupItemIndicator(props: RadioGroupItemIndicatorProps) {
   return (
     <CoreRadioGroup.ItemIndicator
       {...rest}
-      class={cn("ui-radio-group-item-indicator", local.class)}
+      data-slot="radio-indicator"
+      class={cn("ui-radio-group-item-indicator", radioIndicatorClass, local.class)}
     />
   );
 }

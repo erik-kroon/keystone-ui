@@ -24,7 +24,7 @@ describe("Badge", () => {
     expect(badge?.getAttribute("data-size")).toBe("sm");
     expect(badge?.getAttribute("role")).toBeNull();
     expect(badge?.className).toContain("inline-flex");
-    expect(badge?.className).toContain("text-emerald-700");
+    expect(badge?.className).toContain("text-success-foreground");
 
     dispose();
   });

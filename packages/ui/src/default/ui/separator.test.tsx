@@ -33,8 +33,8 @@ describe("Separator", () => {
     expect(separator?.getAttribute("aria-orientation")).toBe("vertical");
     expect(separator?.getAttribute("data-orientation")).toBe("vertical");
     expect(separator?.hasAttribute("data-decorative")).toBe(false);
-    expect(separator?.className).toContain("h-full");
-    expect(separator?.className).toContain("w-px");
+    expect(separator?.className).toContain("data-[orientation=vertical]:w-px");
+    expect(separator?.className).toContain("data-[orientation=vertical]:not-[[class^='h-']]");
 
     dispose();
   });

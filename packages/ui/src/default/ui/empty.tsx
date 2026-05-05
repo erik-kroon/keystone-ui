@@ -31,21 +31,15 @@ export type EmptyActionProps = ParentProps<JSX.HTMLAttributes<HTMLDivElement>>;
 const classes = (...tokens: string[]) => tokens.join(" ");
 
 const emptyVariantClass: Record<EmptyVariant, string> = {
-  bordered: classes(
-    "border",
-    "border-dashed",
-    "border-input",
-    "bg-muted/28",
-    "text-muted-foreground",
-  ),
-  plain: "bg-transparent text-muted-foreground",
-  surface: classes("border", "border-input", "bg-card", "text-muted-foreground", "shadow-xs/5"),
+  bordered: "text-muted-foreground",
+  plain: "text-muted-foreground",
+  surface: "text-muted-foreground",
 };
 
 const emptySizeClass: Record<EmptySize, string> = {
-  compact: classes("min-h-32", "gap-3", "p-4"),
-  default: classes("min-h-44", "gap-4", "p-6"),
-  lg: classes("min-h-60", "gap-5", "p-8"),
+  compact: classes("gap-5", "px-6", "py-10"),
+  default: classes("gap-6", "px-6", "py-12", "md:py-20"),
+  lg: classes("gap-6", "px-6", "py-16", "md:py-24"),
 };
 
 export function Empty(props: EmptyProps) {
@@ -105,10 +99,11 @@ export function EmptyRoot(props: EmptyRootProps) {
           "ui-empty",
           "flex",
           "min-w-0",
+          "flex-1",
           "flex-col",
           "items-center",
           "justify-center",
-          "rounded-xl",
+          "text-balance",
           "text-center",
           emptyVariantClass[variant()],
           emptySizeClass[size()],
@@ -132,20 +127,14 @@ export function EmptyMedia(props: EmptyMediaProps) {
       class={cn(
         classes(
           "ui-empty-media",
+          "relative",
+          "mb-6",
           "flex",
-          "max-h-28",
-          "w-full",
-          "max-w-56",
+          "shrink-0",
           "items-center",
           "justify-center",
-          "overflow-hidden",
-          "rounded-lg",
-          "text-muted-foreground",
-          "[&_img]:max-h-28",
-          "[&_img]:w-auto",
-          "[&_img]:max-w-full",
-          "[&_svg]:max-h-28",
-          "[&_svg]:max-w-full",
+          "[&_svg]:pointer-events-none",
+          "[&_svg]:shrink-0",
         ),
         local.class,
       )}
@@ -166,17 +155,25 @@ export function EmptyIcon(props: EmptyIconProps) {
       class={cn(
         classes(
           "ui-empty-icon",
+          "relative",
           "flex",
-          "size-10",
+          "size-9",
+          "shrink-0",
           "items-center",
           "justify-center",
           "rounded-md",
           "border",
-          "border-input",
-          "bg-background",
-          "text-muted-foreground",
-          "shadow-xs/5",
-          "[&_svg:not([class*='size-'])]:size-5",
+          "bg-card",
+          "not-dark:bg-clip-padding",
+          "text-foreground",
+          "shadow-sm/5",
+          "before:pointer-events-none",
+          "before:absolute",
+          "before:inset-0",
+          "before:rounded-[calc(var(--radius-md)-1px)]",
+          "before:shadow-[0_1px_--theme(--color-black/4%)]",
+          "dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
+          "[&_svg:not([class*='size-'])]:size-4.5",
           "[&_svg]:shrink-0",
         ),
         local.class,
@@ -194,7 +191,7 @@ export function EmptyBody(props: EmptyBodyProps) {
       data-scope="ui-empty"
       data-part="body"
       data-slot="empty-body"
-      class={cn("ui-empty-body flex max-w-sm flex-col items-center gap-1.5", local.class)}
+      class={cn("ui-empty-body flex max-w-sm flex-col items-center text-center", local.class)}
     />
   );
 }
@@ -208,7 +205,7 @@ export function EmptyTitle(props: EmptyTitleProps) {
       data-scope="ui-empty"
       data-part="title"
       data-slot="empty-title"
-      class={cn("ui-empty-title font-medium text-foreground text-sm", local.class)}
+      class={cn("ui-empty-title font-heading font-semibold text-xl", local.class)}
     />
   );
 }
@@ -223,7 +220,7 @@ export function EmptyDescription(props: EmptyDescriptionProps) {
       data-part="description"
       data-slot="empty-description"
       class={cn(
-        "ui-empty-description max-w-prose text-balance text-muted-foreground text-sm leading-6",
+        "ui-empty-description text-muted-foreground text-sm [&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4 [[data-slot=empty-title]+&]:mt-1",
         local.class,
       )}
     />
@@ -239,7 +236,10 @@ export function EmptyAction(props: EmptyActionProps) {
       data-scope="ui-empty"
       data-part="action"
       data-slot="empty-action"
-      class={cn("ui-empty-action flex flex-wrap items-center justify-center gap-2", local.class)}
+      class={cn(
+        "ui-empty-action flex w-full min-w-0 max-w-sm flex-col items-center gap-4 text-balance text-sm",
+        local.class,
+      )}
     />
   );
 }

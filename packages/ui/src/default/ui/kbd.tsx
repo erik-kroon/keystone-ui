@@ -23,7 +23,7 @@ const kbdSizeClass: Record<KbdSize, string> = {
 };
 
 const kbdVariantClass: Record<KbdVariant, string> = {
-  default: classes("border-input", "bg-background", "text-foreground", "shadow-xs/5"),
+  default: classes("bg-muted", "text-muted-foreground"),
   muted: classes("border-transparent", "bg-muted", "text-muted-foreground"),
   outline: classes("border-input", "bg-transparent", "text-foreground"),
 };
@@ -44,17 +44,18 @@ export function Kbd(props: KbdProps) {
       class={cn(
         classes(
           "ui-kbd",
+          "pointer-events-none",
           "inline-flex",
-          "shrink-0",
+          "select-none",
           "items-center",
           "justify-center",
+          "gap-1",
           "rounded",
-          "border",
-          "font-medium",
           "font-sans",
-          "leading-none",
-          "whitespace-nowrap",
+          "font-medium",
+          "[&_svg:not([class*='size-'])]:size-3",
         ),
+        variant() !== "default" && variant() !== "muted" && "border",
         kbdSizeClass[size()],
         kbdVariantClass[variant()],
         local.class,
@@ -72,10 +73,7 @@ export function KbdGroup(props: KbdGroupProps) {
       data-scope="ui-kbd"
       data-part="group"
       data-slot="kbd-group"
-      class={cn(
-        classes("ui-kbd-group", "inline-flex", "min-w-0", "items-center", "gap-1"),
-        local.class,
-      )}
+      class={cn(classes("ui-kbd-group", "inline-flex", "items-center", "gap-1"), local.class)}
     />
   );
 }

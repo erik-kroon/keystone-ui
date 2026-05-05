@@ -10,6 +10,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@keystone-ui/ui/default": path.resolve(__dirname, "../../packages/ui/src/default"),
     },
   },
   server: {

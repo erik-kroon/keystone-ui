@@ -9,8 +9,11 @@ export type SeparatorProps = JSX.HTMLAttributes<HTMLDivElement> & {
 const classes = (...tokens: string[]) => tokens.join(" ");
 
 const separatorOrientationClass: Record<NonNullable<SeparatorProps["orientation"]>, string> = {
-  horizontal: classes("h-px", "w-full"),
-  vertical: classes("h-full", "w-px"),
+  horizontal: classes("data-[orientation=horizontal]:h-px", "data-[orientation=horizontal]:w-full"),
+  vertical: classes(
+    "data-[orientation=vertical]:w-px",
+    "data-[orientation=vertical]:not-[[class^='h-']]:not-[[class*='_h-']]:self-stretch",
+  ),
 };
 
 export function separatorClass(props: Pick<SeparatorProps, "class" | "orientation">) {

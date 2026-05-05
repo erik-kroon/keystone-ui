@@ -123,13 +123,14 @@ export function BreadcrumbList(props: BreadcrumbListProps) {
       class={cn(
         classes(
           "ui-breadcrumb-list",
+          "wrap-break-word",
           "flex",
-          "min-w-0",
           "flex-wrap",
           "items-center",
           "gap-1.5",
           "text-muted-foreground",
           "text-sm",
+          "sm:gap-2.5",
         ),
         local.class,
       )}
@@ -146,7 +147,7 @@ export function BreadcrumbItem(props: BreadcrumbItemProps) {
       data-scope="ui-breadcrumb"
       data-part="item"
       data-slot="breadcrumb-item"
-      class={cn("ui-breadcrumb-item inline-flex min-w-0 items-center gap-1.5", local.class)}
+      class={cn("ui-breadcrumb-item inline-flex items-center gap-1.5", local.class)}
     />
   );
 }
@@ -163,16 +164,8 @@ export function BreadcrumbLink(props: BreadcrumbLinkProps) {
       class={cn(
         classes(
           "ui-breadcrumb-link",
-          "min-w-0",
-          "truncate",
-          "rounded-md",
-          "outline-none",
           "transition-colors",
           "hover:text-foreground",
-          "focus-visible:ring-2",
-          "focus-visible:ring-ring",
-          "focus-visible:ring-offset-1",
-          "focus-visible:ring-offset-background",
           "aria-disabled:pointer-events-none",
           "aria-disabled:opacity-64",
         ),
@@ -192,7 +185,7 @@ export function BreadcrumbPage(props: BreadcrumbPageProps) {
       data-scope="ui-breadcrumb"
       data-part="page"
       data-slot="breadcrumb-page"
-      class={cn("ui-breadcrumb-page min-w-0 truncate font-medium text-foreground", local.class)}
+      class={cn("ui-breadcrumb-page font-normal text-foreground", local.class)}
     />
   );
 }
@@ -208,10 +201,7 @@ export function BreadcrumbSeparator(props: BreadcrumbSeparatorProps) {
       data-part="separator"
       data-slot="breadcrumb-separator"
       role="presentation"
-      class={cn(
-        "ui-breadcrumb-separator inline-flex shrink-0 items-center text-muted-foreground/56 [&_svg]:size-3.5",
-        local.class,
-      )}
+      class={cn("ui-breadcrumb-separator opacity-80 [&>svg]:size-4", local.class)}
     >
       {local.children ?? <ChevronSeparator />}
     </li>
