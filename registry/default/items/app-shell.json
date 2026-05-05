@@ -1,0 +1,45 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "app-shell",
+  "type": "registry:ui",
+  "title": "AppShell",
+  "description": "Central app composition surface for topbar, sidebar navigation, main content, inspector rail, and command menu integration.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["layout", "app-shell", "workspace"],
+  "keywords": ["app-shell", "topbar", "sidebar", "inspector", "command-menu", "workspace"],
+  "docs": "https://keystone-ui.dev/docs/ui/app-shell",
+  "registryDependencies": [
+    "topbar",
+    "nav-list",
+    "command-menu",
+    "sidebar-store",
+    "use-media-query",
+    "cn"
+  ],
+  "meta": {
+    "install": "mason add app-shell",
+    "api": "Exports AppShell plus root, topbar, sidebar, main, inspector, and command-surface parts. High-level AppShell accepts topbar, sidebar, main/children, inspector, commandMenu, and sidebarState slots.",
+    "anatomy": ["root", "topbar", "sidebar", "main", "inspector", "command-surface"],
+    "stateOwnership": "Layout state remains UI/app-owned. Pair sidebarState with SidebarStore, route state with the app/router, command state with CommandMenu/CommandStore, and responsive decisions with useMediaQuery.",
+    "accessibility": "Uses header/topbar slot, aside landmarks for sidebar and inspector, and a main landmark. NavList owns native link/button navigation semantics, while CommandMenu owns its combobox/dialog-like command behavior through existing UI/Core composition.",
+    "responsive": "Mobile stacks topbar, main, sidebar, and inspector in document flow. Large screens use a three-column shell with an optional collapsed sidebar track and independently scrollable main/sidebar/inspector regions.",
+    "customization": "Slots are intentionally broad so apps can compose Topbar, NavList, SidebarStore triggers, CommandMenu, inspector panels, and router-aware content without AppShell owning routing or domain data.",
+    "sourceFiles": ["packages/ui/src/default/ui/app-shell.tsx"],
+    "parity": {
+      "shadcn": "Follows source-owned shell composition and editable classes while avoiding a hard dependency on any single router.",
+      "dataDenseWorkspace": "Covers the central composition surface required by developer consoles, admin control planes, and workspace examples: topbar, sidebar/nav, main content, inspector, and command integration.",
+      "tanstack": "Pairs with app-layer TanStack Store/Router/Hotkeys code through slots and state props while keeping Core independent from TanStack libraries.",
+      "keystoneCore": "Does not introduce Core app-shell APIs. It composes existing UI source and app state."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/app-shell.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

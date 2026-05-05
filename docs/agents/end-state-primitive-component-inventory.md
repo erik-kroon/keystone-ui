@@ -140,6 +140,7 @@ Core owns headless accessible primitives and shared primitive helpers. UI owns s
 - Separator
 - Skeleton
 - Spinner
+- Group (`proven`; compact grouped controls/content with attached and inset variants, separate from FieldGroup/Toolbar/Card; see [ui-group-vertical.md](ui-group-vertical.md))
 - Card
 - Item
 - Empty
@@ -149,8 +150,8 @@ Core owns headless accessible primitives and shared primitive helpers. UI owns s
 - Image
 - Table
 - DataList
-- CodeBlock
-- CopyButton
+- CodeBlock (`proven`; docs/product code surface with caption metadata, copy action, wrapping, and stable anatomy hooks; see [ui-codeblock-copybutton-vertical.md](ui-codeblock-copybutton-vertical.md))
+- CopyButton (`proven`; native copy control backed by UI-owned clipboard helper; see [ui-codeblock-copybutton-vertical.md](ui-codeblock-copybutton-vertical.md))
 
 ### Styled Form UI
 
@@ -173,7 +174,7 @@ Core owns headless accessible primitives and shared primitive helpers. UI owns s
 - NumberField
 - OTPInput
 - FileInput
-- SearchInput
+- SearchInput (`proven`; native search input with clear/loading affordances and source-owned app/filter composition boundary; see [ui-breadcrumb-search-input-vertical.md](ui-breadcrumb-search-input-vertical.md))
 - SubmitButton
 
 ### TanStack Form UI
@@ -235,7 +236,7 @@ Core owns headless accessible primitives and shared primitive helpers. UI owns s
 
 - AppStoreProvider (`implemented`; optional TanStack Store app-shell state provider for generated UI Store/Hotkeys source; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
 - ThemeStore (`0.2`; TanStack Store-backed theme state with provider/hook ergonomics, light/dark/system resolution, persistence, document theme application, and SSR theme script; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
-- SidebarStore (`0.2`; TanStack Store-backed app-shell sidebar state with desktop/mobile open state, active item tracking, persistence, media-query sync, and Mod+B toggle; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
+- SidebarStore (`proven`; TanStack Store-backed app-shell sidebar state with desktop/mobile open state, active item tracking, persistence, media-query sync, and Mod+B toggle; see [ui-sidebar-vertical.md](ui-sidebar-vertical.md))
 - CommandStore (`implemented`; extracted TanStack Store command state, while Keystone Combobox keeps intrinsic command menu behavior; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
 - CommandMenu (`proven for 0.1`; see [ui-command-menu-vertical.md](ui-command-menu-vertical.md); 0.2 should extract reusable app primitives instead of expanding the component)
 - KeyboardShortcuts (`implemented`; app-level shortcut registration and scoping, not Core primitive keyboard behavior; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
@@ -264,8 +265,8 @@ Core owns headless accessible primitives and shared primitive helpers. UI owns s
 - Chart
 - ResizablePanels
 - Carousel
-- Sidebar
-- Breadcrumb
+- Sidebar (`proven`; UI-owned app sidebar source kit with native landmarks/nav controls, desktop/mobile state via SidebarStore, stable data hooks, and no Core layout primitive; see [ui-sidebar-vertical.md](ui-sidebar-vertical.md))
+- Breadcrumb (`proven`; native nav/list/link/page parts for docs, app routes, and topbar composition; see [ui-breadcrumb-search-input-vertical.md](ui-breadcrumb-search-input-vertical.md))
 - Pagination
 - Toolbar
 

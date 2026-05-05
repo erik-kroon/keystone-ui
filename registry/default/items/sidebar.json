@@ -1,0 +1,54 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "sidebar",
+  "type": "registry:ui",
+  "title": "Sidebar",
+  "description": "Source-owned Solid app sidebar with desktop collapse state, mobile panel state, navigation anatomy, active item tracking, and stable styling hooks.",
+  "version": "0.1.0",
+  "dependencies": ["@tanstack/solid-store@^0.11.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["layout", "sidebar", "navigation", "app-shell"],
+  "keywords": ["sidebar", "app-shell", "navigation", "tanstack-store", "solid"],
+  "docs": "https://keystone-ui.dev/docs/ui/sidebar",
+  "registryDependencies": ["button", "cn", "input", "separator", "sidebar-store"],
+  "meta": {
+    "install": "mason add sidebar",
+    "fileTree": "Installs sidebar.tsx as user-owned source under src/components/ui/sidebar.tsx and composes the sidebar-store registry item.",
+    "dependencies": [
+      "@tanstack/solid-store",
+      "button",
+      "cn",
+      "input",
+      "separator",
+      "sidebar-store"
+    ],
+    "api": "Exports SidebarProvider, useSidebar, SidebarLayout, Sidebar, SidebarMobile, SidebarHeader, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarGroupAction, SidebarGroupContent, SidebarNav, SidebarMenu, SidebarMenuItem, SidebarMenuLink, SidebarMenuButton, SidebarMenuAction, SidebarMenuBadge, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton, SidebarTrigger, SidebarRail, SidebarInset, SidebarInput, SidebarSeparator, and SidebarItems.",
+    "anatomy": "The desktop sidebar is an aside inside SidebarLayout. Content uses header/content/footer, group, group action, nav, menu, menu item, link/button, menu action, badge, skeleton, submenu, trigger, rail, input, separator, mobile dialog panel, and inset parts. SidebarItems is a convenience renderer for simple source-owned navigation arrays.",
+    "behavior": "Desktop open state collapses or expands the sidebar. Mobile state opens a dialog-like panel. SidebarTrigger and SidebarRail toggle the current desktop or mobile target through the shared store. Menu links can mark an item active and close the mobile panel after navigation.",
+    "controlled": "Controlled and uncontrolled desktop state are inherited from SidebarProvider and sidebar-store: pass open/onOpenChange for controlled desktop state, defaultOpen for uncontrolled state, and onOpenMobileChange for mobile panel changes.",
+    "accessibility": "The root renders as an aside with an aria-label, navigation renders as nav, the trigger is a button with aria-expanded and optional aria-controls, active links expose aria-current=page, disabled generated links use aria-disabled and prevent navigation, and the mobile panel renders role=dialog with aria-modal.",
+    "keyboard": "Keyboard interaction is native button/link behavior plus the sidebar-store app shortcut. mountSidebarStore registers Mod+B by default and can be disabled with keyboardShortcut=false.",
+    "focus": "No roving focus or selection primitive is introduced. Sidebar navigation remains ordinary document navigation so tab order and screen-reader behavior follow native links/buttons. Mobile focus trapping is intentionally deferred to app composition with Sheet/Dialog when the product needs modal enforcement.",
+    "dataAttributes": "Stable hooks use data-scope=\"ui-sidebar\" and data-part values for layout, root, mobile, header, content, footer, group, group-label, group-action, group-content, nav, menu, menu-item, menu-link, menu-button, menu-action, menu-badge, menu-skeleton, menu-sub, menu-sub-item, menu-sub-button, trigger, rail, inset, input, separator, menu-icon, and menu-badge. State hooks include data-state=expanded|collapsed, data-mobile, data-open-mobile, data-active, data-side, data-variant, data-size, and data-collapsible.",
+    "cssVariables": "SidebarLayout sets --sidebar-width, --sidebar-width-icon, and --sidebar-width-mobile, defaulting to 16rem, 3rem, and 18rem. Consumers may override these props or classes in generated source.",
+    "ssr": "The visual component reads only Solid store accessors during render. Browser-only localStorage, matchMedia, and keydown wiring remain inside mountSidebarStore after mount.",
+    "primitiveBoundary": "Sidebar remains UI source because it is app layout, navigation presentation, app state, and generated-source ergonomics. It should not become a Core layout primitive unless a later ADR identifies reusable intrinsic accessibility behavior beyond native landmarks/buttons/links.",
+    "limitations": "This item does not implement route integration, animated width measurement, tooltip-on-collapsed labels, persisted nested menu state, or enforced mobile focus trapping. Those belong in app composition, future blocks, or Core overlay composition where needed.",
+    "sourceFiles": ["packages/ui/src/default/ui/sidebar.tsx"],
+    "tests": ["packages/ui/src/default/ui/sidebar.test.tsx"],
+    "parity": {
+      "shadcn": "Matches shadcn-style source ownership, provider/hook ergonomics through sidebar-store, desktop/mobile open state, variants, rail, group action, menu action, badge, skeleton, submenus, sidebar input/separator, active item source helpers, CSS variable widths, data-state hooks, and Mod+B shortcut behavior. Keystone differs by keeping visual Sidebar and TanStack Store state as separate registry items and using Solid-native components instead of React asChild/useRender.",
+      "tanstackStore": "Uses TanStack Store only for app-shell state coordination, not intrinsic widget behavior. This keeps Core independent from TanStack app libraries.",
+      "coreBoundary": "No Core primitive is added because the shipped behavior is layout/navigation composition over native aside/nav/button/link semantics."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/sidebar.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

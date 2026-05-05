@@ -28,6 +28,12 @@
       "description": "Keyboard-first workspace command surface composed from CommandMenu and ShortcutDisplay source."
     },
     {
+      "name": "realtime-data-table",
+      "type": "registry:block",
+      "title": "RealtimeDataTableBlock",
+      "description": "TanStack-backed realtime data table pattern for frequent row and cell updates."
+    },
+    {
       "name": "resizable-workspace-shell",
       "type": "registry:block",
       "title": "ResizableWorkspaceShellBlock",
@@ -68,6 +74,12 @@
       "type": "registry:ui",
       "title": "Input",
       "description": "Solid text input component with invalid state styling hooks."
+    },
+    {
+      "name": "search-input",
+      "type": "registry:ui",
+      "title": "SearchInput",
+      "description": "Native Solid search input with search icon, clear affordance, loading state, and styling hooks."
     },
     {
       "name": "textarea",
@@ -214,6 +226,36 @@
       "description": "Command palette source built from Keystone Combobox behavior, TanStack Store command state, and preview TanStack Hotkeys shortcuts."
     },
     {
+      "name": "app-shell",
+      "type": "registry:ui",
+      "title": "AppShell",
+      "description": "Central app composition surface for topbar, sidebar navigation, main content, inspector rail, and command menu integration."
+    },
+    {
+      "name": "topbar",
+      "type": "registry:ui",
+      "title": "Topbar",
+      "description": "Generic app header surface for brand, title, navigation, search, command trigger, status, and actions."
+    },
+    {
+      "name": "nav-list",
+      "type": "registry:ui",
+      "title": "NavList",
+      "description": "Simple app navigation list source for route-aware sidebar and topbar links without menu semantics."
+    },
+    {
+      "name": "use-media-query",
+      "type": "registry:hook",
+      "title": "useMediaQuery",
+      "description": "SSR-safe Solid media query hook with string, breakpoint, pointer, orientation, and preference helpers."
+    },
+    {
+      "name": "use-copy-to-clipboard",
+      "type": "registry:hook",
+      "title": "useCopyToClipboard",
+      "description": "UI-owned Solid clipboard helper with copied/error state, callbacks, timer reset, and SSR-safe capability checks."
+    },
+    {
       "name": "command-store",
       "type": "registry:ui",
       "title": "CommandStore",
@@ -236,6 +278,12 @@
       "type": "registry:ui",
       "title": "SidebarStore",
       "description": "TanStack Store-backed Solid sidebar app state with desktop/mobile open state, active item tracking, persistence, media-query sync, and keyboard toggling."
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "Source-owned Solid app sidebar with desktop collapse state, mobile panel state, navigation anatomy, active item tracking, and stable styling hooks."
     },
     {
       "name": "keyboard-shortcuts",
@@ -292,10 +340,34 @@
       "description": "Composable card parts for grouped content."
     },
     {
+      "name": "group",
+      "type": "registry:ui",
+      "title": "Group",
+      "description": "Compact grouped control and content container for horizontal, vertical, attached, and inset UI composition."
+    },
+    {
+      "name": "code-block",
+      "type": "registry:ui",
+      "title": "CodeBlock",
+      "description": "Source-owned Solid code block for docs and product surfaces with caption metadata and copy action."
+    },
+    {
+      "name": "frame",
+      "type": "registry:ui",
+      "title": "Frame",
+      "description": "Source-owned framed preview and embedded panel container with header, viewport, status, and aspect-ratio anatomy."
+    },
+    {
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",
       "description": "Inline status badge with UI variant styling hooks."
+    },
+    {
+      "name": "copy-button",
+      "type": "registry:ui",
+      "title": "CopyButton",
+      "description": "Accessible Solid button for copying text with copied and error state."
     },
     {
       "name": "separator",
@@ -356,6 +428,12 @@
       "type": "registry:ui",
       "title": "NavigationMenu",
       "description": "Styled Solid navigation menu backed by Keystone menu navigation, typeahead, and overlay behavior."
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "Source-owned Solid breadcrumb navigation for docs, app routes, and dense topbar composition."
     },
     {
       "name": "toast",

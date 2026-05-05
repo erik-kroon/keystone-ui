@@ -143,20 +143,24 @@ describe("Mason registry validation tracer", () => {
     expect(validatedNames).toEqual([
       "accordion",
       "account-settings",
+      "app-shell",
       "app-store-provider",
       "autocomplete",
       "badge",
+      "breadcrumb",
       "button",
       "card",
       "checkbox-field",
       "checkbox",
       "cn",
+      "code-block",
       "collapsible",
       "combobox-field",
       "combobox",
       "command-menu",
       "command-store",
       "context-menu",
+      "copy-button",
       "data-table-tanstack-router",
       "data-table",
       "date-picker-field",
@@ -168,6 +172,8 @@ describe("Mason registry validation tracer", () => {
       "file-field",
       "form-message",
       "form-submit",
+      "frame",
+      "group",
       "hover-card",
       "input",
       "invoice-dashboard",
@@ -176,11 +182,14 @@ describe("Mason registry validation tracer", () => {
       "label",
       "menu",
       "menubar",
+      "nav-list",
       "navigation-menu",
       "popover",
       "radio-group-field",
       "radio-group",
+      "realtime-data-table",
       "resizable-workspace-shell",
+      "search-input",
       "select-field",
       "select",
       "separator",
@@ -189,6 +198,7 @@ describe("Mason registry validation tracer", () => {
       "shortcut-recorder",
       "shortcut-sequence-recorder",
       "sidebar-store",
+      "sidebar",
       "slider-field",
       "slider",
       "switch-field",
@@ -204,6 +214,9 @@ describe("Mason registry validation tracer", () => {
       "toast",
       "toolbar",
       "tooltip",
+      "topbar",
+      "use-copy-to-clipboard",
+      "use-media-query",
     ]);
   });
 
@@ -231,6 +244,47 @@ describe("Mason registry validation tracer", () => {
     if (!empty.ok) {
       expect(empty.errors.map((error) => error.code)).toContain("parity.invalid");
     }
+  });
+
+  test("validates docs-ready metadata on the real default group item", async () => {
+    const item = await import("../../../registry/default/items/group.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/group.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("GroupItem");
+      expect(result.value.meta?.accessibility).toContain("role=group");
+      expect(result.value.meta?.anatomy).toEqual(["root", "item", "label", "description"]);
+      expect(result.value.meta?.statePassThrough).toContain("do not disable");
+      expect(result.value.meta?.composition).toContain("FieldGroup");
+      expect(result.value.meta?.composition).toContain("Toolbar");
+      expect(result.value.meta?.composition).toContain("Card");
+      expect(result.value.meta?.limitations).toContain("no Core primitive behavior");
+      expect(result.value.meta?.parity).toMatchObject({
+        visualReference: expect.any(String),
+        baseUi: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain("export function Group");
+    expect(source).toContain("export function GroupItem");
+    expect(source).toContain("export function GroupLabel");
+    expect(source).toContain("export function GroupDescription");
+    expect(source).toContain('data-scope="ui-group"');
+    expect(source).toContain('data-part="root"');
+    expect(source).toContain('data-slot="group"');
+    expect(source).toContain("data-variant={variant()}");
+    expect(source).toContain("data-orientation={orientation()}");
+    expect(source).toContain('data-disabled={local.disabled ? "" : undefined}');
+    expect(source).toContain('data-invalid={local.invalid ? "" : undefined}');
+    expect(source).toContain('data-selected={local.selected ? "" : undefined}');
+    expect(source).toContain('"attached"');
+    expect(source).toContain('"inset"');
+    expect(source).toContain("[&>[data-slot=button]:not(:first-child)]:rounded-s-none");
+    expect(source).toContain("[&>[data-slot=input-control]:not(:last-child)]:rounded-e-none");
   });
 
   test("validates docs-ready metadata on the real default data-table item", async () => {
@@ -406,6 +460,64 @@ describe("Mason registry validation tracer", () => {
     expect(columns).toContain("dataTableFacetedFilter");
     expect(data).toContain("invoiceDashboardRows");
     expect(data).toContain("invoiceDashboardStatusOptions");
+  });
+
+  test("validates docs-ready metadata on the real default realtime-data-table block", async () => {
+    const item = await import("../../../registry/default/items/realtime-data-table.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.type).toBe("registry:block");
+      expect(result.value.dependencies).toContain("@tanstack/solid-table@^8.21.3");
+      expect(result.value.registryDependencies).toEqual(["badge", "button", "data-table"]);
+      expect(result.value.files).toHaveLength(3);
+      expect(
+        result.value.files.every((file) =>
+          file.target?.startsWith("src/components/blocks/realtime-data-table/"),
+        ),
+      ).toBe(true);
+      expect(result.value.meta?.realtimeBehavior).toContain("accessor");
+      expect(result.value.meta?.sorting).toContain("latency");
+      expect(result.value.meta?.rowIdentity).toContain("getRowId");
+      expect(result.value.meta?.states).toContain("empty state");
+      expect(result.value.meta?.accessibility).toContain("keyboard reachable");
+      expect(result.value.meta?.parity).toMatchObject({
+        tanstackTable: expect.any(String),
+        dataDenseWorkspace: expect.any(String),
+        shadcn: expect.any(String),
+      });
+    }
+  });
+
+  test("captures the real default realtime-data-table generated source contract", async () => {
+    const sourceRoot = resolve(uiPackageSourceRoot, "blocks/realtime-data-table");
+    const [block, columns, data] = await Promise.all([
+      readFile(resolve(sourceRoot, "realtime-data-table.tsx"), "utf8"),
+      readFile(resolve(sourceRoot, "realtime-data-table-columns.tsx"), "utf8"),
+      readFile(resolve(sourceRoot, "realtime-data-table-data.ts"), "utf8"),
+    ]);
+
+    expect(block).toContain("export function RealtimeDataTableBlock");
+    expect(block).toContain('data-part="realtime-data-table"');
+    expect(block).toContain('data-part="realtime-controls"');
+    expect(block).toContain('role="group"');
+    expect(block).toContain('aria-live="polite"');
+    expect(block).toContain("data: rows");
+    expect(block).toContain("getRowId: (row) => row.id");
+    expect(block).toContain("DataTableToolbar");
+    expect(block).toContain("loading={loading()}");
+    expect(block).toContain("setRows([])");
+    expect(block).toContain("window.setInterval");
+
+    expect(columns).toContain("DataTableColumnHeader");
+    expect(columns).toContain("dataTableFacetedFilter");
+    expect(columns).toContain("realtimeDataTableStatusOptions");
+    expect(columns).toContain('accessorKey: "latency"');
+    expect(columns).toContain('accessorKey: "throughput"');
+    expect(data).toContain("nextRealtimeDataTableRows");
+    expect(data).toContain("realtimeDataTableRows");
+    expect(data).toContain("RealtimeDataTableRow");
   });
 
   test("validates docs-ready metadata on the real default keyboard-command-surface block", async () => {

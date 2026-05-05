@@ -1,0 +1,37 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "code-block",
+  "type": "registry:ui",
+  "title": "CodeBlock",
+  "description": "Source-owned Solid code block for docs and product surfaces with caption metadata, copy action, wrapping, and stable anatomy hooks.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["base", "docs", "content"],
+  "keywords": ["code-block", "code", "pre", "docs", "copy"],
+  "docs": "https://keystone-ui.dev/docs/ui/code-block",
+  "registryDependencies": ["cn", "copy-button"],
+  "meta": {
+    "install": "mason add code-block",
+    "customization": "Use ui-code-block classes and data-slot hooks for root, header, title, description, actions, pre, and code. Compose extra actions beside the generated CopyButton.",
+    "sourceFiles": ["packages/ui/src/default/ui/code-block.tsx"],
+    "dependencies": ["cn", "copy-button"],
+    "api": "CodeBlock accepts code, language, title, description, copy, copyLabel, actions, wrap, preClass, codeClass, and copyClass. It also exports CodeBlockHeader, CodeBlockTitle, CodeBlockDescription, CodeBlockActions, CodeBlockPre, and CodeBlockCode.",
+    "accessibility": "Renders a figure with optional figcaption, pre/code text semantics, language metadata as data-language, and a native CopyButton action. Syntax highlighting is intentionally caller/tooling-owned.",
+    "anatomy": ["root", "header", "title", "description", "actions", "pre", "code"],
+    "limitations": "CodeBlock does not parse markdown, tokenize syntax, virtualize long files, or own a syntax highlighter. Add highlighted markup or build-time transforms in docs/app code when needed.",
+    "parity": {
+      "visualReference": "Matches shadcn-style code block source ergonomics in Solid form: framed pre/code surface, header metadata, copy affordance, wrapping option, and stable data hooks.",
+      "baseUi": "No Core/Base UI primitive is needed because native figure/pre/code/button semantics cover the behavior. Copy behavior is delegated to CopyButton and the UI clipboard hook.",
+      "kobalte": "Comparable to Solid display composition rather than a primitive. Keystone intentionally keeps syntax highlighting and docs routing outside this base component."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/code-block.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}
