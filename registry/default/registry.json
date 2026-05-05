@@ -22,6 +22,18 @@
       "description": "Multi-file invoice workspace block composed from Keystone UI source and TanStack app components."
     },
     {
+      "name": "keyboard-command-surface",
+      "type": "registry:block",
+      "title": "KeyboardCommandSurfaceBlock",
+      "description": "Keyboard-first workspace command surface composed from CommandMenu and ShortcutDisplay source."
+    },
+    {
+      "name": "resizable-workspace-shell",
+      "type": "registry:block",
+      "title": "ResizableWorkspaceShellBlock",
+      "description": "Source-owned resizable workspace shell with a left rail, main work surface, and inspector panel."
+    },
+    {
       "name": "cn",
       "type": "registry:lib",
       "title": "Class Name Utility",
@@ -148,16 +160,40 @@
       "description": "TanStack Form select field composed with Keystone Select behavior and UI styling hooks."
     },
     {
+      "name": "combobox-field",
+      "type": "registry:ui",
+      "title": "ComboboxField",
+      "description": "TanStack Form combobox field composed with Keystone Combobox behavior and UI styling hooks."
+    },
+    {
       "name": "slider",
       "type": "registry:ui",
       "title": "Slider",
       "description": "Styled Solid slider component backed by Keystone range, thumb, keyboard, and pointer behavior."
     },
     {
+      "name": "slider-field",
+      "type": "registry:ui",
+      "title": "SliderField",
+      "description": "TanStack Form slider field composed with Keystone Slider behavior and UI styling hooks."
+    },
+    {
+      "name": "file-field",
+      "type": "registry:ui",
+      "title": "FileField",
+      "description": "TanStack Form file input field composed with Keystone field semantics and UI input styling hooks."
+    },
+    {
       "name": "date-picker",
       "type": "registry:ui",
       "title": "DatePicker",
       "description": "Styled Solid date picker and calendar components backed by Keystone date selection behavior."
+    },
+    {
+      "name": "date-picker-field",
+      "type": "registry:ui",
+      "title": "DatePickerField",
+      "description": "TanStack Form date picker field composed with Keystone DatePicker behavior and UI styling hooks."
     },
     {
       "name": "tabs",

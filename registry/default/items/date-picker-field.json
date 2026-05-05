@@ -1,0 +1,64 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "date-picker-field",
+  "type": "registry:ui",
+  "title": "DatePickerField",
+  "description": "TanStack Form date picker field composed with Keystone DatePicker behavior and UI styling hooks.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["form", "tanstack", "calendar"],
+  "keywords": [
+    "date-picker-field",
+    "date-picker",
+    "calendar",
+    "field",
+    "form",
+    "tanstack",
+    "keystone"
+  ],
+  "docs": "https://keystone-ui.dev/docs/ui/date-picker-field",
+  "registryDependencies": ["cn", "date-picker", "tanstack-field"],
+  "meta": {
+    "install": "mason add date-picker-field",
+    "customization": "Use ui-date-picker-field classes, TanStackField shell classes, DatePicker/Calendar classes, Core data attributes, neutral data-slot hooks, datePickerProps, triggerProps, contentProps, calendarProps, and class escape hatches.",
+    "sourceFiles": ["packages/ui/src/default/ui/date-picker-field.tsx"],
+    "dependencies": [
+      "@keystone-ui/core",
+      "@tanstack/solid-form",
+      "cn",
+      "date-picker",
+      "tanstack-field"
+    ],
+    "api": "DatePickerField exports DatePickerField, DatePickerFieldProps, and DatePickerFieldValidators. It composes TanStackField with Keystone DatePicker, passes validators to form.Field, maps ISO date string selection to field.handleChange, maps popup close/trigger blur to field.handleBlur, renders a hidden input for browser form value participation, and forwards disabled/formId/required plus date picker, trigger, content, and calendar props.",
+    "accessibility": "Backed by TanStackField for field relationships and by @keystone-ui/core/date-picker for trigger dialog semantics, calendar grid roles, selected/today/unavailable state, keyboard movement, month navigation, locale week starts, disabled bounds, and popup state data attributes.",
+    "anatomy": [
+      "field-root",
+      "field-label",
+      "date-picker",
+      "trigger",
+      "hidden-input",
+      "content",
+      "calendar",
+      "grid",
+      "field-description",
+      "field-error"
+    ],
+    "state": "TanStack Form owns string field value, touched, dirty, blurred, validating, and errors. DatePickerField stores dates as Keystone ISO date strings and treats the empty string as no selection.",
+    "limitations": "DateField segment editing, range field adapters, date parsing/formatting adapters, multi-month rendering, and non-Gregorian calendar systems remain future composition.",
+    "parity": {
+      "tanstackForm": "Covers form.Field integration, validators pass-through, string date binding, blur/open/change delegation, hidden form value, and touched-derived invalid/error state.",
+      "baseUi": "Primitive behavior coverage comes through Keystone Core DatePicker for popup trigger, calendar grid, keyboard movement, month navigation, selected/unavailable state, and data attributes.",
+      "kobalte": "Solid composition follows DatePicker/Calendar anatomy with generated-source field wiring."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/date-picker-field.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}
