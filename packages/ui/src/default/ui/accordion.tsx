@@ -20,19 +20,27 @@ export type AccordionContentProps = CoreAccordionContentProps;
 export function Accordion(props: AccordionProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
-  return <CoreAccordion.Root {...rest} class={cn("ui-accordion", local.class)} />;
+  return (
+    <CoreAccordion.Root {...rest} data-slot="accordion" class={cn("ui-accordion", local.class)} />
+  );
 }
 
 export function AccordionItem(props: AccordionItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
-  return <CoreAccordion.Item {...rest} class={cn("ui-accordion-item", local.class)} />;
+  return (
+    <CoreAccordion.Item
+      {...rest}
+      data-slot="accordion-item"
+      class={cn("ui-accordion-item border-b last:border-b-0", local.class)}
+    />
+  );
 }
 
 export function AccordionHeader(props: AccordionHeaderProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
-  return <CoreAccordion.Header {...rest} class={cn("ui-accordion-header", local.class)} />;
+  return <CoreAccordion.Header {...rest} class={cn("ui-accordion-header flex", local.class)} />;
 }
 
 export function AccordionTrigger(props: AccordionTriggerProps) {
@@ -40,11 +48,23 @@ export function AccordionTrigger(props: AccordionTriggerProps) {
 
   return (
     <AccordionHeader>
-      <CoreAccordion.Trigger {...rest} class={cn("ui-accordion-trigger", local.class)}>
+      <CoreAccordion.Trigger
+        {...rest}
+        data-slot="accordion-trigger"
+        class={cn(
+          "ui-accordion-trigger flex flex-1 cursor-pointer items-start justify-between gap-4 rounded-md py-4 text-left font-medium text-sm outline-none transition-all focus-visible:ring-[3px] focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-64 data-open:*:data-[slot=accordion-indicator]:rotate-180 data-[state=open]:*:data-[slot=accordion-indicator]:rotate-180",
+          local.class,
+        )}
+      >
         <span data-scope="ui-accordion" data-part="trigger-label">
           {local.children}
         </span>
-        <span class="ui-accordion-indicator" data-scope="ui-accordion" data-part="indicator">
+        <span
+          class="ui-accordion-indicator pointer-events-none size-4 shrink-0 translate-y-0.5 opacity-80 transition-transform duration-200 ease-in-out"
+          data-scope="ui-accordion"
+          data-part="indicator"
+          data-slot="accordion-indicator"
+        >
           {local.indicator ?? "v"}
         </span>
       </CoreAccordion.Trigger>
@@ -56,8 +76,15 @@ export function AccordionContent(props: AccordionContentProps) {
   const [local, rest] = splitProps(props, ["children", "class"]);
 
   return (
-    <CoreAccordion.Content {...rest} class={cn("ui-accordion-content", local.class)}>
-      <div data-scope="ui-accordion" data-part="content-inner">
+    <CoreAccordion.Content
+      {...rest}
+      data-slot="accordion-content"
+      class={cn(
+        "ui-accordion-content overflow-hidden text-muted-foreground text-sm transition-[height] duration-200 ease-in-out data-ending-style:h-0 data-starting-style:h-0",
+        local.class,
+      )}
+    >
+      <div data-scope="ui-accordion" data-part="content-inner" class="pt-0 pb-4">
         {local.children}
       </div>
     </CoreAccordion.Content>

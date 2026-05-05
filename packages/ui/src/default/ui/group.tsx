@@ -1,4 +1,5 @@
 import { splitProps, type JSX, type ParentProps } from "solid-js";
+import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/cn";
 
 export type GroupOrientation = "horizontal" | "vertical";
@@ -19,6 +20,12 @@ export type GroupProps = ParentProps<
 export type GroupItemProps = ParentProps<JSX.HTMLAttributes<HTMLDivElement>>;
 export type GroupLabelProps = ParentProps<JSX.HTMLAttributes<HTMLSpanElement>>;
 export type GroupDescriptionProps = ParentProps<JSX.HTMLAttributes<HTMLSpanElement>>;
+export type GroupTextProps = ParentProps<JSX.HTMLAttributes<HTMLDivElement>>;
+export type GroupSeparatorProps = ParentProps<
+  JSX.HTMLAttributes<HTMLDivElement> & {
+    orientation?: "horizontal" | "vertical";
+  }
+>;
 
 const classes = (...tokens: string[]) => tokens.join(" ");
 
@@ -109,22 +116,110 @@ export function Group(props: GroupProps) {
       class={cn(
         classes(
           "ui-group",
-          "min-w-0",
-          "text-foreground",
-          "data-disabled:opacity-64",
-          "data-invalid:ring-destructive/16",
-          "data-invalid:ring-3",
-          "data-selected:bg-accent/48",
+          "flex",
+          "w-fit",
+          "*:focus-visible:z-1",
+          "has-[>[data-slot=group]]:gap-2",
+          "*:has-focus-visible:z-1",
+          "dark:*:[[data-slot=separator]:has(~button:hover):not(:has(~[data-slot=separator]~[data-slot]:hover)),[data-slot=separator]:has(~[data-slot][data-pressed]):not(:has(~[data-slot=separator]~[data-slot][data-pressed]))]:before:bg-input/64",
+          "dark:*:[button:hover~[data-slot=separator]:not([data-slot]:hover~[data-slot=separator]~[data-slot=separator]),[data-slot][data-pressed]~[data-slot=separator]:not([data-slot][data-pressed]~[data-slot=separator]~[data-slot=separator])]:before:bg-input/64",
         ),
-        orientation() === "horizontal" && classes("inline-flex", "items-stretch"),
-        orientation() === "vertical" && classes("flex", "flex-col"),
+        orientation() === "horizontal" &&
+          classes(
+            "*:pointer-coarse:after:min-w-auto",
+            "*:data-slot:has-[~[data-slot]]:rounded-e-none",
+            "*:data-slot:has-[~[data-slot]]:border-e-0",
+            "*:data-slot:not-data-[slot=separator]:has-[~[data-slot]]:before:-end-[0.5px]",
+            "*:data-slot:has-[~[data-slot]]:before:rounded-e-none",
+            "*:[[data-slot]~[data-slot]:not([data-slot=separator])]:before:-start-[0.5px]",
+            "*:[[data-slot]~[data-slot]]:rounded-s-none",
+            "*:[[data-slot]~[data-slot]]:border-s-0",
+            "*:[[data-slot]~[data-slot]]:before:rounded-s-none",
+          ),
+        orientation() === "vertical" &&
+          classes(
+            "flex-col",
+            "*:pointer-coarse:after:min-h-auto",
+            "*:data-slot:has-[~[data-slot]]:rounded-b-none",
+            "*:data-slot:has-[~[data-slot]]:border-b-0",
+            "*:data-slot:not-data-[slot=separator]:has-[~[data-slot]]:before:-bottom-[0.5px]",
+            "*:data-slot:not-data-[slot=separator]:has-[~[data-slot]]:before:hidden",
+            "*:data-slot:has-[~[data-slot]]:before:rounded-b-none",
+            "dark:*:last:before:hidden",
+            "dark:*:first:before:block",
+            "*:[[data-slot]~[data-slot]:not([data-slot=separator])]:before:-top-[0.5px]",
+            "*:[[data-slot]~[data-slot]]:rounded-t-none",
+            "*:[[data-slot]~[data-slot]]:border-t-0",
+            "*:[[data-slot]~[data-slot]]:before:rounded-t-none",
+          ),
         groupSizeClass[size()],
-        groupVariantClass[variant()],
+        variant() !== "default" && groupVariantClass[variant()],
         local.class,
       )}
     />
   );
 }
+
+export function GroupText(props: GroupTextProps) {
+  return groupPart(
+    "text",
+    classes(
+      "ui-group-text",
+      "relative",
+      "inline-flex",
+      "items-center",
+      "gap-2",
+      "whitespace-nowrap",
+      "rounded-lg",
+      "border",
+      "border-input",
+      "bg-muted",
+      "not-dark:bg-clip-padding",
+      "px-[calc(--spacing(3)-1px)]",
+      "text-base",
+      "text-muted-foreground",
+      "shadow-xs/5",
+      "outline-none",
+      "transition-shadow",
+      "before:pointer-events-none",
+      "before:absolute",
+      "before:inset-0",
+      "before:rounded-[calc(var(--radius-lg)-1px)]",
+      "before:shadow-[0_1px_--theme(--color-black/6%)]",
+      "sm:text-sm",
+      "dark:bg-input/64",
+      "dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
+      "[&_svg:not([class*='size-'])]:size-4.5",
+      "sm:[&_svg:not([class*='size-'])]:size-4",
+      "[&_svg]:-mx-0.5",
+      "[&_svg]:shrink-0",
+    ),
+    props,
+    "group-text",
+  );
+}
+
+export function GroupSeparator(props: GroupSeparatorProps) {
+  const [local, rest] = splitProps(props, ["class", "orientation"]);
+
+  return (
+    <Separator
+      {...rest}
+      data-slot="separator"
+      orientation={local.orientation ?? "vertical"}
+      class={cn(
+        "ui-group-separator pointer-events-none relative z-2 bg-input before:absolute before:inset-0 has-[+[data-slot=input-control]:focus-within,+[data-slot=input-group]:focus-within,+[data-slot=select-trigger]:focus-visible+*,+[data-slot=number-field]:focus-within]:translate-x-px has-[+[data-slot=input-control]:focus-within,+[data-slot=input-group]:focus-within,+[data-slot=select-trigger]:focus-visible+*,+[data-slot=number-field]:focus-within]:bg-ring dark:before:bg-input/32 [[data-slot=input-control]:focus-within+&,[data-slot=input-group]:focus-within+&,[data-slot=select-trigger]:focus-visible+*+&,[data-slot=number-field]:focus-within+&,[data-slot=number-field]:focus-within+input+&]:bg-ring [[data-slot=input-control]:focus-within+&,[data-slot=input-group]:focus-within+&,[data-slot=select-trigger]:focus-visible+*+&,[data-slot=number-field]:focus-within+input+&]:-translate-x-px",
+        local.class,
+      )}
+    />
+  );
+}
+
+export {
+  Group as ButtonGroup,
+  GroupText as ButtonGroupText,
+  GroupSeparator as ButtonGroupSeparator,
+};
 
 export function GroupItem(props: GroupItemProps) {
   return groupPart(

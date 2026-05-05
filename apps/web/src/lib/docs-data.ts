@@ -1,85 +1,160 @@
+import { registryDocItems, type RegistryDocItem } from "@/lib/registry-docs.gen";
+
 export type NavItem = {
-  label: string;
-  href: string;
   badge?: string;
+  href: string;
+  label: string;
 };
 
 export type NavGroup = {
+  items: readonly NavItem[];
   title: string;
-  items: Array<NavItem>;
 };
 
-export const navGroups: Array<NavGroup> = [
+export type TocItem = {
+  href: string;
+  label: string;
+};
+
+export type DocsPage = {
+  description: string;
+  href: string;
+  label: string;
+  title: string;
+  toc: readonly TocItem[];
+};
+
+const typeOrder: Record<string, number> = {
+  "registry:ui": 0,
+  "registry:block": 1,
+  "registry:component": 2,
+  "registry:hook": 3,
+  "registry:lib": 4,
+  "registry:store": 5,
+  "registry:template": 6,
+};
+
+function compareItems(a: RegistryDocItem, b: RegistryDocItem) {
+  const typeDelta = (typeOrder[a.type] ?? 99) - (typeOrder[b.type] ?? 99);
+  if (typeDelta !== 0) return typeDelta;
+  return a.title.localeCompare(b.title);
+}
+
+export const docsItems = [...registryDocItems].sort(compareItems);
+
+export const componentDocs = docsItems.filter((item) => item.type === "registry:ui");
+export const blockDocs = docsItems.filter((item) => item.type === "registry:block");
+export const utilityDocs = docsItems.filter((item) =>
+  ["registry:component", "registry:hook", "registry:lib", "registry:store"].includes(item.type),
+);
+export const templateDocs = docsItems.filter((item) => item.type === "registry:template");
+
+export const overviewPage: DocsPage = {
+  description:
+    "Solid primitives, source-owned UI components, Mason install metadata, and app-layer registry guidance.",
+  href: "/docs",
+  label: "Introduction",
+  title: "Documentation",
+  toc: [
+    { label: "Get Started", href: "#get-started" },
+    { label: "Components", href: "#components" },
+    { label: "Install Model", href: "#install-model" },
+    { label: "MDX Surface", href: "#mdx-surface" },
+    { label: "Roadmap", href: "#roadmap" },
+  ],
+};
+
+export const navGroups: readonly NavGroup[] = [
   {
     title: "Overview",
     items: [
-      { label: "Introduction", href: "#introduction" },
-      { label: "Get Started", href: "#get-started" },
-      { label: "Styling", href: "#styling" },
-      { label: "Migrating from Radix", href: "#migrating" },
-      { label: "Skills", href: "#skills", badge: "New" },
-      { label: "Changelog", href: "#changelog", badge: "New" },
-      { label: "Roadmap", href: "#roadmap" },
+      { label: "Introduction", href: "/docs" },
+      { label: "Get Started", href: "/docs#get-started" },
+      { label: "Install Model", href: "/docs#install-model" },
+      { label: "MDX Surface", href: "/docs#mdx-surface", badge: "New" },
     ],
   },
   {
     title: "Components",
-    items: [
-      { label: "Accordion", href: "#accordion" },
-      { label: "Alert", href: "#components" },
-      { label: "Alert Dialog", href: "#components" },
-      { label: "Autocomplete", href: "#components" },
-      { label: "Avatar", href: "#components" },
-      { label: "Badge", href: "#components" },
-      { label: "Breadcrumb", href: "#components" },
-      { label: "Button", href: "#components" },
-      { label: "Calendar", href: "#components" },
-      { label: "Card", href: "#components" },
-      { label: "Checkbox", href: "#components" },
-      { label: "Collapsible", href: "#components" },
-      { label: "Combobox", href: "#components" },
-      { label: "Dialog", href: "#components" },
-      { label: "Field", href: "#components" },
-      { label: "Form", href: "#components" },
-      { label: "Input", href: "#components" },
-      { label: "Menu", href: "#components" },
-      { label: "Popover", href: "#components" },
-      { label: "Select", href: "#components" },
-      { label: "Sheet", href: "#components" },
-      { label: "Tabs", href: "#components" },
-      { label: "Toast", href: "#components" },
-      { label: "Tooltip", href: "#components" },
-    ],
+    items: componentDocs.map((item) => ({
+      href: componentHref(item.name),
+      label: item.title,
+    })),
   },
   {
-    title: "Hooks",
-    items: [
-      { label: "useControllableState", href: "#hooks" },
-      { label: "useCopyToClipboard", href: "#hooks" },
-    ],
+    title: "Blocks",
+    items: blockDocs.map((item) => ({
+      href: componentHref(item.name),
+      label: item.title.replace(/Block$/, ""),
+    })),
   },
   {
-    title: "Resources",
-    items: [
-      { label: "Registry contract", href: "#registry" },
-      { label: "Primitive contracts", href: "#contracts" },
-    ],
+    title: "Utilities",
+    items: utilityDocs.map((item) => ({
+      href: componentHref(item.name),
+      label: item.title,
+    })),
+  },
+  {
+    title: "Templates",
+    items: templateDocs.map((item) => ({
+      href: componentHref(item.name),
+      label: item.title.replace(/Template$/, ""),
+    })),
   },
 ];
 
-export const tocItems = [
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Core and UI Layers", href: "#core-ui-layers" },
-  { label: "Styling Model", href: "#styling" },
-  { label: "Component Inventory", href: "#components" },
-  { label: "Registry Ownership", href: "#registry" },
-  { label: "Roadmap", href: "#roadmap" },
-];
+export function componentHref(name: string) {
+  return `/docs/components/${name}`;
+}
 
-export const componentRows = [
-  ["Accordion", "Available", "Core primitive plus editable UI source."],
-  ["Dialog", "Available", "Focus, dismissal, portals, and overlay layering."],
-  ["Select", "In progress", "Collection, popup field, keyboard navigation, and typeahead."],
-  ["Data Table", "UI layer", "TanStack Table source for dense app workspaces."],
-  ["TanStack Form Field", "UI layer", "Solid form integration without leaking into Core."],
-];
+export function findDocItem(name: string) {
+  return docsItems.find((item) => item.name === name);
+}
+
+export function registryTypeLabel(type: string) {
+  switch (type) {
+    case "registry:block":
+      return "Block";
+    case "registry:component":
+      return "Component";
+    case "registry:hook":
+      return "Hook";
+    case "registry:lib":
+      return "Library";
+    case "registry:store":
+      return "Store";
+    case "registry:template":
+      return "Template";
+    case "registry:ui":
+      return "UI";
+    default:
+      return type.replace("registry:", "");
+  }
+}
+
+export function itemToc(item: RegistryDocItem): readonly TocItem[] {
+  return [
+    { label: "Installation", href: "#installation" },
+    { label: "Preview", href: "#preview" },
+    ...(item.api || item.dataShape || item.state
+      ? [{ label: "API Notes", href: "#api-notes" }]
+      : []),
+    ...(item.anatomy.length ? [{ label: "Anatomy", href: "#anatomy" }] : []),
+    ...(item.dependencies.length || item.registryDependencies.length
+      ? [{ label: "Dependencies", href: "#dependencies" }]
+      : []),
+    { label: "Source Files", href: "#source-files" },
+    ...(Object.keys(item.parity).length ? [{ label: "Parity Notes", href: "#parity-notes" }] : []),
+  ];
+}
+
+export function itemPage(item: RegistryDocItem): DocsPage {
+  return {
+    description: item.description,
+    href: componentHref(item.name),
+    label: item.title,
+    title: item.title,
+    toc: itemToc(item),
+  };
+}

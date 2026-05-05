@@ -386,6 +386,17 @@ Use shadows as tactile edges, not elevation drama:
 
 ## Component Contracts
 
+These contracts are the source of truth for both hand-written UI source and generated docs previews. Registry components should preserve the same Tailwind token choices, dimensions, radius, hover/focus/disabled states, popup surfaces, dark-mode treatment, and `data-slot` styling hooks unless Keystone Core behavior requires a documented Solid-specific difference.
+
+- Actions and display: Button, Badge, Alert, Card/CardFrame, Empty, Kbd, Separator, Breadcrumb.
+- Fields and forms: Input, Textarea, Label, Field, Select trigger/listbox, Autocomplete, Combobox.
+- Selection controls: Checkbox, Radio Group, Switch, Slider.
+- Disclosure and navigation: Accordion, Collapsible, Tabs, Toolbar.
+- Overlays and menus: Dialog, Sheet, Popover, Tooltip, Menu and submenu surfaces.
+- Layout helpers: Group and grouped separators/text.
+
+Use semantic tokens instead of raw palette utilities. The only raw palette utilities expected in shipped UI are explicitly documented status bases such as `red`, `blue`, `emerald`, and `amber` in token definitions, or black/white alpha shadow and overlay formulas.
+
 ### Button
 
 Base:
@@ -449,6 +460,9 @@ Variants:
 - Radius `sm`.
 - Border transparent.
 - `font-medium`.
+- Focus-visible ring and offset match Button.
+- Button/link badges get cursor and pointer-coarse `44px` hit expansion.
+- SVGs default to `80%` opacity and `0.875rem` mobile, `0.75rem` desktop.
 - Text is compact:
   - Default `h-5.5`, `text-sm`; desktop `h-4.5`, `text-xs`.
   - Small `h-5`, `text-xs`; desktop `h-4`, `text-[0.625rem]`.
@@ -524,6 +538,15 @@ Input inner:
 - Outline none.
 - Autofill transition hack retained to avoid browser yellow flash.
 
+### Textarea
+
+Textarea uses the same wrapper shell as Input:
+
+- Span wrapper with radius `lg`, border `input`, background `background`, dark `input / 32%`, `shadow-xs/5`, focus-visible `3px` ring, invalid destructive states, and disabled opacity `64%`.
+- Inner textarea is `field-sizing-content`, rounded inherit, outline none, full width.
+- Default minimum height `4.375rem`, mobile small-screen minimum `5.125rem`.
+- Small and large sizes adjust padding and minimum height in the same proportion as Input sizes.
+
 ### Alert
 
 - Grid layout.
@@ -538,6 +561,32 @@ Input inner:
 - Title: `font-medium`.
 - Description: flex column, gap `0.625rem`, muted foreground.
 - Action: responsive grid placement, inline flex gap `0.25rem`.
+
+### Selection Controls
+
+Checkbox and Radio Group:
+
+- Control size `1.125rem` mobile and `1rem` desktop.
+- Border `input`, background `background`, dark unchecked background `input / 32%`.
+- Rounded `0.25rem` for checkbox, full for radio.
+- `shadow-xs/5` with one-pixel inset highlight while unchecked and valid.
+- Focus-visible ring `2px` plus `1px` offset.
+- Invalid uses destructive border/ring alpha.
+- Checked state uses `primary` background and `primary-foreground` indicator.
+
+Switch:
+
+- Thumb size variable `--thumb-size`, `1.25rem` mobile and `1rem` desktop.
+- Track width `calc(var(--thumb-size) * 2 - 2px)`.
+- Checked track `primary`, unchecked track `input`.
+- Thumb is background-colored, rounded, shadowed, and stretches subtly on active press.
+
+Slider:
+
+- Root is full width for horizontal orientation.
+- Track uses input-colored rounded pseudo-track.
+- Range/indicator uses `primary`.
+- Thumb is white, bordered, `shadow-xs/5`, ringed on focus, and scales while active/dragging.
 
 ### Tabs
 
@@ -561,6 +610,50 @@ Input inner:
   - `font-medium`.
   - Hover changes text toward muted foreground.
   - Active text is foreground.
+
+### Menu
+
+Menu, dropdown, context menu, menubar popup surfaces, and submenu content share the same visual contract:
+
+- Positioner `z-50`.
+- Content surface is `relative flex min-w-32 rounded-lg border bg-popover not-dark:bg-clip-padding shadow-lg/5 outline-none`.
+- Surface uses a `before` inset highlight with `radius-lg - 1px`.
+- Inner viewport/list uses `max-h-(--available-height) w-full overflow-y-auto p-1`.
+- Items are compact: `min-h-8`, desktop `min-h-7`, `rounded-sm`, `px-2 py-1`, text `base`, desktop `sm`, highlighted background `accent`, highlighted text `accent-foreground`, disabled opacity `64%`.
+- Checkbox and radio items use grid columns with a `0.75rem` or `1rem` indicator column and the same item highlighted/disabled states.
+- Submenu trigger uses the same item style plus trailing chevron and highlighted/open accent states.
+- Shortcuts render as passive `kbd` with `ms-auto font-sans font-medium text-xs tracking-widest text-muted-foreground/72`.
+
+### Dialog And Sheet
+
+Dialog and Sheet use matching overlay surfaces:
+
+- Backdrop: fixed inset, `z-50`, `bg-black/32`, `backdrop-blur-sm`, `200ms` opacity transition.
+- Dialog content: centered grid positioner, `max-w-lg`, rounded `2xl`, border, `bg-popover`, `shadow-lg/5`, inset highlight, mobile bottom-sticky option.
+- Sheet content: side-aware positioner, `bg-popover`, border on the entering side, `shadow-lg/5`, side-aware translate transitions, optional inset variant with rounded `2xl` and border on larger screens.
+- Header: `flex flex-col gap-2 p-6`, reduced bottom padding when a panel exists.
+- Footer: responsive reversed column on mobile, row-end on desktop, default `border-t bg-muted/72 py-4`.
+- Title: `font-heading font-semibold text-xl leading-none`.
+- Description: `text-muted-foreground text-sm`.
+- Close button uses the Button icon/ghost visual contract: absolute top/end, compact square, accent hover, focus-visible ring.
+
+### Popover And Tooltip
+
+- Positioner `z-50`, bounded by available width/height variables, transition position changes.
+- Popover surface: rounded `lg`, border, `bg-popover`, `shadow-lg/5`, inset highlight, scale/opacity transition.
+- Tooltip surface: rounded `md`, border, `bg-popover`, `text-xs`, `shadow-md/5`, text-balance, scale/opacity transition.
+- Viewports own padding and overflow clipping; tooltip viewport uses inline padding `spacing(2)`, popover uses `spacing(4)`.
+
+### Autocomplete And Combobox
+
+- Input group is relative, full width unless explicitly fit-content, and dims when disabled.
+- Start addon is absolute at `start-px`, opacity `80%`, with normalized SVG size.
+- Trigger and clear buttons are absolute compact icon controls at the input end, opacity `80%`, hover `100%`, pointer-coarse target expansion, hidden when clear follows trigger.
+- Popup positioner is `z-50 select-none`.
+- Popup surface is rounded `lg`, bordered, `bg-popover`, `shadow-lg/5`, inset highlight, min width anchored to trigger.
+- Listbox scrolls with `not-empty:px-1 not-empty:py-1`.
+- Items use the same compact highlighted/disabled item contract as Select/Menu. Combobox selected items use a leading indicator column.
+- Empty state is centered muted text with padding only when non-empty.
 
 ### Sidebar
 
