@@ -1,0 +1,49 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "resizable-workspace-shell",
+  "type": "registry:block",
+  "title": "ResizableWorkspaceShellBlock",
+  "description": "Source-owned resizable workspace shell with a left rail, main work surface, and inspector panel.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["workspace", "layout", "data-dense", "block"],
+  "keywords": [
+    "resizable-workspace-shell",
+    "workspace",
+    "resizable",
+    "inspector",
+    "left-rail",
+    "data-dense"
+  ],
+  "docs": "https://keystone-ui.dev/docs/blocks/resizable-workspace-shell",
+  "registryDependencies": ["button", "cn"],
+  "meta": {
+    "install": "mason add resizable-workspace-shell",
+    "fileTree": "Installs resizable-workspace-shell.tsx as user-owned source under src/components/blocks/resizable-workspace-shell.tsx.",
+    "dependencies": ["button", "cn"],
+    "api": "ResizableWorkspaceShellBlock accepts optional title, description, initialLeftWidth, initialInspectorWidth, min/max width constraints, class, and replacement slots for leftRail, workSurface, and inspector content.",
+    "layout": "Desktop uses a five-track CSS grid: left rail, left resize handle, main work surface, inspector resize handle, and inspector panel. Mobile/tablet widths collapse to a single-column document flow with rail, work surface, and inspector stacked in source order.",
+    "keyboardReachability": "Both resize handles are focusable role=separator buttons with aria-valuemin, aria-valuemax, aria-valuenow, aria-valuetext, and aria-orientation. ArrowLeft/ArrowRight resize by 16px, Shift+Arrow resizes by 64px, Home moves to the minimum, and End moves to the maximum. Navigation links, work item actions, and panel toggles remain ordinary keyboard-reachable controls.",
+    "responsiveConstraints": "The default rail is constrained to 192-320px and the inspector to 240-420px. Below the large breakpoint the handles are hidden and panels stack so content remains readable without horizontal drag behavior.",
+    "dataAttributes": "Stable styling hooks use data-scope=\"ui-block\" and data-part values for resizable-workspace-shell, workspace-header, workspace-actions, workspace-grid, left-rail, left-rail-nav, left-rail-item, resize-handle, resize-indicator, work-surface, work-list, work-item, inspector-panel, inspector-list, and inspector-item.",
+    "primitiveBoundary": "This block intentionally keeps resize state, pointer handling, keyboard handling, and responsive layout in UI-owned source. It does not introduce Core behavior; a future Core primitive should only be proposed if multiple generic resizable split-view needs appear across unrelated UI items.",
+    "customization": "Replace leftRail, workSurface, and inspector slots with app-specific source while preserving the shell data attributes and keyboard separator contract. Adjust min/max widths through props instead of editing the resize math.",
+    "limitations": "This is an app-layout block, not a general split-pane primitive. It does not persist panel widths, support nested split views, implement drag ghost previews, or coordinate route-level app state.",
+    "sourceFiles": ["packages/ui/src/default/blocks/resizable-workspace-shell.tsx"],
+    "parity": {
+      "shadcn": "Matches shadcn-style block ownership by shipping readable copy-paste source composed from UI primitives and utility classes. Gaps: no persisted layout preferences, no app router integration, and no generated variant system.",
+      "dataDenseWorkspace": "Covers the reusable data-dense shell shape for a left rail, main work surface, inspector panel, keyboard-reachable actions, and responsive constraints. Gaps: terminal panes, live data orchestration, saved layouts, and specialized workspace patterns remain follow-up blocks.",
+      "coreBoundary": "Keeps layout composition and resize behavior in UI-owned source without adding Core exports. A general Core primitive remains deferred until repeated non-block use cases justify an ADR or RFC."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/blocks/resizable-workspace-shell.tsx",
+      "type": "registry:block",
+      "target": "src/components/blocks/resizable-workspace-shell.tsx"
+    }
+  ]
+}

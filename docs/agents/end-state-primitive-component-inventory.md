@@ -183,14 +183,14 @@ Core owns headless accessible primitives and shared primitive helpers. UI owns s
 - TextField (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
 - TextareaField (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
 - SelectField
-- ComboboxField
+- ComboboxField (`proven`; see [ui-tanstack-field-components-vertical.md](ui-tanstack-field-components-vertical.md))
 - CheckboxField (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
 - RadioGroupField (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
 - SwitchField (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
-- SliderField
+- SliderField (`proven`; see [ui-tanstack-field-components-vertical.md](ui-tanstack-field-components-vertical.md))
 - NumberField
-- FileField
-- DatePickerField
+- FileField (`proven`; see [ui-tanstack-field-components-vertical.md](ui-tanstack-field-components-vertical.md))
+- DatePickerField (`proven`; see [ui-tanstack-field-components-vertical.md](ui-tanstack-field-components-vertical.md))
 - FieldArray (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
 - FormMessage (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
 - FormSubmit (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
@@ -242,6 +242,16 @@ Core owns headless accessible primitives and shared primitive helpers. UI owns s
 - ShortcutDisplay (`implemented`; display-only shortcut label parts for command rows, buttons, menus, and help surfaces; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
 - ShortcutRecorder (`implemented`; single-chord shortcut preference recorder backed by TanStack Hotkeys; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
 - ShortcutSequenceRecorder (`implemented`; multi-chord shortcut sequence preference recorder backed by TanStack Hotkeys; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
+
+### Numeric Formatting UI
+
+- NumberText (`planned`; generic UI-owned display formatting, not a Core primitive; see [ui-numeric-financial-formatting-boundary.md](ui-numeric-financial-formatting-boundary.md))
+- CurrencyText (`planned`; caller-provided currency/locale display source, not finance semantics; see [ui-numeric-financial-formatting-boundary.md](ui-numeric-financial-formatting-boundary.md))
+- PercentText (`planned`; ratio or already-scaled percent display through explicit options; see [ui-numeric-financial-formatting-boundary.md](ui-numeric-financial-formatting-boundary.md))
+- CompactNumberText (`planned`; dense count/volume display without finance-specific unit semantics; see [ui-numeric-financial-formatting-boundary.md](ui-numeric-financial-formatting-boundary.md))
+- SignedNumberText (`planned`; positive/negative/unchanged delta display with stable states; see [ui-numeric-financial-formatting-boundary.md](ui-numeric-financial-formatting-boundary.md))
+- FreshnessIndicator (`planned`; explicit fresh/stale/pending/unknown display state, not realtime data behavior; see [ui-numeric-financial-formatting-boundary.md](ui-numeric-financial-formatting-boundary.md))
+- UpdateEmphasis (`planned`; explicit increase/decrease/unchanged/pending emphasis state with reduced-motion support; see [ui-numeric-financial-formatting-boundary.md](ui-numeric-financial-formatting-boundary.md))
 
 ### Later Styled UI
 
@@ -311,12 +321,14 @@ Core owns headless accessible primitives and shared primitive helpers. UI owns s
 9. UI Core-backed components: Dialog, Select, Popover, Menu.
 10. UI TanStack Table data table components.
 11. UI Store and Hotkeys app helpers.
-12. UI blocks: auth, dashboard shell, settings, data table.
-13. Date, color, rich controls, charts, and advanced templates.
+12. UI numeric formatting source kit.
+13. UI blocks: auth, dashboard shell, settings, data table.
+14. Date, color, rich controls, charts, and advanced templates.
 
 ## Classification Rules
 
 - If the surface owns accessibility behavior, focus, keyboard interaction inside a widget, selection semantics, positioning, dismissal, or form-control ARIA wiring, start in Keystone.
 - If the surface is visual styling, layout, tokens, app state, schema validation, data table behavior, command shortcuts, examples, blocks, or templates, start in UI.
+- If the surface formats numbers, money, percentages, compact values, signed deltas, freshness, or update emphasis, start in UI source. Keep generic formatting components domain-agnostic; finance-specific language belongs in blocks, examples, templates, or a future optional pack.
 - If the surface depends on TanStack Form, Table, Store, Hotkeys, Router, or Start, it belongs in UI unless a later ADR changes Keystone's package boundary.
 - If a behavior can be shared by multiple Core primitives, implement it as a private Core kernel helper first and expose it publicly only after at least two primitives prove the API.

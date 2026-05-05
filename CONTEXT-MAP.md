@@ -84,6 +84,7 @@ Core kernel
 - [docs/rfcs/mason-registry.md](docs/rfcs/mason-registry.md): Mason registry schema, CLI semantics, path safety, project detection, and first proving item.
 - [docs/adr/0003-ui-tanstack-app-layer.md](docs/adr/0003-ui-tanstack-app-layer.md): Mason's TanStack app-layer decision.
 - [docs/agents/end-state-primitive-component-inventory.md](docs/agents/end-state-primitive-component-inventory.md): Core primitive and UI item end-state inventory.
+- [docs/agents/ui-numeric-financial-formatting-boundary.md](docs/agents/ui-numeric-financial-formatting-boundary.md): UI-owned generic numeric formatting boundary for money, percent, compact values, signed changes, freshness, and update emphasis.
 - [docs/agents/README.md](docs/agents/README.md): agent context sources, work tracking, review checks, and README hygiene.
 - [docs/accessibility/testing-plan.md](docs/accessibility/testing-plan.md): accessibility release gates, automated/manual testing matrix, and first primitive coverage.
 - [registry/default](registry/default): first-party Mason registry source and item metadata.

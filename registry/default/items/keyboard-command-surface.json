@@ -1,0 +1,61 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "keyboard-command-surface",
+  "type": "registry:block",
+  "title": "KeyboardCommandSurfaceBlock",
+  "description": "Keyboard-first workspace command surface composed from CommandMenu and ShortcutDisplay source.",
+  "version": "0.1.0",
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0",
+    "@tanstack/solid-hotkeys@^0.10.0",
+    "@tanstack/solid-store@^0.11.0"
+  ],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["command", "workspace", "keyboard", "data-dense", "block"],
+  "keywords": [
+    "keyboard-command-surface",
+    "command-surface",
+    "command-menu",
+    "shortcut-display",
+    "workspace",
+    "data-dense"
+  ],
+  "docs": "https://keystone-ui.dev/docs/blocks/keyboard-command-surface",
+  "registryDependencies": ["cn", "command-menu", "shortcut-display"],
+  "meta": {
+    "install": "mason add keyboard-command-surface",
+    "fileTree": "Installs keyboard-command-surface.tsx as user-owned source under src/components/blocks/keyboard-command-surface.tsx.",
+    "dependencies": [
+      "@keystone-ui/core",
+      "@tanstack/solid-hotkeys",
+      "@tanstack/solid-store",
+      "cn",
+      "command-menu",
+      "shortcut-display"
+    ],
+    "api": "KeyboardCommandSurfaceBlock accepts optional title, description, class, command data, and CommandMenu hotkeys options. Commands are readable CommandMenuItemData objects with section and surface labels used by the visible command list and shortcut map.",
+    "composition": "The block composes the CommandMenu registry item for Core Combobox-backed focus, listbox navigation, selection, overlay positioning, portal, and dismissal. It uses ShortcutDisplay for passive shortcut markup and does not reimplement primitive focus behavior.",
+    "keyboardInspectability": "The command menu exposes grouped command rows and item shortcuts through Keystone Combobox parts. The surrounding command list and shortcut map repeat the same command data with ordinary list and description-list semantics so grouping and shortcut labels can be inspected without opening the menu.",
+    "dataAttributes": "Stable styling hooks use data-scope=\"ui-block\" and data-part values for keyboard-command-surface, command-surface-header, command-surface-grid, command-surface-list, command-row, command-surface-shortcuts, shortcut-row, and command-surface-status.",
+    "customization": "Replace the default command data with route, table, panel, or editor commands. Keep CommandMenu as the interactive command surface and ShortcutDisplay as display-only markup unless the app needs a different installed UI item.",
+    "limitations": "This block does not include nested command pages, fuzzy ranking, async command discovery, route prefetching, persisted shortcut preferences, or conflict resolution. Those stay app-owned or belong to specialized UI items.",
+    "sourceFiles": ["packages/ui/src/default/blocks/keyboard-command-surface.tsx"],
+    "parity": {
+      "baseUi": "Primitive behavior is inherited through CommandMenu, which leans on Keystone Combobox for Base UI-style input/listbox focus, highlighted item state, disabled skipping, portal positioning, and dismissal. This block only adds source-owned workspace composition around it.",
+      "kobalte": "Composition follows Solid-friendly command data and compound UI parts through CommandMenu, with grouped list semantics and display-only shortcut pieces that remain easy to inspect and replace.",
+      "tanstackHotkeys": "CommandMenu owns optional TanStack Hotkeys registration for opening the surface and invoking item shortcuts, while ShortcutDisplay uses TanStack formatting for visible shortcut labels. The block leaves app-level scope and conflict policy to generated source.",
+      "shadcn": "Matches shadcn-style block ownership by shipping readable source composed from installed UI items. Gaps: no route actions, no server mutation wiring, and no persisted command registry.",
+      "dataDenseWorkspace": "Covers the keyboard-first command surface pattern for dense workspaces: grouped navigation/actions/panels, visible shortcut reference, status feedback, and a command menu trigger. Gaps: saved views, role-aware command discovery, and workspace-specific command packs remain follow-up blocks."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/blocks/keyboard-command-surface.tsx",
+      "type": "registry:block",
+      "target": "src/components/blocks/keyboard-command-surface.tsx"
+    }
+  ]
+}

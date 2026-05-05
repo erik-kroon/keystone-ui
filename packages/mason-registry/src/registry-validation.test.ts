@@ -152,22 +152,26 @@ describe("Mason registry validation tracer", () => {
       "checkbox",
       "cn",
       "collapsible",
+      "combobox-field",
       "combobox",
       "command-menu",
       "command-store",
       "context-menu",
       "data-table-tanstack-router",
       "data-table",
+      "date-picker-field",
       "date-picker",
       "dialog",
       "dropdown-menu",
       "field-array",
       "field",
+      "file-field",
       "form-message",
       "form-submit",
       "hover-card",
       "input",
       "invoice-dashboard",
+      "keyboard-command-surface",
       "keyboard-shortcuts",
       "label",
       "menu",
@@ -176,6 +180,7 @@ describe("Mason registry validation tracer", () => {
       "popover",
       "radio-group-field",
       "radio-group",
+      "resizable-workspace-shell",
       "select-field",
       "select",
       "separator",
@@ -184,6 +189,7 @@ describe("Mason registry validation tracer", () => {
       "shortcut-recorder",
       "shortcut-sequence-recorder",
       "sidebar-store",
+      "slider-field",
       "slider",
       "switch-field",
       "switch",
@@ -400,6 +406,98 @@ describe("Mason registry validation tracer", () => {
     expect(columns).toContain("dataTableFacetedFilter");
     expect(data).toContain("invoiceDashboardRows");
     expect(data).toContain("invoiceDashboardStatusOptions");
+  });
+
+  test("validates docs-ready metadata on the real default keyboard-command-surface block", async () => {
+    const item = await import("../../../registry/default/items/keyboard-command-surface.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.type).toBe("registry:block");
+      expect(result.value.dependencies).toContain("@keystone-ui/core@^0.0.0");
+      expect(result.value.registryDependencies).toEqual(["cn", "command-menu", "shortcut-display"]);
+      expect(result.value.files).toHaveLength(1);
+      expect(result.value.files[0]?.target).toBe(
+        "src/components/blocks/keyboard-command-surface.tsx",
+      );
+      expect(result.value.meta?.composition).toContain("Core Combobox-backed focus");
+      expect(result.value.meta?.keyboardInspectability).toContain("description-list semantics");
+      expect(result.value.meta?.parity).toMatchObject({
+        baseUi: expect.any(String),
+        kobalte: expect.any(String),
+        tanstackHotkeys: expect.any(String),
+        shadcn: expect.any(String),
+        dataDenseWorkspace: expect.any(String),
+      });
+    }
+  });
+
+  test("captures the real default keyboard-command-surface generated source contract", async () => {
+    const source = await readFile(
+      resolve(uiPackageSourceRoot, "blocks/keyboard-command-surface.tsx"),
+      "utf8",
+    );
+
+    expect(source).toContain("export function KeyboardCommandSurfaceBlock");
+    expect(source).toContain("CommandMenu");
+    expect(source).toContain("ShortcutDisplay");
+    expect(source).toContain('data-part="keyboard-command-surface"');
+    expect(source).toContain('data-part="command-row"');
+    expect(source).toContain('data-part="command-surface-shortcuts"');
+    expect(source).toContain('aria-live="polite"');
+    expect(source).toContain("createCommandMenuStore");
+    expect(source).toContain("CommandMenuItemData");
+  });
+
+  test("validates docs-ready metadata on the real default resizable-workspace-shell block", async () => {
+    const item = await import("../../../registry/default/items/resizable-workspace-shell.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.type).toBe("registry:block");
+      expect(result.value.registryDependencies).toEqual(["button", "cn"]);
+      expect(result.value.files).toHaveLength(1);
+      expect(result.value.files[0]?.target).toBe(
+        "src/components/blocks/resizable-workspace-shell.tsx",
+      );
+      expect(result.value.meta?.layout).toContain("left rail");
+      expect(result.value.meta?.keyboardReachability).toContain("role=separator");
+      expect(result.value.meta?.responsiveConstraints).toContain("panels stack");
+      expect(result.value.meta?.primitiveBoundary).toContain("does not introduce Core behavior");
+      expect(result.value.meta?.parity).toMatchObject({
+        shadcn: expect.any(String),
+        dataDenseWorkspace: expect.any(String),
+        coreBoundary: expect.any(String),
+      });
+    }
+  });
+
+  test("captures the real default resizable-workspace-shell generated source contract", async () => {
+    const source = await readFile(
+      resolve(uiPackageSourceRoot, "blocks/resizable-workspace-shell.tsx"),
+      "utf8",
+    );
+
+    expect(source).toContain("export function ResizableWorkspaceShellBlock");
+    expect(source).toContain('data-part="resizable-workspace-shell"');
+    expect(source).toContain('data-part="left-rail"');
+    expect(source).toContain('data-part="work-surface"');
+    expect(source).toContain('data-part="inspector-panel"');
+    expect(source).toContain('role="separator"');
+    expect(source).toContain("aria-valuenow={props.value}");
+    expect(source).toContain('case "ArrowLeft"');
+    expect(source).toContain('case "ArrowRight"');
+    expect(source).toContain('case "Home"');
+    expect(source).toContain('case "End"');
+    expect(source).toContain(
+      "lg:grid-cols-[var(--workspace-left)_12px_minmax(0,1fr)_12px_var(--workspace-inspector)]",
+    );
+    expect(source).toContain('document.addEventListener("pointermove"');
+    expect(source).toContain("leftRail?: JSX.Element");
+    expect(source).toContain("workSurface?: JSX.Element");
+    expect(source).toContain("inspector?: JSX.Element");
   });
 
   test("validates docs-ready metadata on the real default TanStack Start dashboard template", async () => {
