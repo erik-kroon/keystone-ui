@@ -1,0 +1,53 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "field-array",
+  "type": "registry:ui",
+  "title": "FieldArray",
+  "description": "TanStack Form array field adapter with Solid Index rendering, array actions, validation message wiring, and source-owned UI anatomy.",
+  "version": "0.1.0",
+  "dependencies": ["@tanstack/solid-form@^1.29.1"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["form", "tanstack"],
+  "keywords": ["field-array", "array", "form", "tanstack"],
+  "docs": "https://keystone-ui.dev/docs/ui/field-array",
+  "registryDependencies": ["cn", "form-message"],
+  "meta": {
+    "install": "mason add field-array",
+    "customization": "Style generated array roots, labels, item containers, empty states, messages, and action controls through ui-field-array classes, state data attributes, and neutral data-slot hooks.",
+    "sourceFiles": ["packages/ui/src/default/ui/field-array.tsx"],
+    "dependencies": ["@tanstack/solid-form", "cn", "form-message"],
+    "api": "FieldArray exports FieldArray, FieldArrayItems, FieldArrayItem, FieldArrayAdd, FieldArrayRemove, FieldArrayMove, FieldArrayApi, FieldArrayFormApi, FieldArrayRenderContext, and prop types. FieldArray renders form.Field with mode=\"array\", passes items, count, field, add, remove, swap, move, itemName, invalid, and firstError to children, and supports defaultValue for add actions.",
+    "accessibility": "The root renders role=group with optional aria-labelledby, aria-describedby, aria-invalid, description, and FormMessage-backed alert output. Action helpers default to type=button so array mutations do not submit the form.",
+    "anatomy": [
+      "root",
+      "label",
+      "items",
+      "item",
+      "empty",
+      "description",
+      "error",
+      "add",
+      "remove",
+      "move"
+    ],
+    "state": "TanStack Form owns array values, touched, dirty, validating, and errors. FieldArray delegates pushValue, removeValue, swapValues, and moveValue when available and only falls back to handleChange for custom compatible field objects.",
+    "dataAttributes": "Stable hooks include data-scope=\"ui-field-array\", data-count, data-empty, data-invalid, data-dirty, data-touched, data-validating, and per-part data-slot values.",
+    "ssr": "Uses Solid createUniqueId for deterministic relationship IDs, Solid Index for array item rendering, and no browser globals.",
+    "limitations": "Nested item field structure remains app-owned composition through itemName. FieldArray intentionally does not invent schema adapters, drag-and-drop sorting, virtualization, or object-specific row layouts.",
+    "parity": {
+      "tanstackForm": "First-class TanStack Form parity: form.Field mode=\"array\", Solid Index item rendering, push/remove/swap/move array operations, and validation metadata pass-through.",
+      "baseUi": "Base UI is not the primary target for app array state; group, description, invalid, and alert semantics preserve accessible composition while Core remains independent from TanStack app libraries.",
+      "kobalte": "Solid parity follows explicit render-prop composition with stable owner-controlled array state.",
+      "shadcn": "Source-owned helper components mirror copy-paste registry ergonomics without hiding TanStack Form behind a new runtime abstraction."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/field-array.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

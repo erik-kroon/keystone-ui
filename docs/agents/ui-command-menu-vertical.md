@@ -21,7 +21,7 @@ Status: Good enough for 0.1 proof. 0.2 follow-up should clarify reusable Store/H
 - This is still a local command palette pattern rather than a dedicated Core command primitive.
 - Nested command pages, async loading states, command history, copy-command footer behavior, user preference persistence, and route-level command discovery remain app-layer follow-up work.
 - TanStack Hotkeys remains a preview integration and is documented as replaceable generated source.
-- Reusable AppStoreProvider, CommandStore, KeyboardShortcuts, and ShortcutDisplay extraction is deferred to 0.2.
+- Reusable AppStoreProvider and CommandStore extraction now lives in the 0.2 Store/Hotkeys vertical. KeyboardShortcuts and ShortcutDisplay remain deferred there.
 
 ## Verification
 

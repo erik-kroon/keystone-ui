@@ -118,6 +118,18 @@
       "description": "TanStack Form switch field composed with Keystone Switch behavior and UI styling hooks."
     },
     {
+      "name": "field-array",
+      "type": "registry:ui",
+      "title": "FieldArray",
+      "description": "TanStack Form array field adapter with Solid Index rendering and source-owned array actions."
+    },
+    {
+      "name": "form-message",
+      "type": "registry:ui",
+      "title": "FormMessage",
+      "description": "Reusable TanStack Form-aware validation message surface with alert semantics and styling hooks."
+    },
+    {
       "name": "form-submit",
       "type": "registry:ui",
       "title": "FormSubmit",
@@ -164,6 +176,54 @@
       "type": "registry:ui",
       "title": "CommandMenu",
       "description": "Command palette source built from Keystone Combobox behavior, TanStack Store command state, and preview TanStack Hotkeys shortcuts."
+    },
+    {
+      "name": "command-store",
+      "type": "registry:ui",
+      "title": "CommandStore",
+      "description": "TanStack Store-backed command state for command menus, shell triggers, and route-scoped command registries."
+    },
+    {
+      "name": "app-store-provider",
+      "type": "registry:ui",
+      "title": "AppStoreProvider",
+      "description": "Optional Solid app-shell state provider for generated UI source that coordinates TanStack Store-backed command, shortcut, shell, and workspace state."
+    },
+    {
+      "name": "theme-store",
+      "type": "registry:ui",
+      "title": "ThemeStore",
+      "description": "TanStack Store-backed Solid theme state with provider, system preference resolution, persistence, and SSR theme script."
+    },
+    {
+      "name": "sidebar-store",
+      "type": "registry:ui",
+      "title": "SidebarStore",
+      "description": "TanStack Store-backed Solid sidebar app state with desktop/mobile open state, active item tracking, persistence, media-query sync, and keyboard toggling."
+    },
+    {
+      "name": "keyboard-shortcuts",
+      "type": "registry:ui",
+      "title": "KeyboardShortcuts",
+      "description": "Preview TanStack Hotkeys registration source for app-level shortcuts with scope filtering and conflict reporting."
+    },
+    {
+      "name": "shortcut-display",
+      "type": "registry:ui",
+      "title": "ShortcutDisplay",
+      "description": "Display-only shortcut label source with platform-aware TanStack Hotkeys formatting and stable key-part data attributes."
+    },
+    {
+      "name": "shortcut-recorder",
+      "type": "registry:ui",
+      "title": "ShortcutRecorder",
+      "description": "Source-owned shortcut recorder control backed by TanStack Hotkeys recorder state and ShortcutDisplay."
+    },
+    {
+      "name": "shortcut-sequence-recorder",
+      "type": "registry:ui",
+      "title": "ShortcutSequenceRecorder",
+      "description": "Source-owned multi-chord shortcut sequence recorder backed by TanStack Hotkeys sequence recorder state and ShortcutDisplay."
     },
     {
       "name": "autocomplete",

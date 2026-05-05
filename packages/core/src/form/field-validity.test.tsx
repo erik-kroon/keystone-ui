@@ -111,6 +111,40 @@ describe("field validity", () => {
     expect(validity.invalid()).toBe(false);
   });
 
+  test("reset clears stale native email validity before the browser reset default action completes", async () => {
+    let validity!: ReturnType<typeof createFieldValidity>;
+    let input!: HTMLInputElement;
+
+    render(() => {
+      validity = createFieldValidity({ defaultValue: "" });
+      const props = validity.getControlProps<HTMLInputElement>({
+        ref: (element) => {
+          input = element;
+          validity.registerControl(() => element);
+        },
+        required: true,
+        type: "email",
+      });
+
+      return <input {...props} />;
+    });
+
+    input.value = "not-an-email";
+    input.dispatchEvent(new Event("invalid", { bubbles: true, cancelable: true }));
+    await settled();
+    expect(validity.nativeValidity().typeMismatch).toBe(true);
+    expect(validity.invalid()).toBe(true);
+
+    validity.reset();
+    await settled();
+
+    expect(validity.nativeValidity().valid).toBe(true);
+    expect(validity.nativeValidity().typeMismatch).toBe(false);
+    expect(validity.validationMessage()).toBeUndefined();
+    expect(validity.invalid()).toBe(false);
+    expect(input.getAttribute("aria-invalid")).toBeNull();
+  });
+
   test("keeps only the latest async validation result", async () => {
     let releaseFirst!: (message: string) => void;
 

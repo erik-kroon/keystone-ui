@@ -143,6 +143,7 @@ describe("Mason registry validation tracer", () => {
     expect(validatedNames).toEqual([
       "accordion",
       "account-settings",
+      "app-store-provider",
       "autocomplete",
       "badge",
       "button",
@@ -153,17 +154,21 @@ describe("Mason registry validation tracer", () => {
       "collapsible",
       "combobox",
       "command-menu",
+      "command-store",
       "context-menu",
       "data-table-tanstack-router",
       "data-table",
       "date-picker",
       "dialog",
       "dropdown-menu",
+      "field-array",
       "field",
+      "form-message",
       "form-submit",
       "hover-card",
       "input",
       "invoice-dashboard",
+      "keyboard-shortcuts",
       "label",
       "menu",
       "menubar",
@@ -175,6 +180,10 @@ describe("Mason registry validation tracer", () => {
       "select",
       "separator",
       "sheet",
+      "shortcut-display",
+      "shortcut-recorder",
+      "shortcut-sequence-recorder",
+      "sidebar-store",
       "slider",
       "switch-field",
       "switch",
@@ -185,6 +194,7 @@ describe("Mason registry validation tracer", () => {
       "text-field",
       "textarea-field",
       "textarea",
+      "theme-store",
       "toast",
       "toolbar",
       "tooltip",
@@ -455,7 +465,7 @@ describe("Mason registry validation tracer", () => {
     if (result.ok) {
       expect(result.value.dependencies).toContain("@tanstack/solid-store@^0.11.0");
       expect(result.value.dependencies).toContain("@tanstack/solid-hotkeys@^0.10.0");
-      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.registryDependencies).toEqual(["cn", "command-store"]);
       expect(result.value.meta?.api).toContain("CommandMenuFooter");
       expect(result.value.meta?.anatomy).toEqual([
         "root",
@@ -498,6 +508,7 @@ describe("Mason registry validation tracer", () => {
     }
 
     expect(source).toContain("export function CommandMenuBackdrop");
+    expect(source).toContain("createCommandStore");
     expect(source).toContain("export function CommandMenuPanel");
     expect(source).toContain("export function CommandMenuFooter");
     expect(source).toContain("export function CommandMenuSeparator");
@@ -508,6 +519,176 @@ describe("Mason registry validation tracer", () => {
     expect(source).toContain('"max-w-xl"');
     expect(source).toContain('"rounded-2xl"');
     expect(source).toContain('"backdrop-blur-sm"');
+  });
+
+  test("validates docs-ready metadata on the real default command-store item", async () => {
+    const item = await import("../../../registry/default/items/command-store.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/command-store.ts"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@tanstack/solid-store@^0.11.0");
+      expect(result.value.meta?.api).toContain("createCommandStore");
+      expect(result.value.meta?.state).toContain("recentlyUsedCommandIds");
+      expect(result.value.meta?.behavior).toContain("does not own combobox roles");
+      expect(result.value.meta?.controlledUsage).toContain("onRegister");
+      expect(result.value.meta?.ssr).toContain("does not read window");
+      expect(result.value.meta?.limitations).toContain("not a Core primitive");
+      expect(result.value.meta?.parity).toMatchObject({
+        tanstackStore: expect.any(String),
+        tanstackHotkeys: expect.any(String),
+        shadcn: expect.any(String),
+        keystoneCore: expect.any(String),
+      });
+    }
+
+    expect(source).toContain("export function createCommandStore");
+    expect(source).toContain("selectedCommandId");
+    expect(source).toContain("recentlyUsedCommandIds");
+    expect(source).toContain("registerCommands");
+    expect(source).toContain("getScopedCommands");
+    expect(source).toContain("options.onRegister?.(commandStore)");
+  });
+
+  test("validates docs-ready metadata on the real default theme-store item", async () => {
+    const item = await import("../../../registry/default/items/theme-store.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "stores/theme-store.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@tanstack/solid-store@^0.11.0");
+      expect(result.value.meta?.api).toContain("createThemeStore");
+      expect(result.value.meta?.state).toContain("light, dark, and system");
+      expect(result.value.meta?.controlled).toContain("ThemeProvider accepts theme");
+      expect(result.value.meta?.ssr).toContain("No browser globals are read");
+      expect(result.value.meta?.parity).toMatchObject({
+        tanstackStore: expect.any(String),
+        shadcn: expect.any(String),
+      });
+    }
+
+    expect(source).toContain("export function createThemeStore");
+    expect(source).toContain("export function mountThemeStore");
+    expect(source).toContain("export function ThemeProvider");
+    expect(source).toContain("export function ThemeScript");
+    expect(source).toContain("data-ui-resolved-theme");
+  });
+
+  test("validates docs-ready metadata on the real default sidebar-store item", async () => {
+    const item = await import("../../../registry/default/items/sidebar-store.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "stores/sidebar-store.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@tanstack/solid-store@^0.11.0");
+      expect(result.value.meta?.api).toContain("createSidebarStore");
+      expect(result.value.meta?.state).toContain("desktop open state");
+      expect(result.value.meta?.keyboard).toContain("Mod+B");
+      expect(result.value.meta?.ssr).toContain("No browser globals are read");
+      expect(result.value.meta?.parity).toMatchObject({
+        tanstackStore: expect.any(String),
+        shadcn: expect.any(String),
+      });
+    }
+
+    expect(source).toContain("export function createSidebarStore");
+    expect(source).toContain("export function mountSidebarStore");
+    expect(source).toContain("export function SidebarProvider");
+    expect(source).toContain("openMobile");
+    expect(source).toContain('defaultKeyboardShortcut = "b"');
+  });
+
+  test("validates docs-ready metadata on the real default keyboard-shortcuts item", async () => {
+    const item = await import("../../../registry/default/items/keyboard-shortcuts.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(
+      resolve(uiPackageSourceRoot, "ui/keyboard-shortcuts.tsx"),
+      "utf8",
+    );
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@tanstack/solid-hotkeys@^0.10.0");
+      expect(result.value.meta?.api).toContain("KeyboardShortcuts");
+      expect(result.value.meta?.behavior).toContain("scope");
+      expect(result.value.meta?.ssr).toContain("no DOM target");
+      expect(result.value.meta?.limitations).toContain("preview/alpha");
+      expect(result.value.meta?.parity).toMatchObject({
+        tanstackHotkeys: expect.any(String),
+        tanstackStore: expect.any(String),
+        shadcn: expect.any(String),
+        keystoneCore: expect.any(String),
+      });
+    }
+
+    expect(source).toContain("export function KeyboardShortcuts");
+    expect(source).toContain("export function getKeyboardShortcutConflicts");
+    expect(source).toContain("createHotkeys");
+    expect(source).toContain("activeScope");
+  });
+
+  test("validates docs-ready metadata on the real default shortcut-display item", async () => {
+    const item = await import("../../../registry/default/items/shortcut-display.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/shortcut-display.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@tanstack/solid-hotkeys@^0.10.0");
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.anatomy).toEqual([
+        "root",
+        "step",
+        "key",
+        "separator",
+        "sequence-separator",
+      ]);
+      expect(result.value.meta?.api).toContain("display-only");
+      expect(result.value.meta?.dataAttributes).toContain('data-scope="ui-shortcut-display"');
+      expect(result.value.meta?.parity).toMatchObject({
+        tanstackHotkeys: expect.any(String),
+        shadcn: expect.any(String),
+        keystoneCore: expect.any(String),
+      });
+    }
+
+    expect(source).toContain("export function ShortcutDisplay");
+    expect(source).toContain("formatForDisplay");
+    expect(source).toContain('data-part="key"');
+    expect(source).toContain("data-key={token}");
+  });
+
+  test("validates docs-ready metadata on the real default shortcut recorder items", async () => {
+    const recorder = await import("../../../registry/default/items/shortcut-recorder.json");
+    const sequence =
+      await import("../../../registry/default/items/shortcut-sequence-recorder.json");
+    const recorderResult = validateItem(recorder.default, { registryRoot: repoRoot });
+    const sequenceResult = validateItem(sequence.default, { registryRoot: repoRoot });
+    const [recorderSource, sequenceSource] = await Promise.all([
+      readFile(resolve(uiPackageSourceRoot, "ui/shortcut-recorder.tsx"), "utf8"),
+      readFile(resolve(uiPackageSourceRoot, "ui/shortcut-sequence-recorder.tsx"), "utf8"),
+    ]);
+
+    expect(recorderResult.ok).toBe(true);
+    expect(sequenceResult.ok).toBe(true);
+    if (recorderResult.ok && sequenceResult.ok) {
+      expect(recorderResult.value.registryDependencies).toEqual(["cn", "shortcut-display"]);
+      expect(sequenceResult.value.registryDependencies).toEqual(["cn", "shortcut-display"]);
+      expect(recorderResult.value.meta?.behavior).toContain("createHotkeyRecorder");
+      expect(sequenceResult.value.meta?.behavior).toContain("createHotkeySequenceRecorder");
+      expect(recorderResult.value.meta?.dataAttributes).toContain("data-recording");
+      expect(sequenceResult.value.meta?.dataAttributes).toContain("data-recording");
+    }
+
+    expect(recorderSource).toContain("export function ShortcutRecorder");
+    expect(recorderSource).toContain("createHotkeyRecorder");
+    expect(recorderSource).toContain('data-scope="ui-shortcut-recorder"');
+    expect(sequenceSource).toContain("export function ShortcutSequenceRecorder");
+    expect(sequenceSource).toContain("createHotkeySequenceRecorder");
+    expect(sequenceSource).toContain('data-scope="ui-shortcut-sequence-recorder"');
   });
 
   test("captures Field parity metadata and generated source contract", async () => {
@@ -785,6 +966,88 @@ describe("Mason registry validation tracer", () => {
     expect(source).toContain('data-slot="tanstack-field-error"');
     expect(source).toContain("data-blurred");
     expect(source).toContain("setFocused");
+  });
+
+  test("captures FormMessage parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/form-message.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/form-message.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@tanstack/solid-form@^1.29.1");
+      expect(result.value.registryDependencies).toEqual(["cn", "tanstack-form"]);
+      expect(result.value.meta?.api).toContain("forceMount");
+      expect(result.value.meta?.accessibility).toContain("role=alert");
+      expect(result.value.meta?.anatomy).toEqual(["root"]);
+      expect(result.value.meta?.state).toContain("TanStack Form owns");
+      expect(result.value.meta?.parity).toMatchObject({
+        tanstackForm: expect.any(String),
+        baseUi: expect.any(String),
+        kobalte: expect.any(String),
+        shadcn: expect.any(String),
+      });
+    }
+
+    expect(source).toContain("export function FormMessage");
+    expect(source).toContain("formatFieldError");
+    expect(source).toContain("getTanStackFormState(local.form)");
+    expect(source).toContain('role={invalid() && hasMessage() ? "alert" : undefined}');
+    expect(source).toContain('aria-live={invalid() && hasMessage() ? "polite" : undefined}');
+    expect(source).toContain('data-scope="ui-form-message"');
+    expect(source).toContain('data-slot="form-message"');
+    expect(source).toContain("data-validating");
+  });
+
+  test("captures FieldArray parity metadata and generated source contract", async () => {
+    const item = await import("../../../registry/default/items/field-array.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/field-array.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.dependencies).toContain("@tanstack/solid-form@^1.29.1");
+      expect(result.value.registryDependencies).toEqual(["cn", "form-message"]);
+      expect(result.value.meta?.api).toContain('mode="array"');
+      expect(result.value.meta?.accessibility).toContain("role=group");
+      expect(result.value.meta?.anatomy).toEqual([
+        "root",
+        "label",
+        "items",
+        "item",
+        "empty",
+        "description",
+        "error",
+        "add",
+        "remove",
+        "move",
+      ]);
+      expect(result.value.meta?.state).toContain("pushValue");
+      expect(result.value.meta?.dataAttributes).toContain('data-scope="ui-field-array"');
+      expect(result.value.meta?.ssr).toContain("Solid Index");
+      expect(result.value.meta?.parity).toMatchObject({
+        tanstackForm: expect.any(String),
+        baseUi: expect.any(String),
+        kobalte: expect.any(String),
+        shadcn: expect.any(String),
+      });
+    }
+
+    expect(source).toContain("export function FieldArray");
+    expect(source).toContain('mode="array"');
+    expect(source).toContain("export function FieldArrayItems");
+    expect(source).toContain("<Index each={props.context.items()}");
+    expect(source).toContain("export function FieldArrayAdd");
+    expect(source).toContain("export function FieldArrayRemove");
+    expect(source).toContain("export function FieldArrayMove");
+    expect(source).toContain("local.field().pushValue");
+    expect(source).toContain("local.field().removeValue");
+    expect(source).toContain("local.field().moveValue");
+    expect(source).toContain("local.field().swapValues");
+    expect(source).toContain('role="group"');
+    expect(source).toContain('data-slot="field-array-items"');
+    expect(source).toContain('data-slot="field-array-error"');
+    expect(source).toContain('type={local.type ?? "button"}');
   });
 
   test("captures SelectField parity metadata and generated source contract", async () => {

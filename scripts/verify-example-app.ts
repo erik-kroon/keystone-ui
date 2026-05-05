@@ -99,6 +99,10 @@ async function main() {
     await addCommand({ cwd: app, item: "radio-group-field", registry });
     await addCommand({ cwd: app, item: "switch-field", registry });
     await addCommand({ cwd: app, item: "command-menu", registry });
+    await addCommand({ cwd: app, item: "keyboard-shortcuts", registry });
+    await addCommand({ cwd: app, item: "shortcut-display", registry });
+    await addCommand({ cwd: app, item: "shortcut-recorder", registry });
+    await addCommand({ cwd: app, item: "shortcut-sequence-recorder", registry });
     await addCommand({ cwd: app, item: "data-table", registry });
     await addCommand({ cwd: app, item: "data-table-tanstack-router", registry });
     await addCommand({ cwd: app, item: "invoice-dashboard", registry });
@@ -127,6 +131,10 @@ import {
   createCommandMenuStore,
   type CommandMenuItemData,
 } from "@/components/ui/command-menu";
+import { KeyboardShortcuts } from "@/components/ui/keyboard-shortcuts";
+import { ShortcutDisplay } from "@/components/ui/shortcut-display";
+import { ShortcutRecorder } from "@/components/ui/shortcut-recorder";
+import { ShortcutSequenceRecorder } from "@/components/ui/shortcut-sequence-recorder";
 import {
   Dialog,
   DialogClose,
@@ -315,6 +323,24 @@ function App() {
         portal={{ forceMount: true }}
         trigger="Open command menu"
       />
+      <KeyboardShortcuts
+        disabled
+        shortcuts={[
+          {
+            id: "open-command-menu",
+            hotkey: "Mod+K",
+            label: "Open command menu",
+            onTrigger: () => commandMenuStore.open(),
+          },
+        ]}
+      />
+      <ShortcutDisplay hotkey="Mod+K" />
+      <ShortcutRecorder value="Mod+K" onValueChange={(value) => value}>
+        Command menu shortcut
+      </ShortcutRecorder>
+      <ShortcutSequenceRecorder value={["G", "G"]} onValueChange={(value) => value}>
+        Go top sequence
+      </ShortcutSequenceRecorder>
       <Dialog>
         <DialogTrigger>Open UI dialog</DialogTrigger>
         <DialogContent>
@@ -360,6 +386,10 @@ import {
   createCommandMenuStore,
   type CommandMenuItemData,
 } from "@/components/ui/command-menu";
+import { KeyboardShortcuts } from "@/components/ui/keyboard-shortcuts";
+import { ShortcutDisplay } from "@/components/ui/shortcut-display";
+import { ShortcutRecorder } from "@/components/ui/shortcut-recorder";
+import { ShortcutSequenceRecorder } from "@/components/ui/shortcut-sequence-recorder";
 import {
   Dialog,
   DialogClose,
@@ -543,6 +573,24 @@ function App() {
         portal={{ forceMount: true }}
         trigger="Open command menu"
       />
+      <KeyboardShortcuts
+        disabled
+        shortcuts={[
+          {
+            id: "open-command-menu",
+            hotkey: "Mod+K",
+            label: "Open command menu",
+            onTrigger: () => commandMenuStore.open(),
+          },
+        ]}
+      />
+      <ShortcutDisplay hotkey="Mod+K" />
+      <ShortcutRecorder value="Mod+K" onValueChange={(value) => value}>
+        Command menu shortcut
+      </ShortcutRecorder>
+      <ShortcutSequenceRecorder value={["G", "G"]} onValueChange={(value) => value}>
+        Go top sequence
+      </ShortcutSequenceRecorder>
       <Dialog defaultOpen>
         <DialogTrigger>Open UI dialog</DialogTrigger>
         <DialogContent portal={{ forceMount: true }}>
@@ -588,6 +636,9 @@ for (const expected of [
   "ui-textarea-field-control",
   "ui-radio-group-field-control",
   "ui-command-menu-trigger",
+  "ui-shortcut-display",
+  "ui-shortcut-recorder",
+  "ui-shortcut-sequence-recorder",
   "ui-block-invoice-dashboard",
   "ui-data-table-table",
   "ui-data-table-pagination",

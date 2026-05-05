@@ -19,6 +19,7 @@ Start with:
 - [End-state primitive/component inventory](./end-state-primitive-component-inventory.md)
 - [Core internal kernel guidance](./core-internal-kernel-guidance.md)
 - [Issue triage spine](./issue-triage-spine.md)
+- [0.2 UI app-layer preview tracker](../reports/0.2-ui-app-layer-preview-tracker.md)
 - [Data-dense workspace verticals](./data-dense-workspace-verticals.md)
 - [UI DataTable vertical](./ui-data-table-vertical.md)
 - [UI CommandMenu vertical](./ui-command-menu-vertical.md)
@@ -44,6 +45,7 @@ GitHub issues are the issue tracker for this repository.
 - Treat the long end-state issue list as a map, not a direct queue.
 - Work from milestone parent issues first. Do not pick directly from the full open issue list unless a parent issue or maintainer direction points there.
 - Use [#46](https://github.com/erik-kroon/core-ui/issues/46) as the active parent for 0.1 preview hardening.
+- Use [#291](https://github.com/erik-kroon/keystone-ui/issues/291) as the active parent for the 0.2 UI app-layer preview.
 - Use [#271](https://github.com/erik-kroon/core-ui/issues/271) as the post-0.1 data-dense workspace direction parent.
 - Use [#28](https://github.com/erik-kroon/core-ui/issues/28) as the long-term end-state inventory/north star.
 - Keep planning notes in docs when they are durable.
@@ -67,7 +69,7 @@ The active 0.1 spine is:
 - [#246](https://github.com/erik-kroon/core-ui/issues/246): UI CommandMenu, good enough for 0.1 proof.
 - [#197](https://github.com/erik-kroon/core-ui/issues/197) and [#198](https://github.com/erik-kroon/core-ui/issues/198): UI TanStack Form proof.
 
-The 0.2 app primitive queue after CommandMenu is [#242](https://github.com/erik-kroon/core-ui/issues/242), [#245](https://github.com/erik-kroon/core-ui/issues/245), [#247](https://github.com/erik-kroon/core-ui/issues/247), and [#248](https://github.com/erik-kroon/core-ui/issues/248). Use [UI Store and Hotkeys vertical](./ui-store-hotkeys-vertical.md) before expanding the broader Store/Hotkeys inventory.
+The 0.2 preview board is [#291](https://github.com/erik-kroon/keystone-ui/issues/291) plus the [0.2 UI app-layer preview tracker](../reports/0.2-ui-app-layer-preview-tracker.md). The app primitive queue after CommandMenu is [#242](https://github.com/erik-kroon/core-ui/issues/242), [#245](https://github.com/erik-kroon/core-ui/issues/245), [#247](https://github.com/erik-kroon/core-ui/issues/247), and [#248](https://github.com/erik-kroon/core-ui/issues/248), but those remain backlog until the 0.2 parent explicitly pulls them into active preview implementation. Use [UI Store and Hotkeys vertical](./ui-store-hotkeys-vertical.md) before expanding the broader Store/Hotkeys inventory.
 
 Issue philosophy:
 

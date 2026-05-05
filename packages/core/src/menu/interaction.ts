@@ -178,6 +178,18 @@ export function createScopedMenu(
             return;
           }
 
+          if (rootRole === "menubar" && event.key === "ArrowRight") {
+            event.preventDefault();
+            list.highlight("next");
+            return;
+          }
+
+          if (rootRole === "menubar" && event.key === "ArrowLeft") {
+            event.preventDefault();
+            list.highlight("previous");
+            return;
+          }
+
           if (event.key === "Tab") {
             event.preventDefault();
             return;

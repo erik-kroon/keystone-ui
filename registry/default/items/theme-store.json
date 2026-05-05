@@ -1,0 +1,41 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "theme-store",
+  "type": "registry:ui",
+  "title": "ThemeStore",
+  "description": "TanStack Store-backed Solid theme state with source-owned provider, system preference resolution, persistence, and SSR theme script.",
+  "version": "0.1.0",
+  "dependencies": ["@tanstack/solid-store@^0.11.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["store", "theme", "tanstack"],
+  "keywords": ["theme", "dark-mode", "tanstack-store", "solid"],
+  "docs": "https://keystone-ui.dev/docs/ui/theme-store",
+  "filesRoot": "packages/ui/src/default/stores",
+  "targetRoot": "src/stores",
+  "meta": {
+    "install": "mason add theme-store",
+    "api": "createThemeStore returns a TanStack Store plus Solid accessors and actions for theme, systemTheme, resolvedTheme, setTheme, setSystemTheme, cycleTheme, applyTheme, and mounted state. ThemeProvider provides optional context through useThemeStore, and ThemeScript can be rendered before hydration to avoid an initial theme flash.",
+    "state": "Supports light, dark, and system modes. resolvedTheme is always light or dark and follows system preference when theme is system.",
+    "controlled": "ThemeProvider accepts theme and onThemeChange for controlled usage. Without theme, the store is uncontrolled and persists selection through localStorage.",
+    "accessibility": "No ARIA roles are introduced because this is app state source, not an interactive widget. Toggle buttons or menus built on top should provide their own labels and pressed/selected state.",
+    "dataAttributes": "applyTheme writes data-ui-theme and data-ui-resolved-theme to the document element. With the default class strategy it also applies light or dark classes; data-theme can be selected when a project uses attribute-based theming.",
+    "cssVariables": "ThemeStore does not define tokens itself. It coordinates the document-level light/dark selector used by generated theme CSS variables.",
+    "ssr": "No browser globals are read while creating the store. mountThemeStore performs localStorage, matchMedia, and document writes after mount. ThemeScript is available for server-rendered shells that need pre-hydration theme application.",
+    "limitations": "This item intentionally owns app theme state only. It does not ship a visual theme editor, token registry format, or framework-specific cookie bridge.",
+    "sourceFiles": ["packages/ui/src/default/stores/theme-store.tsx"],
+    "dependencies": ["@tanstack/solid-store"],
+    "parity": {
+      "tanstackStore": "Uses TanStack Store for app-level theme state while exposing Solid accessors and source-owned actions. This keeps theme coordination in UI rather than Core.",
+      "shadcn": "Follows shadcn dark-mode ergonomics: provider plus hook, light/dark/system modes, localStorage persistence, document class toggling, and optional no-flash script. Keystone differs by using Solid and TanStack Store instead of React state/context alone."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/stores/theme-store.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

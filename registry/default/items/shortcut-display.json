@@ -1,0 +1,39 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "shortcut-display",
+  "type": "registry:ui",
+  "title": "ShortcutDisplay",
+  "description": "Display-only shortcut label source with platform-aware TanStack Hotkeys formatting and stable key-part data attributes.",
+  "version": "0.1.0",
+  "dependencies": ["@tanstack/solid-hotkeys@^0.10.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["shortcut", "hotkeys", "display", "tanstack"],
+  "keywords": ["shortcut-display", "hotkey", "keyboard", "kbd", "tanstack"],
+  "docs": "https://keystone-ui.dev/docs/ui/shortcut-display",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add shortcut-display",
+    "api": "ShortcutDisplay accepts hotkey, sequence, or explicit label props, plus TanStack formatOptions, keyClass, separatorClass, sequenceSeparator, and sequenceSeparatorClass. It renders display-only kbd markup and does not register shortcuts.",
+    "anatomy": ["root", "step", "key", "separator", "sequence-separator"],
+    "accessibility": "ShortcutDisplay renders passive kbd text. It does not add widget roles, keyboard handlers, or command behavior; consuming buttons, menus, and command rows own their labels and interactions.",
+    "dataAttributes": "Stable hooks use data-scope=\"ui-shortcut-display\" and data-part values for root, step, key, separator, and sequence-separator. Each key part also exposes data-key.",
+    "ssr": "Formatting is deterministic from props and TanStack Hotkeys formatForDisplay. Pass formatOptions.platform when server-rendered output must exactly match a known client platform.",
+    "limitations": "ShortcutDisplay is display-only. Registration belongs to KeyboardShortcuts or app-owned source, and editing belongs to ShortcutRecorder or ShortcutSequenceRecorder.",
+    "sourceFiles": ["packages/ui/src/default/ui/shortcut-display.tsx"],
+    "dependencies": ["@tanstack/solid-hotkeys", "cn"],
+    "parity": {
+      "tanstackHotkeys": "Uses TanStack Hotkeys formatForDisplay for platform-aware labels and supports registerable hotkey values and sequence arrays.",
+      "shadcn": "Matches source-owned kbd ergonomics for compact shortcut labels while keeping each key and separator addressable through data attributes.",
+      "keystoneCore": "Intentionally remains UI-only passive markup. Core primitive keyboard behavior is not involved."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/shortcut-display.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

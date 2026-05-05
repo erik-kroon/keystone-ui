@@ -1,0 +1,40 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "shortcut-sequence-recorder",
+  "type": "registry:ui",
+  "title": "ShortcutSequenceRecorder",
+  "description": "Source-owned multi-chord shortcut sequence recorder backed by TanStack Hotkeys sequence recorder state and ShortcutDisplay.",
+  "version": "0.1.0",
+  "dependencies": ["@tanstack/solid-hotkeys@^0.10.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["shortcut", "hotkeys", "recorder", "sequence", "tanstack"],
+  "keywords": ["shortcut-sequence-recorder", "hotkey", "keyboard", "sequence", "vim", "tanstack"],
+  "docs": "https://keystone-ui.dev/docs/ui/shortcut-sequence-recorder",
+  "registryDependencies": ["cn", "shortcut-display"],
+  "meta": {
+    "install": "mason add shortcut-sequence-recorder",
+    "api": "ShortcutSequenceRecorder is a button-like control with value, onValueChange, onCancel, onClear, recorderOptions, placeholder, recordingLabel, sequenceSeparator, and ShortcutDisplay formatOptions props.",
+    "behavior": "Clicking starts TanStack Hotkeys createHotkeySequenceRecorder. It previews current steps, commits through TanStack recorder options such as Enter or idleTimeoutMs, cancels on Escape, and clears through onValueChange([]).",
+    "anatomy": ["trigger", "label", "value", "placeholder"],
+    "accessibility": "ShortcutSequenceRecorder renders a native button, defaults type=button, sets aria-pressed while recording, and preserves caller labels through children. Applications should place it in a labelled settings row when editing sequence preferences.",
+    "dataAttributes": "Stable hooks use data-scope=\"ui-shortcut-sequence-recorder\" and data-part values for trigger, label, value, and placeholder. Trigger exposes data-recording and data-empty.",
+    "ssr": "Rendering does not read browser globals. Sequence recording starts only from user interaction after hydration through TanStack Hotkeys recorder source.",
+    "limitations": "This records multi-step sequences only. Single-chord shortcuts can use ShortcutRecorder. Persistence, conflict resolution, and user preference storage stay in app-owned source.",
+    "sourceFiles": ["packages/ui/src/default/ui/shortcut-sequence-recorder.tsx"],
+    "dependencies": ["@tanstack/solid-hotkeys", "shortcut-display", "cn"],
+    "parity": {
+      "tanstackHotkeys": "Wraps createHotkeySequenceRecorder and preserves sequence recorder options while adding generated UI markup and data attributes.",
+      "shadcn": "Source-owned settings-control ergonomics for command-heavy apps that need Vim-style sequence preference editing.",
+      "keystoneCore": "Does not add Core primitive behavior. It is an app settings control for user shortcut sequence preferences."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/shortcut-sequence-recorder.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

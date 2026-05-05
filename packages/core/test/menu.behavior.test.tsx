@@ -146,6 +146,42 @@ describe("Menu behavior harness", () => {
     expect(getByPart("context-menu", "trigger").getAttribute("aria-expanded")).toBe("false");
   });
 
+  test("keeps a submenu open while the pointer moves from trigger into content", async () => {
+    render(() => (
+      <ContextMenu.Root defaultOpen>
+        <ContextMenu.Trigger>File</ContextMenu.Trigger>
+        <ContextMenu.Content>
+          <ContextMenu.SubRoot>
+            <ContextMenu.SubTrigger>Open recent</ContextMenu.SubTrigger>
+            <ContextMenu.SubContent>
+              <ContextMenu.Item value="alpha">Alpha</ContextMenu.Item>
+            </ContextMenu.SubContent>
+          </ContextMenu.SubRoot>
+          <ContextMenu.SubRoot>
+            <ContextMenu.SubTrigger>Share</ContextMenu.SubTrigger>
+            <ContextMenu.SubContent>
+              <ContextMenu.Item value="copy-link">Copy link</ContextMenu.Item>
+            </ContextMenu.SubContent>
+          </ContextMenu.SubRoot>
+        </ContextMenu.Content>
+      </ContextMenu.Root>
+    ));
+
+    const subTrigger = getByPart("context-menu", "sub-trigger");
+    subTrigger.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, cancelable: true }));
+    await settled();
+
+    const subContent = document.getElementById(subTrigger.getAttribute("aria-controls")!)!;
+    expect(subContent.hidden).toBe(false);
+
+    subTrigger.dispatchEvent(new PointerEvent("pointerleave", { bubbles: true, cancelable: true }));
+    subContent.dispatchEvent(new PointerEvent("pointerenter", { bubbles: true, cancelable: true }));
+    await new Promise((resolve) => setTimeout(resolve, 220));
+    await settled();
+
+    expect(subContent.hidden).toBe(false);
+  });
+
   test("opens context menus from the native contextmenu event", async () => {
     render(() => (
       <ContextMenu.Root>
@@ -181,5 +217,38 @@ describe("Menu behavior harness", () => {
     expect(getByPart("menubar", "content").getAttribute("role")).toBe("menubar");
     expect(getByPart("menubar", "separator").getAttribute("role")).toBe("separator");
     expect(getByPart("menubar", "group").getAttribute("role")).toBe("group");
+  });
+
+  test("menubar roves through items with horizontal arrow keys", () => {
+    render(() => (
+      <Menubar.Root defaultOpen>
+        <Menubar.Trigger>Workspace</Menubar.Trigger>
+        <Menubar.Content>
+          <Menubar.Item value="file">File</Menubar.Item>
+          <Menubar.Item value="edit">Edit</Menubar.Item>
+          <Menubar.Item value="view">View</Menubar.Item>
+        </Menubar.Content>
+      </Menubar.Root>
+    ));
+
+    const content = getByPart("menubar", "content");
+
+    keyDown(content, "ArrowRight");
+    expect(
+      document.querySelector('[data-scope="menubar"][data-part="item"][data-highlighted]')
+        ?.textContent,
+    ).toBe("File");
+
+    keyDown(content, "ArrowRight");
+    expect(
+      document.querySelector('[data-scope="menubar"][data-part="item"][data-highlighted]')
+        ?.textContent,
+    ).toBe("Edit");
+
+    keyDown(content, "ArrowLeft");
+    expect(
+      document.querySelector('[data-scope="menubar"][data-part="item"][data-highlighted]')
+        ?.textContent,
+    ).toBe("File");
   });
 });

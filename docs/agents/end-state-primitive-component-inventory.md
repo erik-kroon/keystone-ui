@@ -191,8 +191,8 @@ Core owns headless accessible primitives and shared primitive helpers. UI owns s
 - NumberField
 - FileField
 - DatePickerField
-- FieldArray
-- FormMessage
+- FieldArray (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
+- FormMessage (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
 - FormSubmit (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
 
 ### Keystone-Backed Styled UI
@@ -233,15 +233,15 @@ Core owns headless accessible primitives and shared primitive helpers. UI owns s
 
 ### TanStack Store And Hotkeys UI
 
-- AppStoreProvider (`0.2`; optional app-shell state provider for generated UI Store/Hotkeys source; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
-- ThemeStore
-- SidebarStore
-- CommandStore (`0.2`; extracted command state, while Keystone Combobox keeps intrinsic command menu behavior; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
+- AppStoreProvider (`implemented`; optional TanStack Store app-shell state provider for generated UI Store/Hotkeys source; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
+- ThemeStore (`0.2`; TanStack Store-backed theme state with provider/hook ergonomics, light/dark/system resolution, persistence, document theme application, and SSR theme script; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
+- SidebarStore (`0.2`; TanStack Store-backed app-shell sidebar state with desktop/mobile open state, active item tracking, persistence, media-query sync, and Mod+B toggle; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
+- CommandStore (`implemented`; extracted TanStack Store command state, while Keystone Combobox keeps intrinsic command menu behavior; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
 - CommandMenu (`proven for 0.1`; see [ui-command-menu-vertical.md](ui-command-menu-vertical.md); 0.2 should extract reusable app primitives instead of expanding the component)
-- KeyboardShortcuts (`0.2`; app-level shortcut registration and scoping, not Core primitive keyboard behavior; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
-- ShortcutDisplay (`0.2`; display-only shortcut label parts for command rows, buttons, menus, and help surfaces; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
-- ShortcutRecorder
-- ShortcutSequenceRecorder
+- KeyboardShortcuts (`implemented`; app-level shortcut registration and scoping, not Core primitive keyboard behavior; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
+- ShortcutDisplay (`implemented`; display-only shortcut label parts for command rows, buttons, menus, and help surfaces; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
+- ShortcutRecorder (`implemented`; single-chord shortcut preference recorder backed by TanStack Hotkeys; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
+- ShortcutSequenceRecorder (`implemented`; multi-chord shortcut sequence preference recorder backed by TanStack Hotkeys; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
 
 ### Later Styled UI
 

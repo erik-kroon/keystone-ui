@@ -1,0 +1,42 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "form-message",
+  "type": "registry:ui",
+  "title": "FormMessage",
+  "description": "Reusable TanStack Form-aware validation message surface with alert semantics and source-owned styling hooks.",
+  "version": "0.1.0",
+  "dependencies": ["@tanstack/solid-form@^1.29.1"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["form", "tanstack"],
+  "keywords": ["form-message", "validation", "message", "tanstack"],
+  "docs": "https://keystone-ui.dev/docs/ui/form-message",
+  "registryDependencies": ["cn", "tanstack-form"],
+  "meta": {
+    "install": "mason add form-message",
+    "customization": "Style generated messages through ui-form-message, data-invalid, data-touched, data-validating, and neutral data-slot hooks.",
+    "sourceFiles": ["packages/ui/src/default/ui/form-message.tsx"],
+    "dependencies": ["@tanstack/solid-form", "cn", "tanstack-form"],
+    "api": "FormMessage exports FormMessage and FormMessageProps. It accepts children, explicit errors, a TanStack field, or a TanStack form and formats validation errors through the shared formatFieldError helper. forceMount keeps the message node in the DOM for layout-stable custom compositions.",
+    "accessibility": "When invalid message content is present, FormMessage renders role=alert with aria-live=polite. Empty messages do not render unless forceMount is set, avoiding empty live regions.",
+    "anatomy": ["root"],
+    "cssVariables": ["--color-destructive-foreground"],
+    "state": "TanStack Form owns field and form error state. FormMessage only reads errors, touched, and validating metadata and mirrors those values through data attributes.",
+    "ssr": "Uses only props and Solid rendering; no browser globals are read, and forceMount allows deterministic layout where needed.",
+    "limitations": "FormMessage does not create label/control relationships by itself. Use TanStackField or Keystone Core form-control helpers for aria-describedby wiring on concrete controls.",
+    "parity": {
+      "tanstackForm": "First-class TanStack Form parity: reads field or form errors, supports explicit error overrides, and keeps validation lifecycle state app-owned.",
+      "baseUi": "Base UI-style field message semantics are represented through alert/live-region behavior while Core remains the owner of intrinsic control relationships.",
+      "kobalte": "Solid parity is a small composable message primitive with explicit props rather than hidden context requirements.",
+      "shadcn": "Source-owned message ergonomics match copy-paste UI conventions with stable class and data-slot hooks."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/form-message.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}
