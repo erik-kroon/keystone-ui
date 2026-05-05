@@ -6,6 +6,8 @@ This note turns the updated Keystone Core/UI PRD direction into independently gr
 
 Parent PRD: [Keystone Core And UI Foundation](../prd/keystone-foundation.md)
 
+Reference note: [Cal.com workspace pattern notes](./calcom-workspace-patterns.md) captures the highest-value app-shell, command-surface, filter-chip, and saved-view patterns from `inspo/coss/apps/examples/calcom`. Use it as a selective pattern source for UI blocks and app-layer generated source, not as implementation code to copy wholesale.
+
 ## Proposed Issue Breakdown
 
 1. **UI Workspace Direction Docs** ([#271](https://github.com/erik-kroon/core-ui/issues/271))
@@ -45,6 +47,7 @@ Parent PRD: [Keystone Core And UI Foundation](../prd/keystone-foundation.md)
      - A UI block provides a left rail, main work surface, and inspector panel with source-owned layout code.
      - Keyboard reachability and responsive constraints are documented.
      - The block avoids introducing Core behavior unless a general primitive need is identified separately.
+     - Cal.com shell/sidebar patterns are reviewed for desktop sidebar, mobile header/footer, settings drawer, collapsed-label tooltip, and navigation data separation before implementation.
 
 5. **Numeric And Financial Formatting UI** ([#275](https://github.com/erik-kroon/keystone-ui/issues/275))
    - Type: decided planning
@@ -83,6 +86,7 @@ Parent PRD: [Keystone Core And UI Foundation](../prd/keystone-foundation.md)
      - A UI pattern covers rule rows, filter/alert conditions, validation display, and event timeline scanning.
      - The implementation prefers TanStack/Form or Store where app behavior is needed.
      - Docs explain ownership boundaries and customization points.
+     - Cal.com booking filter patterns are reviewed for typed filter metadata, active chips, add-filter menus, saved-view comboboxes, and clear actions before implementation.
 
 ## Distilled Rules
 

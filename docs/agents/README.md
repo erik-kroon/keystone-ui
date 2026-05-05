@@ -21,6 +21,7 @@ Start with:
 - [Issue triage spine](./issue-triage-spine.md)
 - [0.2 UI app-layer preview tracker](../reports/0.2-ui-app-layer-preview-tracker.md)
 - [Data-dense workspace verticals](./data-dense-workspace-verticals.md)
+- [Cal.com workspace pattern notes](./calcom-workspace-patterns.md)
 - [UI Numeric And Financial Formatting Boundary](./ui-numeric-financial-formatting-boundary.md)
 - [UI DataTable vertical](./ui-data-table-vertical.md)
 - [UI CommandMenu vertical](./ui-command-menu-vertical.md)
