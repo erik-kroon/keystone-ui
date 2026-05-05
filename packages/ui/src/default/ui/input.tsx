@@ -3,12 +3,18 @@ import { cn } from "@/lib/cn";
 
 export type InputSize = "sm" | "default" | "lg" | number;
 
+type KeystoneDataAttributes = {
+  "data-part"?: string;
+  "data-scope"?: string;
+  "data-slot"?: string;
+};
+
 export type InputProps = Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "size"> & {
   invalid?: boolean;
   nativeInput?: boolean;
   size?: InputSize;
   unstyled?: boolean;
-};
+} & KeystoneDataAttributes;
 
 const classes = (...tokens: string[]) => tokens.join(" ");
 
@@ -16,6 +22,9 @@ export function Input(props: InputProps) {
   const [local, rest] = splitProps(props, [
     "aria-invalid",
     "class",
+    "data-part",
+    "data-scope",
+    "data-slot",
     "disabled",
     "invalid",
     "nativeInput",
@@ -121,9 +130,9 @@ export function Input(props: InputProps) {
         {...rest}
         aria-invalid={invalid() || undefined}
         disabled={local.disabled}
-        data-scope="ui-input"
-        data-part="input"
-        data-slot="input"
+        data-scope={local["data-scope"] ?? "ui-input"}
+        data-part={local["data-part"] ?? "input"}
+        data-slot={local["data-slot"] ?? "input"}
         size={typeof size() === "number" ? size() : undefined}
         type={local.type}
         class={inputClass()}

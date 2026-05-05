@@ -28,6 +28,8 @@ export function DataTablePagination<TData extends RowData>(props: {
         <span>Rows</span>
         <select
           value={String(props.table.getState().pagination.pageSize)}
+          data-scope="ui-data-table"
+          data-part="page-size-select"
           onChange={(event) => props.table.setPageSize(Number(event.currentTarget.value))}
         >
           <For each={pageSizeOptions()}>
@@ -39,6 +41,9 @@ export function DataTablePagination<TData extends RowData>(props: {
         <button
           type="button"
           aria-label="Go to first page"
+          data-scope="ui-data-table"
+          data-part="page-button"
+          data-page="first"
           onClick={() => props.table.setPageIndex(0)}
           disabled={!props.table.getCanPreviousPage()}
         >
@@ -47,6 +52,9 @@ export function DataTablePagination<TData extends RowData>(props: {
         <button
           type="button"
           aria-label="Go to previous page"
+          data-scope="ui-data-table"
+          data-part="page-button"
+          data-page="previous"
           onClick={() => props.table.previousPage()}
           disabled={!props.table.getCanPreviousPage()}
         >
@@ -55,6 +63,9 @@ export function DataTablePagination<TData extends RowData>(props: {
         <button
           type="button"
           aria-label="Go to next page"
+          data-scope="ui-data-table"
+          data-part="page-button"
+          data-page="next"
           onClick={() => props.table.nextPage()}
           disabled={!props.table.getCanNextPage()}
         >
@@ -63,6 +74,9 @@ export function DataTablePagination<TData extends RowData>(props: {
         <button
           type="button"
           aria-label="Go to last page"
+          data-scope="ui-data-table"
+          data-part="page-button"
+          data-page="last"
           onClick={() => props.table.setPageIndex(props.table.getPageCount() - 1)}
           disabled={!props.table.getCanNextPage()}
         >

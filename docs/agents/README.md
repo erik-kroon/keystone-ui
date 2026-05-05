@@ -22,6 +22,7 @@ Start with:
 - [Data-dense workspace verticals](./data-dense-workspace-verticals.md)
 - [UI DataTable vertical](./ui-data-table-vertical.md)
 - [UI CommandMenu vertical](./ui-command-menu-vertical.md)
+- [UI Store and Hotkeys vertical](./ui-store-hotkeys-vertical.md)
 - [Core layer stack vertical](./layer-stack-vertical.md)
 - [Controllable state vertical](./controllable-state-vertical.md)
 - [Solid polymorphic `as` rendering](./solid-polymorphic-as-rendering.md)
@@ -63,8 +64,10 @@ The active 0.1 spine is:
 - [#43](https://github.com/erik-kroon/core-ui/issues/43): Mason registry lifecycle.
 - [#52](https://github.com/erik-kroon/core-ui/issues/52): registry parity metadata.
 - [#233](https://github.com/erik-kroon/core-ui/issues/233): UI DataTable.
-- [#246](https://github.com/erik-kroon/core-ui/issues/246): UI CommandMenu.
+- [#246](https://github.com/erik-kroon/core-ui/issues/246): UI CommandMenu, good enough for 0.1 proof.
 - [#197](https://github.com/erik-kroon/core-ui/issues/197) and [#198](https://github.com/erik-kroon/core-ui/issues/198): UI TanStack Form proof.
+
+The 0.2 app primitive queue after CommandMenu is [#242](https://github.com/erik-kroon/core-ui/issues/242), [#245](https://github.com/erik-kroon/core-ui/issues/245), [#247](https://github.com/erik-kroon/core-ui/issues/247), and [#248](https://github.com/erik-kroon/core-ui/issues/248). Use [UI Store and Hotkeys vertical](./ui-store-hotkeys-vertical.md) before expanding the broader Store/Hotkeys inventory.
 
 Issue philosophy:
 

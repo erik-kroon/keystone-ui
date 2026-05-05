@@ -257,6 +257,8 @@ describe("Mason registry validation tracer", () => {
       pagination,
       viewOptions,
       rowActions,
+      empty,
+      skeleton,
     ] = await Promise.all([
       readFile(resolve(sourceRoot, "data-table.tsx"), "utf8"),
       readFile(resolve(sourceRoot, "use-data-table.ts"), "utf8"),
@@ -266,6 +268,8 @@ describe("Mason registry validation tracer", () => {
       readFile(resolve(sourceRoot, "data-table-pagination.tsx"), "utf8"),
       readFile(resolve(sourceRoot, "data-table-view-options.tsx"), "utf8"),
       readFile(resolve(sourceRoot, "data-table-row-actions.tsx"), "utf8"),
+      readFile(resolve(sourceRoot, "data-table-empty-state.tsx"), "utf8"),
+      readFile(resolve(sourceRoot, "data-table-skeleton.tsx"), "utf8"),
     ]);
 
     expect(table).toContain('data-scope="ui-data-table"');
@@ -295,17 +299,32 @@ describe("Mason registry validation tracer", () => {
     expect(facetedFilter).toContain("<fieldset");
     expect(facetedFilter).toContain("<legend>{props.title}</legend>");
     expect(facetedFilter).toContain('type={props.multiple === false ? "radio" : "checkbox"}');
+    expect(facetedFilter).toContain('data-part="faceted-control"');
+    expect(facetedFilter).toContain('data-state={checked() ? "checked" : "unchecked"}');
     expect(facetedFilter).toContain("props.table.setPageIndex(0)");
 
     expect(pagination).toContain('role="navigation"');
     expect(pagination).toContain('aria-label="Table pagination"');
     expect(pagination).toContain('aria-live="polite"');
     expect(pagination).toContain('aria-label="Go to next page"');
+    expect(pagination).toContain('data-part="page-size-select"');
+    expect(pagination).toContain('data-part="page-button"');
+    expect(pagination).toContain('data-page="last"');
 
     expect(viewOptions).toContain('role="group"');
     expect(viewOptions).toContain('aria-label="Column visibility"');
+    expect(viewOptions).toContain('data-part="view-option-control"');
     expect(rowActions).toContain('role="group"');
-    expect(rowActions).toContain('aria-label="Row actions"');
+    expect(rowActions).toContain('aria-label={props.label ?? "Row actions"}');
+    expect(rowActions).toContain('data-part="row-action"');
+    expect(rowActions).toContain("data-variant={action.variant}");
+    expect(rowActions).toContain("hidden");
+
+    expect(empty).toContain("export function DataTableEmpty");
+    expect(empty).toContain('role="status"');
+    expect(skeleton).toContain('data-part="skeleton-status"');
+    expect(skeleton).toContain('role="status"');
+    expect(skeleton).toContain('aria-hidden="true"');
   });
 
   test("validates docs-ready metadata on the real default data-table router adapter item", async () => {
@@ -548,10 +567,12 @@ describe("Mason registry validation tracer", () => {
 
     expect(source).toContain("export type InputSize");
     expect(source).toContain('data-scope="ui-input"');
+    expect(source).toContain('"data-scope"');
+    expect(source).toContain('data-scope={local["data-scope"] ?? "ui-input"}');
     expect(source).toContain('data-part="root"');
-    expect(source).toContain('data-part="input"');
+    expect(source).toContain('data-part={local["data-part"] ?? "input"}');
     expect(source).toContain('data-slot="input-control"');
-    expect(source).toContain('data-slot="input"');
+    expect(source).toContain('data-slot={local["data-slot"] ?? "input"}');
     expect(source).toContain('local.type === "search"');
     expect(source).toContain('local.type === "file"');
     expect(source).toContain('size={typeof size() === "number" ? size() : undefined}');

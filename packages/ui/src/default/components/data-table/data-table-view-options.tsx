@@ -41,6 +41,9 @@ export function DataTableViewOptions<TData extends RowData>(props: {
               <input
                 type="checkbox"
                 checked={column.getIsVisible()}
+                data-scope="ui-data-table"
+                data-part="view-option-control"
+                data-column={column.id}
                 onChange={column.getToggleVisibilityHandler()}
               />
               <span>

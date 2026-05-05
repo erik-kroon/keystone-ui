@@ -2,6 +2,8 @@
 
 Issue: #246
 
+Status: Good enough for 0.1 proof. 0.2 follow-up should clarify reusable Store/Hotkeys app primitives in [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md) rather than expanding CommandMenu into a general app state system.
+
 ## Scope
 
 - Promote the `command-menu` registry item from a functional app-layer wrapper to a Coss-styled command palette source component.
@@ -19,6 +21,7 @@ Issue: #246
 - This is still a local command palette pattern rather than a dedicated Core command primitive.
 - Nested command pages, async loading states, command history, copy-command footer behavior, user preference persistence, and route-level command discovery remain app-layer follow-up work.
 - TanStack Hotkeys remains a preview integration and is documented as replaceable generated source.
+- Reusable AppStoreProvider, CommandStore, KeyboardShortcuts, and ShortcutDisplay extraction is deferred to 0.2.
 
 ## Verification
 

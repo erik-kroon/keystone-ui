@@ -233,13 +233,13 @@ Core owns headless accessible primitives and shared primitive helpers. UI owns s
 
 ### TanStack Store And Hotkeys UI
 
-- AppStoreProvider
+- AppStoreProvider (`0.2`; optional app-shell state provider for generated UI Store/Hotkeys source; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
 - ThemeStore
 - SidebarStore
-- CommandStore
-- CommandMenu
-- KeyboardShortcuts
-- ShortcutDisplay
+- CommandStore (`0.2`; extracted command state, while Keystone Combobox keeps intrinsic command menu behavior; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
+- CommandMenu (`proven for 0.1`; see [ui-command-menu-vertical.md](ui-command-menu-vertical.md); 0.2 should extract reusable app primitives instead of expanding the component)
+- KeyboardShortcuts (`0.2`; app-level shortcut registration and scoping, not Core primitive keyboard behavior; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
+- ShortcutDisplay (`0.2`; display-only shortcut label parts for command rows, buttons, menus, and help surfaces; see [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md))
 - ShortcutRecorder
 - ShortcutSequenceRecorder
 
