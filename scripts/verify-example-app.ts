@@ -106,6 +106,7 @@ async function main() {
     await addCommand({ cwd: app, item: "data-table", registry });
     await addCommand({ cwd: app, item: "data-table-tanstack-router", registry });
     await addCommand({ cwd: app, item: "invoice-dashboard", registry });
+    await addCommand({ cwd: app, item: "keyboard-command-surface", registry });
     await writeFile(
       path.join(app, "vite.config.ts"),
       `import { fileURLToPath, URL } from "node:url";
@@ -153,6 +154,7 @@ import { DataTableRowActions } from "@/components/data-table/data-table-row-acti
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { dataTableFacetedFilter, useDataTable } from "@/components/data-table/use-data-table";
 import { InvoiceDashboardBlock } from "@/components/blocks/invoice-dashboard/invoice-dashboard";
+import { KeyboardCommandSurfaceBlock } from "@/components/blocks/keyboard-command-surface";
 import { CheckboxField } from "@/components/ui/checkbox-field";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { RadioGroupField } from "@/components/ui/radio-group-field";
@@ -316,6 +318,7 @@ function App() {
         <DataTableToolbar table={table} />
       </DataTable>
       <InvoiceDashboardBlock />
+      <KeyboardCommandSurfaceBlock hotkeys={false} />
       <CommandMenu
         items={commandItems}
         store={commandMenuStore}
@@ -408,6 +411,7 @@ import { DataTableRowActions } from "@/components/data-table/data-table-row-acti
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { dataTableFacetedFilter, useDataTable } from "@/components/data-table/use-data-table";
 import { InvoiceDashboardBlock } from "@/components/blocks/invoice-dashboard/invoice-dashboard";
+import { KeyboardCommandSurfaceBlock } from "@/components/blocks/keyboard-command-surface";
 import { CheckboxField } from "@/components/ui/checkbox-field";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { RadioGroupField } from "@/components/ui/radio-group-field";
@@ -566,6 +570,7 @@ function App() {
         <DataTableToolbar table={table} />
       </DataTable>
       <InvoiceDashboardBlock />
+      <KeyboardCommandSurfaceBlock hotkeys={false} />
       <CommandMenu
         items={commandItems}
         store={commandMenuStore}
@@ -640,10 +645,13 @@ for (const expected of [
   "ui-shortcut-recorder",
   "ui-shortcut-sequence-recorder",
   "ui-block-invoice-dashboard",
+  "ui-block-keyboard-command-surface",
   "ui-data-table-table",
   "ui-data-table-pagination",
   "Invoice workspace",
   "Create draft",
+  "Keyboard-first workspace commands",
+  "Shortcut map",
   "Northstar Labs",
   "Accept terms",
   "Role",

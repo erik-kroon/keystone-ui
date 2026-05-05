@@ -1,0 +1,57 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "combobox-field",
+  "type": "registry:ui",
+  "title": "ComboboxField",
+  "description": "TanStack Form combobox field composed with Keystone Combobox behavior and UI styling hooks.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["form", "tanstack", "autocomplete"],
+  "keywords": ["combobox-field", "combobox", "field", "form", "tanstack", "keystone"],
+  "docs": "https://keystone-ui.dev/docs/ui/combobox-field",
+  "registryDependencies": ["cn", "combobox", "tanstack-field"],
+  "meta": {
+    "install": "mason add combobox-field",
+    "customization": "Use ui-combobox-field classes, TanStackField shell classes, Combobox classes, Core data attributes, neutral data-slot hooks, and combobox/input/content/listbox/group/item prop and class escape hatches.",
+    "sourceFiles": ["packages/ui/src/default/ui/combobox-field.tsx"],
+    "dependencies": [
+      "@keystone-ui/core",
+      "@tanstack/solid-form",
+      "cn",
+      "combobox",
+      "tanstack-field"
+    ],
+    "api": "ComboboxField exports ComboboxField, ComboboxFieldOption, ComboboxFieldOptionGroup, ComboboxFieldProps, and ComboboxFieldValidators. It composes TanStackField with Keystone Combobox, passes validators to form.Field, maps selected values to string field.handleChange, maps popup close/input blur to field.handleBlur, supports grouped/disabled options, textValue labels, empty state, and forwards disabled/readOnly/required/formId.",
+    "accessibility": "Backed by TanStackField for label, description, error, aria-describedby, invalid state, and alert messaging, and by @keystone-ui/core/combobox for input/listbox roles, active descendant, selected/highlighted state, hidden form value, clear/trigger semantics, Escape dismissal, and reset support.",
+    "anatomy": [
+      "field-root",
+      "field-label",
+      "input",
+      "content",
+      "listbox",
+      "group",
+      "group-label",
+      "item",
+      "empty",
+      "field-description",
+      "field-error"
+    ],
+    "state": "TanStack Form owns string field value, touched, dirty, blurred, validating, and errors. ComboboxField treats the empty string as no selected value and leaves filtering/input-value ownership to Core/app composition.",
+    "limitations": "Multi-select, chips, async filtering, object-value adapters, and virtualization remain app-owned composition.",
+    "parity": {
+      "tanstackForm": "Covers form.Field integration, validators pass-through, string value binding, blur/change delegation, and touched-derived invalid/error state.",
+      "baseUi": "Primitive behavior coverage comes through Keystone Core Combobox for input value, selected value, keyboard navigation, popup positioning, hidden input, data attributes, and reset support.",
+      "kobalte": "Solid composition follows the Combobox/Listbox/Popper direction with generated-source field wiring."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/combobox-field.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

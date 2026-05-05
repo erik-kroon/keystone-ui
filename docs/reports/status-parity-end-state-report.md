@@ -277,7 +277,7 @@ Data-dense workspace:
 
 - DataTable and CommandMenu are the first app-layer proofs, not the flagship end-state.
 - Realtime tables, watchlists, workspace shells, chart inspection, condition builders, and event feeds are documented post-0.1 work.
-- Numeric/financial formatting and chart dependency boundaries require maintainer decisions before implementation.
+- Numeric/financial formatting is decided as a generic UI-owned source kit in the default Mason registry plan; chart dependency boundaries still require maintainer decisions before implementation.
 
 ## Recommended Sequencing
 

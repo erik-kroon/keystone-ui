@@ -46,18 +46,20 @@ Parent PRD: [Keystone Core And UI Foundation](../prd/keystone-foundation.md)
      - Keyboard reachability and responsive constraints are documented.
      - The block avoids introducing Core behavior unless a general primitive need is identified separately.
 
-5. **Numeric And Financial Formatting UI** ([#275](https://github.com/erik-kroon/core-ui/issues/275))
-   - Type: HITL
+5. **Numeric And Financial Formatting UI** ([#275](https://github.com/erik-kroon/keystone-ui/issues/275))
+   - Type: decided planning
    - Blocked by: [#271](https://github.com/erik-kroon/core-ui/issues/271)
+   - Decision: [UI Numeric And Financial Formatting Boundary](./ui-numeric-financial-formatting-boundary.md)
    - User stories covered: 4, 15, 49, 51, 52
    - Acceptance criteria:
-     - Maintainers decide whether these ship as generic numeric components, a finance-flavored pack, or example-only code.
-     - Money, percent, compact volume, signed change, stale/fresh state, and update emphasis requirements are documented.
-     - Formatting components remain UI-owned and do not pull domain semantics into Keystone.
+     - Ship the first surface as a generic UI-owned numeric formatting source kit in the default Mason registry plan.
+     - Money, percent, compact volume, signed change, stale/fresh state, and update emphasis requirements are documented in the boundary note.
+     - Formatting components remain UI-owned and do not pull domain semantics into Keystone Core.
+     - Finance-flavored blocks and examples consume the generic kit instead of redefining formatting behavior.
 
 6. **Watchlist And Quote Table Block** ([#276](https://github.com/erik-kroon/core-ui/issues/276))
    - Type: HITL
-   - Blocked by: [#272](https://github.com/erik-kroon/core-ui/issues/272); [#275](https://github.com/erik-kroon/core-ui/issues/275)
+   - Blocked by: [#272](https://github.com/erik-kroon/core-ui/issues/272); [#275](https://github.com/erik-kroon/keystone-ui/issues/275)
    - User stories covered: 8, 15, 49, 51, 52
    - Acceptance criteria:
      - A UI block demonstrates symbol rows, value freshness, signed changes, and dense row scanning.
@@ -66,7 +68,7 @@ Parent PRD: [Keystone Core And UI Foundation](../prd/keystone-foundation.md)
 
 7. **Chart Inspection Interaction Pattern** ([#277](https://github.com/erik-kroon/core-ui/issues/277))
    - Type: HITL
-   - Blocked by: [#275](https://github.com/erik-kroon/core-ui/issues/275)
+   - Blocked by: [#275](https://github.com/erik-kroon/keystone-ui/issues/275)
    - User stories covered: 15, 49, 51, 52
    - Acceptance criteria:
      - Maintainers choose the first chart reference/library boundary before implementation.
@@ -91,6 +93,5 @@ Parent PRD: [Keystone Core And UI Foundation](../prd/keystone-foundation.md)
 
 ## Open Questions
 
-- Whether numeric/financial formatting belongs in the default Mason registry, a future optional pack, or examples first.
 - Which charting dependency should be used for first-party chart interaction patterns.
 - When the repo should start creating GitHub issues versus keeping planning slices in docs.

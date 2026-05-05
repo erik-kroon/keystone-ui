@@ -150,8 +150,8 @@ Candidates:
 
 - RealtimeTable.
 - Watchlist.
-- Metric components.
-- PriceInput and numeric input variants.
+- Metric components backed by the generic UI numeric formatting source kit.
+- PriceInput and numeric input variants, with display formatting kept in UI and general numeric input behavior considered separately for Core only when it reduces to an accessible primitive.
 - TerminalLayout.
 - ChartTooltip and Crosshair adapters.
 - ConditionBuilder.
