@@ -123,15 +123,15 @@ The authoritative source is `packages/core/src/metadata/index.ts`. This table is
 
 ## Internal And Backlog Surfaces
 
-| Surface                 | Maturity | Explanation                                                                                                                                                   |
-| ----------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `listbox`               | Internal | Kernel-facing until Select and Combobox prove the collection API. It is metadata-visible but not a public package subpath.                                    |
-| `overlay`               | Internal | Private overlay kernel. Document behavior through public overlay primitives instead of promoting this API.                                                    |
-| Broad primitive backlog | Backlog  | Future inventory is tracked in `docs/agents/end-state-primitive-component-inventory.md`; backlog items are not public API and should not carry stable claims. |
+| Surface                 | Maturity | Explanation                                                                                                                     |
+| ----------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `listbox`               | Internal | Kernel-facing until Select and Combobox prove the collection API. It is metadata-visible but not a public package subpath.      |
+| `overlay`               | Internal | Private overlay kernel. Document behavior through public overlay primitives instead of promoting this API.                      |
+| Broad primitive backlog | Backlog  | Future inventory belongs in roadmap or issue-tracker work. Backlog items are not public API and should not carry stable claims. |
 
 ## Known Gaps
 
-Known beta and experimental gaps are centralized in [Core Primitive Known Gaps](../core/primitive-known-gaps.md). Stable status requires closing or explicitly deferring the relevant API, browser, and manual accessibility gaps.
+Stable status requires closing or explicitly deferring the relevant API, browser, and manual accessibility gaps in the primitive docs, metadata, or active issue tracker.
 
 ## UI Labels
 

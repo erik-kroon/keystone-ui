@@ -17,6 +17,7 @@ This repository is the early Keystone UI monorepo. Treat `Keystone` as the provi
 
 - Package manager: Bun (`bun@1.3.9` in `package.json`).
 - Monorepo runner: Turborepo.
+- Use the repo-local Keystone skill at [skills/keystone/SKILL.md](skills/keystone/SKILL.md) when building or changing Keystone UI components, primitives, registry source, Mason install behavior, docs examples, or shadcn/Radix-style migrations.
 - Main commands:
   - `bun install`
   - `bun run dev`
@@ -29,15 +30,14 @@ This repository is the early Keystone UI monorepo. Treat `Keystone` as the provi
 
 - [CONTEXT.md](CONTEXT.md): domain glossary, product boundaries, and key conventions.
 - [CONTEXT-MAP.md](CONTEXT-MAP.md): current repo map and intended growth areas.
+- [docs/design-system.md](docs/design-system.md): Keystone visual language, tokens, layout rules, and component styling direction.
 - [docs/adr/](docs/adr/): durable decisions.
-- [docs/agents/](docs/agents/): agent/work tracking conventions.
 - [docs/adr/0003-ui-tanstack-app-layer.md](docs/adr/0003-ui-tanstack-app-layer.md): TanStack app-layer decision for UI.
 - [docs/adr/0004-core-kernel-api-boundary.md](docs/adr/0004-core-kernel-api-boundary.md): public/private Core kernel API boundary.
-- [docs/prd/keystone-foundation.md](docs/prd/keystone-foundation.md): foundation PRD and product flywheel.
-- [docs/prd/core-internals-inspiration-parity.md](docs/prd/core-internals-inspiration-parity.md): Core kernel parity PRD.
-- [docs/agents/issue-triage-spine.md](docs/agents/issue-triage-spine.md): GitHub issue milestones, labels, and 0.1 active spine.
-- [docs/agents/end-state-primitive-component-inventory.md](docs/agents/end-state-primitive-component-inventory.md): optimal Core primitive and UI item inventory.
-- [docs/agents/data-dense-workspace-verticals.md](docs/agents/data-dense-workspace-verticals.md): UI workspace-pattern issue breakdown.
+- [docs/roadmap/canonical-roadmap.md](docs/roadmap/canonical-roadmap.md): sequencing, maturity posture, and product direction.
+- [docs/roadmap/do-not-reinvent.md](docs/roadmap/do-not-reinvent.md): engine-boundary guidance.
+- [docs/roadmap/maturity-model.md](docs/roadmap/maturity-model.md): primitive and registry item maturity labels.
+- [docs/rfcs/](docs/rfcs/): active API and registry contracts.
 
 ## Implementation Guardrails
 
@@ -51,7 +51,7 @@ This repository is the early Keystone UI monorepo. Treat `Keystone` as the provi
 - UI form, table, store, and hotkey work should prefer TanStack libraries instead of custom app-behavior systems.
 - UI data-dense components should preserve clarity under frequent updates and should treat keyboard navigation/focus behavior as first-class product concerns.
 - Every first-party UI primitive/component/block registry item should carry `meta.parity` notes. Prefer Base UI first for runtime depth and Kobalte second for Solid-native primitive shape; use the more fitting reference for exceptions such as TanStack app components, Sonner-style toast behavior, UI utilities, or shadcn-style source registry conventions.
-- When updating the root `README.md`, keep it external-facing and grounded in current repo state. Do not turn it into an internal roadmap; link or defer durable planning detail to `CONTEXT.md`, `CONTEXT-MAP.md`, ADRs, RFCs, and `docs/agents/`.
+- When updating the root `README.md`, keep it external-facing and grounded in current repo state. Do not turn it into an internal roadmap; link or defer durable planning detail to `CONTEXT.md`, `CONTEXT-MAP.md`, ADRs, RFCs, and roadmap docs.
 
 ## Tips
 

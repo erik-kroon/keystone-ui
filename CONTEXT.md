@@ -67,7 +67,7 @@ Core internals -> Core primitives -> UI items -> UI blocks -> UI templates
 ## Key Conventions
 
 - Core should publish as one public package with subpath exports, for example `@scope/core/dialog`.
-- Mason owns the CLI/registry packages, for example `@scope/mason-cli` and `@scope/mason-registry`.
+- Mason owns one CLI/registry package, for example `@scope/mason`.
 - `@keystone-ui` is the provisional npm scope for internal package names and planning examples.
 - `Keystone` is the working umbrella product name until package, trademark, domain, and handle clearance are complete.
 - MIT is the intended open-source license, pending a root `LICENSE` file before public release or package publication.
@@ -80,21 +80,20 @@ Core internals -> Core primitives -> UI items -> UI blocks -> UI templates
 - First-party Mason registry items should carry `meta.parity` notes. Base UI is the default runtime-depth reference, Kobalte is the default Solid-native primitive reference, and exceptions should use the fitting first-class reference such as TanStack, Sonner, UI utility, or shadcn-style registry conventions.
 - UI first-party app components should prefer TanStack libraries for app-grade behavior: `@tanstack/solid-form`, `@tanstack/solid-table`, TanStack Store, and `@tanstack/solid-hotkeys`.
 - UI is the home for data-dense, keyboard-first workspace patterns. Keep domain-specific or finance-specific UI out of Keystone core unless it reduces to a general accessible primitive.
-- Numeric and financial formatting starts as generic UI-owned source in the default Mason registry plan. Money, percent, compact volume, signed change, freshness, and update emphasis belong in UI formatting components or blocks, not Core; see [UI Numeric And Financial Formatting Boundary](docs/agents/ui-numeric-financial-formatting-boundary.md).
+- Numeric and financial formatting starts as generic UI-owned source in the default Mason registry plan. Money, percent, compact volume, signed change, freshness, and update emphasis belong in UI formatting components or blocks, not Core.
 - Core must not depend on TanStack app libraries. Core owns intrinsic primitive behavior; UI owns app-level form/table/store/hotkey integration.
 - Core kernels stay private by default. Public API is promoted through primitive subpaths, primitive-specific creators, explicitly public utility primitives such as Portal/Popper/Direction/Locale/LiveAnnouncer, form support APIs, and metadata support APIs; generic `utils`, overlay, and collection kernels stay private until an ADR or accepted RFC promotes them.
-- Use [ADR 0003](docs/adr/0003-ui-tanstack-app-layer.md) and [End-State Primitive And Component Inventory](docs/agents/end-state-primitive-component-inventory.md) when deciding whether a new surface belongs in Keystone or UI.
+- Use [ADR 0003](docs/adr/0003-ui-tanstack-app-layer.md) and the [Canonical Roadmap](docs/roadmap/canonical-roadmap.md) when deciding whether a new surface belongs in Keystone or UI.
 - Use [ADR 0004](docs/adr/0004-core-kernel-api-boundary.md) before exporting a Core internal helper or letting UI depend on anything below a public primitive or utility subpath.
 - Use [Do Not Reinvent Engines](docs/roadmap/do-not-reinvent.md) before adding table, virtualizer, form-state, query/cache, charting, validation, or date/i18n behavior.
-- The active design source of truth is the accepted ADRs, RFCs, PRDs, agent guidance, and end-state inventory in `docs/`.
+- The active design source of truth is `README.md`, this context file, `CONTEXT-MAP.md`, accepted ADRs, RFCs, and roadmap docs.
 
 ## Current State
 
-- `apps/docs`: Solid + TanStack Router + Tailwind docs/product app.
+- `apps/web`: Solid + TanStack Router + Tailwind docs/product app.
 - `packages/core`: early primitive package with overlay, disclosure, menu, select/combobox, field, selection-control, tabs, toolbar, slider, date-picker, toast, metadata, and utility surfaces. It has more breadth than the original tracer, but the shared kernel is still the main quality target.
-- `packages/mason-cli`: early Mason CLI tracer with init/add planning and tests.
-- `packages/mason-registry`: registry schema, validation, dependency resolution, path safety, and tests.
-- `docs/`: ADRs, RFCs, accessibility plan, PRDs, and agent notes.
+- `packages/mason`: early Mason CLI tracer plus registry schema, validation, dependency resolution, path safety, and tests.
+- `docs/`: ADRs, RFCs, roadmap docs, accessibility plan, release notes, and app design-system guidance.
 - `registry/`: Mason registry source for first-party UI components, TanStack-backed app components, utilities, and early blocks.
 - Future UI workspace work should emphasize data tables, command surfaces, resizable app shells, watchlists, inspection panels, numeric/financial formatting, chart interaction patterns, condition builders, and event feeds while preserving source ownership.
 

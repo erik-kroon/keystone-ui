@@ -49,23 +49,12 @@
         "vitest": "^4.1.5",
       },
     },
-    "packages/mason-cli": {
-      "name": "@keystone-ui/mason-cli",
+    "packages/mason": {
+      "name": "@keystone-ui/mason",
       "version": "0.0.0",
       "bin": {
         "mason": "./src/index.ts",
       },
-      "dependencies": {
-        "@keystone-ui/mason-registry": "workspace:*",
-      },
-      "devDependencies": {
-        "bun-types": "^1.3.4",
-        "typescript": "catalog:",
-      },
-    },
-    "packages/mason-registry": {
-      "name": "@keystone-ui/mason-registry",
-      "version": "0.0.0",
       "dependencies": {
         "zod": "catalog:",
       },
@@ -213,9 +202,7 @@
 
     "@keystone-ui/core": ["@keystone-ui/core@workspace:packages/core"],
 
-    "@keystone-ui/mason-cli": ["@keystone-ui/mason-cli@workspace:packages/mason-cli"],
-
-    "@keystone-ui/mason-registry": ["@keystone-ui/mason-registry@workspace:packages/mason-registry"],
+    "@keystone-ui/mason": ["@keystone-ui/mason@workspace:packages/mason"],
 
     "@keystone-ui/ui": ["@keystone-ui/ui@workspace:packages/ui"],
 

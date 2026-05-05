@@ -13,7 +13,6 @@ Draft
 - [ADR 0001: Keystone Core And UI Product Boundary](../adr/0001-keystone-core-ui-boundary.md)
 - [ADR 0002: Scope, Names, License, And Governance](../adr/0002-scope-names-license-governance.md)
 - [RFC: Core API](core-api.md)
-- [PRD: Keystone Core And UI Foundation](../prd/keystone-foundation.md)
 
 ## Summary
 

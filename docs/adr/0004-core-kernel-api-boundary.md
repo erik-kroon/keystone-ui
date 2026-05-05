@@ -159,7 +159,3 @@ After public package release:
 - [ADR 0001: Keystone Core And UI Product Boundary](0001-keystone-core-ui-boundary.md)
 - [ADR 0003: UI TanStack App Layer](0003-ui-tanstack-app-layer.md)
 - [RFC: Core API](../rfcs/core-api.md)
-- [PRD: Core Internals Inspiration Parity](../prd/core-internals-inspiration-parity.md)
-- [Keystone Internal Kernel Guidance](../agents/core-internal-kernel-guidance.md)
-- [Overlay Kernel Boundary Note](../agents/overlay-kernel-boundary.md)
-- [Collection And Typeahead Kernel Boundary Note](../agents/collection-typeahead-kernel-boundary.md)
