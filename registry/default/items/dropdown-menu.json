@@ -65,8 +65,8 @@
     "limitations": "Submenu pointer grace follows the current Core menu contract, and scroll arrow affordances are not implemented in UI. The generated source keeps behavior in Core and reserves visual density, indicators, shortcuts, and switch-style checkbox items for app-owned styling.",
     "parity": {
       "visualReference": "Matches the reference menu visual shape in Solid source form: rounded popover surface, viewport padding, dense items, inset items, destructive variant, grouped labels, separators, check/radio indicators, switch-style checkbox item, shortcuts, submenus, and neutral data-slot hooks.",
-      "baseUi": "Behavior parity is inherited through Keystone Core DropdownMenu: trigger/content positioning, modal option, item roles, roving focus, typeahead, disabled skipping, checkbox/radio item state, groups, labels, separators, link items, submenu keyboard flow, dismissal, and overlay layering.",
-      "kobalte": "Matches Kobalte DropdownMenu/Menu direction for Solid trigger, portal content, keyboard navigation, item parts, groups, disabled state, checkbox and radio items, submenus, dismissable-layer behavior, and focus restoration through Keystone Core."
+      "baseUi": "Evidence-backed coverage comes through Keystone Core DropdownMenu for trigger/content positioning, modal option, item roles, roving focus, typeahead, disabled skipping, checkbox/radio item state, groups, labels, separators, link items, submenu keyboard flow, dismissal, and overlay layering. Gaps: submenu pointer grace, scroll affordances, nested layer edge cases, and manual AT evidence remain open.",
+      "kobalte": "Solid composition follows DropdownMenu/Menu for trigger, portal content, keyboard navigation, item parts, groups, disabled state, checkbox and radio items, submenus, dismissable-layer behavior, and focus restoration through Keystone Core. Gaps: advanced submenu intent, modality nuance, and manual menu AT notes remain follow-up work."
     }
   },
   "files": [

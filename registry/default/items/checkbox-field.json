@@ -40,9 +40,9 @@
     "state": "TanStack Form owns the boolean field value, touched, dirty, blurred, validating, and errors. CheckboxField treats true as checked and all other values as unchecked.",
     "limitations": "Tri-state app modeling, checkbox groups, and custom inline label layouts remain app-owned composition.",
     "parity": {
-      "tanstackForm": "First-class TanStack Form parity: form.Field integration, validators pass-through, boolean value binding, blur/change delegation, and touched-derived invalid/error state.",
-      "baseUi": "Primitive behavior is inherited through Keystone Core Checkbox: checked state, keyboard toggling, hidden input submission, reset, disabled/read-only guards, and data attributes.",
-      "kobalte": "Solid parity follows Keystone Core Checkbox composition with explicit generated-source field wiring."
+      "tanstackForm": "Evidence-backed TanStack Form coverage: form.Field integration, validators pass-through, boolean value binding, blur/change delegation, and touched-derived invalid/error state. Gaps: async submit policy, schema conventions, and app-specific error copy remain host-owned.",
+      "baseUi": "Primitive behavior coverage comes through Keystone Core Checkbox for checked state, keyboard toggling, hidden input submission, reset, disabled/read-only guards, and data attributes. Gaps: broader readonly/validation examples and manual mixed-state AT evidence remain open.",
+      "kobalte": "Solid composition follows Keystone Core Checkbox with explicit generated-source field wiring. Gaps: richer group composition and validation announcement evidence remain follow-up work."
     }
   },
   "files": [

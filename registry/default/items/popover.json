@@ -52,8 +52,8 @@
     "limitations": "Title and description are styled UI composition helpers, not automatic ARIA relationships. Close controls remain app composition because Core Popover does not expose a close part yet.",
     "parity": {
       "visualReference": "Matches the reference popover visual shape in Solid source form: z-layered positioner, rounded popover surface, viewport padding, dense tooltip-style option, calendar-friendly padding hooks, transition status styling, floating CSS variables, and neutral data-slot hooks.",
-      "baseUi": "Behavior parity is inherited through Keystone Core Popover: Root/Trigger/Portal/Positioner/Content anatomy, controlled open state, modal option, floating placement, same-width and fit-viewport options, arrow geometry, outside and Escape dismissal, and presence metadata.",
-      "kobalte": "Matches Solid Popover/Popper composition for trigger, portal/content, controlled state, positioning, arrow, dismissable-layer direction, modal option, force-mounted lifecycle, and focus restoration through Keystone overlay internals."
+      "baseUi": "Evidence-backed coverage comes through Keystone Core Popover for Root/Trigger/Portal/Positioner/Content anatomy, controlled open state, modal option, floating placement, same-width and fit-viewport options, arrow geometry, outside and Escape dismissal, and presence metadata. Gaps: modal nuances, nested overlay policy, browser matrix, and manual AT evidence remain open.",
+      "kobalte": "Solid composition follows Popover/Popper for trigger, portal/content, controlled state, positioning, arrow, dismissable-layer direction, modal option, force-mounted lifecycle, and focus restoration through Keystone overlay internals. Gaps: deeper force-mount, nested focus restoration, and manual evidence remain follow-up work."
     }
   },
   "files": [

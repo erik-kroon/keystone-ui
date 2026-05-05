@@ -64,8 +64,8 @@
     "limitations": "Filtering strategy, async loading state ownership, chips container composition, and object-value helpers remain app-level composition decisions; Keystone Core owns the primitive combobox contract while UI keeps styling and ergonomic wrappers.",
     "parity": {
       "visualReference": "Matches the reference combobox visual shape in Solid source form: dense input sizing, optional start add-on, trigger and clear affordances, popup surface, listbox padding, grouped options, item indicator column, empty/status rows, separator, data-slot hooks, and pointer/focus/invalid styling.",
-      "baseUi": "Behavior parity is inherited through Keystone Core Combobox: input value, selected value, clear action, keyboard navigation, highlighted and selected item state, hidden input, controlled/uncontrolled open and value, positioning, and state data attributes.",
-      "kobalte": "Solid parity follows Keystone Core Combobox composition with input, trigger, clear, portal, positioner, content, listbox, groups, group labels, items, item text, item indicators, arrow, and form participation."
+      "baseUi": "Evidence-backed coverage comes through Keystone Core Combobox for input value, selected value, clear action, keyboard navigation, highlighted and selected item state, hidden input, controlled/uncontrolled open and value, positioning, and state data attributes. Gaps: filtering orchestration, async loading, multi-select, virtualization, hidden select parity, richer typeahead edge cases, and manual AT evidence remain open.",
+      "kobalte": "Solid composition follows the Combobox/Listbox/Popper direction with input, trigger, clear, portal, positioner, content, listbox, groups, group labels, items, item text, item indicators, arrow, and form participation. Gaps: richer collection APIs, async filtering helpers, reset coverage, and manual combobox AT notes remain follow-up work."
     }
   },
   "files": [

@@ -38,7 +38,7 @@ Commands run on 2026-05-04:
 | `bun run build`                                 | Pass              | Docs app Vite client and SSR builds passed.                                                                     |
 | `bun --filter @keystone-ui/core test`           | Pass              | 38 files, 202 tests.                                                                                            |
 | `bun --filter @keystone-ui/mason-registry test` | Pass              | 27 tests. Includes default registry parity metadata validation.                                                 |
-| `bun --filter @keystone-ui/mason-cli test`      | Pass              | 20 tests. Includes generated app typecheck/build after add.                                                     |
+| `bun --filter @keystone-ui/mason-cli test`      | Pass              | 27 tests. Includes generated app typecheck/build after add and installed registry provenance checks.            |
 | `bun run test`                                  | Not a repo script | Root `package.json` has no `test`; Bun attempted `/bin/test` and failed. Use package filters instead.           |
 
 Working tree after cleanup:
@@ -107,12 +107,12 @@ Important source clusters:
 
 ### Registry
 
-`registry/default` currently contains 37 first-party items:
+`registry/default` currently contains 47 first-party items:
 
-- Base components: button, badge, card, separator, input, label, textarea, cn.
-- Core-backed primitives: dialog, sheet, popover, hover-card, tooltip, accordion, collapsible, tabs, checkbox, switch, radio-group, slider, select/combobox/autocomplete, menu family, date-picker, toast, field.
-- UI app-layer components: data-table, data-table-tanstack-router, command-menu, text-field, select-field.
-- Block: account-settings.
+- Base components and utilities: button, badge, card, field, separator, input, label, textarea, cn.
+- Core-backed primitives: accordion, autocomplete, checkbox, collapsible, combobox, context-menu, date-picker, dialog, dropdown-menu, hover-card, menu, menubar, navigation-menu, popover, radio-group, select, sheet, slider, switch, tabs, toast, toolbar, tooltip.
+- UI app-layer components: checkbox-field, command-menu, data-table, data-table-tanstack-router, form-submit, radio-group-field, select-field, switch-field, tanstack-field, tanstack-form, text-field, textarea-field.
+- Blocks and templates: account-settings, invoice-dashboard, tanstack-start-dashboard.
 
 ## Current Call/Data Flow
 

@@ -123,6 +123,11 @@ Fieldset state attributes include:
 
 ## Known Gaps Before Stable
 
-- Manual screen-reader evidence for error announcement timing must be recorded.
-- Native constraint validation behavior needs broader browser matrix coverage.
+- Browser and manual evidence is summarized in
+  [Primitive Browser And Manual Accessibility Evidence](../accessibility/primitive-evidence.md).
+- Manual screen-reader evidence for error announcement timing must still be recorded before a
+  stable claim.
+- Native constraint validation behavior needs broader browser matrix coverage; the 2026-05-05
+  Chromium probe found a reset edge case where native email validity repopulated the error after
+  reset.
 - Multi-value hidden input conventions should be finalized before stable.

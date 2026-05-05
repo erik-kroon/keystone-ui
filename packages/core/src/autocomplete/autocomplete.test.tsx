@@ -1,3 +1,4 @@
+import { createRoot } from "solid-js";
 import { describe, expect, test } from "vitest";
 import { Autocomplete, createAutocomplete } from "./index";
 import { render, settled } from "../../test/harness";
@@ -37,9 +38,13 @@ describe("autocomplete", () => {
   });
 
   test("createAutocomplete defaults its public scope to autocomplete", () => {
-    const autocomplete = createAutocomplete();
+    createRoot((dispose) => {
+      const autocomplete = createAutocomplete();
 
-    expect(autocomplete.scope).toBe("autocomplete");
-    expect(autocomplete.getInputProps({})["data-scope"]).toBe("autocomplete");
+      expect(autocomplete.scope).toBe("autocomplete");
+      expect(autocomplete.getInputProps({})["data-scope"]).toBe("autocomplete");
+
+      dispose();
+    });
   });
 });

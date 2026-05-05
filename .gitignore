@@ -50,4 +50,5 @@ coverage
 tmp
 temp
 inspo/
+references/
 .playwright-mcp/

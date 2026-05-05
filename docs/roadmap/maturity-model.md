@@ -70,30 +70,68 @@ Requirements:
 
 These labels are intentionally conservative.
 
-| Primitive                             | Maturity     | Notes                                                                                                 |
-| ------------------------------------- | ------------ | ----------------------------------------------------------------------------------------------------- |
-| AccessibleIcon                        | Beta         | Small, proven utility; still preview package.                                                         |
-| Direction                             | Stable       | Proven utility with isolated behavior.                                                                |
-| Locale                                | Beta         | Useful provider; needs broader docs before stable.                                                    |
-| LiveAnnouncer                         | Beta         | Useful utility; manual AT notes should precede stable claims.                                         |
-| VisuallyHidden                        | Stable       | Small utility with stable behavior.                                                                   |
-| Portal                                | Beta         | Proven utility; SSR/hydration docs should remain visible.                                             |
-| Popper                                | Beta         | Public positioning composition surface; depends on Floating UI adapter maturity.                      |
-| FormControl / Field                   | Beta         | Strong direction and tests, but API should settle before stable.                                      |
-| Dialog                                | Beta         | Primary overlay proving primitive; needs broader browser/manual accessibility evidence.               |
-| Select                                | Beta         | Primary collection/form proving primitive; needs virtualized/large collection strategy before stable. |
-| Combobox                              | Experimental | Important, but async/filtering/virtualization guidance is still forming.                              |
-| Listbox                               | Internal     | Kernel-facing until Select/Combobox prove the collection API.                                         |
-| Overlay internals                     | Internal     | Private kernel.                                                                                       |
-| Accordion / Collapsible               | Beta         | Useful disclosure primitives; keep API review open.                                                   |
-| Tabs                                  | Beta         | Needs full keyboard/mounting/focus docs before stable.                                                |
-| Menu family                           | Experimental | Needs submenu, pointer intent, and nested menu depth before beta/stable.                              |
-| Popover / Tooltip / HoverCard / Sheet | Experimental | Overlay derivatives should trail Dialog kernel maturity.                                              |
-| Checkbox / Switch / RadioGroup        | Beta         | Selection-control kernel is promising; validate form/reset and readonly semantics broadly.            |
-| Slider                                | Experimental | Needs broader pointer/keyboard/orientation coverage before beta.                                      |
-| DatePicker / Calendar                 | Experimental | Date field family should move cautiously.                                                             |
-| Toast                                 | Experimental | Needs manager/provider/a11y evidence and pause/update policy before beta.                             |
-| Toolbar                               | Experimental | Needs composite coordination depth before beta.                                                       |
+Preview docs use these buckets:
+
+- Stable-candidate: `Stable` metadata surfaces that are small enough to carry a stable contract during preview (`direction`, `visually-hidden` today).
+- Beta: useful public surfaces for early adopters with explicit known gaps.
+- Experimental: feedback surfaces whose API or evidence may change materially.
+- Internal: private kernel or helper surfaces, even when metadata-visible for testing.
+- Backlog: planned surfaces with no public API contract.
+
+The authoritative source is `packages/core/src/metadata/index.ts`. This table is the current public-docs snapshot of that metadata plus the `@keystone-ui/core` package exports. Public subpaths should not ship without a label here or an explicit explanation.
+
+| Public surface / metadata scope | Export subpath      | Maturity     | Explanation                                                                                                                                                       |
+| ------------------------------- | ------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Package root aggregate          | `.`                 | Mixed        | Re-exports public primitives, metadata helpers, and types. Each primitive keeps its own maturity label; root availability is not a stable claim for every member. |
+| `accessible-icon`               | `./accessible-icon` | Beta         | Small, proven utility; still preview package.                                                                                                                     |
+| `accordion`                     | `./accordion`       | Beta         | Useful disclosure primitive; API review remains open before stable.                                                                                               |
+| `autocomplete`                  | `./autocomplete`    | Experimental | Combobox-derived UI convenience surface; filtering, async loading, and large-list guidance are still forming.                                                     |
+| `checkbox`                      | `./checkbox`        | Beta         | Selection-control kernel is promising; validate form/reset and readonly semantics broadly.                                                                        |
+| `collapsible`                   | `./collapsible`     | Beta         | Useful disclosure primitive; measured transition helpers remain follow-up work.                                                                                   |
+| `combobox`                      | `./combobox`        | Experimental | Important collection/form primitive, but async/filtering/virtualization guidance and AT evidence are not stable-grade yet.                                        |
+| `calendar`                      | `./date-picker`     | Experimental | Exported through the date-picker package; calendar-system and date-field depth remain follow-up work.                                                             |
+| `date-picker`                   | `./date-picker`     | Experimental | Date field family should move cautiously until segment editing, validation, and locale coverage mature.                                                           |
+| `description`                   | `./description`     | Beta         | Small form-associated text primitive; stable status waits on broader form docs and examples.                                                                      |
+| `direction`                     | `./direction`       | Stable       | Proven utility with isolated behavior.                                                                                                                            |
+| `dialog`                        | `./dialog`          | Beta         | Primary overlay proving primitive; needs broader browser/manual accessibility evidence before stable.                                                             |
+| `error-message`                 | `./error-message`   | Beta         | Small form-associated text primitive; stable status waits on broader form docs and examples.                                                                      |
+| `field`                         | `./form`            | Beta         | Exported through the form package; API should settle before stable.                                                                                               |
+| `fieldset`                      | `./fieldset`        | Beta         | Form group primitive with useful metadata; validation/browser evidence needs to broaden before stable.                                                            |
+| `form-control`                  | `./form`            | Beta         | Exported through the form package; strong direction and tests, but API should settle before stable.                                                               |
+| `hover-card`                    | `./hover-card`      | Experimental | Overlay derivative; should trail Dialog and Popper maturity.                                                                                                      |
+| `label`                         | `./label`           | Beta         | Small native-label wrapper; stable status waits on broader field composition docs.                                                                                |
+| `live-announcer`                | `./live-announcer`  | Beta         | Useful utility; manual AT notes should precede stable claims.                                                                                                     |
+| `locale`                        | `./locale`          | Beta         | Useful provider; needs broader docs before stable.                                                                                                                |
+| `context-menu`                  | `./context-menu`    | Experimental | Menu-family surface; pointer intent, checked items, and nested menu depth are still maturing.                                                                     |
+| `dropdown-menu`                 | `./dropdown-menu`   | Experimental | Menu-family surface; submenu, checked item, modality, and layer edge evidence are still maturing.                                                                 |
+| `menu`                          | `./menu`            | Experimental | Menu-family base; submenu, pointer intent, and nested menu depth are needed before beta/stable.                                                                   |
+| `menubar`                       | `./menubar`         | Experimental | Menu-family derivative; nested popup coordination and RTL/pointer coverage need more evidence.                                                                    |
+| `navigation-menu`               | `./navigation-menu` | Experimental | Menu-family derivative; viewport/layout APIs, touch intent, and routed focus evidence remain open.                                                                |
+| `popover`                       | `./popover`         | Experimental | Overlay derivative; should trail Dialog kernel maturity.                                                                                                          |
+| `popper`                        | `./popper`          | Beta         | Public positioning composition surface; depends on Floating UI adapter maturity.                                                                                  |
+| `portal`                        | `./portal`          | Beta         | Proven utility; SSR/hydration docs should remain visible.                                                                                                         |
+| `radio-group`                   | `./radio-group`     | Beta         | Selection-control kernel is promising; validate form/reset and readonly semantics broadly.                                                                        |
+| `select`                        | `./select`          | Beta         | Primary collection/form proving primitive; needs virtualized/large collection strategy and manual AT evidence before stable.                                      |
+| `sheet`                         | `./sheet`           | Experimental | Overlay derivative; side-specific and nested modal evidence should trail Dialog maturity.                                                                         |
+| `slider`                        | `./slider`          | Experimental | Needs broader pointer/keyboard/orientation coverage before beta.                                                                                                  |
+| `switch`                        | `./switch`          | Beta         | Selection-control kernel is promising; validate form/reset and readonly semantics broadly.                                                                        |
+| `tabs`                          | `./tabs`            | Beta         | Needs full keyboard/mounting/focus docs and broader browser evidence before stable.                                                                               |
+| `toast`                         | `./toast`           | Experimental | Needs manager/provider/a11y evidence and pause/update policy before beta.                                                                                         |
+| `toolbar`                       | `./toolbar`         | Experimental | Needs composite coordination depth before beta.                                                                                                                   |
+| `tooltip`                       | `./tooltip`         | Experimental | Overlay derivative; should trail Dialog/Popover kernel maturity and manual AT evidence.                                                                           |
+| `visually-hidden`               | `./visually-hidden` | Stable       | Small utility with stable behavior.                                                                                                                               |
+
+## Internal And Backlog Surfaces
+
+| Surface                 | Maturity | Explanation                                                                                                                                                   |
+| ----------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `listbox`               | Internal | Kernel-facing until Select and Combobox prove the collection API. It is metadata-visible but not a public package subpath.                                    |
+| `overlay`               | Internal | Private overlay kernel. Document behavior through public overlay primitives instead of promoting this API.                                                    |
+| Broad primitive backlog | Backlog  | Future inventory is tracked in `docs/agents/end-state-primitive-component-inventory.md`; backlog items are not public API and should not carry stable claims. |
+
+## Known Gaps
+
+Known beta and experimental gaps are centralized in [Core Primitive Known Gaps](../core/primitive-known-gaps.md). Stable status requires closing or explicitly deferring the relevant API, browser, and manual accessibility gaps.
 
 ## UI Labels
 

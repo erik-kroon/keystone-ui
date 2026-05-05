@@ -32,8 +32,8 @@
     "limitations": "Drag gestures and app-specific field copy remain composition concerns; Keystone Core owns the primitive state and form contract while UI owns the generated visual shell.",
     "parity": {
       "visualReference": "Matches the reference switch visual shape in Solid source form: compact track, thumb-size CSS variable, checked/unchecked track colors, animated thumb translation, active thumb stretch, focus ring, disabled opacity, and data-slot hooks.",
-      "baseUi": "Behavior parity is inherited through Keystone Core Switch: controlled/uncontrolled checked state, disabled/read-only guards, role=switch, hidden checkbox submission, validation metadata, form reset, and preventable user handlers.",
-      "kobalte": "Solid parity follows Keystone Core Switch composition with Root, Control, Thumb, HiddenInput, stable data attributes, native form participation, and user-owned label/description composition."
+      "baseUi": "Evidence-backed coverage comes through Keystone Core Switch for controlled/uncontrolled checked state, disabled/read-only guards, role=switch, hidden checkbox submission, validation metadata, form reset, and preventable user handlers. Gaps: broader readonly, validation, and manual switch AT evidence remain open.",
+      "kobalte": "Solid composition follows Switch Root, Control, Thumb, HiddenInput, stable data attributes, native form participation, and user-owned label/description composition. Gaps: richer field examples and validation announcement evidence remain follow-up work."
     }
   },
   "files": [

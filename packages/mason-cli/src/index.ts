@@ -43,7 +43,9 @@ export async function run(argv: string[] = process.argv.slice(2)): Promise<strin
   if (args.command === "add") {
     if (!args.item) throw new Error("Usage: mason add <item> --registry <path>");
     if (!args.registry)
-      throw new Error("mason add requires --registry <path> for the first tracer.");
+      throw new Error(
+        "mason add requires --registry <path>; the 0.1 preview has no hosted default registry.",
+      );
     return addCommand({
       cwd: args.cwd,
       item: args.item,
@@ -53,12 +55,18 @@ export async function run(argv: string[] = process.argv.slice(2)): Promise<strin
   }
   if (args.command === "diff") {
     if (!args.item) throw new Error("Usage: mason diff <item> --registry <path>");
-    if (!args.registry) throw new Error("mason diff requires --registry <path>.");
+    if (!args.registry)
+      throw new Error(
+        "mason diff requires --registry <path>; the 0.1 preview has no hosted default registry.",
+      );
     return diffCommand({ cwd: args.cwd, item: args.item, registry: args.registry });
   }
   if (args.command === "update") {
     if (!args.item) throw new Error("Usage: mason update <item> --registry <path>");
-    if (!args.registry) throw new Error("mason update requires --registry <path>.");
+    if (!args.registry)
+      throw new Error(
+        "mason update requires --registry <path>; the 0.1 preview has no hosted default registry.",
+      );
     return updateCommand({
       cwd: args.cwd,
       item: args.item,

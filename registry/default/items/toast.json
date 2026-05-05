@@ -57,8 +57,8 @@
       "Toast does not participate in focus trapping, outside hiding, inerting, prevent-scroll, or overlay layering."
     ],
     "parity": {
-      "baseUi": "Inherits Core manager/provider/store behavior with add, update, dismiss, clear, subscribe, limit, timer scheduling, viewport rendering, action and close parts, roles, and hover/focus pause behavior. UI adds source-owned styling, slots, offsets, positions, and tone affordances without exporting private Core internals.",
-      "kobalte": "Inherits Core Toaster/Region/Toast Root, Title, Description, Close, action-like composition, Solid store subscription, duration, visible limit, pause-on-interaction, and polite/assertive live-region behavior. UI provides the styled copy-paste anatomy and decorative icon slot.",
+      "baseUi": "Evidence-backed coverage comes through Core manager/provider/store behavior with add, update, dismiss, clear, subscribe, limit, timer scheduling, viewport rendering, action and close parts, roles, and hover/focus pause behavior. UI adds source-owned styling, slots, offsets, positions, and tone affordances without exporting private Core internals. Gaps: measured stacking, promise helpers, cancel/undo policy, and manual live-region AT evidence remain open.",
+      "kobalte": "Solid composition follows Toaster/Region/Toast Root, Title, Description, Close, action-like composition, store subscription, duration, visible limit, pause-on-interaction, and polite/assertive live-region behavior. UI provides the styled copy-paste anatomy and decorative icon slot. Gaps: update timing, pause policy documentation, and manual AT evidence remain follow-up work.",
       "sonner": "Matches the ergonomic default toaster export, id-based update/dismiss, toast type variants, action callbacks, close button, duration, viewport limit, position offsets, responsive viewport constraints, tone icons, and custom render hook. Swipe, measured stacking, promise helpers, cancel action, and expand mode remain explicit limitations rather than UI reimplementations."
     }
   },

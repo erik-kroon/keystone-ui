@@ -16,7 +16,15 @@ mason diff dialog --registry ./registry/default
 mason update dialog --registry ./registry/default
 ```
 
-There is no hosted default registry in this preview. The default first-party registry exists in this repo under `registry/default`, and tests verify installs against that local registry.
+There is no hosted default registry in this preview. The default first-party registry exists in this repo under `registry/default`, and tests verify installs against that local registry. The CLI error text intentionally tells users that `--registry <path>` is required until a hosted default exists.
+
+Hosted default registry resolution is deferred for 0.1. The first implementation slice should be:
+
+- Publish a static build of `registry/default` at a versioned Keystone-owned URL.
+- Define whether schema references stay relative to the package schema or use a hosted schema URL.
+- Add CLI default-registry resolution only for `add`, `diff`, and `update`.
+- Keep `--registry <path-or-url>` as an override for local and private registries.
+- Add release verification that fetches the hosted registry and installs at least `button`, `dialog`, `data-table`, and `account-settings`.
 
 ## Lifecycle Commands
 
@@ -48,7 +56,7 @@ Resolves a registry item and its transitive registry dependencies, validates the
 
 Current behavior:
 
-- Requires `--registry <path>`.
+- Requires `--registry <path>` because the 0.1 preview has no hosted default registry.
 - Resolves registry dependencies into one plan.
 - Validates item metadata, install-supported item types, paths, dependency specifiers, and targets before writing.
 - Refuses existing target files unless the registry file mode allows the write.
@@ -78,7 +86,7 @@ Compares the current registry output with installed files and recorded hashes.
 
 Current behavior:
 
-- Requires `--registry <path>`.
+- Requires `--registry <path>` because the 0.1 preview has no hosted default registry.
 - Shows creates, updates, deletes, unchanged files, dependency changes, and local-change markers.
 - Uses installed file hashes when available to distinguish registry updates from user edits.
 
@@ -94,7 +102,7 @@ Re-resolves an installed item and applies registry output when safe.
 
 Current behavior:
 
-- Requires `--registry <path>`.
+- Requires `--registry <path>` because the 0.1 preview has no hosted default registry.
 - Blocks when local changes are detected unless `--force` is used.
 - `--dry-run` prints the update plan without writing.
 - `--force` overwrites local changes with the planned registry output.
@@ -154,10 +162,11 @@ The current record includes:
 
 - Item name.
 - Item version.
+- Registry identity: registry name, homepage, and resolved source URL.
 - Installed file targets.
 - File hashes at install time.
 
-This metadata lets `diff`, `update`, `remove`, and `doctor` detect local edits and missing files without treating generated source as hidden runtime state.
+This metadata lets `diff`, `update`, `remove`, and `doctor` detect local edits, missing files, and registry provenance mismatches without treating generated source as hidden runtime state.
 
 ## Default Registry Behavior
 
@@ -184,11 +193,12 @@ Current verification covers:
 - Installing representative registry items into a Solid Vite fixture.
 - Typechecking generated source.
 - Building generated source.
+- Server-rendering a composed app that imports Core-backed overlays, DataTable, DataTable Router adapter, CommandMenu, TanStack Form text/select/textarea/checkbox/radio/switch fields, and the invoice dashboard block.
 - Validating registry metadata, dependency graphs, and path safety.
 
 Current limitations:
 
-- SolidStart, TanStack Router route-file generation, Tailwind/plain CSS variants, and monorepo matrices are not all covered yet.
+- SolidStart, full TanStack Router route-file generation, Tailwind/plain CSS variants, and monorepo matrices are not all covered yet.
 - Browser interaction and accessibility smoke checks for installed UI examples remain future preview hardening work.
 
 ## Preview Rules

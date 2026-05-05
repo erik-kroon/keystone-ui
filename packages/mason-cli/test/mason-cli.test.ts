@@ -1,6 +1,7 @@
 import { cp, mkdir, mkdtemp, readFile, rm, stat, symlink, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { afterEach, describe, expect, test } from "bun:test";
 import { addCommand } from "../src/commands/add";
 import { initCommand } from "../src/commands/init";
@@ -133,10 +134,20 @@ describe("add planning and writes", () => {
     expect(await readFile(path.join(app, "src/lib/cn.ts"), "utf8")).toContain("export function cn");
     const packageJson = JSON.parse(await readFile(path.join(app, "package.json"), "utf8")) as {
       dependencies: Record<string, string>;
-      mason: { installed: Record<string, { files: string[] }> };
+      mason: {
+        installed: Record<
+          string,
+          { files: string[]; registry: { homepage: string; name: string; source: string } }
+        >;
+      };
     };
     expect(packageJson.dependencies["@keystone-ui/core"]).toBeUndefined();
     expect(packageJson.mason.installed.button?.files).toEqual(["src/components/ui/button.tsx"]);
+    expect(packageJson.mason.installed.button?.registry).toEqual({
+      name: "local",
+      homepage: "https://keystone-ui.dev",
+      source: pathToFileURL(registry).href,
+    });
   });
 
   test("write planning rejects existing user-owned files", async () => {
@@ -179,6 +190,11 @@ describe("add planning and writes", () => {
     expect(plan.conflicts).toEqual([buttonFile.conflict]);
     expect(plan.installedItems.find((item) => item.name === "button")?.fileHashes).toEqual({
       "src/components/ui/button.tsx": buttonFile.contentHash,
+    });
+    expect(plan.installedItems.find((item) => item.name === "button")?.registry).toEqual({
+      name: "local",
+      homepage: "https://keystone-ui.dev",
+      source: pathToFileURL(registry).href,
     });
   });
 
@@ -561,6 +577,37 @@ describe("registry lifecycle commands", () => {
     );
   });
 
+  test("doctor reports missing and mismatched installed registry identity", async () => {
+    const app = await fixtureApp();
+    await initCommand({ cwd: app, yes: true });
+    await addCommand({ cwd: app, item: "button", registry });
+    const packagePath = path.join(app, "package.json");
+    const packageJson = JSON.parse(await readFile(packagePath, "utf8")) as {
+      mason: { installed: Record<string, { registry?: unknown }> };
+    };
+    const installedButton = packageJson.mason.installed.button;
+    if (!installedButton) throw new Error("Expected installed button metadata");
+    delete installedButton.registry;
+    await writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
+
+    expect(await doctorCommand({ cwd: app, registry })).toContain(
+      "issue missing registry identity for button",
+    );
+
+    installedButton.registry = {
+      name: "other",
+      homepage: "https://other.example",
+      source: "file:///other-registry",
+    };
+    await writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
+
+    const output = await doctorCommand({ cwd: app, registry });
+    expect(output).toContain("issue registry name mismatch for button: installed from other");
+    expect(output).toContain(
+      "issue registry homepage mismatch for button: installed from https://other.example",
+    );
+  });
+
   test("doctor reports bad config and invalid registry documents", async () => {
     const app = await fixtureApp();
     await initCommand({ cwd: app, yes: true });
@@ -584,6 +631,18 @@ describe("registry lifecycle commands", () => {
       "Mason diff plan for button:",
     );
     expect(await run(["doctor", "--cwd", app, "--registry", registry])).toBe("Mason doctor:\nok");
+  });
+
+  test("CLI explains explicit local registry requirement for preview item resolution", async () => {
+    await expect(run(["add", "button"])).rejects.toThrow(
+      "mason add requires --registry <path>; the 0.1 preview has no hosted default registry.",
+    );
+    await expect(run(["diff", "button"])).rejects.toThrow(
+      "mason diff requires --registry <path>; the 0.1 preview has no hosted default registry.",
+    );
+    await expect(run(["update", "button"])).rejects.toThrow(
+      "mason update requires --registry <path>; the 0.1 preview has no hosted default registry.",
+    );
   });
 });
 
