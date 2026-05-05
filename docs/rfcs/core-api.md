@@ -293,7 +293,11 @@ The first implementation milestone should prove the API in this order:
    - SSR and hydration smoke tests
 3. `AlertDialog`:
    - confirms dialog composition can specialize safety-critical behavior
-   - validates focus defaults and dismissal constraints
+   - exposes Root, Trigger, Portal, Backdrop, Positioner, Content, Title, Description, Cancel, and Action parts
+   - uses `role="alertdialog"`, required title/description relationships, and modal outside hiding
+   - defaults initial focus to the least destructive `Cancel` part while allowing `onMountAutoFocus` to override it
+   - closes with explicit cancel/action parts and Escape, but prevents outside interaction dismissal by default
+   - validates controlled/uncontrolled open state, focus trap/restore, force-mounted presence, and `data-scope="alert-dialog"` part metadata
 4. A field/control primitive:
    - proves labels, descriptions, invalid state, required state, form semantics, and data attributes
 

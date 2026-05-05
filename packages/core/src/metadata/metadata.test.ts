@@ -13,6 +13,16 @@ import {
 const expectedParts = {
   "accessible-icon": ["root", "label"],
   accordion: ["root", "item", "header", "trigger", "content"],
+  "alert-dialog": [
+    "trigger",
+    "cancel",
+    "action",
+    "backdrop",
+    "positioner",
+    "content",
+    "title",
+    "description",
+  ],
   autocomplete: [
     "input",
     "trigger",
@@ -43,6 +53,20 @@ const expectedParts = {
   ],
   checkbox: ["root", "control", "indicator", "hidden-input"],
   combobox: [
+    "input",
+    "trigger",
+    "clear",
+    "positioner",
+    "arrow",
+    "content",
+    "listbox",
+    "group",
+    "group-label",
+    "item",
+    "item-text",
+    "item-indicator",
+  ],
+  command: [
     "input",
     "trigger",
     "clear",
@@ -156,11 +180,13 @@ const expectedParts = {
 const publicPrimitiveScopes = [
   "accessible-icon",
   "accordion",
+  "alert-dialog",
   "autocomplete",
   "calendar",
   "checkbox",
   "collapsible",
   "combobox",
+  "command",
   "context-menu",
   "date-picker",
   "description",
@@ -241,6 +267,7 @@ describe("primitive part metadata", () => {
     expect(primitiveMetadata.dialog.maturity).toBe("beta");
     expect(primitiveMetadata.select.maturity).toBe("beta");
     expect(primitiveMetadata.combobox.maturity).toBe("experimental");
+    expect(primitiveMetadata.command.maturity).toBe("experimental");
   });
 
   test("routes runtime part attributes through the metadata helper", () => {

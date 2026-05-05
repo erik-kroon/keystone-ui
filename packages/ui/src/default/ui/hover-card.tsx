@@ -1,5 +1,6 @@
 import {
   HoverCard as CoreHoverCard,
+  type HoverCardArrowProps as CoreHoverCardArrowProps,
   type HoverCardContentProps as CoreHoverCardContentProps,
   type HoverCardPortalProps as CoreHoverCardPortalProps,
   type HoverCardPositionerProps as CoreHoverCardPositionerProps,
@@ -13,6 +14,7 @@ export type HoverCardProps = CoreHoverCardRootProps;
 export type HoverCardTriggerProps = CoreHoverCardTriggerProps;
 export type HoverCardPortalProps = CoreHoverCardPortalProps;
 export type HoverCardPositionerProps = CoreHoverCardPositionerProps;
+export type HoverCardArrowProps = CoreHoverCardArrowProps;
 export type HoverCardContentProps = CoreHoverCardContentProps & {
   portal?: HoverCardPortalProps;
   positionerClass?: string;
@@ -34,6 +36,11 @@ export function HoverCardPortal(props: HoverCardPortalProps) {
 export function HoverCardPositioner(props: HoverCardPositionerProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return <CoreHoverCard.Positioner {...rest} class={cn("ui-hover-card-positioner", local.class)} />;
+}
+
+export function HoverCardArrow(props: HoverCardArrowProps) {
+  const [local, rest] = splitProps(props, ["class"]);
+  return <CoreHoverCard.Arrow {...rest} class={cn("ui-hover-card-arrow", local.class)} />;
 }
 
 export function HoverCardContent(props: HoverCardContentProps) {

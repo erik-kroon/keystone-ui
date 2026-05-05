@@ -214,9 +214,12 @@ export function createHoverCard(options: CreateHoverCardOptions = {}): HoverCard
         focusReason: "focus",
         pointerReason: "pointer",
       });
+      const { type: _type, ...anchorTriggerProps } = triggerProps as typeof triggerProps & {
+        type?: unknown;
+      };
 
       return interaction.getTriggerProps({
-        ...triggerProps,
+        ...anchorTriggerProps,
         "aria-describedby": undefined,
         onKeyDown: composeEventHandlers<KeyboardEvent>(triggerProps.onKeyDown, (event) => {
           if (event.key !== "Escape" || !overlay.open()) {
