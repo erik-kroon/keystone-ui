@@ -46,8 +46,8 @@
     "limitations": "The UI item styles the popup and viewport only; custom arrow artwork and disabled-trigger composition remain app-level choices while Core owns tooltip behavior.",
     "parity": {
       "visualReference": "Matches the reference tooltip visual shape in Solid source form: compact text-balanced popup, rounded bordered popover surface, small viewport padding, transition status styling, z-layered positioner, floating CSS variables, and neutral data-slot hooks.",
-      "baseUi": "Behavior parity is inherited through Keystone Core Tooltip: provider-level delay groups, controlled open state, hover/focus trigger intent, hoverable content policy, pointer grace area, Escape dismissal, floating placement, arrow geometry, portal rendering, and transition status metadata.",
-      "kobalte": "Matches Solid Tooltip/Popper direction with trigger, portal/content, delay and skip-delay timing, controlled state, aria-describedby wiring, force-mounted lifecycle, arrow part, and pointer safe-area behavior through Keystone overlay internals."
+      "baseUi": "Evidence-backed coverage comes through Keystone Core Tooltip for provider-level delay groups, controlled open state, hover/focus trigger intent, hoverable content policy, pointer grace area, Escape dismissal, floating placement, arrow geometry, portal rendering, and transition status metadata. Gaps: manual AT evidence, pointer/touch matrix, and aria-describedby timing documentation remain open.",
+      "kobalte": "Solid composition follows Tooltip/Popper with trigger, portal/content, delay and skip-delay timing, controlled state, aria-describedby wiring, force-mounted lifecycle, arrow part, and pointer safe-area behavior through Keystone overlay internals. Gaps: deeper force-mount evidence and manual tooltip AT notes remain follow-up work."
     }
   },
   "files": [

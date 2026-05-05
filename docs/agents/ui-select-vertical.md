@@ -17,4 +17,6 @@ Issue: #224
 ## Verification
 
 - Registry validation covers the item metadata, registry inventory, and source contract.
+- `docs/accessibility/primitive-evidence.md` records the 2026-05-05 Select browser probe, manual
+  accessibility status, and large-list/virtualization policy for issue #297.
 - Full verification should include Mason registry tests, docs registry tests, typecheck, and the repo check command.

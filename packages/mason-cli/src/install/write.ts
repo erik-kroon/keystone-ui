@@ -40,6 +40,7 @@ export async function applyWritePlan(project: ProjectShape, plan: WritePlan): Pr
           item.name,
           {
             version: item.version,
+            registry: item.registry,
             files: item.files,
             fileHashes: item.fileHashes,
           },

@@ -40,3 +40,10 @@ shape.
 `FieldControl` is the fully wired control path. A standalone UI `Input` nested directly under
 `Field` remains a native styled input, but it does not consume Core Field context until Keystone
 publishes a public UI field-control context bridge.
+
+## Verification
+
+- `docs/accessibility/primitive-evidence.md` records the 2026-05-05 Field/FormControl browser probe
+  and manual accessibility status for issue #303.
+- Core Field semantics remain separate from TanStack Form app-state adapters; UI TanStack field
+  wrappers may compose Field behavior, but Core must not depend on TanStack Form.

@@ -57,9 +57,9 @@
     "ssr": "Initial placeholder/value output, hidden input serialization, and TanStackField relationship IDs are deterministic. Portal mounting, collection registration, floating measurement, and active descendant movement remain client-side Core Select effects.",
     "limitations": "SelectField is intentionally single-value string-first and reserves the empty string as the no-selection value for placeholder display. Multi-select values, object value adapters, async option loading, filtering, virtualization, and schema-specific validation helpers remain app-owned composition until the underlying Select API grows those contracts.",
     "parity": {
-      "tanstackForm": "First-class comparison is TanStack Form: SelectField now composes TanStackField, passes validators through form.Field, maps Core Select value and blur events into TanStack field handlers, and exposes field-driven touched/invalid/error state.",
-      "baseUi": "Behavior parity for the underlying select is inherited through Keystone Core Select: collection registration, keyboard navigation, typeahead, positioning, hidden form value, data attributes, disabled items, and reset support.",
-      "kobalte": "Solid reference is Kobalte Select plus form-control composition. SelectField follows that shape through TanStackField for form-control relationships and Keystone Select for trigger, portal, listbox, item, and value behavior."
+      "tanstackForm": "Evidence-backed TanStack Form coverage: SelectField composes TanStackField, passes validators through form.Field, maps Core Select value and blur events into TanStack field handlers, and exposes field-driven touched/invalid/error state. Gaps: async submit policy, schema conventions, and app-specific error copy remain host-owned.",
+      "baseUi": "Underlying select coverage comes through Keystone Core Select for collection registration, keyboard navigation, typeahead, positioning, hidden form value, data attributes, disabled items, and reset support. Gaps: large-list policy and manual select AT evidence remain open.",
+      "kobalte": "Solid reference is Kobalte Select plus form-control composition. SelectField follows that shape through TanStackField for form-control relationships and Keystone Select for trigger, portal, listbox, item, and value behavior. Gaps: richer validation/reset examples and manual error announcement evidence remain follow-up work."
     }
   },
   "files": [

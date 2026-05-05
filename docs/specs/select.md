@@ -97,6 +97,10 @@ Floating parts expose Keystone geometry CSS variables.
 
 ## Known Gaps Before Stable
 
-- Manual screen-reader evidence for the trigger/listbox pattern must be recorded.
-- Large collection and virtualization guidance is not stable.
+- Browser, manual, and large-list evidence is summarized in
+  [Primitive Browser And Manual Accessibility Evidence](../accessibility/primitive-evidence.md).
+- Manual screen-reader evidence for the trigger/listbox pattern must still be recorded before a
+  stable claim.
+- Mounted large-list evidence exists for 10, 100, 500, and 1000 items, but public virtualization
+  and offscreen item matching are deferred until a separate adapter is designed.
 - Async item loading and filtering belong to Combobox or UI app composition until separately specified.

@@ -25,9 +25,9 @@
     "state": "TanStack Form owns value, touched, dirty, blurred, validating, and errors. TextField maps string input into TanStack field value and mirrors focus through the TanStackField shell.",
     "limitations": "Masked input, parse/format adapters, async validation examples, and schema-specific validation helpers remain app-owned composition.",
     "parity": {
-      "tanstackForm": "First-class TanStack Form parity: form.Field integration, validators pass-through, controlled input value binding, blur/change delegation, and touched-derived invalid/error state.",
-      "baseUi": "Field behavior is inherited through Keystone Core FormControl and native input semantics.",
-      "kobalte": "Solid parity follows Keystone Core Field/FormControl composition with user-owned source styling."
+      "tanstackForm": "Evidence-backed TanStack Form coverage: form.Field integration, validators pass-through, controlled input value binding, blur/change delegation, and touched-derived invalid/error state. Gaps: async submit policy, schema conventions, and app-specific error copy remain host-owned.",
+      "baseUi": "Field behavior coverage comes through Keystone Core FormControl and native input semantics. Gaps: broader validation/reset examples and manual error announcement evidence remain open.",
+      "kobalte": "Solid composition follows Keystone Core Field/FormControl with user-owned source styling. Gaps: richer field-state examples and manual AT evidence remain follow-up work."
     }
   },
   "files": [

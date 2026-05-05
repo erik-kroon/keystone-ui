@@ -93,7 +93,11 @@ async function main() {
     await addCommand({ cwd: app, item: "tanstack-form", registry });
     await addCommand({ cwd: app, item: "tanstack-field", registry });
     await addCommand({ cwd: app, item: "text-field", registry });
+    await addCommand({ cwd: app, item: "textarea-field", registry });
     await addCommand({ cwd: app, item: "select-field", registry });
+    await addCommand({ cwd: app, item: "checkbox-field", registry });
+    await addCommand({ cwd: app, item: "radio-group-field", registry });
+    await addCommand({ cwd: app, item: "switch-field", registry });
     await addCommand({ cwd: app, item: "command-menu", registry });
     await addCommand({ cwd: app, item: "data-table", registry });
     await addCommand({ cwd: app, item: "data-table-tanstack-router", registry });
@@ -141,11 +145,15 @@ import { DataTableRowActions } from "@/components/data-table/data-table-row-acti
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { dataTableFacetedFilter, useDataTable } from "@/components/data-table/use-data-table";
 import { InvoiceDashboardBlock } from "@/components/blocks/invoice-dashboard/invoice-dashboard";
+import { CheckboxField } from "@/components/ui/checkbox-field";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { RadioGroupField } from "@/components/ui/radio-group-field";
 import { SelectField } from "@/components/ui/select-field";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { SwitchField } from "@/components/ui/switch-field";
 import { TanStackForm, TanStackFormSubmit } from "@/components/ui/tanstack-form";
 import { TextField } from "@/components/ui/text-field";
+import { TextareaField } from "@/components/ui/textarea-field";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import "./styles.css";
 
@@ -223,8 +231,12 @@ const commandItems: CommandMenuItemData[] = [
 function App() {
   const form = createForm(() => ({
     defaultValues: {
+      accepted: false,
       email: "",
+      notes: "",
       plan: "team",
+      role: "admin",
+      updates: true,
     },
     onSubmit: ({ value }) => value,
   }));
@@ -261,6 +273,34 @@ function App() {
             { value: "team", label: "Team" },
             { value: "enterprise", label: "Enterprise" },
           ]}
+        />
+        <TextareaField
+          form={form}
+          name="notes"
+          label="Notes"
+          description="Verified through TanStack Form and Core form-control multiline wiring."
+        />
+        <CheckboxField
+          form={form}
+          name="accepted"
+          label="Accept terms"
+          description="Verified through TanStack Form and Core Checkbox."
+        />
+        <RadioGroupField
+          form={form}
+          name="role"
+          label="Role"
+          description="Verified through TanStack Form and Core RadioGroup."
+          options={[
+            { value: "admin", label: "Admin" },
+            { value: "viewer", label: "Viewer" },
+          ]}
+        />
+        <SwitchField
+          form={form}
+          name="updates"
+          label="Updates"
+          description="Verified through TanStack Form and Core Switch."
         />
         <TanStackFormSubmit>Save</TanStackFormSubmit>
       </TanStackForm>
@@ -338,11 +378,15 @@ import { DataTableRowActions } from "@/components/data-table/data-table-row-acti
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { dataTableFacetedFilter, useDataTable } from "@/components/data-table/use-data-table";
 import { InvoiceDashboardBlock } from "@/components/blocks/invoice-dashboard/invoice-dashboard";
+import { CheckboxField } from "@/components/ui/checkbox-field";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { RadioGroupField } from "@/components/ui/radio-group-field";
 import { SelectField } from "@/components/ui/select-field";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { SwitchField } from "@/components/ui/switch-field";
 import { TanStackForm } from "@/components/ui/tanstack-form";
 import { TextField } from "@/components/ui/text-field";
+import { TextareaField } from "@/components/ui/textarea-field";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 type Invoice = {
@@ -418,8 +462,12 @@ const commandItems: CommandMenuItemData[] = [
 function App() {
   const form = createForm(() => ({
     defaultValues: {
+      accepted: true,
       email: "team@example.com",
+      notes: "SSR notes",
       plan: "team",
+      role: "admin",
+      updates: true,
     },
     onSubmit: ({ value }) => value,
   }));
@@ -454,6 +502,34 @@ function App() {
             { value: "starter", label: "Starter" },
             { value: "team", label: "Team" },
           ]}
+        />
+        <TextareaField
+          form={form}
+          name="notes"
+          label="Notes"
+          description="SSR verifies the TanStack Form TextareaField vertical."
+        />
+        <CheckboxField
+          form={form}
+          name="accepted"
+          label="Accept terms"
+          description="SSR verifies the TanStack Form CheckboxField vertical."
+        />
+        <RadioGroupField
+          form={form}
+          name="role"
+          label="Role"
+          description="SSR verifies the TanStack Form RadioGroupField vertical."
+          options={[
+            { value: "admin", label: "Admin" },
+            { value: "viewer", label: "Viewer" },
+          ]}
+        />
+        <SwitchField
+          form={form}
+          name="updates"
+          label="Updates"
+          description="SSR verifies the TanStack Form SwitchField vertical."
         />
       </TanStackForm>
       <DataTable table={table}>
@@ -509,6 +585,8 @@ for (const expected of [
   "ui-sheet-trigger",
   "ui-text-field-input",
   "ui-select-field-trigger",
+  "ui-textarea-field-control",
+  "ui-radio-group-field-control",
   "ui-command-menu-trigger",
   "ui-block-invoice-dashboard",
   "ui-data-table-table",
@@ -516,9 +594,14 @@ for (const expected of [
   "Invoice workspace",
   "Create draft",
   "Northstar Labs",
+  "Accept terms",
+  "Role",
+  "Updates",
+  "Notes",
   "Ada Lovelace",
   "Katherine Johnson",
   'data-scope="ui-text-field"',
+  'data-scope="ui-textarea-field"',
   'data-scope="ui-data-table"',
   'data-scope="select"',
   'data-part="input"',

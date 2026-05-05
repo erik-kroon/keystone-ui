@@ -79,6 +79,8 @@ Focused coverage:
   entry/restore, and Tab trapping.
 - `packages/core/src/overlay/layer-kernel.test.tsx` covers shared stack ordering, pointer
   blocking, modal hiding, cleanup restore, and reactive modal/pointer option changes.
+- `docs/accessibility/primitive-evidence.md` records the 2026-05-05 Chromium browser probe and
+  manual accessibility status for issue #296.
 
-Status: Dialog is ready as the first Keystone modal primitive baseline, with remaining depth owned
-by shared overlay internals rather than Dialog-specific rework.
+Status: Dialog remains a stable candidate and first Keystone modal primitive baseline. It should
+not be called stable until the manual screen-reader matrix is complete.

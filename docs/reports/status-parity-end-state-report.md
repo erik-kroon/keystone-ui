@@ -30,28 +30,29 @@ Verification included:
 
 - `bun run check`: oxlint and oxfmt passed.
 - `bun run check-types`: Turbo check-types passed for Keystone, Mason CLI, and Mason Registry.
-- `bun run test:core`: 39 files, 218 tests passed.
+- `bun run test:core`: 44 files, 251 tests passed.
 - `bun run test:docs`: 3 tests passed, including docs metadata coverage for every Core primitive metadata scope and every default Mason registry item.
-- `bun run test:mason-cli`: 20 tests passed, including init/add planning, default registry install planning, generated Solid app typecheck/build, lifecycle commands, and path safety.
-- `bun run test:mason-registry`: 30 tests passed, including real default item validation, parity metadata contract, dependency graph resolution, path safety, duplicate target checks, dependency specifier validation, and item type support.
+- `bun run test:mason-cli`: 27 tests passed, including init/add planning, default registry install planning, generated Solid app typecheck/build, lifecycle commands, registry provenance checks, explicit local registry errors, and path safety.
+- `bun run test:mason-registry`: 52 tests passed, including real default item validation, parity metadata contract, dependency graph resolution, path safety, duplicate target checks, dependency specifier validation, and item type support.
 - `bun run verify:example-app`: passed.
 - `bun run build`: docs app built for client and SSR.
 
-The working tree was clean before this report was added.
+This verification snapshot is evidence from the recorded local run, not a guarantee that every later edit preserved the full release gate.
 
 ## Current Implementation Snapshot
 
 This is the current source state, not only the documented target state.
 
-Core currently exposes 31 package export entries: the root export plus 30 subpaths. The exported subpaths are:
+Core currently exposes 36 package export entries: the root export plus 35 subpaths. The exported subpaths are:
 
-- `accessible-icon`, `accordion`, `autocomplete`, `checkbox`, `collapsible`, `combobox`, `context-menu`, `date-picker`, `dialog`, `direction`.
-- `dropdown-menu`, `form`, `hover-card`, `live-announcer`, `locale`, `menu`, `menubar`, `navigation-menu`, `popover`, `popper`.
-- `portal`, `radio-group`, `select`, `sheet`, `slider`, `switch`, `tabs`, `toast`, `toolbar`, `tooltip`, `visually-hidden`.
+- `accessible-icon`, `accordion`, `autocomplete`, `checkbox`, `collapsible`, `combobox`, `context-menu`, `date-picker`, `description`, `dialog`.
+- `direction`, `dropdown-menu`, `error-message`, `fieldset`, `form`, `hover-card`, `label`, `live-announcer`, `locale`, `menu`.
+- `menubar`, `navigation-menu`, `popover`, `popper`, `portal`, `radio-group`, `select`, `sheet`, `slider`, `switch`.
+- `tabs`, `toast`, `toolbar`, `tooltip`, `visually-hidden`.
 
-Core test coverage is broad for a private preview. The package has behavior and kernel tests for accessible icon, collections, form-control, field validity, direction, locale, live announcer, metadata, dismissable layer, floating, focus scope, layer stack, presence, prevent scroll, popover, popper, portal, select controller, selection controls, slider, tooltip, shared kernel utilities, visually hidden, accessibility harness, SSR accessibility, combobox, date picker, dialog, disclosure, menu, navigation menu, overlay verticals, select, tabs, toast, and toolbar. The latest verified Keystone run passed 39 test files and 218 tests.
+Core test coverage is broad for a private preview. The package has behavior and kernel tests for accessible icon, collections, form-control, field validity, direction, locale, live announcer, metadata, dismissable layer, floating, focus scope, layer stack, presence, prevent scroll, popover, popper, portal, select controller, selection controls, slider, tooltip, shared kernel utilities, visually hidden, accessibility harness, SSR accessibility, combobox, date picker, dialog, disclosure, menu, navigation menu, overlay verticals, select, tabs, toast, and toolbar. The latest verified Core run passed 44 test files and 251 tests.
 
-UI currently has 37 first-party registry item metadata files. The default registry source includes 33 `registry/default/ui/*.tsx` component files plus supporting lib and block files. The registry item set is not just theoretical: CLI tests install and build generated source for base components, Core-backed dialog, DataTable, DataTable Router adapter, and the account settings block.
+UI currently has 47 first-party registry item metadata files. The default registry source lives under `registry/default/items` and points into `packages/ui/src/default` source for UI, component, block, and template files. The registry item set is not just theoretical: CLI tests install and build generated source for base components, Core-backed dialog, DataTable, DataTable Router adapter, and the account settings block.
 
 The report itself is currently the only untracked git change:
 
@@ -169,12 +170,12 @@ Notable shipped or proven surfaces:
 
 ## Mason Registry Status
 
-The default registry currently has 37 first-party items with parity metadata:
+The default registry currently has 47 first-party items with parity metadata:
 
 - Base/styled components and utilities: `button`, `badge`, `card`, `cn`, `field`, `input`, `label`, `separator`, `textarea`.
-- Core-backed UI: `accordion`, `checkbox`, `collapsible`, `combobox`, `context-menu`, `date-picker`, `dialog`, `dropdown-menu`, `hover-card`, `menu`, `menubar`, `navigation-menu`, `popover`, `radio-group`, `sheet`, `slider`, `switch`, `tabs`, `toast`, `toolbar`, `tooltip`, `autocomplete`.
-- TanStack-backed app components: `data-table`, `data-table-tanstack-router`, `select-field`, `text-field`, `command-menu`.
-- Block: `account-settings`.
+- Core-backed UI: `accordion`, `autocomplete`, `checkbox`, `collapsible`, `combobox`, `context-menu`, `date-picker`, `dialog`, `dropdown-menu`, `hover-card`, `menu`, `menubar`, `navigation-menu`, `popover`, `radio-group`, `select`, `sheet`, `slider`, `switch`, `tabs`, `toast`, `toolbar`, `tooltip`.
+- TanStack-backed app components: `checkbox-field`, `command-menu`, `data-table`, `data-table-tanstack-router`, `form-submit`, `radio-group-field`, `select-field`, `switch-field`, `tanstack-field`, `tanstack-form`, `text-field`, `textarea-field`.
+- Blocks and templates: `account-settings`, `invoice-dashboard`, `tanstack-start-dashboard`.
 
 Every first-party item validates with non-empty parity metadata. The common parity references are:
 

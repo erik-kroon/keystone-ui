@@ -84,6 +84,9 @@ UI Dialog styling must use these public attributes instead of private overlay in
 
 ## Known Gaps Before Stable
 
-- Manual screen-reader evidence must be recorded for VoiceOver/Safari, NVDA/Firefox, and JAWS/Chrome.
-- Nested modal and non-modal composition needs broader browser verification.
+- Browser and manual evidence is summarized in
+  [Primitive Browser And Manual Accessibility Evidence](../accessibility/primitive-evidence.md).
+- Manual screen-reader evidence must still be recorded for VoiceOver/Safari, NVDA/Firefox, and
+  JAWS/Chrome before a stable claim.
+- Nested modal and non-modal composition needs broader cross-browser verification.
 - AlertDialog-specific semantics are out of scope until a dedicated primitive or variant is specified.

@@ -59,8 +59,8 @@
     "limitations": "Scroll arrow affordances and object-value item helpers are not reimplemented in UI; Keystone Core owns the primitive contract and UI keeps those as future Core/API decisions.",
     "parity": {
       "visualReference": "Matches the reference select visual shape in Solid source form: dense trigger sizing, value truncation, popup surface, listbox padding, grouped options, item indicator column, separator, labels, data-slot hooks, and pointer/focus/invalid styling.",
-      "baseUi": "Behavior parity is inherited through Keystone Core Select: collection registration, keyboard navigation, typeahead, hidden inputs, controlled/uncontrolled open and value, multiple value support, positioning, and state data attributes.",
-      "kobalte": "Solid parity follows Keystone Core Select composition with trigger, value, portal, positioner, content, listbox, groups, group labels, items, item text, item indicators, and form participation."
+      "baseUi": "Evidence-backed coverage comes through Keystone Core Select for collection registration, keyboard navigation, typeahead, hidden inputs, controlled/uncontrolled open and value, multiple value support, positioning, and state data attributes. Gaps: large-list and virtualization policy, richer typeahead edge cases, scroll affordances, and manual AT evidence remain open.",
+      "kobalte": "Solid composition follows the Select/Listbox/Popper direction with trigger, value, portal, positioner, content, listbox, groups, group labels, items, item text, item indicators, and form participation. Gaps: reset/submission edge evidence, large collections, and manual select/listbox AT notes remain follow-up work."
     }
   },
   "files": [

@@ -77,11 +77,11 @@ Core kernel utilities stay private unless an ADR or accepted RFC promotes them i
 
 UI source is distributed through Mason registry items. Installed files are normal Solid source owned by the target application.
 
-The default local registry currently includes 42 items, including:
+The default local registry currently includes 47 items, including:
 
 - Basic UI: `button`, `badge`, `card`, `field`, `input`, `label`, `separator`, `textarea`, `cn`
-- Core-backed UI: `accordion`, `checkbox`, `collapsible`, `combobox`, `dialog`, `dropdown-menu`, `menu`, `popover`, `select`, `sheet`, `slider`, `switch`, `tabs`, `toast`, `toolbar`, `tooltip`
-- TanStack-backed app components: `data-table`, `data-table-tanstack-router`, `tanstack-form`, `tanstack-field`, `select-field`, `text-field`, `command-menu`
+- Core-backed UI: `accordion`, `autocomplete`, `checkbox`, `collapsible`, `combobox`, `context-menu`, `date-picker`, `dialog`, `dropdown-menu`, `hover-card`, `menu`, `menubar`, `navigation-menu`, `popover`, `radio-group`, `select`, `sheet`, `slider`, `switch`, `tabs`, `toast`, `toolbar`, `tooltip`
+- TanStack-backed app components: `checkbox-field`, `command-menu`, `data-table`, `data-table-tanstack-router`, `form-submit`, `radio-group-field`, `select-field`, `switch-field`, `tanstack-form`, `tanstack-field`, `text-field`, `textarea-field`
 - Blocks and templates: `account-settings`, `invoice-dashboard`, `tanstack-start-dashboard`
 
 Example local registry usage from a Solid app, once the preview CLI is available as `mason`:
@@ -91,6 +91,8 @@ mason init
 mason add button --registry <path-to-keystone>/registry/default
 mason add dialog --registry <path-to-keystone>/registry/default
 ```
+
+The 0.1 preview is intentionally local-registry first: `add`, `diff`, and `update` require `--registry <path>`. There is no hosted default registry published yet.
 
 In this repository, the CLI source can be run directly:
 

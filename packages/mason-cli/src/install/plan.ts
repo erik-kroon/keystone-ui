@@ -2,11 +2,13 @@ import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import {
   resolveRegistryDependencyGraph,
   validateRegistry,
   validateRegistryItem,
   type RegistryItem,
+  type RootRegistry,
 } from "@keystone-ui/mason-registry";
 import { readMasonConfig, type MasonConfig } from "../project/config";
 import { configPath } from "../project/config";
@@ -41,13 +43,21 @@ export type WritePlanConflict = {
 export type InstalledItemRecord = {
   name: string;
   version: string;
+  registry: RegistryIdentity;
   files: string[];
   fileHashes: Record<string, string>;
+};
+
+export type RegistryIdentity = {
+  name: string;
+  homepage: string;
+  source: string;
 };
 
 export type InstalledRecord = {
   files: string[];
   fileHashes?: Record<string, string>;
+  registry?: RegistryIdentity;
   version: string;
 };
 
@@ -95,6 +105,24 @@ export type DoctorReport = {
 
 async function readJson(file: string): Promise<unknown> {
   return JSON.parse(await readFile(file, "utf8"));
+}
+
+async function loadRegistryIdentity(registry: string): Promise<RegistryIdentity> {
+  const registryRoot = path.resolve(registry);
+  const input = await readJson(path.join(registryRoot, "registry.json"));
+  const result = validateRegistry(input);
+  if (!result.ok) {
+    throw new Error(result.errors.map((error) => error.message).join("\n"));
+  }
+  return registryIdentityFromRoot(registryRoot, result.value);
+}
+
+function registryIdentityFromRoot(registryRoot: string, registry: RootRegistry): RegistryIdentity {
+  return {
+    name: registry.name,
+    homepage: registry.homepage,
+    source: pathToFileURL(registryRoot).href,
+  };
 }
 
 function repoRootForDefaultRegistry(registryRoot: string): string {
@@ -259,6 +287,7 @@ export async function createInstallTransaction(
   options: { allowConflicts?: boolean; item: string; registry: string },
 ): Promise<InstallTransaction> {
   const config = await readMasonConfig(project.cwd);
+  const registryIdentity = await loadRegistryIdentity(options.registry);
   const items = await resolveItems(options.registry, options.item);
   const alreadyInstalled = installedItemNames(project);
   const plannedItems = items.filter(
@@ -318,6 +347,7 @@ export async function createInstallTransaction(
     installedItems: plannedItems.map((item) => ({
       name: item.name,
       version: item.version,
+      registry: registryIdentity,
       files: files
         .filter((file) => file.item === item.name)
         .map((file) => file.target)
@@ -439,6 +469,7 @@ export async function createDoctorReport(
   options: { registry?: string | null } = {},
 ): Promise<DoctorReport> {
   const issues: string[] = [];
+  let checkedRegistry: RegistryIdentity | null = null;
 
   if (!existsSync(configPath(project.cwd))) {
     issues.push("missing mason.config.json");
@@ -465,6 +496,27 @@ export async function createDoctorReport(
 
   if (project.packageManager === "unknown") issues.push("unknown package manager");
 
+  if (options.registry) {
+    const registryIndex = path.join(path.resolve(options.registry), "registry.json");
+    if (!existsSync(registryIndex)) {
+      issues.push(`registry not reachable: ${options.registry}`);
+    } else {
+      try {
+        const registry = JSON.parse(await readFile(registryIndex, "utf8")) as unknown;
+        const result = validateRegistry(registry);
+        if (!result.ok) {
+          issues.push(
+            `invalid registry: ${result.errors.map((error) => error.message).join("; ")}`,
+          );
+        } else {
+          checkedRegistry = registryIdentityFromRoot(path.resolve(options.registry), result.value);
+        }
+      } catch (error) {
+        issues.push(`invalid registry: ${error instanceof Error ? error.message : String(error)}`);
+      }
+    }
+  }
+
   const installed = installedItems(project);
   for (const [name, record] of Object.entries(installed).sort(([a], [b]) => a.localeCompare(b))) {
     if (!Array.isArray(record.files)) {
@@ -480,23 +532,17 @@ export async function createDoctorReport(
       const recordedHash = fileHash(record, target);
       if (!recordedHash) issues.push(`missing recorded hash for ${name}: ${target}`);
     }
-  }
-
-  if (options.registry) {
-    const registryIndex = path.join(path.resolve(options.registry), "registry.json");
-    if (!existsSync(registryIndex)) {
-      issues.push(`registry not reachable: ${options.registry}`);
-    } else {
-      try {
-        const registry = JSON.parse(await readFile(registryIndex, "utf8")) as unknown;
-        const result = validateRegistry(registry);
-        if (!result.ok) {
-          issues.push(
-            `invalid registry: ${result.errors.map((error) => error.message).join("; ")}`,
-          );
-        }
-      } catch (error) {
-        issues.push(`invalid registry: ${error instanceof Error ? error.message : String(error)}`);
+    if (!record.registry) issues.push(`missing registry identity for ${name}`);
+    else if (checkedRegistry) {
+      if (record.registry.name !== checkedRegistry.name) {
+        issues.push(
+          `registry name mismatch for ${name}: installed from ${record.registry.name}, checked ${checkedRegistry.name}`,
+        );
+      }
+      if (record.registry.homepage !== checkedRegistry.homepage) {
+        issues.push(
+          `registry homepage mismatch for ${name}: installed from ${record.registry.homepage}, checked ${checkedRegistry.homepage}`,
+        );
       }
     }
   }
