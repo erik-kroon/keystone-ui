@@ -93,3 +93,4 @@ Core kernel
 - Deepen Core kernel modules before adding new primitives.
 - Use the accepted ADRs, RFCs, and roadmap docs before adding new Keystone or UI surfaces.
 - Keep docs/playground/registry preview work centered in `apps/web`.
+- Keep GitHub issue triage aligned to the revised milestones: `0.3 Later Core`, `0.4 Later UI`, and `0.5 Data-Dense Workspace`.

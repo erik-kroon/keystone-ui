@@ -6,6 +6,25 @@ export type SeparatorProps = JSX.HTMLAttributes<HTMLDivElement> & {
   decorative?: boolean;
 };
 
+const classes = (...tokens: string[]) => tokens.join(" ");
+
+const separatorOrientationClass: Record<NonNullable<SeparatorProps["orientation"]>, string> = {
+  horizontal: classes("h-px", "w-full"),
+  vertical: classes("h-full", "w-px"),
+};
+
+export function separatorClass(props: Pick<SeparatorProps, "class" | "orientation">) {
+  const orientation = props.orientation ?? "horizontal";
+
+  return cn(
+    "ui-separator",
+    "shrink-0",
+    "bg-border",
+    separatorOrientationClass[orientation],
+    props.class,
+  );
+}
+
 export function Separator(props: SeparatorProps) {
   const [local, rest] = splitProps(props, ["class", "orientation", "decorative"]);
   const orientation = () => local.orientation ?? "horizontal";
@@ -18,8 +37,10 @@ export function Separator(props: SeparatorProps) {
       aria-orientation={decorative() ? undefined : orientation()}
       data-scope="ui-separator"
       data-part="root"
+      data-slot="separator"
+      data-decorative={decorative() ? "" : undefined}
       data-orientation={orientation()}
-      class={cn("ui-separator", `ui-separator-${orientation()}`, local.class)}
+      class={separatorClass({ class: local.class, orientation: orientation() })}
     />
   );
 }

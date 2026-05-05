@@ -443,7 +443,8 @@ Variants:
 
 ### Badge
 
-- Inline-flex centered.
+- Presentational `span` by default; callers own semantic roles, live regions, and accessible names.
+- Inline-flex centered with stable `data-scope="ui-badge"`, `data-part="root"`, `data-slot="badge"`, `data-variant`, and `data-size`.
 - Gap `0.25rem`.
 - Radius `sm`.
 - Border transparent.
@@ -453,8 +454,9 @@ Variants:
   - Small `h-5`, `text-xs`; desktop `h-4`, `text-[0.625rem]`.
   - Large `h-6.5`, `text-base`; desktop `h-5.5`, `text-sm`.
 - Variants:
-  - Filled primary/destructive.
+  - Filled `default`/`primary` and `destructive`; `solid` remains a compatibility alias for primary.
   - Soft `info`, `success`, `warning`, `error` using background alpha `8%` light, `16%` dark.
+  - `muted` for neutral counts and compact metadata.
   - Outline with input border and background.
 
 ### Card And CardFrame
@@ -610,6 +612,20 @@ Sidebar is a full UI component, not just docs navigation.
   - Left side shows Enter/go affordance.
   - Right side can show install command and copy shortcut.
 - Keystone implementation should use Keystone registry names and Mason commands, for example `mason add button`.
+
+### Kbd
+
+Kbd is passive display markup for keyboard input labels and shortcut hints.
+
+- Root renders a native `kbd` element.
+- Default size is compact for dense menus, command rows, and topbar controls.
+- Variants:
+  - `default`: bordered background keycap.
+  - `muted`: low-emphasis keycap for secondary shortcut hints.
+  - `outline`: transparent keycap for dense surfaces.
+- `KbdGroup` composes multiple keys and separators without adding interaction behavior.
+- `KbdSeparator` is aria-hidden and defaults to `+`.
+- Kbd must not register shortcuts, own focus, or add command behavior.
 
 ### Skeleton
 

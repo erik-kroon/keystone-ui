@@ -1,0 +1,39 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "kbd",
+  "type": "registry:ui",
+  "title": "Kbd",
+  "description": "Display-only keyboard input token with group and separator parts for shortcut labels.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["display", "shortcut", "base"],
+  "keywords": ["kbd", "keyboard", "shortcut", "hotkey", "keycap"],
+  "docs": "https://keystone-ui.dev/docs/ui/kbd",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add kbd",
+    "api": "Kbd renders a native kbd element and accepts size sm, default, or lg plus variant default, muted, or outline. KbdGroup and KbdSeparator compose shortcut sequences without registering keyboard behavior.",
+    "anatomy": ["root", "group", "separator"],
+    "accessibility": "Kbd uses native kbd semantics for passive keyboard input text. It does not add widget roles, focus behavior, keyboard handlers, form behavior, or controlled state; consuming controls own accessible labels and actions.",
+    "dataAttributes": "Stable hooks use data-scope=\"ui-kbd\" with data-part values root, group, and separator. Root also exposes data-size, data-variant, and data-slot=\"kbd\".",
+    "ssr": "Kbd is deterministic passive markup with no effects, portals, browser-only state, or hydration-sensitive behavior.",
+    "customization": "Customize the keycap surface through ui-kbd classes, data-size, data-variant, and the group/separator part hooks.",
+    "limitations": "Kbd is intentionally display-only. Shortcut registration belongs to KeyboardShortcuts, platform-aware formatting belongs to ShortcutDisplay, and editable recording belongs to ShortcutRecorder or ShortcutSequenceRecorder.",
+    "sourceFiles": ["packages/ui/src/default/ui/kbd.tsx"],
+    "dependencies": ["cn"],
+    "parity": {
+      "html": "Uses native kbd markup for presentational keyboard input text and keeps grouping/separator wrappers passive. Gaps: native HTML does not define visual variants or shortcut sequence anatomy, so Keystone owns those UI hooks.",
+      "shadcn": "Matches shadcn-style source-owned keyboard token ergonomics with copy-pasteable styling, compact keycap sizing, and no runtime primitive dependency. Intentional difference: Keystone exposes explicit KbdGroup and KbdSeparator parts instead of relying only on ad hoc inline separators.",
+      "keystoneCore": "Intentionally remains UI-only passive markup because Core has no intrinsic behavior to own for a display keycap."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/kbd.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

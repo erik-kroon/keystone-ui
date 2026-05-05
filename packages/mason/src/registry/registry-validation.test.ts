@@ -96,6 +96,47 @@ describe("Mason registry validation tracer", () => {
     expect(source).toContain("pointer-coarse:after:min-h-11");
   });
 
+  test("validates docs-ready metadata on the real default badge item", async () => {
+    const item = await import("../../../../registry/default/items/badge.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.categories).toContain("base");
+      expect(result.value.meta?.install).toBe("mason add badge");
+      expect(result.value.meta?.customization).toContain("badgeClass");
+      expect(result.value.meta?.api).toContain("variant default");
+      expect(result.value.meta?.accessibility).toContain("presentational by default");
+      expect(result.value.meta?.anatomy).toEqual(["root"]);
+      expect(result.value.meta?.limitations).toContain("non-interactive");
+      expect(result.value.meta?.parity).toMatchObject({
+        baseUi: expect.any(String),
+        visualReference: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+  });
+
+  test("captures the real default badge generated source contract", async () => {
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/badge.tsx"), "utf8");
+
+    expect(source).toContain("export type BadgeVariant");
+    expect(source).toContain("export type BadgeSize");
+    expect(source).toContain("export function badgeClass");
+    expect(source).toContain('"success"');
+    expect(source).toContain('"warning"');
+    expect(source).toContain('"error"');
+    expect(source).toContain('"solid"');
+    expect(source).toContain('data-scope="ui-badge"');
+    expect(source).toContain('data-part="root"');
+    expect(source).toContain('data-slot="badge"');
+    expect(source).toContain("data-size={size()}");
+    expect(source).toContain("data-variant={variant()}");
+    expect(source).toContain("inline-flex");
+    expect(source).toContain("rounded-sm");
+    expect(source).toContain("[&_svg:not([class*='size-'])]:size-3.5");
+  });
+
   test("keeps default registry source descriptors pointed at the UI package source", async () => {
     expect(await listFiles(defaultRegistryRoot)).not.toContain("ui/button.tsx");
 
@@ -143,6 +184,7 @@ describe("Mason registry validation tracer", () => {
     expect(validatedNames).toEqual([
       "accordion",
       "account-settings",
+      "alert",
       "app-shell",
       "app-store-provider",
       "autocomplete",
@@ -167,6 +209,7 @@ describe("Mason registry validation tracer", () => {
       "date-picker",
       "dialog",
       "dropdown-menu",
+      "empty",
       "field-array",
       "field",
       "file-field",
@@ -177,6 +220,7 @@ describe("Mason registry validation tracer", () => {
       "hover-card",
       "input",
       "invoice-dashboard",
+      "kbd",
       "keyboard-command-surface",
       "keyboard-shortcuts",
       "label",
@@ -189,6 +233,7 @@ describe("Mason registry validation tracer", () => {
       "radio-group",
       "realtime-data-table",
       "resizable-workspace-shell",
+      "scroll-area",
       "search-input",
       "select-field",
       "select",
@@ -218,6 +263,128 @@ describe("Mason registry validation tracer", () => {
       "use-copy-to-clipboard",
       "use-media-query",
     ]);
+  });
+
+  test("validates docs-ready metadata on the real default kbd item", async () => {
+    const item = await import("../../../../registry/default/items/kbd.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/kbd.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("Kbd renders a native kbd element");
+      expect(result.value.meta?.accessibility).toContain("native kbd semantics");
+      expect(result.value.meta?.anatomy).toEqual(["root", "group", "separator"]);
+      expect(result.value.meta?.dataAttributes).toContain('data-scope="ui-kbd"');
+      expect(result.value.meta?.ssr).toContain("deterministic passive markup");
+      expect(result.value.meta?.limitations).toContain("display-only");
+      expect(result.value.meta?.parity).toMatchObject({
+        html: expect.any(String),
+        shadcn: expect.any(String),
+        keystoneCore: expect.any(String),
+      });
+    }
+
+    expect(source).toContain("export function Kbd");
+    expect(source).toContain("export function KbdGroup");
+    expect(source).toContain("export function KbdSeparator");
+    expect(source).toContain("<kbd");
+    expect(source).toContain('data-scope="ui-kbd"');
+    expect(source).toContain('data-part="root"');
+    expect(source).toContain('data-slot="kbd"');
+    expect(source).toContain('aria-hidden="true"');
+  });
+
+  test("validates docs-ready metadata on the real default alert item", async () => {
+    const item = await import("../../../../registry/default/items/alert.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/alert.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("variant default|info|success|warning|error");
+      expect(result.value.meta?.accessibility).toContain("role=status");
+      expect(result.value.meta?.accessibility).toContain("role=alert");
+      expect(result.value.meta?.anatomy).toEqual([
+        "root",
+        "icon",
+        "title",
+        "description",
+        "action",
+      ]);
+      expect(result.value.meta?.dataAttributes).toContain('data-scope="ui-alert"');
+      expect(result.value.meta?.state).toContain("No controlled or uncontrolled state");
+      expect(result.value.meta?.ssr).toContain("deterministic native elements");
+      expect(result.value.meta?.cssVariables).toContain("No component-specific CSS variables");
+      expect(result.value.meta?.limitations).toContain("does not manage dismissal");
+      expect(result.value.meta?.parity).toMatchObject({
+        visualReference: expect.any(String),
+        baseUi: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain("export function Alert");
+    expect(source).toContain("export function AlertIcon");
+    expect(source).toContain("export function AlertTitle");
+    expect(source).toContain("export function AlertDescription");
+    expect(source).toContain("export function AlertAction");
+    expect(source).toContain('data-scope="ui-alert"');
+    expect(source).toContain('data-part="root"');
+    expect(source).toContain('data-slot="alert"');
+    expect(source).toContain("data-variant={variant()}");
+    expect(source).toContain('variant() === "error" ? "alert" : "status"');
+    expect(source).toContain(
+      'aria-live={local["aria-live"] ?? (role() === "status" ? "polite" : undefined)}',
+    );
+    expect(source).toContain('"grid-cols-[1rem_minmax(0,1fr)]"');
+    expect(source).toContain(
+      '"sm:has-data-[slot=alert-action]:grid-cols-[1rem_minmax(0,1fr)_auto]"',
+    );
+    expect(source).toContain('"border-emerald-500/32"');
+    expect(source).toContain('"border-amber-500/32"');
+  });
+
+  test("validates docs-ready metadata on the real default separator item", async () => {
+    const item = await import("../../../../registry/default/items/separator.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/separator.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("orientation horizontal|vertical");
+      expect(result.value.meta?.accessibility).toContain("role=presentation");
+      expect(result.value.meta?.accessibility).toContain("role=separator");
+      expect(result.value.meta?.anatomy).toEqual(["root"]);
+      expect(result.value.meta?.dataAttributes).toContain('data-scope="ui-separator"');
+      expect(result.value.meta?.state).toContain("No controlled or uncontrolled state");
+      expect(result.value.meta?.ssr).toContain("deterministic native markup");
+      expect(result.value.meta?.cssVariables).toContain("No component-specific CSS variables");
+      expect(result.value.meta?.limitations).toContain("does not implement resizable splitters");
+      expect(result.value.meta?.parity).toMatchObject({
+        visualReference: expect.any(String),
+        baseUi: expect.any(String),
+        kobalte: expect.any(String),
+      });
+    }
+
+    expect(source).toContain("export function separatorClass");
+    expect(source).toContain("export function Separator");
+    expect(source).toContain('role={decorative() ? "presentation" : "separator"}');
+    expect(source).toContain("aria-orientation={decorative() ? undefined : orientation()}");
+    expect(source).toContain('data-scope="ui-separator"');
+    expect(source).toContain('data-part="root"');
+    expect(source).toContain('data-slot="separator"');
+    expect(source).toContain('data-decorative={decorative() ? "" : undefined}');
+    expect(source).toContain("data-orientation={orientation()}");
+    expect(source).toContain('"h-px"');
+    expect(source).toContain('"w-full"');
+    expect(source).toContain('"h-full"');
+    expect(source).toContain('"w-px"');
+    expect(source).toContain('"bg-border"');
   });
 
   test("can require first-party parity metadata during validation", () => {

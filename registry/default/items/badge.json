@@ -3,24 +3,41 @@
   "name": "badge",
   "type": "registry:ui",
   "title": "Badge",
-  "description": "Inline status badge with UI variant styling hooks.",
+  "description": "Presentational Solid badge for inline labels, statuses, counts, and compact metadata.",
   "version": "0.1.0",
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0"
   },
   "categories": ["status", "base"],
-  "keywords": ["badge", "status", "label"],
+  "keywords": ["badge", "status", "label", "count", "metadata"],
   "docs": "https://keystone-ui.dev/docs/ui/badge",
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add badge",
-    "customization": "Customize color and shape through ui-badge classes and data-variant.",
+    "customization": "Customize visual treatment through badgeClass, ui-badge classes, data-slot=badge, and data-variant/data-size attributes.",
     "sourceFiles": ["packages/ui/src/default/ui/badge.tsx"],
     "dependencies": ["cn"],
+    "api": "Badge supports variant default, primary, solid compatibility alias, destructive, info, success, warning, error, muted, and outline; size default, md compatibility alias, sm, and lg. It renders a span and passes through native span HTML and ARIA props.",
+    "accessibility": "Badge is presentational by default and does not create a role, live region, keyboard behavior, pointer behavior, focus behavior, form behavior, or removable state. Consumers own semantic roles such as status, aria-label text for icon-only badges, and live-region announcements when a badge value changes dynamically.",
+    "anatomy": ["root"],
+    "cssVariables": [
+      "--radius-sm",
+      "--color-primary",
+      "--color-primary-foreground",
+      "--color-destructive",
+      "--color-destructive-foreground",
+      "--color-muted",
+      "--color-muted-foreground",
+      "--color-input",
+      "--color-popover",
+      "--color-foreground"
+    ],
+    "limitations": "Badge intentionally remains a non-interactive presentational UI component. Removable badges, notification counters with live announcements, and link/action badges should be separate components composed from native buttons, links, or future primitives.",
     "parity": {
-      "baseUi": "Base UI has no first-class Badge primitive, so parity is scoped to UI display semantics: stable root element, variant metadata, and class/data styling hooks. Gaps: status role guidance, icon slots, removable badge behavior, and accessibility examples remain follow-up work.",
-      "kobalte": "Comparable to Kobalte Badge as a Solid display part with polymorphic composition potential and styling hooks. Gaps: Keystone Core/UI does not yet expose a dedicated as-polymorphic API, semantic status presets, or design-token metadata."
+      "visualReference": "Matches the reference badge source contract in Solid form: compact inline-flex shape, sm/default/lg sizes, primary/destructive filled variants, soft info/success/warning/error variants, muted and outline variants, icon normalization, stable data-slot, and source-owned class helper export. Intentional differences: Solid class conventions, no React Slot/asChild API, and solid/md aliases retained for existing Keystone source.",
+      "baseUi": "Base UI has no first-class Badge primitive, so parity is scoped to UI display semantics: stable span root, pass-through HTML/ARIA props, no invented interaction state, caller-owned roles/live regions, and data-variant/data-size styling hooks.",
+      "kobalte": "Comparable to Kobalte Badge as a Solid presentational display component with stable data attributes, variant metadata, and source-owned styling. Keystone intentionally does not expose a dedicated polymorphic API until there is a repo-wide Solid-native polymorphic convention."
     }
   },
   "files": [

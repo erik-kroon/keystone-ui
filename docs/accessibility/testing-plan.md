@@ -252,6 +252,27 @@ Each stable primitive should have at least one checklist entry for keyboard-only
 
 ## First Primitive Coverage
 
+### Alert
+
+Required checks:
+
+- Non-error alerts use `role="status"` with polite announcement by default.
+- Error alerts use `role="alert"` by default.
+- Consumers can override `role` and `aria-live` when an alert is already announced elsewhere.
+- Title, description, icon, and action parts expose stable `data-scope` and `data-part` hooks.
+- Actions are native buttons or links supplied by the app; Alert itself has no keyboard behavior, focus management, dismissal, timers, or controlled state.
+- Server rendering is deterministic and does not access browser globals, portals, layout APIs, or generated IDs.
+
+### Separator
+
+Required checks:
+
+- Decorative separators use `role="presentation"` and do not expose `aria-orientation`.
+- Semantic separators use `role="separator"` and expose `aria-orientation` matching horizontal or vertical layout.
+- `data-scope`, `data-part`, `data-slot`, `data-orientation`, and decorative state hooks remain stable.
+- Separator itself has no keyboard, pointer, focus, form, live-region, controlled, or uncontrolled behavior.
+- Server rendering is deterministic and does not access browser globals, portals, layout APIs, or generated IDs.
+
 ### Dialog
 
 Required checks:
