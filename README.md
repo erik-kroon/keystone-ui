@@ -41,8 +41,7 @@ apps/
 packages/
   core/                 Headless Solid primitive package
   ui/                   First-party source-owned UI components and blocks
-  mason-cli/            Mason CLI for registry init/add/diff/update/remove/doctor
-  mason-registry/       Registry schema, validation, dependency resolution, and path safety
+  mason/                Mason CLI plus registry schema, validation, dependency resolution, and path safety
 
 registry/
   default/items/        First-party Mason registry item metadata
@@ -97,8 +96,8 @@ The 0.1 preview is intentionally local-registry first: `add`, `diff`, and `updat
 In this repository, the CLI source can be run directly:
 
 ```bash
-bun packages/mason-cli/src/index.ts init --cwd <solid-app-path>
-bun packages/mason-cli/src/index.ts add button --cwd <solid-app-path> --registry ./registry/default
+bun packages/mason/src/index.ts init --cwd <solid-app-path>
+bun packages/mason/src/index.ts add button --cwd <solid-app-path> --registry ./registry/default
 ```
 
 First-party registry items carry docs-ready metadata, source file references, dependencies, customization notes, and `meta.parity` notes.
@@ -126,8 +125,7 @@ bun run check
 bun run check-types
 bun run test:core
 bun run test:docs
-bun run test:mason-cli
-bun run test:mason-registry
+bun run test:mason
 ```
 
 Run the full release gate:
@@ -136,7 +134,7 @@ Run the full release gate:
 bun run verify:release
 ```
 
-The release gate runs formatting/linting, type checks, Core tests, the web test step, Mason CLI tests, Mason registry tests, example app verification, and the web build.
+The release gate runs formatting/linting, type checks, Core tests, the web test step, Mason tests, example app verification, and the web build.
 
 ## Design Principles
 

@@ -1,10 +1,10 @@
 import { cp, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { addCommand } from "../packages/mason-cli/src/commands/add";
-import { initCommand } from "../packages/mason-cli/src/commands/init";
+import { addCommand } from "../packages/mason/src/commands/add";
+import { initCommand } from "../packages/mason/src/commands/init";
 
 const repoRoot = path.resolve(import.meta.dir, "..");
-const fixtureRoot = path.join(repoRoot, "packages/mason-cli/src/testing/fixtures");
+const fixtureRoot = path.join(repoRoot, "packages/mason/src/testing/fixtures");
 const registry = path.join(repoRoot, "registry/default");
 
 async function runCommand(cwd: string, args: string[]): Promise<void> {

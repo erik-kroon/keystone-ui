@@ -10,13 +10,8 @@ Draft
 
 ## Related
 
-- [PRD: Keystone Core And UI Foundation](../prd/keystone-foundation.md)
 - [RFC: Core API](../rfcs/core-api.md)
 - [ADR 0001: Keystone Core And UI Product Boundary](../adr/0001-keystone-core-ui-boundary.md)
-- [Dialog Accessibility Spec](../specs/dialog.md)
-- [Select Accessibility Spec](../specs/select.md)
-- [Field And FormControl Accessibility Spec](../specs/field-form-control.md)
-- [Primitive Browser And Manual Accessibility Evidence](primitive-evidence.md)
 
 ## Summary
 
@@ -57,7 +52,7 @@ An experimental primitive may ship only when:
 
 A stable Core primitive requires:
 
-- A completed accessibility spec in docs.
+- A completed accessibility contract in docs or colocated primitive documentation.
 - Automated interaction tests for keyboard, pointer, focus, controlled/uncontrolled state, disabled behavior, and public DOM attributes.
 - Automated accessibility smoke tests for rendered examples.
 - SSR and hydration tests when the primitive renders IDs, portals, overlays, floating content, presence, or browser-measured state.

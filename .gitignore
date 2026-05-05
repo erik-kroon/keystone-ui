@@ -51,6 +51,6 @@ tmp
 temp
 inspo/
 references/
-!apps/web/skills/**/references/
-!apps/web/skills/**/references/**
+!skills/**/references/
+!skills/**/references/**
 .playwright-mcp/
