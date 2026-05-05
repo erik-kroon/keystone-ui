@@ -1,0 +1,54 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "group",
+  "type": "registry:ui",
+  "title": "Group",
+  "description": "Source-owned grouped control and content container for compact horizontal, vertical, attached, and inset UI composition.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["layout", "base", "actions"],
+  "keywords": ["group", "button-group", "control-group", "attached", "inset", "dense"],
+  "docs": "https://keystone-ui.dev/docs/ui/group",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add group",
+    "customization": "Customize the generated source through ui-group classes, data-variant, data-orientation, data-size, data-slot values, and stable data-scope/data-part hooks. Attached styling targets child button, input-control, and group-item slots without owning child behavior.",
+    "sourceFiles": ["packages/ui/src/default/ui/group.tsx"],
+    "dependencies": ["cn"],
+    "api": "Group exports Group, GroupItem, GroupLabel, and GroupDescription. Group accepts orientation horizontal/vertical, variant default/attached/inset, size sm/default/lg, and disabled/invalid/selected props that project data attributes for styling only.",
+    "accessibility": "Group is presentational by default and does not create keyboard, focus, label, or form semantics. Add role=group with aria-label or aria-labelledby when the grouping needs an accessible name. Labels and descriptions are visual composition parts unless the consumer wires them with native ARIA attributes.",
+    "anatomy": ["root", "item", "label", "description"],
+    "variants": {
+      "orientation": ["horizontal", "vertical"],
+      "variant": ["default", "attached", "inset"],
+      "size": ["sm", "default", "lg"]
+    },
+    "statePassThrough": "disabled, invalid, and selected project data-disabled, data-invalid, and data-selected on the root for parent-state styling. They do not disable, validate, select, or change nested controls; child Button, Input, Field, Toolbar, or custom controls own their native and ARIA behavior.",
+    "composition": "Use Group for compact related controls, segmented metadata, attached buttons and inputs, and small inset clusters. Use FieldGroup for form labelling/validation structure, Toolbar for roving-focus toolbars, and Card for larger content surfaces with header/content/footer anatomy.",
+    "cssVariables": [
+      "--color-accent",
+      "--color-background",
+      "--color-border",
+      "--color-destructive",
+      "--color-foreground",
+      "--color-muted",
+      "--color-muted-foreground",
+      "--color-ring"
+    ],
+    "limitations": "Group intentionally introduces no Core primitive behavior, no roving focus, no form-control context, no fieldset/legend semantics, no card surface anatomy, and no validation or selection state machine.",
+    "parity": {
+      "visualReference": "Maps the Coss Group concept into Solid source: a compact grouped container with root/item/label/description anatomy, horizontal and vertical orientation, inset grouping, attached control grouping, stable styling hooks, and source-owned customization. Keystone keeps it smaller than Card, FieldGroup, or Toolbar.",
+      "baseUi": "Base UI has no direct Group primitive. Keystone treats Group as presentational UI source, with native prop pass-through and optional consumer-owned role=group naming when semantics are needed. Runtime behavior stays in nested controls or Core-backed components.",
+      "kobalte": "Kobalte has no direct generic Group primitive. Solid parity is simple component composition with stable data attributes and no invented context, focus management, or form semantics."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/group.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

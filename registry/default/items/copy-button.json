@@ -1,0 +1,37 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "copy-button",
+  "type": "registry:ui",
+  "title": "CopyButton",
+  "description": "Accessible Solid button for copying text with copied/error visual state and UI-owned clipboard helper behavior.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["base", "feedback", "docs"],
+  "keywords": ["copy", "clipboard", "button", "code", "docs"],
+  "docs": "https://keystone-ui.dev/docs/ui/copy-button",
+  "registryDependencies": ["cn", "use-copy-to-clipboard"],
+  "meta": {
+    "install": "mason add copy-button",
+    "customization": "Use ui-copy-button classes and data-slot/data-copied/data-error hooks to style icon-only or labelled copy controls.",
+    "sourceFiles": ["packages/ui/src/default/ui/copy-button.tsx"],
+    "dependencies": ["cn", "use-copy-to-clipboard"],
+    "api": "CopyButton accepts value, label, copiedLabel, errorLabel, copiedDuration, showLabel, onCopy, onCopyError, and normal button attributes. User onClick runs before copying and event.preventDefault cancels internal copy behavior.",
+    "accessibility": "Renders a native button with dynamic aria-label/title text, visible or screen-reader-only status label, and data state hooks for copied/error/unsupported feedback.",
+    "anatomy": ["root"],
+    "limitations": "CopyButton copies plain text only and does not render a tooltip or toast by itself. Compose those surfaces in app/docs code when persistent feedback is needed.",
+    "parity": {
+      "visualReference": "Matches shadcn-style source-owned copy button behavior in Solid form: icon button default, optional visible label, copied/error state, and data attributes for styling.",
+      "baseUi": "No Core/Base UI primitive is needed because the native button and generated clipboard hook cover the intrinsic semantics and browser boundary.",
+      "kobalte": "Comparable to a Kobalte button composition while remaining UI-owned source. Keystone keeps clipboard state out of Core and exposes cancellable user-first click handling."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/copy-button.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

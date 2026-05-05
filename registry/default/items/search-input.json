@@ -1,0 +1,46 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "search-input",
+  "type": "registry:ui",
+  "title": "SearchInput",
+  "description": "Native Solid search input with search icon, optional clear button, loading state, and input-control styling hooks.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["form", "base", "navigation"],
+  "keywords": ["search-input", "search", "filter", "input", "topbar", "command"],
+  "docs": "https://keystone-ui.dev/docs/ui/search-input",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add search-input",
+    "customization": "Use ui-search-input classes and data-slot hooks for root, icon, input, loading-indicator, and clear button styling. Compose it into command triggers, table filters, topbars, and docs search without adopting a command primitive.",
+    "sourceFiles": ["packages/ui/src/default/ui/search-input.tsx"],
+    "dependencies": ["cn"],
+    "api": "SearchInput is a native type=search input with size sm/default/lg, invalid, loading, loadingLabel, clearable, clearLabel, onClear, rootClass, and inputClass. It accepts normal input attributes except type and native size.",
+    "accessibility": "SearchInput preserves the native input as the focus target, keeps the icon decorative, exposes loading as role=status, gives the clear button an accessible name, and runs onClear before internal clearing so event.preventDefault can take over.",
+    "anatomy": ["root", "icon", "input", "loading-indicator", "clear"],
+    "cssVariables": [
+      "--radius-lg",
+      "--color-input",
+      "--color-background",
+      "--color-foreground",
+      "--color-muted-foreground",
+      "--color-destructive",
+      "--color-ring"
+    ],
+    "limitations": "SearchInput does not filter data, open command palettes, or own query routing. Pair it with app state, TanStack Table filters, CommandMenu, or router search params for behavior.",
+    "parity": {
+      "visualReference": "Matches shadcn-style search input composition in Solid source form: native search input, leading icon, optional clear affordance, loading indicator, invalid/focus/disabled hooks, and search-decoration resets.",
+      "baseUi": "No Core/Base UI primitive is needed because native search input semantics cover the intrinsic behavior. User handlers run before internal clear behavior and can prevent default.",
+      "kobalte": "Comparable to Kobalte TextField input composition when used with labels/descriptions externally. Keystone intentionally keeps SearchInput separate from command, autocomplete, and field registration behavior."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/search-input.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

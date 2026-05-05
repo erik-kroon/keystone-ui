@@ -1,0 +1,37 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "breadcrumb",
+  "type": "registry:ui",
+  "title": "Breadcrumb",
+  "description": "Source-owned Solid breadcrumb navigation for docs, app routes, and dense topbar composition.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0"
+  },
+  "categories": ["navigation", "base"],
+  "keywords": ["breadcrumb", "navigation", "route", "topbar", "docs"],
+  "docs": "https://keystone-ui.dev/docs/ui/breadcrumb",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add breadcrumb",
+    "customization": "Use ui-breadcrumb classes and data-slot hooks for root, list, item, link, page, separator, and ellipsis styling. Pass items for simple route trails or compose parts directly for menus and app topbars.",
+    "sourceFiles": ["packages/ui/src/default/ui/breadcrumb.tsx"],
+    "dependencies": ["cn"],
+    "api": "Breadcrumb accepts items, label, separator, listClass, linkClass, pageClass, and separatorClass for route-generated trails. BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, and BreadcrumbEllipsis are exported for source-owned composition.",
+    "accessibility": "Breadcrumb renders a nav landmark with aria-label and an ordered list. Links remain anchors, separators are presentation-only, the current page uses aria-current=page, and ellipsis is a named button suitable for a menu trigger.",
+    "anatomy": ["root", "list", "item", "link", "page", "separator", "ellipsis"],
+    "limitations": "Breadcrumb is display/navigation source and has no Core dependency because it owns no intrinsic state. Route matching, truncation menus, and responsive collapse policy stay in app code or composed menu source.",
+    "parity": {
+      "visualReference": "Matches shadcn-style source-owned breadcrumb ergonomics in Solid form: nav root, ordered list, item/link/page/separator parts, current page semantics, customizable separator, and ellipsis trigger for collapsed trails.",
+      "baseUi": "Base UI has no dedicated Breadcrumb primitive, so parity is scoped to native landmark/list/link semantics and accessible current-page state.",
+      "kobalte": "Comparable to Kobalte-style Solid composition through explicit parts and data attributes. Keystone intentionally keeps route state and collapse behavior outside this display component."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/breadcrumb.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

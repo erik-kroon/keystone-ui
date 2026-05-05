@@ -10,6 +10,7 @@
       "@/*": ["src/default/*"],
       "@/components/ui/*": ["src/default/ui/*"],
       "@/components/data-table/*": ["src/default/components/data-table/*"],
+      "@/hooks/*": ["src/default/hooks/*"],
       "@/lib/*": ["src/default/lib/*"]
     },
     "types": []

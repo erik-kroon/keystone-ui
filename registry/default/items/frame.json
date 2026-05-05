@@ -1,0 +1,51 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "frame",
+  "type": "registry:ui",
+  "title": "Frame",
+  "description": "Source-owned framed preview and embedded panel container with header, viewport, status, and aspect-ratio anatomy.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["layout", "preview", "panel"],
+  "keywords": ["frame", "preview", "demo", "embed", "inspector", "viewport"],
+  "docs": "https://keystone-ui.dev/docs/ui/frame",
+  "registryDependencies": ["button", "card", "separator", "cn"],
+  "meta": {
+    "install": "mason add frame",
+    "api": "Exports Frame plus root, header, title, description, actions, viewport, content, footer, status, loading, empty, and error parts. High-level Frame accepts title, description, actions, footer, loading, empty, error, variant, and aspect props.",
+    "anatomy": [
+      "root",
+      "header",
+      "title",
+      "description",
+      "actions",
+      "separator",
+      "viewport",
+      "content",
+      "footer",
+      "status",
+      "loading-indicator"
+    ],
+    "variants": "variant supports bordered, elevated, flush, and inset. aspect supports auto, square, video, wide, and portrait for fixed preview constraints while preserving responsive width.",
+    "accessibility": "Frame is presentational by default and renders a section without inventing widget behavior. Consumers own heading levels and labels. Loading and empty states use role=status; error uses role=alert. Actions are native buttons or links supplied by the app.",
+    "composition": "The high-level source composes existing UI Card for the framed surface, Separator for header/footer boundaries, Button for retry actions, and source-owned status parts for loading, empty, and error states. Standalone Skeleton, Empty, and Alert items can replace these slots once those registry items exist.",
+    "customization": "Use data-scope=\"ui-frame\" and data-part hooks for frame root, header, title, description, actions, separator, viewport, content, footer, status, and loading-indicator. Override slots for screenshots, demos, embedded panels, inspector surfaces, loading skeletons, empty states, or alert/callout errors.",
+    "limitations": "Frame does not implement iframe sandboxing, screenshot capture, resizing, focus trapping, drawer behavior, route state, or app-shell layout. Those remain app composition or future specialized UI block concerns.",
+    "sourceFiles": ["packages/ui/src/default/ui/frame.tsx"],
+    "parity": {
+      "coss": "Maps to the Coss Frame concept as a reusable container for framed previews, embedded content, screenshots, demos, device/browser-like panels, and inspectable surfaces.",
+      "shadcn": "Follows source-owned composition with editable classes, stable data hooks, Card-like surface treatment, and slot-based loading/empty/error replacement.",
+      "keystoneUi": "Builds from existing UI Button, Card, Separator, and cn source instead of introducing a Core primitive or app shell abstraction.",
+      "keystoneCore": "No Core behavior is introduced because Frame is a styled layout/presentation container."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/frame.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

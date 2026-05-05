@@ -1,0 +1,51 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "nav-list",
+  "type": "registry:ui",
+  "title": "NavList",
+  "description": "Simple app navigation list source for route-aware sidebar and topbar links without menu semantics.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["navigation", "app-shell", "sidebar"],
+  "keywords": ["nav-list", "nav-item", "sidebar", "topbar", "route"],
+  "docs": "https://keystone-ui.dev/docs/ui/nav-list",
+  "registryDependencies": ["badge", "shortcut-display", "cn"],
+  "meta": {
+    "install": "mason add nav-list",
+    "api": "Exports NavList, NavListRoot, NavListGroup, NavListGroupLabel, NavListItems, NavListItem, NavListItemContent, and item/group/state types. High-level NavList accepts items or groups plus getItemState for app/router-owned active and disabled state.",
+    "anatomy": [
+      "root",
+      "group",
+      "group-label",
+      "items",
+      "item",
+      "item-content",
+      "item-icon",
+      "item-text",
+      "item-label",
+      "item-description",
+      "item-status",
+      "item-badge",
+      "item-shortcut"
+    ],
+    "activeState": "Route matching remains app/router-owned through item.current or getItemState. The component only projects aria-current and data-current when the caller marks an item current.",
+    "accessibility": "Uses native anchor elements for href items and native buttons for action items. It intentionally avoids menu, menubar, and navigation-menu roles because persistent app navigation is not a composite menu.",
+    "keyboard": "Native links and buttons own tab reachability and activation. Use Core NavigationMenu/Menu only for true composite menu surfaces that need roving focus, typeahead, or submenu behavior.",
+    "customization": "Use stable data-scope=\"ui-nav-list\" and data-part hooks for styling dense sidebar and horizontal topbar variants. Badge/count, shortcut, status, icon, label, and description slots are source-owned and replaceable.",
+    "sourceFiles": ["packages/ui/src/default/ui/nav-list.tsx"],
+    "parity": {
+      "shadcn": "Follows source-owned app navigation ergonomics with readable link/button rows, icon/label/badge/shortcut slots, and route-active data hooks.",
+      "baseUi": "Deliberately does not copy Menu or NavigationMenu behavior because the target surface is persistent app navigation, not a composite popup/menu widget.",
+      "kobalte": "Keeps Solid-first JSX data and component composition while avoiding primitive roles that would overstate the interaction model."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/nav-list.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

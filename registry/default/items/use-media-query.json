@@ -1,0 +1,36 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "use-media-query",
+  "type": "registry:hook",
+  "title": "useMediaQuery",
+  "description": "SSR-safe Solid media query hook with string, breakpoint, pointer, orientation, and preference helpers.",
+  "version": "0.1.0",
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["hook", "responsive", "media-query"],
+  "keywords": ["use-media-query", "create-media-query", "responsive", "breakpoint", "solid"],
+  "docs": "https://keystone-ui.dev/docs/hooks/use-media-query",
+  "filesRoot": "packages/ui/src/default/hooks",
+  "targetRoot": "src/hooks",
+  "meta": {
+    "install": "mason add use-media-query",
+    "api": "Exports useMediaQuery/createMediaQuery accessors, normalizeMediaQuery, createBreakpointQuery, createPointerQuery, mediaQueryBreakpoints, and related option/input types.",
+    "ssr": "The accessor starts from defaultValue and does not read window or matchMedia until Solid onMount runs. Pass a window option for tests or embedded documents.",
+    "behavior": "Supports raw media query strings or structured min/max/orientation/pointer/preference objects. Listener cleanup handles modern addEventListener and legacy addListener MediaQueryList APIs.",
+    "limitations": "This hook is UI generated source. It is not a Core utility, does not observe container queries, and does not persist responsive state.",
+    "sourceFiles": ["packages/ui/src/default/hooks/use-media-query.ts"],
+    "parity": {
+      "coss": "Covers the tracked Coss useMediaQuery gap with Solid-native accessors, breakpoint helpers, pointer helpers, and SSR-safe defaults.",
+      "solid": "Uses createSignal and onMount instead of React effect/state conventions.",
+      "keystoneCore": "Intentionally remains in UI source because responsive shell behavior is app-owned and does not require a Core primitive or kernel export."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/hooks/use-media-query.ts",
+      "type": "registry:hook"
+    }
+  ]
+}

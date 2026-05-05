@@ -24,7 +24,7 @@
     "keyboard": "mountSidebarStore registers Mod+B by default, following shadcn sidebar ergonomics. The shortcut is app-level behavior and can be disabled with keyboardShortcut=false or changed with a custom key.",
     "dataAttributes": "The store does not render DOM. Generated sidebar UI should project state through stable data-scope/data-part hooks and data-state values such as expanded/collapsed.",
     "ssr": "No browser globals are read while creating the store. mountSidebarStore performs localStorage, matchMedia, and keydown registration after mount.",
-    "limitations": "This item intentionally owns shared app shell state only. It does not implement a visual Sidebar component, focus trapping, drawer dismissal, or navigation semantics; those belong in future UI sidebar source built on Core overlays and navigation primitives where appropriate.",
+    "limitations": "This item intentionally owns shared app shell state only. The visual Sidebar registry item composes this store for source-owned aside/nav/button/link anatomy. Focus trapping and drawer dismissal remain app composition concerns unless future Core overlay composition is explicitly needed.",
     "sourceFiles": ["packages/ui/src/default/stores/sidebar-store.tsx"],
     "dependencies": ["@tanstack/solid-store"],
     "parity": {
