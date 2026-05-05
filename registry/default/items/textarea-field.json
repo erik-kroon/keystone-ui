@@ -1,0 +1,39 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "textarea-field",
+  "type": "registry:ui",
+  "title": "TextareaField",
+  "description": "TanStack Form textarea field composed with Keystone form-control semantics and UI styling hooks.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["form", "tanstack"],
+  "keywords": ["textarea-field", "textarea", "field", "form", "tanstack", "keystone"],
+  "docs": "https://keystone-ui.dev/docs/ui/textarea-field",
+  "registryDependencies": ["cn", "textarea", "tanstack-field"],
+  "meta": {
+    "install": "mason add textarea-field",
+    "customization": "Use ui-textarea-field classes, TanStackField shell classes, Textarea classes, Core data attributes, neutral data-slot hooks, and textareaClass for generated-source styling.",
+    "sourceFiles": ["packages/ui/src/default/ui/textarea-field.tsx"],
+    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn", "textarea", "tanstack-field"],
+    "api": "TextareaField exports TextareaField, TextareaFieldProps, and TextareaFieldValidators. It composes TanStackField with the styled Textarea item, passes validators to form.Field, derives touched error state through TanStackField, maps textarea input to field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId plus native textarea props.",
+    "accessibility": "Backed by TanStackField for generated IDs, label/description/error relationships, aria-describedby, aria-invalid, required/disabled/readonly metadata, touched/dirty/blurred/validating metadata, and alert messaging. The rendered textarea receives the shared Core form-control props.",
+    "anatomy": ["field-root", "field-label", "textarea", "field-description", "field-error"],
+    "state": "TanStack Form owns value, touched, dirty, blurred, validating, and errors. TextareaField maps string textarea input into TanStack field value and mirrors focus through the TanStackField shell.",
+    "limitations": "Autosize, character count, markdown helpers, rich text, and schema-specific validation helpers remain app-owned composition.",
+    "parity": {
+      "tanstackForm": "First-class TanStack Form parity: form.Field integration, validators pass-through, controlled textarea value binding, blur/change delegation, and touched-derived invalid/error state.",
+      "baseUi": "Field behavior is inherited through Keystone Core FormControl and native textarea semantics.",
+      "kobalte": "Solid parity follows Keystone Core Field/FormControl composition with user-owned source styling."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/textarea-field.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

@@ -180,20 +180,20 @@ Core owns headless accessible primitives and shared primitive helpers. UI owns s
 
 - TanStackForm
 - TanStackField
-- TextField
-- TextareaField
+- TextField (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
+- TextareaField (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
 - SelectField
 - ComboboxField
-- CheckboxField
-- RadioGroupField
-- SwitchField
+- CheckboxField (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
+- RadioGroupField (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
+- SwitchField (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
 - SliderField
 - NumberField
 - FileField
 - DatePickerField
 - FieldArray
 - FormMessage
-- FormSubmit
+- FormSubmit (`proven`; see [ui-tanstack-form-vertical.md](ui-tanstack-form-vertical.md))
 
 ### Keystone-Backed Styled UI
 

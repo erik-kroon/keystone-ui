@@ -1,0 +1,39 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "checkbox-field",
+  "type": "registry:ui",
+  "title": "CheckboxField",
+  "description": "TanStack Form checkbox field composed with Keystone Checkbox behavior and UI styling hooks.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["form", "tanstack", "selection"],
+  "keywords": ["checkbox-field", "checkbox", "field", "form", "tanstack", "keystone"],
+  "docs": "https://keystone-ui.dev/docs/ui/checkbox-field",
+  "registryDependencies": ["checkbox", "cn", "tanstack-field"],
+  "meta": {
+    "install": "mason add checkbox-field",
+    "customization": "Use ui-checkbox-field classes, TanStackField shell classes, Checkbox classes, Core data attributes, neutral data-slot hooks, checkboxProps, and checkboxClass for generated-source styling.",
+    "sourceFiles": ["packages/ui/src/default/ui/checkbox-field.tsx"],
+    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "checkbox", "cn", "tanstack-field"],
+    "api": "CheckboxField exports CheckboxField, CheckboxFieldProps, and CheckboxFieldValidators. It composes TanStackField with the styled Checkbox item, passes validators to form.Field, derives touched error state through TanStackField, maps checked changes to boolean field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId to Core Checkbox.",
+    "accessibility": "Backed by TanStackField for field relationships and by @keystone-ui/core/checkbox for role=checkbox, aria-checked including mixed primitive support, Space keyboard toggling, hidden input submission, reset synchronization, and validation metadata. The checkbox control receives the shared Core form-control ID and ARIA props.",
+    "anatomy": ["field-root", "field-label", "checkbox-root", "checkbox", "indicator", "hidden-input", "field-description", "field-error"],
+    "state": "TanStack Form owns the boolean field value, touched, dirty, blurred, validating, and errors. CheckboxField treats true as checked and all other values as unchecked.",
+    "limitations": "Tri-state app modeling, checkbox groups, and custom inline label layouts remain app-owned composition.",
+    "parity": {
+      "tanstackForm": "First-class TanStack Form parity: form.Field integration, validators pass-through, boolean value binding, blur/change delegation, and touched-derived invalid/error state.",
+      "baseUi": "Primitive behavior is inherited through Keystone Core Checkbox: checked state, keyboard toggling, hidden input submission, reset, disabled/read-only guards, and data attributes.",
+      "kobalte": "Solid parity follows Keystone Core Checkbox composition with explicit generated-source field wiring."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/checkbox-field.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}
