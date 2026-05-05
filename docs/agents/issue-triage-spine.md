@@ -9,7 +9,7 @@ The active parent for 0.1 is [#46](https://github.com/erik-kroon/core-ui/issues/
 ## Milestones
 
 - `0.1 Preview`: kernel/API hardening, existing primitives only, Mason registry stability, docs/contracts, accessibility harness.
-- `0.2 UI App Layer`: DataTable, CommandMenu, TanStack Form adapters, registry lifecycle polish, generated app verification.
+- `0.2 UI App Layer`: DataTable, CommandMenu, TanStack Form adapters, Store/Hotkeys app primitives, registry lifecycle polish, generated app verification.
 - `0.3 Data-Dense Workspace`: RealtimeTable, Watchlist, metrics, workspace layouts, EventFeed, ConditionBuilder, chart inspection wrappers.
 - `Later / End-State`: broad catalog, advanced date/time/color work, rich controls, charts, carousel, and other non-0.1 surfaces.
 
@@ -30,8 +30,17 @@ Keep the active board near 12-15 issues:
 - [#43](https://github.com/erik-kroon/core-ui/issues/43): Mason registry lifecycle commands.
 - [#52](https://github.com/erik-kroon/core-ui/issues/52): registry parity metadata contract.
 - [#233](https://github.com/erik-kroon/core-ui/issues/233): UI DataTable.
-- [#246](https://github.com/erik-kroon/core-ui/issues/246): UI CommandMenu.
+- [#246](https://github.com/erik-kroon/core-ui/issues/246): UI CommandMenu, good enough for 0.1 proof and registry validation.
 - [#197](https://github.com/erik-kroon/core-ui/issues/197), [#198](https://github.com/erik-kroon/core-ui/issues/198), and [#201](https://github.com/erik-kroon/core-ui/issues/201): TanStack Form proof.
+
+## 0.2 App Primitive Queue
+
+These issues are maintainer-selected follow-up from the 0.1 CommandMenu proof. Do not pull in the rest of the Store/Hotkeys end-state inventory until these clarify the reusable app primitives.
+
+- [#242](https://github.com/erik-kroon/core-ui/issues/242): AppStoreProvider.
+- [#245](https://github.com/erik-kroon/core-ui/issues/245): CommandStore.
+- [#247](https://github.com/erik-kroon/core-ui/issues/247): KeyboardShortcuts.
+- [#248](https://github.com/erik-kroon/core-ui/issues/248): ShortcutDisplay.
 
 ## 0.1 Hardening Checklist
 
@@ -75,6 +84,6 @@ Keep the active board near 12-15 issues:
 ## Phase Guidance
 
 - `phase:0.1`: active hardening spine and existing primitive/app-layer proof only.
-- `phase:0.2`: UI app layer after 0.1: DataTable, CommandMenu, TanStack Form/Store/Hotkeys.
+- `phase:0.2`: UI app layer after 0.1: DataTable, CommandMenu follow-through, TanStack Form, and the reusable Store/Hotkeys primitives in [ui-store-hotkeys-vertical.md](ui-store-hotkeys-vertical.md).
 - `phase:0.3`: data-dense workspace patterns such as realtime tables, watchlists, resizable shells, metrics, and chart inspection.
 - `phase:later`: broad end-state catalog and advanced surfaces.

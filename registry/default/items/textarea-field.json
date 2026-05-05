@@ -18,7 +18,13 @@
     "install": "mason add textarea-field",
     "customization": "Use ui-textarea-field classes, TanStackField shell classes, Textarea classes, Core data attributes, neutral data-slot hooks, and textareaClass for generated-source styling.",
     "sourceFiles": ["packages/ui/src/default/ui/textarea-field.tsx"],
-    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn", "textarea", "tanstack-field"],
+    "dependencies": [
+      "@keystone-ui/core",
+      "@tanstack/solid-form",
+      "cn",
+      "textarea",
+      "tanstack-field"
+    ],
     "api": "TextareaField exports TextareaField, TextareaFieldProps, and TextareaFieldValidators. It composes TanStackField with the styled Textarea item, passes validators to form.Field, derives touched error state through TanStackField, maps textarea input to field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId plus native textarea props.",
     "accessibility": "Backed by TanStackField for generated IDs, label/description/error relationships, aria-describedby, aria-invalid, required/disabled/readonly metadata, touched/dirty/blurred/validating metadata, and alert messaging. The rendered textarea receives the shared Core form-control props.",
     "anatomy": ["field-root", "field-label", "textarea", "field-description", "field-error"],

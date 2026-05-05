@@ -18,10 +18,27 @@
     "install": "mason add radio-group-field",
     "customization": "Use ui-radio-group-field classes, TanStackField shell classes, RadioGroup classes, Core data attributes, neutral data-slot hooks, radioGroupProps, itemProps, radioGroupClass, and itemClass for generated-source styling.",
     "sourceFiles": ["packages/ui/src/default/ui/radio-group-field.tsx"],
-    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn", "radio-group", "tanstack-field"],
+    "dependencies": [
+      "@keystone-ui/core",
+      "@tanstack/solid-form",
+      "cn",
+      "radio-group",
+      "tanstack-field"
+    ],
     "api": "RadioGroupField exports RadioGroupField, RadioGroupFieldOption, RadioGroupFieldProps, and RadioGroupFieldValidators. It composes TanStackField with the styled RadioGroup item, passes validators to form.Field, derives touched error state through TanStackField, maps value changes to string field.handleChange, maps blur to field.handleBlur, supports disabled options and custom indicators, and forwards disabled/readOnly/required/formId to Core RadioGroup.",
     "accessibility": "Backed by TanStackField for field relationships and by @keystone-ui/core/radio-group for radiogroup semantics, radio items, roving tabindex, arrow/Home/End keyboard selection, hidden radio input submission, reset synchronization, and validation metadata. The radiogroup root receives the shared Core form-control ID and ARIA props.",
-    "anatomy": ["field-root", "field-label", "radio-group", "item", "item-control", "item-indicator", "item-label", "hidden-input", "field-description", "field-error"],
+    "anatomy": [
+      "field-root",
+      "field-label",
+      "radio-group",
+      "item",
+      "item-control",
+      "item-indicator",
+      "item-label",
+      "hidden-input",
+      "field-description",
+      "field-error"
+    ],
     "state": "TanStack Form owns string field value, touched, dirty, blurred, validating, and errors. RadioGroupField maps undefined Core values to the empty string for field state.",
     "limitations": "Object value adapters, rich item descriptions, toolbar/nested composite policies, and async option loading remain app-owned composition.",
     "parity": {

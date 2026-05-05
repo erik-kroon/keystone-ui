@@ -16,6 +16,7 @@ Existing reusable pieces:
 - `packages/ui/src/default/components/data-table/data-table-pagination.tsx`: native pagination controls and page size select.
 - `packages/ui/src/default/components/data-table/data-table-view-options.tsx`: column visibility controls.
 - `packages/ui/src/default/components/data-table/data-table-row-actions.tsx`: source-owned action slot helper.
+- `packages/ui/src/default/components/data-table/data-table-empty-state.tsx`: `DataTableEmpty` empty-state row renderer with `DataTableEmptyState` kept as a compatibility alias.
 - `packages/ui/src/default/components/data-table/data-table-search.ts` and `use-data-table-router.ts`: TanStack Router search-param adapter.
 - `registry/default/items/data-table.json` and `data-table-tanstack-router.json`: Mason multi-file registry metadata.
 
@@ -40,10 +41,11 @@ API:
 Anatomy and attributes:
 
 - Stable `data-scope="ui-data-table"` appears on all public parts.
-- Stable parts include `root`, `header-slot`, `viewport`, `table`, `caption`, `header`, `header-row`, `head`, `body`, `row`, `cell`, `empty-row`, `empty`, `skeleton-row`, `skeleton-cell`, `column-header`, `sort-trigger`, `sort-clear`, `column-hide`, `toolbar`, `search`, `reset`, `toolbar-actions`, `faceted-filter`, `faceted-option`, `faceted-count`, `faceted-clear`, `view-options`, `view-options-search`, `view-option`, `row-actions`, `pagination`, `selected-summary`, `page-summary`, `page-size`, and `page-buttons`.
+- Stable parts include `root`, `header-slot`, `viewport`, `table`, `caption`, `header`, `header-row`, `head`, `body`, `row`, `cell`, `empty-row`, `empty`, `skeleton-status-row`, `skeleton-status`, `skeleton-row`, `skeleton-cell`, `column-header`, `sort-trigger`, `sort-clear`, `column-hide`, `toolbar`, `search`, `reset`, `toolbar-actions`, `faceted-filter`, `faceted-option`, `faceted-control`, `faceted-count`, `faceted-clear`, `view-options`, `view-options-search`, `view-option`, `view-option-control`, `row-actions`, `row-action`, `pagination`, `selected-summary`, `page-summary`, `page-size`, `page-size-select`, `page-buttons`, and `page-button`.
 - Root exposes `data-loading` and `data-empty`.
 - Header cells expose `data-sort` and `aria-sort`.
 - Selected rows expose `data-selected`, `data-state="selected"`, and `aria-selected`.
+- Faceted options expose `data-state` and `data-value`; pagination buttons expose `data-page`; row action buttons expose optional `data-action` and `data-variant`.
 
 Accessibility:
 
@@ -51,6 +53,7 @@ Accessibility:
 - Caption, table, header, body, row, cell, button, search input, checkbox, radio, select, fieldset, legend, and label semantics are used directly.
 - Loading sets `aria-busy` on the root.
 - Pagination is a labelled navigation region with live page/selection summaries.
+- Empty and skeleton loading rows use `role="status"` while decorative skeleton cells are hidden from assistive technology.
 - Sorting, clearing, hiding, searching, pagination, and row-action controls are keyboard reachable through native elements.
 
 SSR and hydration:

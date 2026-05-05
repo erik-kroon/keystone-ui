@@ -41,11 +41,18 @@ export function DataTableFacetedFilter<TData extends RowData>(props: {
             const checked = createMemo(() => selectedValues().has(option.value));
             const count = createMemo(() => optionCount(option));
             return (
-              <label data-scope="ui-data-table" data-part="faceted-option">
+              <label
+                data-scope="ui-data-table"
+                data-part="faceted-option"
+                data-state={checked() ? "checked" : "unchecked"}
+                data-value={option.value}
+              >
                 <input
                   type={props.multiple === false ? "radio" : "checkbox"}
                   name={`data-table-${props.columnId}`}
                   checked={checked()}
+                  data-scope="ui-data-table"
+                  data-part="faceted-control"
                   onChange={() => {
                     const next = new Set(selectedValues());
                     if (props.multiple === false) {

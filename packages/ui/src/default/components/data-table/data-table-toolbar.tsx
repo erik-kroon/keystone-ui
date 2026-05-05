@@ -42,6 +42,7 @@ export function DataTableToolbar<TData extends RowData>(props: {
                   aria-label={meta?.placeholder ?? `Search ${label}`}
                   data-scope="ui-data-table"
                   data-part="search"
+                  data-column={column.id}
                   class="ui-data-table-search"
                   onInput={(event) => {
                     column.setFilterValue(event.currentTarget.value);

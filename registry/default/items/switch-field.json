@@ -21,7 +21,16 @@
     "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn", "switch", "tanstack-field"],
     "api": "SwitchField exports SwitchField, SwitchFieldProps, and SwitchFieldValidators. It composes TanStackField with the styled Switch item, passes validators to form.Field, derives touched error state through TanStackField, maps checked changes to boolean field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId to Core Switch.",
     "accessibility": "Backed by TanStackField for field relationships and by @keystone-ui/core/switch for role=switch, aria-checked, Space keyboard toggling, hidden checkbox submission, reset synchronization, and validation metadata. The switch control receives the shared Core form-control ID and ARIA props.",
-    "anatomy": ["field-root", "field-label", "switch-root", "switch", "thumb", "hidden-input", "field-description", "field-error"],
+    "anatomy": [
+      "field-root",
+      "field-label",
+      "switch-root",
+      "switch",
+      "thumb",
+      "hidden-input",
+      "field-description",
+      "field-error"
+    ],
     "state": "TanStack Form owns the boolean field value, touched, dirty, blurred, validating, and errors. SwitchField treats true as checked and all other values as unchecked.",
     "limitations": "Drag gestures, optimistic preference persistence, and custom inline label layouts remain app-owned composition.",
     "parity": {

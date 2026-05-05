@@ -1,7 +1,7 @@
 import { flexRender, type RowData, type Table } from "@tanstack/solid-table";
 import { For, Show, splitProps, type JSX } from "solid-js";
 import { cn } from "@/lib/cn";
-import { DataTableEmptyState } from "./data-table-empty-state";
+import { DataTableEmpty } from "./data-table-empty-state";
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableSkeleton } from "./data-table-skeleton";
 
@@ -91,7 +91,7 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
               <Show
                 when={local.table.getRowModel().rows.length > 0}
                 fallback={
-                  <DataTableEmptyState
+                  <DataTableEmpty
                     colSpan={local.table.getVisibleLeafColumns().length}
                     label={local.empty}
                   />

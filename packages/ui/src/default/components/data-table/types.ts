@@ -26,9 +26,13 @@ export type DataTableFacetedFilterConfig<TData extends RowData> = {
 };
 
 export type DataTableRowAction<TData extends RowData> = {
-  label: string;
-  onSelect: (row: Row<TData>) => void;
-  disabled?: (row: Row<TData>) => boolean;
+  label: JSX.Element;
+  onSelect: (row: Row<TData>, event: MouseEvent) => void;
+  ariaLabel?: string;
+  disabled?: boolean | ((row: Row<TData>) => boolean);
+  hidden?: boolean | ((row: Row<TData>) => boolean);
+  id?: string;
+  variant?: "default" | "destructive";
 };
 
 export type DataTableColumns<TData extends RowData> = ColumnDef<TData, unknown>[];
