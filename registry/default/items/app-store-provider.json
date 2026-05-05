@@ -1,0 +1,52 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "app-store-provider",
+  "type": "registry:ui",
+  "title": "AppStoreProvider",
+  "description": "Optional Solid app-shell state provider for generated UI source that coordinates TanStack Store-backed command, shortcut, shell, and workspace state.",
+  "version": "0.1.0",
+  "dependencies": ["@tanstack/solid-store@^0.11.0"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["store", "app-shell", "tanstack"],
+  "keywords": [
+    "app-store",
+    "provider",
+    "store",
+    "command-menu",
+    "shortcuts",
+    "shell",
+    "workspace",
+    "tanstack"
+  ],
+  "docs": "https://keystone-ui.dev/docs/ui/app-store-provider",
+  "registryDependencies": ["cn"],
+  "meta": {
+    "install": "mason add app-store-provider",
+    "api": "Exports createAppStore, AppStoreProvider, useAppStore, useRequiredAppStore, and useAppStoreSelector. createAppStore returns a TanStack Store plus Solid-native actions for command menu visibility/query/selection, command group registration, shortcut preferences/scope, shell theme/sidebar state, and app-owned workspace values.",
+    "anatomy": ["provider"],
+    "accessibility": "AppStoreProvider has no widget role and does not replace Core primitive keyboard, focus, or ARIA behavior. It renders a neutral div with stable ui-app-store provider data attributes so generated app shells can style or inspect the provider without adding semantics.",
+    "controlledUncontrolled": "Use initialState for local uncontrolled provider state, pass an externally created TanStack Store for app-owned state, or pass a createAppStore result when callers need shared actions outside the component tree.",
+    "ssrHydration": "The provider does not read document, window, layout, or storage during creation/render. Persisting state to storage and registering global hotkeys should be layered in app-owned source after hydration.",
+    "dataAttributes": "The root provider emits data-scope=\"ui-app-store\", data-part=\"provider\", and data-slot=\"app-store-provider\".",
+    "cssVariables": [],
+    "limitations": "This source coordinates app-shell state only. It does not register keyboard shortcuts, persist preferences, implement command search/ranking, own route permissions, or provide Core primitive behavior.",
+    "sourceFiles": ["packages/ui/src/default/ui/app-store-provider.tsx"],
+    "dependencies": ["@tanstack/solid-store", "cn"],
+    "parity": {
+      "visualReference": "No visual reference is required because AppStoreProvider is a neutral app-shell state provider, not a styled visible widget.",
+      "baseUi": "Intentionally differs from Base UI because Base UI owns primitive interaction state; this provider only shares app-level state across generated UI source.",
+      "kobalte": "Intentionally differs from Kobalte primitive context shape by exposing app-shell store actions instead of widget-scoped primitive APIs.",
+      "tanstackStore": "Uses TanStack Store as the provider state engine and exposes Solid selectors through useSelector so generated UI can subscribe to narrow state slices.",
+      "tanstackHotkeys": "Stores shortcut preferences and active shortcut scope for app-level hotkey integrations, but leaves actual registration to KeyboardShortcuts or user-owned source because TanStack Hotkeys remains preview/alpha."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/app-store-provider.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

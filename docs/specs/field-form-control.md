@@ -127,7 +127,7 @@ Fieldset state attributes include:
   [Primitive Browser And Manual Accessibility Evidence](../accessibility/primitive-evidence.md).
 - Manual screen-reader evidence for error announcement timing must still be recorded before a
   stable claim.
-- Native constraint validation behavior needs broader browser matrix coverage; the 2026-05-05
-  Chromium probe found a reset edge case where native email validity repopulated the error after
-  reset.
+- Native constraint validation behavior needs broader browser matrix coverage. The 2026-05-05
+  Chromium reset edge case for native email validity is covered by a regression test and follow-up
+  browser probe.
 - Multi-value hidden input conventions should be finalized before stable.

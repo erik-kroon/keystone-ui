@@ -193,7 +193,9 @@ export type RadioGroupContextValue = {
 
 export type SubmenuContextValue = {
   child: MenuApi;
+  clearCloseTimer: () => void;
   parent: MenuApi;
+  scheduleClose: () => void;
 };
 
 export type MenuItemContextValue = {

@@ -102,15 +102,16 @@ Manual accessibility check:
 
 Browser matrix:
 
-| Scenario                                      | Environment            | Result | Evidence                                                              |
-| --------------------------------------------- | ---------------------- | ------ | --------------------------------------------------------------------- |
-| Label, description, error relationships       | Core happy-dom harness | Pass   | `packages/core/src/form/form-control.behavior.test.tsx`               |
-| Required, invalid, disabled, readonly states  | Core happy-dom harness | Pass   | Field wiring and validity tests cover ARIA/data state                 |
-| Native and custom validity                    | Core happy-dom harness | Pass   | `packages/core/src/form/field-validity.test.tsx`                      |
-| Async validity latest-result behavior         | Core happy-dom harness | Pass   | Latest async validation result wins                                   |
-| Hidden inputs                                 | Core happy-dom harness | Pass   | Array values serialize as repeated native inputs                      |
-| Form reset                                    | Core happy-dom harness | Pass   | Field and FormControl reset listeners covered                         |
-| Browser invalid email announcement/reset path | Chromium manual probe  | Gap    | Native email validity repopulated an error after reset in the harness |
+| Scenario                                      | Environment            | Result | Evidence                                                                |
+| --------------------------------------------- | ---------------------- | ------ | ----------------------------------------------------------------------- |
+| Label, description, error relationships       | Core happy-dom harness | Pass   | `packages/core/src/form/form-control.behavior.test.tsx`                 |
+| Required, invalid, disabled, readonly states  | Core happy-dom harness | Pass   | Field wiring and validity tests cover ARIA/data state                   |
+| Native and custom validity                    | Core happy-dom harness | Pass   | `packages/core/src/form/field-validity.test.tsx`                        |
+| Async validity latest-result behavior         | Core happy-dom harness | Pass   | Latest async validation result wins                                     |
+| Hidden inputs                                 | Core happy-dom harness | Pass   | Array values serialize as repeated native inputs                        |
+| Form reset                                    | Core happy-dom harness | Pass   | Field and FormControl reset listeners covered                           |
+| Browser invalid email announcement/reset path | Chromium browser probe | Pass   | Reset clears stale native email validity and removes the error relation |
+| Browser hidden input serialization            | Chromium browser probe | Pass   | Hidden input serialized `project=alpha` before and after reset          |
 
 Manual accessibility check:
 
@@ -118,16 +119,16 @@ Manual accessibility check:
 - Version or commit: workspace state on 2026-05-05
 - Tester: Codex
 - Date: 2026-05-05
-- Environment: Chromium through Playwright MCP
-- Assistive technology: Playwright accessibility snapshot, no desktop screen reader attached
+- Environment: Headless Chromium through Playwright 1.59.1 against `.context/evidence-browser/field-form-control`
+- Assistive technology: Chromium accessibility tree via CDP `Accessibility.getFullAXTree`, no desktop screen reader attached
 - Scenario: Fill invalid email, submit, inspect label/description/error relationships and reset behavior.
-- Expected: Control is labelled by `Email`, described by help text plus error when invalid, exposes required/invalid state, and reset clears invalid UI.
-- Actual: Invalid state exposed `aria-invalid="true"` and `aria-required="true"` with two described-by references and error text `Use a work email`. After reset, Chromium native email validity repopulated an error message: `Please include an '@' in the email address...`.
-- Result: Pass for label/description/error wiring; Fail for this browser reset edge case.
-- Follow-up: Track browser-native constraint reset behavior before Field/FormControl is promoted to stable.
+- Expected: Control is labelled by `Email`, described by help text plus error when invalid, exposes required/invalid state, reset clears invalid UI, and the help text remains described after reset.
+- Actual: Initial email control exposed `aria-labelledby` for the label, `aria-describedby` for the description, and `aria-required="true"`. Invalid submit added `aria-invalid="true"`, added the error id to `aria-describedby`, and rendered `Use a work email`. Reset removed `aria-invalid`, removed the error id and error node, kept the description id, and restored the empty value. Hidden input form data remained `project=alpha` before and after reset.
+- Result: Pass for Chromium browser semantics, error relationship, description relationship, hidden input serialization, and reset behavior.
+- Follow-up: Run the full desktop screen-reader announcement matrix before promoting Field/FormControl beyond stable-candidate.
 
 ## Stable-Candidate Posture
 
 Dialog and Select have enough focused automated and browser-probe evidence to remain stable candidates, but not enough to be called stable because desktop and mobile screen-reader announcement quality has not been run.
 
-Field/FormControl should remain beta/stable-candidate at most. The browser reset gap above must be resolved or documented as a known limitation before any stable claim.
+Field/FormControl should remain beta/stable-candidate at most. The Chromium browser reset gap is resolved, but desktop and mobile screen-reader announcement quality still needs a dedicated matrix before any stable claim.

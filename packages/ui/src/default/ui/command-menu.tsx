@@ -18,38 +18,25 @@ import {
   type CreateHotkeyOptions,
   type RegisterableHotkey,
 } from "@tanstack/solid-hotkeys";
-import { createStore, useSelector, type Store } from "@tanstack/solid-store";
+import { useSelector } from "@tanstack/solid-store";
 import { For, Show, createMemo, splitProps, type JSX, type ParentProps } from "solid-js";
+import {
+  createCommandStore,
+  type CommandStore,
+  type CommandStoreCommand,
+  type CommandStoreState,
+} from "@/components/ui/command-store";
 import { cn } from "@/lib/cn";
 
-export type CommandMenuItemData = {
+export type CommandMenuItemData = Omit<CommandStoreCommand, "id"> & {
   value: string;
-  label: string;
-  description?: string;
-  disabled?: boolean;
-  group?: string;
-  keywords?: readonly string[];
   shortcut?: RegisterableHotkey;
   shortcutLabel?: string;
   onSelect?: (item: CommandMenuItemData) => void;
 };
 
-export type CommandMenuState = {
-  open: boolean;
-  query: string;
-  lastSelectedValue?: string;
-};
-
-export type CommandMenuStore = {
-  store: Store<CommandMenuState>;
-  close: () => void;
-  open: () => void;
-  resetQuery: () => void;
-  selectValue: (value: string) => void;
-  setOpen: (open: boolean) => void;
-  setQuery: (query: string) => void;
-  toggleOpen: () => void;
-};
+export type CommandMenuState = CommandStoreState<CommandStoreCommand>;
+export type CommandMenuStore = CommandStore<CommandStoreCommand>;
 
 export type CommandMenuHotkeysOptions = Omit<CreateHotkeyOptions, "target"> & {
   enabled?: boolean;
@@ -137,29 +124,7 @@ function SearchIcon() {
 }
 
 export function createCommandMenuStore(initialState: Partial<CommandMenuState> = {}) {
-  const store = createStore<CommandMenuState>({
-    open: initialState.open ?? false,
-    query: initialState.query ?? "",
-    lastSelectedValue: initialState.lastSelectedValue,
-  });
-
-  const setOpen = (open: boolean) => store.setState((state) => ({ ...state, open }));
-  const setQuery = (query: string) => store.setState((state) => ({ ...state, query }));
-
-  return {
-    store,
-    close: () => setOpen(false),
-    open: () => setOpen(true),
-    resetQuery: () => setQuery(""),
-    selectValue: (value: string) =>
-      store.setState((state) => ({
-        ...state,
-        lastSelectedValue: value,
-      })),
-    setOpen,
-    setQuery,
-    toggleOpen: () => store.setState((state) => ({ ...state, open: !state.open })),
-  } satisfies CommandMenuStore;
+  return createCommandStore({ initialState }) satisfies CommandMenuStore;
 }
 
 export function CommandMenu(props: CommandMenuProps) {
@@ -255,7 +220,7 @@ export function CommandMenu(props: CommandMenuProps) {
         preventDefault: options.preventDefault ?? true,
         requireReset: options.requireReset ?? true,
         stopPropagation: options.stopPropagation ?? true,
-        target: options.target,
+        ...(options.target !== undefined ? { target: options.target } : {}),
       };
     },
   );

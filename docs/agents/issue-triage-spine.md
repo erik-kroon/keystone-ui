@@ -4,7 +4,7 @@
 
 Do not pick from the full open issue list directly. Work only from milestone parent issues or maintainer-selected active issues.
 
-The active parent for 0.1 is [#46](https://github.com/erik-kroon/core-ui/issues/46). The data-dense workspace parent for post-0.1 work is [#271](https://github.com/erik-kroon/core-ui/issues/271). The long-term north star remains [#28](https://github.com/erik-kroon/core-ui/issues/28).
+The active parent for 0.1 is [#46](https://github.com/erik-kroon/core-ui/issues/46). The active parent for the 0.2 UI app-layer preview is [#291](https://github.com/erik-kroon/keystone-ui/issues/291). The data-dense workspace parent for post-0.2 work is [#271](https://github.com/erik-kroon/core-ui/issues/271). The long-term north star remains [#28](https://github.com/erik-kroon/core-ui/issues/28).
 
 ## Milestones
 
@@ -32,15 +32,20 @@ Keep the active board near 12-15 issues:
 - [#233](https://github.com/erik-kroon/core-ui/issues/233): UI DataTable.
 - [#246](https://github.com/erik-kroon/core-ui/issues/246): UI CommandMenu, good enough for 0.1 proof and registry validation.
 - [#197](https://github.com/erik-kroon/core-ui/issues/197), [#198](https://github.com/erik-kroon/core-ui/issues/198), and [#201](https://github.com/erik-kroon/core-ui/issues/201): TanStack Form proof.
+- [#291](https://github.com/erik-kroon/keystone-ui/issues/291): 0.2 UI app-layer preview parent. Use [0.2 UI app-layer preview tracker](../reports/0.2-ui-app-layer-preview-tracker.md) for active/backlog classification and completion bars.
 
 ## 0.2 App Primitive Queue
 
-These issues are maintainer-selected follow-up from the 0.1 CommandMenu proof. Do not pull in the rest of the Store/Hotkeys end-state inventory until these clarify the reusable app primitives.
+These issues are the named extraction queue after the 0.1 CommandMenu proof, but they remain backlog inventory until [#291](https://github.com/erik-kroon/keystone-ui/issues/291) explicitly pulls one into active preview implementation. Do not pull in the rest of the Store/Hotkeys end-state inventory until these clarify the reusable app primitives.
 
 - [#242](https://github.com/erik-kroon/core-ui/issues/242): AppStoreProvider.
 - [#245](https://github.com/erik-kroon/core-ui/issues/245): CommandStore.
 - [#247](https://github.com/erik-kroon/core-ui/issues/247): KeyboardShortcuts.
 - [#248](https://github.com/erik-kroon/core-ui/issues/248): ShortcutDisplay.
+
+## 0.2 Preview Tracker
+
+Use [docs/reports/0.2-ui-app-layer-preview-tracker.md](../reports/0.2-ui-app-layer-preview-tracker.md) as the working 0.2 board. It classifies the DataTable, TanStack Form fields, Store/Hotkeys, block/template, and registry lifecycle issue families as either active preview scope or backlog inventory, and it records the preview completion bar for each family.
 
 ## 0.1 Hardening Checklist
 

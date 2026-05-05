@@ -209,10 +209,11 @@ export function createFieldValidity(options: CreateFieldValidityOptions = {}): F
     setTouched(false);
     setFocused(false);
     setFilled(isFilledValue(nextValue));
+    setNativeValidity(emptyNativeValidity());
+    setNativeMessage(undefined);
     setValidationErrors([]);
     setValidating(false);
     setManualCustomError(undefined);
-    updateNativeValidity();
   };
 
   const registerFormReset = (element: Accessor<HTMLElement | undefined>) => {

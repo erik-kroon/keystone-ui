@@ -453,10 +453,24 @@ export function createMenuNamespace(factoryOptions: MenuFactoryOptions) {
       id: child.contentId,
       close: () => child.close(undefined, "programmatic"),
     });
-    onCleanup(unregister);
+    let closeTimer: ReturnType<typeof setTimeout> | undefined;
+    const clearCloseTimer = () => {
+      if (closeTimer !== undefined) {
+        clearTimeout(closeTimer);
+        closeTimer = undefined;
+      }
+    };
+    const scheduleClose = () => {
+      clearCloseTimer();
+      closeTimer = setTimeout(() => child.close(undefined, "programmatic"), 180);
+    };
+    onCleanup(() => {
+      clearCloseTimer();
+      unregister();
+    });
 
     return (
-      <SubmenuContext.Provider value={{ child, parent }}>
+      <SubmenuContext.Provider value={{ child, clearCloseTimer, parent, scheduleClose }}>
         <MenuContext.Provider value={child}>{props.children}</MenuContext.Provider>
       </SubmenuContext.Provider>
     );
@@ -482,18 +496,6 @@ export function createMenuNamespace(factoryOptions: MenuFactoryOptions) {
     ]);
     const value = submenu.child.contentId;
     const label = () => String(local.children ?? value);
-    let closeTimer: ReturnType<typeof setTimeout> | undefined;
-    const clearCloseTimer = () => {
-      if (closeTimer !== undefined) {
-        clearTimeout(closeTimer);
-        closeTimer = undefined;
-      }
-    };
-    const scheduleClose = () => {
-      clearCloseTimer();
-      closeTimer = setTimeout(() => submenu.child.close(undefined, "programmatic"), 180);
-    };
-    onCleanup(clearCloseTimer);
 
     const triggerProps = submenu.parent.getItemProps({
       ...(others as Record<string, unknown>),
@@ -505,7 +507,11 @@ export function createMenuNamespace(factoryOptions: MenuFactoryOptions) {
         submenu.child.setOpen(true, { event, reason: "trigger" });
       }),
       onKeyDown: composeEventHandlers<KeyboardEvent>(local.onKeyDown, (event) => {
-        if (event.key === "ArrowRight") {
+        const opensSubmenu =
+          event.key === "ArrowRight" ||
+          (submenu.parent.rootRole() === "menubar" && event.key === "ArrowDown");
+
+        if (opensSubmenu) {
           event.preventDefault();
           submenu.parent.closeSubmenus(submenu.child.contentId);
           submenu.child.setOpen(true, { event, reason: "keyboard" });
@@ -516,8 +522,14 @@ export function createMenuNamespace(factoryOptions: MenuFactoryOptions) {
           });
         }
       }),
-      onPointerEnter: composeEventHandlers<PointerEvent>(local.onPointerEnter, clearCloseTimer),
-      onPointerLeave: composeEventHandlers<PointerEvent>(local.onPointerLeave, scheduleClose),
+      onPointerEnter: composeEventHandlers<PointerEvent>(
+        local.onPointerEnter,
+        submenu.clearCloseTimer,
+      ),
+      onPointerLeave: composeEventHandlers<PointerEvent>(
+        local.onPointerLeave,
+        submenu.scheduleClose,
+      ),
       onPointerMove: composeEventHandlers<PointerEvent>(local.onPointerMove, (event) => {
         submenu.parent.closeSubmenus(submenu.child.contentId);
         submenu.child.setOpen(true, { event, reason: "trigger" });
@@ -559,8 +571,13 @@ export function createMenuNamespace(factoryOptions: MenuFactoryOptions) {
           }
         })}
         onPointerEnter={composeEventHandlers<PointerEvent>(props.onPointerEnter, () => {
+          submenu.clearCloseTimer();
           submenu.parent.closeSubmenus(submenu.child.contentId);
         })}
+        onPointerLeave={composeEventHandlers<PointerEvent>(
+          props.onPointerLeave,
+          submenu.scheduleClose,
+        )}
       />
     );
   }

@@ -107,7 +107,7 @@ The authoritative source is `packages/core/src/metadata/index.ts`. This table is
 | `menu`                          | `./menu`            | Experimental | Menu-family base; submenu, pointer intent, and nested menu depth are needed before beta/stable.                                                                   |
 | `menubar`                       | `./menubar`         | Experimental | Menu-family derivative; nested popup coordination and RTL/pointer coverage need more evidence.                                                                    |
 | `navigation-menu`               | `./navigation-menu` | Experimental | Menu-family derivative; viewport/layout APIs, touch intent, and routed focus evidence remain open.                                                                |
-| `popover`                       | `./popover`         | Experimental | Overlay derivative; should trail Dialog kernel maturity.                                                                                                          |
+| `popover`                       | `./popover`         | Experimental | Overlay derivative with a documented interaction matrix; should trail Dialog until browser, nested overlay, and manual AT evidence improve.                       |
 | `popper`                        | `./popper`          | Beta         | Public positioning composition surface; depends on Floating UI adapter maturity.                                                                                  |
 | `portal`                        | `./portal`          | Beta         | Proven utility; SSR/hydration docs should remain visible.                                                                                                         |
 | `radio-group`                   | `./radio-group`     | Beta         | Selection-control kernel is promising; validate form/reset and readonly semantics broadly.                                                                        |
@@ -118,7 +118,7 @@ The authoritative source is `packages/core/src/metadata/index.ts`. This table is
 | `tabs`                          | `./tabs`            | Beta         | Needs full keyboard/mounting/focus docs and broader browser evidence before stable.                                                                               |
 | `toast`                         | `./toast`           | Experimental | Needs manager/provider/a11y evidence and pause/update policy before beta.                                                                                         |
 | `toolbar`                       | `./toolbar`         | Experimental | Needs composite coordination depth before beta.                                                                                                                   |
-| `tooltip`                       | `./tooltip`         | Experimental | Overlay derivative; should trail Dialog/Popover kernel maturity and manual AT evidence.                                                                           |
+| `tooltip`                       | `./tooltip`         | Experimental | Overlay derivative with documented timing/hover limitations; should trail Dialog/Popover kernel maturity and manual AT evidence.                                  |
 | `visually-hidden`               | `./visually-hidden` | Stable       | Small utility with stable behavior.                                                                                                                               |
 
 ## Internal And Backlog Surfaces

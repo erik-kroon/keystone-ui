@@ -2,9 +2,10 @@
 
 ## Scope
 
-Issues #197, #198, #199, #200, #201, #203, #204, #205, and #211 cover the
+Issues #197, #198, #199, #200, #201, #203, #204, #205, #209, #210, and #211 cover the
 UI-layer TanStackForm, TanStackField, TextField, TextareaField, SelectField,
-CheckboxField, RadioGroupField, SwitchField, and FormSubmit generated source items.
+CheckboxField, RadioGroupField, SwitchField, FieldArray, FormMessage, and FormSubmit
+generated source items.
 
 These are app-layer UI components. TanStack Form owns form state, validation, blur,
 submit, touched, dirty, and validating metadata. Keystone Core owns intrinsic form-control
@@ -78,16 +79,45 @@ FormSubmit:
   supports external native form ownership through `formId`, disables while submitting or when
   `canSubmit` is false by default, and exposes a dedicated `ui-form-submit` data contract.
 
+FieldArray and FormMessage:
+
+- `FieldArray` renders `form.Field` with `mode="array"`, follows TanStack's Solid `Index`
+  rendering guidance for array item stability, and exposes render-context helpers for `add`,
+  `remove`, `swap`, `move`, `itemName`, `items`, `count`, `invalid`, and `firstError`.
+- `FieldArrayItems`, `FieldArrayItem`, `FieldArrayAdd`, `FieldArrayRemove`, and
+  `FieldArrayMove` provide source-owned generated helpers. Action helpers default to
+  `type="button"` so mutations do not submit forms, and user click handlers can prevent
+  the internal mutation by calling `event.preventDefault()`.
+- `FieldArray` renders a grouped accessibility shell with optional label, description, empty
+  state, error message, `aria-labelledby`, `aria-describedby`, `aria-invalid`, and stable
+  `data-scope="ui-field-array"` / `data-slot` hooks. TanStack Form owns array value,
+  touched, dirty, validating, and error state.
+- `FormMessage` is the reusable message surface for custom TanStack Form layouts. It reads
+  explicit `errors`, field errors, or form errors, formats messages through
+  `formatFieldError`, renders `role="alert"` with `aria-live="polite"` when invalid content
+  exists, and stays unmounted while empty unless `forceMount` is set.
+
 ## Registry Status
 
 - `tanstack-form`, `tanstack-field`, `text-field`, `textarea-field`, `select-field`,
-  `checkbox-field`, `radio-group-field`, `switch-field`, and `form-submit` carry
+  `checkbox-field`, `radio-group-field`, `switch-field`, `field-array`, `form-message`,
+  and `form-submit` carry
   `meta.api`, `meta.accessibility`, `meta.anatomy`, `meta.state`, `meta.limitations`,
   and `meta.parity` notes where relevant to the item.
 - `select-field` depends on `select` and `tanstack-field`, so installed source reuses the
   same UI Select and TanStack field contracts.
 - The first TanStack Form field vertical is implemented: #199 TextField, #200 TextareaField,
-  #203 CheckboxField, #204 RadioGroupField, #205 SwitchField, and #211 FormSubmit.
+  #203 CheckboxField, #204 RadioGroupField, #205 SwitchField, #209 FieldArray,
+  #210 FormMessage, and #211 FormSubmit.
+- Issue #209 final status: implemented as a source-owned TanStack array adapter with
+  `mode="array"`, Solid `Index` rendering, array action helpers, group/message
+  accessibility, registry metadata, and source contract coverage. Known limitations are
+  intentional: nested row layout, drag-and-drop sorting, virtualization, and schema-specific
+  object adapters remain app-owned composition.
+- Issue #210 final status: implemented as a reusable message surface for explicit errors,
+  TanStack field errors, or TanStack form errors. Known limitations are intentional:
+  FormMessage does not create control relationships on its own; TanStackField or Core
+  form-control helpers own `aria-describedby` for concrete controls.
 - Issue #201 final status: implemented as the string-first, single-select TanStack adapter.
   Known limitations are intentional: empty string means no selection, and multi-select,
   object adapters, async loading, filtering, virtualization, and schema-specific validation
