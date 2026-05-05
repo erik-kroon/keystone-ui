@@ -40,4 +40,3 @@ Adjust names to the actual local component exports after inspecting the source.
 - Styling invalid state only visually while missing `aria-invalid`.
 - Reimplementing field state in a block instead of using existing field wrappers.
 - Moving TanStack form state into Core.
-

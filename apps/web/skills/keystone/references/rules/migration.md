@@ -26,13 +26,13 @@ Use this when adapting snippets from shadcn, Radix, React, or Base UI-shaped exa
 ```tsx
 // React
 const [open, setOpen] = useState(false);
-<Button className="gap-2" onClick={() => setOpen(true)} />
+<Button className="gap-2" onClick={() => setOpen(true)} />;
 ```
 
 ```tsx
 // Solid / Keystone
 const [open, setOpen] = createSignal(false);
-<Button class="gap-2" onClick={() => setOpen(true)} />
+<Button class="gap-2" onClick={() => setOpen(true)} />;
 ```
 
 ```tsx
@@ -57,4 +57,3 @@ const [open, setOpen] = createSignal(false);
 4. Accessibility parts are preserved.
 5. Styling uses Keystone tokens.
 6. Registry install names use Mason items.
-

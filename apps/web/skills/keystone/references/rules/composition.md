@@ -50,4 +50,3 @@ Use existing group, toolbar, tabs, toggle, menu, and field wrappers before custo
 - Omitting title/description parts in a modal flow.
 - Using UI stores inside Core.
 - Adding a new wrapper when a current registry item can compose the behavior.
-

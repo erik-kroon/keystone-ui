@@ -1,96 +1,19 @@
 import { createFileRoute } from "@tanstack/solid-router";
-import { ChevronRight, Command, Search, Sparkles } from "lucide-solid";
+import { ChevronRight, Command, Sparkles } from "lucide-solid";
 import { For } from "solid-js";
+
+import {
+  CodeBlock,
+  PageHeader,
+  PageHeaderDescription,
+  PageHeaderHeading,
+  SiteFooter,
+} from "@/components/docs-shell";
+import { componentRows, navGroups, tocItems } from "@/lib/docs-data";
 
 export const Route = createFileRoute("/")({
   component: DocsHome,
 });
-
-type NavItem = {
-  label: string;
-  href: string;
-  badge?: string;
-};
-
-type NavGroup = {
-  title: string;
-  items: Array<NavItem>;
-};
-
-const navGroups: Array<NavGroup> = [
-  {
-    title: "Overview",
-    items: [
-      { label: "Introduction", href: "#introduction" },
-      { label: "Get Started", href: "#get-started" },
-      { label: "Styling", href: "#styling" },
-      { label: "Migrating from Radix", href: "#migrating" },
-      { label: "Skills", href: "#skills", badge: "New" },
-      { label: "Changelog", href: "#changelog", badge: "New" },
-      { label: "Roadmap", href: "#roadmap" },
-    ],
-  },
-  {
-    title: "Components",
-    items: [
-      { label: "Accordion", href: "#accordion" },
-      { label: "Alert", href: "#components" },
-      { label: "Alert Dialog", href: "#components" },
-      { label: "Autocomplete", href: "#components" },
-      { label: "Avatar", href: "#components" },
-      { label: "Badge", href: "#components" },
-      { label: "Breadcrumb", href: "#components" },
-      { label: "Button", href: "#components" },
-      { label: "Calendar", href: "#components" },
-      { label: "Card", href: "#components" },
-      { label: "Checkbox", href: "#components" },
-      { label: "Collapsible", href: "#components" },
-      { label: "Combobox", href: "#components" },
-      { label: "Dialog", href: "#components" },
-      { label: "Field", href: "#components" },
-      { label: "Form", href: "#components" },
-      { label: "Input", href: "#components" },
-      { label: "Menu", href: "#components" },
-      { label: "Popover", href: "#components" },
-      { label: "Select", href: "#components" },
-      { label: "Sheet", href: "#components" },
-      { label: "Tabs", href: "#components" },
-      { label: "Toast", href: "#components" },
-      { label: "Tooltip", href: "#components" },
-    ],
-  },
-  {
-    title: "Hooks",
-    items: [
-      { label: "useControllableState", href: "#hooks" },
-      { label: "useCopyToClipboard", href: "#hooks" },
-    ],
-  },
-  {
-    title: "Resources",
-    items: [
-      { label: "Registry contract", href: "#registry" },
-      { label: "Primitive contracts", href: "#contracts" },
-    ],
-  },
-];
-
-const tocItems = [
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Core and UI Layers", href: "#core-ui-layers" },
-  { label: "Styling Model", href: "#styling" },
-  { label: "Component Inventory", href: "#components" },
-  { label: "Registry Ownership", href: "#registry" },
-  { label: "Roadmap", href: "#roadmap" },
-];
-
-const componentRows = [
-  ["Accordion", "Available", "Core primitive plus editable UI source."],
-  ["Dialog", "Available", "Focus, dismissal, portals, and overlay layering."],
-  ["Select", "In progress", "Collection, popup field, keyboard navigation, and typeahead."],
-  ["Data Table", "UI layer", "TanStack Table source for dense app workspaces."],
-  ["TanStack Form Field", "UI layer", "Solid form integration without leaking into Core."],
-];
 
 function DocsHome() {
   return (
@@ -103,22 +26,18 @@ function DocsHome() {
         </aside>
 
         <article class="min-w-0 px-5 py-8 sm:px-8 lg:px-12 lg:py-12">
-          <MobileNavigation />
-
           <div class="mx-auto max-w-[760px]">
-            <section id="introduction" class="scroll-mt-24 border-b border-border pb-12">
+            <PageHeader id="introduction" class="border-b border-border pb-12">
               <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-muted px-3 py-1 text-[0.78rem] font-medium text-muted-foreground">
                 <Sparkles size={14} />
                 Keystone UI documentation shell
               </div>
-              <h1 class="max-w-[12ch] text-4xl font-semibold leading-[1.02] tracking-normal text-foreground sm:text-5xl">
-                Solid primitives and source-owned UI.
-              </h1>
-              <p class="mt-5 max-w-2xl text-[1.05rem] leading-7 text-muted-foreground">
+              <PageHeaderHeading>Solid primitives and source-owned UI.</PageHeaderHeading>
+              <PageHeaderDescription>
                 Keystone UI is a headless Core primitive layer and a copy-paste UI source registry
-                for Solid applications. The docs layout mirrors the dense, three-column reference
-                pattern used by coss ui while keeping Keystone's Core/UI boundaries explicit.
-              </p>
+                for Solid applications. The docs layout uses a dense, three-column reference pattern
+                while keeping Keystone's Core/UI boundaries explicit.
+              </PageHeaderDescription>
               <div class="mt-8 flex flex-wrap items-center gap-3">
                 <a class="ks-button ks-button-primary" href="#get-started">
                   Get Started
@@ -128,7 +47,7 @@ function DocsHome() {
                   Browse Components
                 </a>
               </div>
-            </section>
+            </PageHeader>
 
             <section id="how-it-works" class="docs-section">
               <h2>How It Works</h2>
@@ -149,10 +68,12 @@ function DocsHome() {
                 Install from the Mason registry when you want owned source. Import directly from
                 Core when you need primitive behavior without Keystone's styled app layer.
               </p>
-              <pre class="code-block">
-                <code>{`bunx mason add button dialog select-field
-bun add @keystone-ui/core`}</code>
-              </pre>
+              <CodeBlock
+                code={`bunx mason add button dialog select-field
+bun add @keystone-ui/core`}
+                language="shell"
+                title="Install Core and UI source"
+              />
             </section>
 
             <section id="core-ui-layers" class="docs-section">
@@ -264,6 +185,7 @@ bun add @keystone-ui/core`}</code>
           </div>
         </aside>
       </div>
+      <SiteFooter />
     </main>
   );
 }
@@ -291,26 +213,6 @@ function DocsSidebar() {
         )}
       </For>
     </nav>
-  );
-}
-
-function MobileNavigation() {
-  return (
-    <div class="mb-8 rounded-lg border border-border bg-card p-3 lg:hidden">
-      <div class="mb-2 flex items-center gap-2 text-sm font-semibold">
-        <Search size={15} />
-        Docs Navigation
-      </div>
-      <div class="flex gap-2 overflow-x-auto pb-1">
-        <For each={navGroups[0].items.concat(navGroups[1].items.slice(0, 8))}>
-          {(item) => (
-            <a class="mobile-pill" href={item.href}>
-              {item.label}
-            </a>
-          )}
-        </For>
-      </div>
-    </div>
   );
 }
 

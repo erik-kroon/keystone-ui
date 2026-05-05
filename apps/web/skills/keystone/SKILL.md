@@ -53,6 +53,17 @@ Rule references, read on demand:
 - `references/rules/migration.md` for shadcn/Radix/React-to-Keystone translation.
 - `references/portal-props.md` for portal prop conventions in Keystone UI wrappers.
 
+Focused primitive references, read when working on these high-risk items:
+
+- `references/primitives/dialog.md` for modal dialog composition, focus, dismissal, and portal behavior.
+- `references/primitives/menu.md` for trigger menus, item selection, roving focus, and typeahead.
+- `references/primitives/select.md` for select/listbox composition and form value behavior.
+- `references/primitives/form.md` for Keystone Field, TanStack Form, and field adapter boundaries.
+- `references/primitives/input-group.md` for grouped input adornments and current source limitations.
+- `references/primitives/toast.md` for toaster placement, live-region behavior, and manager usage.
+- `references/primitives/combobox.md` for autocomplete, listbox input, and field wiring.
+- `references/primitives/data-table.md` for TanStack Table source kits and dense table workflows.
+
 ## Workflow
 
 1. Identify user intent: base component, form flow, overlay flow, feedback flow, app shell, block, or template.
@@ -85,10 +96,10 @@ If Mason is not available in the target project yet, give manual setup guidance:
 
 Read source and relevant rules first for:
 
-- Dialog, Sheet, Popover, HoverCard, Menu, Menubar, ContextMenu, Tooltip, and Toast.
-- Select, Combobox, Autocomplete, and DatePicker.
-- Field, TextField, SelectField, CheckboxField, SwitchField, RadioGroupField, TanStackField, and TanStackForm.
-- DataTable, CommandMenu, keyboard shortcuts, stores, and app shell/sidebar patterns.
+- Dialog, Menu, Select, Combobox, Toast, Form, Input Group, and DataTable using the focused primitive references above.
+- Sheet, Popover, HoverCard, Menubar, ContextMenu, Tooltip, Autocomplete, and DatePicker using source plus the composition rules.
+- Field, TextField, SelectField, CheckboxField, SwitchField, RadioGroupField, TanStackField, and TanStackForm using `references/rules/forms.md`.
+- CommandMenu, keyboard shortcuts, stores, and app shell/sidebar patterns using source and registry metadata.
 
 ## Output Checklist
 
@@ -102,4 +113,3 @@ Before returning code:
 - Core/UI dependency boundaries are respected.
 - Registry metadata is accurate if installable source changed.
 - Verification command was run or the reason it was not run is stated.
-
