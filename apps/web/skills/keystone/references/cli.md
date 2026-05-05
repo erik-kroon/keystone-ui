@@ -41,4 +41,3 @@ When manual install is requested:
 - File paths are complete.
 - Token/theme requirements are stated.
 - Manual steps do not bypass accessibility behavior.
-

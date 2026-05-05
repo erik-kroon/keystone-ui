@@ -265,19 +265,19 @@ The gallery is the registry preview browser.
 
 Add two Tailwind theme breakpoints:
 
-| Token | Value |
-| --- | --- |
+| Token | Value    |
+| ----- | -------- |
 | `3xl` | `1600px` |
 | `4xl` | `2000px` |
 
 ### Radius
 
-| Token | Value |
-| --- | --- |
-| `--radius` | `0.625rem` |
+| Token         | Value                       |
+| ------------- | --------------------------- |
+| `--radius`    | `0.625rem`                  |
 | `--radius-sm` | `calc(var(--radius) - 4px)` |
 | `--radius-md` | `calc(var(--radius) - 2px)` |
-| `--radius-lg` | `var(--radius)` |
+| `--radius-lg` | `var(--radius)`             |
 | `--radius-xl` | `calc(var(--radius) + 4px)` |
 
 Use `rounded-lg` for buttons and inputs, `rounded-xl` for alerts/previews, and `rounded-2xl` for cards and frames. Badges use `rounded-sm`; tiny square pins use `2px`.
@@ -286,11 +286,11 @@ Use `rounded-lg` for buttons and inputs, `rounded-xl` for alerts/previews, and `
 
 Font roles:
 
-| Role | Typeface | Weight |
-| --- | --- | --- |
-| Sans | Cal Sans UI variable | `300 700` |
-| Heading | Cal Sans Regular | `400 600` |
-| Mono | Paper Mono Regular | regular |
+| Role    | Typeface             | Weight    |
+| ------- | -------------------- | --------- |
+| Sans    | Cal Sans UI variable | `300 700` |
+| Heading | Cal Sans Regular     | `400 600` |
+| Mono    | Paper Mono Regular   | regular   |
 
 Implementation rules:
 
@@ -302,38 +302,38 @@ Implementation rules:
 
 ### Light Colors
 
-| Token | Value |
-| --- | --- |
-| `background` | `white` |
-| `foreground` | `neutral-800` |
-| `card` | `white` |
-| `card-foreground` | `neutral-800` |
-| `popover` | `white` |
-| `popover-foreground` | `neutral-800` |
-| `primary` | `neutral-800` |
-| `primary-foreground` | `neutral-50` |
-| `secondary` | black alpha `4%` |
-| `secondary-foreground` | `neutral-800` |
-| `muted` | black alpha `4%` |
-| `muted-foreground` | `neutral-500` mixed 90% with black |
-| `accent` | black alpha `4%` |
-| `accent-foreground` | `neutral-800` |
-| `destructive` | `red-500` |
-| `destructive-foreground` | `red-700` |
-| `info` | `blue-500` |
-| `info-foreground` | `blue-700` |
-| `success` | `emerald-500` |
-| `success-foreground` | `emerald-700` |
-| `warning` | `amber-500` |
-| `warning-foreground` | `amber-700` |
-| `border` | black alpha `8%` |
-| `input` | black alpha `10%` |
-| `ring` | `neutral-400` |
-| `sidebar` | `neutral-50` |
-| `sidebar-foreground` | `neutral-800` mixed 64% with sidebar |
-| `sidebar-border` | black alpha `6%` |
-| `code` | `white` |
-| `code-highlight` | black alpha `4%` |
+| Token                    | Value                                |
+| ------------------------ | ------------------------------------ |
+| `background`             | `white`                              |
+| `foreground`             | `neutral-800`                        |
+| `card`                   | `white`                              |
+| `card-foreground`        | `neutral-800`                        |
+| `popover`                | `white`                              |
+| `popover-foreground`     | `neutral-800`                        |
+| `primary`                | `neutral-800`                        |
+| `primary-foreground`     | `neutral-50`                         |
+| `secondary`              | black alpha `4%`                     |
+| `secondary-foreground`   | `neutral-800`                        |
+| `muted`                  | black alpha `4%`                     |
+| `muted-foreground`       | `neutral-500` mixed 90% with black   |
+| `accent`                 | black alpha `4%`                     |
+| `accent-foreground`      | `neutral-800`                        |
+| `destructive`            | `red-500`                            |
+| `destructive-foreground` | `red-700`                            |
+| `info`                   | `blue-500`                           |
+| `info-foreground`        | `blue-700`                           |
+| `success`                | `emerald-500`                        |
+| `success-foreground`     | `emerald-700`                        |
+| `warning`                | `amber-500`                          |
+| `warning-foreground`     | `amber-700`                          |
+| `border`                 | black alpha `8%`                     |
+| `input`                  | black alpha `10%`                    |
+| `ring`                   | `neutral-400`                        |
+| `sidebar`                | `neutral-50`                         |
+| `sidebar-foreground`     | `neutral-800` mixed 64% with sidebar |
+| `sidebar-border`         | black alpha `6%`                     |
+| `code`                   | `white`                              |
+| `code-highlight`         | black alpha `4%`                     |
 
 Chart colors:
 
@@ -345,25 +345,25 @@ Chart colors:
 
 ### Dark Colors
 
-| Token | Value |
-| --- | --- |
-| `background` | neutral-950 mixed 96% with white |
-| `foreground` | neutral-100 |
-| `card` | background mixed 98% with white |
-| `popover` | background mixed 96% with white |
-| `primary` | neutral-100 |
-| `primary-foreground` | neutral-800 |
-| `secondary` | white alpha `4%` |
-| `muted` | white alpha `4%` |
-| `accent` | white alpha `4%` |
-| `border` | white alpha `6%` |
-| `input` | white alpha `8%` |
-| `ring` | neutral-500 |
-| `sidebar` | neutral-950 mixed 97% with white |
+| Token                | Value                              |
+| -------------------- | ---------------------------------- |
+| `background`         | neutral-950 mixed 96% with white   |
+| `foreground`         | neutral-100                        |
+| `card`               | background mixed 98% with white    |
+| `popover`            | background mixed 96% with white    |
+| `primary`            | neutral-100                        |
+| `primary-foreground` | neutral-800                        |
+| `secondary`          | white alpha `4%`                   |
+| `muted`              | white alpha `4%`                   |
+| `accent`             | white alpha `4%`                   |
+| `border`             | white alpha `6%`                   |
+| `input`              | white alpha `8%`                   |
+| `ring`               | neutral-500                        |
+| `sidebar`            | neutral-950 mixed 97% with white   |
 | `sidebar-foreground` | neutral-100 mixed 64% with sidebar |
-| `sidebar-border` | white alpha `5%` |
-| `code` | background mixed 98% with white |
-| `code-highlight` | white alpha `4%` |
+| `sidebar-border`     | white alpha `5%`                   |
+| `code`               | background mixed 98% with white    |
+| `code-highlight`     | white alpha `4%`                   |
 
 Semantic dark foregrounds:
 
@@ -418,18 +418,18 @@ Base:
 
 Sizes:
 
-| Size | Mobile | Desktop |
-| --- | --- | --- |
-| `xs` | `h-7`, `text-sm`, px about `0.5rem - 1px` | `h-6`, `text-xs` |
-| `sm` | `h-8`, gap `0.375rem` | `h-7` |
-| `default` | `h-9` | `h-8` |
-| `lg` | `h-10` | `h-9` |
-| `xl` | `h-11`, `text-lg` | `h-10`, `text-base` |
-| `icon-xs` | `size-7` | `size-6` |
-| `icon-sm` | `size-8` | `size-7` |
-| `icon` | `size-9` | `size-8` |
-| `icon-lg` | `size-10` | `size-9` |
-| `icon-xl` | `size-11` | `size-10` |
+| Size      | Mobile                                    | Desktop             |
+| --------- | ----------------------------------------- | ------------------- |
+| `xs`      | `h-7`, `text-sm`, px about `0.5rem - 1px` | `h-6`, `text-xs`    |
+| `sm`      | `h-8`, gap `0.375rem`                     | `h-7`               |
+| `default` | `h-9`                                     | `h-8`               |
+| `lg`      | `h-10`                                    | `h-9`               |
+| `xl`      | `h-11`, `text-lg`                         | `h-10`, `text-base` |
+| `icon-xs` | `size-7`                                  | `size-6`            |
+| `icon-sm` | `size-8`                                  | `size-7`            |
+| `icon`    | `size-9`                                  | `size-8`            |
+| `icon-lg` | `size-10`                                 | `size-9`            |
+| `icon-xl` | `size-11`                                 | `size-10`           |
 
 Variants:
 

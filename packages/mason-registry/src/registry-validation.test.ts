@@ -594,8 +594,8 @@ describe("Mason registry validation tracer", () => {
       expect(result.value.meta?.shortcutDisplay).toBeString();
       expect(result.value.meta?.hotkeysPreview).toContain("preview");
       expect(result.value.meta?.accessibility).toContain("Keystone Combobox");
-      expect(result.value.meta?.customization).toContain("Coss command component");
-      expect(result.value.meta?.limitations).toContain("Coss command component");
+      expect(result.value.meta?.customization).toContain("dense command palette structure");
+      expect(result.value.meta?.limitations).toContain("local command palette pattern");
       expect(result.value.meta?.parity).toMatchObject({
         visualReference: expect.any(String),
         baseUi: expect.any(String),

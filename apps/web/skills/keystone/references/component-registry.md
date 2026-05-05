@@ -12,6 +12,7 @@ Use this file to choose the right Keystone UI source item and inspect its files 
 ## Fields And Forms
 
 - **Input**: `packages/ui/src/default/ui/input.tsx`, registry `input`
+- **Input Group Pattern**: no standalone registry item yet; use `references/primitives/input-group.md`
 - **Textarea**: `packages/ui/src/default/ui/textarea.tsx`, registry `textarea`
 - **Label**: `packages/ui/src/default/ui/label.tsx`, registry `label`
 - **Field**: `packages/ui/src/default/ui/field.tsx`, registry `field`
@@ -26,6 +27,7 @@ Use this file to choose the right Keystone UI source item and inspect its files 
 - **FieldArray**: registry `field-array`
 - **TanStackField**: registry `tanstack-field`
 - **TanStackForm**: registry `tanstack-form`
+- Focused guide: `references/primitives/form.md`
 
 ## Selection And Input Primitives
 
@@ -37,6 +39,7 @@ Use this file to choose the right Keystone UI source item and inspect its files 
 - **Combobox**: `packages/ui/src/default/ui/combobox.tsx`, registry `combobox`
 - **Autocomplete**: `packages/ui/src/default/ui/autocomplete.tsx`, registry `autocomplete`
 - **DatePicker**: registry `date-picker`
+- Focused guides: `references/primitives/select.md`, `references/primitives/combobox.md`
 
 ## Overlays And Menus
 
@@ -51,6 +54,7 @@ Use this file to choose the right Keystone UI source item and inspect its files 
 - **Menubar**: registry `menubar`
 - **NavigationMenu**: registry `navigation-menu`
 - **Toast**: registry `toast`
+- Focused guides: `references/primitives/dialog.md`, `references/primitives/menu.md`, `references/primitives/toast.md`
 
 ## Layout, Navigation, And App Components
 
@@ -64,6 +68,7 @@ Use this file to choose the right Keystone UI source item and inspect its files 
 - **AccountSettings**: registry `account-settings`
 - **InvoiceDashboard**: registry `invoice-dashboard`
 - **TanStackStartDashboard**: registry `tanstack-start-dashboard`
+- Focused guide: `references/primitives/data-table.md`
 
 ## Stores And Utilities
 
@@ -84,4 +89,3 @@ Use this file to choose the right Keystone UI source item and inspect its files 
 - Use TanStack items for application-grade forms and data tables.
 - Use blocks/templates for product-like surfaces instead of stitching many primitives manually.
 - If the item is not listed here, inspect `registry/default/items/` before adding a new one.
-

@@ -61,4 +61,3 @@ Use this when writing or updating Keystone UI source, docs examples, blocks, and
 4. Does dark mode work?
 5. Does mobile text fit?
 6. Did you avoid adding design behavior to Core?
-
