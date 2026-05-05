@@ -1,0 +1,39 @@
+{
+  "$schema": "https://mason.build/schema/registry-item.json",
+  "name": "radio-group-field",
+  "type": "registry:ui",
+  "title": "RadioGroupField",
+  "description": "TanStack Form radio group field composed with Keystone RadioGroup behavior and UI styling hooks.",
+  "version": "0.1.0",
+  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "compatibility": {
+    "mason": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0"
+  },
+  "categories": ["form", "tanstack", "selection"],
+  "keywords": ["radio-group-field", "radio-group", "field", "form", "tanstack", "keystone"],
+  "docs": "https://keystone-ui.dev/docs/ui/radio-group-field",
+  "registryDependencies": ["cn", "radio-group", "tanstack-field"],
+  "meta": {
+    "install": "mason add radio-group-field",
+    "customization": "Use ui-radio-group-field classes, TanStackField shell classes, RadioGroup classes, Core data attributes, neutral data-slot hooks, radioGroupProps, itemProps, radioGroupClass, and itemClass for generated-source styling.",
+    "sourceFiles": ["packages/ui/src/default/ui/radio-group-field.tsx"],
+    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn", "radio-group", "tanstack-field"],
+    "api": "RadioGroupField exports RadioGroupField, RadioGroupFieldOption, RadioGroupFieldProps, and RadioGroupFieldValidators. It composes TanStackField with the styled RadioGroup item, passes validators to form.Field, derives touched error state through TanStackField, maps value changes to string field.handleChange, maps blur to field.handleBlur, supports disabled options and custom indicators, and forwards disabled/readOnly/required/formId to Core RadioGroup.",
+    "accessibility": "Backed by TanStackField for field relationships and by @keystone-ui/core/radio-group for radiogroup semantics, radio items, roving tabindex, arrow/Home/End keyboard selection, hidden radio input submission, reset synchronization, and validation metadata. The radiogroup root receives the shared Core form-control ID and ARIA props.",
+    "anatomy": ["field-root", "field-label", "radio-group", "item", "item-control", "item-indicator", "item-label", "hidden-input", "field-description", "field-error"],
+    "state": "TanStack Form owns string field value, touched, dirty, blurred, validating, and errors. RadioGroupField maps undefined Core values to the empty string for field state.",
+    "limitations": "Object value adapters, rich item descriptions, toolbar/nested composite policies, and async option loading remain app-owned composition.",
+    "parity": {
+      "tanstackForm": "First-class TanStack Form parity: form.Field integration, validators pass-through, string value binding, blur/change delegation, and touched-derived invalid/error state.",
+      "baseUi": "Primitive behavior is inherited through Keystone Core RadioGroup: controlled value, roving focus, keyboard selection, hidden native inputs, disabled items, and data attributes.",
+      "kobalte": "Solid parity follows Keystone Core RadioGroup composition with explicit generated-source field wiring."
+    }
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/default/ui/radio-group-field.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}

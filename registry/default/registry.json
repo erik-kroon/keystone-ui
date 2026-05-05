@@ -94,6 +94,36 @@
       "description": "TanStack Form text field composed with Keystone form-control semantics and UI styling hooks."
     },
     {
+      "name": "textarea-field",
+      "type": "registry:ui",
+      "title": "TextareaField",
+      "description": "TanStack Form textarea field composed with Keystone form-control semantics and UI styling hooks."
+    },
+    {
+      "name": "checkbox-field",
+      "type": "registry:ui",
+      "title": "CheckboxField",
+      "description": "TanStack Form checkbox field composed with Keystone Checkbox behavior and UI styling hooks."
+    },
+    {
+      "name": "radio-group-field",
+      "type": "registry:ui",
+      "title": "RadioGroupField",
+      "description": "TanStack Form radio group field composed with Keystone RadioGroup behavior and UI styling hooks."
+    },
+    {
+      "name": "switch-field",
+      "type": "registry:ui",
+      "title": "SwitchField",
+      "description": "TanStack Form switch field composed with Keystone Switch behavior and UI styling hooks."
+    },
+    {
+      "name": "form-submit",
+      "type": "registry:ui",
+      "title": "FormSubmit",
+      "description": "Source-owned submit control for TanStack Form state and native form submission."
+    },
+    {
       "name": "select",
       "type": "registry:ui",
       "title": "Select",

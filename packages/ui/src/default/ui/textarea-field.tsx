@@ -1,5 +1,5 @@
 import { splitProps, type JSX } from "solid-js";
-import { Input, type InputProps } from "@/components/ui/input";
+import { Textarea, type TextareaProps } from "@/components/ui/textarea";
 import {
   TanStackField,
   type TanStackFieldApi,
@@ -7,18 +7,18 @@ import {
 } from "@/components/ui/tanstack-field";
 import { cn } from "@/lib/cn";
 
-type TextFieldValidatorContext = {
+type TextareaFieldValidatorContext = {
   value: string;
 };
 
-export type TextFieldValidators = {
-  onChange?: (context: TextFieldValidatorContext) => unknown;
-  onBlur?: (context: TextFieldValidatorContext) => unknown;
-  onSubmit?: (context: TextFieldValidatorContext) => unknown;
+export type TextareaFieldValidators = {
+  onChange?: (context: TextareaFieldValidatorContext) => unknown;
+  onBlur?: (context: TextareaFieldValidatorContext) => unknown;
+  onSubmit?: (context: TextareaFieldValidatorContext) => unknown;
 };
 
-type TextFieldInputProps = Omit<
-  InputProps,
+type TextareaFieldControlProps = Omit<
+  TextareaProps,
   | "aria-describedby"
   | "aria-invalid"
   | "disabled"
@@ -34,17 +34,17 @@ type TextFieldInputProps = Omit<
   | "value"
 >;
 
-export type TextFieldProps = Omit<
-  TanStackFieldProps<string, HTMLInputElement>,
+export type TextareaFieldProps = Omit<
+  TanStackFieldProps<string, HTMLTextAreaElement>,
   "children" | "validators"
 > &
-  TextFieldInputProps & {
-    validators?: TextFieldValidators;
-    inputClass?: string;
+  TextareaFieldControlProps & {
+    validators?: TextareaFieldValidators;
+    textareaClass?: string;
   };
 
-export function TextField(props: TextFieldProps) {
-  const [local, inputProps] = splitProps(props, [
+export function TextareaField(props: TextareaFieldProps) {
+  const [local, textareaProps] = splitProps(props, [
     "class",
     "description",
     "descriptionClass",
@@ -54,19 +54,19 @@ export function TextField(props: TextFieldProps) {
     "form",
     "formId",
     "id",
-    "inputClass",
     "invalid",
     "label",
     "labelClass",
     "name",
     "readOnly",
     "required",
+    "textareaClass",
     "validators",
   ]);
 
   return (
-    <TanStackField<string, HTMLInputElement>
-      class={cn("ui-text-field", local.class)}
+    <TanStackField<string, HTMLTextAreaElement>
+      class={cn("ui-textarea-field", local.class)}
       description={local.description}
       descriptionClass={local.descriptionClass}
       disabled={local.disabled}
@@ -84,17 +84,17 @@ export function TextField(props: TextFieldProps) {
       validators={local.validators}
     >
       {(context) => (
-        <TextFieldControl
-          {...inputProps}
-          controlProps={context.control.getControlProps<HTMLInputElement>()}
+        <TextareaFieldControl
+          {...textareaProps}
+          controlProps={context.control.getControlProps<HTMLTextAreaElement>()}
           disabled={local.disabled}
           field={context.field}
           formId={local.formId}
-          inputClass={local.inputClass}
           invalid={context.invalid()}
           readOnly={local.readOnly}
           required={local.required}
           setFocused={context.setFocused}
+          textareaClass={local.textareaClass}
           value={context.value()}
         />
       )}
@@ -102,47 +102,46 @@ export function TextField(props: TextFieldProps) {
   );
 }
 
-function TextFieldControl(
-  props: TextFieldInputProps & {
-    controlProps: JSX.HTMLAttributes<HTMLInputElement>;
+function TextareaFieldControl(
+  props: TextareaFieldControlProps & {
+    controlProps: JSX.HTMLAttributes<HTMLTextAreaElement>;
     disabled?: boolean;
-    field: () => TanStackFieldApi<string, HTMLInputElement>;
+    field: () => TanStackFieldApi<string, HTMLTextAreaElement>;
     formId?: string;
-    inputClass?: string;
     invalid: boolean;
     readOnly?: boolean;
     required?: boolean;
     setFocused: (focused: boolean) => void;
+    textareaClass?: string;
     value: string;
   },
 ) {
-  const [local, inputProps] = splitProps(props, [
+  const [local, textareaProps] = splitProps(props, [
     "controlProps",
     "disabled",
     "field",
     "formId",
-    "inputClass",
     "invalid",
     "readOnly",
     "required",
     "setFocused",
+    "textareaClass",
     "value",
   ]);
 
   return (
-    <Input
+    <Textarea
       {...local.controlProps}
-      {...inputProps}
-      data-scope="ui-text-field"
-      data-part="input"
-      data-slot="text-field-input"
+      {...textareaProps}
+      data-scope="ui-textarea-field"
+      data-part="textarea"
+      data-slot="textarea-field-control"
       disabled={local.disabled}
       form={local.formId}
       invalid={local.invalid}
       name={local.field().name}
       readOnly={local.readOnly}
       required={local.required}
-      type={inputProps.type ?? "text"}
       value={String(local.value ?? "")}
       onBlur={(event) => {
         local.setFocused(false);
@@ -150,7 +149,7 @@ function TextFieldControl(
       }}
       onFocus={() => local.setFocused(true)}
       onInput={(event) => local.field().handleChange(event.currentTarget.value)}
-      class={cn("ui-text-field-input", inputProps.class, local.inputClass)}
+      class={cn("ui-textarea-field-control", textareaProps.class, local.textareaClass)}
     />
   );
 }
