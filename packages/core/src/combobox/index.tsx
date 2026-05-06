@@ -114,6 +114,7 @@ export type ComboboxItemProps = ComboboxPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref" | "value"> & {
     disabled?: boolean;
     group?: string;
+    hidden?: JSX.HTMLAttributes<HTMLDivElement>["hidden"];
     label?: string;
     value: string;
   };
@@ -135,6 +136,7 @@ export type ComboboxGroupContractProps = Omit<ComboboxGroupProps, "children" | "
 export type ComboboxGroupLabelContractProps = Omit<ComboboxGroupLabelProps, "children">;
 export type ComboboxItemContractProps = Omit<ComboboxItemProps, "children" | "label"> & {
   group?: string;
+  hidden?: JSX.HTMLAttributes<HTMLDivElement>["hidden"];
   label: string;
 };
 export type ComboboxItemTextContractProps = Omit<ComboboxItemTextProps, "children">;
@@ -485,6 +487,7 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
       const [local, others] = splitProps(props, [
         "disabled",
         "group",
+        "hidden",
         "label",
         "onClick",
         "onPointerMove",
@@ -495,6 +498,7 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
         ...others,
         disabled: local.disabled,
         group: local.group,
+        hidden: local.hidden,
         label: local.label,
         onClick: composeEventHandlers<MouseEvent>(local.onClick, (event) => {
           if (readOnly()) {
@@ -836,6 +840,7 @@ function createComboboxNamespace(factoryOptions: ComboboxFactoryOptions) {
       "children",
       "disabled",
       "group",
+      "hidden",
       "label",
       "onClick",
       "onPointerMove",
@@ -849,6 +854,7 @@ function createComboboxNamespace(factoryOptions: ComboboxFactoryOptions) {
           ...others,
           disabled: local.disabled ?? group?.disabled,
           group: local.group ?? group?.value,
+          hidden: local.hidden,
           label: label(),
           onClick: local.onClick,
           onPointerMove: local.onPointerMove,

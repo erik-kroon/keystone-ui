@@ -32,6 +32,7 @@ export type MenuItemData = CollectionItem & {
 export type MenuRootProps = {
   children?: JSX.Element;
   arrowPadding?: number;
+  class?: string;
   closeOnSelect?: boolean;
   collisionBoundary?: FloatingCollisionBoundary;
   collisionPadding?: number;
@@ -42,12 +43,13 @@ export type MenuRootProps = {
   onOpenChange?: (open: boolean, detail: MenuOpenChangeDetail) => void;
   onOpenChangeComplete?: (open: boolean, detail: OverlayPresenceCompleteDetail) => void;
   open?: boolean;
+  ref?: HTMLElement | ((element: HTMLElement) => void);
   placement?: FloatingPlacement;
   rootBoundary?: FloatingRootBoundary;
   sameWidth?: boolean;
   sticky?: FloatingSticky;
   strategy?: FloatingStrategy;
-};
+} & Omit<JSX.HTMLAttributes<HTMLElement>, "children" | "ref" | "onOpenChange">;
 
 export type MenuPartProps<T extends HTMLElement = HTMLElement> = {
   children?: JSX.Element;
@@ -83,6 +85,13 @@ export type MenuGroupLabelProps = MenuPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
 export type MenuSeparatorProps = MenuPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
+export type MenuListProps = MenuPartProps<HTMLUListElement> &
+  Omit<JSX.HTMLAttributes<HTMLUListElement>, "children" | "ref">;
+export type MenuMenuProps = MenuPartProps<HTMLLIElement> &
+  Omit<JSX.LiHTMLAttributes<HTMLLIElement>, "children" | "ref">;
+export type MenuViewportProps = MenuContentProps;
+export type MenuIndicatorProps = MenuPartProps<HTMLSpanElement> &
+  Omit<JSX.HTMLAttributes<HTMLSpanElement>, "children" | "ref">;
 export type MenuItemProps = MenuPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref" | "onSelect" | "role"> & {
     closeOnSelect?: boolean;
@@ -153,6 +162,7 @@ export type MenuApi = {
   getContentProps: (props: Omit<MenuContentProps, "children">) => Record<string, unknown>;
   getGroupLabelProps: (props: Omit<MenuGroupLabelProps, "children">) => Record<string, unknown>;
   getGroupProps: (props: Omit<MenuGroupProps, "children">) => Record<string, unknown>;
+  getIndicatorProps: (props: Omit<MenuIndicatorProps, "children">) => Record<string, unknown>;
   getItemIndicatorProps: (
     props: Omit<MenuPartProps<HTMLSpanElement>, "children">,
   ) => Record<string, unknown>;
@@ -165,8 +175,12 @@ export type MenuApi = {
     },
   ) => Record<string, unknown>;
   getPositionerProps: (props: Omit<MenuPositionerProps, "children">) => Record<string, unknown>;
+  getListProps: (props: Omit<MenuListProps, "children">) => Record<string, unknown>;
+  getMenuProps: (props: Omit<MenuMenuProps, "children">) => Record<string, unknown>;
+  getRootProps: (props: Omit<MenuRootProps, "children">) => Record<string, unknown>;
   getSeparatorProps: (props: Omit<MenuSeparatorProps, "children">) => Record<string, unknown>;
   getTriggerProps: (props: Omit<MenuTriggerProps, "as" | "children">) => Record<string, unknown>;
+  getViewportProps: (props: Omit<MenuViewportProps, "children">) => Record<string, unknown>;
   highlightedValue: () => string | undefined;
   itemId: (value: string) => string;
   open: () => boolean;
@@ -183,6 +197,7 @@ export type MenuApi = {
 
 export type MenuFactoryOptions = {
   rootRole?: "menu" | "menubar";
+  rootTag?: "nav";
   scope: string;
 };
 

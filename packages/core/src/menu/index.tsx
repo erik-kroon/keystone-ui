@@ -8,8 +8,11 @@ export type {
   MenuContentProps,
   MenuGroupLabelProps,
   MenuGroupProps,
+  MenuIndicatorProps,
   MenuItemData,
   MenuItemProps,
+  MenuListProps,
+  MenuMenuProps,
   MenuLinkProps,
   MenuOpenChangeDetail,
   MenuPartProps,
@@ -21,6 +24,7 @@ export type {
   MenuSelectDetail,
   MenuSeparatorProps,
   MenuTriggerProps,
+  MenuViewportProps,
 } from "./types";
 export {
   createContextMenu,
@@ -36,5 +40,6 @@ export const ContextMenu = createMenuNamespace({ scope: "context-menu" });
 export const Menubar = createMenuNamespace({ rootRole: "menubar", scope: "menubar" });
 export const NavigationMenu = createMenuNamespace({
   rootRole: "menubar",
+  rootTag: "nav",
   scope: "navigation-menu",
 });

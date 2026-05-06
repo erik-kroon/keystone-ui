@@ -10,6 +10,7 @@ export { ContextMenu, createContextMenu } from "./context-menu/index";
 export { Direction, DirectionProvider, createDirection, useDirection } from "./direction/index";
 export { Calendar, DatePicker, createCalendar, createDatePicker } from "./date-picker/index";
 export { Dialog, createDialog } from "./dialog/index";
+export { Drawer, createDrawer } from "./drawer/index";
 export { Description, createDescription } from "./description/index";
 export { DropdownMenu, createDropdownMenu } from "./dropdown-menu/index";
 export { ErrorMessage, createErrorMessage } from "./error-message/index";
@@ -214,6 +215,29 @@ export type {
   DialogTriggerProps,
 } from "./dialog/index";
 export type {
+  CreateDrawerOptions,
+  DrawerApi,
+  DrawerBackdropContractProps,
+  DrawerBackdropProps,
+  DrawerChangeDetail,
+  DrawerCloseContractProps,
+  DrawerCloseProps,
+  DrawerContentContractProps,
+  DrawerContentProps,
+  DrawerDescriptionContractProps,
+  DrawerDescriptionProps,
+  DrawerPartProps,
+  DrawerPortalProps,
+  DrawerPositionerContractProps,
+  DrawerPositionerProps,
+  DrawerRootProps,
+  DrawerSide,
+  DrawerTitleContractProps,
+  DrawerTitleProps,
+  DrawerTriggerContractProps,
+  DrawerTriggerProps,
+} from "./drawer/index";
+export type {
   CreateDescriptionOptions,
   DescriptionPartProps,
   DescriptionRootProps,
@@ -293,8 +317,11 @@ export type {
   MenuContentProps,
   MenuGroupLabelProps,
   MenuGroupProps,
+  MenuIndicatorProps,
   MenuItemData,
   MenuItemProps,
+  MenuListProps,
+  MenuMenuProps,
   MenuOpenChangeDetail,
   MenuPartProps,
   MenuPortalProps,
@@ -305,6 +332,7 @@ export type {
   MenuSelectDetail,
   MenuSeparatorProps,
   MenuTriggerProps,
+  MenuViewportProps,
 } from "./menu/index";
 export type {
   CreateNavigationMenuOptions,
@@ -313,7 +341,10 @@ export type {
   NavigationMenuContentProps,
   NavigationMenuGroupLabelProps,
   NavigationMenuGroupProps,
+  NavigationMenuIndicatorProps,
   NavigationMenuItemProps,
+  NavigationMenuListProps,
+  NavigationMenuMenuProps,
   NavigationMenuOpenChangeDetail,
   NavigationMenuPartProps,
   NavigationMenuPortalProps,
@@ -324,6 +355,7 @@ export type {
   NavigationMenuSelectDetail,
   NavigationMenuSeparatorProps,
   NavigationMenuTriggerProps,
+  NavigationMenuViewportProps,
 } from "./navigation-menu/index";
 export { Popover, createPopover } from "./popover/index";
 export { RadioGroup, createRadioGroup } from "./radio-group/index";

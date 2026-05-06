@@ -213,6 +213,10 @@ export function createScopedMenu(
       role: "group",
       ...partProps("group"),
     }),
+    getIndicatorProps: (props) => ({
+      ...props,
+      ...partProps("indicator"),
+    }),
     getItemIndicatorProps: (props) => ({
       ...props,
       ...partProps("item-indicator"),
@@ -298,6 +302,19 @@ export function createScopedMenu(
       },
       ...floatingPartProps("positioner"),
     }),
+    getListProps: (props) => ({
+      ...props,
+      role: rootRole,
+      ...partProps("list"),
+    }),
+    getMenuProps: (props) => ({
+      ...props,
+      ...partProps("menu"),
+    }),
+    getRootProps: (props) => ({
+      ...props,
+      ...partProps("root"),
+    }),
     getSeparatorProps: (props) => ({
       ...props,
       role: "separator",
@@ -312,6 +329,57 @@ export function createScopedMenu(
           reason: "trigger",
         },
       ) as Record<string, unknown>,
+    getViewportProps: (props) => {
+      const [local, others] = splitProps(props, [
+        "onEscapeKeyDown",
+        "onFocusOutside",
+        "onInteractOutside",
+        "onKeyDown",
+        "onMountAutoFocus",
+        "onPointerDownOutside",
+        "onUnmountAutoFocus",
+        "ref",
+        "style",
+      ]);
+      const layerProps = overlay.getContentLayerProps<HTMLDivElement>(
+        {
+          onEscapeKeyDown: local.onEscapeKeyDown,
+          onFocusOutside: local.onFocusOutside,
+          onInteractOutside: local.onInteractOutside,
+          onMountAutoFocus: local.onMountAutoFocus,
+          onPointerDownOutside: local.onPointerDownOutside,
+          onUnmountAutoFocus: local.onUnmountAutoFocus,
+        },
+        {
+          containsTrigger: true,
+          modal: overlay.modal,
+          disableOutsidePointerEvents: overlay.modal,
+          restoreFocus: () => true,
+          trapFocus: overlay.modal,
+          dismissReason: (event) => (event.type === "keydown" ? "escape" : "outside"),
+        },
+      );
+      const floatingProps = overlay.getFloatingContentProps<HTMLDivElement>({
+        ref: local.ref,
+        style: local.style,
+      });
+
+      return {
+        ...others,
+        ...layerProps,
+        ...floatingProps,
+        get hidden() {
+          return overlay.hidden();
+        },
+        ...floatingPartProps("viewport"),
+        onKeyDown: composeEventHandlers<KeyboardEvent>(local.onKeyDown, (event) => {
+          if (event.key === "Escape") {
+            event.preventDefault();
+            overlay.close(event, "escape");
+          }
+        }),
+      };
+    },
     highlightedValue: list.highlightedValue,
     itemId,
     open: overlay.open,

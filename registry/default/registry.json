@@ -229,7 +229,7 @@
       "name": "command-menu",
       "type": "registry:ui",
       "title": "CommandMenu",
-      "description": "Command palette source built from Keystone Combobox behavior, TanStack Store command state, and preview TanStack Hotkeys shortcuts."
+      "description": "Command palette source built from Keystone Command behavior, TanStack Store command state, and preview TanStack Hotkeys shortcuts."
     },
     {
       "name": "app-shell",

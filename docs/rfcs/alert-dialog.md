@@ -6,6 +6,7 @@ Status: implemented beta Core primitive.
 
 - Existing reusable behavior: Core `Dialog`, the overlay controller, portal, presence, focus scope, dismissable layer, outside hiding, pointer blocking, scroll lock, and metadata helpers already covered the runtime mechanics AlertDialog needs.
 - Missing before this work: no `@keystone-ui/core/alert-dialog` subpath, no `AlertDialog` compound parts, no `createAlertDialog`, no `alert-dialog` metadata scope, no behavior harness, and only generic accessibility-plan notes.
+- Safety evidence now covered in the Core harness: alertdialog roles and labels, least-destructive initial focus, prevented outside dismissal, Escape cancellation, focus restoration, controlled and force-mounted state, modal outside hiding/inert state, pointer/scroll restoration, nested top-layer Escape behavior, form-safe button defaults, and preventable user handlers for cancel/action clicks.
 - Intentional Core boundary: AlertDialog stays unstyled and does not add UI registry source. Styled confirmation surfaces belong in Keystone UI and should wrap this Core primitive instead of reimplementing focus, dismissal, or ARIA behavior.
 
 ## Public API

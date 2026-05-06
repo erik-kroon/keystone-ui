@@ -76,6 +76,50 @@ describe("AlertDialog behavior harness", () => {
     expect(outsideEvents).toEqual(["keystone.pointerDownOutside", "keystone.pointerDownOutside"]);
   });
 
+  test("applies modal layer safety while open and restores outside document state on close", async () => {
+    document.body.style.pointerEvents = "all";
+    document.body.style.overflow = "auto";
+    const outsideRoot = document.createElement("main");
+    outsideRoot.setAttribute("data-testid", "outside-root");
+    outsideRoot.setAttribute("aria-hidden", "false");
+    document.body.append(outsideRoot);
+
+    render(() => (
+      <AlertDialog.Root>
+        <AlertDialog.Trigger>Delete project</AlertDialog.Trigger>
+        <AlertDialog.Portal>
+          <AlertDialog.Content>
+            <AlertDialog.Title>Delete project?</AlertDialog.Title>
+            <AlertDialog.Description>This action cannot be undone.</AlertDialog.Description>
+            <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+            <AlertDialog.Action>Delete</AlertDialog.Action>
+          </AlertDialog.Content>
+        </AlertDialog.Portal>
+      </AlertDialog.Root>
+    ));
+
+    click(getByPart("alert-dialog", "trigger"));
+    await settled();
+
+    const content = getByPart("alert-dialog", "content");
+
+    expect(document.body.style.pointerEvents).toBe("none");
+    expect(document.body.style.overflow).toBe("hidden");
+    expect(content.style.pointerEvents).toBe("auto");
+    expect(outsideRoot.getAttribute("aria-hidden")).toBe("true");
+    expect(outsideRoot.inert).toBe(true);
+    expect(outsideRoot.hasAttribute("inert")).toBe(true);
+
+    click(getByPart("alert-dialog", "cancel"));
+    await settled();
+
+    expect(document.body.style.pointerEvents).toBe("all");
+    expect(document.body.style.overflow).toBe("auto");
+    expect(outsideRoot.getAttribute("aria-hidden")).toBe("false");
+    expect(outsideRoot.inert).toBe(false);
+    expect(outsideRoot.hasAttribute("inert")).toBe(false);
+  });
+
   test("closes with Escape as a cancel path and returns focus to the trigger", async () => {
     const changes: string[] = [];
 
@@ -131,6 +175,64 @@ describe("AlertDialog behavior harness", () => {
     expect(queryByPart("alert-dialog", "content")).not.toBeNull();
   });
 
+  test("only the top alert dialog responds to Escape in nested layering", async () => {
+    const changes: string[] = [];
+
+    render(() => (
+      <AlertDialog.Root onOpenChange={(_open, detail) => changes.push(`outer:${detail.reason}`)}>
+        <AlertDialog.Trigger>Delete project</AlertDialog.Trigger>
+        <AlertDialog.Portal>
+          <AlertDialog.Content>
+            <AlertDialog.Title>Delete project?</AlertDialog.Title>
+            <AlertDialog.Description>This action cannot be undone.</AlertDialog.Description>
+            <AlertDialog.Root
+              onOpenChange={(_open, detail) => changes.push(`inner:${detail.reason}`)}
+            >
+              <AlertDialog.Trigger>Open final confirmation</AlertDialog.Trigger>
+              <AlertDialog.Portal>
+                <AlertDialog.Content>
+                  <AlertDialog.Title>Final confirmation</AlertDialog.Title>
+                  <AlertDialog.Description>
+                    This will permanently delete data.
+                  </AlertDialog.Description>
+                  <AlertDialog.Cancel>Keep project</AlertDialog.Cancel>
+                  <AlertDialog.Action>Delete forever</AlertDialog.Action>
+                </AlertDialog.Content>
+              </AlertDialog.Portal>
+            </AlertDialog.Root>
+            <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+            <AlertDialog.Action>Delete</AlertDialog.Action>
+          </AlertDialog.Content>
+        </AlertDialog.Portal>
+      </AlertDialog.Root>
+    ));
+
+    click(getByPart("alert-dialog", "trigger"));
+    await settled();
+    click(
+      Array.from(
+        document.querySelectorAll<HTMLElement>('[data-scope="alert-dialog"][data-part="trigger"]'),
+      )[1]!,
+    );
+    await settled();
+
+    const contents = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-scope="alert-dialog"][data-part="content"]'),
+    );
+
+    expect(contents).toHaveLength(2);
+
+    keyDown(contents[0]!, "Escape");
+    await settled();
+
+    const remainingContents = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-scope="alert-dialog"][data-part="content"]'),
+    );
+
+    expect(remainingContents).toHaveLength(1);
+    expect(changes).toEqual(["outer:trigger", "inner:trigger", "inner:escape"]);
+  });
+
   test("distinguishes cancel and action close reasons without submitting forms accidentally", async () => {
     const reasons: string[] = [];
     const submissions: string[] = [];
@@ -168,6 +270,38 @@ describe("AlertDialog behavior harness", () => {
 
     expect(reasons).toEqual(["trigger", "cancel", "trigger", "action"]);
     expect(submissions).toEqual([]);
+  });
+
+  test("lets user handlers prevent cancel and action from closing", async () => {
+    const reasons: string[] = [];
+
+    render(() => (
+      <AlertDialog.Root onOpenChange={(_open, detail) => reasons.push(detail.reason)}>
+        <AlertDialog.Trigger>Delete project</AlertDialog.Trigger>
+        <AlertDialog.Portal>
+          <AlertDialog.Content>
+            <AlertDialog.Title>Delete project?</AlertDialog.Title>
+            <AlertDialog.Description>This action cannot be undone.</AlertDialog.Description>
+            <AlertDialog.Cancel onClick={(event) => event.preventDefault()}>
+              Stay open
+            </AlertDialog.Cancel>
+            <AlertDialog.Action onClick={(event) => event.preventDefault()}>
+              Also stay open
+            </AlertDialog.Action>
+          </AlertDialog.Content>
+        </AlertDialog.Portal>
+      </AlertDialog.Root>
+    ));
+
+    click(getByPart("alert-dialog", "trigger"));
+    await settled();
+    click(getByPart("alert-dialog", "cancel"));
+    await settled();
+    click(getByPart("alert-dialog", "action"));
+    await settled();
+
+    expect(queryByPart("alert-dialog", "content")).not.toBeNull();
+    expect(reasons).toEqual(["trigger"]);
   });
 
   test("supports controlled open state and force-mounted hidden content", async () => {
