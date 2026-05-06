@@ -43,6 +43,7 @@ export {
   primitiveMetadata,
 } from "./metadata/index";
 export { NavigationMenu, createNavigationMenu } from "./navigation-menu/index";
+export { NumberField, createNumberField } from "./number-field/index";
 export { Popper, createPopper } from "./popper/index";
 export { Portal } from "./portal/index";
 export type {
@@ -56,6 +57,15 @@ export type {
   PrimitivePartMetadata,
   PrimitiveScope,
 } from "./metadata/index";
+export type {
+  CreateNumberFieldOptions,
+  NumberFieldDecrementTriggerProps,
+  NumberFieldIncrementTriggerProps,
+  NumberFieldInputProps,
+  NumberFieldPartProps,
+  NumberFieldRootProps,
+  NumberFieldValueChangeDetail,
+} from "./number-field/index";
 export type { PortalProps } from "./portal/index";
 export type {
   AccessibleIconLabelProps,
@@ -382,6 +392,7 @@ export type {
 } from "./radio-group/index";
 export { Select, createSelect } from "./select/index";
 export { Slider, createSlider } from "./slider/index";
+export { SpinButton, createSpinButton } from "./spin-button/index";
 export type {
   CreateSelectOptions,
   SelectApi,
@@ -417,6 +428,17 @@ export type {
   SliderValueChangeDetail,
   SliderValueChangeReason,
 } from "./slider/index";
+export type {
+  CreateSpinButtonOptions,
+  SpinButtonApi,
+  SpinButtonDecrementTriggerProps,
+  SpinButtonIncrementTriggerProps,
+  SpinButtonInputProps,
+  SpinButtonPartProps,
+  SpinButtonRootProps,
+  SpinButtonValueChangeDetail,
+  SpinButtonValueChangeReason,
+} from "./spin-button/index";
 export { Sheet, createSheet } from "./sheet/index";
 export { Switch, createSwitch } from "./switch/index";
 export type {

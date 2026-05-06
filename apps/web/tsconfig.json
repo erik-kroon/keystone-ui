@@ -5,7 +5,7 @@
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "module": "ESNext",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "types": ["vite/client", "node"],
 
     "moduleResolution": "bundler",
@@ -21,7 +21,8 @@
 
     "rootDirs": ["."],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@keystone-ui/ui/default/*": ["../../packages/ui/src/default/*"]
     }
   }
 }

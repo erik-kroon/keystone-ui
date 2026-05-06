@@ -6,12 +6,13 @@ import { Suspense } from "solid-js";
 import { HydrationScript } from "solid-js/web";
 
 import Header from "@/components/header";
-import "@/styles.css";
+import stylesUrl from "@/styles.css?url";
 
 export interface RouterContext {}
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   head: () => ({
+    links: [{ rel: "stylesheet", href: stylesUrl }],
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -35,7 +36,7 @@ function RootComponent() {
 
 function RootDocument(props: Readonly<{ children: JSX.Element }>) {
   return (
-    <html lang="en">
+    <html lang="en" class="dark">
       <head>
         <HydrationScript />
         <HeadContent />

@@ -80,7 +80,7 @@ The default local registry includes first-party items such as:
 
 - Basic UI: `button`, `badge`, `card`, `field`, `input`, `label`, `separator`, `textarea`, `cn`
 - Core-backed UI: `accordion`, `autocomplete`, `checkbox`, `collapsible`, `combobox`, `context-menu`, `date-picker`, `dialog`, `dropdown-menu`, `hover-card`, `menu`, `menubar`, `navigation-menu`, `popover`, `radio-group`, `select`, `sheet`, `slider`, `switch`, `tabs`, `toast`, `toolbar`, `tooltip`
-- TanStack-backed app components: `checkbox-field`, `command-menu`, `data-table`, `data-table-tanstack-router`, `form-submit`, `radio-group-field`, `select-field`, `switch-field`, `tanstack-form`, `tanstack-field`, `text-field`, `textarea-field`
+- TanStack-backed app components: `checkbox-field`, `command-menu`, `data-table`, `data-table-tanstack-router`, `form-submit`, `number-field`, `radio-group-field`, `select-field`, `switch-field`, `tanstack-form`, `tanstack-field`, `text-field`, `textarea-field`
 - Blocks and templates: `account-settings`, `invoice-dashboard`, `tanstack-start-dashboard`
 
 Example local registry usage from a Solid app, once the preview CLI is available as `mason`:

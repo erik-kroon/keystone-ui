@@ -1,7 +1,9 @@
 import {
   Show,
   createContext,
+  createEffect,
   createMemo,
+  createSignal,
   createUniqueId,
   onCleanup,
   splitProps,
@@ -97,6 +99,7 @@ type AccordionItemApi = {
 
 const AccordionContext = createContext<AccordionApi>();
 const AccordionItemContext = createContext<AccordionItemApi>();
+const ACCORDION_CONTENT_TRANSITION_MS = 200;
 
 export function createAccordion(
   options: {
@@ -310,25 +313,133 @@ function Trigger(props: AccordionTriggerProps) {
     },
   });
 
-  if (!local.as) return <button {...triggerProps}>{local.children}</button>;
+  if (!local.as)
+    return (
+      <button {...triggerProps} data-panel-open={item.open() ? "" : undefined}>
+        {local.children}
+      </button>
+    );
 
   return renderPolymorphic(local.as, "button", {
     ...triggerProps,
     children: local.children,
+    "data-panel-open": item.open() ? "" : undefined,
   });
 }
 
 function Content(props: AccordionContentProps) {
   const item = useAccordionItem("Content");
-  const [local, others] = splitProps(props, ["children", "forceMount", "hiddenUntilFound"]);
+  const [local, others] = splitProps(props, [
+    "children",
+    "forceMount",
+    "hiddenUntilFound",
+    "onTransitionEnd",
+    "ref",
+    "style",
+  ]);
   const contentProps = item.getContentProps({
     ...others,
     hiddenUntilFound: local.hiddenUntilFound,
   });
+  const [present, setPresent] = createSignal(
+    local.forceMount || local.hiddenUntilFound || item.open(),
+  );
+  const [transitionState, setTransitionState] = createSignal<"idle" | "starting" | "ending">(
+    "idle",
+  );
+  const [panelHeight, setPanelHeight] = createSignal(0);
+  let contentElement: HTMLDivElement | undefined;
+  let frameId: number | undefined;
+  let fallbackTimer: ReturnType<typeof setTimeout> | undefined;
+
+  const measurePanel = () => {
+    if (contentElement) setPanelHeight(contentElement.scrollHeight);
+  };
+  const clearTransitionWork = () => {
+    if (frameId !== undefined) {
+      cancelAnimationFrame(frameId);
+      frameId = undefined;
+    }
+    if (fallbackTimer !== undefined) {
+      clearTimeout(fallbackTimer);
+      fallbackTimer = undefined;
+    }
+  };
+  const scheduleFrame = (callback: () => void) => {
+    frameId = requestAnimationFrame(() => {
+      frameId = undefined;
+      callback();
+    });
+  };
+
+  createEffect(() => {
+    if (item.open()) {
+      clearTransitionWork();
+      setPresent(true);
+      setTransitionState("starting");
+      scheduleFrame(() => {
+        measurePanel();
+        scheduleFrame(() => setTransitionState("idle"));
+      });
+      return;
+    }
+
+    if (local.forceMount || local.hiddenUntilFound) {
+      clearTransitionWork();
+      setPresent(true);
+      setTransitionState("idle");
+      return;
+    }
+
+    if (!present()) return;
+
+    measurePanel();
+    setTransitionState("ending");
+    fallbackTimer = setTimeout(() => {
+      setPresent(false);
+      setTransitionState("idle");
+    }, ACCORDION_CONTENT_TRANSITION_MS);
+  });
+
+  onCleanup(clearTransitionWork);
+
+  const hidden = () => {
+    if (item.open() || transitionState() !== "idle") return undefined;
+    if (local.hiddenUntilFound) return undefined;
+    return local.forceMount ? true : undefined;
+  };
+  const contentStyle = () => {
+    const heightVariable = { "--accordion-panel-height": `${panelHeight()}px` };
+    if (typeof local.style === "string") {
+      return `--accordion-panel-height: ${panelHeight()}px; ${local.style}`;
+    }
+    return { ...local.style, ...heightVariable } as JSX.CSSProperties;
+  };
+  const setContentRef = (element: HTMLDivElement) => {
+    contentElement = element;
+    measurePanel();
+    if (typeof local.ref === "function") local.ref(element);
+  };
 
   return (
-    <Show when={local.forceMount || local.hiddenUntilFound || item.open()}>
-      <div {...contentProps}>{local.children}</div>
+    <Show when={present()}>
+      <div
+        {...contentProps}
+        data-ending-style={transitionState() === "ending" ? "" : undefined}
+        data-starting-style={transitionState() === "starting" ? "" : undefined}
+        hidden={hidden()}
+        onTransitionEnd={(event) => {
+          callEventHandler(local.onTransitionEnd, event);
+          if (event.target !== contentElement || transitionState() !== "ending") return;
+          clearTransitionWork();
+          setPresent(false);
+          setTransitionState("idle");
+        }}
+        ref={setContentRef}
+        style={contentStyle()}
+      >
+        {local.children}
+      </div>
     </Show>
   );
 }

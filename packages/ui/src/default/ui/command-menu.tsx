@@ -166,7 +166,7 @@ export function CommandMenu(props: CommandMenuProps) {
     commandStore.close();
 
     if (local.resetQueryOnSelect !== false) {
-      commandStore.resetQuery();
+      afterSynchronousSelection(commandStore.resetQuery);
     }
   };
 
@@ -829,4 +829,13 @@ function groupCommandItems(items: readonly CommandMenuItemData[]) {
   }
 
   return groups;
+}
+
+function afterSynchronousSelection(callback: () => void) {
+  if (typeof queueMicrotask === "function") {
+    queueMicrotask(callback);
+    return;
+  }
+
+  void Promise.resolve().then(callback);
 }

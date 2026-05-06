@@ -6,7 +6,8 @@ import {
   type AccordionRootProps as CoreAccordionRootProps,
   type AccordionTriggerProps as CoreAccordionTriggerProps,
 } from "@keystone-ui/core/accordion";
-import { splitProps, type JSX } from "solid-js";
+import { ChevronDown } from "lucide-solid";
+import { Show, splitProps, type JSX } from "solid-js";
 import { cn } from "@/lib/cn";
 
 export type AccordionProps = CoreAccordionRootProps;
@@ -52,35 +53,49 @@ export function AccordionTrigger(props: AccordionTriggerProps) {
         {...rest}
         data-slot="accordion-trigger"
         class={cn(
-          "ui-accordion-trigger flex flex-1 cursor-pointer items-start justify-between gap-4 rounded-md py-4 text-left font-medium text-sm outline-none transition-all focus-visible:ring-[3px] focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-64 data-open:*:data-[slot=accordion-indicator]:rotate-180 data-[state=open]:*:data-[slot=accordion-indicator]:rotate-180",
+          "ui-accordion-trigger flex flex-1 cursor-pointer items-start justify-between gap-4 rounded-md py-4 text-left font-medium text-sm outline-none transition-all focus-visible:ring-[3px] focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-64 data-panel-open:*:data-[slot=accordion-indicator]:rotate-180",
           local.class,
         )}
       >
         <span data-scope="ui-accordion" data-part="trigger-label">
           {local.children}
         </span>
-        <span
-          class="ui-accordion-indicator pointer-events-none size-4 shrink-0 translate-y-0.5 opacity-80 transition-transform duration-200 ease-in-out"
-          data-scope="ui-accordion"
-          data-part="indicator"
-          data-slot="accordion-indicator"
+        <Show
+          fallback={
+            <ChevronDown
+              class="ui-accordion-indicator pointer-events-none size-4 shrink-0 translate-y-0.5 opacity-80 transition-transform duration-200 ease-in-out"
+              data-scope="ui-accordion"
+              data-part="indicator"
+              data-slot="accordion-indicator"
+            />
+          }
+          when={local.indicator}
         >
-          {local.indicator ?? "v"}
-        </span>
+          {(indicator) => (
+            <span
+              class="ui-accordion-indicator pointer-events-none size-4 shrink-0 translate-y-0.5 opacity-80 transition-transform duration-200 ease-in-out"
+              data-scope="ui-accordion"
+              data-part="indicator"
+              data-slot="accordion-indicator"
+            >
+              {indicator()}
+            </span>
+          )}
+        </Show>
       </CoreAccordion.Trigger>
     </AccordionHeader>
   );
 }
 
-export function AccordionContent(props: AccordionContentProps) {
+export function AccordionPanel(props: AccordionContentProps) {
   const [local, rest] = splitProps(props, ["children", "class"]);
 
   return (
     <CoreAccordion.Content
       {...rest}
-      data-slot="accordion-content"
+      data-slot="accordion-panel"
       class={cn(
-        "ui-accordion-content overflow-hidden text-muted-foreground text-sm transition-[height] duration-200 ease-in-out data-ending-style:h-0 data-starting-style:h-0",
+        "ui-accordion-panel h-(--accordion-panel-height) overflow-hidden text-muted-foreground text-sm transition-[height] duration-200 ease-in-out data-ending-style:h-0 data-starting-style:h-0",
         local.class,
       )}
     >
@@ -90,3 +105,5 @@ export function AccordionContent(props: AccordionContentProps) {
     </CoreAccordion.Content>
   );
 }
+
+export { AccordionPanel as AccordionContent };

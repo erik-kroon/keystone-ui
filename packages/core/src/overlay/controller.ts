@@ -15,7 +15,6 @@ import {
 import {
   createOverlayLayer,
   type CreateOverlayLayerOptions,
-  type OverlayLayerApi,
   type OverlayLayerOutsideEvent,
 } from "./layer-kernel";
 import {
@@ -76,6 +75,7 @@ export type OverlayControllerLayerOptions<Reason extends string> = {
   disableOutsidePointerEvents?: Accessor<boolean>;
   modal?: Accessor<boolean>;
   onDismiss?: (event: Event) => void;
+  outsidePointerElements?: Accessor<readonly HTMLElement[]>;
   restoreFocus?: Accessor<boolean>;
   trapFocus?: Accessor<boolean>;
   dismissReason?: (event: Event) => Reason;
@@ -150,7 +150,6 @@ export function createOverlayController<Reason extends string>(
   const [contentElement, setContentElement] = createSignal<HTMLElement>();
   const [positionerElement, setPositionerElement] = createSignal<HTMLElement>();
   const [virtualAnchor, setVirtualAnchor] = createSignal<FloatingReferenceElement>();
-  let contentLayer: OverlayLayerApi | undefined;
   let currentContentEvents: OverlayControllerContentEvents | undefined;
   const [open, setOpenState] = createControllableBooleanSignal({
     value: options.open,
@@ -248,11 +247,12 @@ export function createOverlayController<Reason extends string>(
         onUnmountAutoFocus: _onUnmountAutoFocus,
         ...domProps
       } = props;
-      contentLayer ??= createOverlayLayer({
+      const layer = createOverlayLayer({
         id: contentId(),
         element: contentElement,
         enabled: () => open() || presence.transitionStatus() !== "closed",
         modal: layerOptions.modal ?? modal,
+        outsidePointerElements: layerOptions.outsidePointerElements,
         containsTarget: (target) => dismissal.containsTarget(target, layerOptions),
         disableOutsidePointerEvents: () => dismissal.disableOutsidePointerEvents(layerOptions),
         trapFocus: () => dismissal.trapFocus(layerOptions),
@@ -265,7 +265,6 @@ export function createOverlayController<Reason extends string>(
         onUnmountAutoFocus: dismissal.onUnmountAutoFocus,
         onDismiss: (event) => dismissal.onDismiss(event, layerOptions),
       } satisfies CreateOverlayLayerOptions);
-      const layer = contentLayer;
 
       return {
         ...domProps,

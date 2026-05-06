@@ -291,6 +291,7 @@ describe("add planning and writes", () => {
         "create src/components/data-table/data-table.tsx",
         "create src/components/data-table/types.ts",
         "create src/components/data-table/use-data-table.ts",
+        "create src/components/ui/table.tsx",
         "create src/lib/cn.ts",
         "add @tanstack/solid-table@^8.21.3",
         "install command: bun add @tanstack/solid-table@^8.21.3",

@@ -3,6 +3,7 @@ import {
   createContext,
   createEffect,
   createMemo,
+  createRenderEffect,
   createSignal,
   createUniqueId,
   onCleanup,
@@ -11,6 +12,7 @@ import {
   type Accessor,
   type JSX,
 } from "solid-js";
+import { isServer } from "solid-js/web";
 import {
   callEventHandler,
   createControllableSignal,
@@ -330,6 +332,9 @@ function Trigger(props: TabsTriggerProps) {
     get "data-selected"() {
       return dataBoolean(selected());
     },
+    get "data-active"() {
+      return dataBoolean(selected());
+    },
     ...partDataAttributes("tabs", "trigger"),
     onClick: (event: MouseEvent) => {
       callEventHandler(local.onClick, event);
@@ -373,7 +378,10 @@ function Indicator(props: TabsIndicatorProps) {
     const element = indicatorElement();
     const selectedTrigger = tabs.triggers().find((record) => record.value === tabs.selectedValue());
     const container = element?.parentElement;
-    if (!element || !selectedTrigger || !container) return;
+    if (!element || !selectedTrigger || !container) {
+      element?.setAttribute("data-state", "idle");
+      return;
+    }
 
     const triggerRect = selectedTrigger.element.getBoundingClientRect();
     const containerRect = container.getBoundingClientRect();
@@ -384,15 +392,24 @@ function Indicator(props: TabsIndicatorProps) {
     element.style.setProperty("--keystone-tabs-indicator-y", `${y}px`);
     element.style.setProperty("--keystone-tabs-indicator-width", `${triggerRect.width}px`);
     element.style.setProperty("--keystone-tabs-indicator-height", `${triggerRect.height}px`);
+    element.style.setProperty("--active-tab-left", `${x}px`);
+    element.style.setProperty("--active-tab-top", `${y}px`);
+    element.style.setProperty("--active-tab-width", `${triggerRect.width}px`);
+    element.style.setProperty("--active-tab-height", `${triggerRect.height}px`);
+    element.style.setProperty("--active-tab-bottom", `${-y}px`);
+    element.setAttribute("data-state", "measured");
   };
 
-  createEffect(() => {
-    indicatorElement();
-    tabs.selectedValue();
-    tabs.orientation();
-    tabs.triggers();
-    queueMicrotask(updateIndicator);
-  });
+  if (!isServer) {
+    createRenderEffect(() => {
+      indicatorElement();
+      tabs.selectedValue();
+      tabs.orientation();
+      tabs.triggers();
+      updateIndicator();
+      queueMicrotask(updateIndicator);
+    });
+  }
 
   createEffect(() => {
     const element = indicatorElement();
@@ -424,11 +441,12 @@ function Indicator(props: TabsIndicatorProps) {
       {...others}
       data-disabled={dataBoolean(tabs.disabled())}
       data-orientation={tabs.orientation()}
-      data-state={tabs.selectedValue() ? "measured" : "idle"}
+      data-state="idle"
       {...partDataAttributes("tabs", "indicator")}
       ref={(element) => {
         setIndicatorElement(element);
         if (typeof local.ref === "function") local.ref(element);
+        updateIndicator();
         queueMicrotask(updateIndicator);
       }}
     >
@@ -486,6 +504,7 @@ function Content(props: TabsContentProps) {
         data-disabled={dataBoolean(tabs.disabled())}
         data-orientation={tabs.orientation()}
         data-selected={dataBoolean(selected())}
+        data-active={dataBoolean(selected())}
         {...partDataAttributes("tabs", "content")}
         ref={(element) => {
           setPanelElement(element);

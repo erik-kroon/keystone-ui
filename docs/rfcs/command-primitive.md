@@ -51,3 +51,20 @@ DOM contract:
 Core Command owns intrinsic accessible command-list selection behavior. UI CommandMenu owns palette filtering, ranking, shortcut registration, command stores, visual styling, app navigation, and action execution.
 
 This keeps Core independent from TanStack Store and Hotkeys while letting UI build command surfaces on a dedicated Core primitive contract.
+
+## UI CommandMenu End-State Status
+
+Issue #226 audited the UI Command surface after Core Command became credible. The current first-party UI outcome is `command-menu`, backed by `packages/ui/src/default/ui/command-menu.tsx`, `packages/ui/src/default/ui/command-store.ts`, registry metadata in `registry/default/items/command-menu.json`, and the workspace block in `packages/ui/src/default/blocks/keyboard-command-surface.tsx`.
+
+End-state contract:
+
+- `CommandMenu` is the high-level copy-paste palette source for grouped command data, query filtering, shortcut display, app-level hotkey registration, shared command-store coordination, and selection callbacks.
+- Compound exports (`CommandMenuRoot`, `CommandMenuTrigger`, `CommandMenuPortal`, `CommandMenuPositioner`, `CommandMenuBackdrop`, `CommandMenuContent`, `CommandMenuInput`, `CommandMenuPanel`, `CommandMenuList`, `CommandMenuGroup`, `CommandMenuGroupLabel`, `CommandMenuItem`, `CommandMenuItemText`, `CommandMenuShortcut`, `CommandMenuEmpty`, `CommandMenuSeparator`, and `CommandMenuFooter`) remain available for source-owned composition.
+- Accessibility, keyboard navigation, highlighted item state, disabled item skipping, controlled/uncontrolled primitive state, portal positioning, dismissal, SSR-safe primitive construction, and form serialization stay delegated to Core Command.
+- UI data hooks use `data-scope="ui-command-menu"` plus stable `data-part`/`data-slot` values for trigger, backdrop, positioner, content, input row, icon, input, panel, list, group, label, item, item text, item label, item description, shortcut, empty state, separator, and footer.
+- The registry item carries parity metadata for Base UI-style primitive behavior, Kobalte-style Solid composition, shadcn-style source ownership, TanStack Store command state, and preview TanStack Hotkeys integration.
+
+Intentional exceptions and follow-ups:
+
+- UI CommandMenu does not ship fuzzy scoring, nested command pages, async command discovery, route-aware command registration, persisted history, virtualization, or shortcut conflict policy. Those remain app-owned or later specialized UI items unless repeated use proves a durable source pattern.
+- TanStack Hotkeys remains a preview integration. Generated source keeps the integration easy to remove or adapt if upstream APIs change.

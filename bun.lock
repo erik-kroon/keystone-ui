@@ -18,6 +18,7 @@
       "name": "web",
       "dependencies": {
         "@keystone-ui/core": "workspace:*",
+        "@keystone-ui/ui": "workspace:*",
         "@tailwindcss/vite": "^4.2.2",
         "@tanstack/solid-form": "^1.29.1",
         "@tanstack/solid-router": "^1.168.20",
@@ -73,6 +74,7 @@
         "@tanstack/solid-hotkeys": "^0.10.0",
         "@tanstack/solid-store": "^0.11.0",
         "@tanstack/solid-table": "^8.21.3",
+        "lucide-solid": "^1.8.0",
         "solid-js": "^1.9.12",
       },
       "devDependencies": {

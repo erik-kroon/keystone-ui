@@ -5,6 +5,7 @@ Use this guide for data-dense tabular views with sorting, filtering, pagination,
 ## Source
 
 - Component source root: `packages/ui/src/default/components/data-table/`
+- Presentational table source: `packages/ui/src/default/ui/table.tsx`
 - Main table: `data-table.tsx`
 - Hook: `use-data-table.ts`
 - Types: `types.ts`
@@ -15,7 +16,7 @@ Use this guide for data-dense tabular views with sorting, filtering, pagination,
 
 TanStack Table owns row models, column definitions, sorting, filtering, pagination, row selection, column visibility, and controlled/uncontrolled table state.
 
-Keystone UI owns the source kit: native table markup, toolbar, search, faceted filters, view options, column header controls, row actions, pagination controls, empty state, skeleton rows, classes, and data attributes.
+Keystone UI owns the source kit: presentational Table anatomy, native table markup, toolbar, search, faceted filters, view options, column header controls, row actions, pagination controls, empty state, skeleton rows, classes, and data attributes.
 
 Keystone Core is not involved in table state. Do not move table behavior into Core.
 

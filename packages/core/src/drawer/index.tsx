@@ -1,5 +1,6 @@
-import { createContext, splitProps, useContext, type JSX } from "solid-js";
+import { createContext, createSignal, splitProps, useContext, type JSX } from "solid-js";
 import { getPartDataAttributes } from "../metadata/index";
+import { assignRef } from "../overlay/dom";
 import {
   OverlayLayerProvider,
   type OverlayLayerOutsideEvent,
@@ -102,6 +103,12 @@ export type CreateDrawerOptions = {
 const DrawerContext = createContext<DrawerApi>();
 
 export function createDrawer(options: CreateDrawerOptions = {}): DrawerApi {
+  const [backdropElement, setBackdropElement] = createSignal<HTMLDivElement>();
+  const [positionerElement, setPositionerElement] = createSignal<HTMLDivElement>();
+  const outsidePointerElements = () =>
+    [backdropElement(), positionerElement()].filter(
+      (element): element is HTMLDivElement => element !== undefined,
+    );
   const overlay = createOverlayController<DrawerChangeDetail["reason"]>({
     scope: "drawer",
     open: options.open,
@@ -121,6 +128,10 @@ export function createDrawer(options: CreateDrawerOptions = {}): DrawerApi {
     descriptionId: overlay.descriptionId,
     getBackdropProps: (props) => ({
       ...props,
+      ref: (element: HTMLDivElement) => {
+        setBackdropElement(() => element);
+        assignRef(props.ref, element);
+      },
       get hidden() {
         return overlay.hidden();
       },
@@ -154,6 +165,7 @@ export function createDrawer(options: CreateDrawerOptions = {}): DrawerApi {
           containsTrigger: true,
           modal: overlay.modal,
           disableOutsidePointerEvents: overlay.modal,
+          outsidePointerElements,
           trapFocus: overlay.modal,
           dismissReason: (event) => (event.type === "keydown" ? "escape" : "outside"),
         },
@@ -181,6 +193,10 @@ export function createDrawer(options: CreateDrawerOptions = {}): DrawerApi {
     }),
     getPositionerProps: (props) => ({
       ...props,
+      ref: (element: HTMLDivElement) => {
+        setPositionerElement(() => element);
+        assignRef(props.ref, element);
+      },
       get hidden() {
         return overlay.hidden();
       },

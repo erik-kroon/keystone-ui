@@ -745,6 +745,16 @@ Motion is subtle and functional:
   - Horizontal shake `-3px`, `3px`, `-3px`, `0`.
 - Respect `prefers-reduced-motion: reduce`; toast success/error animations should be disabled.
 
+## Numeric Text
+
+Use tabular numerals by default for numbers that can update in place, including timers, counters, prices, percentages, scores, pagination summaries, and live data metrics. Apply Tailwind's `tabular-nums` utility, or the equivalent CSS:
+
+```css
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+```
+
 ## Icons
 
 Keystone should prefer `lucide-solid` where an equivalent exists, matching the repo guidance.

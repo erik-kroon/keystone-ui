@@ -3,6 +3,7 @@ import {
   createEffect,
   onCleanup,
   onMount,
+  Show,
   splitProps,
   useContext,
   type JSX,
@@ -151,18 +152,18 @@ function Indicator(props: CheckboxIndicatorProps) {
   const control = useCheckbox("Indicator");
   const [local, others] = splitProps(props, ["children", "forceMount"]);
 
-  if (!local.forceMount && control.checked() === false) return null;
-
   return (
-    <span
-      {...others}
-      data-checked={dataBoolean(control.checked() === true)}
-      data-disabled={dataBoolean(control.disabled())}
-      data-state={getSelectionState(control.checked())}
-      {...partDataAttributes("checkbox", "indicator")}
-    >
-      {local.children}
-    </span>
+    <Show when={local.forceMount || control.checked() !== false}>
+      <span
+        {...others}
+        data-checked={dataBoolean(control.checked() === true)}
+        data-disabled={dataBoolean(control.disabled())}
+        data-state={getSelectionState(control.checked())}
+        {...partDataAttributes("checkbox", "indicator")}
+      >
+        {local.children}
+      </span>
+    </Show>
   );
 }
 

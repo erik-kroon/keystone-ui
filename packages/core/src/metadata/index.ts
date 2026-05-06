@@ -138,6 +138,7 @@ const toastStateAttributes = [
 ] as const satisfies readonly PartStateAttributeMetadata[];
 
 const tabsStateAttributes = [
+  { name: "data-active" },
   { name: "data-disabled" },
   { name: "data-highlighted" },
   { name: "data-orientation", values: ["horizontal", "vertical"] },
@@ -158,6 +159,15 @@ const sliderCssVars = [
   { name: "--keystone-slider-range-end" },
   { name: "--keystone-slider-thumb-percent" },
 ] as const satisfies readonly PartCssVarMetadata[];
+
+const numericInputStateAttributes = [
+  { name: "data-at-max" },
+  { name: "data-at-min" },
+  { name: "data-disabled" },
+  { name: "data-invalid" },
+  { name: "data-readonly" },
+  { name: "data-required" },
+] as const satisfies readonly PartStateAttributeMetadata[];
 
 const toolbarStateAttributes = [
   { name: "data-disabled" },
@@ -233,6 +243,7 @@ const primitiveMaturityByScope: Record<string, PrimitiveMaturity> = {
   menu: "experimental",
   menubar: "experimental",
   "navigation-menu": "experimental",
+  "number-field": "experimental",
   overlay: "internal",
   popover: "experimental",
   popper: "beta",
@@ -241,6 +252,7 @@ const primitiveMaturityByScope: Record<string, PrimitiveMaturity> = {
   select: "beta",
   sheet: "experimental",
   slider: "experimental",
+  "spin-button": "experimental",
   switch: "beta",
   tabs: "beta",
   toast: "experimental",
@@ -386,6 +398,7 @@ export const primitiveMetadata = {
   menu: menuPrimitive("menu"),
   menubar: menuPrimitive("menubar"),
   "navigation-menu": menuPrimitive("navigation-menu"),
+  "number-field": numericInputPrimitive("number-field"),
   overlay: definePrimitive("overlay", [
     part("layer", [
       { name: "data-layer-id" },
@@ -463,6 +476,7 @@ export const primitiveMetadata = {
     part("thumb", [...sliderStateAttributes, { name: "data-index" }], sliderCssVars.slice(2)),
     part("hidden-input", [...sliderStateAttributes, { name: "data-index" }]),
   ]),
+  "spin-button": numericInputPrimitive("spin-button"),
   tabs: definePrimitive("tabs", [
     part("root", [
       { name: "data-disabled" },
@@ -482,6 +496,7 @@ export const primitiveMetadata = {
     part("content", [
       { name: "data-disabled" },
       { name: "data-orientation", values: ["horizontal", "vertical"] },
+      { name: "data-active" },
       { name: "data-selected" },
     ]),
   ]),
@@ -615,6 +630,15 @@ function comboboxPrimitive(scope: string): PrimitiveMetadata {
     ]),
     part("item-text"),
     part("item-indicator"),
+  ]);
+}
+
+function numericInputPrimitive(scope: string): PrimitiveMetadata {
+  return definePrimitive(scope, [
+    part("root", numericInputStateAttributes),
+    part("input", numericInputStateAttributes),
+    part("increment-trigger", numericInputStateAttributes),
+    part("decrement-trigger", numericInputStateAttributes),
   ]);
 }
 

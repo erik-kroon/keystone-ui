@@ -1,6 +1,16 @@
-import { flexRender, type RowData, type Table } from "@tanstack/solid-table";
+import { flexRender, type RowData, type Table as TanStackTable } from "@tanstack/solid-table";
 import { For, Show, splitProps, type JSX } from "solid-js";
 import { cn } from "@/lib/cn";
+import {
+  Table as UITable,
+  TableBody as UITableBody,
+  TableCaption as UITableCaption,
+  TableCell as UITableCell,
+  TableContainer as UITableContainer,
+  TableHead as UITableHead,
+  TableHeader as UITableHeader,
+  TableRow as UITableRow,
+} from "@/components/ui/table";
 import { DataTableEmpty } from "./data-table-empty-state";
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableSkeleton } from "./data-table-skeleton";
@@ -8,7 +18,7 @@ import { DataTableSkeleton } from "./data-table-skeleton";
 type DataTableRootProps = Omit<JSX.HTMLAttributes<HTMLDivElement>, "children">;
 
 export type DataTableProps<TData extends RowData> = DataTableRootProps & {
-  table: Table<TData>;
+  table: TanStackTable<TData>;
   caption?: JSX.Element;
   children?: JSX.Element;
   empty?: JSX.Element;
@@ -39,27 +49,31 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
       data-empty={local.table.getRowModel().rows.length === 0 ? "" : undefined}
       data-loading={local.loading ? "" : undefined}
       aria-busy={local.loading || undefined}
-      class={cn("ui-data-table", local.class)}
+      class={cn("ui-data-table tabular-nums", local.class)}
     >
       <Show when={local.children}>
         <div data-scope="ui-data-table" data-part="header-slot">
           {local.children}
         </div>
       </Show>
-      <div data-scope="ui-data-table" data-part="viewport" class="ui-data-table-viewport">
-        <table data-scope="ui-data-table" data-part="table" class="ui-data-table-table">
+      <UITableContainer
+        data-scope="ui-data-table"
+        data-part="viewport"
+        class="ui-data-table-viewport"
+      >
+        <UITable data-scope="ui-data-table" data-part="table" class="ui-data-table-table">
           <Show when={local.caption}>
-            <caption data-scope="ui-data-table" data-part="caption">
+            <UITableCaption data-scope="ui-data-table" data-part="caption">
               {local.caption}
-            </caption>
+            </UITableCaption>
           </Show>
-          <thead data-scope="ui-data-table" data-part="header" class="ui-data-table-header">
+          <UITableHeader data-scope="ui-data-table" data-part="header" class="ui-data-table-header">
             <For each={local.table.getHeaderGroups()}>
               {(headerGroup) => (
-                <tr data-scope="ui-data-table" data-part="header-row">
+                <UITableRow data-scope="ui-data-table" data-part="header-row">
                   <For each={headerGroup.headers}>
                     {(header) => (
-                      <th
+                      <UITableHead
                         colSpan={header.colSpan}
                         scope="col"
                         aria-sort={getAriaSort(header.column.getIsSorted())}
@@ -71,14 +85,14 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
                         <Show when={!header.isPlaceholder}>
                           {flexRender(header.column.columnDef.header, header.getContext())}
                         </Show>
-                      </th>
+                      </UITableHead>
                     )}
                   </For>
-                </tr>
+                </UITableRow>
               )}
             </For>
-          </thead>
-          <tbody data-scope="ui-data-table" data-part="body" class="ui-data-table-body">
+          </UITableHeader>
+          <UITableBody data-scope="ui-data-table" data-part="body" class="ui-data-table-body">
             <Show
               when={!local.loading}
               fallback={
@@ -99,7 +113,7 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
               >
                 <For each={local.table.getRowModel().rows}>
                   {(row) => (
-                    <tr
+                    <UITableRow
                       data-scope="ui-data-table"
                       data-part="row"
                       aria-selected={row.getIsSelected() || undefined}
@@ -109,23 +123,23 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
                     >
                       <For each={row.getVisibleCells()}>
                         {(cell) => (
-                          <td
+                          <UITableCell
                             data-scope="ui-data-table"
                             data-part="cell"
                             class="ui-data-table-cell"
                           >
                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                          </td>
+                          </UITableCell>
                         )}
                       </For>
-                    </tr>
+                    </UITableRow>
                   )}
                 </For>
               </Show>
             </Show>
-          </tbody>
-        </table>
-      </div>
+          </UITableBody>
+        </UITable>
+      </UITableContainer>
       <Show when={local.pagination !== false}>
         <DataTablePagination table={local.table} pageSizeOptions={local.pageSizeOptions} />
       </Show>

@@ -31,6 +31,7 @@
     "./menu": "./src/menu/index.tsx",
     "./menubar": "./src/menubar/index.ts",
     "./navigation-menu": "./src/navigation-menu/index.ts",
+    "./number-field": "./src/number-field/index.tsx",
     "./popper": "./src/popper/index.tsx",
     "./portal": "./src/portal/index.tsx",
     "./popover": "./src/popover/index.tsx",
@@ -42,6 +43,7 @@
     "./toolbar": "./src/toolbar/index.tsx",
     "./select": "./src/select/index.tsx",
     "./slider": "./src/slider/index.tsx",
+    "./spin-button": "./src/spin-button/index.tsx",
     "./toast": "./src/toast/index.tsx",
     "./visually-hidden": "./src/visually-hidden/index.tsx"
   },

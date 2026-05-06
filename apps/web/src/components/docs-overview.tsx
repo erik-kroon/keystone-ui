@@ -13,13 +13,7 @@ import {
   secondaryButtonClass,
 } from "@/components/docs-shell";
 import { MdxContent, MdxH2, MdxP, MdxTable } from "@/components/mdx-components";
-import {
-  blockDocs,
-  componentDocs,
-  componentHref,
-  overviewPage,
-  utilityDocs,
-} from "@/lib/docs-data";
+import { componentDocs, componentHref, overviewPage, hookDocs } from "@/lib/docs-data";
 
 export function DocsOverview() {
   return (
@@ -30,9 +24,8 @@ export function DocsOverview() {
             <Badge class="self-start">Keystone UI documentation</Badge>
             <PageHeaderHeading>Solid primitives and source-owned UI.</PageHeaderHeading>
             <PageHeaderDescription>
-              A Coss-inspired docs shell for the current Keystone registry: generated component
-              pages, Mason install instructions, registry metadata, source files, and right-side
-              page navigation.
+              A Coss-inspired docs shell for the current Keystone registry: focused component
+              guides, install workflows, and practical usage patterns.
             </PageHeaderDescription>
           </div>
           <div class="flex flex-wrap items-center gap-2">
@@ -70,7 +63,7 @@ bun add @keystone-ui/core`}
               title="Core"
             />
             <FeatureCard
-              description="Copy-paste Solid source, Tailwind token styling, app-layer TanStack integrations, blocks, templates, and user-owned files."
+              description="Copy-paste Solid source, Tailwind token styling, app-layer TanStack integrations, and user-owned files."
               icon={<FileCode2 size={18} />}
               title="UI"
             />
@@ -86,8 +79,8 @@ bun add @keystone-ui/core`}
           <MdxH2>Components</MdxH2>
           <MdxP>
             Component pages are generated from `registry/default/items/*.json`, so every current and
-            future registry item gets a consistent page with install, dependencies, source files,
-            API notes, and parity sections.
+            future registry item gets a consistent page with install, usage, accessible preview, and
+            API guidance.
           </MdxP>
           <div class="mt-5 grid gap-3 md:grid-cols-2">
             <For each={componentDocs.slice(0, 12)}>
@@ -132,9 +125,9 @@ bun add @keystone-ui/core`}
         <section id="roadmap" class="mt-12 scroll-mt-24 lg:mt-16">
           <MdxH2>Roadmap</MdxH2>
           <MdxP>
-            Current docs inventory includes {componentDocs.length} UI items, {blockDocs.length}{" "}
-            blocks, and {utilityDocs.length} utilities. The layout is ready for deeper authored
-            pages without changing the navigation frame.
+            Current docs inventory includes {componentDocs.length} UI items and {hookDocs.length}
+            registry hooks. The layout is ready for deeper authored pages without changing the
+            navigation frame.
           </MdxP>
         </section>
       </MdxContent>

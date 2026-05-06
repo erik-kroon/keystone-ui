@@ -15,7 +15,7 @@ export function DataTablePagination<TData extends RowData>(props: {
       data-part="pagination"
       role="navigation"
       aria-label="Table pagination"
-      class={cn("ui-data-table-pagination", props.class)}
+      class={cn("ui-data-table-pagination tabular-nums", props.class)}
     >
       <span data-scope="ui-data-table" data-part="selected-summary" aria-live="polite">
         {props.table.getFilteredSelectedRowModel().rows.length} of{" "}
