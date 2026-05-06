@@ -18,6 +18,7 @@
     "./date-picker": "./src/date-picker/index.tsx",
     "./direction": "./src/direction/index.tsx",
     "./dialog": "./src/dialog/index.tsx",
+    "./drawer": "./src/drawer/index.tsx",
     "./description": "./src/description/index.tsx",
     "./dropdown-menu": "./src/dropdown-menu/index.ts",
     "./error-message": "./src/error-message/index.tsx",

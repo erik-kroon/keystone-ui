@@ -6,8 +6,11 @@ export type {
   MenuContentProps as NavigationMenuContentProps,
   MenuGroupLabelProps as NavigationMenuGroupLabelProps,
   MenuGroupProps as NavigationMenuGroupProps,
+  MenuIndicatorProps as NavigationMenuIndicatorProps,
   MenuItemProps as NavigationMenuItemProps,
+  MenuListProps as NavigationMenuListProps,
   MenuLinkProps as NavigationMenuLinkProps,
+  MenuMenuProps as NavigationMenuMenuProps,
   MenuOpenChangeDetail as NavigationMenuOpenChangeDetail,
   MenuPartProps as NavigationMenuPartProps,
   MenuPortalProps as NavigationMenuPortalProps,
@@ -18,4 +21,5 @@ export type {
   MenuSelectDetail as NavigationMenuSelectDetail,
   MenuSeparatorProps as NavigationMenuSeparatorProps,
   MenuTriggerProps as NavigationMenuTriggerProps,
+  MenuViewportProps as NavigationMenuViewportProps,
 } from "../menu/index";

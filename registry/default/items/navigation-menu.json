@@ -16,13 +16,17 @@
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add navigation-menu",
-    "customization": "Style the generated wrappers through ui-navigation-menu classes while Core owns menubar roles, item navigation, typeahead, overlay positioning, and item state behavior.",
+    "customization": "Style the generated wrappers through ui-navigation-menu classes while Core owns nav/list/menu anatomy, menubar roles, item navigation, typeahead, overlay positioning, and item state behavior.",
     "sourceFiles": ["packages/ui/src/default/ui/navigation-menu.tsx"],
     "dependencies": ["@keystone-ui/core", "cn"],
     "parts": [
       "trigger",
+      "list",
+      "menu",
       "positioner",
       "content",
+      "viewport",
+      "indicator",
       "group",
       "group-label",
       "separator",
@@ -31,8 +35,8 @@
       "item-indicator"
     ],
     "parity": {
-      "baseUi": "Thin vertical covers the core NavigationMenu trigger/content item/link contract through Keystone overlay positioning and menubar semantics. Gaps: Viewport, Popup-specific layout APIs, animation metadata, touch pointer intent, and edge-case tests remain follow-up work.",
-      "kobalte": "Thin vertical maps Root/Trigger/Content/Item/Link/Group/Separator behavior onto Keystone menu kernel with navigation-menu scope, controlled open state, typeahead, disabled skipping, routed anchor activation, and UI wrappers. Gaps: explicit Root nav/List/Viewport parts, hover intent tuning, submenu cursor safety, focus restoration across dynamic route transitions, and richer nested coordination remain follow-up work."
+      "baseUi": "Covers the core NavigationMenu trigger/content item/link contract through Keystone overlay positioning, menubar semantics, navigation root/list/menu anatomy, viewport, and indicator data parts. Gaps: Popup-specific layout APIs, animation metadata, touch pointer intent, and edge-case tests remain follow-up work.",
+      "kobalte": "Maps Root/List/Menu/Trigger/Content/Viewport/Indicator/Item/Link/Group/Separator behavior onto Keystone menu kernel with navigation-menu scope, controlled open state, typeahead, disabled skipping, routed anchor activation, and UI wrappers. Gaps: hover intent tuning, submenu cursor safety, focus restoration across dynamic route transitions, and richer nested coordination remain follow-up work."
     }
   },
   "files": [

@@ -3,6 +3,40 @@ import { NavigationMenu } from "../src/navigation-menu/index";
 import { click, getByPart, keyDown, render, settled } from "./harness";
 
 describe("NavigationMenu behavior", () => {
+  test("exposes navigation-specific root, list, menu, viewport, and indicator anatomy", () => {
+    render(() => (
+      <NavigationMenu.Root defaultOpen aria-label="Primary">
+        <NavigationMenu.List>
+          <NavigationMenu.Menu>
+            <NavigationMenu.Trigger>Products</NavigationMenu.Trigger>
+          </NavigationMenu.Menu>
+        </NavigationMenu.List>
+        <NavigationMenu.Viewport>
+          <NavigationMenu.Content>
+            <NavigationMenu.Link href="/docs" value="docs">
+              Docs
+            </NavigationMenu.Link>
+          </NavigationMenu.Content>
+        </NavigationMenu.Viewport>
+        <NavigationMenu.Indicator />
+      </NavigationMenu.Root>
+    ));
+
+    const root = getByPart("navigation-menu", "root");
+    const list = getByPart("navigation-menu", "list");
+    const menu = getByPart("navigation-menu", "menu");
+    const viewport = getByPart("navigation-menu", "viewport");
+    const indicator = getByPart("navigation-menu", "indicator");
+
+    expect(root.tagName).toBe("NAV");
+    expect(root.getAttribute("aria-label")).toBe("Primary");
+    expect(list.tagName).toBe("UL");
+    expect(list.getAttribute("role")).toBe("menubar");
+    expect(menu.tagName).toBe("LI");
+    expect(viewport.getAttribute("role")).toBeNull();
+    expect(indicator.tagName).toBe("SPAN");
+  });
+
   test("exposes a navigation-menu scoped menubar contract over the menu kernel", () => {
     render(() => (
       <NavigationMenu.Root defaultOpen>

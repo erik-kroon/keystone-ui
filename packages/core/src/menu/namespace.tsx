@@ -23,9 +23,12 @@ import type {
   MenuFactoryOptions,
   MenuGroupLabelProps,
   MenuGroupProps,
+  MenuIndicatorProps,
   MenuItemContextValue,
   MenuItemProps,
+  MenuListProps,
   MenuLinkProps,
+  MenuMenuProps,
   MenuPartProps,
   MenuPortalProps,
   MenuPositionerProps,
@@ -35,37 +38,62 @@ import type {
   MenuSelectDetail,
   MenuSeparatorProps,
   MenuTriggerProps,
+  MenuViewportProps,
   RadioGroupContextValue,
 } from "./types";
 
 export function createMenuNamespace(factoryOptions: MenuFactoryOptions) {
   function Root(props: MenuRootProps) {
+    const [local, rootProps] = splitProps(props, [
+      "arrowPadding",
+      "children",
+      "closeOnSelect",
+      "collisionBoundary",
+      "collisionPadding",
+      "defaultOpen",
+      "fitViewport",
+      "gutter",
+      "modal",
+      "onOpenChange",
+      "onOpenChangeComplete",
+      "open",
+      "placement",
+      "rootBoundary",
+      "sameWidth",
+      "sticky",
+      "strategy",
+    ]);
     const menu = createScopedMenu(
       {
-        arrowPadding: () => props.arrowPadding,
-        closeOnSelect: () => props.closeOnSelect,
-        collisionBoundary: () => props.collisionBoundary,
-        collisionPadding: () => props.collisionPadding,
-        defaultOpen: props.defaultOpen,
-        fitViewport: () => props.fitViewport,
-        gutter: () => props.gutter,
-        modal: () => props.modal,
-        onOpenChange: props.onOpenChange,
-        onOpenChangeComplete: props.onOpenChangeComplete,
-        open: () => props.open,
-        placement: () => props.placement,
-        rootBoundary: () => props.rootBoundary,
-        sameWidth: () => props.sameWidth,
+        arrowPadding: () => local.arrowPadding,
+        closeOnSelect: () => local.closeOnSelect,
+        collisionBoundary: () => local.collisionBoundary,
+        collisionPadding: () => local.collisionPadding,
+        defaultOpen: local.defaultOpen,
+        fitViewport: () => local.fitViewport,
+        gutter: () => local.gutter,
+        modal: () => local.modal,
+        onOpenChange: local.onOpenChange,
+        onOpenChangeComplete: local.onOpenChangeComplete,
+        open: () => local.open,
+        placement: () => local.placement,
+        rootBoundary: () => local.rootBoundary,
+        sameWidth: () => local.sameWidth,
         scope: factoryOptions.scope,
-        sticky: () => props.sticky,
-        strategy: () => props.strategy,
+        sticky: () => local.sticky,
+        strategy: () => local.strategy,
       },
       factoryOptions.rootRole ?? "menu",
     );
+    const children = <MenuContext.Provider value={menu}>{local.children}</MenuContext.Provider>;
 
     return (
       <OverlayLayerProvider>
-        <MenuContext.Provider value={menu}>{props.children}</MenuContext.Provider>
+        {factoryOptions.rootTag === "nav" ? (
+          <nav {...menu.getRootProps(rootProps)}>{children}</nav>
+        ) : (
+          children
+        )}
       </OverlayLayerProvider>
     );
   }
@@ -171,6 +199,18 @@ export function createMenuNamespace(factoryOptions: MenuFactoryOptions) {
     const menu = useMenu("Separator");
     const [local, others] = splitProps(props, ["children"]);
     return <div {...menu.getSeparatorProps(others)}>{local.children}</div>;
+  }
+
+  function List(props: MenuListProps) {
+    const menu = useMenu("List");
+    const [local, others] = splitProps(props, ["children"]);
+    return <ul {...menu.getListProps(others)}>{local.children}</ul>;
+  }
+
+  function MenuPart(props: MenuMenuProps) {
+    const menu = useMenu("Menu");
+    const [local, others] = splitProps(props, ["children"]);
+    return <li {...menu.getMenuProps(others)}>{local.children}</li>;
   }
 
   function Item(props: MenuItemProps) {
@@ -396,6 +436,47 @@ export function createMenuNamespace(factoryOptions: MenuFactoryOptions) {
     return <span {...menu.getItemIndicatorProps(others)}>{local.children}</span>;
   }
 
+  function Indicator(props: MenuIndicatorProps) {
+    const menu = useMenu("Indicator");
+    const [local, others] = splitProps(props, ["children"]);
+    return <span {...menu.getIndicatorProps(others)}>{local.children}</span>;
+  }
+
+  function Viewport(props: MenuViewportProps) {
+    const menu = useMenu("Viewport");
+    const [local, others] = splitProps(props, [
+      "children",
+      "onEscapeKeyDown",
+      "onFocusOutside",
+      "onInteractOutside",
+      "onKeyDown",
+      "onMountAutoFocus",
+      "onPointerDownOutside",
+      "onUnmountAutoFocus",
+      "ref",
+      "style",
+    ]);
+
+    return (
+      <div
+        {...menu.getViewportProps({
+          ...others,
+          onEscapeKeyDown: local.onEscapeKeyDown,
+          onFocusOutside: local.onFocusOutside,
+          onInteractOutside: local.onInteractOutside,
+          onKeyDown: local.onKeyDown,
+          onMountAutoFocus: local.onMountAutoFocus,
+          onPointerDownOutside: local.onPointerDownOutside,
+          onUnmountAutoFocus: local.onUnmountAutoFocus,
+          ref: local.ref,
+          style: local.style,
+        })}
+      >
+        {local.children}
+      </div>
+    );
+  }
+
   function ItemLabel(props: MenuPartProps<HTMLSpanElement>) {
     const item = useContext(MenuItemContext);
     const menu = useMenu("ItemLabel");
@@ -592,14 +673,18 @@ export function createMenuNamespace(factoryOptions: MenuFactoryOptions) {
     Group,
     GroupLabel,
     Separator,
+    List,
+    Menu: MenuPart,
     Item,
     Link,
     CheckboxItem,
     RadioGroup,
     RadioItem,
+    Indicator,
     ItemIndicator,
     ItemLabel,
     ItemDescription,
+    Viewport,
     SubRoot,
     SubTrigger,
     SubContent,

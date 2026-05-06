@@ -131,6 +131,41 @@ describe("Command behavior harness", () => {
     expect(values).toEqual([""]);
   });
 
+  test("hidden command items stay registered but are skipped by active-descendant navigation", async () => {
+    render(() => (
+      <Command.Root defaultOpen>
+        <Command.Input />
+        <Command.Content>
+          <Command.Listbox>
+            <Command.Item value="alpha">Alpha</Command.Item>
+            <Command.Item value="hidden-beta" hidden>
+              Hidden beta
+            </Command.Item>
+            <Command.Item value="bravo">Bravo</Command.Item>
+          </Command.Listbox>
+        </Command.Content>
+      </Command.Root>
+    ));
+
+    const input = getByPart("command", "input") as HTMLInputElement;
+    const hidden = document.querySelector(
+      '[data-scope="command"][data-part="item"][data-value="hidden-beta"]',
+    ) as HTMLElement;
+
+    expect(hidden.hidden).toBe(true);
+    expect(hidden.getAttribute("data-hidden")).toBe("");
+
+    keyDown(input, "ArrowDown");
+    expect(input.getAttribute("aria-activedescendant")).toContain("alpha");
+
+    keyDown(input, "ArrowDown");
+    expect(input.getAttribute("aria-activedescendant")).toContain("bravo");
+    expect(
+      document.querySelector('[data-scope="command"][data-part="item"][data-highlighted]')
+        ?.textContent,
+    ).toBe("Bravo");
+  });
+
   test("createCommand defaults its public scope to command", () => {
     createRoot((dispose) => {
       const command = createCommand();

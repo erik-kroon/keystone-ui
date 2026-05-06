@@ -214,7 +214,7 @@ export const registryDocItems = [
     name: "keyboard-command-surface",
     parity: {
       baseUi:
-        "Primitive behavior is inherited through CommandMenu, which leans on Keystone Combobox for Base UI-style input/listbox focus, highlighted item state, disabled skipping, portal positioning, and dismissal. This block only adds source-owned workspace composition around it.",
+        "Primitive behavior is inherited through CommandMenu, which leans on Keystone Command for Base UI-style input/listbox focus, highlighted item state, disabled skipping, portal positioning, and dismissal. This block only adds source-owned workspace composition around it.",
       kobalte:
         "Composition follows Solid-friendly command data and compound UI parts through CommandMenu, with grouped list semantics and display-only shortcut pieces that remain easy to inspect and replace.",
       tanstackHotkeys:
@@ -1727,7 +1727,7 @@ export const registryDocItems = [
   },
   {
     accessibility:
-      "Keystone Combobox owns input/listbox roles, aria-activedescendant, highlighted item state, disabled skipping, typeahead/list keyboard behavior, portal positioning, dismissal, and controlled open/input state. UI only adds command item data, filtering, shortcut display, and app-level shortcut registration.",
+      "Keystone Command owns input/listbox roles, aria-activedescendant, highlighted item state, disabled and hidden item skipping, typeahead/list keyboard behavior, portal positioning, dismissal, and controlled open/input state. UI only adds command item data, filtering, shortcut display, and app-level shortcut registration.",
     anatomy: [
       "root",
       "trigger",
@@ -1751,7 +1751,7 @@ export const registryDocItems = [
       "separator",
       "footer",
     ],
-    api: "CommandMenu exports createCommandMenuStore, CommandMenu, CommandMenuRoot, CommandMenuTrigger, CommandMenuPortal, CommandMenuPositioner, CommandMenuBackdrop, CommandMenuContent, CommandMenuInput, CommandMenuPanel, CommandMenuList, CommandMenuGroup, CommandMenuGroupLabel, CommandMenuItem, CommandMenuItemText, CommandMenuShortcut, CommandMenuEmpty, CommandMenuSeparator, and CommandMenuFooter. The high-level component accepts items, trigger, empty, footer, class escape hatches, showBackdrop, an optional shared CommandStore, and hotkey options while Core Combobox owns primitive open/input/value behavior.",
+    api: "CommandMenu exports createCommandMenuStore, CommandMenu, CommandMenuRoot, CommandMenuTrigger, CommandMenuPortal, CommandMenuPositioner, CommandMenuBackdrop, CommandMenuContent, CommandMenuInput, CommandMenuPanel, CommandMenuList, CommandMenuGroup, CommandMenuGroupLabel, CommandMenuItem, CommandMenuItemText, CommandMenuShortcut, CommandMenuEmpty, CommandMenuSeparator, and CommandMenuFooter. The high-level component accepts items, trigger, empty, footer, class escape hatches, showBackdrop, an optional shared CommandStore, and hotkey options while Core Command owns primitive open/input/value behavior.",
     categories: ["command", "combobox", "tanstack", "hotkeys"],
     compatibility: {
       mason: ">=0.1.0 <0.2.0",
@@ -1767,7 +1767,7 @@ export const registryDocItems = [
       "cn",
     ],
     description:
-      "Command palette source built from Keystone Combobox behavior, TanStack Store command state, and preview TanStack Hotkeys shortcuts.",
+      "Command palette source built from Keystone Command behavior, TanStack Store command state, and preview TanStack Hotkeys shortcuts.",
     files: [
       {
         path: "packages/ui/src/default/ui/command-menu.tsx",
@@ -1791,9 +1791,9 @@ export const registryDocItems = [
       visualReference:
         "Uses a dense command palette visual structure in Solid source form: blurred backdrop, rounded popover shell, translucent-muted inner overlay, transparent search input row with search icon, bordered results panel, grouped list rows, kbd shortcut styling, separator, and footer slot.",
       baseUi:
-        "Runtime behavior intentionally leans on Keystone Combobox toward accessible combobox/listbox depth: input ownership, aria-activedescendant, item highlighting, disabled items, typeahead/list navigation, overlay positioning, and dismissal. Gaps: nested command pages, fuzzy scorer conventions, async collection loading, and command history remain app-code follow-up work.",
+        "Runtime behavior intentionally leans on Keystone Command toward accessible combobox/listbox depth: input ownership, aria-activedescendant, item highlighting, disabled and hidden items, typeahead/list navigation, overlay positioning, and dismissal. Gaps: nested command pages, fuzzy scorer conventions, async collection loading, and command history remain app-code follow-up work.",
       kobalte:
-        "Solid primitive shape tracks Kobalte-style Combobox composition through root/input/content/listbox/group/item parts, plus command-specific panel/footer wrappers. Gaps: richer command-specific examples, virtualized command lists, and route-scoped collection discovery remain follow-up work.",
+        "Solid primitive shape tracks Kobalte-style command composition through root/input/content/listbox/group/item parts, plus command-specific panel/footer wrappers. Gaps: richer command-specific examples, virtualized command lists, and route-scoped collection discovery remain follow-up work.",
       tanstackStore:
         "TanStack Store is used through the command-store registry item for app-level command menu state that benefits from sharing across shell controls: open, query, selected command id, recent command ids, command registry, scope, and loading/error metadata. It deliberately does not replace Core primitive state or list navigation.",
       tanstackHotkeys:

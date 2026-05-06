@@ -4,8 +4,11 @@ import {
   type NavigationMenuContentProps as CoreNavigationMenuContentProps,
   type NavigationMenuGroupLabelProps as CoreNavigationMenuGroupLabelProps,
   type NavigationMenuGroupProps as CoreNavigationMenuGroupProps,
+  type NavigationMenuIndicatorProps as CoreNavigationMenuIndicatorProps,
   type NavigationMenuItemProps as CoreNavigationMenuItemProps,
+  type NavigationMenuListProps as CoreNavigationMenuListProps,
   type NavigationMenuLinkProps as CoreNavigationMenuLinkProps,
+  type NavigationMenuMenuProps as CoreNavigationMenuMenuProps,
   type NavigationMenuPartProps as CoreNavigationMenuPartProps,
   type NavigationMenuPortalProps as CoreNavigationMenuPortalProps,
   type NavigationMenuPositionerProps as CoreNavigationMenuPositionerProps,
@@ -14,6 +17,7 @@ import {
   type NavigationMenuRootProps as CoreNavigationMenuRootProps,
   type NavigationMenuSeparatorProps as CoreNavigationMenuSeparatorProps,
   type NavigationMenuTriggerProps as CoreNavigationMenuTriggerProps,
+  type NavigationMenuViewportProps as CoreNavigationMenuViewportProps,
 } from "@keystone-ui/core/navigation-menu";
 import { splitProps } from "solid-js";
 import { cn } from "@/lib/cn";
@@ -29,15 +33,23 @@ export type NavigationMenuContentProps = CoreNavigationMenuContentProps & {
 export type NavigationMenuGroupProps = CoreNavigationMenuGroupProps;
 export type NavigationMenuGroupLabelProps = CoreNavigationMenuGroupLabelProps;
 export type NavigationMenuSeparatorProps = CoreNavigationMenuSeparatorProps;
+export type NavigationMenuListProps = CoreNavigationMenuListProps;
+export type NavigationMenuMenuProps = CoreNavigationMenuMenuProps;
 export type NavigationMenuItemProps = CoreNavigationMenuItemProps;
 export type NavigationMenuLinkProps = CoreNavigationMenuLinkProps;
 export type NavigationMenuCheckboxItemProps = CoreNavigationMenuCheckboxItemProps;
 export type NavigationMenuRadioGroupProps = CoreNavigationMenuRadioGroupProps;
 export type NavigationMenuRadioItemProps = CoreNavigationMenuRadioItemProps;
+export type NavigationMenuIndicatorProps = CoreNavigationMenuIndicatorProps;
 export type NavigationMenuItemIndicatorProps = CoreNavigationMenuPartProps<HTMLSpanElement>;
+export type NavigationMenuViewportProps = CoreNavigationMenuViewportProps & {
+  portal?: NavigationMenuPortalProps;
+  positionerClass?: string;
+};
 
 export function NavigationMenu(props: NavigationMenuProps) {
-  return <CoreNavigationMenu.Root {...props} />;
+  const [local, rest] = splitProps(props, ["class"]);
+  return <CoreNavigationMenu.Root {...rest} class={cn("ui-navigation-menu", local.class)} />;
 }
 
 export function NavigationMenuTrigger(props: NavigationMenuTriggerProps) {
@@ -99,6 +111,16 @@ export function NavigationMenuSeparator(props: NavigationMenuSeparatorProps) {
   );
 }
 
+export function NavigationMenuList(props: NavigationMenuListProps) {
+  const [local, rest] = splitProps(props, ["class"]);
+  return <CoreNavigationMenu.List {...rest} class={cn("ui-navigation-menu-list", local.class)} />;
+}
+
+export function NavigationMenuMenu(props: NavigationMenuMenuProps) {
+  const [local, rest] = splitProps(props, ["class"]);
+  return <CoreNavigationMenu.Menu {...rest} class={cn("ui-navigation-menu-menu", local.class)} />;
+}
+
 export function NavigationMenuItem(props: NavigationMenuItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return <CoreNavigationMenu.Item {...rest} class={cn("ui-navigation-menu-item", local.class)} />;
@@ -127,6 +149,16 @@ export function NavigationMenuRadioItem(props: NavigationMenuRadioItemProps) {
   );
 }
 
+export function NavigationMenuIndicator(props: NavigationMenuIndicatorProps) {
+  const [local, rest] = splitProps(props, ["class"]);
+  return (
+    <CoreNavigationMenu.Indicator
+      {...rest}
+      class={cn("ui-navigation-menu-indicator", local.class)}
+    />
+  );
+}
+
 export function NavigationMenuItemIndicator(props: NavigationMenuItemIndicatorProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
@@ -134,5 +166,21 @@ export function NavigationMenuItemIndicator(props: NavigationMenuItemIndicatorPr
       {...rest}
       class={cn("ui-navigation-menu-item-indicator", local.class)}
     />
+  );
+}
+
+export function NavigationMenuViewport(props: NavigationMenuViewportProps) {
+  const [local, rest] = splitProps(props, ["children", "class", "portal", "positionerClass"]);
+  return (
+    <NavigationMenuPortal {...local.portal}>
+      <NavigationMenuPositioner class={local.positionerClass}>
+        <CoreNavigationMenu.Viewport
+          {...rest}
+          class={cn("ui-navigation-menu-viewport", local.class)}
+        >
+          {local.children}
+        </CoreNavigationMenu.Viewport>
+      </NavigationMenuPositioner>
+    </NavigationMenuPortal>
   );
 }

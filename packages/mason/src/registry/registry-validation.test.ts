@@ -700,7 +700,7 @@ describe("Mason registry validation tracer", () => {
       expect(result.value.files[0]?.target).toBe(
         "src/components/blocks/keyboard-command-surface.tsx",
       );
-      expect(result.value.meta?.composition).toContain("Core Combobox-backed focus");
+      expect(result.value.meta?.composition).toContain("Core Command-backed focus");
       expect(result.value.meta?.keyboardInspectability).toContain("description-list semantics");
       expect(result.value.meta?.parity).toMatchObject({
         baseUi: expect.any(String),
@@ -872,7 +872,7 @@ describe("Mason registry validation tracer", () => {
       expect(result.value.meta?.store).toBeString();
       expect(result.value.meta?.shortcutDisplay).toBeString();
       expect(result.value.meta?.hotkeysPreview).toContain("preview");
-      expect(result.value.meta?.accessibility).toContain("Keystone Combobox");
+      expect(result.value.meta?.accessibility).toContain("Keystone Command");
       expect(result.value.meta?.customization).toContain("dense command palette structure");
       expect(result.value.meta?.limitations).toContain("local command palette pattern");
       expect(result.value.meta?.parity).toMatchObject({

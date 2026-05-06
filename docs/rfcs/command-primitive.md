@@ -36,13 +36,14 @@ Accessibility and behavior:
 - `Listbox` uses `role="listbox"` with grouped options and single selection.
 - Arrow keys open and move highlight, `Enter` selects the highlighted item, and `Escape` closes or clears.
 - Pointer selection, disabled items, grouped items, selected/highlighted states, and read-only/disabled guards follow Combobox behavior.
+- Hidden items stay registered for collection lookup but are omitted from active-descendant navigation and typeahead through the shared collection kernel.
 - `name`, `form`, `defaultValue`, and controlled `value` serialize through the Core form-control hidden input kernel and reset with the owning form.
 - `open`, `inputValue`, and `value` support controlled and uncontrolled usage with change details.
 
 DOM contract:
 
 - All public parts use `data-scope="command"` and a stable `data-part`.
-- State attributes match the Combobox contract: `data-state`, `data-disabled`, `data-invalid`, `data-placeholder`, `data-readonly`, `data-required`, `data-highlighted`, `data-selected`, and `data-group` where applicable.
+- State attributes match the Combobox contract: `data-state`, `data-disabled`, `data-hidden`, `data-invalid`, `data-placeholder`, `data-readonly`, `data-required`, `data-highlighted`, `data-selected`, `data-group`, and `data-value` where applicable.
 - Floating parts expose the standard Keystone floating CSS variables: `--keystone-anchor-width`, `--keystone-anchor-height`, `--keystone-available-width`, `--keystone-available-height`, `--keystone-arrow-x`, `--keystone-arrow-y`, and `--keystone-transform-origin`.
 
 ## Boundaries

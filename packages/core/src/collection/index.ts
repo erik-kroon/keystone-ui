@@ -265,6 +265,7 @@ export function createListboxInteraction<T extends CollectionItem, Detail>(
         "data-disabled": dataBoolean(local.disabled),
         "data-group": local.group,
         "data-hidden": dataBoolean(Boolean(local.hidden)),
+        "data-value": local.value,
         get "data-highlighted"() {
           return dataBoolean(list.collection.isHighlighted(local.value));
         },
