@@ -20,6 +20,7 @@ Use this file to choose the right Keystone UI source item and inspect its files 
 - **Label**: `packages/ui/src/default/ui/label.tsx`, registry `label`
 - **Field**: `packages/ui/src/default/ui/field.tsx`, registry `field`
 - **TextField**: registry `text-field`
+- **NumberField**: registry `number-field`
 - **TextareaField**: registry `textarea-field`
 - **SelectField**: registry `select-field`
 - **CheckboxField**: registry `checkbox-field`
@@ -67,21 +68,38 @@ Use this file to choose the right Keystone UI source item and inspect its files 
 - **Toolbar**: registry `toolbar`
 - **ScrollArea**: `packages/ui/src/default/ui/scroll-area.tsx`, registry `scroll-area`
 - **CommandMenu**: registry `command-menu`
+- **Table**: `packages/ui/src/default/ui/table.tsx`, registry `table`
 - **DataTable**: registry `data-table`
 - **DataTableTanStackRouter**: registry `data-table-tanstack-router`
-- **AccountSettings**: registry `account-settings`
-- **InvoiceDashboard**: registry `invoice-dashboard`
-- **TanStackStartDashboard**: registry `tanstack-start-dashboard`
 - Focused guide: `references/primitives/data-table.md`
 
-## Stores And Utilities
+## Blocks
 
-- **cn**: registry `cn`
+- **AccountSettings**: `packages/ui/src/default/blocks/account-settings.tsx`, registry `account-settings`
+- **InvoiceDashboard**: `packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard.tsx`, registry `invoice-dashboard`
+- **KeyboardCommandSurface**: `packages/ui/src/default/blocks/keyboard-command-surface.tsx`, registry `keyboard-command-surface`
+- **RealtimeDataTable**: `packages/ui/src/default/blocks/realtime-data-table/realtime-data-table.tsx`, registry `realtime-data-table`
+- **ResizableWorkspaceShell**: `packages/ui/src/default/blocks/resizable-workspace-shell.tsx`, registry `resizable-workspace-shell`
+
+## Stores
+
 - **ThemeStore**: registry `theme-store`
 - **CommandStore**: registry `command-store`
 - **SidebarStore**: registry `sidebar-store`
 - **AppStoreProvider**: registry `app-store-provider`
 - **KeyboardShortcuts**: registry `keyboard-shortcuts`
+
+## Hooks
+
+- **useCopyToClipboard**: registry `use-copy-to-clipboard`
+- **useMediaQuery**: registry `use-media-query`
+
+## Templates
+
+- **TanStackStartDashboard**: registry `tanstack-start-dashboard`
+
+## Utilities
+
 - **ShortcutDisplay**: registry `shortcut-display`
 - **ShortcutRecorder**: registry `shortcut-recorder`
 - **ShortcutSequenceRecorder**: registry `shortcut-sequence-recorder`

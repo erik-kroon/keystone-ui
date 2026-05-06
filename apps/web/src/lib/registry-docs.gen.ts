@@ -4,10 +4,15 @@ export type RegistryDocFile = {
   type: string;
 };
 
+export type RegistryDocMetadata =
+  | string
+  | readonly string[]
+  | Readonly<Record<string, readonly string[]>>;
+
 export type RegistryDocItem = {
-  accessibility?: string;
-  anatomy: readonly string[];
-  api?: string;
+  accessibility?: RegistryDocMetadata;
+  anatomy: RegistryDocMetadata;
+  api?: RegistryDocMetadata;
   categories: readonly string[];
   columns?: string;
   compatibility: Readonly<Record<string, string>>;
@@ -19,7 +24,7 @@ export type RegistryDocItem = {
   files: readonly RegistryDocFile[];
   install: string;
   keywords: readonly string[];
-  limitations?: string;
+  limitations?: RegistryDocMetadata;
   name: string;
   parity: Readonly<Record<string, string>>;
   registryDependencies: readonly string[];
@@ -42,7 +47,7 @@ export const registryDocItems = [
     },
     customization:
       "Style the generated wrappers through ui-accordion classes while Keystone keeps item coordination, trigger ARIA, keyboard navigation, hidden-until-found behavior, and data attributes.",
-    dependencies: ["@keystone-ui/core", "cn"],
+    dependencies: ["@keystone-ui/core", "lucide-solid", "cn"],
     description: "Styled Solid accordion component backed by Keystone disclosure coordination.",
     files: [
       {
@@ -375,38 +380,6 @@ export const registryDocItems = [
     sourceFiles: ["packages/ui/src/default/blocks/resizable-workspace-shell.tsx"],
     title: "ResizableWorkspaceShellBlock",
     type: "registry:block",
-    version: "0.1.0",
-  },
-  {
-    anatomy: [],
-    categories: ["utility"],
-    compatibility: {
-      mason: ">=0.1.0 <0.2.0",
-      solid: ">=1.9.0 <2.0.0",
-    },
-    customization:
-      "Extend this helper when your project needs conditional class maps, array flattening, or conflict-aware class merging.",
-    dependencies: [],
-    description: "Small class name composition helper shared by UI base components.",
-    files: [
-      {
-        path: "packages/ui/src/default/lib/cn.ts",
-        type: "registry:lib",
-      },
-    ],
-    install: "mason add cn",
-    keywords: ["classes", "utility", "styling"],
-    name: "cn",
-    parity: {
-      mason:
-        "Utility item, not a primitive. Parity is scoped to Mason registry ergonomics: one small copy-paste class composer shared by base components. Gaps: conflict-aware Tailwind merging, array/object conditional inputs, and project-specific class policy are intentionally left to user customization.",
-      shadcn:
-        "Comparable to shadcn cn helpers in role and install shape, but currently thinner. Gaps: no clsx/tailwind-merge dependency by default and no registry option to choose a stricter merge strategy.",
-    },
-    registryDependencies: [],
-    sourceFiles: ["packages/ui/src/default/lib/cn.ts"],
-    title: "Class Name Utility",
-    type: "registry:lib",
     version: "0.1.0",
   },
   {
@@ -747,7 +720,7 @@ export const registryDocItems = [
     accessibility:
       "TanStackForm keeps native form semantics, sets aria-busy while submitting or validating, preserves preventDefault escape hatches through user onSubmit, exposes state-aware submit disabling, and exposes TanStackFormErrors with role=alert when form errors are present.",
     anatomy: ["root", "submit", "errors"],
-    api: "TanStackForm exports TanStackForm, TanStackFormSubmit, TanStackFormErrors, getTanStackFormState, TanStackFormState, and formatFieldError. TanStackForm wraps a native form element, runs user onSubmit first, optionally prevents default and stops propagation, calls form.handleSubmit, and mirrors submitting, validating, invalid, can-submit, dirty, touched, submitted, and submission-attempt metadata. TanStackFormSubmit can bind to the form state to disable while submitting or while canSubmit is false.",
+    api: "TanStackForm exports TanStackForm, TanStackFormSubmit, TanStackFormErrors, getTanStackFormState, TanStackFormState, and formatFieldError. TanStackForm wraps a native form element, runs user onSubmit first, optionally prevents default and stops propagation, calls form.handleSubmit, and mirrors submitting, validating, invalid, can-submit, dirty, touched, submitted, and submission-attempt metadata. TanStackFormSubmit can bind to the form state to disable while submitting or while canSubmit is false; use formId when the submit button targets an external native form owner.",
     categories: ["form", "tanstack"],
     compatibility: {
       mason: ">=0.1.0 <0.2.0",
@@ -861,6 +834,57 @@ export const registryDocItems = [
     state:
       "TanStack Form owns value, touched, dirty, blurred, validating, and errors. TextField maps string input into TanStack field value and mirrors focus through the TanStackField shell.",
     title: "TextField",
+    type: "registry:ui",
+    version: "0.1.0",
+  },
+  {
+    accessibility:
+      "Backed by TanStackField for generated IDs, label/description/error relationships, touched-derived invalid state, and alert messaging. Backed by @keystone-ui/core/number-field for role=spinbutton, aria-valuemin, aria-valuemax, aria-valuenow, aria-valuetext, keyboard increment/decrement behavior, trigger aria-controls, native input naming, reset support, disabled/read-only/required state, and stable data attributes.",
+    anatomy: [
+      "field-root",
+      "field-label",
+      "number-field",
+      "decrement-trigger",
+      "input",
+      "increment-trigger",
+      "field-description",
+      "field-error",
+    ],
+    api: "NumberField exports NumberField, NumberFieldProps, and NumberFieldValidators. It composes TanStackField with @keystone-ui/core/number-field, passes validators to form.Field, maps number and undefined values to field.handleChange, maps blur to field.handleBlur, preserves Core min/max/step/parse/format behavior, and forwards disabled/readOnly/required/formId plus input and trigger props.",
+    categories: ["form", "tanstack", "input"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
+    },
+    customization:
+      "Use ui-number-field classes, TanStackField shell classes, Core data attributes, neutral data-slot hooks, inputProps, trigger props, inputClass, triggerClass, and class escape hatches for generated-source styling.",
+    dependencies: ["@keystone-ui/core", "@tanstack/solid-form", "cn", "tanstack-field"],
+    description:
+      "TanStack Form number field composed with Keystone NumberField behavior and UI styling hooks.",
+    files: [
+      {
+        path: "packages/ui/src/default/ui/number-field.tsx",
+        type: "registry:ui",
+      },
+    ],
+    install: "mason add number-field",
+    keywords: ["number-field", "number", "spinbutton", "field", "form", "tanstack", "keystone"],
+    limitations:
+      "Press-and-hold repeat, locale-specific number parsing, currency/percent adapters, wheel input policy, and app-specific validation copy remain follow-up or host-owned composition.",
+    name: "number-field",
+    parity: {
+      tanstackForm:
+        "Covers form.Field integration, validators pass-through, number binding, blur/change delegation, touched-derived invalid/error state, and generated-source prop escape hatches.",
+      baseUi:
+        "Primitive behavior coverage comes through Keystone Core NumberField for spinbutton ARIA, min/max/step keyboard behavior, controlled values, parse/format hooks, and data attributes.",
+      kobalte:
+        "Solid composition follows root/input/increment-trigger/decrement-trigger anatomy with Keystone Core behavior and user-owned UI source styling.",
+    },
+    registryDependencies: ["cn", "tanstack-field"],
+    sourceFiles: ["packages/ui/src/default/ui/number-field.tsx"],
+    state:
+      "TanStack Form owns number field value, touched, dirty, blurred, validating, and errors. Keystone Core NumberField owns numeric parsing, formatting, clamping, step movement, keyboard behavior, trigger disablement at min/max, and form-control state mirroring.",
+    title: "NumberField",
     type: "registry:ui",
     version: "0.1.0",
   },
@@ -2461,7 +2485,7 @@ export const registryDocItems = [
       'Stable styling hooks use data-scope="ui-data-table" and data-part values for root, header-slot, viewport, table, caption, header, header-row, head, body, row, cell, empty-row, empty, skeleton-status-row, skeleton-status, skeleton-row, skeleton-cell, column-header, sort-trigger, sort-clear, column-hide, toolbar, search, reset, toolbar-actions, faceted-filter, faceted-option, faceted-control, faceted-count, faceted-clear, view-options, view-options-search, view-option, view-option-control, row-actions, row-action, pagination, selected-summary, page-summary, page-size, page-size-select, page-buttons, and page-button. Root exposes data-loading and data-empty; rows expose data-selected/data-state; headers expose data-sort; filters expose data-state/data-value; pagination buttons expose data-page.',
     dataShape:
       "Pass an array of row objects through data and TanStack ColumnDef<TData, unknown>[] through columns. Use getRowId when the row key is not stable by index.",
-    dependencies: ["@tanstack/solid-table", "cn"],
+    dependencies: ["@tanstack/solid-table", "table", "cn"],
     description:
       "TanStack Table source kit with local state, toolbar, filters, pagination, column visibility, skeletons, empty state, and row actions.",
     files: [
@@ -2521,7 +2545,7 @@ export const registryDocItems = [
       shadcn:
         "Comparable to shadcn data-table source kits in copy-paste ownership and composable subcomponents, with Solid-native accessors and Mason multi-file install metadata. Gaps: no CLI-generated schema, no baked-in URL state without the adapter, and no opinionated server data layer.",
     },
-    registryDependencies: ["cn"],
+    registryDependencies: ["table", "cn"],
     routerAdapter:
       "Install data-table-tanstack-router for URL-backed search param state with TanStack Router.",
     sourceFiles: [
@@ -2541,6 +2565,50 @@ export const registryDocItems = [
     state:
       "useDataTable is uncontrolled by default through Solid signals initialized from initialState. Pass state plus onSortingChange, onColumnFiltersChange, onColumnVisibilityChange, onPaginationChange, or onRowSelectionChange to control individual TanStack state slices; use manualSorting, manualFiltering, manualPagination, and pageCount for server-owned row models.",
     title: "DataTable",
+    type: "registry:ui",
+    version: "0.1.0",
+  },
+  {
+    accessibility:
+      "The component preserves native table, caption, thead, tbody, tfoot, tr, th, and td semantics. Consumers own caption text, header scope, aria-sort, labelled regions, selected-row announcements, and any interactive controls placed inside cells.",
+    anatomy: ["container", "root", "caption", "header", "body", "footer", "row", "head", "cell"],
+    api: "Table exports TableContainer, Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, and TableCaption. Every part forwards native HTML props, class, children, and data-scope/data-part/data-slot overrides for app-layer wrappers.",
+    categories: ["base", "table", "data"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
+    },
+    customization:
+      'Customize the native anatomy through ui-table classes, shadcn-style data-slot values, and stable data-scope="ui-table" data-part hooks.',
+    dataAttributes:
+      'Defaults use data-scope="ui-table" and data-part values container, root, caption, header, body, footer, row, head, and cell. data-slot values are table-container, table, table-caption, table-header, table-body, table-footer, table-row, table-head, and table-cell. App-layer components may override those attributes while retaining native elements and classes.',
+    dependencies: ["cn"],
+    description:
+      "Presentational native table anatomy for readable data grids and TanStack Table app-layer composition.",
+    files: [
+      {
+        path: "packages/ui/src/default/ui/table.tsx",
+        type: "registry:ui",
+      },
+    ],
+    install: "mason add table",
+    keywords: ["table", "thead", "tbody", "caption", "tanstack-table", "data-table"],
+    limitations:
+      "Table is presentational source, not a grid engine. It does not implement sorting, filtering, pagination, virtualization, roving focus, column sizing, column reordering, row selection, or async loading policy.",
+    name: "table",
+    parity: {
+      html: "Keeps native table semantics as the contract: Keystone does not replace table markup with ARIA grid roles unless a future app component requires that behavior explicitly.",
+      shadcn:
+        "Matches the copy-paste anatomy shape and data-slot ergonomics in Solid source form, with Keystone tokens, compact styling, and a TableContainer part compatible with CardFrame table-container clipping.",
+      tanstackTable:
+        "The base parts are intentionally engine-agnostic and are consumed by the first-party DataTable kit, where TanStack Table owns row models, sorting, filtering, pagination, selection, and column visibility.",
+    },
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/table.tsx"],
+    ssr: "Renders deterministic native markup with no browser globals, effects, generated IDs, or hydration-sensitive state.",
+    state:
+      "No controlled or uncontrolled state. Sorting, filtering, pagination, selection, column visibility, and row identity belong to app-layer engines such as TanStack Table or to host application state.",
+    title: "Table",
     type: "registry:ui",
     version: "0.1.0",
   },
@@ -2678,7 +2746,6 @@ export const registryDocItems = [
       "description",
       "action",
       "panel",
-      "content",
       "footer",
       "frame",
       "frame-header",
@@ -2687,7 +2754,7 @@ export const registryDocItems = [
       "frame-action",
       "frame-footer",
     ],
-    api: "Card exports Card, CardHeader, CardTitle, CardDescription, CardAction, CardPanel, CardContent, CardFooter, CardFrame, CardFrameHeader, CardFrameTitle, CardFrameDescription, CardFrameAction, and CardFrameFooter. CardPanel is the preferred content part; CardContent remains a compatibility alias with its own content data part.",
+    api: "Card exports Card, CardHeader, CardTitle, CardDescription, CardAction, CardPanel, CardContent, CardFooter, CardFrame, CardFrameHeader, CardFrameTitle, CardFrameDescription, CardFrameAction, and CardFrameFooter. CardContent is an alias of CardPanel, matching the reference card-panel data-slot.",
     categories: ["layout", "base"],
     compatibility: {
       mason: ">=0.1.0 <0.2.0",
@@ -2710,7 +2777,7 @@ export const registryDocItems = [
     name: "card",
     parity: {
       visualReference:
-        "Matches the reference Card source shape in Solid form: root surface styling, CardPanel/CardContent content area, CardAction, CardFrame, frame header/title/description/action/footer, reference data-slot names, nested card clipping variables, and table-container frame affordances. Intentional difference: no Base UI render prop until Keystone has a public Solid-native polymorphic UI convention.",
+        "Matches the reference Card source shape in Solid form: root surface styling, CardPanel/CardContent alias content area, CardAction, CardFrame, frame header/title/description/action/footer, reference data-slot names, nested card clipping variables, and table-container frame affordances. Intentional difference: no Base UI render prop until Keystone has a public Solid-native polymorphic UI convention.",
       baseUi:
         "Base UI has no first-class Card primitive, so parity is source-owned anatomy and native semantics: presentational div parts, pass-through HTML/ARIA props, and no invented state machine. Interactive behavior remains owned by nested buttons, links, forms, or future primitives.",
       kobalte:
@@ -3449,8 +3516,12 @@ export const registryDocItems = [
   {
     anatomy: [
       "trigger",
+      "list",
+      "menu",
       "positioner",
       "content",
+      "viewport",
+      "indicator",
       "group",
       "group-label",
       "separator",
@@ -3464,7 +3535,7 @@ export const registryDocItems = [
       solid: ">=1.9.0 <2.0.0",
     },
     customization:
-      "Style the generated wrappers through ui-navigation-menu classes while Core owns menubar roles, item navigation, typeahead, overlay positioning, and item state behavior.",
+      "Style the generated wrappers through ui-navigation-menu classes while Core owns nav/list/menu anatomy, menubar roles, item navigation, typeahead, overlay positioning, and item state behavior.",
     dependencies: ["@keystone-ui/core", "cn"],
     description:
       "Styled Solid navigation menu backed by Keystone menu navigation, typeahead, and overlay behavior.",
@@ -3479,9 +3550,9 @@ export const registryDocItems = [
     name: "navigation-menu",
     parity: {
       baseUi:
-        "Thin vertical covers the core NavigationMenu trigger/content item/link contract through Keystone overlay positioning and menubar semantics. Gaps: Viewport, Popup-specific layout APIs, animation metadata, touch pointer intent, and edge-case tests remain follow-up work.",
+        "Covers the core NavigationMenu trigger/content item/link contract through Keystone overlay positioning, menubar semantics, navigation root/list/menu anatomy, viewport, and indicator data parts. Gaps: Popup-specific layout APIs, animation metadata, touch pointer intent, and edge-case tests remain follow-up work.",
       kobalte:
-        "Thin vertical maps Root/Trigger/Content/Item/Link/Group/Separator behavior onto Keystone menu kernel with navigation-menu scope, controlled open state, typeahead, disabled skipping, routed anchor activation, and UI wrappers. Gaps: explicit Root nav/List/Viewport parts, hover intent tuning, submenu cursor safety, focus restoration across dynamic route transitions, and richer nested coordination remain follow-up work.",
+        "Maps Root/List/Menu/Trigger/Content/Viewport/Indicator/Item/Link/Group/Separator behavior onto Keystone menu kernel with navigation-menu scope, controlled open state, typeahead, disabled skipping, routed anchor activation, and UI wrappers. Gaps: hover intent tuning, submenu cursor safety, focus restoration across dynamic route transitions, and richer nested coordination remain follow-up work.",
     },
     registryDependencies: ["cn"],
     sourceFiles: ["packages/ui/src/default/ui/navigation-menu.tsx"],

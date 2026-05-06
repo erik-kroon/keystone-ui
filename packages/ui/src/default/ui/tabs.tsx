@@ -35,12 +35,13 @@ const tabsListClass = (variant: TabsVariant) =>
     "data-[orientation=vertical]:flex-col",
     variant === "default"
       ? "rounded-lg bg-muted p-0.5 text-muted-foreground/72"
-      : "data-[orientation=vertical]:px-1 data-[orientation=horizontal]:py-1 *:data-[slot=tabs-trigger]:hover:bg-accent",
+      : "data-[orientation=vertical]:px-1 data-[orientation=horizontal]:py-1 *:data-[slot=tabs-tab]:hover:bg-accent",
   );
 
 const tabsTriggerClass = classes(
   "relative",
   "flex",
+  "z-10",
   "h-9",
   "shrink-0",
   "grow",
@@ -50,8 +51,7 @@ const tabsTriggerClass = classes(
   "gap-1.5",
   "whitespace-nowrap",
   "rounded-md",
-  "border",
-  "border-transparent",
+  "border-0",
   "px-[calc(--spacing(2.5)-1px)]",
   "font-medium",
   "text-base",
@@ -63,6 +63,8 @@ const tabsTriggerClass = classes(
   "data-disabled:pointer-events-none",
   "data-[orientation=vertical]:w-full",
   "data-[orientation=vertical]:justify-start",
+  "data-selected:[anchor-name:--keystone-tabs-active]",
+  "data-active:text-foreground",
   "data-selected:text-foreground",
   "data-disabled:opacity-64",
   "sm:h-8",
@@ -72,7 +74,6 @@ const tabsTriggerClass = classes(
   "[&_svg]:pointer-events-none",
   "[&_svg]:-mx-0.5",
   "[&_svg]:shrink-0",
-  "data-selected:text-foreground",
 );
 
 const tabsIndicatorClass = (variant: TabsVariant = "default") =>
@@ -80,15 +81,18 @@ const tabsIndicatorClass = (variant: TabsVariant = "default") =>
     "absolute",
     "bottom-0",
     "left-0",
-    "h-[var(--keystone-tabs-indicator-height,0px)]",
-    "w-[var(--keystone-tabs-indicator-width,0px)]",
-    "[transform:translate3d(var(--keystone-tabs-indicator-x,0px),var(--keystone-tabs-indicator-y,0px),0)]",
-    "transition-[width,transform]",
+    "pointer-events-none",
+    "z-0",
+    "h-(--active-tab-height)",
+    "w-(--active-tab-width)",
+    "translate-x-(--active-tab-left)",
+    "-translate-y-(--active-tab-bottom)",
+    "transition-[width,translate]",
     "duration-200",
     "ease-in-out",
     variant === "underline"
       ? "z-10 bg-primary data-[orientation=horizontal]:h-0.5 data-[orientation=vertical]:w-0.5 data-[orientation=vertical]:-translate-x-px data-[orientation=horizontal]:translate-y-px"
-      : "-z-1 rounded-md bg-background shadow-sm/5 dark:bg-input",
+      : "rounded-md bg-background shadow-sm/5 supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[bottom:auto] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[height:anchor-size(--keystone-tabs-active_height)] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[left:anchor(--keystone-tabs-active_left)] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[top:anchor(--keystone-tabs-active_top)] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[translate:0_0] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[width:anchor-size(--keystone-tabs-active_width)] dark:bg-input",
   );
 
 const tabsContentClass = classes("flex-1", "outline-none");
@@ -96,7 +100,9 @@ const tabsContentClass = classes("flex-1", "outline-none");
 export function Tabs(props: TabsProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
-  return <CoreTabs.Root {...rest} class={cn("ui-tabs", tabsRootClass, local.class)} />;
+  return (
+    <CoreTabs.Root {...rest} data-slot="tabs" class={cn("ui-tabs", tabsRootClass, local.class)} />
+  );
 }
 
 export function TabsList(props: TabsListProps) {
@@ -121,8 +127,8 @@ export function TabsTrigger(props: TabsTriggerProps) {
   return (
     <CoreTabs.Trigger
       {...rest}
-      data-slot="tabs-trigger"
-      class={cn("ui-tabs-trigger", tabsTriggerClass, local.class)}
+      data-slot="tabs-tab"
+      class={cn("ui-tabs-trigger ui-tabs-tab", tabsTriggerClass, local.class)}
     />
   );
 }
@@ -133,8 +139,12 @@ export function TabsIndicator(props: TabsIndicatorProps & { variant?: TabsVarian
   return (
     <CoreTabs.Indicator
       {...rest}
-      data-slot="tabs-indicator"
-      class={cn("ui-tabs-indicator", tabsIndicatorClass(local.variant), local.class)}
+      data-slot="tab-indicator"
+      class={cn(
+        "ui-tabs-indicator ui-tab-indicator",
+        tabsIndicatorClass(local.variant),
+        local.class,
+      )}
     />
   );
 }

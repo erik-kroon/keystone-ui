@@ -117,13 +117,16 @@ describe("Accordion behavior", () => {
     await settled();
     expect(values).toEqual([["account"]]);
     expect(triggers[0].getAttribute("aria-expanded")).toBe("true");
+    expect(triggers[0].hasAttribute("data-panel-open")).toBe(true);
     expect(getByPart("accordion", "content").getAttribute("aria-labelledby")).toBe(triggers[0].id);
 
     click(triggers[1]);
     await settled();
     expect(values).toEqual([["account"], ["billing"]]);
     expect(triggers[0].getAttribute("aria-expanded")).toBe("false");
+    expect(triggers[0].hasAttribute("data-panel-open")).toBe(false);
     expect(triggers[1].getAttribute("aria-expanded")).toBe("true");
+    expect(triggers[1].hasAttribute("data-panel-open")).toBe(true);
   });
 
   test("supports multiple open items and trigger keyboard navigation", async () => {

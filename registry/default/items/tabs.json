@@ -25,7 +25,12 @@
       "--keystone-tabs-indicator-x",
       "--keystone-tabs-indicator-y",
       "--keystone-tabs-indicator-width",
-      "--keystone-tabs-indicator-height"
+      "--keystone-tabs-indicator-height",
+      "--active-tab-left",
+      "--active-tab-top",
+      "--active-tab-width",
+      "--active-tab-height",
+      "--active-tab-bottom"
     ],
     "accessibility": "Keystone Core owns role=tablist/tab/tabpanel, aria-selected, aria-controls, aria-labelledby, horizontal and vertical keyboard navigation, RTL-aware horizontal arrows, disabled trigger semantics, and panel tabIndex heuristics.",
     "parity": {

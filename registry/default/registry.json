@@ -46,12 +46,6 @@
       "description": "Source-owned resizable workspace shell with a left rail, main work surface, and inspector panel."
     },
     {
-      "name": "cn",
-      "type": "registry:lib",
-      "title": "Class Name Utility",
-      "description": "Small class name composition helper shared by UI base components."
-    },
-    {
       "name": "button",
       "type": "registry:ui",
       "title": "Button",
@@ -122,6 +116,12 @@
       "type": "registry:ui",
       "title": "TextField",
       "description": "TanStack Form text field composed with Keystone form-control semantics and UI styling hooks."
+    },
+    {
+      "name": "number-field",
+      "type": "registry:ui",
+      "title": "NumberField",
+      "description": "TanStack Form number field composed with Keystone NumberField behavior and UI styling hooks."
     },
     {
       "name": "textarea-field",
@@ -326,6 +326,12 @@
       "type": "registry:ui",
       "title": "DataTable",
       "description": "TanStack Table source kit with local state, toolbar, filters, pagination, column visibility, skeletons, empty state, and row actions."
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "Presentational native table anatomy for readable data grids and TanStack Table app-layer composition."
     },
     {
       "name": "data-table-tanstack-router",

@@ -32,6 +32,7 @@ type OverlayLayerRegistration = {
   element?: HTMLElement;
   getElement?: Accessor<HTMLElement | undefined>;
   getBranchElements?: Accessor<readonly HTMLElement[]>;
+  getOutsidePointerElements?: Accessor<readonly HTMLElement[]>;
   modal: Accessor<boolean>;
   disableOutsidePointerEvents: Accessor<boolean>;
 };
@@ -53,6 +54,7 @@ export type OverlayLayerProviderProps = {
 export type CreateOverlayLayerOptions = {
   id: string;
   branchElements?: Accessor<readonly HTMLElement[]>;
+  outsidePointerElements?: Accessor<readonly HTMLElement[]>;
   containsTarget?: (target: Node | null) => boolean;
   element?: Accessor<HTMLElement | undefined>;
   enabled?: Accessor<boolean>;
@@ -119,7 +121,7 @@ export function createOverlayLayerStack(): OverlayLayerStack {
     const current = registrations();
     const hasBlockingLayer = current.some((layer) => layer.disableOutsidePointerEvents());
     const unblockedElements = new Set(
-      current.flatMap((layer) => getRegistrationElements(layer, ownerDocument)),
+      current.flatMap((layer) => getRegistrationPointerElements(layer, ownerDocument)),
     );
 
     if (hasBlockingLayer) {
@@ -251,6 +253,7 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
     const element = options.element?.();
     modal();
     options.disableOutsidePointerEvents?.();
+    options.outsidePointerElements?.();
 
     if (!enabled || !element) {
       cleanupRegisteredLayer();
@@ -280,6 +283,7 @@ export function createOverlayLayer(options: CreateOverlayLayerOptions): OverlayL
       element,
       getElement: options.element,
       getBranchElements: options.branchElements,
+      getOutsidePointerElements: options.outsidePointerElements,
       disableOutsidePointerEvents: () => options.disableOutsidePointerEvents?.() ?? modal(),
     });
     let isReady = false;
@@ -448,6 +452,16 @@ function getRegistrationElements(layer: OverlayLayerRegistration, ownerDocument:
   const element = untrack(() => layer.getElement?.() ?? layer.element);
 
   return [element, ...getRegistrationBranchElements(layer, ownerDocument)].filter(
+    (candidate): candidate is HTMLElement =>
+      candidate instanceof HTMLElement && getOwnerDocument(candidate) === ownerDocument,
+  );
+}
+
+function getRegistrationPointerElements(layer: OverlayLayerRegistration, ownerDocument: Document) {
+  return [
+    ...getRegistrationElements(layer, ownerDocument),
+    ...untrack(() => layer.getOutsidePointerElements?.() ?? []),
+  ].filter(
     (candidate): candidate is HTMLElement =>
       candidate instanceof HTMLElement && getOwnerDocument(candidate) === ownerDocument,
   );

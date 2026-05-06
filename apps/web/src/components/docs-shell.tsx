@@ -101,7 +101,7 @@ export function CopyButton(props: Readonly<{ value: string; label?: string; clas
     <button
       aria-label={copied() ? "Copied" : (props.label ?? "Copy code")}
       class={cn(
-        "absolute top-1.5 right-1.5 z-10 inline-flex size-8 items-center justify-center rounded-md border border-border bg-muted text-muted-foreground opacity-80 outline-none transition-colors hover:bg-accent hover:text-foreground hover:opacity-100 focus-visible:bg-accent focus-visible:text-foreground focus-visible:opacity-100 data-copied:bg-accent data-copied:text-foreground data-copied:opacity-100",
+        "absolute top-1.5 right-1.5 z-10 inline-flex size-9 items-center justify-center rounded-md border border-transparent bg-code text-code-foreground opacity-70 outline-none transition-colors hover:bg-code-highlight hover:opacity-100 focus-visible:bg-code-highlight focus-visible:opacity-100 data-copied:bg-code-highlight data-copied:opacity-100 sm:size-8",
         props.class,
       )}
       data-copied={copied() ? "" : undefined}
@@ -139,23 +139,97 @@ export function CodeBlock(
   }>,
 ) {
   return (
-    <figure class="relative mt-6 overflow-hidden rounded-xl border border-border bg-code text-code-foreground outline-none">
-      <Show when={props.title || props.language}>
-        <figcaption class="flex min-h-11 items-center gap-2 border-border/64 border-b px-4 py-2.5 pr-12 font-mono text-code-foreground text-xs">
-          <span class="rounded bg-code-highlight px-1.5 py-0.5 font-mono text-[0.68rem] text-code-foreground uppercase">
-            {props.language}
-          </span>
+    <figure data-rehype-pretty-code-figure="">
+      <Show when={props.title}>
+        <figcaption
+          class="flex items-center gap-2 text-[.8125rem] text-code-foreground [&_svg]:size-4.5 [&_svg]:text-code-foreground sm:[&_svg]:size-4"
+          data-language={props.language}
+          data-rehype-pretty-code-title=""
+        >
+          <span class="text-code-foreground/72">{props.language}</span>
           <Show when={props.title}>{(title) => <span>{title()}</span>}</Show>
         </figcaption>
       </Show>
       <Show when={props.copy ?? true}>
         <CopyButton value={props.code} />
       </Show>
-      <pre class="m-0 overflow-x-auto px-4 py-3.5 font-mono text-[0.8125rem] leading-6">
-        <code class="bg-transparent p-0 text-inherit text-sm">{props.code}</code>
+      <pre class="m-0 max-h-[450px] overflow-auto p-4 font-mono text-[13px] leading-snug">
+        <code data-line-numbers="">
+          <HighlightedCode code={props.code} language={props.language} lineNumbers />
+        </code>
       </pre>
     </figure>
   );
+}
+
+function HighlightedCode(
+  props: Readonly<{ code: string; language: string; lineNumbers?: boolean }>,
+) {
+  const lines = () => props.code.split("\n");
+
+  return (
+    <For each={lines()}>
+      {(line, index) => (
+        <>
+          <span data-line={props.lineNumbers ? "" : undefined}>
+            <For each={highlightLine(line, props.language)}>
+              {(token) => <span style={token.style}>{token.value}</span>}
+            </For>
+          </span>
+          <Show when={index() < lines().length - 1}>{"\n"}</Show>
+        </>
+      )}
+    </For>
+  );
+}
+
+type HighlightToken = {
+  style?: JSX.CSSProperties;
+  value: string;
+};
+
+function highlightLine(line: string, language: string): HighlightToken[] {
+  const tokens: HighlightToken[] = [];
+  const pattern =
+    language === "shell" || language === "bash"
+      ? /(\s+|#.*|--[\w-]+|"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|\b(?:bunx|bun|npm|npx|pnpm|yarn|mason|add|cp)\b|[^\s]+)/g
+      : /(\s+|\/\/.*|"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`|<\/?[A-Z][\w.]*|<\/?[a-z][\w.-]*|\b(?:import|from|const|let|return|function|export|type|true|false|undefined)\b|\b[A-Z][\w.]*\b|[{}()[\].,;:=<>/]|[^\s{}()[\].,;:=<>/]+)/g;
+
+  for (const match of line.matchAll(pattern)) {
+    const value = match[0];
+    tokens.push({ value, style: highlightStyle(value, language) });
+  }
+
+  return tokens;
+}
+
+function highlightStyle(value: string, language: string): JSX.CSSProperties | undefined {
+  if (/^\s+$/.test(value)) return undefined;
+  if (value.startsWith("#") || value.startsWith("//")) return shiki("#6a737d", "#8b949e");
+  if (/^["'`]/.test(value)) return shiki("#032f62", "#a5d6ff");
+  if (language === "shell" || language === "bash") {
+    if (value.startsWith("--")) return shiki("#005cc5", "#79c0ff");
+    if (/^(bunx|bun|npm|npx|pnpm|yarn|mason|add|cp)$/.test(value)) {
+      return shiki("#d73a49", "#ff7b72");
+    }
+    return undefined;
+  }
+  if (/^(import|from|const|let|return|function|export|type|true|false|undefined)$/.test(value)) {
+    return shiki("#d73a49", "#ff7b72");
+  }
+  if (/^<\/?[A-Z]/.test(value) || /^[A-Z][\w.]*$/.test(value)) {
+    return shiki("#6f42c1", "#d2a8ff");
+  }
+  if (/^<\/?[a-z]/.test(value)) return shiki("#22863a", "#7ee787");
+  if (/^[{}()[\].,;:=<>/]$/.test(value)) return shiki("#24292e", "#c9d1d9");
+  return undefined;
+}
+
+function shiki(light: string, dark: string): JSX.CSSProperties {
+  return {
+    "--shiki-light": light,
+    "--shiki-dark": dark,
+  } as JSX.CSSProperties;
 }
 
 export function MobileNav(props: Readonly<{ groups: readonly NavGroup[] }>) {
@@ -178,7 +252,7 @@ export function MobileNav(props: Readonly<{ groups: readonly NavGroup[] }>) {
         <div class="fixed inset-0 z-60 h-svh bg-foreground/20" onClick={close} />
         <aside
           aria-label="Documentation navigation"
-          class="fixed inset-y-0 left-0 z-70 flex h-svh w-[min(22rem,calc(100vw-2rem))] flex-col border-sidebar-border border-r bg-background shadow-2xl"
+          class="fixed inset-y-0 left-0 z-70 flex h-svh w-[min(22rem,calc(100vw-2rem))] flex-col bg-background shadow-2xl"
           id="mobile-docs-navigation"
         >
           <div class="flex items-center justify-between gap-4 border-sidebar-border border-b p-4">
@@ -251,7 +325,7 @@ export function DocsChrome(props: Readonly<{ children: JSX.Element }>) {
   return (
     <main class="flex min-h-0 flex-1 flex-col bg-background text-foreground">
       <div class="mx-auto grid min-h-[calc(100svh-var(--header-height))] w-full max-w-[1416px] grid-cols-1 px-0 [--sidebar-width:220px] [--top-spacing:0px] lg:grid-cols-[var(--sidebar-width)_minmax(0,1fr)] lg:[--sidebar-width:240px] lg:[--top-spacing:calc(var(--spacing)*4)] xl:grid-cols-[var(--sidebar-width)_minmax(0,1fr)_18rem]">
-        <aside class="hidden border-sidebar-border border-r lg:block">
+        <aside class="hidden lg:block">
           <div class="sticky top-(--header-height) h-[calc(100svh-var(--header-height))] overflow-y-auto px-4 py-2">
             <div class="h-(--top-spacing) shrink-0" />
             <DocsSidebar groups={navGroups} />
@@ -269,7 +343,9 @@ export function DocsPageFrame(props: Readonly<{ children: JSX.Element; page: Doc
       <article class="relative flex w-full min-w-0 flex-1 flex-col lg:mt-8 lg:mr-4 lg:mb-8">
         <div class="flex min-h-full flex-col border-sidebar-border bg-card text-card-foreground shadow-lg/5 max-lg:border-none lg:rounded-2xl lg:border">
           <div class="flex-1 border-border bg-card max-lg:rounded-none lg:-m-px lg:rounded-2xl lg:border">
-            <div class="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 lg:p-8">{props.children}</div>
+            <div class="mx-auto w-full max-w-[880px] px-4 py-6 sm:px-6 lg:p-8">
+              {props.children}
+            </div>
           </div>
           <SiteFooter />
         </div>
@@ -295,17 +371,17 @@ export function DocsSidebar(props: Readonly<{ groups: readonly NavGroup[] }>) {
     <nav aria-label="Documentation">
       <For each={props.groups}>
         {(group) => (
-          <div class="mb-4">
-            <h2 class="flex h-7 items-center px-0 font-medium text-sidebar-accent-foreground text-sm">
+          <div class="mb-4 min-w-0">
+            <h2 class="flex h-7 min-w-0 items-center px-0 font-medium text-sidebar-accent-foreground text-sm">
               {group.title}
             </h2>
-            <div class="grid gap-0.5">
+            <div class="grid min-w-0 gap-0.5">
               <For each={group.items}>
                 {(item) => (
                   <a
                     aria-current={isActive(item.href) ? "page" : undefined}
                     class={cn(
-                      "flex min-h-8 items-center justify-between gap-3 rounded-md px-3.5 py-1.5 text-sm leading-tight outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:bg-sidebar-accent focus-visible:text-sidebar-accent-foreground",
+                      "flex min-h-8 w-full min-w-0 items-center justify-between gap-3 rounded-md px-3.5 py-1.5 text-sm leading-tight outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:bg-sidebar-accent focus-visible:text-sidebar-accent-foreground",
                       isActive(item.href)
                         ? "bg-sidebar-accent text-sidebar-accent-foreground"
                         : "text-sidebar-foreground",

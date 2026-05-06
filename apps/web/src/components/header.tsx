@@ -1,25 +1,17 @@
 import { Link } from "@tanstack/solid-router";
-import { Code2, Command, Layers, Moon, Search, Sun } from "lucide-solid";
-import { createSignal, onMount, Show } from "solid-js";
+import { Code2, Layers, Moon, Sun } from "lucide-solid";
+import { createSignal, Show } from "solid-js";
 
+import { DocsCommandSearch } from "@/components/docs-command-search";
 import { MobileNav, ProductDropdown } from "@/components/docs-shell";
 import { navGroups } from "@/lib/docs-data";
 
 export default function Header() {
-  const [dark, setDark] = createSignal(false);
-
-  onMount(() => {
-    const stored = localStorage.getItem("keystone-theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const nextDark = stored ? stored === "dark" : prefersDark;
-    document.documentElement.classList.toggle("dark", nextDark);
-    setDark(nextDark);
-  });
+  const [dark, setDark] = createSignal(true);
 
   const toggleTheme = () => {
     const nextDark = !dark();
     document.documentElement.classList.toggle("dark", nextDark);
-    localStorage.setItem("keystone-theme", nextDark ? "dark" : "light");
     setDark(nextDark);
   };
 
@@ -41,18 +33,7 @@ export default function Header() {
           </Link>
         </div>
 
-        <button
-          class="hidden h-9 min-w-[260px] items-center justify-between rounded-md border border-input bg-popover px-3 text-sm text-muted-foreground shadow-xs/5 outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/24 md:flex"
-          type="button"
-        >
-          <span class="flex items-center gap-2">
-            <Search size={15} />
-            Search docs
-          </span>
-          <span class="flex items-center gap-1 rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[0.68rem]">
-            <Command size={11} />K
-          </span>
-        </button>
+        <DocsCommandSearch />
 
         <nav class="flex items-center gap-5 text-sm text-muted-foreground" aria-label="Primary">
           <ProductDropdown

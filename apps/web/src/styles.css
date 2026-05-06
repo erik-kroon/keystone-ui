@@ -2,8 +2,6 @@
 
 @source "../../../packages/ui/src/default";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
 @theme inline {
   --breakpoint-3xl: 1600px;
   --breakpoint-4xl: 2000px;
@@ -147,6 +145,7 @@
 
 * {
   box-sizing: border-box;
+  @apply border-border outline-ring/50;
 }
 
 html {
@@ -170,4 +169,73 @@ kbd,
 samp,
 pre {
   font-family: var(--font-mono);
+}
+
+[data-rehype-pretty-code-figure] {
+  position: relative;
+  margin-top: calc(var(--spacing) * 6);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-code);
+  color: var(--color-code-foreground);
+  outline: none;
+}
+
+[data-rehype-pretty-code-figure]:has([data-rehype-pretty-code-title]) [data-slot="copy-button"] {
+  top: calc(var(--spacing) * 1.5);
+}
+
+*[data-tab="code"] [data-rehype-pretty-code-figure] {
+  margin-top: 0;
+  border-width: 0;
+}
+
+[data-rehype-pretty-code-title] {
+  min-height: calc(var(--spacing) * 11);
+  border-bottom: 1px solid --alpha(var(--border) / 64%);
+  padding-block: calc(var(--spacing) * 2.5);
+  padding-inline: calc(var(--spacing) * 4);
+  color: var(--color-code-foreground);
+  font-family: var(--font-mono);
+}
+
+[data-line-numbers] {
+  display: grid;
+  min-width: 100%;
+  white-space: pre;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  counter-reset: line;
+  box-decoration-break: clone;
+}
+
+[data-line-numbers] [data-line]::before {
+  position: sticky;
+  left: 0;
+  display: inline-block;
+  width: calc(var(--spacing) * 16);
+  padding-right: calc(var(--spacing) * 6);
+  background-color: var(--color-code);
+  color: var(--color-muted-foreground);
+  text-align: right;
+  content: counter(line);
+  counter-increment: line;
+}
+
+[data-line] {
+  display: inline-block;
+  width: 100%;
+  min-height: calc(var(--spacing) * 1);
+  padding-top: calc(var(--spacing) * 0.5);
+  padding-bottom: calc(var(--spacing) * 0.5);
+}
+
+[data-line] span {
+  color: var(--shiki-light);
+}
+
+.dark [data-line] span {
+  color: var(--shiki-dark) !important;
 }

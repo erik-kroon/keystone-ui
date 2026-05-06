@@ -26,7 +26,11 @@ export type TanStackFormProps = ParentProps<
     stopPropagation?: boolean;
   }
 >;
-export type TanStackFormSubmitProps = ParentProps<JSX.ButtonHTMLAttributes<HTMLButtonElement>>;
+export type TanStackFormSubmitProps = ParentProps<
+  Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, "form"> & {
+    formId?: string;
+  }
+>;
 export type TanStackFormErrorsProps = ParentProps<
   JSX.HTMLAttributes<HTMLDivElement> & {
     form?: unknown;
@@ -102,6 +106,7 @@ export function TanStackFormSubmit(props: TanStackFormSubmitStateProps) {
     "disableWhenCannotSubmit",
     "disableWhenSubmitting",
     "form",
+    "formId",
     "type",
   ]);
   const state = () => getTanStackFormState(local.form);
@@ -123,6 +128,7 @@ export function TanStackFormSubmit(props: TanStackFormSubmitStateProps) {
       data-submitting={submitting() ? "" : undefined}
       data-can-submit={canSubmit() ? "" : undefined}
       disabled={disabled()}
+      form={local.formId}
       type={local.type ?? "submit"}
       class={cn("ui-tanstack-form-submit", local.class)}
     />

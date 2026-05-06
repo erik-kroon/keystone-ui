@@ -1,6 +1,12 @@
 import { CircleAlert } from "lucide-solid";
 import { Match, Switch } from "solid-js";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@keystone-ui/ui/default/ui/accordion.tsx";
+import {
   Alert,
   AlertDescription,
   AlertIcon,
@@ -29,6 +35,28 @@ export function ComponentPreview(props: Readonly<{ item: RegistryDocItem }>) {
       </div>
       <div class="flex min-h-52 items-center justify-center bg-background/60 p-6">
         <Switch fallback={<GenericPreview item={props.item} />}>
+          <Match when={props.item.name === "accordion"}>
+            <Accordion defaultValue={["item-3"]} class="w-full max-w-md">
+              <AccordionItem value="item-1">
+                <AccordionTrigger>What is Keystone UI?</AccordionTrigger>
+                <AccordionContent>
+                  Keystone UI is source-owned Solid component source backed by Core behavior.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-2">
+                <AccordionTrigger>How do I get started?</AccordionTrigger>
+                <AccordionContent>
+                  Install components with Mason, then edit the generated source in your app.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-3">
+                <AccordionTrigger>Can I use it for my project?</AccordionTrigger>
+                <AccordionContent>
+                  Yes. The wrappers keep behavior in Core and styling in the UI layer.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </Match>
           <Match when={props.item.name === "button"}>
             <div class="flex flex-wrap items-center gap-3">
               <Button>Button</Button>

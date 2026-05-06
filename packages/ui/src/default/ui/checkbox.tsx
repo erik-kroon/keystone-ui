@@ -166,7 +166,7 @@ export function CheckboxHiddenInput(props: CheckboxHiddenInputProps) {
     <CoreCheckbox.HiddenInput
       {...rest}
       data-slot="checkbox-input"
-      class={cn("ui-checkbox-input", local.class)}
+      class={cn("ui-checkbox-input sr-only", local.class)}
     />
   );
 }

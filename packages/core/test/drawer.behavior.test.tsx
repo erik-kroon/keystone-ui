@@ -50,6 +50,48 @@ describe("Drawer behavior harness", () => {
     expect(document.body.style.pointerEvents).toBe("");
   });
 
+  test("keeps backdrop and positioner clickable for outside dismissal after reopen", async () => {
+    const changes: string[] = [];
+
+    render(() => (
+      <Drawer.Root onOpenChange={(_open, detail) => changes.push(detail.reason)}>
+        <Drawer.Trigger>Open drawer</Drawer.Trigger>
+        <Drawer.Portal>
+          <Drawer.Backdrop />
+          <Drawer.Positioner>
+            <Drawer.Content>
+              <Drawer.Title>Filters</Drawer.Title>
+              <Drawer.Description>Choose visible filters.</Drawer.Description>
+            </Drawer.Content>
+          </Drawer.Positioner>
+        </Drawer.Portal>
+      </Drawer.Root>
+    ));
+
+    const trigger = getByPart("drawer", "trigger");
+
+    click(trigger);
+    await settled();
+
+    expect(document.body.style.pointerEvents).toBe("none");
+    expect(getByPart("drawer", "backdrop").style.pointerEvents).toBe("auto");
+    expect(getByPart("drawer", "positioner").style.pointerEvents).toBe("auto");
+
+    pointerDown(getByPart("drawer", "positioner"));
+    await settled();
+
+    expect(queryByPart("drawer", "content")).toBeNull();
+
+    click(trigger);
+    await settled();
+
+    pointerDown(getByPart("drawer", "backdrop"));
+    await settled();
+
+    expect(queryByPart("drawer", "content")).toBeNull();
+    expect(changes).toEqual(["trigger", "outside", "trigger", "outside"]);
+  });
+
   test("applies side data to every overlay side", async () => {
     const sides = ["top", "right", "bottom", "left"] as const;
 

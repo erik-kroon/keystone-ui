@@ -1,5 +1,6 @@
-import { createContext, splitProps, useContext, type JSX } from "solid-js";
+import { createContext, createSignal, splitProps, useContext, type JSX } from "solid-js";
 import { getPartDataAttributes } from "../metadata/index";
+import { assignRef } from "../overlay/dom";
 import { OverlayLayerProvider, type DismissableLayerOutsideEvent } from "../overlay/index";
 import { createOverlayController } from "../overlay/controller";
 import type { OverlayPresenceCompleteDetail } from "../overlay/index";
@@ -90,6 +91,12 @@ export type CreateDialogOptions = {
 const DialogContext = createContext<DialogApi>();
 
 export function createDialog(options: CreateDialogOptions = {}): DialogApi {
+  const [backdropElement, setBackdropElement] = createSignal<HTMLDivElement>();
+  const [positionerElement, setPositionerElement] = createSignal<HTMLDivElement>();
+  const outsidePointerElements = () =>
+    [backdropElement(), positionerElement()].filter(
+      (element): element is HTMLDivElement => element !== undefined,
+    );
   const overlay = createOverlayController<DialogChangeDetail["reason"]>({
     scope: "dialog",
     open: options.open,
@@ -104,6 +111,10 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
     descriptionId: overlay.descriptionId,
     getBackdropProps: (props) => ({
       ...props,
+      ref: (element: HTMLDivElement) => {
+        setBackdropElement(() => element);
+        assignRef(props.ref, element);
+      },
       get hidden() {
         return overlay.hidden();
       },
@@ -134,6 +145,7 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
           containsTrigger: true,
           modal: overlay.modal,
           disableOutsidePointerEvents: overlay.modal,
+          outsidePointerElements,
           trapFocus: overlay.modal,
           dismissReason: (event) => (event.type === "keydown" ? "escape" : "outside"),
         },
@@ -161,6 +173,10 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
     }),
     getPositionerProps: (props) => ({
       ...props,
+      ref: (element: HTMLDivElement) => {
+        setPositionerElement(() => element);
+        assignRef(props.ref, element);
+      },
       get hidden() {
         return overlay.hidden();
       },

@@ -17,6 +17,7 @@
     "@tanstack/solid-hotkeys": "^0.10.0",
     "@tanstack/solid-store": "^0.11.0",
     "@tanstack/solid-table": "^8.21.3",
+    "lucide-solid": "^1.8.0",
     "solid-js": "^1.9.12"
   },
   "devDependencies": {

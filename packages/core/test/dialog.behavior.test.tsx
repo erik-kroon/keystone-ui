@@ -74,6 +74,49 @@ describe("Dialog behavior harness", () => {
     expect(changes).toEqual(["trigger", "outside"]);
   });
 
+  test("re-registers lazy content after outside dismissal and reopen", async () => {
+    const changes: string[] = [];
+
+    render(() => (
+      <>
+        <button data-testid="outside">Outside</button>
+        <Dialog.Root onOpenChange={(_open, detail) => changes.push(detail.reason)}>
+          <Dialog.Trigger>Open dialog</Dialog.Trigger>
+          <Dialog.Portal>
+            <Dialog.Backdrop />
+            <Dialog.Positioner>
+              <Dialog.Content>
+                <Dialog.Title>Project settings</Dialog.Title>
+                <Dialog.Description>Change project metadata.</Dialog.Description>
+              </Dialog.Content>
+            </Dialog.Positioner>
+          </Dialog.Portal>
+        </Dialog.Root>
+      </>
+    ));
+
+    const trigger = getByPart("dialog", "trigger");
+    const outside = document.querySelector<HTMLElement>("[data-testid='outside']")!;
+
+    click(trigger);
+    await settled();
+    expect(queryByPart("dialog", "content")).not.toBeNull();
+
+    pointerDown(outside);
+    await settled();
+    expect(queryByPart("dialog", "content")).toBeNull();
+
+    click(trigger);
+    await settled();
+    expect(queryByPart("dialog", "content")).not.toBeNull();
+
+    pointerDown(getByPart("dialog", "positioner"));
+    await settled();
+
+    expect(queryByPart("dialog", "content")).toBeNull();
+    expect(changes).toEqual(["trigger", "outside", "trigger", "outside"]);
+  });
+
   test("does not dismiss when outside interaction is prevented", async () => {
     render(() => (
       <>
@@ -408,6 +451,8 @@ describe("Dialog behavior harness", () => {
     expect(content.hidden).toBe(false);
     expect(backdrop.hidden).toBe(false);
     expect(positioner.hidden).toBe(false);
+    expect(backdrop.style.pointerEvents).toBe("auto");
+    expect(positioner.style.pointerEvents).toBe("auto");
     expect(outsideRoot.getAttribute("aria-hidden")).toBe("true");
     expect(outsideRoot.inert).toBe(true);
 

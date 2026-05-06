@@ -228,6 +228,7 @@ describe("Mason registry validation tracer", () => {
       "menubar",
       "nav-list",
       "navigation-menu",
+      "number-field",
       "popover",
       "radio-group-field",
       "radio-group",
@@ -248,6 +249,7 @@ describe("Mason registry validation tracer", () => {
       "slider",
       "switch-field",
       "switch",
+      "table",
       "tabs",
       "tanstack-field",
       "tanstack-form",
@@ -294,6 +296,54 @@ describe("Mason registry validation tracer", () => {
     expect(source).toContain('data-part="root"');
     expect(source).toContain('data-slot="kbd"');
     expect(source).toContain('aria-hidden="true"');
+  });
+
+  test("validates docs-ready metadata on the real default table item", async () => {
+    const item = await import("../../../../registry/default/items/table.json");
+    const result = validateItem(item.default, { registryRoot: repoRoot });
+    const source = await readFile(resolve(uiPackageSourceRoot, "ui/table.tsx"), "utf8");
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.meta?.api).toContain("TableContainer");
+      expect(result.value.meta?.accessibility).toContain("native table");
+      expect(result.value.meta?.anatomy).toEqual([
+        "container",
+        "root",
+        "caption",
+        "header",
+        "body",
+        "footer",
+        "row",
+        "head",
+        "cell",
+      ]);
+      expect(result.value.meta?.dataAttributes).toContain('data-scope="ui-table"');
+      expect(result.value.meta?.state).toContain("No controlled or uncontrolled state");
+      expect(result.value.meta?.ssr).toContain("deterministic native markup");
+      expect(result.value.meta?.limitations).toContain("not a grid engine");
+      expect(result.value.meta?.parity).toMatchObject({
+        html: expect.any(String),
+        shadcn: expect.any(String),
+        tanstackTable: expect.any(String),
+      });
+    }
+
+    expect(source).toContain("export function TableContainer");
+    expect(source).toContain("export function Table");
+    expect(source).toContain("export function TableHeader");
+    expect(source).toContain("export function TableBody");
+    expect(source).toContain("export function TableFooter");
+    expect(source).toContain("export function TableRow");
+    expect(source).toContain("export function TableHead");
+    expect(source).toContain("export function TableCell");
+    expect(source).toContain("export function TableCaption");
+    expect(source).toContain('data-scope={local["data-scope"] ?? "ui-table"}');
+    expect(source).toContain('data-slot={local["data-slot"] ?? "table-container"}');
+    expect(source).toContain('data-slot={local["data-slot"] ?? "table"}');
+    expect(source).toContain("caption-bottom");
+    expect(source).toContain("data-[state=selected]:bg-muted/64");
   });
 
   test("validates docs-ready metadata on the real default alert item", async () => {
@@ -461,7 +511,7 @@ describe("Mason registry validation tracer", () => {
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.value.dependencies).toContain("@tanstack/solid-table@^8.21.3");
-      expect(result.value.registryDependencies).toEqual(["cn"]);
+      expect(result.value.registryDependencies).toEqual(["table", "cn"]);
       expect(result.value.files.length).toBeGreaterThan(1);
       expect(
         result.value.files.every((file) => file.target?.startsWith("src/components/data-table/")),
@@ -510,6 +560,8 @@ describe("Mason registry validation tracer", () => {
     ]);
 
     expect(table).toContain('data-scope="ui-data-table"');
+    expect(table).toContain("@/components/ui/table");
+    expect(table).toContain("<UITableContainer");
     expect(table).toContain('data-part="caption"');
     expect(table).toContain("aria-busy={local.loading || undefined}");
     expect(table).toContain('scope="col"');
@@ -820,6 +872,11 @@ describe("Mason registry validation tracer", () => {
         "--keystone-tabs-indicator-y",
         "--keystone-tabs-indicator-width",
         "--keystone-tabs-indicator-height",
+        "--active-tab-left",
+        "--active-tab-top",
+        "--active-tab-width",
+        "--active-tab-height",
+        "--active-tab-bottom",
       ]);
       expect(result.value.meta?.accessibility).toContain("role=tablist/tab/tabpanel");
     }
@@ -827,10 +884,11 @@ describe("Mason registry validation tracer", () => {
     expect(source).toContain("tabsRootClass");
     expect(source).toContain("tabsIndicatorClass");
     expect(source).toContain("--keystone-tabs-indicator-x");
-    expect(source).toContain("--keystone-tabs-indicator-width");
+    expect(source).toContain("--active-tab-left");
+    expect(source).toContain("--active-tab-width");
     expect(source).toContain("data-[orientation=vertical]:flex-col");
     expect(source).toContain("focus-visible:ring-2");
-    expect(source).toContain("data-selected:text-foreground");
+    expect(source).toContain("data-active:text-foreground");
   });
 
   test("validates docs-ready metadata on the real default command-menu item", async () => {

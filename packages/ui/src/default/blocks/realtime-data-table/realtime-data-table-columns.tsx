@@ -59,17 +59,19 @@ export const realtimeDataTableColumns: ColumnDef<RealtimeDataTableRow, unknown>[
   {
     accessorKey: "latency",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Latency" />,
-    cell: ({ row }) => `${row.original.latency} ms`,
+    cell: ({ row }) => <span class="tabular-nums">{row.original.latency} ms</span>,
   },
   {
     accessorKey: "throughput",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Throughput" />,
-    cell: ({ row }) => `${formatNumber(row.original.throughput)} rpm`,
+    cell: ({ row }) => (
+      <span class="tabular-nums">{formatNumber(row.original.throughput)} rpm</span>
+    ),
   },
   {
     accessorKey: "errorRate",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Errors" />,
-    cell: ({ row }) => `${row.original.errorRate.toFixed(2)}%`,
+    cell: ({ row }) => <span class="tabular-nums">{row.original.errorRate.toFixed(2)}%</span>,
   },
   {
     accessorKey: "updatedAt",

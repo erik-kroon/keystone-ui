@@ -92,9 +92,11 @@ export function CardFrameHeader(props: CardProps) {
     classes(
       "ui-card-frame-header",
       "relative",
+      "flex",
       "grid",
       "auto-rows-min",
       "grid-rows-[auto_auto]",
+      "flex-col",
       "items-start",
       "gap-x-4",
       "px-6",
@@ -205,21 +207,7 @@ export function CardPanel(props: CardProps) {
   );
 }
 
-export function CardContent(props: CardProps) {
-  return cardPart(
-    "content",
-    classes(
-      "ui-card-content",
-      "ui-card-panel",
-      "flex-1",
-      "p-6",
-      "in-[[data-slot=card]:has(>[data-slot=card-header]:not(.border-b))]:pt-0",
-      "in-[[data-slot=card]:has(>[data-slot=card-footer]:not(.border-t))]:pb-0",
-    ),
-    props,
-    "card-content",
-  );
-}
+export const CardContent = CardPanel;
 
 export function CardFooter(props: CardProps) {
   return cardPart(

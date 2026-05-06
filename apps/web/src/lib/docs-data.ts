@@ -41,13 +41,14 @@ function compareItems(a: RegistryDocItem, b: RegistryDocItem) {
 }
 
 export const docsItems = [...registryDocItems].sort(compareItems);
+export const navigableDocs = docsItems.filter(
+  (item) => item.type !== "registry:block" && item.type !== "registry:template",
+);
 
-export const componentDocs = docsItems.filter((item) => item.type === "registry:ui");
-export const blockDocs = docsItems.filter((item) => item.type === "registry:block");
-export const utilityDocs = docsItems.filter((item) =>
+export const componentDocs = navigableDocs.filter((item) => item.type === "registry:ui");
+export const hookDocs = navigableDocs.filter((item) =>
   ["registry:component", "registry:hook", "registry:lib", "registry:store"].includes(item.type),
 );
-export const templateDocs = docsItems.filter((item) => item.type === "registry:template");
 
 export const overviewPage: DocsPage = {
   description:
@@ -58,9 +59,6 @@ export const overviewPage: DocsPage = {
   toc: [
     { label: "Get Started", href: "#get-started" },
     { label: "Components", href: "#components" },
-    { label: "Install Model", href: "#install-model" },
-    { label: "MDX Surface", href: "#mdx-surface" },
-    { label: "Roadmap", href: "#roadmap" },
   ],
 };
 
@@ -82,24 +80,10 @@ export const navGroups: readonly NavGroup[] = [
     })),
   },
   {
-    title: "Blocks",
-    items: blockDocs.map((item) => ({
-      href: componentHref(item.name),
-      label: item.title.replace(/Block$/, ""),
-    })),
-  },
-  {
-    title: "Utilities",
-    items: utilityDocs.map((item) => ({
+    title: "Hooks",
+    items: hookDocs.map((item) => ({
       href: componentHref(item.name),
       label: item.title,
-    })),
-  },
-  {
-    title: "Templates",
-    items: templateDocs.map((item) => ({
-      href: componentHref(item.name),
-      label: item.title.replace(/Template$/, ""),
     })),
   },
 ];
@@ -134,19 +118,46 @@ export function registryTypeLabel(type: string) {
 }
 
 export function itemToc(item: RegistryDocItem): readonly TocItem[] {
+  const hasUsage = item.type === "registry:ui";
+  const hasExamples = item.type === "registry:ui";
+  const hasAccessibility = Boolean(item.accessibility);
+  const apiText = metadataText(item.api);
+  const hasData =
+    Boolean(item.dataAttributes) || apiText.includes("data-") || anatomyParts(item).length;
+
   return [
     { label: "Installation", href: "#installation" },
     { label: "Preview", href: "#preview" },
-    ...(item.api || item.dataShape || item.state
-      ? [{ label: "API Notes", href: "#api-notes" }]
+    ...(hasUsage ? [{ label: "Usage", href: "#usage" }] : []),
+    ...(hasExamples ? [{ label: "Examples", href: "#examples" }] : []),
+    ...(item.api ? [{ label: "API Reference", href: "#api-reference" }] : []),
+    ...(hasAccessibility ? [{ label: "Accessibility", href: "#accessibility-keyboard" }] : []),
+    ...(hasData ? [{ label: "Data attributes", href: "#data-attributes" }] : []),
+    ...(anatomyParts(item).length ? [{ label: "Anatomy", href: "#anatomy" }] : []),
+    ...(item.dependencies.length || item.registryDependencies.length || item.sourceFiles.length
+      ? [{ label: "Source and registry details", href: "#source-registry-details" }]
       : []),
-    ...(item.anatomy.length ? [{ label: "Anatomy", href: "#anatomy" }] : []),
-    ...(item.dependencies.length || item.registryDependencies.length
-      ? [{ label: "Dependencies", href: "#dependencies" }]
-      : []),
-    { label: "Source Files", href: "#source-files" },
-    ...(Object.keys(item.parity).length ? [{ label: "Parity Notes", href: "#parity-notes" }] : []),
+    ...(Object.keys(item.parity).length ? [{ label: "Parity notes", href: "#parity-notes" }] : []),
   ];
+}
+
+export function anatomyParts(item: RegistryDocItem): readonly string[] {
+  if (Array.isArray(item.anatomy)) return item.anatomy;
+  if (typeof item.anatomy === "string")
+    return item.anatomy
+      .split(",")
+      .map((part) => part.trim())
+      .filter(Boolean);
+  return Object.entries(item.anatomy).flatMap(([group, parts]) =>
+    (parts as readonly string[]).map((part) => `${group}.${part}`),
+  );
+}
+
+function metadataText(value: RegistryDocItem["api"]) {
+  if (!value) return "";
+  if (Array.isArray(value)) return value.join(" ");
+  if (typeof value === "string") return value;
+  return Object.values(value).flat().join(" ");
 }
 
 export function itemPage(item: RegistryDocItem): DocsPage {

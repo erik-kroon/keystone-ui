@@ -166,7 +166,55 @@ describe("Tabs behavior", () => {
     expect(indicator.style.getPropertyValue("--keystone-tabs-indicator-y")).toBe("4px");
     expect(indicator.style.getPropertyValue("--keystone-tabs-indicator-width")).toBe("72px");
     expect(indicator.style.getPropertyValue("--keystone-tabs-indicator-height")).toBe("32px");
+    expect(indicator.style.getPropertyValue("--active-tab-left")).toBe("80px");
+    expect(indicator.style.getPropertyValue("--active-tab-top")).toBe("4px");
+    expect(indicator.style.getPropertyValue("--active-tab-width")).toBe("72px");
+    expect(indicator.style.getPropertyValue("--active-tab-height")).toBe("32px");
+    expect(indicator.style.getPropertyValue("--active-tab-bottom")).toBe("-4px");
     expect(indicator.getAttribute("data-state")).toBe("measured");
+  });
+
+  test("measures the default active trigger before the first settled turn", () => {
+    const originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+    HTMLElement.prototype.getBoundingClientRect = function getBoundingClientRect() {
+      const element = this as HTMLElement;
+
+      if (element.getAttribute("data-part") === "list") {
+        return domRect({ height: 40, left: 10, top: 20, width: 240 });
+      }
+
+      if (element.textContent === "Alpha") {
+        return domRect({ height: 32, left: 18, top: 24, width: 64 });
+      }
+
+      return originalGetBoundingClientRect.call(this);
+    };
+
+    try {
+      render(() => (
+        <Tabs.Root defaultValue="alpha">
+          <Tabs.List>
+            <Tabs.Trigger value="alpha">Alpha</Tabs.Trigger>
+            <Tabs.Trigger value="beta">Beta</Tabs.Trigger>
+            <Tabs.Indicator />
+          </Tabs.List>
+          <Tabs.Content value="alpha">Alpha panel</Tabs.Content>
+          <Tabs.Content value="beta">Beta panel</Tabs.Content>
+        </Tabs.Root>
+      ));
+
+      const indicator = document.body.querySelector<HTMLElement>(
+        '[data-scope="tabs"][data-part="indicator"]',
+      );
+      if (!indicator) throw new Error("Unable to find tabs indicator");
+
+      expect(indicator.style.getPropertyValue("--keystone-tabs-indicator-x")).toBe("8px");
+      expect(indicator.style.getPropertyValue("--keystone-tabs-indicator-y")).toBe("4px");
+      expect(indicator.style.getPropertyValue("--keystone-tabs-indicator-width")).toBe("64px");
+      expect(indicator.style.getPropertyValue("--keystone-tabs-indicator-height")).toBe("32px");
+    } finally {
+      HTMLElement.prototype.getBoundingClientRect = originalGetBoundingClientRect;
+    }
   });
 
   test("moves selection and focus when the active trigger is removed", async () => {
@@ -229,18 +277,21 @@ describe("Tabs behavior", () => {
 });
 
 function setRect(element: HTMLElement, rect: Pick<DOMRect, "height" | "left" | "top" | "width">) {
-  element.getBoundingClientRect = () =>
-    ({
-      bottom: rect.top + rect.height,
-      height: rect.height,
-      left: rect.left,
-      right: rect.left + rect.width,
-      top: rect.top,
-      width: rect.width,
-      x: rect.left,
-      y: rect.top,
-      toJSON: () => ({}),
-    }) as DOMRect;
+  element.getBoundingClientRect = () => domRect(rect);
+}
+
+function domRect(rect: Pick<DOMRect, "height" | "left" | "top" | "width">) {
+  return {
+    bottom: rect.top + rect.height,
+    height: rect.height,
+    left: rect.left,
+    right: rect.left + rect.width,
+    top: rect.top,
+    width: rect.width,
+    x: rect.left,
+    y: rect.top,
+    toJSON: () => ({}),
+  } as DOMRect;
 }
 
 function getList() {
