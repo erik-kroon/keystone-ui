@@ -12,11 +12,7 @@ import type { NavGroup } from "@/lib/docs-data";
 
 let navGroupsPromise: Promise<readonly NavGroup[]> | undefined;
 
-const menuItems = [
-  { href: "/docs", label: "Home" },
-  { href: "/docs#components", label: "Components" },
-  { href: "/docs#roadmap", label: "Roadmap" },
-] as const;
+const menuItems = [{ href: "/docs", label: "Home" }] as const;
 
 function MenuIcon() {
   return (
@@ -80,9 +76,11 @@ export function DocsMobileNav() {
         positionerClass="z-70"
         showCloseButton
       >
-        <SheetPanel class="scrollbar-none flex flex-col gap-12 p-6 pt-8" scrollFade={false}>
+        <SheetPanel class="scrollbar-none flex flex-col gap-8 p-6 pt-8" scrollFade={false}>
           <section class="flex flex-col gap-3">
-            <SheetTitle class="font-semibold text-base leading-none">Menu</SheetTitle>
+            <SheetTitle class="font-sans! font-semibold text-foreground text-sm! leading-none">
+              Menu
+            </SheetTitle>
             <nav class="flex flex-col gap-1" aria-label="Primary mobile navigation">
               <For each={menuItems}>
                 {(item) => (

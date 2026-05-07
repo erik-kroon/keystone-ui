@@ -60,7 +60,10 @@ export function createCopyToClipboard(options: CopyToClipboardOptions = {}): Cop
       setError(undefined);
       setStatus("copied");
       options.onCopy?.(value);
-      timeoutId = setTimeout(() => setStatus("idle"), options.copiedDuration ?? 1600);
+      const copiedDuration = options.copiedDuration ?? 2000;
+      if (copiedDuration !== 0) {
+        timeoutId = setTimeout(() => setStatus("idle"), copiedDuration);
+      }
       return true;
     } catch (nextError) {
       clearCopiedTimeout();

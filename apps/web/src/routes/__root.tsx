@@ -51,10 +51,6 @@ function RootComponent() {
           aria-hidden="true"
           class="pointer-events-none absolute inset-0 z-45 mx-auto hidden w-full max-w-[1416px] px-4 before:absolute before:inset-y-0 before:-left-3 before:w-px before:bg-border/64 after:absolute after:inset-y-0 after:-right-3 after:w-px after:bg-border/64 lg:block lg:px-6"
         />
-        <div
-          aria-hidden="true"
-          class="pointer-events-none fixed inset-0 z-45 mx-auto hidden w-full max-w-[1416px] px-4 before:absolute before:top-[calc(var(--header-height)-4.5px)] before:-left-[11.5px] before:z-1 before:-ml-1 before:size-2 before:rounded-[2px] before:border before:border-border before:bg-popover before:bg-clip-padding before:shadow-xs/5 after:absolute after:top-[calc(var(--header-height)-4.5px)] after:-right-[11.5px] after:z-1 after:-mr-1 after:size-2 after:rounded-[2px] after:border after:border-border after:bg-background after:bg-clip-padding after:shadow-xs/5 dark:before:bg-clip-border dark:after:bg-clip-border lg:block lg:px-6"
-        />
         <Header />
         <Suspense>
           <Outlet />

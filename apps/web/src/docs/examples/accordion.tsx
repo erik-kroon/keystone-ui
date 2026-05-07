@@ -1,4 +1,5 @@
 import { createSignal } from "solid-js";
+import { Info } from "lucide-solid";
 import { Button } from "@keystone-ui/ui/default/ui/button.tsx";
 import {
   Accordion,
@@ -44,6 +45,7 @@ import {
   SelectValue,
 } from "@keystone-ui/ui/default/ui/select.tsx";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@keystone-ui/ui/default/ui/tabs.tsx";
+import { Textarea } from "@keystone-ui/ui/default/ui/textarea.tsx";
 import { toaster, Toaster } from "@keystone-ui/ui/default/ui/toast.tsx";
 import {
   Tooltip,
@@ -171,7 +173,7 @@ export const singleAccordionCode = `import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-export default function Component() {
+export function Component() {
   const items = [
     {
       content:
@@ -204,62 +206,108 @@ export default function Component() {
   );
 }`;
 
-export const multipleAccordionCode = `<Accordion defaultValue={["item-1", "item-2"]} class="w-full" multiple>
-  <AccordionItem value="item-1">
-    <AccordionTrigger>What is Keystone UI?</AccordionTrigger>
-    <AccordionContent>Keystone UI is a source-owned Solid component system for design systems and web apps.</AccordionContent>
-  </AccordionItem>
-  <AccordionItem value="item-2">
-    <AccordionTrigger>How do I get started?</AccordionTrigger>
-    <AccordionContent>Install components with Mason, then own the generated source in your application.</AccordionContent>
-  </AccordionItem>
-  <AccordionItem value="item-3">
-    <AccordionTrigger>Can I use it for my project?</AccordionTrigger>
-    <AccordionContent>Yes. Components are copy-paste source backed by Keystone Core.</AccordionContent>
-  </AccordionItem>
-</Accordion>`;
+export const multipleAccordionCode = `import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
-export const controlledAccordionCode = `const [value, setValue] = createSignal<string[]>([]);
+export function Component() {
+  return (
+    <Accordion defaultValue={["item-1", "item-2"]} class="w-full" multiple>
+      <AccordionItem value="item-1">
+        <AccordionTrigger>What is Keystone UI?</AccordionTrigger>
+        <AccordionContent>
+          Keystone UI is a source-owned Solid component system for design systems and web apps.
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-2">
+        <AccordionTrigger>How do I get started?</AccordionTrigger>
+        <AccordionContent>
+          Install components with Mason, then own the generated source in your application.
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-3">
+        <AccordionTrigger>Can I use it for my project?</AccordionTrigger>
+        <AccordionContent>Yes. Components are copy-paste source backed by Keystone Core.</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}`;
 
-<Accordion value={value()} class="w-full" onValueChange={setValue}>
-  <AccordionItem value="item-1">
-    <AccordionTrigger>What is Keystone UI?</AccordionTrigger>
-    <AccordionContent>Keystone UI is a source-owned Solid component system for design systems and web apps.</AccordionContent>
-  </AccordionItem>
-  <AccordionItem value="item-2">
-    <AccordionTrigger>How do I get started?</AccordionTrigger>
-    <AccordionContent>Install components with Mason, then own the generated source in your application.</AccordionContent>
-  </AccordionItem>
-  <AccordionItem value="item-3">
-    <AccordionTrigger>Can I use it for my project?</AccordionTrigger>
-    <AccordionContent>Yes. Components are copy-paste source backed by Keystone Core.</AccordionContent>
-  </AccordionItem>
-</Accordion>`;
+export const controlledAccordionCode = `import { createSignal } from "solid-js";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
-export const disabledAccordionCode = `<Accordion defaultValue={["item-2"]} class="w-full">
-  <AccordionItem value="item-1" disabled>
-    <AccordionTrigger>Unavailable item</AccordionTrigger>
-    <AccordionContent>Disabled items keep focus order and ignore activation until enabled.</AccordionContent>
-  </AccordionItem>
-  <AccordionItem value="item-2">
-    <AccordionTrigger>Available item</AccordionTrigger>
-    <AccordionContent>This item remains interactive.</AccordionContent>
-  </AccordionItem>
-</Accordion>`;
+export function Component() {
+  const [value, setValue] = createSignal<string[]>([]);
+
+  return (
+    <Accordion value={value()} class="w-full" onValueChange={setValue}>
+      <AccordionItem value="item-1">
+        <AccordionTrigger>What is Keystone UI?</AccordionTrigger>
+        <AccordionContent>
+          Keystone UI is a source-owned Solid component system for design systems and web apps.
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-2">
+        <AccordionTrigger>How do I get started?</AccordionTrigger>
+        <AccordionContent>
+          Install components with Mason, then own the generated source in your application.
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-3">
+        <AccordionTrigger>Can I use it for my project?</AccordionTrigger>
+        <AccordionContent>Yes. Components are copy-paste source backed by Keystone Core.</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}`;
+
+export const disabledAccordionCode = `import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
+export function Component() {
+  return (
+    <Accordion defaultValue={["item-2"]} class="w-full">
+      <AccordionItem value="item-1" disabled>
+        <AccordionTrigger>Unavailable item</AccordionTrigger>
+        <AccordionContent>Disabled items keep focus order and ignore activation until enabled.</AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-2">
+        <AccordionTrigger>Available item</AccordionTrigger>
+        <AccordionContent>This item remains interactive.</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}`;
 
 export const accordionUsageCode = `import {
   Accordion,
+  AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  AccordionContent,
 } from "@/components/ui/accordion";
 
-<Accordion class="w-full">
-  <AccordionItem value="item-1">
-    <AccordionTrigger>What is this?</AccordionTrigger>
-    <AccordionContent>Accordion is a Core-backed UI disclosure pattern.</AccordionContent>
-  </AccordionItem>
-</Accordion>`;
+export function Component() {
+  return (
+    <Accordion class="w-full">
+      <AccordionItem value="item-1">
+        <AccordionTrigger>What is this?</AccordionTrigger>
+        <AccordionContent>Accordion is a Core-backed UI disclosure pattern.</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}`;
 
 export function ButtonExample() {
   return (
@@ -272,82 +320,121 @@ export function ButtonExample() {
   );
 }
 
-export const buttonExampleCode = `<div class="flex flex-wrap items-center gap-3">
-  <Button>Save changes</Button>
-  <Button variant="outline">Preview</Button>
-  <Button variant="secondary">Cancel</Button>
-  <Button disabled>Disabled</Button>
-</div>`;
+export const buttonExampleCode = `import { Button } from "@/components/ui/button";
+
+export function Component() {
+  return (
+    <div class="flex flex-wrap items-center gap-3">
+      <Button>Save changes</Button>
+      <Button variant="outline">Preview</Button>
+      <Button variant="secondary">Cancel</Button>
+      <Button disabled>Disabled</Button>
+    </div>
+  );
+}`;
 
 export const buttonUsageCode = `import { Button } from "@/components/ui/button";
 
-<Button type="submit">Save changes</Button>`;
+export function Component() {
+  return <Button type="submit">Save changes</Button>;
+}`;
 
 export function CardExample() {
   return (
-    <Card class="w-full max-w-sm">
+    <Card class="w-[22rem] max-w-full">
       <CardHeader>
         <CardTitle>Create project</CardTitle>
-        <CardDescription>Configure a new Solid workspace before deploying.</CardDescription>
+        <CardDescription>Deploy your new project in one-click.</CardDescription>
       </CardHeader>
-      <CardPanel class="grid gap-4">
+      <CardPanel class="grid gap-5">
         <label class="grid gap-2 text-sm">
           <span class="font-medium text-foreground">Name</span>
-          <Input placeholder="Keystone dashboard" />
+          <Input placeholder="Name of your project" />
         </label>
         <label class="grid gap-2 text-sm">
           <span class="font-medium text-foreground">Framework</span>
           <Select>
             <SelectTrigger>
-              <SelectValue placeholder="Choose a framework" />
+              <SelectValue placeholder="Next.js" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="solid">Solid</SelectItem>
-              <SelectItem value="react">React</SelectItem>
-              <SelectItem value="vue">Vue</SelectItem>
+              <SelectItem value="next">Next.js</SelectItem>
+              <SelectItem value="solid">SolidStart</SelectItem>
+              <SelectItem value="vite">Vite</SelectItem>
             </SelectContent>
           </Select>
         </label>
       </CardPanel>
-      <CardFooter class="justify-between gap-3 border-t bg-muted/56">
-        <p class="m-0 text-muted-foreground text-xs">Includes Core-backed UI source.</p>
-        <Button size="sm" type="button">
+      <CardFooter class="grid gap-5">
+        <Button class="w-full" type="button">
           Deploy
         </Button>
+        <p class="m-0 flex items-center gap-2 text-muted-foreground text-sm">
+          <Info aria-hidden="true" class="size-4 shrink-0 text-muted-foreground/80" />
+          <span>This will take a few seconds to complete.</span>
+        </p>
       </CardFooter>
     </Card>
   );
 }
 
-export const cardExampleCode = `<Card class="w-full max-w-sm">
-  <CardHeader>
-    <CardTitle>Create project</CardTitle>
-    <CardDescription>Configure a new Solid workspace before deploying.</CardDescription>
-  </CardHeader>
-  <CardPanel class="grid gap-4">
-    <label class="grid gap-2 text-sm">
-      <span class="font-medium text-foreground">Name</span>
-      <Input placeholder="Keystone dashboard" />
-    </label>
-    <label class="grid gap-2 text-sm">
-      <span class="font-medium text-foreground">Framework</span>
-      <Select>
-        <SelectTrigger>
-          <SelectValue placeholder="Choose a framework" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="solid">Solid</SelectItem>
-          <SelectItem value="react">React</SelectItem>
-          <SelectItem value="vue">Vue</SelectItem>
-        </SelectContent>
-      </Select>
-    </label>
-  </CardPanel>
-  <CardFooter class="justify-between gap-3 border-t bg-muted/56">
-    <p class="m-0 text-muted-foreground text-xs">Includes Core-backed UI source.</p>
-    <Button size="sm" type="button">Deploy</Button>
-  </CardFooter>
-</Card>`;
+export const cardExampleCode = `import { Button } from "@/components/ui/button";
+import { Info } from "lucide-solid";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardPanel,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+export function Component() {
+  return (
+    <Card class="w-[22rem] max-w-full">
+      <CardHeader>
+        <CardTitle>Create project</CardTitle>
+        <CardDescription>Deploy your new project in one-click.</CardDescription>
+      </CardHeader>
+      <CardPanel class="grid gap-5">
+        <label class="grid gap-2 text-sm">
+          <span class="font-medium text-foreground">Name</span>
+          <Input placeholder="Name of your project" />
+        </label>
+        <label class="grid gap-2 text-sm">
+          <span class="font-medium text-foreground">Framework</span>
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Next.js" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="next">Next.js</SelectItem>
+              <SelectItem value="solid">SolidStart</SelectItem>
+              <SelectItem value="vite">Vite</SelectItem>
+            </SelectContent>
+          </Select>
+        </label>
+      </CardPanel>
+      <CardFooter class="grid gap-5">
+        <Button class="w-full" type="button">
+          Deploy
+        </Button>
+        <p class="m-0 flex items-center gap-2 text-muted-foreground text-sm">
+          <Info aria-hidden="true" class="size-4 shrink-0 text-muted-foreground/80" />
+          <span>This will take a few seconds to complete.</span>
+        </p>
+      </CardFooter>
+    </Card>
+  );
+}`;
 
 export const cardUsageCode = `import {
   Card,
@@ -358,14 +445,18 @@ export const cardUsageCode = `import {
   CardTitle,
 } from "@/components/ui/card";
 
-<Card>
-  <CardHeader>
-    <CardTitle>Create project</CardTitle>
-    <CardDescription>Configure a new workspace.</CardDescription>
-  </CardHeader>
-  <CardPanel>Project settings go here.</CardPanel>
-  <CardFooter>Actions go here.</CardFooter>
-</Card>`;
+export function Component() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Create project</CardTitle>
+        <CardDescription>Configure a new workspace.</CardDescription>
+      </CardHeader>
+      <CardPanel>Project settings go here.</CardPanel>
+      <CardFooter>Actions go here.</CardFooter>
+    </Card>
+  );
+}`;
 
 export function DialogExample() {
   return (
@@ -397,19 +488,38 @@ export function DialogExample() {
   );
 }
 
-export const dialogExampleCode = `<Dialog>
-  <DialogTrigger type="button">Open dialog</DialogTrigger>
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle>Invite teammate</DialogTitle>
-      <DialogDescription>Send an invitation to join this Keystone workspace.</DialogDescription>
-    </DialogHeader>
-    <DialogPanel>Dialog content is rendered through Core overlay behavior.</DialogPanel>
-    <DialogFooter>
-      <DialogClose as={Button} type="button">Send invite</DialogClose>
-    </DialogFooter>
-  </DialogContent>
-</Dialog>`;
+export const dialogExampleCode = `import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogPanel,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+export function Component() {
+  return (
+    <Dialog>
+      <DialogTrigger type="button">Open dialog</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Invite teammate</DialogTitle>
+          <DialogDescription>Send an invitation to join this Keystone workspace.</DialogDescription>
+        </DialogHeader>
+        <DialogPanel>Dialog content is rendered through Core overlay behavior.</DialogPanel>
+        <DialogFooter>
+          <DialogClose as={Button} type="button">
+            Send invite
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}`;
 
 export const dialogUsageCode = `import {
   Dialog,
@@ -418,23 +528,31 @@ export const dialogUsageCode = `import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogPanel,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
-<Dialog>
-  <DialogTrigger type="button">Open dialog</DialogTrigger>
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle>Invite teammate</DialogTitle>
-      <DialogDescription>Send an invitation.</DialogDescription>
-    </DialogHeader>
-    <DialogFooter>
-      <DialogClose as={Button} type="button">Send invite</DialogClose>
-    </DialogFooter>
-  </DialogContent>
-</Dialog>`;
+export function Component() {
+  return (
+    <Dialog>
+      <DialogTrigger type="button">Open dialog</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Invite teammate</DialogTitle>
+          <DialogDescription>Send an invitation.</DialogDescription>
+        </DialogHeader>
+        <DialogPanel>Review teammate details before sending.</DialogPanel>
+        <DialogFooter>
+          <DialogClose as={Button} type="button">
+            Send invite
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}`;
 
 export function CheckboxExample() {
   const [checked, setChecked] = createSignal(true);
@@ -447,16 +565,25 @@ export function CheckboxExample() {
   );
 }
 
-export const checkboxExampleCode = `const [checked, setChecked] = createSignal(true);
+export const checkboxExampleCode = `import { createSignal } from "solid-js";
+import { Checkbox } from "@/components/ui/checkbox";
 
-<label class="flex items-center gap-3 text-sm">
-  <Checkbox checked={checked()} onCheckedChange={setChecked} />
-  Enable weekly digest
-</label>`;
+export function Component() {
+  const [checked, setChecked] = createSignal(true);
+
+  return (
+    <label class="flex items-center gap-3 text-sm">
+      <Checkbox checked={checked()} onCheckedChange={setChecked} />
+      Enable weekly digest
+    </label>
+  );
+}`;
 
 export const checkboxUsageCode = `import { Checkbox } from "@/components/ui/checkbox";
 
-<Checkbox name="digest" defaultChecked />`;
+export function Component() {
+  return <Checkbox name="digest" defaultChecked />;
+}`;
 
 export function SelectExample() {
   return (
@@ -473,16 +600,28 @@ export function SelectExample() {
   );
 }
 
-export const selectExampleCode = `<Select>
-  <SelectTrigger class="w-56">
-    <SelectValue placeholder="Choose a framework" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectItem value="solid">Solid</SelectItem>
-    <SelectItem value="react">React</SelectItem>
-    <SelectItem value="vue">Vue</SelectItem>
-  </SelectContent>
-</Select>`;
+export const selectExampleCode = `import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+export function Component() {
+  return (
+    <Select>
+      <SelectTrigger class="w-56">
+        <SelectValue placeholder="Choose a framework" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="solid">Solid</SelectItem>
+        <SelectItem value="react">React</SelectItem>
+        <SelectItem value="vue">Vue</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+}`;
 
 export const selectUsageCode = `import {
   Select,
@@ -492,14 +631,18 @@ export const selectUsageCode = `import {
   SelectValue,
 } from "@/components/ui/select";
 
-<Select>
-  <SelectTrigger>
-    <SelectValue placeholder="Choose a framework" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectItem value="solid">Solid</SelectItem>
-  </SelectContent>
-</Select>`;
+export function Component() {
+  return (
+    <Select>
+      <SelectTrigger>
+        <SelectValue placeholder="Choose a framework" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="solid">Solid</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+}`;
 
 export function TooltipExample() {
   return (
@@ -517,12 +660,23 @@ export function TooltipExample() {
   );
 }
 
-export const tooltipExampleCode = `<TooltipProvider delayDuration={120}>
-  <Tooltip>
-    <TooltipTrigger type="button">Hover or focus</TooltipTrigger>
-    <TooltipContent>Tooltip content follows the trigger.</TooltipContent>
-  </Tooltip>
-</TooltipProvider>`;
+export const tooltipExampleCode = `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+export function Component() {
+  return (
+    <TooltipProvider delayDuration={120}>
+      <Tooltip>
+        <TooltipTrigger type="button">Hover or focus</TooltipTrigger>
+        <TooltipContent>Tooltip content follows the trigger.</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}`;
 
 export const tooltipUsageCode = `import {
   Tooltip,
@@ -531,33 +685,42 @@ export const tooltipUsageCode = `import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-<TooltipProvider>
-  <Tooltip>
-    <TooltipTrigger type="button">Hover</TooltipTrigger>
-    <TooltipContent>Useful context.</TooltipContent>
-  </Tooltip>
-</TooltipProvider>`;
+export function Component() {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger type="button">Hover</TooltipTrigger>
+        <TooltipContent>Useful context.</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}`;
 
 export function PopoverExample() {
+  const [open, setOpen] = createSignal(false);
+
   return (
-    <Popover>
+    <Popover open={open()} onOpenChange={setOpen}>
       <PopoverTrigger
         class="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-input bg-popover px-3 text-foreground text-sm font-medium leading-none shadow-xs/5 outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/24 sm:min-h-8"
         type="button"
       >
-        Open popover
+        Open Popover
       </PopoverTrigger>
-      <PopoverContent class="w-72">
+      <PopoverContent class="w-[18rem] sm:w-[20rem]">
         <PopoverHeader>
-          <PopoverTitle>Workspace</PopoverTitle>
-          <PopoverDescription>Review quick settings for this workspace.</PopoverDescription>
+          <PopoverTitle>Send us feedback</PopoverTitle>
+          <PopoverDescription>Let us know how we can improve.</PopoverDescription>
         </PopoverHeader>
-        <p class="m-0 text-muted-foreground text-sm leading-6">
-          Popovers are non-modal floating panels for contextual controls.
-        </p>
+        <Textarea
+          aria-label="Feedback"
+          class="min-h-20"
+          placeholder="How can we improve?"
+          size="lg"
+        />
         <PopoverFooter>
-          <Button size="sm" type="button">
-            Apply
+          <Button class="w-full" onClick={() => setOpen(false)} type="button">
+            Send feedback
           </Button>
         </PopoverFooter>
       </PopoverContent>
@@ -565,19 +728,40 @@ export function PopoverExample() {
   );
 }
 
-export const popoverExampleCode = `<Popover>
-  <PopoverTrigger type="button">Open popover</PopoverTrigger>
-  <PopoverContent class="w-72">
-    <PopoverHeader>
-      <PopoverTitle>Workspace</PopoverTitle>
-      <PopoverDescription>Review quick settings for this workspace.</PopoverDescription>
-    </PopoverHeader>
-    <p>Popovers are non-modal floating panels for contextual controls.</p>
-    <PopoverFooter>
-      <Button size="sm" type="button">Apply</Button>
-    </PopoverFooter>
-  </PopoverContent>
-</Popover>`;
+export const popoverExampleCode = `import { createSignal } from "solid-js";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverFooter,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Textarea } from "@/components/ui/textarea";
+
+export function Component() {
+  const [open, setOpen] = createSignal(false);
+
+  return (
+    <Popover open={open()} onOpenChange={setOpen}>
+      <PopoverTrigger type="button">Open Popover</PopoverTrigger>
+      <PopoverContent class="w-[20rem]">
+        <PopoverHeader>
+          <PopoverTitle>Send us feedback</PopoverTitle>
+          <PopoverDescription>Let us know how we can improve.</PopoverDescription>
+        </PopoverHeader>
+        <Textarea aria-label="Feedback" placeholder="How can we improve?" size="lg" />
+        <PopoverFooter>
+          <Button class="w-full" onClick={() => setOpen(false)} type="button">
+            Send feedback
+          </Button>
+        </PopoverFooter>
+      </PopoverContent>
+    </Popover>
+  );
+}`;
 
 export const popoverUsageCode = `import {
   Popover,
@@ -585,10 +769,14 @@ export const popoverUsageCode = `import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-<Popover>
-  <PopoverTrigger type="button">Open</PopoverTrigger>
-  <PopoverContent>Contextual controls.</PopoverContent>
-</Popover>`;
+export function Component() {
+  return (
+    <Popover>
+      <PopoverTrigger type="button">Open</PopoverTrigger>
+      <PopoverContent>Contextual controls.</PopoverContent>
+    </Popover>
+  );
+}`;
 
 export function TabsExample() {
   return (
@@ -611,16 +799,27 @@ export function TabsExample() {
   );
 }
 
-export const tabsExampleCode = `<Tabs defaultValue="overview">
-  <TabsList>
-    <TabsTrigger value="overview">Overview</TabsTrigger>
-    <TabsTrigger value="activity">Activity</TabsTrigger>
-    <TabsTrigger value="settings">Settings</TabsTrigger>
-  </TabsList>
-  <TabsContent value="overview">Track the current workspace state.</TabsContent>
-  <TabsContent value="activity">Review recent changes.</TabsContent>
-  <TabsContent value="settings">Configure defaults and permissions.</TabsContent>
-</Tabs>`;
+export const tabsExampleCode = `import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
+
+export function Component() {
+  return (
+    <Tabs defaultValue="overview">
+      <TabsList>
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="activity">Activity</TabsTrigger>
+        <TabsTrigger value="settings">Settings</TabsTrigger>
+      </TabsList>
+      <TabsContent value="overview">Track the current workspace state.</TabsContent>
+      <TabsContent value="activity">Review recent changes.</TabsContent>
+      <TabsContent value="settings">Configure defaults and permissions.</TabsContent>
+    </Tabs>
+  );
+}`;
 
 export const tabsUsageCode = `import {
   Tabs,
@@ -629,12 +828,16 @@ export const tabsUsageCode = `import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 
-<Tabs defaultValue="overview">
-  <TabsList>
-    <TabsTrigger value="overview">Overview</TabsTrigger>
-  </TabsList>
-  <TabsContent value="overview">Track the current workspace state.</TabsContent>
-</Tabs>`;
+export function Component() {
+  return (
+    <Tabs defaultValue="overview">
+      <TabsList>
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+      </TabsList>
+      <TabsContent value="overview">Track the current workspace state.</TabsContent>
+    </Tabs>
+  );
+}`;
 
 export function ToastExample() {
   return (

@@ -123,6 +123,113 @@ describe("CommandMenu", () => {
     dispose();
   });
 
+  test("uses ranked command search and supports external filtering escape hatches", async () => {
+    const host = document.createElement("div");
+    document.body.append(host);
+    const dispose = render(
+      () => <CommandMenu defaultOpen hotkeys={false} items={commands} trigger="Commands" />,
+      host,
+    );
+
+    await tick();
+
+    const input = document.querySelector<HTMLInputElement>("[data-slot='command-menu-input']");
+
+    inputText(input!, "oi");
+    await tick();
+
+    expect(document.querySelector("[data-value='open-invoices']")).not.toBeNull();
+    expect(document.querySelector("[data-value='open-settings']")).toBeNull();
+
+    inputText(input!, "opp");
+    await tick();
+
+    expect(document.querySelector("[data-value='open-invoices']")).toBeNull();
+    expect(document.querySelector("[data-value='open-settings']")).toBeNull();
+
+    inputText(input!, "open-settings");
+    await tick();
+
+    expect(document.querySelector("[data-value='open-settings']")).not.toBeNull();
+    expect(document.querySelector("[data-value='open-invoices']")).toBeNull();
+
+    inputText(input!, "bill tab");
+    await tick();
+
+    expect(document.querySelector("[data-value='open-invoices']")).not.toBeNull();
+    expect(document.querySelector("[data-value='open-settings']")).toBeNull();
+
+    dispose();
+
+    document.body.replaceChildren();
+    document.body.append(host);
+    const customFilter = vi.fn(
+      (item: CommandMenuItemData, query: string) =>
+        item.value === "delete-record" && query === "anything",
+    );
+    const filteredDispose = render(
+      () => <CommandMenu defaultOpen filter={customFilter} hotkeys={false} items={commands} />,
+      host,
+    );
+
+    await tick();
+
+    const filteredInput = document.querySelector<HTMLInputElement>(
+      "[data-slot='command-menu-input']",
+    );
+    inputText(filteredInput!, "anything");
+    await tick();
+
+    expect(customFilter).toHaveBeenCalled();
+    expect(document.querySelector("[data-value='delete-record']")).not.toBeNull();
+    expect(document.querySelector("[data-value='open-invoices']")).toBeNull();
+
+    filteredDispose();
+
+    document.body.replaceChildren();
+    document.body.append(host);
+    const externalDispose = render(
+      () => (
+        <CommandMenu defaultOpen filteredItems={[commands[1]!]} hotkeys={false} items={commands} />
+      ),
+      host,
+    );
+
+    await tick();
+
+    expect(document.querySelector("[data-value='open-settings']")).not.toBeNull();
+    expect(document.querySelector("[data-value='open-invoices']")).toBeNull();
+
+    externalDispose();
+  });
+
+  test("highlights the first filtered command so Enter selects it", async () => {
+    const selected = vi.fn();
+    const host = document.createElement("div");
+    document.body.append(host);
+    const dispose = render(
+      () => <CommandMenu defaultOpen hotkeys={false} items={commands} onSelect={selected} />,
+      host,
+    );
+
+    await tick();
+
+    const input = document.querySelector<HTMLInputElement>("[data-slot='command-menu-input']");
+    inputText(input!, "open-settings");
+    await tick();
+
+    expect(
+      document.querySelector("[data-value='open-settings']")?.getAttribute("data-highlighted"),
+    ).toBe("");
+
+    keyDown(input!, "Enter");
+    await tick();
+
+    expect(selected).toHaveBeenCalledWith(expect.objectContaining({ value: "open-settings" }));
+
+    dispose();
+  });
+
   test("registers optional TanStack hotkeys for opening the menu and invoking item shortcuts", async () => {
     const onSelect = vi.fn();
     const host = document.createElement("div");
@@ -162,6 +269,10 @@ describe("CommandMenu", () => {
 function inputText(element: HTMLInputElement, value: string) {
   element.value = value;
   element.dispatchEvent(new InputEvent("input", { bubbles: true, cancelable: true }));
+}
+
+function keyDown(element: HTMLElement, key: string) {
+  element.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, cancelable: true, key }));
 }
 
 function tick() {

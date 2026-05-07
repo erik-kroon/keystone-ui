@@ -35,26 +35,6 @@ export default function Header() {
           </Link>
         </div>
 
-        <nav
-          class="pointer-events-none absolute inset-x-0 hidden items-center justify-center gap-7 text-muted-foreground text-sm md:flex"
-          aria-label="Primary"
-        >
-          <Link
-            class="pointer-events-auto rounded-md px-2 py-1 outline-none transition-colors hover:text-accent-foreground focus-visible:text-accent-foreground"
-            to="/docs"
-            hash="components"
-          >
-            Components
-          </Link>
-          <Link
-            class="pointer-events-auto rounded-md px-2 py-1 outline-none transition-colors hover:text-accent-foreground focus-visible:text-accent-foreground"
-            to="/docs"
-            hash="roadmap"
-          >
-            Roadmap
-          </Link>
-        </nav>
-
         <nav class="flex items-center text-sm text-muted-foreground" aria-label="Actions">
           <DocsCommandSearch />
           <span

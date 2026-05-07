@@ -1,5 +1,14 @@
 import { Check, ChevronDown, Clipboard, Menu, Package, X } from "lucide-solid";
-import { createSignal, For, type JSX, Show, splitProps } from "solid-js";
+import {
+  createEffect,
+  createMemo,
+  createSignal,
+  For,
+  type JSX,
+  onCleanup,
+  Show,
+  splitProps,
+} from "solid-js";
 import { Link, useRouterState } from "@tanstack/solid-router";
 
 import {
@@ -180,7 +189,7 @@ export function CodeBlock(
 }
 
 const codePreClass =
-  "m-0 max-h-[450px] min-w-0 w-max overflow-auto px-4 py-3.5 font-mono text-[.8125rem] leading-snug outline-none has-data-[highlighted-line]:px-0 has-data-[line-numbers]:ps-0 !bg-transparent";
+  "m-0 max-h-[450px] min-w-0 w-full overflow-auto px-4 py-3.5 font-mono text-[.8125rem] leading-snug outline-none has-data-[highlighted-line]:px-0 has-data-[line-numbers]:ps-0 !bg-transparent";
 
 function renderCodeBlock(code: string) {
   const lines = code.split("\n");
@@ -394,7 +403,7 @@ export function DocsChrome(props: Readonly<{ children: JSX.Element }>) {
     <main class="flex min-h-0 flex-1 flex-col bg-background text-foreground">
       <div class="mx-auto grid min-h-[calc(100svh-var(--header-height))] w-full max-w-[1416px] grid-cols-1 px-0 [--sidebar-width:220px] [--top-spacing:0px] lg:grid-cols-[var(--sidebar-width)_minmax(0,1fr)] lg:[--sidebar-width:240px] lg:[--top-spacing:calc(var(--spacing)*3)] xl:grid-cols-[var(--sidebar-width)_minmax(0,1fr)_18rem]">
         <aside class="hidden lg:block">
-          <div class="scrollbar-none sticky top-(--header-height) h-[calc(100svh-var(--header-height))] overflow-y-auto px-4 py-2">
+          <div class="scrollbar-none sticky top-(--header-height) h-[calc(100svh-var(--header-height))] overflow-y-auto py-2 pr-10 pl-4">
             <div class="h-(--top-spacing) shrink-0" />
             <DocsSidebar groups={navGroups} />
           </div>
@@ -408,17 +417,17 @@ export function DocsChrome(props: Readonly<{ children: JSX.Element }>) {
 export function DocsPageFrame(props: Readonly<{ children: JSX.Element; page: DocsPage }>) {
   return (
     <>
-      <article class="relative flex w-full min-w-0 flex-1 flex-col lg:mt-5 lg:mr-4 lg:mb-8">
-        <div class="flex min-h-full flex-col border-sidebar-border bg-card text-card-foreground shadow-lg/5 max-lg:border-none lg:rounded-2xl lg:border">
-          <div class="flex-1 border-border bg-card max-lg:rounded-none lg:-m-px lg:rounded-2xl lg:border">
-            <div class="mx-auto w-full max-w-[880px] px-4 pt-4 pb-6 sm:px-6 lg:px-8 lg:pt-5 lg:pb-8">
+      <article class="relative flex w-full min-w-0 flex-1 flex-col sm:m-4 sm:w-auto lg:mt-5 lg:mr-4 lg:mb-8 lg:ml-0">
+        <div class="flex min-h-full flex-col overflow-hidden border-sidebar-border bg-card text-card-foreground shadow-lg/5 sm:rounded-2xl sm:border">
+          <div class="flex-1 bg-card">
+            <div class="mx-auto w-full max-w-[960px] px-4 pt-4 pb-6 sm:px-12 sm:pt-9 sm:pb-10 lg:px-10 lg:pt-10 lg:pb-12">
               {props.children}
             </div>
           </div>
           <SiteFooter />
         </div>
       </article>
-      <aside class="sticky top-(--header-height) z-30 ms-auto hidden h-[calc(100svh-var(--header-height))] w-72 flex-col overflow-hidden overscroll-none xl:flex">
+      <aside class="sticky top-(--header-height) z-30 ms-auto hidden h-[calc(100svh-var(--header-height))] w-72 flex-col overflow-hidden xl:flex">
         <div class="flex min-h-0 flex-col gap-2 overflow-y-auto pt-0 pb-2">
           <div class="h-(--top-spacing) shrink-0" />
           <DocsToc items={props.page.toc} />
@@ -474,6 +483,130 @@ export function DocsSidebar(props: Readonly<{ groups: readonly NavGroup[] }>) {
 }
 
 export function DocsToc(props: Readonly<{ items: readonly TocItem[] }>) {
+  const itemIds = createMemo(() =>
+    props.items.map((item) => item.href.replace(/^#/, "")).filter(Boolean),
+  );
+  const [activeId, setActiveId] = createSignal<string | undefined>();
+  let tocElement: HTMLElement | undefined;
+  let clickScrollId: string | undefined;
+  let animationFrameId: number | undefined;
+  const isActive = (href: string) => activeId() === href.replace(/^#/, "");
+
+  const getActiveIdFromScroll = (ids: readonly string[]) => {
+    if (!ids.length || typeof window === "undefined" || typeof document === "undefined") {
+      return ids[0];
+    }
+
+    const activationY = Math.min(Math.max(window.innerHeight * 0.2, 96), 180);
+    let nextActiveId = ids[0];
+
+    for (const id of ids) {
+      const element = document.getElementById(id);
+      if (!element) continue;
+      if (element.getBoundingClientRect().top > activationY) break;
+      nextActiveId = id;
+    }
+
+    return nextActiveId;
+  };
+
+  const setClickedActiveId = (href: string) => {
+    const id = href.replace(/^#/, "");
+    if (!id) return;
+    clickScrollId = id;
+    setActiveId(id);
+  };
+
+  createEffect(() => {
+    const ids = itemIds();
+    if (!ids.length || typeof window === "undefined" || typeof document === "undefined") {
+      setActiveId(ids[0]);
+      return;
+    }
+
+    if (clickScrollId && !ids.includes(clickScrollId)) {
+      clickScrollId = undefined;
+    }
+
+    const hashId = window.location.hash.replace(/^#/, "");
+    setActiveId((current) =>
+      current && ids.includes(current)
+        ? current
+        : ids.includes(hashId)
+          ? hashId
+          : getActiveIdFromScroll(ids),
+    );
+
+    const syncActiveId = () => {
+      animationFrameId = undefined;
+      if (clickScrollId) return;
+      setActiveId(getActiveIdFromScroll(ids));
+    };
+
+    const scheduleActiveSync = () => {
+      if (animationFrameId !== undefined) return;
+      animationFrameId = window.requestAnimationFrame(syncActiveId);
+    };
+
+    const clearClickScroll = () => {
+      if (!clickScrollId) return;
+      clickScrollId = undefined;
+      scheduleActiveSync();
+    };
+
+    const clearClickScrollFromPointer = (event: PointerEvent | TouchEvent) => {
+      const target = event.target;
+      if (target instanceof Node && tocElement?.contains(target)) return;
+      clearClickScroll();
+    };
+
+    const onHashChange = () => {
+      const nextHashId = window.location.hash.replace(/^#/, "");
+      if (ids.includes(nextHashId)) {
+        clickScrollId = nextHashId;
+        setActiveId(nextHashId);
+        return;
+      }
+      clearClickScroll();
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      const target = event.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable || ["INPUT", "SELECT", "TEXTAREA"].includes(target.tagName))
+      ) {
+        return;
+      }
+
+      if ([" ", "ArrowDown", "ArrowUp", "End", "Home", "PageDown", "PageUp"].includes(event.key)) {
+        clearClickScroll();
+      }
+    };
+
+    window.addEventListener("scroll", scheduleActiveSync, { passive: true });
+    window.addEventListener("resize", scheduleActiveSync);
+    window.addEventListener("hashchange", onHashChange);
+    window.addEventListener("wheel", clearClickScroll, { passive: true });
+    window.addEventListener("touchstart", clearClickScrollFromPointer, { passive: true });
+    window.addEventListener("pointerdown", clearClickScrollFromPointer, { capture: true });
+    window.addEventListener("keydown", onKeyDown);
+
+    onCleanup(() => {
+      if (animationFrameId !== undefined) {
+        window.cancelAnimationFrame(animationFrameId);
+        animationFrameId = undefined;
+      }
+      window.removeEventListener("scroll", scheduleActiveSync);
+      window.removeEventListener("resize", scheduleActiveSync);
+      window.removeEventListener("hashchange", onHashChange);
+      window.removeEventListener("wheel", clearClickScroll);
+      window.removeEventListener("touchstart", clearClickScrollFromPointer);
+      window.removeEventListener("pointerdown", clearClickScrollFromPointer, { capture: true });
+      window.removeEventListener("keydown", onKeyDown);
+    });
+  });
+
   return (
     <>
       <div class="z-10 flex flex-col gap-1 pt-0 pr-4 pb-2 pl-6 text-sm">
@@ -481,12 +614,19 @@ export function DocsToc(props: Readonly<{ items: readonly TocItem[] }>) {
         <nav
           aria-label="On this page"
           class="relative ms-3.5 flex flex-col gap-0.5 before:absolute before:inset-y-0 before:-left-3.25 before:w-px before:bg-border"
+          ref={(element) => {
+            tocElement = element;
+          }}
         >
           <For each={props.items}>
             {(item) => (
               <a
-                class="relative py-1 text-[0.8125rem] text-sidebar-foreground leading-4.5 no-underline outline-none transition-colors before:absolute before:inset-y-px before:-left-3.25 before:w-px before:rounded-full before:bg-transparent hover:text-foreground hover:before:w-0.5 hover:before:bg-primary focus-visible:text-foreground focus-visible:before:w-0.5 focus-visible:before:bg-primary"
+                class="relative py-1 text-[0.8125rem] text-sidebar-foreground leading-4.5 no-underline outline-none transition-colors before:absolute before:inset-y-px before:-left-3.25 before:w-px before:rounded-full before:bg-transparent hover:text-foreground focus-visible:text-foreground data-[active=true]:text-foreground data-[active=true]:before:w-0.5 data-[active=true]:before:bg-primary data-[depth=3]:ps-3.5 data-[depth=4]:ps-5.5"
+                data-active={isActive(item.href)}
+                data-depth={item.depth}
                 href={item.href}
+                onClick={() => setClickedActiveId(item.href)}
+                onPointerDown={() => setClickedActiveId(item.href)}
               >
                 {item.label}
               </a>
@@ -511,8 +651,8 @@ export function SiteFooter() {
   return (
     <footer class="flex items-center justify-between gap-4 px-4 py-6 text-muted-foreground text-sm lg:rounded-b-2xl lg:px-8">
       <p class="m-0">
-        <strong class="text-foreground">Keystone UI</strong> is early Solid primitive and registry
-        infrastructure.
+        <strong class="text-foreground">Keystone UI</strong> is a new, modern UI component library
+        for SolidJS.
       </p>
       <a class="font-semibold text-foreground" href="#top">
         Back to top

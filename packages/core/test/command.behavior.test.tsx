@@ -1,4 +1,4 @@
-import { createRoot } from "solid-js";
+import { createRoot, createSignal, For } from "solid-js";
 import { describe, expect, test } from "vitest";
 import { Command, createCommand } from "../src/command/index";
 import { click, getByPart, keyDown, render, settled } from "./harness";
@@ -54,7 +54,6 @@ describe("Command behavior harness", () => {
     expect(inputs).toEqual(["open"]);
 
     keyDown(input, "ArrowDown");
-    keyDown(input, "ArrowDown");
     expect(
       document.querySelector('[data-scope="command"][data-part="item"][data-highlighted]')
         ?.textContent,
@@ -87,7 +86,6 @@ describe("Command behavior harness", () => {
     ));
 
     const input = getByPart("command", "input") as HTMLInputElement;
-    keyDown(input, "ArrowDown");
     keyDown(input, "ArrowDown");
     keyDown(input, "Enter");
     await settled();
@@ -164,6 +162,53 @@ describe("Command behavior harness", () => {
       document.querySelector('[data-scope="command"][data-part="item"][data-highlighted]')
         ?.textContent,
     ).toBe("Bravo");
+  });
+
+  test("auto-highlights the first visible command result after typing", async () => {
+    const values: string[] = [];
+    const commands = [
+      { label: "Open file", value: "open-file" },
+      { label: "Open settings", value: "open-settings" },
+    ];
+
+    function FilteredCommand() {
+      const [query, setQuery] = createSignal("");
+      const visibleCommands = () =>
+        commands.filter((command) => command.label.toLowerCase().includes(query().toLowerCase()));
+
+      return (
+        <Command.Root
+          onInputValueChange={(value) => setQuery(value)}
+          onValueChange={(value) => values.push(value ?? "")}
+        >
+          <Command.Input />
+          <Command.Content>
+            <Command.Listbox>
+              <For each={visibleCommands()}>
+                {(command) => <Command.Item value={command.value}>{command.label}</Command.Item>}
+              </For>
+            </Command.Listbox>
+          </Command.Content>
+        </Command.Root>
+      );
+    }
+
+    render(() => <FilteredCommand />);
+
+    const input = getByPart("command", "input") as HTMLInputElement;
+    inputText(input, "settings");
+    await settled();
+
+    expect(input.getAttribute("aria-activedescendant")).toContain("open-settings");
+    expect(
+      document.querySelector('[data-scope="command"][data-part="item"][data-highlighted]')
+        ?.textContent,
+    ).toBe("Open settings");
+
+    keyDown(input, "Enter");
+    await settled();
+
+    expect(values).toEqual(["open-settings"]);
   });
 
   test("createCommand defaults its public scope to command", () => {

@@ -16,7 +16,7 @@
   "targetRoot": "src/hooks",
   "meta": {
     "install": "mason add use-copy-to-clipboard",
-    "api": "Exports createCopyToClipboard with copied, status, error, isSupported, reset, and async copy(value). Options include copiedDuration, onCopy, onError, and test/embed window injection.",
+    "api": "Exports createCopyToClipboard with copied, status, error, isSupported, reset, and async copy(value). Options include copiedDuration, onCopy, onError, and test/embed window injection. copiedDuration defaults to 2000ms and 0 keeps copied state until reset.",
     "accessibility": "The hook is state only. Components using it should expose copied/error feedback with accessible names or live regions appropriate to the surface.",
     "behavior": "Uses navigator.clipboard.writeText when available, returns false instead of throwing when unsupported or rejected, stores error state, and clears copied state after the configured duration.",
     "ssr": "Does not touch window or navigator until copy/isSupported is called. A window option supports tests and embedded document contexts.",

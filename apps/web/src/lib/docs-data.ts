@@ -12,6 +12,7 @@ export type NavGroup = {
 };
 
 export type TocItem = {
+  depth?: number;
   href: string;
   label: string;
 };
@@ -46,6 +47,7 @@ export const navigableDocs = docsItems.filter(
 );
 
 export const componentDocs = navigableDocs.filter((item) => item.type === "registry:ui");
+const showFullDocsCatalog = import.meta.env?.DEV === true;
 const sidebarComponentDocs = componentDocs.filter(
   (item) => !item.categories.includes("store") && !item.categories.includes("router"),
 );
@@ -113,44 +115,56 @@ const sidebarMaturityGroups = Object.values(
       };
     }, {}),
 ).sort(compareMaturityGroups);
+const visibleSidebarComponentDocs = stableSidebarComponentDocs;
+const visibleSidebarMaturityGroups = showFullDocsCatalog ? sidebarMaturityGroups : [];
+const visibleHookDocs = showFullDocsCatalog ? hookDocs : [];
+const routableDocs = showFullDocsCatalog ? docsItems : stableSidebarComponentDocs;
+
+export const searchableComponentDocs = showFullDocsCatalog
+  ? componentDocs
+  : stableSidebarComponentDocs;
+export const searchableHookDocs = visibleHookDocs;
 
 export const overviewPage: DocsPage = {
   description:
     "Solid primitives, source-owned UI components, Mason install metadata, and app-layer registry guidance.",
   href: "/docs",
   label: "Introduction",
-  title: "Documentation",
+  title: "Introduction",
   toc: [
-    { label: "Get Started", href: "#get-started" },
-    { label: "Components", href: "#components" },
+    { depth: 2, href: "#built-on-keystone-core", label: "Built on Keystone Core" },
+    { depth: 2, href: "#layers", label: "Primitives, Components, and App Patterns" },
+    { depth: 2, href: "#own-your-code", label: "Own Your Code" },
+    { depth: 2, href: "#readable-source", label: "Readable Source by Default" },
+    { depth: 2, href: "#open-development", label: "Built in the Open" },
+    { depth: 2, href: "#get-involved", label: "Get Involved" },
   ],
 };
 
 export const navGroups: readonly NavGroup[] = [
   {
     title: "Overview",
-    items: [
-      { label: "Introduction", href: "/docs" },
-      { label: "Get Started", href: "/docs#get-started" },
-      { label: "Install Model", href: "/docs#install-model" },
-      { label: "MDX Surface", href: "/docs#mdx-surface", badge: "New" },
-    ],
+    items: [{ label: "Introduction", href: "/docs" }],
   },
   {
     title: "Components",
-    items: stableSidebarComponentDocs.map((item) => ({
+    items: visibleSidebarComponentDocs.map((item) => ({
       href: componentHref(item.name),
       label: item.title,
     })),
   },
-  ...sidebarMaturityGroups,
-  {
-    title: "Hooks",
-    items: hookDocs.map((item) => ({
-      href: componentHref(item.name),
-      label: item.title,
-    })),
-  },
+  ...visibleSidebarMaturityGroups,
+  ...(visibleHookDocs.length
+    ? [
+        {
+          title: "Hooks",
+          items: visibleHookDocs.map((item) => ({
+            href: componentHref(item.name),
+            label: item.title,
+          })),
+        },
+      ]
+    : []),
 ];
 
 export function componentHref(name: string) {
@@ -158,7 +172,7 @@ export function componentHref(name: string) {
 }
 
 export function findDocItem(name: string) {
-  return docsItems.find((item) => item.name === name);
+  return routableDocs.find((item) => item.name === name);
 }
 
 export function registryTypeLabel(type: string) {
@@ -185,6 +199,7 @@ export function registryTypeLabel(type: string) {
 export function itemToc(item: RegistryDocItem): readonly TocItem[] {
   const hasUsage = item.type === "registry:ui";
   const hasExamples = item.type === "registry:ui";
+  const hasPreview = item.type === "registry:ui";
   const hasAccessibility = Boolean(item.accessibility);
   const apiText = metadataText(item.api);
   const hasData =
@@ -192,7 +207,7 @@ export function itemToc(item: RegistryDocItem): readonly TocItem[] {
 
   return [
     { label: "Installation", href: "#installation" },
-    { label: "Preview", href: "#preview" },
+    ...(hasPreview ? [{ label: "Preview", href: "#preview" }] : []),
     ...(hasUsage ? [{ label: "Usage", href: "#usage" }] : []),
     ...(hasExamples ? [{ label: "Examples", href: "#examples" }] : []),
     ...(item.api ? [{ label: "API Reference", href: "#api-reference" }] : []),

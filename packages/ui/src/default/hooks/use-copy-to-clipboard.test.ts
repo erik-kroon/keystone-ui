@@ -42,4 +42,21 @@ describe("createCopyToClipboard", () => {
       dispose();
     });
   });
+
+  test("can keep copied state until reset", async () => {
+    await createRoot(async (dispose) => {
+      const clipboard = createCopyToClipboard({
+        copiedDuration: 0,
+        window: createTestWindow(async () => {}),
+      });
+
+      await expect(clipboard.copy("hello")).resolves.toBe(true);
+      expect(clipboard.copied()).toBe(true);
+
+      clipboard.reset();
+      expect(clipboard.copied()).toBe(false);
+
+      dispose();
+    });
+  });
 });

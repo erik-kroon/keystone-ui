@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
+    "deploy:production": "bun run build && bunx --bun wrangler@4 deploy",
+    "deploy:production:dry-run": "bun run build && bunx --bun wrangler@4 deploy --dry-run",
     "generate:registry-items": "bun ../../scripts/generate-docs-registry-items.ts",
     "serve": "vite preview",
     "start": "node .output/server/index.mjs",
