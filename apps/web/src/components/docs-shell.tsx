@@ -400,10 +400,10 @@ export function ProductDropdown(props: Readonly<{ items: readonly NavItem[] }>) 
 
 export function DocsChrome(props: Readonly<{ children: JSX.Element }>) {
   return (
-    <main class="flex min-h-0 flex-1 flex-col bg-background text-foreground">
+    <main class="flex min-h-0 flex-1 flex-col bg-sidebar text-foreground">
       <div class="mx-auto grid min-h-[calc(100svh-var(--header-height))] w-full max-w-[1416px] grid-cols-1 px-0 [--sidebar-width:220px] [--top-spacing:0px] lg:grid-cols-[var(--sidebar-width)_minmax(0,1fr)] lg:[--sidebar-width:240px] lg:[--top-spacing:calc(var(--spacing)*3)] xl:grid-cols-[var(--sidebar-width)_minmax(0,1fr)_18rem]">
         <aside class="hidden lg:block">
-          <div class="scrollbar-none sticky top-(--header-height) h-[calc(100svh-var(--header-height))] overflow-y-auto py-2 pr-10 pl-4">
+          <div class="scrollbar-none sticky top-(--header-height) h-[calc(100svh-var(--header-height))] overflow-y-auto py-2 pr-6 pl-4">
             <div class="h-(--top-spacing) shrink-0" />
             <DocsSidebar groups={navGroups} />
           </div>

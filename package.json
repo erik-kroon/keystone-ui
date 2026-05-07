@@ -16,6 +16,7 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
+    "deploy": "bun run --cwd apps/web deploy",
     "check-types": "turbo check-types",
     "test:core": "turbo -F @keystone-ui/core test",
     "test:docs": "bun --filter web test --pass-with-no-tests",
