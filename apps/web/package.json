@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "bun run generate:registry-items && vite build",
     "deploy": "bun run build && bunx --bun wrangler@4 deploy",
     "deploy:production": "bun run deploy",
     "deploy:production:dry-run": "bun run build && bunx --bun wrangler@4 deploy --dry-run",

@@ -57,6 +57,8 @@ export const hookDocs = navigableDocs.filter((item) =>
 
 const componentMaturityByName: Readonly<Record<string, string>> = {
   accordion: "Stable",
+  alert: "Stable",
+  badge: "Stable",
   button: "Stable",
   card: "Stable",
   checkbox: "Stable",
@@ -80,6 +82,15 @@ export function componentMaturity(item: RegistryDocItem) {
   return componentMaturityByName[item.name] ?? "Draft";
 }
 
+function componentMaturityKey(item: RegistryDocItem) {
+  return componentMaturity(item).toLowerCase();
+}
+
+function isPublicComponentDoc(item: RegistryDocItem) {
+  const maturity = componentMaturityKey(item);
+  return maturity === "stable" || maturity === "preview";
+}
+
 function maturityGroupTitle(maturity: string) {
   const normalized = maturity.trim().toLowerCase() || "draft";
   return normalized.charAt(0).toUpperCase() + normalized.slice(1);
@@ -93,11 +104,12 @@ function compareMaturityGroups(a: NavGroup, b: NavGroup) {
 }
 
 const stableSidebarComponentDocs = sidebarComponentDocs.filter(
-  (item) => componentMaturity(item).toLowerCase() === "stable",
+  (item) => componentMaturityKey(item) === "stable",
 );
+const publicComponentDocs = componentDocs.filter(isPublicComponentDoc);
 const sidebarMaturityGroups = Object.values(
   sidebarComponentDocs
-    .filter((item) => componentMaturity(item).toLowerCase() !== "stable")
+    .filter((item) => componentMaturityKey(item) !== "stable")
     .reduce<Record<string, NavGroup>>((groups, item) => {
       const title = maturityGroupTitle(componentMaturity(item));
       return {
@@ -116,13 +128,15 @@ const sidebarMaturityGroups = Object.values(
     }, {}),
 ).sort(compareMaturityGroups);
 const visibleSidebarComponentDocs = stableSidebarComponentDocs;
-const visibleSidebarMaturityGroups = showFullDocsCatalog ? sidebarMaturityGroups : [];
+const visibleSidebarMaturityGroups = sidebarMaturityGroups.filter((group) =>
+  showFullDocsCatalog ? true : group.title.toLowerCase() === "preview",
+);
 const visibleHookDocs = showFullDocsCatalog ? hookDocs : [];
-const routableDocs = showFullDocsCatalog ? docsItems : stableSidebarComponentDocs;
+const routableDocs = showFullDocsCatalog ? docsItems : publicComponentDocs;
 
 export const searchableComponentDocs = showFullDocsCatalog
   ? componentDocs
-  : stableSidebarComponentDocs;
+  : publicComponentDocs;
 export const searchableHookDocs = visibleHookDocs;
 
 export const overviewPage: DocsPage = {

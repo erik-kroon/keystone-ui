@@ -1,4 +1,4 @@
-import { createComponent, type JSX, type ValidComponent } from "solid-js";
+import { createComponent, mergeProps, type JSX, type ValidComponent } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 export type CoreAs<Props> =
@@ -19,5 +19,10 @@ export function renderPolymorphic<Props extends Record<string, unknown>>(
     return createComponent(as as (props: Props) => JSX.Element, props);
   }
 
-  return createComponent(Dynamic, { component: as ?? fallback, ...props });
+  return createComponent(
+    Dynamic as unknown as (props: Props & { component: ValidComponent | undefined }) => JSX.Element,
+    mergeProps({ component: (as ?? fallback) as ValidComponent }, props) as Props & {
+      component: ValidComponent | undefined;
+    },
+  );
 }

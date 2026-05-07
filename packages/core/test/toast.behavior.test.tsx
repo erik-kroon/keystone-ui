@@ -132,6 +132,37 @@ describe("Toast behavior harness", () => {
     expect(actionCalls).toEqual(["undo"]);
   });
 
+  test("action button dismisses unless the toast action prevents default", async () => {
+    const manager = renderToastHarness();
+
+    manager.add({
+      action: {
+        label: "Stay",
+        onClick: (_toast, event) => event.preventDefault(),
+      },
+      id: "stay",
+      title: "Keep visible",
+    });
+    await settled();
+
+    click(getByPart("toast", "action"));
+    await settled();
+
+    expect(getByPart("toast", "root").textContent).toContain("Keep visible");
+
+    manager.update("stay", {
+      action: {
+        label: "Dismiss",
+      },
+    });
+    await settled();
+
+    click(getByPart("toast", "action"));
+    await settled();
+
+    expect(queryByPart("toast", "root")).toBeNull();
+  });
+
   test("typed toaster shortcuts preserve ids and expose type metadata", async () => {
     const manager = renderToastHarness();
 
@@ -146,5 +177,102 @@ describe("Toast behavior harness", () => {
 
     const roots = document.querySelectorAll('[data-scope="toast"][data-part="root"]');
     expect(roots[1]?.getAttribute("data-type")).toBe("error");
+  });
+
+  test("manager is callable and exposes Sonner-style message and promise helpers", async () => {
+    const manager = renderToastHarness();
+
+    const callableId = manager({ id: "callable", title: "Callable" });
+    await settled();
+
+    expect(callableId).toBe("callable");
+    expect(getByPart("toast", "title").textContent).toBe("Callable");
+
+    const messageId = manager.message({ id: "message", title: "Message" });
+    await settled();
+
+    expect(messageId).toBe("message");
+    expect(document.body.textContent).toContain("Message");
+
+    const promiseId = manager.promise(Promise.resolve("done"), {
+      id: "promise",
+      loading: "Saving",
+      success: (value) => ({
+        description: "Complete",
+        title: `Saved ${value}`,
+      }),
+    });
+    await settled();
+
+    expect(promiseId).toBe("promise");
+    expect(document.body.textContent).toContain("Saved done");
+    expect(document.body.textContent).toContain("Complete");
+
+    const successOnlyId = manager.promise(Promise.resolve("later"), {
+      id: "success-only",
+      success: (value) => `Resolved ${value}`,
+    });
+    await settled();
+
+    expect(successOnlyId).toBe("success-only");
+    expect(document.body.textContent).toContain("Resolved later");
+  });
+
+  test("viewport render callback receives stack metadata and hotkey focus", async () => {
+    const manager = createToastManager();
+
+    render(() => (
+      <Toast.Provider manager={manager}>
+        <Toast.Viewport hotkey={["altKey", "KeyT"]}>
+          {(toast, info) => (
+            <Toast.Root
+              data-count={String(info.count)}
+              data-front-index={String(info.frontIndex)}
+              toast={toast}
+            >
+              <Toast.Title />
+            </Toast.Root>
+          )}
+        </Toast.Viewport>
+      </Toast.Provider>
+    ));
+
+    manager.add({ id: "one", title: "One" });
+    manager.add({ id: "two", title: "Two" });
+    await settled();
+
+    const roots = document.querySelectorAll<HTMLElement>('[data-scope="toast"][data-part="root"]');
+    expect(roots[0]?.getAttribute("data-count")).toBe("2");
+    expect(roots[0]?.getAttribute("data-front-index")).toBe("1");
+    expect(roots[1]?.getAttribute("data-front-index")).toBe("0");
+
+    document.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        altKey: true,
+        bubbles: true,
+        cancelable: true,
+        code: "KeyT",
+      }),
+    );
+
+    expect(document.activeElement).toBe(getByPart("toast", "viewport"));
+  });
+
+  test("preserves mounted toast roots when appending new toasts", async () => {
+    const manager = renderToastHarness();
+
+    manager.add({ id: "one", title: "One" });
+    await settled();
+
+    const firstRoot = getByPart("toast", "root") as HTMLElement & { __toastMark?: string };
+    firstRoot.__toastMark = "one";
+
+    manager.add({ id: "two", title: "Two" });
+    await settled();
+
+    const roots = document.querySelectorAll<HTMLElement>('[data-scope="toast"][data-part="root"]');
+    expect(roots).toHaveLength(2);
+    expect(roots[0]).toBe(firstRoot);
+    expect((roots[0] as HTMLElement & { __toastMark?: string }).__toastMark).toBe("one");
   });
 });

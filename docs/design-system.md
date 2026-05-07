@@ -464,9 +464,9 @@ Variants:
 - Button/link badges get cursor and pointer-coarse `44px` hit expansion.
 - SVGs default to `80%` opacity and `0.875rem` mobile, `0.75rem` desktop.
 - Text is compact:
-  - Default `h-5.5`, `text-sm`; desktop `h-4.5`, `text-xs`.
-  - Small `h-5`, `text-xs`; desktop `h-4`, `text-[0.625rem]`.
-  - Large `h-6.5`, `text-base`; desktop `h-5.5`, `text-sm`.
+  - Default `h-6`, `text-sm`; desktop `h-5`, `text-xs`.
+  - Small `h-5`, `text-xs`; desktop `h-4.5`, `text-[0.625rem]`.
+  - Large `h-7`, `text-base`; desktop `h-6`, `text-sm`.
 - Variants:
   - Filled `default`/`primary` and `destructive`; `solid` remains a compatibility alias for primary.
   - Soft `info`, `success`, `warning`, `error` using background alpha `8%` light, `16%` dark.

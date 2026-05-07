@@ -139,6 +139,7 @@ export function AlertAction(props: AlertPartProps) {
       "ui-alert-action",
       "flex",
       "gap-1",
+      "[[data-slot=alert]:has(>[data-slot=alert-icon])>_&]:col-start-3",
       "max-sm:col-start-2",
       "max-sm:mt-2",
       "sm:row-end-3",

@@ -32,6 +32,9 @@ describe("Alert", () => {
       "Registry metadata is up to date.",
     );
     expect(host.querySelector("[data-slot='alert-action'] button")?.textContent).toBe("View");
+    expect(host.querySelector("[data-slot='alert-action']")?.className).toContain(
+      "[[data-slot=alert]:has(>[data-slot=alert-icon])>_&]:col-start-3",
+    );
 
     dispose();
   });
