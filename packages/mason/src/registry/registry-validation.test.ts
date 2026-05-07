@@ -1841,6 +1841,7 @@ describe("Mason registry validation tracer", () => {
       expect(result.value.meta?.parts).toEqual([
         "viewport",
         "root",
+        "content",
         "icon",
         "title",
         "description",
@@ -1850,7 +1851,7 @@ describe("Mason registry validation tracer", () => {
       expect(result.value.meta?.api).toContain("ToastPrimitive");
       expect(result.value.meta?.anatomy).toMatchObject({
         coreParts: expect.arrayContaining(["viewport", "root", "title", "description"]),
-        uiSlots: expect.arrayContaining(["toast-viewport", "toast-icon", "toast-close"]),
+        uiSlots: expect.arrayContaining(["toast-viewport", "toast-content", "toast-icon"]),
       });
       expect(result.value.meta?.accessibility).toEqual(
         expect.arrayContaining([expect.any(String)]),
@@ -1858,7 +1859,16 @@ describe("Mason registry validation tracer", () => {
       expect(result.value.meta?.cssVariables).toEqual([
         "--toast-offset",
         "--toast-gap",
+        "--toast-peek",
         "--toast-width",
+        "--toast-calc-height",
+        "--toast-height",
+        "--toast-index",
+        "--toast-scale",
+        "--toast-shrink",
+        "--toast-swipe-movement-x",
+        "--toast-swipe-movement-y",
+        "--toast-stack-offset",
       ]);
       expect(result.value.meta?.limitations).toEqual(expect.arrayContaining([expect.any(String)]));
       expect(result.value.meta?.parity).toMatchObject({
@@ -1872,11 +1882,14 @@ describe("Mason registry validation tracer", () => {
 
     expect(source).toContain('from "@keystone-ui/core/toast"');
     expect(source).toContain("export function ToastIcon");
+    expect(source).toContain("export function ToastContent");
     expect(source).toContain("export const ToastPrimitive = CoreToast");
     expect(source).toContain('data-slot="toast-viewport"');
     expect(source).toContain('data-slot="toast-icon"');
-    expect(source).toContain("[--toast-width:24rem]");
-    expect(source).toContain("renderToast?: (toast: ToastData) => JSX.Element");
+    expect(source).toContain("DEFAULT_VISIBLE_TOASTS = 3");
+    expect(source).toContain(
+      "renderToast?: (toast: ToastData, info: ToastRenderInfo) => JSX.Element",
+    );
   });
 
   test("resolves dialog registry dependencies deterministically", () => {

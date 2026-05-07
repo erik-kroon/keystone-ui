@@ -112,6 +112,7 @@ export function DocsCommandSearchDialog(props: Readonly<DocsCommandSearchDialogP
             </Dialog.Description>
             <Command.Root
               open
+              class="flex min-h-0 flex-1 flex-col"
               inputValue={query()}
               onInputValueChange={(value) => setQuery(value)}
               onOpenChange={(nextOpen, detail) => {
@@ -136,8 +137,8 @@ export function DocsCommandSearchDialog(props: Readonly<DocsCommandSearchDialogP
                   type="search"
                 />
               </div>
-              <div class="relative -mx-px min-h-0 border border-border bg-popover bg-clip-padding shadow-xs/5 [clip-path:inset(0_1px_1px_1px)]">
-                <Command.Listbox class="max-h-[min(22rem,calc(100svh-12rem))] min-h-0 overflow-y-auto p-2 scroll-py-2">
+              <div class="relative -mx-px min-h-0 flex-1 border border-border bg-popover bg-clip-padding shadow-xs/5 [clip-path:inset(0_1px_1px_1px)]">
+                <Command.Listbox class="h-full max-h-[min(22rem,calc(100svh-12rem))] min-h-0 overflow-y-auto p-2 scroll-py-2">
                   <Show
                     when={searchData()}
                     fallback={

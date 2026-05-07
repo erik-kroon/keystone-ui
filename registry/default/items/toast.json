@@ -5,7 +5,7 @@
   "title": "Toast",
   "description": "Styled Solid toast component backed by Keystone notification manager, viewport, timer, and live-region behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": ["@keystone-ui/core@^0.0.0", "lucide-solid@^1.8.0"],
   "compatibility": {
     "mason": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0"
@@ -16,15 +16,16 @@
   "registryDependencies": ["cn"],
   "meta": {
     "install": "mason add toast",
-    "customization": "Style generated ui-toast classes, data-slot hooks, position classes, and toast CSS variables while Core owns manager updates, live-region roles, dismissal, timer scheduling, pause/resume, viewport limits, and stable toast data attributes.",
+    "customization": "Style generated ui-toast classes, data-slot hooks, position classes, stack classes, and toast CSS variables while Core owns manager updates, promise lifecycle updates, live-region roles, dismissal, timer scheduling, page-idle pause/resume, viewport limits, hotkey focus, and stable toast data attributes.",
     "sourceFiles": ["packages/ui/src/default/ui/toast.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
+    "dependencies": ["@keystone-ui/core", "lucide-solid", "cn"],
     "api": [
       "Toaster",
       "toaster",
       "ToastProvider",
       "ToastViewport",
       "Toast",
+      "ToastContent",
       "ToastIcon",
       "ToastTitle",
       "ToastDescription",
@@ -37,6 +38,7 @@
       "uiSlots": [
         "toast-viewport",
         "toast",
+        "toast-content",
         "toast-icon",
         "toast-title",
         "toast-description",
@@ -50,16 +52,29 @@
       "Title and description relationships, action callbacks, close labeling, hover pause, focus pause, duration, limit, and dismiss behavior remain Core-owned.",
       "The UI icon slot is decorative and marked aria-hidden."
     ],
-    "cssVariables": ["--toast-offset", "--toast-gap", "--toast-width"],
-    "parts": ["viewport", "root", "icon", "title", "description", "action", "close"],
+    "cssVariables": [
+      "--toast-offset",
+      "--toast-gap",
+      "--toast-peek",
+      "--toast-width",
+      "--toast-calc-height",
+      "--toast-height",
+      "--toast-index",
+      "--toast-scale",
+      "--toast-shrink",
+      "--toast-swipe-movement-x",
+      "--toast-swipe-movement-y",
+      "--toast-stack-offset"
+    ],
+    "parts": ["viewport", "root", "content", "icon", "title", "description", "action", "close"],
     "limitations": [
-      "Swipe gestures, stacked height measurement, expand mode, promise helper lifecycle, cancel action, and window blur timer pausing are intentionally deferred to Core or a later UI helper.",
+      "Swipe gestures, anchored/contextual toasts, a progress-bar part, and cancel-action sugar are intentionally deferred to Core or a later UI helper.",
       "Toast does not participate in focus trapping, outside hiding, inerting, prevent-scroll, or overlay layering."
     ],
     "parity": {
-      "baseUi": "Evidence-backed coverage comes through Core manager/provider/store behavior with add, update, dismiss, clear, subscribe, limit, timer scheduling, viewport rendering, action and close parts, roles, and hover/focus pause behavior. UI adds source-owned styling, slots, offsets, positions, and tone affordances without exporting private Core internals. Gaps: measured stacking, promise helpers, cancel/undo policy, and manual live-region AT evidence remain open.",
-      "kobalte": "Solid composition follows Toaster/Region/Toast Root, Title, Description, Close, action-like composition, store subscription, duration, visible limit, pause-on-interaction, and polite/assertive live-region behavior. UI provides the styled copy-paste anatomy and decorative icon slot. Gaps: update timing, pause policy documentation, and manual AT evidence remain follow-up work.",
-      "sonner": "Matches the ergonomic default toaster export, id-based update/dismiss, toast type variants, action callbacks, close button, duration, viewport limit, position offsets, responsive viewport constraints, tone icons, and custom render hook. Swipe, measured stacking, promise helpers, cancel action, and expand mode remain explicit limitations rather than UI reimplementations."
+      "baseUi": "Base UI is a first-class reference for the stacked viewport: visible limit defaults to three, render metadata exposes front index/order, UI measures toast height for expanded stack offsets, the root shell carries coss-style stacked transforms and keyframed entry motion, and Core owns manager updates, actions, close parts, timer pause/resume, hotkey focus, roles, and viewport filtering. Gaps: anchored positioner, swipe dismissal, transition-status exit states, and progress parts remain later Core work.",
+      "kobalte": "Kobalte is a first-class Solid/accessibility reference: Keystone keeps Solid compound composition, region filtering, duration overrides, viewport limits, hover/focus pause, page-idle timer pausing, hotkey access to the notification region, polite/assertive roles, and programmatic update/dismiss. Gaps: progress track/fill and swipe CSS variables remain deferred.",
+      "sonner": "Sonner is a first-class ergonomic reference: toaster is callable, typed helpers update by id, promise helpers move loading to success/error, default Toaster shows three visible toasts in the bottom-right corner, enter motion slides from the screen edge with coss/Sonner-style easing, hover/focus expands the stack, action clicks dismiss unless prevented, close button remains opt-in, tone icons mirror Sonner expectations, and custom render hooks receive toast metadata. Gaps: per-toast position routing, cancel action sugar, rich color mode, and swipe physics remain explicit follow-ups."
     }
   },
   "files": [
