@@ -1,5 +1,6 @@
 import { Check, ChevronDown, Clipboard, FileText, Menu, Package, X } from "lucide-solid";
-import { createSignal, For, type JSX, Show, splitProps } from "solid-js";
+import { codeToHtml, type ShikiTransformer } from "shiki";
+import { createResource, createSignal, For, type JSX, Show, splitProps } from "solid-js";
 import { useRouterState } from "@tanstack/solid-router";
 
 import {
@@ -138,6 +139,14 @@ export function CodeBlock(
     title?: string;
   }>,
 ) {
+  const [highlightedCode] = createResource(
+    () => `${props.language}\u0000${props.code}`,
+    async (key) => {
+      const separator = key.indexOf("\u0000");
+      return highlightCode(key.slice(separator + 1), key.slice(0, separator));
+    },
+  );
+
   return (
     <figure data-rehype-pretty-code-figure="">
       <Show when={props.title}>
@@ -153,84 +162,43 @@ export function CodeBlock(
       <Show when={props.copy ?? true}>
         <CopyButton value={props.code} />
       </Show>
-      <pre class="m-0 max-h-[450px] overflow-auto p-4 font-mono text-[13px] leading-snug">
-        <code data-line-numbers="">
-          <HighlightedCode code={props.code} language={props.language} lineNumbers />
-        </code>
-      </pre>
+      <Show when={highlightedCode()}>{(html) => <div class="contents" innerHTML={html()} />}</Show>
     </figure>
   );
 }
 
-function HighlightedCode(
-  props: Readonly<{ code: string; language: string; lineNumbers?: boolean }>,
-) {
-  const lines = () => props.code.split("\n");
+const highlightedCodeCache = new Map<string, Promise<string>>();
 
-  return (
-    <For each={lines()}>
-      {(line, index) => (
-        <>
-          <span data-line={props.lineNumbers ? "" : undefined}>
-            <For each={highlightLine(line, props.language)}>
-              {(token) => <span style={token.style}>{token.value}</span>}
-            </For>
-          </span>
-          <Show when={index() < lines().length - 1}>{"\n"}</Show>
-        </>
-      )}
-    </For>
-  );
+function highlightCode(code: string, language: string) {
+  const key = `${language}\u0000${code}`;
+  const cached = highlightedCodeCache.get(key);
+  if (cached) return cached;
+
+  const highlighted = codeToHtml(code, {
+    lang: language,
+    themes: {
+      dark: "github-dark",
+      light: "github-light",
+    },
+    transformers: [codeBlockTransformer],
+  });
+
+  highlightedCodeCache.set(key, highlighted);
+  return highlighted;
 }
 
-type HighlightToken = {
-  style?: JSX.CSSProperties;
-  value: string;
+const codeBlockTransformer: ShikiTransformer = {
+  code(node) {
+    node.properties["data-line-numbers"] = "";
+  },
+  line(node) {
+    node.properties["data-line"] = "";
+  },
+  pre(node) {
+    node.properties.class =
+      "m-0 max-h-[450px] min-w-0 w-max overflow-auto px-4 py-3.5 font-mono text-[.8125rem] leading-snug outline-none has-data-[highlighted-line]:px-0 has-data-[line-numbers]:ps-0 !bg-transparent";
+  },
 };
-
-function highlightLine(line: string, language: string): HighlightToken[] {
-  const tokens: HighlightToken[] = [];
-  const pattern =
-    language === "shell" || language === "bash"
-      ? /(\s+|#.*|--[\w-]+|"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|\b(?:bunx|bun|npm|npx|pnpm|yarn|mason|add|cp)\b|[^\s]+)/g
-      : /(\s+|\/\/.*|"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`|<\/?[A-Z][\w.]*|<\/?[a-z][\w.-]*|\b(?:import|from|const|let|return|function|export|type|true|false|undefined)\b|\b[A-Z][\w.]*\b|[{}()[\].,;:=<>/]|[^\s{}()[\].,;:=<>/]+)/g;
-
-  for (const match of line.matchAll(pattern)) {
-    const value = match[0];
-    tokens.push({ value, style: highlightStyle(value, language) });
-  }
-
-  return tokens;
-}
-
-function highlightStyle(value: string, language: string): JSX.CSSProperties | undefined {
-  if (/^\s+$/.test(value)) return undefined;
-  if (value.startsWith("#") || value.startsWith("//")) return shiki("#6a737d", "#8b949e");
-  if (/^["'`]/.test(value)) return shiki("#032f62", "#a5d6ff");
-  if (language === "shell" || language === "bash") {
-    if (value.startsWith("--")) return shiki("#005cc5", "#79c0ff");
-    if (/^(bunx|bun|npm|npx|pnpm|yarn|mason|add|cp)$/.test(value)) {
-      return shiki("#d73a49", "#ff7b72");
-    }
-    return undefined;
-  }
-  if (/^(import|from|const|let|return|function|export|type|true|false|undefined)$/.test(value)) {
-    return shiki("#d73a49", "#ff7b72");
-  }
-  if (/^<\/?[A-Z]/.test(value) || /^[A-Z][\w.]*$/.test(value)) {
-    return shiki("#6f42c1", "#d2a8ff");
-  }
-  if (/^<\/?[a-z]/.test(value)) return shiki("#22863a", "#7ee787");
-  if (/^[{}()[\].,;:=<>/]$/.test(value)) return shiki("#24292e", "#c9d1d9");
-  return undefined;
-}
-
-function shiki(light: string, dark: string): JSX.CSSProperties {
-  return {
-    "--shiki-light": light,
-    "--shiki-dark": dark,
-  } as JSX.CSSProperties;
-}
 
 export function MobileNav(props: Readonly<{ groups: readonly NavGroup[] }>) {
   const [open, setOpen] = createSignal(false);
@@ -364,7 +332,7 @@ export function DocsSidebar(props: Readonly<{ groups: readonly NavGroup[] }>) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const isActive = (href: string) => {
     const path = href.split("#")[0] || "/docs";
-    return pathname() === path || (pathname() === "/" && path === "/docs");
+    return pathname() === path;
   };
 
   return (

@@ -17,7 +17,7 @@ export default function Header() {
 
   return (
     <header class="sticky top-0 z-40 w-full bg-sidebar/80 backdrop-blur-sm before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-border/64">
-      <div class="relative mx-auto flex h-(--header-height) w-full max-w-[1416px] items-center justify-between gap-2 px-4 sm:px-6">
+      <div class="relative mx-auto flex h-(--header-height) w-full max-w-[1416px] items-center justify-between gap-2 px-4 lg:px-6">
         <div class="flex min-w-0 items-center gap-2">
           <MobileNav groups={navGroups} />
           <Link to="/docs" class="flex min-w-0 items-center gap-2.5" aria-label="Keystone UI home">

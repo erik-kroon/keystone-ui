@@ -51,27 +51,34 @@ import {
   TooltipTrigger,
 } from "@keystone-ui/ui/default/ui/tooltip.tsx";
 
+const accordionItems = [
+  {
+    content:
+      "Keystone UI is a source-owned Solid component system for design systems and web apps.",
+    id: "item-1",
+    title: "What is Keystone UI?",
+  },
+  {
+    content: "Install components with Mason, then own the generated source in your application.",
+    id: "item-2",
+    title: "How do I get started?",
+  },
+  {
+    content: "Yes. Components are copy-paste source backed by Keystone Core.",
+    id: "item-3",
+    title: "Can I use it for my project?",
+  },
+];
+
 export function SingleAccordionExample() {
   return (
     <Accordion defaultValue={["item-3"]} class="w-full">
-      <AccordionItem value="item-1">
-        <AccordionTrigger>What is Keystone UI?</AccordionTrigger>
-        <AccordionContent>
-          Keystone UI is a source-owned Solid component system for design systems and web apps.
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="item-2">
-        <AccordionTrigger>How do I get started?</AccordionTrigger>
-        <AccordionContent>
-          Install components with Mason, then own the generated source in your application.
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="item-3">
-        <AccordionTrigger>Can I use it for my project?</AccordionTrigger>
-        <AccordionContent>
-          Yes. Components are copy-paste source backed by Keystone Core.
-        </AccordionContent>
-      </AccordionItem>
+      {accordionItems.map((item) => (
+        <AccordionItem value={item.id}>
+          <AccordionTrigger>{item.title}</AccordionTrigger>
+          <AccordionContent>{item.content}</AccordionContent>
+        </AccordionItem>
+      ))}
     </Accordion>
   );
 }
@@ -156,20 +163,45 @@ export function DisabledItemAccordionExample() {
   );
 }
 
-export const singleAccordionCode = `<Accordion defaultValue={["item-3"]} class="w-full">
-  <AccordionItem value="item-1">
-    <AccordionTrigger>What is Keystone UI?</AccordionTrigger>
-    <AccordionContent>Keystone UI is a source-owned Solid component system for design systems and web apps.</AccordionContent>
-  </AccordionItem>
-  <AccordionItem value="item-2">
-    <AccordionTrigger>How do I get started?</AccordionTrigger>
-    <AccordionContent>Install components with Mason, then own the generated source in your application.</AccordionContent>
-  </AccordionItem>
-  <AccordionItem value="item-3">
-    <AccordionTrigger>Can I use it for my project?</AccordionTrigger>
-    <AccordionContent>Yes. Components are copy-paste source backed by Keystone Core.</AccordionContent>
-  </AccordionItem>
-</Accordion>`;
+export const singleAccordionCode = `import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
+export default function Component() {
+  const items = [
+    {
+      content:
+        "Keystone UI is a source-owned Solid component system for design systems and web apps.",
+      id: "item-1",
+      title: "What is Keystone UI?",
+    },
+    {
+      content:
+        "Install components with Mason, then own the generated source in your application.",
+      id: "item-2",
+      title: "How do I get started?",
+    },
+    {
+      content: "Yes. Components are copy-paste source backed by Keystone Core.",
+      id: "item-3",
+      title: "Can I use it for my project?",
+    },
+  ];
+
+  return (
+    <Accordion defaultValue={["item-3"]} class="w-full">
+      {items.map((item) => (
+        <AccordionItem value={item.id}>
+          <AccordionTrigger>{item.title}</AccordionTrigger>
+          <AccordionContent>{item.content}</AccordionContent>
+        </AccordionItem>
+      ))}
+    </Accordion>
+  );
+}`;
 
 export const multipleAccordionCode = `<Accordion defaultValue={["item-1", "item-2"]} class="w-full" multiple>
   <AccordionItem value="item-1">

@@ -6,27 +6,54 @@ import { Suspense } from "solid-js";
 import { HydrationScript } from "solid-js/web";
 
 import Header from "@/components/header";
+import { seo } from "@/lib/utils";
 import stylesUrl from "@/styles.css?url";
 
 export interface RouterContext {}
 
 export const Route = createRootRouteWithContext<RouterContext>()({
+  component: RootComponent,
   head: () => ({
-    links: [{ rel: "stylesheet", href: stylesUrl }],
     meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Keystone UI" },
-      { rel: "icon", href: "/favicon.svg" },
+      {
+        charSet: "utf-8",
+      },
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1",
+      },
+      ...seo({
+        title: "Keystone",
+        description: "Keystone UI",
+      }),
+    ],
+    links: [
+      { rel: "stylesheet", href: stylesUrl },
+      {
+        rel: "icon",
+        type: "image/svg+xml",
+        href: "/favicon.svg",
+      },
+      {
+        rel: "manifest",
+        href: "/site.webmanifest",
+      },
     ],
   }),
-  component: RootComponent,
 });
 
 function RootComponent() {
   return (
     <RootDocument>
-      <div class="min-h-svh">
+      <div class="relative isolate flex min-h-svh flex-col overflow-clip bg-sidebar text-foreground [--header-height:4rem]">
+        <div
+          aria-hidden="true"
+          class="pointer-events-none absolute inset-0 z-45 mx-auto hidden w-full max-w-[1416px] px-4 before:absolute before:inset-y-0 before:-left-3 before:w-px before:bg-border/64 after:absolute after:inset-y-0 after:-right-3 after:w-px after:bg-border/64 lg:block lg:px-6"
+        />
+        <div
+          aria-hidden="true"
+          class="pointer-events-none fixed inset-0 z-45 mx-auto hidden w-full max-w-[1416px] px-4 before:absolute before:top-[calc(var(--header-height)-4.5px)] before:-left-[11.5px] before:z-1 before:-ml-1 before:size-2 before:rounded-[2px] before:border before:border-border before:bg-popover before:bg-clip-padding before:shadow-xs/5 after:absolute after:top-[calc(var(--header-height)-4.5px)] after:-right-[11.5px] after:z-1 after:-mr-1 after:size-2 after:rounded-[2px] after:border after:border-border after:bg-background after:bg-clip-padding after:shadow-xs/5 dark:before:bg-clip-border dark:after:bg-clip-border lg:block lg:px-6"
+        />
         <Header />
         <Outlet />
       </div>
