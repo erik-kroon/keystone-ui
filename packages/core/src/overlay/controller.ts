@@ -1,4 +1,4 @@
-import { createEffect, createSignal, type Accessor, type JSX } from "solid-js";
+import { createEffect, createSignal, onCleanup, type Accessor, type JSX } from "solid-js";
 import { assignRef } from "./dom";
 import { getPartDataAttributes } from "../metadata/index";
 import { createOverlayDismissalPolicy } from "./dismissal-policy";
@@ -193,18 +193,24 @@ export function createOverlayController<Reason extends string>(
   createEffect(() => {
     const content = contentElement();
     const status = presence.transitionStatus();
+    const style = presence.transitionStyle();
     const currentState = state();
 
     content?.setAttribute("data-state", currentState);
     content?.setAttribute("data-transition-status", status);
+    setOptionalAttribute(content, "data-starting-style", style === "starting");
+    setOptionalAttribute(content, "data-ending-style", style === "ending");
   });
   createEffect(() => {
     const positioner = positionerElement();
     const status = presence.transitionStatus();
+    const style = presence.transitionStyle();
     const currentState = state();
 
     positioner?.setAttribute("data-state", currentState);
     positioner?.setAttribute("data-transition-status", status);
+    setOptionalAttribute(positioner, "data-starting-style", style === "starting");
+    setOptionalAttribute(positioner, "data-ending-style", style === "ending");
   });
   const getPartProps = (part: string) => ({
     ...getPartDataAttributes(options.scope, part),
@@ -214,9 +220,22 @@ export function createOverlayController<Reason extends string>(
     get "data-transition-status"() {
       return presence.transitionStatus();
     },
+    get "data-starting-style"() {
+      return presence.transitionStyle() === "starting" ? "" : undefined;
+    },
+    get "data-ending-style"() {
+      return presence.transitionStyle() === "ending" ? "" : undefined;
+    },
   });
   const getFloatingProps = <T extends HTMLElement>(props: JSX.HTMLAttributes<T>) => {
     return floating?.getFloatingProps({ style: props.style }) ?? { style: props.style };
+  };
+  const getFloatingContentStyle = <T extends HTMLElement>(props: JSX.HTMLAttributes<T>) => {
+    if (positionerElement()) {
+      return props.style;
+    }
+
+    return getFloatingProps(props).style;
   };
 
   return {
@@ -278,26 +297,40 @@ export function createOverlayController<Reason extends string>(
         ref: (element: T) => {
           setContentElement(() => element);
           presence.setElement(element);
+          onCleanup(() => {
+            if (contentElement() === element) {
+              setContentElement(undefined);
+              presence.setElement(undefined);
+            }
+          });
           assignRef(domProps.ref, element);
         },
       };
     },
-    getFloatingContentProps: <T extends HTMLElement>(props: JSX.HTMLAttributes<T>) => {
-      const floatingProps = getFloatingProps(props);
-
-      return {
-        ...props,
-        "data-side": floating?.side(),
-        "data-align": floating?.align(),
-        style: floatingProps.style,
-        ref: (element: T) => {
-          setContentElement(() => element);
-          presence.setElement(element);
-          assignRef(props.ref, element);
-          scheduleMicrotask(() => floating?.update());
-        },
-      };
-    },
+    getFloatingContentProps: <T extends HTMLElement>(props: JSX.HTMLAttributes<T>) => ({
+      ...props,
+      get "data-side"() {
+        return floating?.side();
+      },
+      get "data-align"() {
+        return floating?.align();
+      },
+      get style() {
+        return getFloatingContentStyle(props);
+      },
+      ref: (element: T) => {
+        setContentElement(() => element);
+        presence.setElement(element);
+        onCleanup(() => {
+          if (contentElement() === element) {
+            setContentElement(undefined);
+            presence.setElement(undefined);
+          }
+        });
+        assignRef(props.ref, element);
+        scheduleMicrotask(() => floating?.update());
+      },
+    }),
     getFloatingPositionerProps: <T extends HTMLElement>(props: JSX.HTMLAttributes<T>) => {
       const floatingProps = getFloatingProps(props);
 
@@ -308,6 +341,11 @@ export function createOverlayController<Reason extends string>(
         style: floatingProps.style,
         ref: (element: T) => {
           setPositionerElement(() => element);
+          onCleanup(() => {
+            if (positionerElement() === element) {
+              setPositionerElement(undefined);
+            }
+          });
           assignRef(props.ref, element);
           scheduleMicrotask(() => floating?.update());
         },
@@ -401,4 +439,21 @@ export function createOverlayController<Reason extends string>(
     triggerElement,
     triggerId: triggerId(),
   };
+}
+
+function setOptionalAttribute(
+  element: HTMLElement | undefined,
+  attribute: "data-ending-style" | "data-starting-style",
+  present: boolean,
+) {
+  if (!element) {
+    return;
+  }
+
+  if (present) {
+    element.setAttribute(attribute, "");
+    return;
+  }
+
+  element.removeAttribute(attribute);
 }

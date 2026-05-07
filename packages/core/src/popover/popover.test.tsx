@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+import { createSignal, type Setter } from "solid-js";
 import { Popover } from "./index";
 import {
   click,
@@ -43,6 +44,91 @@ describe("popover arrow", () => {
     expect(arrow.getAttribute("data-side")).toBe("bottom");
     expect(arrow.getAttribute("data-align")).toBe("start");
     expect(arrow.style.position).toBe("absolute");
+  });
+});
+
+describe("popover floating positioning", () => {
+  test("centers below the trigger by default", async () => {
+    render(() => (
+      <Popover.Root defaultOpen>
+        <Popover.Trigger>Open</Popover.Trigger>
+        <Popover.Portal>
+          <Popover.Positioner>
+            <Popover.Content>Details</Popover.Content>
+          </Popover.Positioner>
+        </Popover.Portal>
+      </Popover.Root>
+    ));
+
+    const trigger = getByPart("popover", "trigger");
+    const positioner = getByPart("popover", "positioner");
+
+    trigger.getBoundingClientRect = () =>
+      ({ bottom: 70, height: 40, left: 300, right: 420, top: 30, width: 120 }) as DOMRect;
+    positioner.getBoundingClientRect = () =>
+      ({ bottom: 0, height: 80, left: 0, right: 0, top: 0, width: 200 }) as DOMRect;
+
+    window.dispatchEvent(new Event("resize"));
+    await settled();
+
+    expect(positioner.style.left).toBe("260px");
+    expect(positioner.style.top).toBe("74px");
+    expect(positioner.getAttribute("data-side")).toBe("bottom");
+    expect(positioner.getAttribute("data-align")).toBe("center");
+  });
+
+  test("keeps nested content unpositioned across positioner remounts", async () => {
+    let setOpen!: Setter<boolean>;
+
+    render(() => {
+      const [open, setOpenSignal] = createSignal(true);
+      setOpen = setOpenSignal;
+
+      return (
+        <Popover.Root open={open()} onOpenChange={setOpen}>
+          <Popover.Trigger>Open</Popover.Trigger>
+          <Popover.Portal>
+            <Popover.Positioner>
+              <Popover.Content>Details</Popover.Content>
+            </Popover.Positioner>
+          </Popover.Portal>
+        </Popover.Root>
+      );
+    });
+
+    const trigger = getByPart("popover", "trigger");
+    trigger.getBoundingClientRect = () =>
+      ({ bottom: 48, height: 32, left: 12, right: 132, top: 16, width: 120 }) as DOMRect;
+
+    let positioner = getByPart("popover", "positioner");
+    positioner.getBoundingClientRect = () =>
+      ({ bottom: 0, height: 80, left: 0, right: 0, top: 0, width: 200 }) as DOMRect;
+
+    window.dispatchEvent(new Event("resize"));
+    await settled();
+
+    expect(positioner.style.left).toBe("4px");
+    expect(positioner.style.top).toBe("52px");
+    expect(getByPart("popover", "content").style.left).toBe("");
+    expect(getByPart("popover", "content").style.top).toBe("");
+
+    setOpen(false);
+    await settled();
+    expect(queryByPart("popover", "content")).toBeNull();
+
+    setOpen(true);
+    await settled();
+
+    positioner = getByPart("popover", "positioner");
+    positioner.getBoundingClientRect = () =>
+      ({ bottom: 0, height: 80, left: 0, right: 0, top: 0, width: 200 }) as DOMRect;
+    window.dispatchEvent(new Event("resize"));
+    await settled();
+
+    expect(positioner.style.left).toBe("4px");
+    expect(positioner.style.top).toBe("52px");
+    expect(getByPart("popover", "content").style.left).toBe("");
+    expect(getByPart("popover", "content").style.top).toBe("");
   });
 });
 

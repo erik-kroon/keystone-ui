@@ -16,6 +16,11 @@ describe("overlay presence", () => {
     );
 
     expect(transitionStatus?.values).toEqual(["closed", "closing", "opening", "open"]);
+    expect(metadata?.dataAttributes.some((attribute) => attribute.name === "data-starting-style"))
+      .toBe(true);
+    expect(metadata?.dataAttributes.some((attribute) => attribute.name === "data-ending-style")).toBe(
+      true,
+    );
   });
 
   test("retains mounted content until close transitions complete", async () => {
@@ -41,12 +46,17 @@ describe("overlay presence", () => {
     expect(presence.shouldMount()).toBe(false);
 
     setOpen(true);
-    await settled();
+    await Promise.resolve();
 
     expect(presence.mounted()).toBe(true);
     expect(presence.transitionStatus()).toBe("opening");
+    expect(presence.transitionStyle()).toBe("starting");
 
+    await settled();
     await animationFrame();
+    await settled();
+    expect(presence.transitionStyle()).toBe(undefined);
+
     element.dispatchEvent(new Event("transitionend"));
     await settled();
 
@@ -60,6 +70,7 @@ describe("overlay presence", () => {
     expect(presence.shouldMount()).toBe(true);
     expect(presence.hidden()).toBe(false);
     expect(presence.transitionStatus()).toBe("closing");
+    expect(presence.transitionStyle()).toBe("ending");
 
     await animationFrame();
     element.dispatchEvent(new Event("transitionend"));
@@ -145,6 +156,7 @@ describe("overlay presence", () => {
     expect(presence.mounted()).toBe(true);
     expect(presence.hidden()).toBe(false);
     expect(presence.transitionStatus()).toBe("closing");
+    expect(presence.transitionStyle()).toBe("ending");
 
     await animationFrame();
     element.dispatchEvent(new Event("transitionend"));

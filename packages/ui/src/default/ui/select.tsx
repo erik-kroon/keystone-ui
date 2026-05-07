@@ -54,7 +54,7 @@ const triggerBaseClass = classes(
   "relative",
   "inline-flex",
   "min-h-9",
-  "w-full",
+  "max-w-full",
   "min-w-36",
   "select-none",
   "items-center",
@@ -148,6 +148,10 @@ function CheckIcon() {
       <path d="M5.252 12.7 10.2 18.63 18.748 5.37" />
     </svg>
   );
+}
+
+function itemLabelFromChildren(children: JSX.Element, value: string) {
+  return typeof children === "string" || typeof children === "number" ? String(children) : value;
 }
 
 export function Select(props: SelectProps) {
@@ -354,11 +358,13 @@ export function SelectLabel(props: SelectLabelProps) {
 }
 
 export function SelectItem(props: SelectItemProps) {
-  const [local, rest] = splitProps(props, ["children", "class", "indicator"]);
+  const [local, rest] = splitProps(props, ["children", "class", "indicator", "label", "value"]);
 
   return (
     <CoreSelect.Item
       {...rest}
+      value={local.value}
+      label={local.label ?? itemLabelFromChildren(local.children, local.value)}
       data-slot="select-item"
       class={cn(
         classes(

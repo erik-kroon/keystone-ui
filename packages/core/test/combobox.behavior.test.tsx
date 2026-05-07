@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+import { createSignal, type Setter } from "solid-js";
 import { Autocomplete, Combobox } from "../src/combobox/index";
 import { click, getByPart, keyDown, render, settled } from "./harness";
 
@@ -137,5 +138,62 @@ describe("Combobox behavior harness", () => {
     expect(input.getAttribute("role")).toBe("combobox");
     expect(listbox.getAttribute("role")).toBe("listbox");
     expect(getByPart("autocomplete", "group").getAttribute("role")).toBe("group");
+  });
+
+  test("keeps nested content unpositioned when a positioner owns floating geometry", async () => {
+    let setOpen!: Setter<boolean>;
+
+    render(() => {
+      const [open, setOpenSignal] = createSignal(true);
+      setOpen = setOpenSignal;
+
+      return (
+        <Combobox.Root open={open()} onOpenChange={setOpen}>
+          <Combobox.Input />
+          <Combobox.Portal>
+            <Combobox.Positioner>
+              <Combobox.Content>
+                <Combobox.Listbox>
+                  <Combobox.Item value="alpha">Alpha</Combobox.Item>
+                </Combobox.Listbox>
+              </Combobox.Content>
+            </Combobox.Positioner>
+          </Combobox.Portal>
+        </Combobox.Root>
+      );
+    });
+
+    const input = getByPart("combobox", "input");
+    input.getBoundingClientRect = () =>
+      ({ bottom: 48, height: 32, left: 12, right: 132, top: 16, width: 120 }) as DOMRect;
+
+    let positioner = getByPart("combobox", "positioner");
+    positioner.getBoundingClientRect = () =>
+      ({ bottom: 0, height: 64, left: 0, right: 0, top: 0, width: 180 }) as DOMRect;
+
+    window.dispatchEvent(new Event("resize"));
+    await settled();
+
+    expect(positioner.style.left).toBe("12px");
+    expect(positioner.style.top).toBe("52px");
+    expect(getByPart("combobox", "content").style.left).toBe("");
+    expect(getByPart("combobox", "content").style.top).toBe("");
+
+    setOpen(false);
+    await settled();
+
+    setOpen(true);
+    await settled();
+
+    positioner = getByPart("combobox", "positioner");
+    positioner.getBoundingClientRect = () =>
+      ({ bottom: 0, height: 64, left: 0, right: 0, top: 0, width: 180 }) as DOMRect;
+    window.dispatchEvent(new Event("resize"));
+    await settled();
+
+    expect(positioner.style.left).toBe("12px");
+    expect(positioner.style.top).toBe("52px");
+    expect(getByPart("combobox", "content").style.left).toBe("");
+    expect(getByPart("combobox", "content").style.top).toBe("");
   });
 });

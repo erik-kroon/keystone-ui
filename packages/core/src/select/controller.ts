@@ -1,4 +1,4 @@
-import { createMemo, splitProps, type JSX } from "solid-js";
+import { createMemo, createSignal, splitProps, type JSX } from "solid-js";
 import type { FormControlApi } from "../form/index";
 import { createListboxInteraction, type ListboxInteractionApi } from "../collection/index";
 import type { ListInteractionKernelApi } from "../collection/interaction-kernel";
@@ -22,7 +22,7 @@ export type SelectChangeDetail = {
 
 export type SelectOpenChangeDetail = {
   event?: Event;
-  reason: "trigger" | "keyboard" | "select" | "escape" | "programmatic";
+  reason: "trigger" | "keyboard" | "select" | "escape" | "outside" | "programmatic";
 };
 
 export type SelectItemData = {
@@ -112,7 +112,9 @@ export type SelectItemIndicatorProps = SelectPartProps<HTMLSpanElement> &
 
 export type SelectTriggerContractProps = Omit<SelectTriggerProps, "as" | "children">;
 export type SelectValueContractProps = Omit<SelectValueProps, "children" | "placeholder">;
-export type SelectContentContractProps = Omit<SelectContentProps, "children">;
+export type SelectContentContractProps = Omit<SelectContentProps, "children"> & {
+  positioned?: boolean;
+};
 export type SelectPositionerContractProps = Omit<SelectPositionerProps, "children">;
 export type SelectArrowContractProps = Omit<SelectArrowProps, "children">;
 export type SelectListboxContractProps = Omit<SelectListboxProps, "children">;
@@ -183,6 +185,8 @@ export type SelectApi = {
   placeholder: () => string | undefined;
   readOnly: () => boolean;
   required: () => boolean;
+  needsSelectedLabel: () => boolean;
+  selectedLabel: () => string | undefined;
   setOpen: (open: boolean, detail: SelectOpenChangeDetail) => void;
   triggerId: string;
   value: () => string | undefined;
@@ -321,6 +325,8 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
   const groupId = (value: string) => `${popup.listboxId}-group-${value}`;
   const groupLabelId = (value: string) => `${popup.listboxId}-group-${value}-label`;
   const setOpen = popup.setOpen;
+  const itemLabels = new Map<string, string>();
+  const [itemLabelVersion, setItemLabelVersion] = createSignal(0);
   const listbox = createListboxInteraction<SelectItemData, SelectChangeDetail>({
     id: listboxId,
     labelledBy: triggerId,
@@ -366,6 +372,28 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
   const open = popup.open;
   const state = popup.state;
   const partProps = popup.getPartProps;
+  const rememberItemLabel = (value: string, label: string) => {
+    if (itemLabels.get(value) === label) {
+      return;
+    }
+
+    itemLabels.set(value, label);
+    setItemLabelVersion((version) => version + 1);
+  };
+  const selectedLabel = createMemo(() => {
+    const selectedItem = listbox.selection.selectedItem();
+
+    if (selectedItem) {
+      return selectedItem.label;
+    }
+
+    itemLabelVersion();
+    const value = formValue.value();
+    return value === undefined ? undefined : itemLabels.get(value);
+  });
+  const needsSelectedLabel = createMemo(
+    () => formValue.value() !== undefined && selectedLabel() === undefined,
+  );
 
   return {
     contentId: popup.contentId,
@@ -402,6 +430,7 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
         "onPointerMove",
         "value",
       ]);
+      rememberItemLabel(local.value, local.label);
 
       return listbox.getOptionProps({
         ...others,
@@ -522,6 +551,8 @@ export function createSelect(options: CreateSelectOptions = {}): SelectApi {
     placeholder: () => options.placeholder?.(),
     readOnly,
     required,
+    needsSelectedLabel,
+    selectedLabel,
     setOpen,
     triggerId: popup.anchorId,
     value: listbox.selection.value,

@@ -34,7 +34,7 @@ const tabsListClass = (variant: TabsVariant) =>
     "text-muted-foreground",
     "data-[orientation=vertical]:flex-col",
     variant === "default"
-      ? "rounded-lg bg-muted p-0.5 text-muted-foreground/72"
+      ? "rounded-lg bg-transparent p-0 text-muted-foreground/72"
       : "data-[orientation=vertical]:px-1 data-[orientation=horizontal]:py-1 *:data-[slot=tabs-tab]:hover:bg-accent",
   );
 
@@ -50,7 +50,7 @@ const tabsTriggerClass = classes(
   "justify-center",
   "gap-1.5",
   "whitespace-nowrap",
-  "rounded-md",
+  "rounded-lg",
   "border-0",
   "px-[calc(--spacing(2.5)-1px)]",
   "font-medium",
@@ -92,7 +92,7 @@ const tabsIndicatorClass = (variant: TabsVariant = "default") =>
     "ease-in-out",
     variant === "underline"
       ? "z-10 bg-primary data-[orientation=horizontal]:h-0.5 data-[orientation=vertical]:w-0.5 data-[orientation=vertical]:-translate-x-px data-[orientation=horizontal]:translate-y-px"
-      : "rounded-md bg-background shadow-sm/5 supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[bottom:auto] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[height:anchor-size(--keystone-tabs-active_height)] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[left:anchor(--keystone-tabs-active_left)] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[top:anchor(--keystone-tabs-active_top)] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[translate:0_0] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[width:anchor-size(--keystone-tabs-active_width)] dark:bg-input",
+      : "rounded-lg bg-accent shadow-none supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[bottom:auto] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[height:anchor-size(--keystone-tabs-active_height)] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[left:anchor(--keystone-tabs-active_left)] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[top:anchor(--keystone-tabs-active_top)] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[translate:0_0] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[width:anchor-size(--keystone-tabs-active_width)]",
   );
 
 const tabsContentClass = classes("flex-1", "outline-none");

@@ -2,6 +2,7 @@ import { createEffect, createSignal, onCleanup, type Accessor } from "solid-js";
 import { getOpenClosedState } from "../utils/index";
 
 export type OverlayPresenceTransitionStatus = "closed" | "closing" | "opening" | "open";
+export type OverlayPresenceTransitionStyle = "ending" | "starting";
 
 export type OverlayPresenceCompleteDetail = {
   open: boolean;
@@ -13,6 +14,7 @@ export type OverlayPresenceApi = {
   mounted: Accessor<boolean>;
   setElement: (element: HTMLElement | undefined) => void;
   shouldMount: (forceMount?: boolean) => boolean;
+  transitionStyle: Accessor<OverlayPresenceTransitionStyle | undefined>;
   transitionStatus: Accessor<OverlayPresenceTransitionStatus>;
 };
 
@@ -28,7 +30,11 @@ export function createOverlayPresence(options: CreateOverlayPresenceOptions): Ov
   const [transitionStatus, setTransitionStatus] = createSignal<OverlayPresenceTransitionStatus>(
     getOpenClosedState(options.open()),
   );
+  const [transitionStyle, setTransitionStyle] = createSignal<
+    OverlayPresenceTransitionStyle | undefined
+  >();
   let cleanupTransition: (() => void) | undefined;
+  let clearStartingStyleFrame: number | undefined;
   let preventedUnmount = false;
   let requestedForceMount = false;
   let skipInitialEffect = true;
@@ -50,8 +56,7 @@ export function createOverlayPresence(options: CreateOverlayPresenceOptions): Ov
   const complete = (open: boolean) => {
     const shouldRetainOnClose = !open && (preventedUnmount || isForceMounted());
 
-    cleanupTransition?.();
-    cleanupTransition = undefined;
+    clearTransitionWork();
     setTransitionStatus(getOpenClosedState(open));
 
     if (!open && !shouldRetainOnClose) {
@@ -64,6 +69,15 @@ export function createOverlayPresence(options: CreateOverlayPresenceOptions): Ov
     });
     preventedUnmount = false;
   };
+  const clearTransitionWork = () => {
+    cleanupTransition?.();
+    cleanupTransition = undefined;
+    if (clearStartingStyleFrame !== undefined) {
+      cancelScheduledAnimationFrame(clearStartingStyleFrame);
+      clearStartingStyleFrame = undefined;
+    }
+    setTransitionStyle(undefined);
+  };
 
   createEffect(() => {
     const open = options.open();
@@ -73,21 +87,26 @@ export function createOverlayPresence(options: CreateOverlayPresenceOptions): Ov
       return;
     }
 
-    cleanupTransition?.();
-    cleanupTransition = undefined;
+    clearTransitionWork();
 
     if (open) {
       setMounted(true);
       setTransitionStatus("opening");
+      setTransitionStyle("starting");
+      clearStartingStyleFrame = scheduleAnimationFrame(() => {
+        clearStartingStyleFrame = undefined;
+        setTransitionStyle(undefined);
+      });
       cleanupTransition = waitForElementTransition(element, () => complete(true));
       return;
     }
 
     setTransitionStatus("closing");
+    setTransitionStyle("ending");
     cleanupTransition = waitForElementTransition(element, () => complete(false));
   });
 
-  onCleanup(() => cleanupTransition?.());
+  onCleanup(clearTransitionWork);
 
   return {
     hidden: (forceMount) =>
@@ -95,6 +114,7 @@ export function createOverlayPresence(options: CreateOverlayPresenceOptions): Ov
     mounted,
     setElement,
     shouldMount,
+    transitionStyle,
     transitionStatus,
   };
 }

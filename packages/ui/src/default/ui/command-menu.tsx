@@ -454,8 +454,8 @@ export function CommandMenuBackdrop(props: CommandMenuBackdropProps) {
           "backdrop-blur-sm",
           "transition-all",
           "duration-200",
-          "data-[transition-status=ending]:opacity-0",
-          "data-[transition-status=starting]:opacity-0",
+          "data-ending-style:opacity-0",
+          "data-starting-style:opacity-0",
         ),
         local.class,
       )}

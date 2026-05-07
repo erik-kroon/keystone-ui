@@ -1,4 +1,4 @@
-import { createEffect, createSignal, type Accessor, type JSX } from "solid-js";
+import { createEffect, createSignal, onCleanup, type Accessor, type JSX } from "solid-js";
 import { createFormControl, type FormControlApi, type FormControlValue } from "../form/index";
 import { getPartDataAttributes } from "../metadata/index";
 import { assignRef } from "../overlay/dom";
@@ -92,6 +92,7 @@ export type PopupFieldKernelApi<
   ) => Record<string, unknown>;
   getContentProps: (
     props: JSX.HTMLAttributes<HTMLDivElement> & {
+      positioned?: boolean;
       ref?: HTMLDivElement | ((element: HTMLDivElement) => void);
     },
   ) => Record<string, unknown>;
@@ -188,10 +189,12 @@ export function createPopupFieldKernel<
       },
     }),
     getContentProps: (props) => {
-      const floatingProps = floating.getFloatingProps({ style: props.style });
+      const { positioned, ref, style, ...contentProps } = props;
+      const contentStyle = () =>
+        positioned || positionerElement() ? style : floating.getFloatingProps({ style }).style;
 
       return {
-        ...props,
+        ...contentProps,
         id: contentId(),
         ...partProps(options.contentPart ?? "content"),
         get "data-state"() {
@@ -203,10 +206,17 @@ export function createPopupFieldKernel<
         get "data-align"() {
           return floating.align();
         },
-        style: floatingProps.style,
+        get style() {
+          return contentStyle();
+        },
         ref: (element: HTMLDivElement) => {
           setContentElement(element);
-          assignRef(props.ref, element);
+          onCleanup(() => {
+            if (contentElement() === element) {
+              setContentElement(undefined);
+            }
+          });
+          assignRef(ref, element);
           scheduleMicrotask(floating.update);
         },
       };
@@ -231,6 +241,11 @@ export function createPopupFieldKernel<
         style: floatingProps.style,
         ref: (element: HTMLDivElement) => {
           setPositionerElement(element);
+          onCleanup(() => {
+            if (positionerElement() === element) {
+              setPositionerElement(undefined);
+            }
+          });
           assignRef(props.ref, element);
           scheduleMicrotask(floating.update);
         },

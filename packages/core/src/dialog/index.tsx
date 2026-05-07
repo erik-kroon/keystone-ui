@@ -1,4 +1,12 @@
-import { createContext, createSignal, splitProps, useContext, type JSX } from "solid-js";
+import {
+  createContext,
+  createEffect,
+  createSignal,
+  onCleanup,
+  splitProps,
+  useContext,
+  type JSX,
+} from "solid-js";
 import { getPartDataAttributes } from "../metadata/index";
 import { assignRef } from "../overlay/dom";
 import { OverlayLayerProvider, type DismissableLayerOutsideEvent } from "../overlay/index";
@@ -105,6 +113,18 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
     onOpenChange: (open, detail) => options.onOpenChange?.(open, detail),
     onOpenChangeComplete: options.onOpenChangeComplete,
   });
+  createEffect(() => {
+    const status = overlay.presence.transitionStatus();
+    const style = overlay.presence.transitionStyle();
+    const currentState = overlay.state();
+
+    for (const element of [backdropElement(), positionerElement()]) {
+      element?.setAttribute("data-state", currentState);
+      element?.setAttribute("data-transition-status", status);
+      setOptionalAttribute(element, "data-starting-style", style === "starting");
+      setOptionalAttribute(element, "data-ending-style", style === "ending");
+    }
+  });
 
   return {
     contentId: overlay.contentId,
@@ -113,6 +133,11 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
       ...props,
       ref: (element: HTMLDivElement) => {
         setBackdropElement(() => element);
+        onCleanup(() => {
+          if (backdropElement() === element) {
+            setBackdropElement(undefined);
+          }
+        });
         assignRef(props.ref, element);
       },
       get hidden() {
@@ -175,6 +200,11 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
       ...props,
       ref: (element: HTMLDivElement) => {
         setPositionerElement(() => element);
+        onCleanup(() => {
+          if (positionerElement() === element) {
+            setPositionerElement(undefined);
+          }
+        });
         assignRef(props.ref, element);
       },
       get hidden() {
@@ -199,6 +229,23 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
     shouldMount: overlay.shouldMount,
     titleId: overlay.titleId,
   };
+}
+
+function setOptionalAttribute(
+  element: HTMLElement | undefined,
+  attribute: "data-ending-style" | "data-starting-style",
+  present: boolean,
+) {
+  if (!element) {
+    return;
+  }
+
+  if (present) {
+    element.setAttribute(attribute, "");
+    return;
+  }
+
+  element.removeAttribute(attribute);
 }
 
 function useDialog(part: string) {

@@ -112,7 +112,7 @@ export function createPopover(options: CreatePopoverOptions = {}): PopoverApi {
       collisionPadding: options.collisionPadding,
       fitViewport: options.fitViewport,
       gutter: options.gutter,
-      placement: options.placement,
+      placement: () => options.placement?.() ?? "bottom",
       rootBoundary: options.rootBoundary,
       sameWidth: options.sameWidth,
       sticky: options.sticky,

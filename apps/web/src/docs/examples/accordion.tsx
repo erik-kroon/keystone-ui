@@ -17,6 +17,7 @@ import {
 import { Checkbox } from "@keystone-ui/ui/default/ui/checkbox.tsx";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -72,7 +73,7 @@ const accordionItems = [
 
 export function SingleAccordionExample() {
   return (
-    <Accordion defaultValue={["item-3"]} class="w-full">
+    <Accordion class="w-full">
       {accordionItems.map((item) => (
         <AccordionItem value={item.id}>
           <AccordionTrigger>{item.title}</AccordionTrigger>
@@ -192,7 +193,7 @@ export default function Component() {
   ];
 
   return (
-    <Accordion defaultValue={["item-3"]} class="w-full">
+    <Accordion class="w-full">
       {items.map((item) => (
         <AccordionItem value={item.id}>
           <AccordionTrigger>{item.title}</AccordionTrigger>
@@ -253,7 +254,7 @@ export const accordionUsageCode = `import {
   AccordionContent,
 } from "@/components/ui/accordion";
 
-<Accordion defaultValue={["item-1"]} class="w-full">
+<Accordion class="w-full">
   <AccordionItem value="item-1">
     <AccordionTrigger>What is this?</AccordionTrigger>
     <AccordionContent>Accordion is a Core-backed UI disclosure pattern.</AccordionContent>
@@ -284,7 +285,7 @@ export const buttonUsageCode = `import { Button } from "@/components/ui/button";
 
 export function CardExample() {
   return (
-    <Card class="w-full max-w-md">
+    <Card class="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Create project</CardTitle>
         <CardDescription>Configure a new Solid workspace before deploying.</CardDescription>
@@ -296,7 +297,7 @@ export function CardExample() {
         </label>
         <label class="grid gap-2 text-sm">
           <span class="font-medium text-foreground">Framework</span>
-          <Select defaultValue="solid">
+          <Select>
             <SelectTrigger>
               <SelectValue placeholder="Choose a framework" />
             </SelectTrigger>
@@ -318,7 +319,7 @@ export function CardExample() {
   );
 }
 
-export const cardExampleCode = `<Card class="w-full max-w-md">
+export const cardExampleCode = `<Card class="w-full max-w-sm">
   <CardHeader>
     <CardTitle>Create project</CardTitle>
     <CardDescription>Configure a new Solid workspace before deploying.</CardDescription>
@@ -330,7 +331,7 @@ export const cardExampleCode = `<Card class="w-full max-w-md">
     </label>
     <label class="grid gap-2 text-sm">
       <span class="font-medium text-foreground">Framework</span>
-      <Select defaultValue="solid">
+      <Select>
         <SelectTrigger>
           <SelectValue placeholder="Choose a framework" />
         </SelectTrigger>
@@ -387,7 +388,9 @@ export function DialogExample() {
           </p>
         </DialogPanel>
         <DialogFooter>
-          <Button type="button">Send invite</Button>
+          <DialogClose as={Button} type="button">
+            Send invite
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -403,15 +406,17 @@ export const dialogExampleCode = `<Dialog>
     </DialogHeader>
     <DialogPanel>Dialog content is rendered through Core overlay behavior.</DialogPanel>
     <DialogFooter>
-      <Button type="button">Send invite</Button>
+      <DialogClose as={Button} type="button">Send invite</DialogClose>
     </DialogFooter>
   </DialogContent>
 </Dialog>`;
 
 export const dialogUsageCode = `import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -425,6 +430,9 @@ import { Button } from "@/components/ui/button";
       <DialogTitle>Invite teammate</DialogTitle>
       <DialogDescription>Send an invitation.</DialogDescription>
     </DialogHeader>
+    <DialogFooter>
+      <DialogClose as={Button} type="button">Send invite</DialogClose>
+    </DialogFooter>
   </DialogContent>
 </Dialog>`;
 
@@ -452,7 +460,7 @@ export const checkboxUsageCode = `import { Checkbox } from "@/components/ui/chec
 
 export function SelectExample() {
   return (
-    <Select defaultValue="solid">
+    <Select>
       <SelectTrigger class="w-56">
         <SelectValue placeholder="Choose a framework" />
       </SelectTrigger>
@@ -465,7 +473,7 @@ export function SelectExample() {
   );
 }
 
-export const selectExampleCode = `<Select defaultValue="solid">
+export const selectExampleCode = `<Select>
   <SelectTrigger class="w-56">
     <SelectValue placeholder="Choose a framework" />
   </SelectTrigger>
@@ -484,7 +492,7 @@ export const selectUsageCode = `import {
   SelectValue,
 } from "@/components/ui/select";
 
-<Select defaultValue="solid">
+<Select>
   <SelectTrigger>
     <SelectValue placeholder="Choose a framework" />
   </SelectTrigger>

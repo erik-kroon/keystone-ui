@@ -1,11 +1,11 @@
 /// <reference types="vite/client" />
 
 import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from "@tanstack/solid-router";
-import type { JSX } from "solid-js";
-import { Suspense } from "solid-js";
+import { Suspense, type JSX } from "solid-js";
 import { HydrationScript } from "solid-js/web";
 
 import Header from "@/components/header";
+import { NotFound } from "@/components/not-found";
 import { seo } from "@/lib/utils";
 import stylesUrl from "@/styles.css?url";
 
@@ -13,6 +13,7 @@ export interface RouterContext {}
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
+  notFoundComponent: NotFound,
   head: () => ({
     meta: [
       {
@@ -55,7 +56,9 @@ function RootComponent() {
           class="pointer-events-none fixed inset-0 z-45 mx-auto hidden w-full max-w-[1416px] px-4 before:absolute before:top-[calc(var(--header-height)-4.5px)] before:-left-[11.5px] before:z-1 before:-ml-1 before:size-2 before:rounded-[2px] before:border before:border-border before:bg-popover before:bg-clip-padding before:shadow-xs/5 after:absolute after:top-[calc(var(--header-height)-4.5px)] after:-right-[11.5px] after:z-1 after:-mr-1 after:size-2 after:rounded-[2px] after:border after:border-border after:bg-background after:bg-clip-padding after:shadow-xs/5 dark:before:bg-clip-border dark:after:bg-clip-border lg:block lg:px-6"
         />
         <Header />
-        <Outlet />
+        <Suspense>
+          <Outlet />
+        </Suspense>
       </div>
     </RootDocument>
   );
@@ -69,7 +72,7 @@ function RootDocument(props: Readonly<{ children: JSX.Element }>) {
         <HeadContent />
       </head>
       <body>
-        <Suspense>{props.children}</Suspense>
+        {props.children}
         <Scripts />
       </body>
     </html>
