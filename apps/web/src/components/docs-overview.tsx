@@ -123,7 +123,7 @@ export function DocsOverview() {
         </section>
 
         <section id="own-your-code" class={sectionClass}>
-          <MdxH2 class={sectionHeadingClass}>Own Your Code</MdxH2>
+          <MdxH2 class={sectionHeadingClass}>Own your code</MdxH2>
           <MdxP class={proseClass}>
             Keystone follows the source-owned ethos of{" "}
             <strong class="font-medium text-foreground">shadcn/ui</strong>.
@@ -156,17 +156,16 @@ export function DocsOverview() {
           <MdxP class={proseClass}>
             Keystone source is meant to be{" "}
             <strong class="font-medium text-foreground">
-              read, reviewed, and changed
+              read, reviewed and changed.
             </strong>
-            . Components use explicit Solid code, stable data attributes,
-            predictable files, and registry metadata that records dependencies
-            and parity notes. That keeps the system legible as your team adapts
+            Components use explicit Solid code, stable data attributes and
+            predictable files. That keeps the system legible as your team adapts
             it over time.
           </MdxP>
         </section>
 
         <section id="get-involved" class={sectionClass}>
-          <MdxH2 class={sectionHeadingClass}>Get Involved</MdxH2>
+          <MdxH2 class={sectionHeadingClass}>Get involved</MdxH2>
           <MdxP class={proseClass}>
             Contributions, bug reports, accessibility notes, tests, examples,
             and docs improvements are welcome while Keystone is still forming.
