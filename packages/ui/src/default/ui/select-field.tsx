@@ -213,7 +213,7 @@ function SelectFieldControl(props: {
         data-scope="ui-select-field"
         data-part="trigger"
         data-slot="select-field-trigger"
-        class={cn("ui-select-field-trigger", props.triggerClass)}
+        class={cn("ui-select-field-trigger", "w-full", props.triggerClass)}
       >
         <SelectValue placeholder={props.placeholder} />
       </SelectTrigger>

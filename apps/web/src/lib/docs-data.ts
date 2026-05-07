@@ -46,9 +46,73 @@ export const navigableDocs = docsItems.filter(
 );
 
 export const componentDocs = navigableDocs.filter((item) => item.type === "registry:ui");
+const sidebarComponentDocs = componentDocs.filter(
+  (item) => !item.categories.includes("store") && !item.categories.includes("router"),
+);
 export const hookDocs = navigableDocs.filter((item) =>
   ["registry:component", "registry:hook", "registry:lib", "registry:store"].includes(item.type),
 );
+
+const componentMaturityByName: Readonly<Record<string, string>> = {
+  accordion: "Stable",
+  button: "Stable",
+  card: "Stable",
+  checkbox: "Stable",
+  dialog: "Stable",
+  popover: "Stable",
+  select: "Stable",
+  tabs: "Stable",
+  toast: "Preview",
+  tooltip: "Stable",
+};
+
+const maturityOrder: Readonly<Record<string, number>> = {
+  preview: 0,
+  beta: 1,
+  experimental: 2,
+  draft: 3,
+  deprecated: 4,
+};
+
+export function componentMaturity(item: RegistryDocItem) {
+  return componentMaturityByName[item.name] ?? "Draft";
+}
+
+function maturityGroupTitle(maturity: string) {
+  const normalized = maturity.trim().toLowerCase() || "draft";
+  return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+}
+
+function compareMaturityGroups(a: NavGroup, b: NavGroup) {
+  const orderDelta =
+    (maturityOrder[a.title.toLowerCase()] ?? 99) - (maturityOrder[b.title.toLowerCase()] ?? 99);
+  if (orderDelta !== 0) return orderDelta;
+  return a.title.localeCompare(b.title);
+}
+
+const stableSidebarComponentDocs = sidebarComponentDocs.filter(
+  (item) => componentMaturity(item).toLowerCase() === "stable",
+);
+const sidebarMaturityGroups = Object.values(
+  sidebarComponentDocs
+    .filter((item) => componentMaturity(item).toLowerCase() !== "stable")
+    .reduce<Record<string, NavGroup>>((groups, item) => {
+      const title = maturityGroupTitle(componentMaturity(item));
+      return {
+        ...groups,
+        [title]: {
+          title,
+          items: [
+            ...(groups[title]?.items ?? []),
+            {
+              href: componentHref(item.name),
+              label: item.title,
+            },
+          ],
+        },
+      };
+    }, {}),
+).sort(compareMaturityGroups);
 
 export const overviewPage: DocsPage = {
   description:
@@ -74,11 +138,12 @@ export const navGroups: readonly NavGroup[] = [
   },
   {
     title: "Components",
-    items: componentDocs.map((item) => ({
+    items: stableSidebarComponentDocs.map((item) => ({
       href: componentHref(item.name),
       label: item.title,
     })),
   },
+  ...sidebarMaturityGroups,
   {
     title: "Hooks",
     items: hookDocs.map((item) => ({

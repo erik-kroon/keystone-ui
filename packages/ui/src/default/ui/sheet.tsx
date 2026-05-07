@@ -88,7 +88,7 @@ export function SheetBackdrop(props: SheetBackdropProps) {
       {...rest}
       data-slot="sheet-backdrop"
       class={cn(
-        "ui-sheet-backdrop fixed inset-0 z-50 bg-black/32 backdrop-blur-sm transition-all duration-200 data-[transition-status=ending]:opacity-0 data-[transition-status=starting]:opacity-0",
+        "ui-sheet-backdrop fixed inset-0 z-50 bg-black/32 backdrop-blur-sm transition-all duration-200 data-ending-style:opacity-0 data-starting-style:opacity-0",
         local.class,
       )}
     />
@@ -152,28 +152,28 @@ export function SheetContent(props: SheetContentProps) {
               "before:absolute",
               "before:inset-0",
               "before:shadow-[0_1px_--theme(--color-black/4%)]",
-              "data-[transition-status=ending]:opacity-0",
-              "data-[transition-status=starting]:opacity-0",
+              "data-ending-style:opacity-0",
+              "data-starting-style:opacity-0",
               "max-sm:before:hidden",
               "dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
               "data-[side=bottom]:row-start-2",
               "data-[side=bottom]:border-t",
-              "data-[side=bottom]:data-[transition-status=ending]:translate-y-8",
-              "data-[side=bottom]:data-[transition-status=starting]:translate-y-8",
+              "data-[side=bottom]:data-ending-style:translate-y-8",
+              "data-[side=bottom]:data-starting-style:translate-y-8",
               "data-[side=top]:border-b",
-              "data-[side=top]:data-[transition-status=ending]:-translate-y-8",
-              "data-[side=top]:data-[transition-status=starting]:-translate-y-8",
+              "data-[side=top]:data-ending-style:-translate-y-8",
+              "data-[side=top]:data-starting-style:-translate-y-8",
               "data-[side=left]:w-[calc(100%-(--spacing(12)))]",
               "data-[side=left]:max-w-md",
               "data-[side=left]:border-e",
-              "data-[side=left]:data-[transition-status=ending]:-translate-x-8",
-              "data-[side=left]:data-[transition-status=starting]:-translate-x-8",
+              "data-[side=left]:data-ending-style:-translate-x-8",
+              "data-[side=left]:data-starting-style:-translate-x-8",
               "data-[side=right]:col-start-2",
               "data-[side=right]:w-[calc(100%-(--spacing(12)))]",
               "data-[side=right]:max-w-md",
               "data-[side=right]:border-s",
-              "data-[side=right]:data-[transition-status=ending]:translate-x-8",
-              "data-[side=right]:data-[transition-status=starting]:translate-x-8",
+              "data-[side=right]:data-ending-style:translate-x-8",
+              "data-[side=right]:data-starting-style:translate-x-8",
             ),
             variant() === "inset" &&
               classes(

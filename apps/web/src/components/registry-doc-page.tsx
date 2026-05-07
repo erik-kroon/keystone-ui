@@ -1,4 +1,4 @@
-import { ChevronRight, Clipboard, Package, Puzzle, Terminal } from "lucide-solid";
+import { ChevronRight, Clipboard, Copy, Puzzle, Terminal } from "lucide-solid";
 import { For, Show, createSignal, type JSX } from "solid-js";
 
 import { ComponentPreview } from "@/components/component-preview";
@@ -16,13 +16,13 @@ import {
 import { MdxContent, MdxH2, MdxH3, MdxList, MdxP, MdxTable } from "@/components/mdx-components";
 import {
   anatomyParts,
+  componentMaturity,
   findDocItem,
   itemToc,
-  registryTypeLabel,
   type DocsPage,
 } from "@/lib/docs-data";
 import type { RegistryDocItem } from "@/lib/registry-docs.gen";
-import { Tabs, TabsList, TabsTrigger } from "@keystone-ui/ui/default/ui/tabs.tsx";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@keystone-ui/ui/default/ui/tabs.tsx";
 
 import {
   ControlledAccordionExample,
@@ -96,6 +96,30 @@ type ComponentDocsBlueprint = {
   cssVariables?: readonly (readonly [string, string])[];
 };
 
+const pageHeaderActionClass =
+  "min-h-7.5 gap-1.25 rounded-lg px-2.5 text-sm shadow-none [&>svg]:size-3.75 [&>svg]:opacity-80";
+
+function maturityBadgeClass(maturity: string) {
+  switch (maturity.toLowerCase()) {
+    case "stable":
+      return "bg-success/8 text-success-foreground dark:bg-success/16";
+    case "beta":
+    case "preview":
+      return "bg-warning/8 text-warning-foreground dark:bg-warning/16";
+    case "experimental":
+      return "bg-info/8 text-info-foreground dark:bg-info/16";
+    case "deprecated":
+      return "bg-destructive/8 text-destructive-foreground dark:bg-destructive/16";
+    case "draft":
+    default:
+      return "bg-muted text-muted-foreground dark:bg-muted/64";
+  }
+}
+
+function maturityLabel(maturity: string | undefined) {
+  return (maturity ?? "Draft").toLowerCase();
+}
+
 const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
   accordion: {
     description: "A set of collapsible panels with headings and content.",
@@ -122,7 +146,7 @@ const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
     examples: [
       {
         code: singleAccordionCode,
-        description: "A single open item by default.",
+        description: "A single-open accordion that starts closed.",
         id: "single",
         preview: () => <SingleAccordionExample />,
         title: "Single accordion",
@@ -569,34 +593,36 @@ function RegistryDocContent(
       : props.item.api
         ? [{ name: props.item.title, description: readableMetadata(props.item.api) }]
         : [];
+  const maturity = () => maturityLabel(props.docsBlueprint.maturity);
 
   return (
     <DocsPageFrame page={props.page}>
       <MdxContent id="top" class="component-doc">
         <PageHeader class="flex flex-col gap-6">
           <div class="flex flex-col gap-2">
-            <div class="flex items-center gap-2">
-              <Badge>{registryTypeLabel(props.item.type)}</Badge>
-              <Badge>{props.item.version ? `v${props.item.version}` : "Draft"}</Badge>
-              <Show when={props.item.type === "registry:ui"}>
-                <Badge>Maturity: {props.docsBlueprint.maturity ?? "Draft"}</Badge>
-              </Show>
+            <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+              <PageHeaderHeading>{props.item.title}</PageHeaderHeading>
+              <Badge class={`translate-y-0.5 ${maturityBadgeClass(maturity())}`}>
+                {maturity()}
+              </Badge>
             </div>
-            <PageHeaderHeading>{props.item.title}</PageHeaderHeading>
             <PageHeaderDescription>{description()}</PageHeaderDescription>
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <Show when={apiItems().length}>
-              <ActionLink class={secondaryButtonClass} href="#api-reference">
+              <ActionLink
+                class={`${secondaryButtonClass} ${pageHeaderActionClass}`}
+                href="#api-reference"
+              >
                 <ChevronRight size={16} />
                 API Reference
               </ActionLink>
             </Show>
-            <ActionLink class={secondaryButtonClass} href="#source-registry-details">
-              <Package size={16} />
-              View source
-            </ActionLink>
-            <CopyPageButton markdown={markdown()} />
+            <CopyPageButton
+              class={pageHeaderActionClass}
+              icon={<Copy aria-hidden="true" size={16} />}
+              markdown={markdown()}
+            />
           </div>
         </PageHeader>
 
@@ -604,11 +630,7 @@ function RegistryDocContent(
           <HeroPreviewSection item={props.item} docsBlueprint={props.docsBlueprint} />
         </section>
 
-        <DocSection
-          id="installation"
-          title="Installation"
-          description="Install with Mason, then own the generated UI source in your app."
-        >
+        <DocSection id="installation" title="Installation">
           <InstallationSection install={props.item.install} item={props.item} />
         </DocSection>
 
@@ -837,26 +859,13 @@ function InstallationSection(props: Readonly<{ install: string; item: RegistryDo
     ].join("\n");
 
   return (
-    <>
-      <div class="flex items-center gap-2">
-        <button class={modeTabClass(mode() === "cli")} onClick={() => setMode("cli")} type="button">
-          CLI
-        </button>
-        <button
-          class={modeTabClass(mode() === "manual")}
-          onClick={() => setMode("manual")}
-          type="button"
-        >
-          Manual
-        </button>
-      </div>
-      <div class="mt-3">
-        <Show
-          when={mode() === "cli"}
-          fallback={
-            <CodeBlock code={manualInstructions()} language="shell" title="Manual install" />
-          }
-        >
+    <Tabs onValueChange={(value) => setMode(value === "manual" ? "manual" : "cli")} value={mode()}>
+      <TabsList>
+        <TabsTrigger value="cli">CLI</TabsTrigger>
+        <TabsTrigger value="manual">Manual</TabsTrigger>
+      </TabsList>
+      <TabsContent class="mt-1" value="cli">
+        <Show when={mode() === "cli"}>
           <div data-rehype-pretty-code-figure="" class="relative mt-0">
             <div class="flex min-h-11 items-center gap-2 border-border/64 border-b px-4 py-1 font-mono">
               <Terminal class="size-4 text-code-foreground" aria-hidden="true" />
@@ -875,23 +884,24 @@ function InstallationSection(props: Readonly<{ install: string; item: RegistryDo
             <CopyInstallButton command={cliCommands()[manager()]} />
             <div class="px-4 py-3.5">
               <pre class="m-0 overflow-x-auto font-mono text-[0.8125rem] leading-none">
-                <code>{cliCommands()[manager()]}</code>
+                <code class="inline-flex min-w-max items-center gap-2">
+                  <span
+                    aria-hidden="true"
+                    class="select-none font-semibold text-success-foreground"
+                  >
+                    $
+                  </span>
+                  <span>{cliCommands()[manager()]}</span>
+                </code>
               </pre>
             </div>
-            <Show when={props.item.type === "registry:ui"}>
-              <details class="border-border/64 border-t px-4 py-3 text-muted-foreground text-xs">
-                <summary class="cursor-pointer list-none font-medium text-code-foreground/80">
-                  Local registry command
-                </summary>
-                <code class="mt-2 block overflow-x-auto rounded-md bg-code-highlight px-3 py-2">
-                  {`mason add ${packageName()} --registry <path-to-keystone>/registry/default`}
-                </code>
-              </details>
-            </Show>
           </div>
         </Show>
-      </div>
-    </>
+      </TabsContent>
+      <TabsContent class="mt-1" value="manual">
+        <CodeBlock code={manualInstructions()} language="shell" title="Manual install" />
+      </TabsContent>
+    </Tabs>
   );
 }
 
@@ -942,19 +952,15 @@ function PreviewCodeTabs(
   const selectTab = (value: string) => {
     if (value === "preview" || value === "code") setTab(value);
   };
-  const align = () => props.align ?? "start";
+  const align = () => props.align ?? "center";
 
   return (
     <div class="group relative mt-4 mb-12 flex flex-col gap-2">
       <Tabs onValueChange={selectTab} value={tab()}>
         <div class="flex items-center justify-between">
-          <TabsList class="bg-transparent! p-0! *:data-[slot=tab-indicator]:rounded-lg *:data-[slot=tab-indicator]:bg-accent *:data-[slot=tab-indicator]:shadow-none">
-            <TabsTrigger class="rounded-lg" value="preview">
-              Preview
-            </TabsTrigger>
-            <TabsTrigger class="rounded-lg" value="code">
-              Code
-            </TabsTrigger>
+          <TabsList>
+            <TabsTrigger value="preview">Preview</TabsTrigger>
+            <TabsTrigger value="code">Code</TabsTrigger>
           </TabsList>
         </div>
       </Tabs>
@@ -994,8 +1000,10 @@ function DocSection(
 ) {
   return (
     <section id={props.id} class="mt-18 scroll-mt-24">
-      <div class="mb-6">
-        <MdxH2 id={`${props.id}-heading`}>{props.title}</MdxH2>
+      <div class={props.description ? "mb-6" : "mb-5"}>
+        <MdxH2 class={props.description ? undefined : "mb-0"} id={`${props.id}-heading`}>
+          {props.title}
+        </MdxH2>
         <Show when={props.description}>{(description) => <MdxP>{description()}</MdxP>}</Show>
       </div>
       {props.children}
@@ -1031,7 +1039,7 @@ function ApiReference(props: Readonly<{ items: readonly ApiReferenceItem[] }>) {
 }
 
 function previewFrameClass(variant: PreviewVariant, align: PreviewAlign) {
-  const base = "flex w-full justify-center";
+  const base = "flex min-h-full w-full justify-center";
   const aligned = `${base} ${previewFrameAlignClass(align)}`;
   switch (variant) {
     case "inline":
@@ -1057,7 +1065,10 @@ function previewFrameAlignClass(align: PreviewAlign) {
 }
 
 function docsBlueprintForItem(item: RegistryDocItem): ComponentDocsBlueprint {
-  return componentDocsOverrides[item.name] ?? { usageCode: genericUsageCode(item) };
+  return {
+    ...(componentDocsOverrides[item.name] ?? { usageCode: genericUsageCode(item) }),
+    maturity: componentMaturity(item),
+  };
 }
 
 function itemPageWithBlueprint(item: RegistryDocItem, blueprint: ComponentDocsBlueprint): DocsPage {
@@ -1114,12 +1125,6 @@ function toPascalCase(value: string) {
     .split(" ")
     .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
     .join("");
-}
-
-function modeTabClass(active: boolean) {
-  return active
-    ? "inline-flex h-8 items-center rounded-lg bg-accent px-3 text-sm font-medium text-accent-foreground transition-colors"
-    : "inline-flex h-8 items-center rounded-lg px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent/64 hover:text-accent-foreground";
 }
 
 function subTabButtonClass(active: boolean) {

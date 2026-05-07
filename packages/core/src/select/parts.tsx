@@ -1,5 +1,6 @@
 import { For, Show, createContext, splitProps, useContext } from "solid-js";
 import { createPopupFieldHiddenInputProps } from "../collection/popup-field-kernel";
+import { DismissableLayer } from "../overlay/index";
 import { Portal } from "../portal/index";
 import { renderPolymorphic } from "../utils/index";
 import {
@@ -22,6 +23,9 @@ import {
 
 const SelectContext = createContext<SelectApi>();
 const SelectGroupContext = createContext<{ disabled?: boolean; value: string }>();
+const SelectItemContext = createContext<{ value: string }>();
+const SelectPositionerContext = createContext(false);
+const SelectLabelHydrationContext = createContext(false);
 
 function useSelect(part: string) {
   const select = useContext(SelectContext);
@@ -31,6 +35,16 @@ function useSelect(part: string) {
   }
 
   return select;
+}
+
+function useSelectItem(part: string) {
+  const item = useContext(SelectItemContext);
+
+  if (!item) {
+    throw new Error(`Select.${part} must be used within Select.Item`);
+  }
+
+  return item;
 }
 
 function Root(props: SelectRootProps) {
@@ -112,39 +126,61 @@ function Value(props: SelectValueProps) {
   const select = useSelect("Value");
   const [local, others] = splitProps(props, ["children", "placeholder"]);
   const text = () =>
-    local.children ??
-    select.listbox.selection.selectedItem()?.label ??
-    local.placeholder ??
-    select.placeholder();
+    local.children ?? select.selectedLabel() ?? local.placeholder ?? select.placeholder();
 
   return <span {...select.getValueProps(others)}>{text()}</span>;
 }
 
 function PortalPart(props: SelectPortalProps) {
   const select = useSelect("Portal");
+  const hydratingLabel = () =>
+    props.forceMount !== true && !select.open() && select.needsSelectedLabel();
 
   return (
-    <Portal forceMount={props.forceMount} mount={props.mount} present={select.open()}>
-      {props.children}
+    <Portal
+      forceMount={props.forceMount}
+      mount={props.mount}
+      present={select.open() || hydratingLabel()}
+    >
+      <SelectLabelHydrationContext.Provider value={hydratingLabel()}>
+        {props.children}
+      </SelectLabelHydrationContext.Provider>
     </Portal>
   );
 }
 
 function Content(props: SelectContentProps) {
   const select = useSelect("Content");
+  const positioned = useContext(SelectPositionerContext);
+  const hydratingLabel = useContext(SelectLabelHydrationContext);
   const [local, others] = splitProps(props, ["children", "onKeyDown", "ref", "style"]);
+  const contentProps = select.getContentProps({
+    ...others,
+    hidden: hydratingLabel ? true : others.hidden,
+    onKeyDown: local.onKeyDown,
+    positioned,
+    ref: local.ref,
+    style: local.style,
+  });
+
+  if (hydratingLabel) {
+    return <div {...contentProps}>{local.children}</div>;
+  }
 
   return (
-    <div
-      {...select.getContentProps({
-        ...others,
-        onKeyDown: local.onKeyDown,
-        ref: local.ref,
-        style: local.style,
-      })}
+    <DismissableLayer
+      {...contentProps}
+      disableOutsidePointerEvents
+      onFocusOutside={(event) => event.preventDefault()}
+      onDismiss={(event) => {
+        select.setOpen(false, {
+          event,
+          reason: event.type === "keydown" ? "escape" : "outside",
+        });
+      }}
     >
       {local.children}
-    </div>
+    </DismissableLayer>
   );
 }
 
@@ -153,15 +189,17 @@ function Positioner(props: SelectPositionerProps) {
   const [local, others] = splitProps(props, ["children", "ref", "style"]);
 
   return (
-    <div
-      {...select.getPositionerProps({
-        ...others,
-        ref: local.ref,
-        style: local.style,
-      })}
-    >
-      {local.children}
-    </div>
+    <SelectPositionerContext.Provider value={true}>
+      <div
+        {...select.getPositionerProps({
+          ...others,
+          ref: local.ref,
+          style: local.style,
+        })}
+      >
+        {local.children}
+      </div>
+    </SelectPositionerContext.Provider>
   );
 }
 
@@ -246,19 +284,21 @@ function Item(props: SelectItemProps) {
   const label = () => local.label ?? String(local.children ?? local.value);
 
   return (
-    <div
-      {...select.getItemProps({
-        ...others,
-        disabled: local.disabled ?? group?.disabled,
-        group: local.group ?? group?.value,
-        label: label(),
-        onClick: local.onClick,
-        onPointerMove: local.onPointerMove,
-        value: local.value,
-      })}
-    >
-      {local.children}
-    </div>
+    <SelectItemContext.Provider value={{ value: local.value }}>
+      <div
+        {...select.getItemProps({
+          ...others,
+          disabled: local.disabled ?? group?.disabled,
+          group: local.group ?? group?.value,
+          label: label(),
+          onClick: local.onClick,
+          onPointerMove: local.onPointerMove,
+          value: local.value,
+        })}
+      >
+        {local.children}
+      </div>
+    </SelectItemContext.Provider>
   );
 }
 
@@ -271,9 +311,14 @@ function ItemText(props: SelectItemTextProps) {
 
 function ItemIndicator(props: SelectItemIndicatorProps) {
   const select = useSelect("ItemIndicator");
+  const item = useSelectItem("ItemIndicator");
   const [local, others] = splitProps(props, ["children"]);
 
-  return <span {...select.getItemIndicatorProps(others)}>{local.children}</span>;
+  return (
+    <Show when={select.listbox.selection.isSelected(item.value)}>
+      <span {...select.getItemIndicatorProps(others)}>{local.children}</span>
+    </Show>
+  );
 }
 
 export const Select = {

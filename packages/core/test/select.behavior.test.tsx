@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { Show, createSignal, type Setter } from "solid-js";
 import { Select } from "../src/select/index";
-import { click, getByPart, keyDown, render, settled } from "./harness";
+import { click, getByPart, keyDown, pointerDown, queryByPart, render, settled } from "./harness";
 
 describe("Select behavior harness", () => {
   test("navigates enabled items, supports typeahead, and selects from the keyboard", async () => {
@@ -306,6 +306,125 @@ describe("Select behavior harness", () => {
     expect(changes).toEqual(["charlie"]);
   });
 
+  test("only renders the item indicator for selected values", async () => {
+    render(() => (
+      <Select.Root defaultOpen defaultValue="alpha">
+        <Select.Trigger>Choose project</Select.Trigger>
+        <Select.Content>
+          <Select.Listbox>
+            <Select.Item value="alpha">
+              <Select.ItemIndicator>Selected</Select.ItemIndicator>
+              Alpha
+            </Select.Item>
+            <Select.Item value="bravo">
+              <Select.ItemIndicator>Selected</Select.ItemIndicator>
+              Bravo
+            </Select.Item>
+          </Select.Listbox>
+        </Select.Content>
+      </Select.Root>
+    ));
+
+    expect(document.querySelectorAll('[data-part="item-indicator"]')).toHaveLength(1);
+    expect(document.querySelector('[data-part="item-indicator"]')?.parentElement?.textContent).toBe(
+      "SelectedAlpha",
+    );
+  });
+
+  test("opening an empty select does not select the first item", async () => {
+    const changes: string[] = [];
+
+    render(() => (
+      <Select.Root onValueChange={(value) => changes.push(value ?? "")}>
+        <Select.Trigger>
+          <Select.Value placeholder="Choose project" />
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Listbox>
+            <Select.Item value="alpha">
+              <Select.ItemIndicator>Selected</Select.ItemIndicator>
+              Alpha
+            </Select.Item>
+            <Select.Item value="bravo">
+              <Select.ItemIndicator>Selected</Select.ItemIndicator>
+              Bravo
+            </Select.Item>
+          </Select.Listbox>
+        </Select.Content>
+      </Select.Root>
+    ));
+
+    click(getByPart("select", "trigger"));
+    await settled();
+
+    expect(getByPart("select", "value").textContent).toBe("Choose project");
+    expect(document.querySelectorAll('[data-part="item-indicator"]')).toHaveLength(0);
+    expect(changes).toEqual([]);
+  });
+
+  test("keeps the selected label after portaled items unmount on close", async () => {
+    render(() => (
+      <Select.Root>
+        <Select.Trigger>
+          <Select.Value placeholder="Choose project" />
+        </Select.Trigger>
+        <Select.Portal>
+          <Select.Content>
+            <Select.Listbox>
+              <Select.Item value="alpha">Alpha</Select.Item>
+              <Select.Item value="bravo">Bravo</Select.Item>
+            </Select.Listbox>
+          </Select.Content>
+        </Select.Portal>
+      </Select.Root>
+    ));
+
+    click(getByPart("select", "trigger"));
+    await settled();
+    click(getByPart("select", "item"));
+    await settled();
+
+    expect(queryByPart("select", "content")).toBeNull();
+    expect(getByPart("select", "value").textContent).toBe("Alpha");
+  });
+
+  test("dismisses on the first outside pointer and blocks outside pointer events while open", async () => {
+    const changes: string[] = [];
+
+    render(() => (
+      <>
+        <button data-testid="outside">Outside</button>
+        <Select.Root onOpenChange={(_open, detail) => changes.push(detail.reason)}>
+          <Select.Trigger>Choose project</Select.Trigger>
+          <Select.Portal>
+            <Select.Positioner>
+              <Select.Content>
+                <Select.Listbox>
+                  <Select.Item value="alpha">Alpha</Select.Item>
+                  <Select.Item value="bravo">Bravo</Select.Item>
+                </Select.Listbox>
+              </Select.Content>
+            </Select.Positioner>
+          </Select.Portal>
+        </Select.Root>
+      </>
+    ));
+
+    click(getByPart("select", "trigger"));
+    await settled();
+
+    expect(queryByPart("select", "content")).not.toBeNull();
+    expect(document.body.style.pointerEvents).toBe("none");
+    expect(getByPart("select", "content").style.pointerEvents).toBe("auto");
+
+    pointerDown(document.querySelector<HTMLElement>("[data-testid='outside']")!);
+    await settled();
+
+    expect(queryByPart("select", "content")).toBeNull();
+    expect(document.body.style.pointerEvents).toBe("");
+    expect(changes).toEqual(["trigger", "outside"]);
+  });
+
   test("keeps duplicate value replacements after stale option cleanup", async () => {
     let setShowOldAlpha!: Setter<boolean>;
 
@@ -433,5 +552,80 @@ describe("Select behavior harness", () => {
     expect(positioner.getAttribute("data-side")).toBe("bottom");
     expect(positioner.getAttribute("data-align")).toBe("start");
     expect(positioner.style.getPropertyValue("--keystone-anchor-width")).toBe("120px");
+    expect(positioner.style.getPropertyValue("--anchor-width")).toBe("120px");
+  });
+
+  test("keeps nested content unpositioned across positioner remounts", async () => {
+    let setOpen!: Setter<boolean>;
+
+    render(() => {
+      const [open, setOpenSignal] = createSignal(true);
+      setOpen = setOpenSignal;
+
+      return (
+        <Select.Root open={open()} onOpenChange={setOpen}>
+          <Select.Trigger>Choose project</Select.Trigger>
+          <Select.Portal>
+            <Select.Positioner>
+              <Select.Content>
+                <Select.Listbox>
+                  <Select.Item value="alpha">Alpha</Select.Item>
+                </Select.Listbox>
+              </Select.Content>
+            </Select.Positioner>
+          </Select.Portal>
+        </Select.Root>
+      );
+    });
+
+    const trigger = getByPart("select", "trigger");
+    trigger.getBoundingClientRect = () =>
+      ({
+        bottom: 48,
+        height: 32,
+        left: 12,
+        right: 132,
+        top: 16,
+        width: 120,
+      }) as DOMRect;
+
+    let positioner = getByPart("select", "positioner");
+    positioner.getBoundingClientRect = () =>
+      ({
+        bottom: 0,
+        height: 64,
+        left: 0,
+        right: 0,
+        top: 0,
+        width: 180,
+      }) as DOMRect;
+
+    window.dispatchEvent(new Event("resize"));
+    await settled();
+
+    expect(positioner.style.left).toBe("12px");
+    expect(getByPart("select", "content").style.left).toBe("");
+
+    setOpen(false);
+    await settled();
+    expect(queryByPart("select", "content")).toBeNull();
+
+    setOpen(true);
+    await settled();
+    positioner = getByPart("select", "positioner");
+    positioner.getBoundingClientRect = () =>
+      ({
+        bottom: 0,
+        height: 64,
+        left: 0,
+        right: 0,
+        top: 0,
+        width: 180,
+      }) as DOMRect;
+    window.dispatchEvent(new Event("resize"));
+    await settled();
+
+    expect(positioner.style.left).toBe("12px");
+    expect(getByPart("select", "content").style.left).toBe("");
   });
 });

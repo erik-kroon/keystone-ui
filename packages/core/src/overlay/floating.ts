@@ -391,6 +391,13 @@ function applyFloatingGeometry(element: HTMLElement, geometry: FloatingGeometry)
   setStyleProperty(element, "--keystone-arrow-x", `${geometry.arrowX}px`);
   setStyleProperty(element, "--keystone-arrow-y", `${geometry.arrowY}px`);
   setStyleProperty(element, "--keystone-transform-origin", geometry.transformOrigin);
+  setStyleProperty(element, "--anchor-width", `${geometry.width}px`);
+  setStyleProperty(element, "--anchor-height", `${geometry.height}px`);
+  setStyleProperty(element, "--available-width", `${geometry.availableWidth}px`);
+  setStyleProperty(element, "--available-height", `${geometry.availableHeight}px`);
+  setStyleProperty(element, "--arrow-x", `${geometry.arrowX}px`);
+  setStyleProperty(element, "--arrow-y", `${geometry.arrowY}px`);
+  setStyleProperty(element, "--transform-origin", geometry.transformOrigin);
   setElementStyleValue(element, "left", `${geometry.left}px`);
   setOptionalElementStyleValue(element, "maxHeight", geometry.maxHeight);
   setOptionalElementStyleValue(element, "maxWidth", geometry.maxWidth);
@@ -473,6 +480,13 @@ function mergeFloatingStyle(
     "--keystone-arrow-x": geometry ? `${geometry.arrowX}px` : undefined,
     "--keystone-arrow-y": geometry ? `${geometry.arrowY}px` : undefined,
     "--keystone-transform-origin": geometry?.transformOrigin,
+    "--anchor-width": geometry ? `${geometry.width}px` : undefined,
+    "--anchor-height": geometry ? `${geometry.height}px` : undefined,
+    "--available-width": geometry ? `${geometry.availableWidth}px` : undefined,
+    "--available-height": geometry ? `${geometry.availableHeight}px` : undefined,
+    "--arrow-x": geometry ? `${geometry.arrowX}px` : undefined,
+    "--arrow-y": geometry ? `${geometry.arrowY}px` : undefined,
+    "--transform-origin": geometry?.transformOrigin,
   } as JSX.CSSProperties;
 
   if (!style || typeof style === "string") {

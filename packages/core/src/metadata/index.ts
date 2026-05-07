@@ -40,6 +40,8 @@ const basePartAttributes = [
 const overlayStateAttributes = [
   { name: "data-state", values: ["open", "closed"] },
   { name: "data-transition-status", values: ["closed", "closing", "opening", "open"] },
+  { name: "data-starting-style" },
+  { name: "data-ending-style" },
 ] as const satisfies readonly PartStateAttributeMetadata[];
 
 const floatingAttributes = [

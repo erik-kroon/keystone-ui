@@ -1,5 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" fill="#17201c"/>
-  <path d="M16 18h32v8H16zM16 30h32v8H16zM16 42h32v8H16z" fill="#fff8e9"/>
-  <path d="M20 22h24M20 34h24M20 46h24" stroke="#c94638" stroke-width="3"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Keystone favicon">
+  <path
+    fill="#181818"
+    transform="translate(32 32) scale(1.12) translate(-32 -32)"
+    d="M12 14h40L41 50H23L12 14z"
+  />
 </svg>

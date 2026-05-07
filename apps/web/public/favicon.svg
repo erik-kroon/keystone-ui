@@ -1,7 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Keystone favicon">
-  <rect x="0" y="0" width="64" height="64" rx="14" fill="#FAF9F5" />
   <path
-    fill="#111111"
+    fill="#181818"
     transform="translate(32 32) scale(1.12) translate(-32 -32)"
     d="M12 14h40L41 50H23L12 14z"
   />

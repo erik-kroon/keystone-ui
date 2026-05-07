@@ -54,7 +54,7 @@ export function ComponentPreview(props: Readonly<{ item: RegistryDocItem }>) {
       <div class="flex min-h-52 items-center justify-center bg-background/60 p-6">
         <Switch fallback={<GenericPreview item={props.item} />}>
           <Match when={props.item.name === "accordion"}>
-            <Accordion defaultValue={["item-3"]} class="w-full max-w-md">
+            <Accordion class="w-full max-w-md">
               {accordionItems.map((item) => (
                 <AccordionItem value={item.id}>
                   <AccordionTrigger>{item.title}</AccordionTrigger>
