@@ -54,3 +54,4 @@ references/
 !skills/**/references/
 !skills/**/references/**
 .playwright-mcp/
+/test-results

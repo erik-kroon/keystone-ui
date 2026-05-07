@@ -1,148 +1,187 @@
-import { ArrowRight, Boxes, FileCode2, Layers, PackageCheck } from "lucide-solid";
-import { For, type JSX } from "solid-js";
+import { Info } from "lucide-solid";
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+} from "@keystone-ui/ui/default/ui/alert.tsx";
 
 import {
-  ActionLink,
-  Badge,
-  CodeBlock,
   DocsPageFrame,
   PageHeader,
-  PageHeaderDescription,
   PageHeaderHeading,
-  primaryButtonClass,
-  secondaryButtonClass,
 } from "@/components/docs-shell";
-import { MdxContent, MdxH2, MdxP, MdxTable } from "@/components/mdx-components";
-import { componentDocs, componentHref, overviewPage, hookDocs } from "@/lib/docs-data";
+import { MdxContent, MdxH2, MdxList, MdxP } from "@/components/mdx-components";
+import { overviewPage } from "@/lib/docs-data";
+
+const sectionClass = "mt-10 scroll-mt-24 lg:mt-12";
+const sectionHeadingClass =
+  "mb-3 font-heading text-2xl leading-tight lg:text-3xl";
+const proseClass =
+  "max-w-[76ch] text-base leading-7 text-muted-foreground sm:leading-8 [text-wrap:pretty]";
+const listClass =
+  "my-4 max-w-[76ch] space-y-2 pl-5 text-base leading-7 text-muted-foreground marker:text-muted-foreground sm:leading-8";
+const introMeasureClass = "w-full max-w-[76ch]";
 
 export function DocsOverview() {
   return (
     <DocsPageFrame page={overviewPage}>
       <MdxContent id="top">
-        <PageHeader class="flex flex-col gap-8">
+        <PageHeader class="flex flex-col gap-5 sm:gap-6">
           <div class="flex flex-col gap-2">
-            <Badge class="self-start">Keystone UI documentation</Badge>
-            <PageHeaderHeading>Solid primitives and source-owned UI.</PageHeaderHeading>
-            <PageHeaderDescription>
-              A Coss-inspired docs shell for the current Keystone registry: focused component
-              guides, install workflows, and practical usage patterns.
-            </PageHeaderDescription>
+            <PageHeaderHeading class="text-4xl lg:text-5xl">
+              Introduction
+            </PageHeaderHeading>
           </div>
-          <div class="flex flex-wrap items-center gap-2">
-            <ActionLink class={primaryButtonClass} href="/docs/components/button">
-              Browse Components
-              <ArrowRight size={16} />
-            </ActionLink>
-            <ActionLink class={secondaryButtonClass} href="#get-started">
-              Get Started
-            </ActionLink>
+          <div class="flex flex-col items-start gap-6">
+            <div
+              class={`grid ${introMeasureClass} gap-4 text-base text-muted-foreground leading-7 sm:leading-8 [text-wrap:pretty]`}
+            >
+              <p class="m-0">
+                <strong class="font-medium text-foreground">Keystone UI</strong>{" "}
+                is a collection of beautifully designed, accessible and
+                composable components for modern Solid applications. Built on
+                top of{" "}
+                <strong class="font-medium text-foreground  underline-offset-4">
+                  Keystone Core
+                </strong>{" "}
+                and styled with{" "}
+                <strong class="font-medium text-foreground  underline-offset-4">
+                  Tailwind CSS,
+                </strong>{" "}
+                it's designed for you to copy, paste and own.
+              </p>
+              <p class="m-0">
+                We think accessible, unstyled primitives are the best foundation
+                for modern web applications. Keystone Core handles the behavior
+                layer, and Keystone UI gives those primitives a design system
+                that's ready to shape into your app.
+              </p>
+              <p class="m-0">
+                This is the component system we're shaping for serious Solid
+                products: dashboards, internal tools, developer tools, analytics
+                workspaces and other{" "}
+                <strong class="font-medium text-foreground">
+                  data-dense interfaces
+                </strong>{" "}
+                where clarity and keyboard behavior matter.
+              </p>
+            </div>
+
+            <Alert variant="info">
+              <AlertIcon>
+                <Info />
+              </AlertIcon>
+              <AlertTitle>Early Access</AlertTitle>
+              <AlertDescription class="[text-wrap:pretty]">
+                Keystone UI is in early development. The component source and
+                Core primitives are still evolving, so expect breaking changes
+                while the project takes shape. It is not recommended for
+                production applications yet.
+              </AlertDescription>
+            </Alert>
           </div>
         </PageHeader>
 
-        <section id="get-started" class="mt-12 scroll-mt-24 lg:mt-16">
-          <MdxH2>Get Started</MdxH2>
-          <MdxP>
-            Install source through Mason when you want editable UI in the target project. Import
-            Core directly only when the app needs headless primitive behavior without the styled
-            registry layer.
+        <section id="built-on-keystone-core" class={sectionClass}>
+          <MdxH2 class={sectionHeadingClass}>Core</MdxH2>
+          <MdxP class={proseClass}>
+            Keystone UI is built on{" "}
+            <strong class="font-medium text-foreground">Keystone Core</strong>{" "}
+            from the ground up.{" "}
+            <strong class="font-medium text-foreground">Core</strong> owns the
+            hard primitive behavior: accessibility, keyboard navigation, focus
+            management, dismissal, positioning, form semantics, SSR, hydration
+            and controlled or uncontrolled state.
           </MdxP>
-          <CodeBlock
-            code={`bunx mason add button dialog select-field
-bun add @keystone-ui/core`}
-            language="shell"
-            title="Install Core and registry source"
-          />
+          <MdxList class={listClass}>
+            <li>
+              <strong class="font-medium text-foreground">
+                Accessible primitive behavior
+              </strong>{" "}
+              without forcing a visual language into Core.
+            </li>
+            <li>
+              <strong class="font-medium text-foreground">
+                Product-ready composition patterns
+              </strong>{" "}
+              for overlays, fields, forms, and data-dense workflows.
+            </li>
+            <li>
+              <strong class="font-medium text-foreground">
+                Thoughtful defaults
+              </strong>{" "}
+              optimized for modern Solid applications.
+            </li>
+            <li>
+              <strong class="font-medium text-foreground">
+                Consistent design tokens
+              </strong>{" "}
+              across components, docs, previews, and registry source.
+            </li>
+          </MdxList>
         </section>
 
-        <section id="core-ui-layers" class="mt-12 scroll-mt-24 lg:mt-16">
-          <MdxH2>Core and UI Layers</MdxH2>
-          <div class="mt-5 grid gap-3 md:grid-cols-3">
-            <FeatureCard
-              description="Headless behavior, ARIA relationships, keyboard navigation, controlled/uncontrolled state, and stable data attributes."
-              icon={<Layers size={18} />}
-              title="Core"
-            />
-            <FeatureCard
-              description="Copy-paste Solid source, Tailwind token styling, app-layer TanStack integrations, and user-owned files."
-              icon={<FileCode2 size={18} />}
-              title="UI"
-            />
-            <FeatureCard
-              description="Registry metadata, install commands, dependency graphs, source paths, and parity notes for each installable item."
-              icon={<PackageCheck size={18} />}
-              title="Mason"
-            />
-          </div>
-        </section>
-
-        <section id="components" class="mt-12 scroll-mt-24 lg:mt-16">
-          <MdxH2>Components</MdxH2>
-          <MdxP>
-            Component pages are generated from `registry/default/items/*.json`, so every current and
-            future registry item gets a consistent page with install, usage, accessible preview, and
-            API guidance.
+        <section id="own-your-code" class={sectionClass}>
+          <MdxH2 class={sectionHeadingClass}>Own Your Code</MdxH2>
+          <MdxP class={proseClass}>
+            Keystone follows the source-owned ethos of{" "}
+            <strong class="font-medium text-foreground">shadcn/ui</strong>.
+            Readable component files live in your project, where you can adapt
+            them as your product changes. Mason is the planned registry and CLI
+            layer for that workflow, but the source model comes first.
           </MdxP>
-          <div class="mt-5 grid gap-3 md:grid-cols-2">
-            <For each={componentDocs.slice(0, 12)}>
-              {(item) => (
-                <a
-                  class="grid min-h-42 content-start gap-3 rounded-lg border border-border bg-card p-4 shadow-xs outline-none hover:border-primary/40 focus-visible:border-primary/40"
-                  href={componentHref(item.name)}
-                >
-                  <span class="inline-flex size-8 items-center justify-center rounded-md border border-border bg-muted text-primary">
-                    <Boxes size={16} />
-                  </span>
-                  <strong class="font-semibold text-base text-foreground">{item.title}</strong>
-                  <span class="text-muted-foreground text-sm leading-6">{item.description}</span>
-                </a>
-              )}
-            </For>
-          </div>
-        </section>
-
-        <section id="install-model" class="mt-12 scroll-mt-24 lg:mt-16">
-          <MdxH2>Install Model</MdxH2>
-          <MdxTable
-            columns={["Layer", "Source", "Ownership"]}
-            rows={[
-              ["Core", "@keystone-ui/core", "Headless runtime primitives"],
-              ["UI", "packages/ui/src/default", "Copied source owned by the app"],
-              ["Registry", "registry/default/items", "Mason install contract and docs metadata"],
-              ["Docs", "apps/web/src/lib/registry-docs.gen.ts", "Generated page data"],
-            ]}
-          />
-        </section>
-
-        <section id="mdx-surface" class="mt-12 scroll-mt-24 lg:mt-16">
-          <MdxH2>MDX Surface</MdxH2>
-          <MdxP>
-            The docs app now has Solid MDX-style render components for headings, paragraphs, lists,
-            tables, and code blocks. The current pages render registry data directly, but the same
-            component surface can back authored MDX once content files are introduced.
+          <MdxList class={listClass}>
+            <li>
+              <strong class="font-medium text-foreground">
+                Editable source:
+              </strong>{" "}
+              components live in your app instead of behind an opaque styled
+              runtime.
+            </li>
+            <li>
+              <strong class="font-medium text-foreground">
+                Endless customization:
+              </strong>{" "}
+              need to change behavior, markup, or styling? Edit the file.
+            </li>
+            <li>
+              <strong class="font-medium text-foreground">
+                Learn by doing:
+              </strong>{" "}
+              read the Solid source, see how the pieces are composed, and adapt
+              the pattern to your needs.
+            </li>
+          </MdxList>
+          <MdxP class={proseClass}>
+            Keystone source is meant to be{" "}
+            <strong class="font-medium text-foreground">
+              read, reviewed, and changed
+            </strong>
+            . Components use explicit Solid code, stable data attributes,
+            predictable files, and registry metadata that records dependencies
+            and parity notes. That keeps the system legible as your team adapts
+            it over time.
           </MdxP>
         </section>
 
-        <section id="roadmap" class="mt-12 scroll-mt-24 lg:mt-16">
-          <MdxH2>Roadmap</MdxH2>
-          <MdxP>
-            Current docs inventory includes {componentDocs.length} UI items and {hookDocs.length}
-            registry hooks. The layout is ready for deeper authored pages without changing the
-            navigation frame.
+        <section id="get-involved" class={sectionClass}>
+          <MdxH2 class={sectionHeadingClass}>Get Involved</MdxH2>
+          <MdxP class={proseClass}>
+            Contributions, bug reports, accessibility notes, tests, examples,
+            and docs improvements are welcome while Keystone is still forming.
+            Start with the{" "}
+            <a
+              class="font-medium text-foreground underline underline-offset-4"
+              href="/docs/components/button"
+            >
+              current component docs
+            </a>{" "}
+            and roadmap, then open an issue or pull request with the behavior,
+            evidence, or source change you want to contribute.
           </MdxP>
         </section>
       </MdxContent>
     </DocsPageFrame>
-  );
-}
-
-function FeatureCard(props: { description: string; icon: JSX.Element; title: string }) {
-  return (
-    <div class="min-h-44 rounded-lg border border-border bg-card p-4 shadow-xs">
-      <span class="inline-flex size-8 items-center justify-center rounded-md border border-border bg-muted text-primary">
-        {props.icon}
-      </span>
-      <h3 class="mt-3 font-semibold text-base text-foreground">{props.title}</h3>
-      <p class="mt-2 text-muted-foreground text-sm leading-6">{props.description}</p>
-    </div>
   );
 }

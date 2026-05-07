@@ -45,11 +45,19 @@ export type CommandMenuHotkeysOptions = Omit<CreateHotkeyOptions, "target"> & {
   target?: HTMLElement | Document | Window | null;
 };
 
+export type CommandMenuFilter = (
+  item: CommandMenuItemData,
+  query: string,
+  itemText: string,
+) => boolean;
+
 export type CommandMenuProps = Omit<CoreCommandRootProps, "children" | "inputValue" | "open"> & {
   children?: JSX.Element;
   backdropClass?: string;
   contentClass?: string;
   empty?: JSX.Element;
+  filter?: CommandMenuFilter | null;
+  filteredItems?: readonly CommandMenuItemData[];
   footer?: JSX.Element;
   footerClass?: string;
   hotkeys?: boolean | CommandMenuHotkeysOptions;
@@ -100,6 +108,13 @@ type CommandMenuGroupModel = {
   items: readonly CommandMenuItemData[];
 };
 
+type SearchFieldWeight = "primary" | "secondary";
+
+type SearchField = {
+  value: string;
+  weight: SearchFieldWeight;
+};
+
 const defaultOpenShortcut = "Mod+K";
 const ungroupedValue = "__ui-command-menu";
 const classes = (...tokens: string[]) => tokens.join(" ");
@@ -133,6 +148,8 @@ export function CommandMenu(props: CommandMenuProps) {
     "backdropClass",
     "contentClass",
     "empty",
+    "filter",
+    "filteredItems",
     "footer",
     "footerClass",
     "hotkeys",
@@ -154,7 +171,9 @@ export function CommandMenu(props: CommandMenuProps) {
   const commandStore = local.store ?? createCommandMenuStore({ open: rootProps.defaultOpen });
   const open = useSelector(commandStore.store, (state) => state.open);
   const query = useSelector(commandStore.store, (state) => state.query);
-  const visibleItems = createMemo(() => filterCommandItems(local.items, query()));
+  const visibleItems = createMemo(
+    () => local.filteredItems ?? filterCommandItems(local.items, query(), local.filter),
+  );
   const groups = createMemo(() => groupCommandItems(visibleItems()));
   const hotkeys = createMemo(() => normalizeHotkeys(local.hotkeys));
 
@@ -381,7 +400,7 @@ export function CommandMenuInput(props: CommandMenuInputProps) {
         data-scope="ui-command-menu"
         data-part="input-icon"
         data-slot="command-menu-input-icon"
-        class="pointer-events-none absolute z-10 mt-2.5 ms-[calc(--spacing(3)-1px)] flex size-4.5 items-center justify-center text-muted-foreground/72 sm:size-4"
+        class="pointer-events-none absolute top-[calc(50%+1px)] z-10 ms-[calc(--spacing(3)-1px)] flex size-5 -translate-y-1/2 items-center justify-center text-foreground/72 sm:size-4.5"
       >
         <SearchIcon />
       </span>
@@ -394,19 +413,20 @@ export function CommandMenuInput(props: CommandMenuInputProps) {
             "h-9.5",
             "w-full",
             "min-w-0",
-            "rounded-lg",
-            "border",
-            "border-transparent",
+            "appearance-none",
+            "border-0",
             "bg-transparent",
             "ps-[calc(--spacing(8.5)-1px)]",
             "pe-3",
             "text-base",
             "text-foreground",
+            "leading-none",
             "shadow-none",
             "outline-none",
             "ring-0",
             "transition-colors",
             "placeholder:text-muted-foreground/72",
+            "focus-visible:outline-none",
             "focus-visible:ring-0",
             "sm:h-8.5",
             "sm:text-sm",
@@ -793,23 +813,128 @@ function normalizeHotkeys(
   };
 }
 
-function filterCommandItems(items: readonly CommandMenuItemData[], query: string) {
-  const normalizedQuery = query.trim().toLowerCase();
-  if (!normalizedQuery) return items;
+function filterCommandItems(
+  items: readonly CommandMenuItemData[],
+  query: string,
+  filter: CommandMenuFilter | null | undefined,
+) {
+  const preparedQuery = prepareSearchQuery(query);
+  if (!preparedQuery) return items;
+  if (filter === null) return items;
 
-  return items.filter((item) => {
-    const haystack = [
-      item.label,
-      item.value,
-      item.description,
-      item.group,
-      ...(item.keywords ?? []),
-    ]
-      .filter(Boolean)
-      .join(" ")
-      .toLowerCase();
-    return haystack.includes(normalizedQuery);
-  });
+  if (filter) {
+    return items.filter((item) => filter(item, query, commandItemText(item)));
+  }
+
+  return items
+    .map((item, index) => ({
+      item,
+      index,
+      score: rankSearchFields(
+        [
+          { value: item.label, weight: "primary" },
+          { value: item.value, weight: "primary" },
+          { value: item.description ?? "", weight: "secondary" },
+          { value: item.group ?? "", weight: "secondary" },
+          ...(item.keywords ?? []).map((keyword) => ({
+            value: keyword,
+            weight: "secondary" as const,
+          })),
+        ],
+        preparedQuery,
+      ),
+    }))
+    .filter(
+      (match): match is { item: CommandMenuItemData; index: number; score: number } =>
+        match.score !== null,
+    )
+    .sort((a, b) => a.score - b.score || a.index - b.index)
+    .map((match) => match.item);
+}
+
+function commandItemText(item: CommandMenuItemData) {
+  return [item.label, item.value, item.description, item.group, ...(item.keywords ?? [])]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function prepareSearchQuery(query: string) {
+  const normalized = normalizeSearchText(query);
+  if (!normalized) return null;
+
+  return {
+    compact: normalized.replaceAll(" ", ""),
+    normalized,
+    terms: normalized.split(" ").filter(Boolean),
+  };
+}
+
+function rankSearchFields(
+  fields: readonly SearchField[],
+  query: NonNullable<ReturnType<typeof prepareSearchQuery>>,
+) {
+  let bestScore: number | null = null;
+  const searchableFields = fields
+    .map((field) => ({
+      ...field,
+      normalized: normalizeSearchText(field.value),
+    }))
+    .filter((field) => field.normalized);
+
+  for (const field of searchableFields) {
+    const score = rankSearchField(field.normalized, field.weight, query);
+    if (score === null) continue;
+    bestScore = bestScore === null ? score : Math.min(bestScore, score);
+  }
+
+  const allTermsMatch = query.terms.every((term) =>
+    searchableFields.some((field) => field.normalized.includes(term)),
+  );
+
+  if (allTermsMatch) {
+    const termScore = searchableFields.some((field) => field.weight === "primary") ? 24 : 32;
+    bestScore = bestScore === null ? termScore : Math.min(bestScore, termScore);
+  }
+
+  return bestScore;
+}
+
+function rankSearchField(
+  field: string,
+  weight: SearchFieldWeight,
+  query: NonNullable<ReturnType<typeof prepareSearchQuery>>,
+) {
+  const offset = weight === "primary" ? 0 : 12;
+  const compactField = field.replaceAll(" ", "");
+  const words = field.split(" ").filter(Boolean);
+  const initials = words.map((word) => word[0]).join("");
+
+  if (field === query.normalized || compactField === query.compact) return offset;
+  if (field.startsWith(query.normalized) || compactField.startsWith(query.compact)) {
+    return offset + 1;
+  }
+  if (field.includes(query.normalized) || compactField.includes(query.compact)) {
+    return offset + 2;
+  }
+  if (initials.startsWith(query.compact)) return offset + 3;
+  if (query.terms.every((term) => words.some((word) => word.startsWith(term)))) {
+    return offset + 4;
+  }
+  if (query.terms.every((term) => words.some((word) => word.includes(term)))) {
+    return offset + 5;
+  }
+
+  return null;
+}
+
+function normalizeSearchText(value: string) {
+  return value
+    .normalize("NFKD")
+    .replace(/\p{Diacritic}/gu, "")
+    .replace(/['’]/g, "")
+    .replace(/[^\p{Letter}\p{Number}]+/gu, " ")
+    .trim()
+    .toLocaleLowerCase();
 }
 
 function groupCommandItems(items: readonly CommandMenuItemData[]) {

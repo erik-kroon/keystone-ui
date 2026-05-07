@@ -66,5 +66,5 @@ End-state contract:
 
 Intentional exceptions and follow-ups:
 
-- UI CommandMenu does not ship fuzzy scoring, nested command pages, async command discovery, route-aware command registration, persisted history, virtualization, or shortcut conflict policy. Those remain app-owned or later specialized UI items unless repeated use proves a durable source pattern.
+- UI CommandMenu ships ranked local matching for labels, values, descriptions, groups, and keywords, plus `filter` and `filteredItems` escape hatches for app-owned search. Nested command pages, async command discovery, route-aware command registration, persisted history, virtualization, and shortcut conflict policy remain app-owned or later specialized UI items unless repeated use proves a durable source pattern.
 - TanStack Hotkeys remains a preview integration. Generated source keeps the integration easy to remove or adapt if upstream APIs change.

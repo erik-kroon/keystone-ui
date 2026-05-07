@@ -1,4 +1,13 @@
-import { For, Show, createContext, createMemo, splitProps, useContext, type JSX } from "solid-js";
+import {
+  For,
+  Show,
+  createContext,
+  createEffect,
+  createMemo,
+  splitProps,
+  useContext,
+  type JSX,
+} from "solid-js";
 import type { FormControlApi } from "../form/index";
 import { createListboxInteraction, type ListboxInteractionApi } from "../collection/index";
 import type { ListInteractionKernelApi } from "../collection/interaction-kernel";
@@ -312,6 +321,14 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
         reason: detail.reason === "keyboard" ? "keyboard" : "select",
       });
     },
+  });
+  createEffect(() => {
+    if (scope !== "command" || !open() || !inputValue()) return;
+
+    const highlightedValue = listbox.activeDescendant.highlightedValue();
+    if (highlightedValue && listbox.collection.itemByValue(highlightedValue)) return;
+
+    listbox.keyboard.highlight("first");
   });
   formValue = createComboboxValueForm({
     defaultValue: () => options.defaultValue,

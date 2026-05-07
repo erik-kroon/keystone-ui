@@ -12,7 +12,12 @@ import {
   type JSX,
 } from "solid-js";
 
-import type { componentDocs, componentHref, hookDocs, navGroups } from "@/lib/docs-data";
+import type {
+  componentHref,
+  navGroups,
+  searchableComponentDocs,
+  searchableHookDocs,
+} from "@/lib/docs-data";
 
 type DocsCommandSearchDialogProps = {
   onOpenChange: (open: boolean) => void;
@@ -20,9 +25,9 @@ type DocsCommandSearchDialogProps = {
 };
 
 type DocsSearchData = {
-  componentDocs: typeof componentDocs;
+  componentDocs: typeof searchableComponentDocs;
   componentHref: typeof componentHref;
-  hookDocs: typeof hookDocs;
+  hookDocs: typeof searchableHookDocs;
   navGroups: typeof navGroups;
 };
 
@@ -39,6 +44,13 @@ type SearchItem = {
 type SearchGroup = {
   items: readonly SearchItem[];
   label: string;
+};
+
+type SearchFieldWeight = "primary" | "secondary";
+
+type SearchField = {
+  value: string;
+  weight: SearchFieldWeight;
 };
 
 const iconClass = "size-4 text-muted-foreground/80";
@@ -111,7 +123,7 @@ export function DocsCommandSearchDialog(props: Readonly<DocsCommandSearchDialogP
             >
               <div class="relative px-2.5 py-1.5">
                 <Search
-                  class="pointer-events-none absolute top-1/2 left-5 z-10 size-4 -translate-y-1/2 text-muted-foreground/72"
+                  class="pointer-events-none absolute top-[calc(50%+1px)] left-5 z-10 size-5 -translate-y-1/2 text-foreground/72 sm:size-4.5"
                   aria-hidden="true"
                 />
                 <Command.Input
@@ -119,7 +131,7 @@ export function DocsCommandSearchDialog(props: Readonly<DocsCommandSearchDialogP
                   ref={(element) => {
                     inputRef = element;
                   }}
-                  class="h-9.5 w-full min-w-0 rounded-lg border border-transparent bg-transparent ps-9 pe-3 text-base text-foreground shadow-none outline-none ring-0 transition-colors placeholder:text-muted-foreground/72 focus-visible:ring-0 sm:h-8.5 sm:text-sm [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-results-button]:appearance-none [&::-webkit-search-results-decoration]:appearance-none"
+                  class="h-9.5 w-full min-w-0 appearance-none border-0 bg-transparent ps-9 pe-3 text-base text-foreground leading-none shadow-none outline-none ring-0 transition-colors placeholder:text-muted-foreground/72 focus-visible:outline-none focus-visible:ring-0 sm:h-8.5 sm:text-sm [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-results-button]:appearance-none [&::-webkit-search-results-decoration]:appearance-none"
                   placeholder="Search documentation..."
                   type="search"
                 />
@@ -199,10 +211,10 @@ export function DocsCommandSearchDialog(props: Readonly<DocsCommandSearchDialogP
 
 function loadDocsSearchData() {
   docsSearchDataPromise ??= import("@/lib/docs-data").then(
-    ({ componentDocs, componentHref, hookDocs, navGroups }) => ({
-      componentDocs,
+    ({ componentHref, navGroups, searchableComponentDocs, searchableHookDocs }) => ({
+      componentDocs: searchableComponentDocs,
       componentHref,
-      hookDocs,
+      hookDocs: searchableHookDocs,
       navGroups,
     }),
   );
@@ -246,7 +258,7 @@ function createSearchItems(data: DocsSearchData) {
       group: "Components",
       href: data.componentHref(item.name),
       icon: "component" as const,
-      keywords: [item.name, item.type, ...Object.values(item.parity)],
+      keywords: [item.name, item.type, ...item.categories, ...item.keywords],
       label: item.title,
       value: data.componentHref(item.name),
     })),
@@ -255,7 +267,7 @@ function createSearchItems(data: DocsSearchData) {
       group: "Hooks",
       href: data.componentHref(item.name),
       icon: "hook" as const,
-      keywords: [item.name, item.type, ...Object.values(item.parity)],
+      keywords: [item.name, item.type, ...item.categories, ...item.keywords],
       label: item.title,
       value: data.componentHref(item.name),
     })),
@@ -263,17 +275,111 @@ function createSearchItems(data: DocsSearchData) {
 }
 
 function filterItems(items: readonly SearchItem[], query: string) {
-  const normalizedQuery = query.trim().toLowerCase();
-  if (!normalizedQuery) return items.slice(0, 20);
+  const preparedQuery = prepareSearchQuery(query);
+  if (!preparedQuery) return items.slice(0, 20);
 
   return items
-    .filter((item) =>
-      [item.label, item.description, item.group, item.href, ...item.keywords]
-        .join(" ")
-        .toLowerCase()
-        .includes(normalizedQuery),
+    .map((item, index) => ({
+      item,
+      index,
+      score: rankSearchFields(
+        [
+          { value: item.label, weight: "primary" },
+          { value: item.href, weight: "primary" },
+          { value: item.group, weight: "secondary" },
+          ...item.keywords.map((keyword) => ({
+            value: keyword,
+            weight: "secondary" as const,
+          })),
+        ],
+        preparedQuery,
+      ),
+    }))
+    .filter(
+      (match): match is { item: SearchItem; index: number; score: number } => match.score !== null,
     )
-    .slice(0, 30);
+    .sort((a, b) => a.score - b.score || a.index - b.index)
+    .slice(0, 30)
+    .map((match) => match.item);
+}
+
+function prepareSearchQuery(query: string) {
+  const normalized = normalizeSearchText(query);
+  if (!normalized) return null;
+
+  return {
+    compact: normalized.replaceAll(" ", ""),
+    normalized,
+    terms: normalized.split(" ").filter(Boolean),
+  };
+}
+
+function rankSearchFields(
+  fields: readonly SearchField[],
+  query: NonNullable<ReturnType<typeof prepareSearchQuery>>,
+) {
+  let bestScore: number | null = null;
+  const searchableFields = fields
+    .map((field) => ({
+      ...field,
+      normalized: normalizeSearchText(field.value),
+    }))
+    .filter((field) => field.normalized);
+
+  for (const field of searchableFields) {
+    const score = rankSearchField(field.normalized, field.weight, query);
+    if (score === null) continue;
+    bestScore = bestScore === null ? score : Math.min(bestScore, score);
+  }
+
+  const allTermsMatch = query.terms.every((term) =>
+    searchableFields.some((field) => field.normalized.includes(term)),
+  );
+
+  if (allTermsMatch) {
+    const termScore = searchableFields.some((field) => field.weight === "primary") ? 24 : 32;
+    bestScore = bestScore === null ? termScore : Math.min(bestScore, termScore);
+  }
+
+  return bestScore;
+}
+
+function rankSearchField(
+  field: string,
+  weight: SearchFieldWeight,
+  query: NonNullable<ReturnType<typeof prepareSearchQuery>>,
+) {
+  const offset = weight === "primary" ? 0 : 12;
+  const compactField = field.replaceAll(" ", "");
+  const words = field.split(" ").filter(Boolean);
+  const initials = words.map((word) => word[0]).join("");
+
+  if (field === query.normalized || compactField === query.compact) return offset;
+  if (field.startsWith(query.normalized) || compactField.startsWith(query.compact)) {
+    return offset + 1;
+  }
+  if (field.includes(query.normalized) || compactField.includes(query.compact)) {
+    return offset + 2;
+  }
+  if (initials.startsWith(query.compact)) return offset + 3;
+  if (query.terms.every((term) => words.some((word) => word.startsWith(term)))) {
+    return offset + 4;
+  }
+  if (query.terms.every((term) => words.some((word) => word.includes(term)))) {
+    return offset + 5;
+  }
+
+  return null;
+}
+
+function normalizeSearchText(value: string) {
+  return value
+    .normalize("NFKD")
+    .replace(/\p{Diacritic}/gu, "")
+    .replace(/['’]/g, "")
+    .replace(/[^\p{Letter}\p{Number}]+/gu, " ")
+    .trim()
+    .toLocaleLowerCase();
 }
 
 function groupItems(items: readonly SearchItem[]) {

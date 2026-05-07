@@ -1,5 +1,5 @@
 import { Clipboard, Copy, ExternalLink, Puzzle, Terminal } from "lucide-solid";
-import { For, Show, createSignal, type JSX } from "solid-js";
+import { For, Show, createSignal, type Accessor, type JSX } from "solid-js";
 
 import { ComponentPreview } from "@/components/component-preview";
 import {
@@ -8,20 +8,16 @@ import {
   CodeBlock,
   CopyPageButton,
   DocsPageFrame,
+  cn,
   PageHeader,
   PageHeaderDescription,
   PageHeaderHeading,
   secondaryButtonClass,
 } from "@/components/docs-shell";
-import { MdxContent, MdxH2, MdxH3, MdxList, MdxP, MdxTable } from "@/components/mdx-components";
-import {
-  anatomyParts,
-  componentMaturity,
-  findDocItem,
-  itemToc,
-  type DocsPage,
-} from "@/lib/docs-data";
+import { MdxContent, MdxH2, MdxH3, MdxP, MdxTable } from "@/components/mdx-components";
+import { componentMaturity, findDocItem, itemToc, type DocsPage } from "@/lib/docs-data";
 import type { RegistryDocItem } from "@/lib/registry-docs.gen";
+import { useMediaQuery } from "@keystone-ui/ui/default/hooks/use-media-query.ts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@keystone-ui/ui/default/ui/tabs.tsx";
 
 import {
@@ -96,8 +92,35 @@ type ComponentDocsBlueprint = {
   cssVariables?: readonly (readonly [string, string])[];
 };
 
+type HookTable = {
+  columns: readonly string[];
+  rows: readonly (readonly string[])[];
+};
+
+type HookSubsection = {
+  body?: JSX.Element;
+  code?: string;
+  id: string;
+  table?: HookTable;
+  title: string;
+};
+
+type HookSection = HookSubsection & {
+  children?: readonly HookSubsection[];
+  demo?: () => JSX.Element;
+};
+
+type HookDocsBlueprint = {
+  intro: JSX.Element;
+  sections: readonly HookSection[];
+};
+
 const pageHeaderActionClass =
   "!h-7 !min-h-7 gap-1 rounded-md px-2 text-sm shadow-none sm:!h-6 sm:!min-h-6 sm:text-xs [&>svg]:size-4 [&>svg]:opacity-80 sm:[&>svg]:size-3.5";
+const docsSectionClass = "mt-10 scroll-mt-24 lg:mt-12";
+const previewSectionClass = "mt-6 scroll-mt-24";
+
+const showInstallationSection = false;
 
 function maturityBadgeClass(maturity: string) {
   switch (maturity.toLowerCase()) {
@@ -150,7 +173,7 @@ const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
         description: "A single-open accordion that starts closed.",
         id: "single",
         preview: () => <SingleAccordionExample />,
-        title: "Single accordion",
+        title: "Single Accordion",
         variant: "centered",
       },
       {
@@ -158,7 +181,7 @@ const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
         description: "Open more than one item at a time.",
         id: "multiple",
         preview: () => <MultipleAccordionExample />,
-        title: "Multiple accordion",
+        title: "Multiple Accordion",
         variant: "centered",
       },
       {
@@ -166,7 +189,7 @@ const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
         description: "Drive open items from parent state.",
         id: "controlled",
         preview: () => <ControlledAccordionExample />,
-        title: "Controlled accordion",
+        title: "Controlled Accordion",
         variant: "centered",
       },
       {
@@ -174,7 +197,7 @@ const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
         description: "Disable specific items while keeping keyboard navigation.",
         id: "disabled",
         preview: () => <DisabledItemAccordionExample />,
-        title: "Disabled item",
+        title: "Disabled Item",
         variant: "centered",
       },
     ],
@@ -257,7 +280,7 @@ const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
         description: "A project creation card with inputs, select, and footer action.",
         id: "project-card",
         preview: () => <CardExample />,
-        title: "Project card",
+        title: "Project Card",
         variant: "centered",
       },
     ],
@@ -295,7 +318,7 @@ const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
         description: "Controlled checkbox with a visible label.",
         id: "controlled",
         preview: () => <CheckboxExample />,
-        title: "Controlled checkbox",
+        title: "Controlled Checkbox",
         variant: "inline",
       },
     ],
@@ -335,7 +358,7 @@ const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
         description: "A modal dialog with title, description, body, and footer action.",
         id: "basic",
         preview: () => <DialogExample />,
-        title: "Basic dialog",
+        title: "Basic Dialog",
         variant: "centered",
       },
     ],
@@ -377,7 +400,7 @@ const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
         description: "Contextual panel with title, description, content, and footer action.",
         id: "basic",
         preview: () => <PopoverExample />,
-        title: "Basic popover",
+        title: "Basic Popover",
         variant: "centered",
       },
     ],
@@ -416,7 +439,7 @@ const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
         description: "Single value select with three options.",
         id: "basic",
         preview: () => <SelectExample />,
-        title: "Basic select",
+        title: "Basic Select",
         variant: "centered",
       },
     ],
@@ -455,7 +478,7 @@ const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
         description: "Horizontal tabs with three panels.",
         id: "basic",
         preview: () => <TabsExample />,
-        title: "Basic tabs",
+        title: "Basic Tabs",
         variant: "centered",
       },
     ],
@@ -498,7 +521,7 @@ const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
         description: "Trigger a success toast from an application action.",
         id: "basic",
         preview: () => <ToastExample />,
-        title: "Basic toast",
+        title: "Basic Toast",
         variant: "centered",
       },
     ],
@@ -536,7 +559,7 @@ const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
         description: "Tooltip attached to a focusable trigger.",
         id: "basic",
         preview: () => <TooltipExample />,
-        title: "Basic tooltip",
+        title: "Basic Tooltip",
         variant: "inline",
       },
     ],
@@ -551,6 +574,351 @@ const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
       ["data-side", "Resolved floating side."],
       ["data-align", "Resolved floating alignment."],
       ["data-transition-status", "Overlay enter/exit transition phase."],
+    ],
+  },
+};
+
+const copyToClipboardBasicCode = `import { createCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+
+function CopyButton(props: { text: string }) {
+  const clipboard = createCopyToClipboard();
+
+  return (
+    <button onClick={() => void clipboard.copy(props.text)}>
+      {clipboard.copied() ? "Copied!" : "Copy"}
+    </button>
+  );
+}`;
+
+const copyToClipboardTimeoutCode = `const clipboard = createCopyToClipboard({ copiedDuration: 3000 });`;
+
+const copyToClipboardCallbackCode = `const clipboard = createCopyToClipboard({
+  onCopy: (value) => console.log("Copied to clipboard", value),
+});`;
+
+const copyToClipboardIconSwapCode = `import { Check, Copy } from "lucide-solid";
+import { createCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+import { Button } from "@/components/ui/button";
+
+function CopyButton(props: { value: string }) {
+  const clipboard = createCopyToClipboard();
+
+  return (
+    <Button
+      aria-label="Copy to clipboard"
+      onClick={() => void clipboard.copy(props.value)}
+      size="icon"
+      variant="outline"
+    >
+      {clipboard.copied() ? (
+        <Check aria-hidden="true" />
+      ) : (
+        <Copy aria-hidden="true" />
+      )}
+    </Button>
+  );
+}`;
+
+const copyToClipboardApiCode = `function createCopyToClipboard(options?: {
+  copiedDuration?: number;
+  onCopy?: (value: string) => void;
+  onError?: (error: unknown, value: string) => void;
+  window?: Window;
+}): {
+  copy: (value: string) => Promise<boolean>;
+  copied: Accessor<boolean>;
+  status: Accessor<"idle" | "copied" | "error">;
+  error: Accessor<unknown>;
+  isSupported: () => boolean;
+  reset: () => void;
+};`;
+
+const mediaQueryBreakpointCode = `import { useMediaQuery } from "@/hooks/use-media-query";
+
+// Min-width (breakpoint and above), like md:
+const isDesktop = useMediaQuery("md");
+
+// Max-width (below breakpoint), like max-md:
+const isMobile = useMediaQuery("max-md");
+
+// Range (between two breakpoints), like md:max-lg:
+const isTablet = useMediaQuery("md:max-lg");`;
+
+const mediaQueryObjectCode = `// Touch device detection
+const isTouch = useMediaQuery({ pointer: "coarse" });
+
+// Breakpoint + pointer combined
+const isMobileTouch = useMediaQuery({ max: "md", pointer: "coarse" });
+
+// Custom pixel values
+const isNarrow = useMediaQuery({ max: 600 });`;
+
+const mediaQueryRawCode = `const prefersDark = useMediaQuery("(prefers-color-scheme: dark)");
+const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");`;
+
+const mediaQueryConditionalCode = `function Layout() {
+  const isDesktop = useMediaQuery("lg");
+
+  return isDesktop() ? <DesktopNav /> : <MobileNav />;
+}`;
+
+const mediaQueryApiCode = `function useMediaQuery(
+  query: MediaQueryBreakpointQuery | MediaQueryInput | string,
+  options?: UseMediaQueryOptions,
+): Accessor<boolean>;`;
+
+const useIsMobileCode = `import { useIsMobile } from "@/hooks/use-media-query";
+
+const isMobile = useIsMobile(); // equivalent to useMediaQuery("max-md")`;
+
+const hookDocsOverrides: Record<string, HookDocsBlueprint> = {
+  "use-copy-to-clipboard": {
+    intro: (
+      <MdxP class="mt-8">
+        A Solid clipboard helper that wraps the Clipboard API with a built-in timer for copied
+        feedback. Use it for copy buttons that need brief confirmation, failure state, and SSR-safe
+        capability checks.
+      </MdxP>
+    ),
+    sections: [
+      {
+        id: "usage",
+        title: "Usage",
+        children: [
+          {
+            code: copyToClipboardBasicCode,
+            id: "basic",
+            title: "Basic",
+          },
+          {
+            body: (
+              <>
+                <MdxP>
+                  The copied state resets after 2 seconds by default. Pass{" "}
+                  <InlineCode>copiedDuration</InlineCode> to change that window.
+                </MdxP>
+                <MdxP class="mt-3">
+                  Set <InlineCode>copiedDuration</InlineCode> to <InlineCode>0</InlineCode> to keep
+                  <InlineCode>copied()</InlineCode> as <InlineCode>true</InlineCode> until{" "}
+                  <InlineCode>reset()</InlineCode> is called or the owner disposes.
+                </MdxP>
+              </>
+            ),
+            code: copyToClipboardTimeoutCode,
+            id: "custom-timeout",
+            title: "Custom timeout",
+          },
+          {
+            body: <MdxP>Run a side effect when a copy succeeds.</MdxP>,
+            code: copyToClipboardCallbackCode,
+            id: "callback-on-copy",
+            title: "Callback on copy",
+          },
+          {
+            body: <MdxP>A common pattern: swap the icon briefly to confirm the copy.</MdxP>,
+            code: copyToClipboardIconSwapCode,
+            id: "with-icon-swap",
+            title: "With icon swap",
+          },
+        ],
+      },
+      {
+        code: copyToClipboardApiCode,
+        id: "api-reference",
+        title: "API",
+        children: [
+          {
+            id: "options",
+            table: {
+              columns: ["Property", "Type", "Default", "Description"],
+              rows: [
+                [
+                  "copiedDuration",
+                  "number",
+                  "2000",
+                  "Milliseconds before copied state resets to false. Set to 0 to keep it true.",
+                ],
+                [
+                  "onCopy",
+                  "(value: string) => void",
+                  "-",
+                  "Callback fired after a successful copy.",
+                ],
+                [
+                  "onError",
+                  "(error: unknown, value: string) => void",
+                  "-",
+                  "Callback fired when the Clipboard API is unavailable or rejects.",
+                ],
+                [
+                  "window",
+                  "Window",
+                  "globalThis",
+                  "Window override for tests or embedded contexts.",
+                ],
+              ],
+            },
+            title: "Options",
+          },
+          {
+            id: "return-value",
+            table: {
+              columns: ["Property", "Type", "Description"],
+              rows: [
+                ["copy", "(value: string) => Promise<boolean>", "Copy text and report success."],
+                ["copied", "Accessor<boolean>", "True while copied feedback is active."],
+                ["status", 'Accessor<"idle" | "copied" | "error">', "Current copy lifecycle."],
+                ["error", "Accessor<unknown>", "Last clipboard error."],
+                ["isSupported", "() => boolean", "Whether writeText is available."],
+                ["reset", "() => void", "Clear copied and error state."],
+              ],
+            },
+            title: "Return value",
+          },
+        ],
+      },
+    ],
+  },
+  "use-media-query": {
+    intro: (
+      <MdxP class="mt-8">
+        A Solid media query hook that subscribes to CSS media queries and returns a reactive
+        accessor. It supports Tailwind-like breakpoint shorthand, object queries, raw CSS media
+        strings, and SSR-safe defaults.
+      </MdxP>
+    ),
+    sections: [
+      {
+        id: "usage",
+        title: "Usage",
+        children: [
+          {
+            body: (
+              <MdxP>
+                Use Tailwind variant syntax to match breakpoints. TypeScript provides autocomplete
+                for the built-in breakpoint names.
+              </MdxP>
+            ),
+            code: mediaQueryBreakpointCode,
+            id: "breakpoint-shorthand",
+            title: "Breakpoint shorthand",
+          },
+          {
+            body: (
+              <MdxP>
+                Use the object form when you need pointer detection, orientation, preference checks,
+                or custom pixel values.
+              </MdxP>
+            ),
+            code: mediaQueryObjectCode,
+            id: "object-api",
+            title: "Object API",
+          },
+          {
+            body: <MdxP>Pass any valid CSS media query string as an escape hatch.</MdxP>,
+            code: mediaQueryRawCode,
+            id: "raw-media-query",
+            title: "Raw media query",
+          },
+          {
+            body: (
+              <MdxP>
+                The primary use case: mount one component instead of another based on viewport.
+              </MdxP>
+            ),
+            code: mediaQueryConditionalCode,
+            id: "conditional-rendering",
+            title: "Conditional rendering",
+          },
+        ],
+      },
+      {
+        body: (
+          <MdxP>
+            The hook includes a static breakpoint map that should match your Tailwind theme.
+          </MdxP>
+        ),
+        id: "breakpoints",
+        table: {
+          columns: ["Name", "Value"],
+          rows: [
+            ["sm", "640px"],
+            ["md", "800px"],
+            ["lg", "1024px"],
+            ["xl", "1280px"],
+            ["2xl", "1536px"],
+            ["3xl", "1600px"],
+            ["4xl", "2000px"],
+          ],
+        },
+        title: "Breakpoints",
+      },
+      {
+        code: mediaQueryApiCode,
+        id: "api-reference",
+        title: "API",
+        children: [
+          {
+            id: "string-queries",
+            table: {
+              columns: ["Pattern", "Example", "Matches"],
+              rows: [
+                ['"{bp}"', '"md"', "Viewport >= breakpoint"],
+                ['"max-{bp}"', '"max-md"', "Viewport < breakpoint"],
+                ['"{bp}:max-{bp}"', '"md:max-lg"', "Between two breakpoints"],
+                ['"(...)"', '"(prefers-color-scheme: dark)"', "Raw CSS media query"],
+              ],
+            },
+            title: "String queries",
+          },
+          {
+            id: "object-queries",
+            table: {
+              columns: ["Property", "Type", "Description"],
+              rows: [
+                ["min", "Breakpoint | number | string", "Min-width breakpoint name or CSS value."],
+                ["max", "Breakpoint | number | string", "Max-width breakpoint name or CSS value."],
+                ["pointer", '"coarse" | "fine" | "none"', "Pointer type."],
+                ["orientation", '"landscape" | "portrait"', "Viewport orientation."],
+                [
+                  "preference",
+                  '"dark" | "light" | "motion" | "reduced-motion"',
+                  "Color-scheme or reduced-motion preference.",
+                ],
+              ],
+            },
+            title: "Object queries",
+          },
+          {
+            body: (
+              <MdxP>
+                Returns an <InlineCode>Accessor&lt;boolean&gt;</InlineCode>. The accessor returns{" "}
+                <InlineCode>true</InlineCode> when the query matches, <InlineCode>false</InlineCode>{" "}
+                otherwise, and starts from <InlineCode>defaultValue</InlineCode> during SSR.
+              </MdxP>
+            ),
+            id: "return-value",
+            title: "Return value",
+          },
+        ],
+      },
+      {
+        body: <MdxP>Resize the viewport to see values update in real time.</MdxP>,
+        demo: () => <MediaQueryDemo />,
+        id: "examples",
+        title: "Examples",
+      },
+      {
+        body: (
+          <MdxP>
+            The hook also exports <InlineCode>useIsMobile</InlineCode> for the common{" "}
+            <InlineCode>max-md</InlineCode> check.
+          </MdxP>
+        ),
+        code: useIsMobileCode,
+        id: "convenience-export",
+        title: "Convenience export",
+      },
     ],
   },
 };
@@ -585,15 +953,14 @@ function RegistryDocContent(
   const markdown = () => pageMarkdown(props.item, props.docsBlueprint);
   const usageCode = () => props.docsBlueprint.usageCode || genericUsageCode(props.item);
   const description = () => props.docsBlueprint.description ?? props.item.description;
-  const anatomy = () => anatomyParts(props.item);
-  const blueprintDataAttributes = () => props.docsBlueprint.dataAttributes ?? [];
-  const blueprintCssVariables = () => props.docsBlueprint.cssVariables ?? [];
   const apiItems = () =>
     props.docsBlueprint.apiItems?.length
       ? props.docsBlueprint.apiItems
       : props.item.api
         ? [{ name: props.item.title, description: readableMetadata(props.item.api) }]
         : [];
+  const hasPreview = () => props.item.type === "registry:ui";
+  const hookDocs = () => hookDocsOverrides[props.item.name];
   const maturity = () => maturityLabel(props.docsBlueprint.maturity);
 
   return (
@@ -627,207 +994,261 @@ function RegistryDocContent(
           </div>
         </PageHeader>
 
-        <section id="preview" class="mt-8 scroll-mt-24">
-          <HeroPreviewSection item={props.item} docsBlueprint={props.docsBlueprint} />
-        </section>
-
-        <DocSection id="installation" title="Installation">
-          <InstallationSection install={props.item.install} item={props.item} />
-        </DocSection>
-
-        <DocSection
-          id="usage"
-          title="Usage"
-          description="Import the generated source and compose it in application code."
-        >
-          <CodeBlock code={usageCode()} language="tsx" title="Usage" />
-        </DocSection>
-
-        <DocSection id="api-reference" title="API Reference">
-          <Show
-            when={apiItems().length > 0}
-            fallback={<MdxP>No API reference has been documented yet.</MdxP>}
-          >
-            <ApiReference items={apiItems()} />
-          </Show>
-        </DocSection>
-
-        <Show when={props.docsBlueprint.examples?.length}>
-          <DocSection id="examples" title="Examples">
-            <div class="grid gap-10">
-              <For each={props.docsBlueprint.examples}>
-                {(example) => (
-                  <article class="scroll-mt-24" id={example.id}>
-                    <div class="mb-6">
-                      <MdxH3 class="mt-0">{example.title}</MdxH3>
-                      <MdxP>{example.description}</MdxP>
-                    </div>
-                    <PreviewCodeTabs
-                      preview={example.preview}
-                      code={example.code}
-                      align={example.align ?? props.docsBlueprint.previewAlign}
-                      variant={example.variant ?? props.docsBlueprint.heroVariant ?? "centered"}
-                    />
-                  </article>
-                )}
-              </For>
-            </div>
-          </DocSection>
-        </Show>
-
         <Show
-          when={props.docsBlueprint.accessibility || props.item.accessibility || props.item.state}
-        >
-          <DocSection id="accessibility-keyboard" title="Accessibility / Keyboard Interactions">
-            <Show when={props.docsBlueprint.accessibility?.length}>
-              <div class="mt-4">
-                <MdxH3>Accessibility</MdxH3>
-                <MdxList>
-                  <For each={props.docsBlueprint.accessibility}>{(item) => <li>{item}</li>}</For>
-                </MdxList>
-              </div>
-            </Show>
-            <Show when={props.docsBlueprint.keyboardInteractions?.length}>
-              <div class="mt-5">
-                <MdxH3>Keyboard</MdxH3>
-                <MdxList>
-                  <For each={props.docsBlueprint.keyboardInteractions}>
-                    {(item) => <li>{item}</li>}
-                  </For>
-                </MdxList>
-              </div>
-            </Show>
-            <Show
-              when={
-                !props.docsBlueprint.accessibility?.length ? props.item.accessibility : undefined
-              }
-            >
-              {(accessibility) => <MdxP>{readableMetadata(accessibility())}</MdxP>}
-            </Show>
-            <Show when={props.item.state}>
-              <MdxP>State metadata: {props.item.state}</MdxP>
-            </Show>
-          </DocSection>
-        </Show>
-
-        <Show
-          when={
-            blueprintDataAttributes().length ||
-            props.item.dataAttributes ||
-            blueprintCssVariables().length
-          }
-        >
-          <DocSection id="data-attributes" title="Data Attributes / CSS Variables">
-            <Show when={props.docsBlueprint.dataAttributeDescription}>
-              <MdxP>{props.docsBlueprint.dataAttributeDescription}</MdxP>
-            </Show>
-            <Show when={blueprintDataAttributes().length}>
-              <MdxTable
-                columns={["Attribute", "Description"]}
-                rows={blueprintDataAttributes().map(([key, value]) => [key, value])}
-              />
-            </Show>
-            <Show when={props.item.dataAttributes}>
-              {(dataAttributes) => (
-                <p class="mt-4 text-muted-foreground text-sm leading-7">
-                  Source metadata mentions: {readableMetadata(dataAttributes())}
-                </p>
-              )}
-            </Show>
-            <Show when={blueprintCssVariables().length}>
-              <div class="mt-4">
-                <MdxH3>CSS Variables</MdxH3>
-                <MdxTable
-                  columns={["Variable", "Description"]}
-                  rows={blueprintCssVariables().map(([key, value]) => [key, value])}
-                />
-              </div>
-            </Show>
-          </DocSection>
-        </Show>
-
-        <Show when={anatomy().length}>
-          <DocSection
-            id="anatomy"
-            title="Anatomy"
-            description="Stable parts help with component-specific styling and predictable behavior hooks."
-          >
-            <div class="mt-4 flex flex-wrap gap-2">
-              <For each={anatomy()}>
-                {(part) => (
-                  <span class="rounded-md border border-border bg-muted px-2 py-1 font-mono text-foreground text-xs">
-                    {part}
-                  </span>
-                )}
-              </For>
-            </div>
-          </DocSection>
-        </Show>
-
-        <DocSection id="source-registry-details" title="Source and registry details">
-          <details class="group rounded-lg border border-border bg-card">
-            <summary class="cursor-pointer list-none px-4 py-3 font-medium text-sm">
-              Source and registry details
-            </summary>
-            <div class="px-4 pb-4">
-              <Show when={props.item.dependencies.length || props.item.registryDependencies.length}>
-                <MdxH3>Dependencies</MdxH3>
-                <MdxTable
-                  columns={["Kind", "Values"]}
-                  rows={[
-                    [
-                      "Registry",
-                      props.item.registryDependencies.length
-                        ? props.item.registryDependencies.join(", ")
-                        : "None",
-                    ],
-                    [
-                      "Runtime",
-                      props.item.dependencies.length ? props.item.dependencies.join(", ") : "None",
-                    ],
-                  ]}
-                />
+          when={hookDocs()}
+          fallback={
+            <>
+              <Show when={hasPreview()}>
+                <section id="preview" class={previewSectionClass}>
+                  <HeroPreviewSection item={props.item} docsBlueprint={props.docsBlueprint} />
+                </section>
               </Show>
 
-              <Show when={props.item.sourceFiles.length}>
-                <div class="mt-6">
-                  <MdxH3>Source files</MdxH3>
-                  <div class="mt-3 space-y-2">
-                    <For each={props.item.sourceFiles}>
-                      {(file) => (
-                        <p class="m-0 rounded-md border border-border bg-muted px-3 py-2 font-mono text-xs">
-                          {file}
-                        </p>
+              <Show when={showInstallationSection}>
+                <DocSection id="installation" title="Installation">
+                  <InstallationSection install={props.item.install} item={props.item} />
+                </DocSection>
+              </Show>
+
+              <DocSection id="usage" title="Usage">
+                <CodeBlock code={usageCode()} language="tsx" title="Usage" />
+              </DocSection>
+
+              <DocSection id="api-reference" title="API Reference">
+                <Show
+                  when={apiItems().length > 0}
+                  fallback={<MdxP>No API reference has been documented yet.</MdxP>}
+                >
+                  <ApiReference items={apiItems()} />
+                </Show>
+              </DocSection>
+
+              <Show when={props.docsBlueprint.examples?.length}>
+                <DocSection contentClass="mb-5!" id="examples" title="Examples">
+                  <div class="grid gap-8">
+                    <For each={props.docsBlueprint.examples}>
+                      {(example) => (
+                        <article class="scroll-mt-24" id={example.id}>
+                          <div class="mb-3">
+                            <MdxH3 class="mt-0!">{example.title}</MdxH3>
+                          </div>
+                          <PreviewCodeTabs
+                            class="mt-0! mb-0!"
+                            preview={example.preview}
+                            code={example.code}
+                            align={example.align ?? props.docsBlueprint.previewAlign}
+                            variant={
+                              example.variant ?? props.docsBlueprint.heroVariant ?? "centered"
+                            }
+                          />
+                        </article>
                       )}
                     </For>
                   </div>
-                </div>
+                </DocSection>
               </Show>
-
-              <Show when={Object.keys(props.item.parity).length}>
-                <div class="mt-6">
-                  <MdxH3>Parity notes</MdxH3>
-                  <Show when={Boolean(Object.keys(props.item.compatibility).length)}>
-                    <MdxList>
-                      <For each={Object.entries(props.item.compatibility)}>
-                        {([label, version]) => <li>{`${label}: ${version}`}</li>}
-                      </For>
-                    </MdxList>
-                  </Show>
-                  <Show when={Object.values(props.item.parity).length}>
-                    <MdxList class="mt-4">
-                      <For each={Object.entries(props.item.parity)}>
-                        {([label, value]) => <li>{`${readableKey(label)}: ${value}`}</li>}
-                      </For>
-                    </MdxList>
-                  </Show>
-                </div>
-              </Show>
-            </div>
-          </details>
-        </DocSection>
+            </>
+          }
+        >
+          {(docs) => <HookDocsContent docs={docs()} item={props.item} />}
+        </Show>
       </MdxContent>
     </DocsPageFrame>
+  );
+}
+
+function HookDocsContent(props: Readonly<{ docs: HookDocsBlueprint; item: RegistryDocItem }>) {
+  return (
+    <>
+      {props.docs.intro}
+
+      <DocSection id="installation" title="Installation">
+        <InstallationSection install={props.item.install} item={props.item} />
+      </DocSection>
+
+      <For each={props.docs.sections}>{(section) => <HookDocSection section={section} />}</For>
+    </>
+  );
+}
+
+function HookDocSection(props: Readonly<{ section: HookSection }>) {
+  return (
+    <DocSection id={props.section.id} title={props.section.title}>
+      <HookSectionBody section={props.section} />
+      <Show when={props.section.children?.length}>
+        <div class="mt-6 grid gap-8">
+          <For each={props.section.children}>
+            {(child) => (
+              <article class="scroll-mt-24" id={child.id}>
+                <MdxH3 class="mt-0!">{child.title}</MdxH3>
+                <HookSectionBody section={child} />
+              </article>
+            )}
+          </For>
+        </div>
+      </Show>
+    </DocSection>
+  );
+}
+
+function HookSectionBody(props: Readonly<{ section: HookSubsection | HookSection }>) {
+  return (
+    <>
+      <Show when={props.section.body}>{(body) => <div class="mb-4">{body()}</div>}</Show>
+      <Show when={props.section.code}>{(code) => <CodeBlock code={code()} language="tsx" />}</Show>
+      <Show when={props.section.table}>
+        {(table) => (
+          <MdxTable
+            columns={table().columns}
+            rows={table().rows.map((row) =>
+              row.map((cell, index) => (
+                <TableCellText column={table().columns[index] ?? ""} value={cell} />
+              )),
+            )}
+          />
+        )}
+      </Show>
+      <Show when={"demo" in props.section ? props.section.demo : undefined}>
+        {(demo) => <div class="mt-5">{demo()()}</div>}
+      </Show>
+    </>
+  );
+}
+
+function TableCellText(props: Readonly<{ column: string; value: string }>) {
+  if (props.value === "-") return <span aria-label="None">-</span>;
+  if (isCodeColumn(props.column)) return <InlineCode>{props.value}</InlineCode>;
+  return <span>{props.value}</span>;
+}
+
+function isCodeColumn(column: string) {
+  return ["Default", "Example", "Pattern", "Property", "Type"].includes(column);
+}
+
+function InlineCode(props: Readonly<{ children: JSX.Element }>) {
+  return (
+    <code class="break-all rounded-md bg-muted px-[0.3rem] py-[0.2rem] font-mono text-[0.8125rem] text-muted-foreground">
+      {props.children}
+    </code>
+  );
+}
+
+type MediaQueryDemoRow = {
+  description?: string;
+  label: string;
+  value: Accessor<boolean>;
+};
+
+function MediaQueryDemoSection(
+  props: Readonly<{ rows: readonly MediaQueryDemoRow[]; title: string }>,
+) {
+  return (
+    <div>
+      <h3 class="mb-2 font-medium text-foreground text-sm">{props.title}</h3>
+      <ul class="divide-y divide-border rounded-xl border border-border">
+        <For each={props.rows}>
+          {(row) => (
+            <li class="flex items-center justify-between gap-2 px-3 py-2.5">
+              <div class="min-w-0">
+                <InlineCode>{row.label}</InlineCode>
+              </div>
+              <div class="flex items-center gap-2">
+                <Show when={row.description}>
+                  {(description) => (
+                    <span class="ms-2 text-muted-foreground text-xs">{description()}</span>
+                  )}
+                </Show>
+                <span
+                  class={cn(
+                    "inline-flex h-6 min-w-11 shrink-0 items-center justify-center rounded-full px-2 font-medium text-xs",
+                    row.value()
+                      ? "bg-success/12 text-success-foreground dark:bg-success/20"
+                      : "bg-secondary text-muted-foreground",
+                  )}
+                >
+                  {row.value() ? "true" : "false"}
+                </span>
+              </div>
+            </li>
+          )}
+        </For>
+      </ul>
+    </div>
+  );
+}
+
+function MediaQueryDemo() {
+  const sm = useMediaQuery("sm");
+  const md = useMediaQuery("md");
+  const lg = useMediaQuery("lg");
+  const xl = useMediaQuery("xl");
+  const xxl = useMediaQuery("2xl");
+
+  const maxSm = useMediaQuery("max-sm");
+  const maxMd = useMediaQuery("max-md");
+  const maxLg = useMediaQuery("max-lg");
+
+  const smToMd = useMediaQuery("sm:max-md");
+  const mdToLg = useMediaQuery("md:max-lg");
+  const lgToXl = useMediaQuery("lg:max-xl");
+
+  const pointerCoarse = useMediaQuery({ pointer: "coarse" });
+  const pointerFine = useMediaQuery({ pointer: "fine" });
+  const darkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+
+  return (
+    <div class="my-8 flex flex-col gap-6">
+      <MediaQueryDemoSection
+        rows={[
+          { description: ">= 640px", label: `useMediaQuery("sm")`, value: sm },
+          { description: ">= 800px", label: `useMediaQuery("md")`, value: md },
+          { description: ">= 1024px", label: `useMediaQuery("lg")`, value: lg },
+          { description: ">= 1280px", label: `useMediaQuery("xl")`, value: xl },
+          { description: ">= 1536px", label: `useMediaQuery("2xl")`, value: xxl },
+        ]}
+        title="Min-width (breakpoint and above)"
+      />
+      <MediaQueryDemoSection
+        rows={[
+          { description: "< 640px", label: `useMediaQuery("max-sm")`, value: maxSm },
+          { description: "< 800px", label: `useMediaQuery("max-md")`, value: maxMd },
+          { description: "< 1024px", label: `useMediaQuery("max-lg")`, value: maxLg },
+        ]}
+        title="Max-width (below breakpoint)"
+      />
+      <MediaQueryDemoSection
+        rows={[
+          { description: "640 - 799px", label: `useMediaQuery("sm:max-md")`, value: smToMd },
+          { description: "800 - 1023px", label: `useMediaQuery("md:max-lg")`, value: mdToLg },
+          { description: "1024 - 1279px", label: `useMediaQuery("lg:max-xl")`, value: lgToXl },
+        ]}
+        title="Ranges"
+      />
+      <MediaQueryDemoSection
+        rows={[
+          {
+            description: "touch",
+            label: `useMediaQuery({ pointer: "coarse" })`,
+            value: pointerCoarse,
+          },
+          {
+            description: "mouse",
+            label: `useMediaQuery({ pointer: "fine" })`,
+            value: pointerFine,
+          },
+          {
+            label: `useMediaQuery("(prefers-color-scheme: dark)")`,
+            value: darkMode,
+          },
+          {
+            label: `useMediaQuery("(prefers-reduced-motion: reduce)")`,
+            value: reducedMotion,
+          },
+        ]}
+        title="Device and preferences"
+      />
+    </div>
   );
 }
 
@@ -848,10 +1269,10 @@ function InstallationSection(props: Readonly<{ install: string; item: RegistryDo
 
   const manualInstructions = () =>
     [
-      "# Copy source files from the registry default UI source path.",
-      ...props.item.sourceFiles.map((file) => `cp ${file} ./src/components/ui/`),
+      "# Copy source files from the registry default source path.",
+      ...props.item.sourceFiles.map((file) => `cp ${file} ${manualTargetRoot(props.item)}`),
       "# Install runtime dependencies in your app.",
-      `bun add ${props.item.dependencies.filter((dep) => dep !== "cn").join(" ") || "<deps>"}`,
+      runtimeDependencyCommand(props.item),
       "",
       "# If your app uses local registry mode:",
       props.item.registryDependencies.length
@@ -912,6 +1333,24 @@ function InstallationSection(props: Readonly<{ install: string; item: RegistryDo
   );
 }
 
+function manualTargetRoot(item: RegistryDocItem) {
+  switch (item.type) {
+    case "registry:hook":
+      return "./src/hooks/";
+    case "registry:lib":
+      return "./src/lib/";
+    default:
+      return "./src/components/ui/";
+  }
+}
+
+function runtimeDependencyCommand(item: RegistryDocItem) {
+  const dependencies = item.dependencies.filter((dep) => dep !== "cn");
+  return dependencies.length
+    ? `bun add ${dependencies.join(" ")}`
+    : "No runtime dependencies declared.";
+}
+
 function CopyInstallButton(props: Readonly<{ command: string }>) {
   return (
     <button
@@ -950,6 +1389,7 @@ function HeroPreviewSection(
 function PreviewCodeTabs(
   props: Readonly<{
     align?: PreviewAlign;
+    class?: string;
     preview: () => JSX.Element;
     code: string;
     variant?: PreviewVariant;
@@ -962,7 +1402,7 @@ function PreviewCodeTabs(
   const align = () => props.align ?? "center";
 
   return (
-    <div class="group relative mt-4 mb-12 flex flex-col gap-2">
+    <div class={cn("group relative mt-4 flex flex-col gap-2", props.class)}>
       <Tabs onValueChange={selectTab} value={tab()}>
         <div class="flex items-center justify-between">
           <TabsList>
@@ -974,7 +1414,7 @@ function PreviewCodeTabs(
       <div class="relative rounded-xl border not-dark:bg-card" data-tab={tab()}>
         <div class="invisible data-[active=true]:visible" data-active={tab() === "preview"}>
           <div
-            class="flex h-[450px] w-full justify-center overflow-y-auto p-10 data-[align=start]:items-start data-[align=end]:items-end data-[align=center]:items-center max-sm:px-6"
+            class="flex min-h-[430px] w-full justify-center overflow-y-auto bg-sidebar/24 p-8 data-[align=start]:items-start data-[align=end]:items-end data-[align=center]:items-center sm:p-10 max-sm:min-h-[380px] max-sm:px-5"
             data-align={align()}
           >
             <div
@@ -986,7 +1426,7 @@ function PreviewCodeTabs(
           </div>
         </div>
         <div
-          class="absolute inset-0 hidden overflow-hidden data-[active=true]:block **:[figure]:m-0! **:[pre]:h-[450px]"
+          class="absolute inset-0 hidden overflow-hidden data-[active=true]:block **:[figure]:m-0! **:[pre]:h-[430px]"
           data-active={tab() === "code"}
           data-slot="code"
         >
@@ -1000,14 +1440,15 @@ function PreviewCodeTabs(
 function DocSection(
   props: Readonly<{
     children: JSX.Element;
+    contentClass?: string;
     description?: string;
     id: string;
     title: string;
   }>,
 ) {
   return (
-    <section id={props.id} class="mt-18 scroll-mt-24">
-      <div class={props.description ? "mb-6" : "mb-5"}>
+    <section id={props.id} class={docsSectionClass}>
+      <div class={cn(props.description ? "mb-6" : "mb-5", props.contentClass)}>
         <MdxH2 class={props.description ? undefined : "mb-0"} id={`${props.id}-heading`}>
           {props.title}
         </MdxH2>
@@ -1047,7 +1488,7 @@ function ApiReferenceDescription(props: Readonly<{ text: string }>) {
   const parts = () => props.text.split(/(`[^`]+`)/g).filter(Boolean);
 
   return (
-    <p class="m-0 mt-6 max-w-3xl text-muted-foreground text-base leading-relaxed">
+    <p class="m-0 mt-2 max-w-3xl text-muted-foreground text-base leading-relaxed">
       <For each={parts()}>
         {(part) =>
           part.startsWith("`") && part.endsWith("`") ? (
@@ -1106,43 +1547,60 @@ function docsBlueprintForItem(item: RegistryDocItem): ComponentDocsBlueprint {
 }
 
 function itemPageWithBlueprint(item: RegistryDocItem, blueprint: ComponentDocsBlueprint): DocsPage {
+  const hookDocs = hookDocsOverrides[item.name];
   const toc = itemToc(item);
-  const hasApi = Boolean(blueprint.apiItems?.length || item.api);
+  const apiReferenceItems = blueprint.apiItems ?? [];
+  const exampleItems = blueprint.examples ?? [];
+  const hasApi = Boolean(apiReferenceItems.length || item.api);
   const hasUsage = Boolean(blueprint.usageCode || item.title);
-  const hasExamples = Boolean(blueprint.examples?.length);
-  const hasAccessibility = Boolean(
-    blueprint.accessibility?.length ||
-    blueprint.keyboardInteractions?.length ||
-    item.accessibility ||
-    item.state,
-  );
-  const hasDataAttributes =
-    Boolean(blueprint.dataAttributes?.length) ||
-    Boolean(blueprint.cssVariables?.length) ||
-    Boolean(item.dataAttributes);
+  const hasExamples = Boolean(exampleItems.length);
 
   return {
     description: blueprint.description ?? item.description,
     href: `/docs/components/${item.name}`,
     label: item.title,
     title: item.title,
-    toc: [
-      ...(toc.some((item) => item.href === "#preview")
-        ? [{ label: "Preview", href: "#preview" }]
-        : []),
-      ...(toc.some((item) => item.href === "#installation")
-        ? [{ label: "Installation", href: "#installation" }]
-        : []),
-      ...(hasUsage ? [{ label: "Usage", href: "#usage" }] : []),
-      ...(hasApi ? [{ label: "API Reference", href: "#api-reference" }] : []),
-      ...(hasExamples ? [{ label: "Examples", href: "#examples" }] : []),
-      ...(hasAccessibility
-        ? [{ label: "Accessibility / Keyboard", href: "#accessibility-keyboard" }]
-        : []),
-      ...(hasDataAttributes ? [{ label: "Data attributes", href: "#data-attributes" }] : []),
-      ...(anatomyParts(item).length ? [{ label: "Anatomy", href: "#anatomy" }] : []),
-      { label: "Source and registry details", href: "#source-registry-details" },
-    ],
+    toc: hookDocs
+      ? [
+          { label: "Installation", href: "#installation" },
+          ...hookDocs.sections.flatMap((section) => [
+            { label: section.title, href: `#${section.id}` },
+            ...(section.children ?? []).map((child) => ({
+              depth: 3,
+              label: child.title,
+              href: `#${child.id}`,
+            })),
+          ]),
+        ]
+      : [
+          ...(toc.some((item) => item.href === "#preview")
+            ? [{ label: "Preview", href: "#preview" }]
+            : []),
+          ...(showInstallationSection && toc.some((item) => item.href === "#installation")
+            ? [{ label: "Installation", href: "#installation" }]
+            : []),
+          ...(hasUsage ? [{ label: "Usage", href: "#usage" }] : []),
+          ...(hasApi
+            ? [
+                { label: "API Reference", href: "#api-reference" },
+                ...apiReferenceItems.map((api) => ({
+                  depth: 3,
+                  label: api.name,
+                  href: `#api-${apiReferenceId(api.name)}`,
+                })),
+              ]
+            : []),
+          ...(hasExamples
+            ? [
+                { label: "Examples", href: "#examples" },
+                ...exampleItems.map((example) => ({
+                  depth: 3,
+                  label: example.title,
+                  href: `#${example.id}`,
+                })),
+              ]
+            : []),
+        ],
   };
 }
 
@@ -1175,25 +1633,64 @@ function readableKey(value: string) {
 }
 
 function pageMarkdown(item: RegistryDocItem, blueprint: ComponentDocsBlueprint) {
+  const hookDocs = hookDocsOverrides[item.name];
+  if (hookDocs) return hookPageMarkdown(item, hookDocs);
+
   const sections = [
     `# ${item.title}`,
     blueprint.description ?? item.description,
-    `## Installation\n\n\`\`\`shell\n${item.install}\n\`\`\``,
+    showInstallationSection ? `## Installation\n\n\`\`\`shell\n${item.install}\n\`\`\`` : "",
     `## Usage\n\n${blueprint.usageCode}`,
     blueprint.apiItems?.length
       ? `## API Reference\n\n${blueprint.apiItems.map((api) => `- ${api.name}: ${api.description}`).join("\n")}`
       : item.api
         ? `## API Reference\n\n${readableMetadata(item.api)}`
         : "",
-    anatomyParts(item).length
-      ? `## Anatomy\n\n${anatomyParts(item)
-          .map((part) => `- ${part}`)
-          .join("\n")}`
+    blueprint.examples?.length
+      ? `## Examples\n\n${blueprint.examples.map((example) => `### ${example.title}\n\n\`\`\`tsx\n${example.code}\n\`\`\``).join("\n\n")}`
       : "",
-    `## Source and registry details\n\n${item.sourceFiles.map((file) => `- ${file}`).join("\n")}`,
   ];
 
   return sections.filter(Boolean).join("\n\n");
+}
+
+function hookPageMarkdown(item: RegistryDocItem, docs: HookDocsBlueprint) {
+  return [
+    `# ${item.title}`,
+    item.description,
+    `## Installation\n\n\`\`\`shell\n${item.install}\n\`\`\``,
+    ...docs.sections.map(hookSectionMarkdown),
+  ]
+    .filter(Boolean)
+    .join("\n\n");
+}
+
+function hookSectionMarkdown(section: HookSection | HookSubsection) {
+  return [
+    `## ${section.title}`,
+    section.code ? `\`\`\`tsx\n${section.code}\n\`\`\`` : "",
+    section.table ? markdownTable(section.table) : "",
+    "children" in section ? (section.children ?? []).map(hookSubsectionMarkdown).join("\n\n") : "",
+  ]
+    .filter(Boolean)
+    .join("\n\n");
+}
+
+function hookSubsectionMarkdown(section: HookSubsection) {
+  return [
+    `### ${section.title}`,
+    section.code ? `\`\`\`tsx\n${section.code}\n\`\`\`` : "",
+    section.table ? markdownTable(section.table) : "",
+  ]
+    .filter(Boolean)
+    .join("\n\n");
+}
+
+function markdownTable(table: HookTable) {
+  const header = `| ${table.columns.join(" |")} |`;
+  const divider = `| ${table.columns.map(() => "---").join(" | ")} |`;
+  const rows = table.rows.map((row) => `| ${row.join(" | ")} |`);
+  return [header, divider, ...rows].join("\n");
 }
 
 function readableMetadata(

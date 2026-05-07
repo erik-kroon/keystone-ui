@@ -45,17 +45,21 @@ describe("useMediaQuery", () => {
   });
 
   test("normalizes breakpoint and feature helpers", () => {
-    expect(createBreakpointQuery("md")).toBe("(min-width: 768px)");
-    expect(createBreakpointQuery("md", "down")).toBe("(max-width: 767.98px)");
+    expect(createBreakpointQuery("md")).toBe("(min-width: 800px)");
+    expect(createBreakpointQuery("md", "down")).toBe("(max-width: 799.98px)");
+    expect(normalizeMediaQuery("md")).toBe("(min-width: 800px)");
+    expect(normalizeMediaQuery("max-md")).toBe("(max-width: 799.98px)");
+    expect(normalizeMediaQuery("md:max-lg")).toBe("(min-width: 800px) and (max-width: 1023.98px)");
     expect(
       normalizeMediaQuery({
+        min: "md",
         max: "48rem",
         orientation: "portrait",
         pointer: "coarse",
         preference: "reduced-motion",
       }),
     ).toBe(
-      "(max-width: 48rem) and (orientation: portrait) and (pointer: coarse) and (prefers-reduced-motion: reduce)",
+      "(min-width: 800px) and (max-width: 48rem) and (orientation: portrait) and (pointer: coarse) and (prefers-reduced-motion: reduce)",
     );
   });
 });

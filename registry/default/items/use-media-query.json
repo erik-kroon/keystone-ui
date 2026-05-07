@@ -16,9 +16,9 @@
   "targetRoot": "src/hooks",
   "meta": {
     "install": "mason add use-media-query",
-    "api": "Exports useMediaQuery/createMediaQuery accessors, normalizeMediaQuery, createBreakpointQuery, createPointerQuery, mediaQueryBreakpoints, and related option/input types.",
+    "api": "Exports useMediaQuery/createMediaQuery accessors, useIsMobile, normalizeMediaQuery, createBreakpointQuery, createPointerQuery, mediaQueryBreakpoints, breakpoint shorthand query types, and related option/input types.",
     "ssr": "The accessor starts from defaultValue and does not read window or matchMedia until Solid onMount runs. Pass a window option for tests or embedded documents.",
-    "behavior": "Supports raw media query strings or structured min/max/orientation/pointer/preference objects. Listener cleanup handles modern addEventListener and legacy addListener MediaQueryList APIs.",
+    "behavior": "Supports Tailwind-like breakpoint shorthand strings, raw media query strings, and structured min/max/orientation/pointer/preference objects. Listener cleanup handles modern addEventListener and legacy addListener MediaQueryList APIs.",
     "limitations": "This hook is UI generated source. It is not a Core utility, does not observe container queries, and does not persist responsive state.",
     "sourceFiles": ["packages/ui/src/default/hooks/use-media-query.ts"],
     "parity": {

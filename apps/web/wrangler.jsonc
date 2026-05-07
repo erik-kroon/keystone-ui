@@ -1,0 +1,21 @@
+{
+  "name": "keystone-ui",
+  "main": "./dist/server/server.js",
+  "compatibility_date": "2026-02-18",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist/client",
+  },
+  "routes": [
+    {
+      "pattern": "keystone-ui.drastic.dev",
+      "custom_domain": true,
+    },
+  ],
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true,
+    },
+  },
+}

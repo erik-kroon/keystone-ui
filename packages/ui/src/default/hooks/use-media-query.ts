@@ -1,7 +1,8 @@
 import { createSignal, onCleanup, onMount, type Accessor } from "solid-js";
 
 export type MediaQueryInput =
-  | string
+  | MediaQueryBreakpointQuery
+  | (string & {})
   | {
       max?: number | string;
       min?: number | string;
@@ -17,13 +18,19 @@ export type UseMediaQueryOptions = {
 
 export const mediaQueryBreakpoints = {
   sm: 640,
-  md: 768,
+  md: 800,
   lg: 1024,
   xl: 1280,
   "2xl": 1536,
+  "3xl": 1600,
+  "4xl": 2000,
 } as const;
 
 export type MediaQueryBreakpoint = keyof typeof mediaQueryBreakpoints;
+export type MediaQueryBreakpointQuery =
+  | MediaQueryBreakpoint
+  | `max-${MediaQueryBreakpoint}`
+  | `${MediaQueryBreakpoint}:max-${MediaQueryBreakpoint}`;
 
 export function useMediaQuery(query: MediaQueryInput, options: UseMediaQueryOptions = {}) {
   return createMediaQuery(query, options);
@@ -69,7 +76,16 @@ export function createPointerQuery(pointer: "coarse" | "fine" | "none") {
 }
 
 export function normalizeMediaQuery(query: MediaQueryInput) {
-  if (typeof query === "string") return query;
+  if (typeof query === "string") {
+    if (query.startsWith("(")) return query;
+
+    const parts = query
+      .split(":")
+      .map((segment) => mediaQuerySegment(segment))
+      .filter(Boolean);
+
+    return parts.length > 0 ? parts.join(" and ") : query;
+  }
 
   const parts: string[] = [];
 
@@ -105,7 +121,22 @@ export function normalizeMediaQuery(query: MediaQueryInput) {
 }
 
 function formatMediaValue(value: number | string) {
-  return typeof value === "number" ? `${value}px` : value;
+  if (typeof value === "number") return `${value}px`;
+  if (isMediaQueryBreakpoint(value)) return `${mediaQueryBreakpoints[value]}px`;
+  return value;
+}
+
+function mediaQuerySegment(segment: string) {
+  if (segment.startsWith("max-")) {
+    const breakpoint = segment.slice(4);
+    return isMediaQueryBreakpoint(breakpoint) ? createBreakpointQuery(breakpoint, "down") : null;
+  }
+
+  return isMediaQueryBreakpoint(segment) ? createBreakpointQuery(segment) : null;
+}
+
+function isMediaQueryBreakpoint(value: string): value is MediaQueryBreakpoint {
+  return value in mediaQueryBreakpoints;
 }
 
 function addMediaQueryListener(mediaQueryList: MediaQueryList, listener: () => void) {
@@ -124,4 +155,8 @@ function removeMediaQueryListener(mediaQueryList: MediaQueryList, listener: () =
   }
 
   mediaQueryList.removeListener?.(listener);
+}
+
+export function useIsMobile(options: UseMediaQueryOptions = {}) {
+  return useMediaQuery("max-md", options);
 }
