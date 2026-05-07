@@ -37,7 +37,7 @@ export function DataTableViewOptions<TData extends RowData>(props: {
       <Show when={columns().length > 0} fallback={<span>No hideable columns</span>}>
         <For each={columns()}>
           {(column) => (
-            <label data-scope="ui-data-table" data-part="view-option">
+            <label data-scope="ui-data-table" data-part="view-option" class="cursor-pointer">
               <input
                 type="checkbox"
                 checked={column.getIsVisible()}

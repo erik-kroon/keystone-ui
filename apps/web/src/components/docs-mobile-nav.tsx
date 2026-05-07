@@ -1,10 +1,41 @@
-import { Menu, X } from "lucide-solid";
 import { Link } from "@tanstack/solid-router";
-import { createSignal, For, Show } from "solid-js";
+import { createSignal, For, type JSX, Show } from "solid-js";
+import {
+  Sheet,
+  SheetContent,
+  SheetPanel,
+  SheetTitle,
+  SheetTrigger,
+} from "@keystone-ui/ui/default/ui/sheet.tsx";
 
 import type { NavGroup } from "@/lib/docs-data";
 
 let navGroupsPromise: Promise<readonly NavGroup[]> | undefined;
+
+const menuItems = [
+  { href: "/docs", label: "Home" },
+  { href: "/docs#components", label: "Components" },
+  { href: "/docs#roadmap", label: "Roadmap" },
+] as const;
+
+function MenuIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      class="size-5"
+      fill="none"
+      focusable="false"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+    >
+      <path d="M4 8h16" />
+      <path d="M4 16h16" />
+    </svg>
+  );
+}
 
 function NewBadge(props: Readonly<{ children: string }>) {
   return (
@@ -24,68 +55,81 @@ export function DocsMobileNav() {
     navGroupsPromise ??= import("@/lib/docs-data").then((module) => module.navGroups);
     void navGroupsPromise.then(setGroups);
   };
-  const openMenu = () => {
-    setOpen(true);
-    ensureGroups();
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+    if (nextOpen) ensureGroups();
   };
 
   return (
-    <>
-      <button
-        aria-controls="mobile-docs-navigation"
-        aria-expanded={open()}
-        aria-label="Open documentation navigation"
-        class="inline-flex size-9 items-center justify-center rounded-md border border-input bg-popover text-foreground shadow-xs/5 outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/24 lg:hidden"
-        onClick={openMenu}
+    <Sheet open={open()} onOpenChange={handleOpenChange} side="left">
+      <SheetTrigger
+        aria-label="Toggle Menu"
+        class="relative -ms-1.5 inline-flex size-8 items-center justify-center rounded-lg border-0 bg-transparent text-foreground outline-none transition-colors hover:bg-transparent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background lg:hidden"
         type="button"
       >
-        <Menu size={18} />
-      </button>
-      <Show when={open()}>
-        <div class="fixed inset-0 z-60 h-svh bg-foreground/20" onClick={close} />
-        <aside
-          aria-label="Documentation navigation"
-          class="fixed inset-y-0 left-0 z-70 flex h-svh w-[min(22rem,calc(100vw-2rem))] flex-col bg-background shadow-2xl"
-          id="mobile-docs-navigation"
-        >
-          <div class="flex items-center justify-between gap-4 border-sidebar-border border-b p-4">
-            <div>
-              <div class="text-muted-foreground text-xs">Keystone UI</div>
-              <div class="font-semibold text-base text-foreground">Documentation</div>
-            </div>
-            <button
-              aria-label="Close documentation navigation"
-              class="inline-flex size-9 items-center justify-center rounded-md border border-input bg-popover text-foreground shadow-xs/5 outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/24"
-              onClick={close}
-              type="button"
-            >
-              <X size={18} />
-            </button>
-          </div>
-          <nav class="scrollbar-none min-h-0 overflow-y-auto p-4">
+        <MenuIcon />
+      </SheetTrigger>
+      <SheetContent
+        closeProps={{
+          class:
+            "end-6 top-8 size-8 border-0 bg-transparent text-foreground/80 shadow-none hover:bg-transparent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
+        }}
+        backdropClass="z-60 bg-black/32 opacity-100 backdrop-blur-sm !transition-opacity !duration-[450ms] !ease-[cubic-bezier(0.32,0.72,0,1)]"
+        class="border-sidebar-border bg-background shadow-2xl shadow-black/20 before:hidden !transition-[translate,box-shadow] !duration-[450ms] !ease-[cubic-bezier(0.32,0.72,0,1)] data-[side=left]:w-[calc(100%-(--spacing(12)))] data-[side=left]:max-w-md data-[side=left]:data-ending-style:-translate-x-full data-[side=left]:data-ending-style:opacity-100 data-[side=left]:data-starting-style:-translate-x-full data-[side=left]:data-starting-style:opacity-100"
+        id="mobile-docs-navigation"
+        positionerClass="z-70"
+        showCloseButton
+      >
+        <SheetPanel class="scrollbar-none flex flex-col gap-12 p-6 pt-8" scrollFade={false}>
+          <section class="flex flex-col gap-3">
+            <SheetTitle class="font-semibold text-base leading-none">Menu</SheetTitle>
+            <nav class="flex flex-col gap-1" aria-label="Primary mobile navigation">
+              <For each={menuItems}>
+                {(item) => (
+                  <MobileNavLink href={item.href} onClick={close}>
+                    {item.label}
+                  </MobileNavLink>
+                )}
+              </For>
+            </nav>
+          </section>
+
+          <nav class="flex flex-col gap-8" aria-label="Documentation navigation">
             <For each={groups()}>
               {(group) => (
-                <section class="mt-6 first:mt-0">
-                  <h2 class="mb-2 font-semibold text-foreground text-xs">{group.title}</h2>
-                  <For each={group.items}>
-                    {(item) => (
-                      <Link
-                        class="flex min-h-9 items-center justify-between gap-3 rounded-md px-3.5 py-1.5 text-sidebar-foreground text-sm outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:bg-sidebar-accent focus-visible:text-sidebar-accent-foreground"
-                        onClick={close}
-                        {...linkPropsForHref(item.href)}
-                      >
-                        <span>{item.label}</span>
-                        <Show when={item.badge}>{(badge) => <NewBadge>{badge()}</NewBadge>}</Show>
-                      </Link>
-                    )}
-                  </For>
+                <section class="flex flex-col gap-3">
+                  <h2 class="font-semibold text-foreground text-sm">{group.title}</h2>
+                  <div class="flex flex-col gap-0.5">
+                    <For each={group.items}>
+                      {(item) => (
+                        <MobileNavLink href={item.href} onClick={close}>
+                          <span>{item.label}</span>
+                          <Show when={item.badge}>{(badge) => <NewBadge>{badge()}</NewBadge>}</Show>
+                        </MobileNavLink>
+                      )}
+                    </For>
+                  </div>
                 </section>
               )}
             </For>
           </nav>
-        </aside>
-      </Show>
-    </>
+        </SheetPanel>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+function MobileNavLink(
+  props: Readonly<{ children: JSX.Element; href: string; onClick: () => void }>,
+) {
+  return (
+    <Link
+      class="flex min-h-9 items-center gap-2 rounded-md py-1.5 text-base text-muted-foreground leading-tight outline-none transition-colors hover:text-foreground focus-visible:text-foreground"
+      onClick={props.onClick}
+      {...linkPropsForHref(props.href)}
+    >
+      {props.children}
+    </Link>
   );
 }
 

@@ -129,6 +129,7 @@ export function CopyButton(props: CopyButtonProps) {
           "inline-flex",
           "h-8",
           "shrink-0",
+          "cursor-pointer",
           "items-center",
           "justify-center",
           "gap-1.5",

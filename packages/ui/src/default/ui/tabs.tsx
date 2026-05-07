@@ -79,20 +79,17 @@ const tabsTriggerClass = classes(
 const tabsIndicatorClass = (variant: TabsVariant = "default") =>
   classes(
     "absolute",
-    "bottom-0",
     "left-0",
     "pointer-events-none",
     "z-0",
     "h-(--active-tab-height)",
     "w-(--active-tab-width)",
-    "translate-x-(--active-tab-left)",
-    "-translate-y-(--active-tab-bottom)",
     "transition-[width,translate]",
     "duration-200",
     "ease-in-out",
     variant === "underline"
-      ? "z-10 bg-primary data-[orientation=horizontal]:h-0.5 data-[orientation=vertical]:w-0.5 data-[orientation=vertical]:-translate-x-px data-[orientation=horizontal]:translate-y-px"
-      : "rounded-lg bg-accent shadow-none supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[bottom:auto] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[height:anchor-size(--keystone-tabs-active_height)] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[left:anchor(--keystone-tabs-active_left)] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[top:anchor(--keystone-tabs-active_top)] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[translate:0_0] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[width:anchor-size(--keystone-tabs-active_width)]",
+      ? "bottom-0 z-10 translate-x-(--active-tab-left) -translate-y-(--active-tab-bottom) bg-primary data-[orientation=horizontal]:h-0.5 data-[orientation=vertical]:w-0.5 data-[orientation=vertical]:-translate-x-px data-[orientation=horizontal]:translate-y-px"
+      : "top-0 translate-x-(--active-tab-left) translate-y-(--active-tab-top) rounded-lg bg-accent shadow-none supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[height:anchor-size(--keystone-tabs-active_height)] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[left:anchor(--keystone-tabs-active_left)] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[top:anchor(--keystone-tabs-active_top)] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[translate:0_0] supports-[anchor-name:--keystone-tabs-active]:data-[state=idle]:[width:anchor-size(--keystone-tabs-active_width)]",
   );
 
 const tabsContentClass = classes("flex-1", "outline-none");

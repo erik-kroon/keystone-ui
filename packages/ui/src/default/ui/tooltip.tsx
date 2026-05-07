@@ -39,7 +39,7 @@ export function TooltipTrigger(props: TooltipTriggerProps) {
     <CoreTooltip.Trigger
       {...rest}
       data-slot="tooltip-trigger"
-      class={cn("ui-tooltip-trigger", local.class)}
+      class={cn("ui-tooltip-trigger cursor-pointer", local.class)}
     />
   );
 }
@@ -102,6 +102,9 @@ export function TooltipContent(props: TooltipContentProps) {
               "text-xs",
               "shadow-md/5",
               "transition-[width,height,scale,opacity]",
+              "duration-150",
+              "ease-[cubic-bezier(0.23,1,0.32,1)]",
+              "will-change-[scale,opacity]",
               "before:pointer-events-none",
               "before:absolute",
               "before:inset-0",

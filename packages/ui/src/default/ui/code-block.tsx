@@ -26,6 +26,13 @@ export type CodeBlockPreProps = ParentProps<JSX.HTMLAttributes<HTMLPreElement>>;
 export type CodeBlockCodeProps = ParentProps<JSX.HTMLAttributes<HTMLElement>>;
 
 const classes = (...tokens: string[]) => tokens.join(" ");
+const codeBlockCopyButtonClass = classes(
+  "border-0",
+  "bg-transparent",
+  "shadow-none",
+  "hover:bg-accent",
+  "focus-visible:bg-accent",
+);
 
 export function CodeBlock(props: CodeBlockProps) {
   const [local, rest] = splitProps(props, [
@@ -84,7 +91,7 @@ export function CodeBlock(props: CodeBlockProps) {
             {local.actions}
             <Show when={local.copy !== false}>
               <CopyButton
-                class={local.copyClass}
+                class={cn(codeBlockCopyButtonClass, local.copyClass)}
                 label={local.copyLabel ?? "Copy code"}
                 value={local.code}
               />

@@ -1,4 +1,4 @@
-import { createEffect, createSignal, onCleanup, type Accessor, type JSX } from "solid-js";
+import { createEffect, createSignal, onCleanup, untrack, type Accessor, type JSX } from "solid-js";
 import { assignRef } from "./dom";
 import { getPartDataAttributes } from "../metadata/index";
 import { createOverlayDismissalPolicy } from "./dismissal-policy";
@@ -230,13 +230,6 @@ export function createOverlayController<Reason extends string>(
   const getFloatingProps = <T extends HTMLElement>(props: JSX.HTMLAttributes<T>) => {
     return floating?.getFloatingProps({ style: props.style }) ?? { style: props.style };
   };
-  const getFloatingContentStyle = <T extends HTMLElement>(props: JSX.HTMLAttributes<T>) => {
-    if (positionerElement()) {
-      return props.style;
-    }
-
-    return getFloatingProps(props).style;
-  };
 
   return {
     close: (event, reason) => setOpen(false, { event, reason }),
@@ -289,10 +282,10 @@ export function createOverlayController<Reason extends string>(
         ...domProps,
         "data-layer-id": layer.id,
         get "data-layer-index"() {
-          return layer.index();
+          return untrack(layer.index);
         },
         get "data-top-layer"() {
-          return layer.isTopLayer() ? "" : undefined;
+          return untrack(layer.isTopLayer) ? "" : undefined;
         },
         ref: (element: T) => {
           setContentElement(() => element);
@@ -315,9 +308,7 @@ export function createOverlayController<Reason extends string>(
       get "data-align"() {
         return floating?.align();
       },
-      get style() {
-        return getFloatingContentStyle(props);
-      },
+      style: props.style,
       ref: (element: T) => {
         setContentElement(() => element);
         presence.setElement(element);

@@ -35,7 +35,7 @@ export function ToolbarButton(props: ToolbarButtonProps) {
     <CoreToolbar.Button
       {...rest}
       data-slot="toolbar-button"
-      class={cn("ui-toolbar-button", local.class)}
+      class={cn("ui-toolbar-button cursor-pointer", local.class)}
     />
   );
 }
@@ -47,7 +47,7 @@ export function ToolbarLink(props: ToolbarLinkProps) {
     <CoreToolbar.Link
       {...rest}
       data-slot="toolbar-link"
-      class={cn("ui-toolbar-link", local.class)}
+      class={cn("ui-toolbar-link cursor-pointer", local.class)}
     />
   );
 }

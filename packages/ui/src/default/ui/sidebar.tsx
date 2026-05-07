@@ -291,7 +291,7 @@ export function SidebarGroupAction(props: SidebarGroupActionProps) {
     <button
       {...rest}
       class={cn(
-        "ui-sidebar-group-action absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none transition-transform after:absolute after:-inset-2 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[state=collapsed]:hidden md:after:hidden",
+        "ui-sidebar-group-action absolute right-3 top-3.5 flex aspect-square w-5 cursor-pointer items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none transition-transform after:absolute after:-inset-2 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[state=collapsed]:hidden md:after:hidden",
         local.class,
       )}
       data-part="group-action"
@@ -372,7 +372,7 @@ export function SidebarMenuLink(props: SidebarMenuLinkProps) {
       {...rest}
       aria-current={isActive() ? "page" : undefined}
       class={cn(
-        "ui-sidebar-menu-link flex min-h-9 items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+        "ui-sidebar-menu-link flex min-h-9 cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring",
         "data-[active]:bg-sidebar-accent data-[active]:font-medium data-[active]:text-sidebar-accent-foreground",
         "data-[state=collapsed]:size-8 data-[state=collapsed]:justify-center data-[state=collapsed]:p-2",
         local.class,
@@ -461,7 +461,7 @@ export function SidebarMenuAction(props: SidebarMenuActionProps) {
     <button
       {...rest}
       class={cn(
-        "ui-sidebar-menu-action absolute right-1 top-1.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none transition-[opacity,transform] after:absolute after:-inset-2 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[state=collapsed]:hidden md:after:hidden",
+        "ui-sidebar-menu-action absolute right-1 top-1.5 flex aspect-square w-5 cursor-pointer items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none transition-[opacity,transform] after:absolute after:-inset-2 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[state=collapsed]:hidden md:after:hidden",
         local.showOnHover &&
           "opacity-100 md:opacity-0 md:group-focus-within/menu-item:opacity-100 md:group-hover/menu-item:opacity-100",
         local.class,
@@ -562,7 +562,7 @@ export function SidebarMenuSubButton(props: SidebarMenuSubButtonProps) {
       {...rest}
       aria-current={local.active ? "page" : undefined}
       class={cn(
-        "ui-sidebar-menu-sub-button flex h-7 min-w-0 items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground outline-none hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[active]:bg-sidebar-accent data-[active]:text-sidebar-accent-foreground data-[state=collapsed]:hidden",
+        "ui-sidebar-menu-sub-button flex h-7 min-w-0 cursor-pointer items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground outline-none hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[active]:bg-sidebar-accent data-[active]:text-sidebar-accent-foreground data-[state=collapsed]:hidden",
         (local.size ?? "md") === "md" ? "text-sm" : "text-xs",
         local.class,
       )}
@@ -619,7 +619,7 @@ export function SidebarRail(props: SidebarRailProps) {
       aria-label={rest["aria-label"] ?? "Toggle sidebar"}
       {...rest}
       class={cn(
-        "ui-sidebar-rail absolute inset-y-0 z-20 hidden w-4 transition-all ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-px hover:after:bg-sidebar-border data-[side=left]:-right-4 data-[side=right]:left-0 sm:flex",
+        "ui-sidebar-rail absolute inset-y-0 z-20 hidden w-4 cursor-pointer transition-all ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-px hover:after:bg-sidebar-border data-[side=left]:-right-4 data-[side=right]:left-0 sm:flex",
         local.class,
       )}
       data-part="rail"

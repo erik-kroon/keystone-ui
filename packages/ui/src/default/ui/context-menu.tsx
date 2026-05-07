@@ -59,7 +59,13 @@ export function ContextMenuContent(props: ContextMenuContentProps) {
   return (
     <ContextMenuPortal {...local.portal}>
       <ContextMenuPositioner class={local.positionerClass}>
-        <CoreContextMenu.Content {...rest} class={cn("ui-context-menu-content", local.class)}>
+        <CoreContextMenu.Content
+          {...rest}
+          class={cn(
+            "ui-context-menu-content origin-(--transform-origin) transition-[width,height,scale,opacity] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] will-change-[scale,opacity] data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0",
+            local.class,
+          )}
+        >
           {local.children}
         </CoreContextMenu.Content>
       </ContextMenuPositioner>
@@ -88,12 +94,22 @@ export function ContextMenuSeparator(props: ContextMenuSeparatorProps) {
 
 export function ContextMenuItem(props: ContextMenuItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <CoreContextMenu.Item {...rest} class={cn("ui-context-menu-item", local.class)} />;
+  return (
+    <CoreContextMenu.Item
+      {...rest}
+      class={cn("ui-context-menu-item cursor-pointer", local.class)}
+    />
+  );
 }
 
 export function ContextMenuCheckboxItem(props: ContextMenuCheckboxItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <CoreContextMenu.CheckboxItem {...rest} class={cn("ui-context-menu-item", local.class)} />;
+  return (
+    <CoreContextMenu.CheckboxItem
+      {...rest}
+      class={cn("ui-context-menu-item cursor-pointer", local.class)}
+    />
+  );
 }
 
 export function ContextMenuRadioGroup(props: ContextMenuRadioGroupProps) {
@@ -102,7 +118,12 @@ export function ContextMenuRadioGroup(props: ContextMenuRadioGroupProps) {
 
 export function ContextMenuRadioItem(props: ContextMenuRadioItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <CoreContextMenu.RadioItem {...rest} class={cn("ui-context-menu-item", local.class)} />;
+  return (
+    <CoreContextMenu.RadioItem
+      {...rest}
+      class={cn("ui-context-menu-item cursor-pointer", local.class)}
+    />
+  );
 }
 
 export function ContextMenuItemIndicator(props: ContextMenuItemIndicatorProps) {

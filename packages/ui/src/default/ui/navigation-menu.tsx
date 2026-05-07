@@ -55,7 +55,10 @@ export function NavigationMenu(props: NavigationMenuProps) {
 export function NavigationMenuTrigger(props: NavigationMenuTriggerProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <CoreNavigationMenu.Trigger {...rest} class={cn("ui-navigation-menu-trigger", local.class)} />
+    <CoreNavigationMenu.Trigger
+      {...rest}
+      class={cn("ui-navigation-menu-trigger cursor-pointer", local.class)}
+    />
   );
 }
 
@@ -78,7 +81,13 @@ export function NavigationMenuContent(props: NavigationMenuContentProps) {
   return (
     <NavigationMenuPortal {...local.portal}>
       <NavigationMenuPositioner class={local.positionerClass}>
-        <CoreNavigationMenu.Content {...rest} class={cn("ui-navigation-menu-content", local.class)}>
+        <CoreNavigationMenu.Content
+          {...rest}
+          class={cn(
+            "ui-navigation-menu-content origin-(--transform-origin) transition-[width,height,scale,opacity] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] will-change-[scale,opacity] data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0",
+            local.class,
+          )}
+        >
           {local.children}
         </CoreNavigationMenu.Content>
       </NavigationMenuPositioner>
@@ -128,13 +137,21 @@ export function NavigationMenuItem(props: NavigationMenuItemProps) {
 
 export function NavigationMenuLink(props: NavigationMenuLinkProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <CoreNavigationMenu.Link {...rest} class={cn("ui-navigation-menu-link", local.class)} />;
+  return (
+    <CoreNavigationMenu.Link
+      {...rest}
+      class={cn("ui-navigation-menu-link cursor-pointer", local.class)}
+    />
+  );
 }
 
 export function NavigationMenuCheckboxItem(props: NavigationMenuCheckboxItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <CoreNavigationMenu.CheckboxItem {...rest} class={cn("ui-navigation-menu-item", local.class)} />
+    <CoreNavigationMenu.CheckboxItem
+      {...rest}
+      class={cn("ui-navigation-menu-item cursor-pointer", local.class)}
+    />
   );
 }
 
@@ -145,7 +162,10 @@ export function NavigationMenuRadioGroup(props: NavigationMenuRadioGroupProps) {
 export function NavigationMenuRadioItem(props: NavigationMenuRadioItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
   return (
-    <CoreNavigationMenu.RadioItem {...rest} class={cn("ui-navigation-menu-item", local.class)} />
+    <CoreNavigationMenu.RadioItem
+      {...rest}
+      class={cn("ui-navigation-menu-item cursor-pointer", local.class)}
+    />
   );
 }
 
@@ -176,7 +196,10 @@ export function NavigationMenuViewport(props: NavigationMenuViewportProps) {
       <NavigationMenuPositioner class={local.positionerClass}>
         <CoreNavigationMenu.Viewport
           {...rest}
-          class={cn("ui-navigation-menu-viewport", local.class)}
+          class={cn(
+            "ui-navigation-menu-viewport origin-(--transform-origin) transition-[width,height,scale,opacity] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] will-change-[scale,opacity] data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0",
+            local.class,
+          )}
         >
           {local.children}
         </CoreNavigationMenu.Viewport>

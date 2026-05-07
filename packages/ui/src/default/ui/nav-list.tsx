@@ -190,6 +190,7 @@ export function NavListItem(props: NavListItemProps) {
         "min-h-8",
         "w-full",
         "min-w-0",
+        "cursor-pointer",
         "items-center",
         "gap-2",
         "rounded-lg",

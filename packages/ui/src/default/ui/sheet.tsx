@@ -72,7 +72,7 @@ export function SheetTrigger(props: SheetTriggerProps) {
     <CoreSheet.Trigger
       {...rest}
       data-slot="sheet-trigger"
-      class={cn("ui-sheet-trigger", local.class)}
+      class={cn("ui-sheet-trigger cursor-pointer", local.class)}
     />
   );
 }
@@ -166,14 +166,14 @@ export function SheetContent(props: SheetContentProps) {
               "data-[side=left]:w-[calc(100%-(--spacing(12)))]",
               "data-[side=left]:max-w-md",
               "data-[side=left]:border-e",
-              "data-[side=left]:data-ending-style:-translate-x-8",
-              "data-[side=left]:data-starting-style:-translate-x-8",
+              "data-[side=left]:data-ending-style:-translate-x-full",
+              "data-[side=left]:data-starting-style:-translate-x-full",
               "data-[side=right]:col-start-2",
               "data-[side=right]:w-[calc(100%-(--spacing(12)))]",
               "data-[side=right]:max-w-md",
               "data-[side=right]:border-s",
-              "data-[side=right]:data-ending-style:translate-x-8",
-              "data-[side=right]:data-starting-style:translate-x-8",
+              "data-[side=right]:data-ending-style:translate-x-full",
+              "data-[side=right]:data-starting-style:translate-x-full",
             ),
             variant() === "inset" &&
               classes(

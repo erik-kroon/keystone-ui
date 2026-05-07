@@ -30,7 +30,7 @@ export function CollapsibleTrigger(props: CollapsibleTriggerProps) {
     <CoreCollapsible.Trigger
       {...rest}
       data-slot="collapsible-trigger"
-      class={cn("ui-collapsible-trigger", local.class)}
+      class={cn("ui-collapsible-trigger cursor-pointer", local.class)}
     />
   );
 }
