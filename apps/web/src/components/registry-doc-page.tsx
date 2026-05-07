@@ -421,8 +421,8 @@ function PreviewCodeTabs(
           </TabsList>
         </div>
       </Tabs>
-      <div class="relative rounded-xl border not-dark:bg-card" data-tab={tab()}>
-        <div class="invisible data-[active=true]:visible" data-active={tab() === "preview"}>
+      <div class="rounded-xl border not-dark:bg-card" data-tab={tab()}>
+        <div class="hidden data-[active=true]:block" data-active={tab() === "preview"}>
           <div
             class="flex min-h-[430px] w-full justify-center overflow-y-auto bg-sidebar/24 p-8 data-[align=start]:items-start data-[align=end]:items-end data-[align=center]:items-center sm:p-10 max-sm:min-h-[380px] max-sm:px-5"
             data-align={align()}
@@ -436,7 +436,7 @@ function PreviewCodeTabs(
           </div>
         </div>
         <div
-          class="absolute inset-0 hidden overflow-hidden data-[active=true]:block **:[figure]:m-0! **:[pre]:h-[430px]"
+          class="hidden overflow-hidden data-[active=true]:block **:[figure]:m-0! **:[pre]:h-[430px]"
           data-active={tab() === "code"}
           data-slot="code"
         >
