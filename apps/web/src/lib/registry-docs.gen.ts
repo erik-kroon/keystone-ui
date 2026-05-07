@@ -34,128 +34,81 @@ export type RegistryDocItem = {
 
 export const registryDocItems = [
   {
-    "anatomy": [
-      "root",
-      "item",
-      "header",
-      "trigger",
-      "content"
-    ],
-    "categories": [
-      "disclosure",
-      "navigation",
-      "layout"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    anatomy: ["root", "item", "header", "trigger", "content"],
+    categories: ["disclosure", "navigation", "layout"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-accordion classes while Keystone keeps item coordination, trigger ARIA, keyboard navigation, hidden-until-found behavior, and data attributes.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "lucide-solid",
-      "cn"
-    ],
-    "description": "Styled Solid accordion component backed by Keystone disclosure coordination.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-accordion classes while Keystone keeps item coordination, trigger ARIA, keyboard navigation, hidden-until-found behavior, and data attributes.",
+    dependencies: ["@keystone-ui/core", "lucide-solid", "cn"],
+    description: "Styled Solid accordion component backed by Keystone disclosure coordination.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/accordion.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/accordion.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add accordion",
-    "keywords": [
-      "accordion",
-      "collapsible",
-      "disclosure",
-      "keystone"
-    ],
-    "name": "accordion",
-    "parity": {
-      "baseUi": "Thin vertical covers Root/Item/Header/Trigger/Panel-style anatomy, single and multiple value state, disabled items, trigger ARIA, vertical keyboard movement, hidden-until-found behavior, and UI metadata. Gaps: measured panel CSS variables, transition lifecycle status, RTL horizontal keyboard behavior, and broader browser-find edge cases remain follow-up work.",
-      "kobalte": "Thin vertical matches Solid Root/Item/Header/Trigger/Content composition, controlled and uncontrolled values, collapsible single mode, multiple mode, disabled item guards, and stable data attributes. Gaps: richer transition hooks, DOM measurement helpers, and expanded accessibility regression coverage remain follow-up work."
+    install: "mason add accordion",
+    keywords: ["accordion", "collapsible", "disclosure", "keystone"],
+    name: "accordion",
+    parity: {
+      baseUi:
+        "Thin vertical covers Root/Item/Header/Trigger/Panel-style anatomy, single and multiple value state, disabled items, trigger ARIA, vertical keyboard movement, hidden-until-found behavior, and UI metadata. Gaps: measured panel CSS variables, transition lifecycle status, RTL horizontal keyboard behavior, and broader browser-find edge cases remain follow-up work.",
+      kobalte:
+        "Thin vertical matches Solid Root/Item/Header/Trigger/Content composition, controlled and uncontrolled values, collapsible single mode, multiple mode, disabled item guards, and stable data attributes. Gaps: richer transition hooks, DOM measurement helpers, and expanded accessibility regression coverage remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/accordion.tsx"
-    ],
-    "title": "Accordion",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/accordion.tsx"],
+    title: "Accordion",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [],
-    "categories": [
-      "settings",
-      "form",
-      "block"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    anatomy: [],
+    categories: ["settings", "form", "block"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Customize the generated block through ui-block-account-settings classes while base controls stay owned source.",
-    "dependencies": [
-      "badge",
-      "button",
-      "card",
-      "field",
-      "input",
-      "separator"
-    ],
-    "description": "Account settings form block composed from UI base components.",
-    "files": [
+    customization:
+      "Customize the generated block through ui-block-account-settings classes while base controls stay owned source.",
+    dependencies: ["badge", "button", "card", "field", "input", "separator"],
+    description: "Account settings form block composed from UI base components.",
+    files: [
       {
-        "path": "packages/ui/src/default/blocks/account-settings.tsx",
-        "type": "registry:block"
-      }
+        path: "packages/ui/src/default/blocks/account-settings.tsx",
+        type: "registry:block",
+      },
     ],
-    "install": "mason add account-settings",
-    "keywords": [
-      "account-settings",
-      "settings",
-      "profile",
-      "form",
-      "block"
-    ],
-    "name": "account-settings",
-    "parity": {
-      "mason": "Composes existing UI badge, button, card, field, input, and separator source into a copy-paste settings block with local state and readable classes. Gaps: TanStack Form integration, validation, submission lifecycle, async persistence, and error handling are intentionally left to app code or a future form block pass.",
-      "shadcn": "Comparable to shadcn-style settings blocks in copy-paste ownership and utility-class composition rather than primitive behavior. Gaps: no registry-managed schema, server action wiring, avatar/file controls, or account security sections yet."
+    install: "mason add account-settings",
+    keywords: ["account-settings", "settings", "profile", "form", "block"],
+    name: "account-settings",
+    parity: {
+      mason:
+        "Composes existing UI badge, button, card, field, input, and separator source into a copy-paste settings block with local state and readable classes. Gaps: TanStack Form integration, validation, submission lifecycle, async persistence, and error handling are intentionally left to app code or a future form block pass.",
+      shadcn:
+        "Comparable to shadcn-style settings blocks in copy-paste ownership and utility-class composition rather than primitive behavior. Gaps: no registry-managed schema, server action wiring, avatar/file controls, or account security sections yet.",
     },
-    "registryDependencies": [
-      "badge",
-      "button",
-      "card",
-      "field",
-      "input",
-      "separator"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/blocks/account-settings.tsx"
-    ],
-    "title": "AccountSettingsBlock",
-    "type": "registry:block",
-    "version": "0.1.0"
+    registryDependencies: ["badge", "button", "card", "field", "input", "separator"],
+    sourceFiles: ["packages/ui/src/default/blocks/account-settings.tsx"],
+    title: "AccountSettingsBlock",
+    type: "registry:block",
+    version: "0.1.0",
   },
   {
-    "anatomy": [],
-    "categories": [
-      "dashboard",
-      "form",
-      "table",
-      "block"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0",
+    anatomy: [],
+    categories: ["dashboard", "form", "table", "block"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
       "tanstack-form": ">=1.29.0 <2.0.0",
-      "tanstack-table": ">=8.21.0 <9.0.0"
+      "tanstack-table": ">=8.21.0 <9.0.0",
     },
-    "customization": "Replace the sample invoice data with route loader or app-store data, adjust columns in invoice-dashboard-columns.tsx, and wire submit/toast actions to real mutations.",
-    "dependencies": [
+    customization:
+      "Replace the sample invoice data with route loader or app-store data, adjust columns in invoice-dashboard-columns.tsx, and wire submit/toast actions to real mutations.",
+    dependencies: [
       "@tanstack/solid-form",
       "@tanstack/solid-table",
       "badge",
@@ -167,39 +120,38 @@ export const registryDocItems = [
       "separator",
       "tanstack-form",
       "text-field",
-      "toast"
+      "toast",
     ],
-    "description": "Multi-file invoice workspace block composed from Keystone UI source and TanStack app components.",
-    "files": [
+    description:
+      "Multi-file invoice workspace block composed from Keystone UI source and TanStack app components.",
+    files: [
       {
-        "path": "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard.tsx",
-        "type": "registry:block"
+        path: "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard.tsx",
+        type: "registry:block",
       },
       {
-        "path": "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard-columns.tsx",
-        "type": "registry:block"
+        path: "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard-columns.tsx",
+        type: "registry:block",
       },
       {
-        "path": "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard-data.ts",
-        "type": "registry:block"
-      }
+        path: "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard-data.ts",
+        type: "registry:block",
+      },
     ],
-    "install": "mason add invoice-dashboard",
-    "keywords": [
-      "invoice-dashboard",
-      "dashboard",
-      "settings",
-      "data-table",
-      "tanstack-form"
-    ],
-    "name": "invoice-dashboard",
-    "parity": {
-      "shadcn": "Matches shadcn-style block ownership by composing installed UI primitives instead of duplicating their source. Gaps: no server actions, auth, persisted filters, or production data loader contract.",
-      "tanstackForm": "Uses TanStack Form for app-level draft creation while Core remains independent. Gaps: schema validators and async submit lifecycle are intentionally left to the host app.",
-      "tanstackTable": "Uses the first-party DataTable kit for a realistic management table. Gaps: server pagination, virtualization, and saved views remain follow-up work.",
-      "sonner": "Uses the Keystone Toast source for workflow feedback. Gaps: no optimistic mutation queue or undo contract yet."
+    install: "mason add invoice-dashboard",
+    keywords: ["invoice-dashboard", "dashboard", "settings", "data-table", "tanstack-form"],
+    name: "invoice-dashboard",
+    parity: {
+      shadcn:
+        "Matches shadcn-style block ownership by composing installed UI primitives instead of duplicating their source. Gaps: no server actions, auth, persisted filters, or production data loader contract.",
+      tanstackForm:
+        "Uses TanStack Form for app-level draft creation while Core remains independent. Gaps: schema validators and async submit lifecycle are intentionally left to the host app.",
+      tanstackTable:
+        "Uses the first-party DataTable kit for a realistic management table. Gaps: server pagination, virtualization, and saved views remain follow-up work.",
+      sonner:
+        "Uses the Keystone Toast source for workflow feedback. Gaps: no optimistic mutation queue or undo contract yet.",
     },
-    "registryDependencies": [
+    registryDependencies: [
       "badge",
       "button",
       "card",
@@ -209,888 +161,681 @@ export const registryDocItems = [
       "separator",
       "tanstack-form",
       "text-field",
-      "toast"
+      "toast",
     ],
-    "sourceFiles": [
+    sourceFiles: [
       "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard.tsx",
       "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard-columns.tsx",
-      "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard-data.ts"
+      "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard-data.ts",
     ],
-    "title": "InvoiceDashboardBlock",
-    "type": "registry:block",
-    "version": "0.1.0"
+    title: "InvoiceDashboardBlock",
+    type: "registry:block",
+    version: "0.1.0",
   },
   {
-    "anatomy": [],
-    "api": "KeyboardCommandSurfaceBlock accepts optional title, description, class, command data, and CommandMenu hotkeys options. Commands are readable CommandMenuItemData objects with section and surface labels used by the visible command list and shortcut map.",
-    "categories": [
-      "command",
-      "workspace",
-      "keyboard",
-      "data-dense",
-      "block"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    anatomy: [],
+    api: "KeyboardCommandSurfaceBlock accepts optional title, description, class, command data, and CommandMenu hotkeys options. Commands are readable CommandMenuItemData objects with section and surface labels used by the visible command list and shortcut map.",
+    categories: ["command", "workspace", "keyboard", "data-dense", "block"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Replace the default command data with route, table, panel, or editor commands. Keep CommandMenu as the interactive command surface and ShortcutDisplay as display-only markup unless the app needs a different installed UI item.",
-    "dataAttributes": "Stable styling hooks use data-scope=\"ui-block\" and data-part values for keyboard-command-surface, command-surface-header, command-surface-grid, command-surface-list, command-row, command-surface-shortcuts, shortcut-row, and command-surface-status.",
-    "dependencies": [
+    customization:
+      "Replace the default command data with route, table, panel, or editor commands. Keep CommandMenu as the interactive command surface and ShortcutDisplay as display-only markup unless the app needs a different installed UI item.",
+    dataAttributes:
+      'Stable styling hooks use data-scope="ui-block" and data-part values for keyboard-command-surface, command-surface-header, command-surface-grid, command-surface-list, command-row, command-surface-shortcuts, shortcut-row, and command-surface-status.',
+    dependencies: [
       "@keystone-ui/core",
       "@tanstack/solid-hotkeys",
       "@tanstack/solid-store",
       "cn",
       "command-menu",
-      "shortcut-display"
+      "shortcut-display",
     ],
-    "description": "Keyboard-first workspace command surface composed from CommandMenu and ShortcutDisplay source.",
-    "files": [
+    description:
+      "Keyboard-first workspace command surface composed from CommandMenu and ShortcutDisplay source.",
+    files: [
       {
-        "path": "packages/ui/src/default/blocks/keyboard-command-surface.tsx",
-        "type": "registry:block"
-      }
+        path: "packages/ui/src/default/blocks/keyboard-command-surface.tsx",
+        type: "registry:block",
+      },
     ],
-    "install": "mason add keyboard-command-surface",
-    "keywords": [
+    install: "mason add keyboard-command-surface",
+    keywords: [
       "keyboard-command-surface",
       "command-surface",
       "command-menu",
       "shortcut-display",
       "workspace",
-      "data-dense"
+      "data-dense",
     ],
-    "limitations": "This block does not include nested command pages, fuzzy ranking, async command discovery, route prefetching, persisted shortcut preferences, or conflict resolution. Those stay app-owned or belong to specialized UI items.",
-    "name": "keyboard-command-surface",
-    "parity": {
-      "baseUi": "Primitive behavior is inherited through CommandMenu, which leans on Keystone Command for Base UI-style input/listbox focus, highlighted item state, disabled skipping, portal positioning, and dismissal. This block only adds source-owned workspace composition around it.",
-      "kobalte": "Composition follows Solid-friendly command data and compound UI parts through CommandMenu, with grouped list semantics and display-only shortcut pieces that remain easy to inspect and replace.",
-      "tanstackHotkeys": "CommandMenu owns optional TanStack Hotkeys registration for opening the surface and invoking item shortcuts, while ShortcutDisplay uses TanStack formatting for visible shortcut labels. The block leaves app-level scope and conflict policy to generated source.",
-      "shadcn": "Matches shadcn-style block ownership by shipping readable source composed from installed UI items. Gaps: no route actions, no server mutation wiring, and no persisted command registry.",
-      "dataDenseWorkspace": "Covers the keyboard-first command surface pattern for dense workspaces: grouped navigation/actions/panels, visible shortcut reference, status feedback, and a command menu trigger. Gaps: saved views, role-aware command discovery, and workspace-specific command packs remain follow-up blocks."
+    limitations:
+      "This block does not include nested command pages, fuzzy ranking, async command discovery, route prefetching, persisted shortcut preferences, or conflict resolution. Those stay app-owned or belong to specialized UI items.",
+    name: "keyboard-command-surface",
+    parity: {
+      baseUi:
+        "Primitive behavior is inherited through CommandMenu, which leans on Keystone Command for Base UI-style input/listbox focus, highlighted item state, disabled skipping, portal positioning, and dismissal. This block only adds source-owned workspace composition around it.",
+      kobalte:
+        "Composition follows Solid-friendly command data and compound UI parts through CommandMenu, with grouped list semantics and display-only shortcut pieces that remain easy to inspect and replace.",
+      tanstackHotkeys:
+        "CommandMenu owns optional TanStack Hotkeys registration for opening the surface and invoking item shortcuts, while ShortcutDisplay uses TanStack formatting for visible shortcut labels. The block leaves app-level scope and conflict policy to generated source.",
+      shadcn:
+        "Matches shadcn-style block ownership by shipping readable source composed from installed UI items. Gaps: no route actions, no server mutation wiring, and no persisted command registry.",
+      dataDenseWorkspace:
+        "Covers the keyboard-first command surface pattern for dense workspaces: grouped navigation/actions/panels, visible shortcut reference, status feedback, and a command menu trigger. Gaps: saved views, role-aware command discovery, and workspace-specific command packs remain follow-up blocks.",
     },
-    "registryDependencies": [
-      "cn",
-      "command-menu",
-      "shortcut-display"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/blocks/keyboard-command-surface.tsx"
-    ],
-    "title": "KeyboardCommandSurfaceBlock",
-    "type": "registry:block",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "command-menu", "shortcut-display"],
+    sourceFiles: ["packages/ui/src/default/blocks/keyboard-command-surface.tsx"],
+    title: "KeyboardCommandSurfaceBlock",
+    type: "registry:block",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Controls are native buttons in a labelled group, update status is aria-live=polite, loading is delegated to DataTable aria-busy/status semantics, and sorting/filter/view controls remain keyboard reachable through the DataTable kit.",
-    "anatomy": [],
-    "categories": [
-      "table",
-      "tanstack",
-      "data-dense",
-      "block"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0",
-      "tanstack-table": ">=8.21.0 <9.0.0"
+    accessibility:
+      "Controls are native buttons in a labelled group, update status is aria-live=polite, loading is delegated to DataTable aria-busy/status semantics, and sorting/filter/view controls remain keyboard reachable through the DataTable kit.",
+    anatomy: [],
+    categories: ["table", "tanstack", "data-dense", "block"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
+      "tanstack-table": ">=8.21.0 <9.0.0",
     },
-    "customization": "Replace realtime-data-table-data.ts with route loader, websocket, SSE, polling, or TanStack Store data. Keep stable row IDs and pass loading from the host app's fetch/subscription lifecycle.",
-    "dependencies": [
-      "@tanstack/solid-table",
-      "badge",
-      "button",
-      "data-table"
-    ],
-    "description": "TanStack-backed realtime data table pattern for frequent row and cell updates.",
-    "files": [
+    customization:
+      "Replace realtime-data-table-data.ts with route loader, websocket, SSE, polling, or TanStack Store data. Keep stable row IDs and pass loading from the host app's fetch/subscription lifecycle.",
+    dependencies: ["@tanstack/solid-table", "badge", "button", "data-table"],
+    description: "TanStack-backed realtime data table pattern for frequent row and cell updates.",
+    files: [
       {
-        "path": "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table.tsx",
-        "type": "registry:block"
+        path: "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table.tsx",
+        type: "registry:block",
       },
       {
-        "path": "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table-columns.tsx",
-        "type": "registry:block"
+        path: "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table-columns.tsx",
+        type: "registry:block",
       },
       {
-        "path": "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table-data.ts",
-        "type": "registry:block"
-      }
+        path: "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table-data.ts",
+        type: "registry:block",
+      },
     ],
-    "install": "mason add realtime-data-table",
-    "keywords": [
+    install: "mason add realtime-data-table",
+    keywords: [
       "realtime-data-table",
       "data-table",
       "tanstack",
       "sorting",
       "loading",
-      "empty-state"
+      "empty-state",
     ],
-    "name": "realtime-data-table",
-    "parity": {
-      "tanstackTable": "Uses TanStack Solid Table state, ColumnDef definitions, getRowId, sorting, filtering, pagination, and reactive data accessors. Gaps: no virtualization, server streaming contract, optimistic mutation queue, or persisted view state.",
-      "dataDenseWorkspace": "Targets dense operational tables where values update frequently and users need stable scanning, keyboard-reachable controls, explicit loading/empty states, and row identity that survives updates. Gaps: domain-specific formatting and alert workflows belong in later blocks.",
-      "shadcn": "Follows copy-paste block ownership over an installed data-table source kit, with app-specific sample data isolated into companion files. Gaps: no generated schema or backend loader convention."
+    name: "realtime-data-table",
+    parity: {
+      tanstackTable:
+        "Uses TanStack Solid Table state, ColumnDef definitions, getRowId, sorting, filtering, pagination, and reactive data accessors. Gaps: no virtualization, server streaming contract, optimistic mutation queue, or persisted view state.",
+      dataDenseWorkspace:
+        "Targets dense operational tables where values update frequently and users need stable scanning, keyboard-reachable controls, explicit loading/empty states, and row identity that survives updates. Gaps: domain-specific formatting and alert workflows belong in later blocks.",
+      shadcn:
+        "Follows copy-paste block ownership over an installed data-table source kit, with app-specific sample data isolated into companion files. Gaps: no generated schema or backend loader convention.",
     },
-    "registryDependencies": [
-      "badge",
-      "button",
-      "data-table"
-    ],
-    "sourceFiles": [
+    registryDependencies: ["badge", "button", "data-table"],
+    sourceFiles: [
       "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table.tsx",
       "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table-columns.tsx",
-      "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table-data.ts"
+      "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table-data.ts",
     ],
-    "title": "RealtimeDataTableBlock",
-    "type": "registry:block",
-    "version": "0.1.0"
+    title: "RealtimeDataTableBlock",
+    type: "registry:block",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Alert is presentational UI with native live-region semantics instead of custom keyboard behavior: non-error variants default to role=status and error defaults to role=alert. Use AlertTitle and AlertDescription to provide a readable accessible name/description; place interactive controls in AlertAction as native buttons or links.",
-    "anatomy": [
-      "root",
-      "icon",
-      "title",
-      "description",
-      "action"
-    ],
-    "api": "Alert accepts variant default|info|success|warning|error. Non-error variants default to role=status with aria-live=polite; error defaults to role=alert. Consumers may override role and aria-live when the message is purely decorative or already announced elsewhere.",
-    "categories": [
-      "feedback",
-      "status",
-      "base"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "Alert is presentational UI with native live-region semantics instead of custom keyboard behavior: non-error variants default to role=status and error defaults to role=alert. Use AlertTitle and AlertDescription to provide a readable accessible name/description; place interactive controls in AlertAction as native buttons or links.",
+    anatomy: ["root", "icon", "title", "description", "action"],
+    api: "Alert accepts variant default|info|success|warning|error. Non-error variants default to role=status with aria-live=polite; error defaults to role=alert. Consumers may override role and aria-live when the message is purely decorative or already announced elsewhere.",
+    categories: ["feedback", "status", "base"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Customize tone and layout through ui-alert classes, data-variant, and the icon/title/description/action parts.",
-    "dataAttributes": "Root exposes data-scope=\"ui-alert\", data-part=\"root\", data-slot=\"alert\", and data-variant. Parts expose data-scope=\"ui-alert\", data-part, and data-slot=\"alert-*\".",
-    "dependencies": [
-      "cn"
-    ],
-    "description": "Presentational Solid alert/callout surface with semantic status and error roles.",
-    "files": [
+    customization:
+      "Customize tone and layout through ui-alert classes, data-variant, and the icon/title/description/action parts.",
+    dataAttributes:
+      'Root exposes data-scope="ui-alert", data-part="root", data-slot="alert", and data-variant. Parts expose data-scope="ui-alert", data-part, and data-slot="alert-*".',
+    dependencies: ["cn"],
+    description: "Presentational Solid alert/callout surface with semantic status and error roles.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/alert.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/alert.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add alert",
-    "keywords": [
-      "alert",
-      "callout",
-      "status",
-      "feedback",
-      "message"
-    ],
-    "limitations": "Alert does not manage dismissal, timers, focus, or notification queues. Use Toast or app-owned state for dismissible or time-based feedback.",
-    "name": "alert",
-    "parity": {
-      "visualReference": "Matches the Keystone design-system Alert contract: grid layout, rounded-xl border surface, compact padding, one-rem icon column, semantic tone variants, description spacing, and responsive action placement.",
-      "baseUi": "Base UI does not provide a dedicated presentational Alert primitive; parity is intentionally native semantic HTML with stable anatomy and styling hooks. Core behavior is not needed because there is no intrinsic widget state.",
-      "kobalte": "Kobalte has no first-class Alert primitive comparable to dialogs/toasts, so Keystone scopes this item to Solid-native composition, live-region defaults, and copy-paste source ownership."
+    install: "mason add alert",
+    keywords: ["alert", "callout", "status", "feedback", "message"],
+    limitations:
+      "Alert does not manage dismissal, timers, focus, or notification queues. Use Toast or app-owned state for dismissible or time-based feedback.",
+    name: "alert",
+    parity: {
+      visualReference:
+        "Matches the Keystone design-system Alert contract: grid layout, rounded-xl border surface, compact padding, one-rem icon column, semantic tone variants, description spacing, and responsive action placement.",
+      baseUi:
+        "Base UI does not provide a dedicated presentational Alert primitive; parity is intentionally native semantic HTML with stable anatomy and styling hooks. Core behavior is not needed because there is no intrinsic widget state.",
+      kobalte:
+        "Kobalte has no first-class Alert primitive comparable to dialogs/toasts, so Keystone scopes this item to Solid-native composition, live-region defaults, and copy-paste source ownership.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/alert.tsx"
-    ],
-    "ssr": "SSR and hydration are stable because the component renders deterministic native elements with no effects, ids, browser APIs, portals, or measurement.",
-    "state": "No controlled or uncontrolled state contract applies; Alert is a presentational surface and all interactive state belongs to child controls supplied by the app.",
-    "title": "Alert",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/alert.tsx"],
+    ssr: "SSR and hydration are stable because the component renders deterministic native elements with no effects, ids, browser APIs, portals, or measurement.",
+    state:
+      "No controlled or uncontrolled state contract applies; Alert is a presentational surface and all interactive state belongs to child controls supplied by the app.",
+    title: "Alert",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [],
-    "api": "ResizableWorkspaceShellBlock accepts optional title, description, initialLeftWidth, initialInspectorWidth, min/max width constraints, class, and replacement slots for leftRail, workSurface, and inspector content.",
-    "categories": [
-      "workspace",
-      "layout",
-      "data-dense",
-      "block"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    anatomy: [],
+    api: "ResizableWorkspaceShellBlock accepts optional title, description, initialLeftWidth, initialInspectorWidth, min/max width constraints, class, and replacement slots for leftRail, workSurface, and inspector content.",
+    categories: ["workspace", "layout", "data-dense", "block"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Replace leftRail, workSurface, and inspector slots with app-specific source while preserving the shell data attributes and keyboard separator contract. Adjust min/max widths through props instead of editing the resize math.",
-    "dataAttributes": "Stable styling hooks use data-scope=\"ui-block\" and data-part values for resizable-workspace-shell, workspace-header, workspace-actions, workspace-grid, left-rail, left-rail-nav, left-rail-item, resize-handle, resize-indicator, work-surface, work-list, work-item, inspector-panel, inspector-list, and inspector-item.",
-    "dependencies": [
-      "button",
-      "cn"
-    ],
-    "description": "Source-owned resizable workspace shell with a left rail, main work surface, and inspector panel.",
-    "files": [
+    customization:
+      "Replace leftRail, workSurface, and inspector slots with app-specific source while preserving the shell data attributes and keyboard separator contract. Adjust min/max widths through props instead of editing the resize math.",
+    dataAttributes:
+      'Stable styling hooks use data-scope="ui-block" and data-part values for resizable-workspace-shell, workspace-header, workspace-actions, workspace-grid, left-rail, left-rail-nav, left-rail-item, resize-handle, resize-indicator, work-surface, work-list, work-item, inspector-panel, inspector-list, and inspector-item.',
+    dependencies: ["button", "cn"],
+    description:
+      "Source-owned resizable workspace shell with a left rail, main work surface, and inspector panel.",
+    files: [
       {
-        "path": "packages/ui/src/default/blocks/resizable-workspace-shell.tsx",
-        "type": "registry:block"
-      }
+        path: "packages/ui/src/default/blocks/resizable-workspace-shell.tsx",
+        type: "registry:block",
+      },
     ],
-    "install": "mason add resizable-workspace-shell",
-    "keywords": [
+    install: "mason add resizable-workspace-shell",
+    keywords: [
       "resizable-workspace-shell",
       "workspace",
       "resizable",
       "inspector",
       "left-rail",
-      "data-dense"
+      "data-dense",
     ],
-    "limitations": "This is an app-layout block, not a general split-pane primitive. It does not persist panel widths, support nested split views, implement drag ghost previews, or coordinate route-level app state.",
-    "name": "resizable-workspace-shell",
-    "parity": {
-      "shadcn": "Matches shadcn-style block ownership by shipping readable copy-paste source composed from UI primitives and utility classes. Gaps: no persisted layout preferences, no app router integration, and no generated variant system.",
-      "dataDenseWorkspace": "Covers the reusable data-dense shell shape for a left rail, main work surface, inspector panel, keyboard-reachable actions, and responsive constraints. Gaps: terminal panes, live data orchestration, saved layouts, and specialized workspace patterns remain follow-up blocks.",
-      "coreBoundary": "Keeps layout composition and resize behavior in UI-owned source without adding Core exports. A general Core primitive remains deferred until repeated non-block use cases justify an ADR or RFC."
+    limitations:
+      "This is an app-layout block, not a general split-pane primitive. It does not persist panel widths, support nested split views, implement drag ghost previews, or coordinate route-level app state.",
+    name: "resizable-workspace-shell",
+    parity: {
+      shadcn:
+        "Matches shadcn-style block ownership by shipping readable copy-paste source composed from UI primitives and utility classes. Gaps: no persisted layout preferences, no app router integration, and no generated variant system.",
+      dataDenseWorkspace:
+        "Covers the reusable data-dense shell shape for a left rail, main work surface, inspector panel, keyboard-reachable actions, and responsive constraints. Gaps: terminal panes, live data orchestration, saved layouts, and specialized workspace patterns remain follow-up blocks.",
+      coreBoundary:
+        "Keeps layout composition and resize behavior in UI-owned source without adding Core exports. A general Core primitive remains deferred until repeated non-block use cases justify an ADR or RFC.",
     },
-    "registryDependencies": [
-      "button",
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/blocks/resizable-workspace-shell.tsx"
-    ],
-    "title": "ResizableWorkspaceShellBlock",
-    "type": "registry:block",
-    "version": "0.1.0"
+    registryDependencies: ["button", "cn"],
+    sourceFiles: ["packages/ui/src/default/blocks/resizable-workspace-shell.tsx"],
+    title: "ResizableWorkspaceShellBlock",
+    type: "registry:block",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Renders a native button, defaults type to button, preserves explicit submit/reset types, uses native disabled for disabled and loading states, exposes aria-pressed when pressed is provided, and keeps icon-only labeling as caller-owned through aria-label.",
-    "anatomy": [
-      "root",
-      "loading-indicator",
-      "loading-label"
-    ],
-    "api": "Button supports variant default, secondary, destructive, destructive-outline, outline, ghost, link, and solid compatibility alias; size default, xs, sm, md, lg, xl, icon-xs, icon-sm, icon, icon-lg, and icon-xl; loading disables the native button and adds data-loading, aria-busy, aria-disabled, and a loading indicator.",
-    "categories": [
-      "action",
-      "base"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "Renders a native button, defaults type to button, preserves explicit submit/reset types, uses native disabled for disabled and loading states, exposes aria-pressed when pressed is provided, and keeps icon-only labeling as caller-owned through aria-label.",
+    anatomy: ["root", "loading-indicator", "loading-label"],
+    api: "Button supports variant default, secondary, destructive, destructive-outline, outline, ghost, link, and solid compatibility alias; size default, xs, sm, md, lg, xl, icon-xs, icon-sm, icon, icon-lg, and icon-xl; loading disables the native button and adds data-loading, aria-busy, aria-disabled, and a loading indicator.",
+    categories: ["action", "base"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Customize visual treatment through buttonClass, ui-button classes, data-variant/data-size attributes, and the root/loading part hooks.",
-    "dependencies": [
-      "cn"
-    ],
-    "description": "Solid button component with reference-inspired UI styling, loading state, and native form semantics.",
-    "files": [
+    customization:
+      "Customize visual treatment through buttonClass, ui-button classes, data-variant/data-size attributes, and the root/loading part hooks.",
+    dependencies: ["cn"],
+    description:
+      "Solid button component with reference-inspired UI styling, loading state, and native form semantics.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/button.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/button.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add button",
-    "keywords": [
-      "button",
-      "action",
-      "form",
-      "loading",
-      "icon"
-    ],
-    "limitations": "Button intentionally remains a presentational native button rather than a polymorphic link or toggle primitive; LinkButton, IconButton, Toggle, and ToggleGroup remain separate end-state surfaces.",
-    "name": "button",
-    "parity": {
-      "visualReference": "Matches the reference Button visual contract in Solid source form: broad variant and icon-size vocabulary, focus-visible ring classes, pointer-coarse target expansion, SVG normalization, loading indicator slot, data-loading styling, and default type=button semantics. Intentional differences: Solid class/classList conventions, no Base UI render prop, and solid/md compatibility aliases for the existing Keystone registry surface.",
-      "baseUi": "Keeps Base UI-aligned native button semantics, disabled behavior, default type=button behavior, pressed state exposure through aria-pressed/data-pressed, and styling hooks without moving app behavior into Core. Intentional gap: no polymorphic render helper until Keystone has a Solid-native public polymorphic UI convention.",
-      "kobalte": "Comparable to Kobalte Button as a Solid-native native-button wrapper with pass-through HTML props, disabled handling, loading-driven disabled state, data attributes, and form-safe defaults. Icon-only accessible names remain caller-owned through aria-label because Button, IconButton, and LinkButton are separate inventory surfaces."
+    install: "mason add button",
+    keywords: ["button", "action", "form", "loading", "icon"],
+    limitations:
+      "Button intentionally remains a presentational native button rather than a polymorphic link or toggle primitive; LinkButton, IconButton, Toggle, and ToggleGroup remain separate end-state surfaces.",
+    name: "button",
+    parity: {
+      visualReference:
+        "Matches the reference Button visual contract in Solid source form: broad variant and icon-size vocabulary, focus-visible ring classes, pointer-coarse target expansion, SVG normalization, loading indicator slot, data-loading styling, and default type=button semantics. Intentional differences: Solid class/classList conventions, no Base UI render prop, and solid/md compatibility aliases for the existing Keystone registry surface.",
+      baseUi:
+        "Keeps Base UI-aligned native button semantics, disabled behavior, default type=button behavior, pressed state exposure through aria-pressed/data-pressed, and styling hooks without moving app behavior into Core. Intentional gap: no polymorphic render helper until Keystone has a Solid-native public polymorphic UI convention.",
+      kobalte:
+        "Comparable to Kobalte Button as a Solid-native native-button wrapper with pass-through HTML props, disabled handling, loading-driven disabled state, data attributes, and form-safe defaults. Icon-only accessible names remain caller-owned through aria-label because Button, IconButton, and LinkButton are separate inventory surfaces.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/button.tsx"
-    ],
-    "title": "Button",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/button.tsx"],
+    title: "Button",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by @keystone-ui/core/switch for role=switch, aria-checked, Space keyboard toggling, disabled/read-only guards, required and invalid state metadata, hidden native checkbox submission, user-handler precedence, and form reset synchronization.",
-    "anatomy": [
-      "root",
-      "control",
-      "thumb",
-      "hidden-input"
-    ],
-    "api": "Switch exports Switch, SwitchControl, SwitchThumb, SwitchHiddenInput, and SwitchPrimitive. The default Switch renders a styled control, animated thumb, and hidden native input when no custom children are provided; custom children can compose the same Core-backed parts directly.",
-    "categories": [
-      "forms",
-      "selection",
-      "input"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "Backed by @keystone-ui/core/switch for role=switch, aria-checked, Space keyboard toggling, disabled/read-only guards, required and invalid state metadata, hidden native checkbox submission, user-handler precedence, and form reset synchronization.",
+    anatomy: ["root", "control", "thumb", "hidden-input"],
+    api: "Switch exports Switch, SwitchControl, SwitchThumb, SwitchHiddenInput, and SwitchPrimitive. The default Switch renders a styled control, animated thumb, and hidden native input when no custom children are provided; custom children can compose the same Core-backed parts directly.",
+    categories: ["forms", "selection", "input"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated root, control, thumb, and hidden input through ui-switch classes, Core data attributes, CSS thumb-size variable, and neutral data-slot hooks while Keystone keeps role=switch, checked state, hidden input, form reset, validation, and preventable toggle behavior.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid switch component backed by Keystone selection-control behavior.",
-    "files": [
+    customization:
+      "Style the generated root, control, thumb, and hidden input through ui-switch classes, Core data attributes, CSS thumb-size variable, and neutral data-slot hooks while Keystone keeps role=switch, checked state, hidden input, form reset, validation, and preventable toggle behavior.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description: "Styled Solid switch component backed by Keystone selection-control behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/switch.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/switch.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add switch",
-    "keywords": [
-      "switch",
-      "toggle",
-      "checked",
-      "keystone"
-    ],
-    "limitations": "Drag gestures and app-specific field copy remain composition concerns; Keystone Core owns the primitive state and form contract while UI owns the generated visual shell.",
-    "name": "switch",
-    "parity": {
-      "visualReference": "Matches the reference switch visual shape in Solid source form: compact track, thumb-size CSS variable, checked/unchecked track colors, animated thumb translation, active thumb stretch, focus ring, disabled opacity, and data-slot hooks.",
-      "baseUi": "Evidence-backed coverage comes through Keystone Core Switch for controlled/uncontrolled checked state, disabled/read-only guards, role=switch, hidden checkbox submission, validation metadata, form reset, and preventable user handlers. Gaps: broader readonly, validation, and manual switch AT evidence remain open.",
-      "kobalte": "Solid composition follows Switch Root, Control, Thumb, HiddenInput, stable data attributes, native form participation, and user-owned label/description composition. Gaps: richer field examples and validation announcement evidence remain follow-up work."
+    install: "mason add switch",
+    keywords: ["switch", "toggle", "checked", "keystone"],
+    limitations:
+      "Drag gestures and app-specific field copy remain composition concerns; Keystone Core owns the primitive state and form contract while UI owns the generated visual shell.",
+    name: "switch",
+    parity: {
+      visualReference:
+        "Matches the reference switch visual shape in Solid source form: compact track, thumb-size CSS variable, checked/unchecked track colors, animated thumb translation, active thumb stretch, focus ring, disabled opacity, and data-slot hooks.",
+      baseUi:
+        "Evidence-backed coverage comes through Keystone Core Switch for controlled/uncontrolled checked state, disabled/read-only guards, role=switch, hidden checkbox submission, validation metadata, form reset, and preventable user handlers. Gaps: broader readonly, validation, and manual switch AT evidence remain open.",
+      kobalte:
+        "Solid composition follows Switch Root, Control, Thumb, HiddenInput, stable data attributes, native form participation, and user-owned label/description composition. Gaps: richer field examples and validation announcement evidence remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/switch.tsx"
-    ],
-    "title": "Switch",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/switch.tsx"],
+    title: "Switch",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by @keystone-ui/core/checkbox for role=checkbox, aria-checked including mixed state, Space keyboard toggling, disabled/read-only guards, required and invalid state metadata, hidden native input submission, user-handler precedence, and form reset synchronization.",
-    "anatomy": [
-      "root",
-      "control",
-      "indicator",
-      "indicator-icon",
-      "hidden-input"
-    ],
-    "api": "Checkbox exports Checkbox, CheckboxControl, CheckboxIndicator, CheckboxIndicatorIcon, CheckboxHiddenInput, and CheckboxPrimitive. The default Checkbox renders a styled control, state-aware indicator icon, and hidden native input when no custom children are provided; custom children can compose the same Core-backed parts directly.",
-    "categories": [
-      "forms",
-      "selection",
-      "input"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "Backed by @keystone-ui/core/checkbox for role=checkbox, aria-checked including mixed state, Space keyboard toggling, disabled/read-only guards, required and invalid state metadata, hidden native input submission, user-handler precedence, and form reset synchronization.",
+    anatomy: ["root", "control", "indicator", "indicator-icon", "hidden-input"],
+    api: "Checkbox exports Checkbox, CheckboxControl, CheckboxIndicator, CheckboxIndicatorIcon, CheckboxHiddenInput, and CheckboxPrimitive. The default Checkbox renders a styled control, state-aware indicator icon, and hidden native input when no custom children are provided; custom children can compose the same Core-backed parts directly.",
+    categories: ["forms", "selection", "input"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated root, control, indicator, indicator icon, and hidden input through ui-checkbox classes, Core data attributes, and neutral data-slot hooks while Keystone keeps role=checkbox, mixed state, hidden input, form reset, validation, and preventable toggle behavior.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid checkbox component backed by Keystone selection-control behavior.",
-    "files": [
+    customization:
+      "Style the generated root, control, indicator, indicator icon, and hidden input through ui-checkbox classes, Core data attributes, and neutral data-slot hooks while Keystone keeps role=checkbox, mixed state, hidden input, form reset, validation, and preventable toggle behavior.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description: "Styled Solid checkbox component backed by Keystone selection-control behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/checkbox.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/checkbox.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add checkbox",
-    "keywords": [
-      "checkbox",
-      "checked",
-      "indeterminate",
-      "keystone"
-    ],
-    "limitations": "Group-level checkbox coordination and app-specific field copy remain composition concerns; Keystone Core owns the primitive state and form contract while UI owns the generated visual shell.",
-    "name": "checkbox",
-    "parity": {
-      "visualReference": "Matches the reference checkbox visual shape in Solid source form: compact square control, subtle surface treatment, checked and indeterminate indicator states, focus/invalid rings, disabled opacity, data-slot hooks, and responsive icon sizing.",
-      "baseUi": "Evidence-backed coverage comes through Keystone Core Checkbox for controlled/uncontrolled checked state, indeterminate state, disabled/read-only guards, role=checkbox, hidden input submission, validation metadata, form reset, and preventable user handlers. Gaps: broader readonly, validation, and manual mixed-state AT evidence remain open.",
-      "kobalte": "Solid composition follows Checkbox Root, Control, Indicator, HiddenInput, stable data attributes, mixed state, native form participation, and user-owned label/description composition. Gaps: richer field/group examples and validation announcement evidence remain follow-up work."
+    install: "mason add checkbox",
+    keywords: ["checkbox", "checked", "indeterminate", "keystone"],
+    limitations:
+      "Group-level checkbox coordination and app-specific field copy remain composition concerns; Keystone Core owns the primitive state and form contract while UI owns the generated visual shell.",
+    name: "checkbox",
+    parity: {
+      visualReference:
+        "Matches the reference checkbox visual shape in Solid source form: compact square control, subtle surface treatment, checked and indeterminate indicator states, focus/invalid rings, disabled opacity, data-slot hooks, and responsive icon sizing.",
+      baseUi:
+        "Evidence-backed coverage comes through Keystone Core Checkbox for controlled/uncontrolled checked state, indeterminate state, disabled/read-only guards, role=checkbox, hidden input submission, validation metadata, form reset, and preventable user handlers. Gaps: broader readonly, validation, and manual mixed-state AT evidence remain open.",
+      kobalte:
+        "Solid composition follows Checkbox Root, Control, Indicator, HiddenInput, stable data attributes, mixed state, native form participation, and user-owned label/description composition. Gaps: richer field/group examples and validation announcement evidence remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/checkbox.tsx"
-    ],
-    "title": "Checkbox",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/checkbox.tsx"],
+    title: "Checkbox",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [
-      "root",
-      "item",
-      "item-indicator",
-      "hidden-input"
-    ],
-    "categories": [
-      "forms",
-      "selection",
-      "input"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    anatomy: ["root", "item", "item-indicator", "hidden-input"],
+    categories: ["forms", "selection", "input"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-radio-group classes while Keystone keeps radiogroup semantics, roving focus, RTL-aware horizontal keyboard selection, hidden radio inputs, and data attributes.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid radio group component backed by Keystone roving selection behavior.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-radio-group classes while Keystone keeps radiogroup semantics, roving focus, RTL-aware horizontal keyboard selection, hidden radio inputs, and data attributes.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description: "Styled Solid radio group component backed by Keystone roving selection behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/radio-group.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/radio-group.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add radio-group",
-    "keywords": [
-      "radio",
-      "radio-group",
-      "checked",
-      "keystone"
-    ],
-    "name": "radio-group",
-    "parity": {
-      "baseUi": "Thin vertical covers controlled and uncontrolled value state, disabled items, radiogroup ARIA, roving tabindex, RTL-aware arrow/Home/End keyboard selection, hidden radio submission, hidden-input state metadata, and UI wrapper metadata. Gaps: toolbar/nested coordination, richer label composition, form validation edge cases, and hydration edge tests remain follow-up work.",
-      "kobalte": "Matches Solid RadioGroup Root/Item/Input/Control/Indicator direction with single selection, hidden native inputs, disabled state, orientation, and stable data attributes. Gaps: form-control group composition, validation/reset semantics, and nested composite-widget policy remain follow-up work."
+    install: "mason add radio-group",
+    keywords: ["radio", "radio-group", "checked", "keystone"],
+    name: "radio-group",
+    parity: {
+      baseUi:
+        "Thin vertical covers controlled and uncontrolled value state, disabled items, radiogroup ARIA, roving tabindex, RTL-aware arrow/Home/End keyboard selection, hidden radio submission, hidden-input state metadata, and UI wrapper metadata. Gaps: toolbar/nested coordination, richer label composition, form validation edge cases, and hydration edge tests remain follow-up work.",
+      kobalte:
+        "Matches Solid RadioGroup Root/Item/Input/Control/Indicator direction with single selection, hidden native inputs, disabled state, orientation, and stable data attributes. Gaps: form-control group composition, validation/reset semantics, and nested composite-widget policy remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/radio-group.tsx"
-    ],
-    "title": "RadioGroup",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/radio-group.tsx"],
+    title: "RadioGroup",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Input renders a native input inside a presentational span wrapper. Type, name, value, disabled, required, autocomplete, placeholder, aria-* attributes, events, and form participation pass through to the native input. For labelled form flows, compose with FieldControl or wire labels/descriptions manually.",
-    "anatomy": [
-      "root",
-      "input"
-    ],
-    "api": "Input supports size sm, default, lg, or a numeric native size attribute; invalid mirrors aria-invalid and data-invalid; unstyled removes the wrapper surface classes; nativeInput is accepted as a compatibility no-op because this Solid implementation always renders a native input.",
-    "categories": [
-      "form",
-      "base"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "Input renders a native input inside a presentational span wrapper. Type, name, value, disabled, required, autocomplete, placeholder, aria-* attributes, events, and form participation pass through to the native input. For labelled form flows, compose with FieldControl or wire labels/descriptions manually.",
+    anatomy: ["root", "input"],
+    api: "Input supports size sm, default, lg, or a numeric native size attribute; invalid mirrors aria-invalid and data-invalid; unstyled removes the wrapper surface classes; nativeInput is accepted as a compatibility no-op because this Solid implementation always renders a native input.",
+    categories: ["form", "base"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Use ui-input-control, ui-input, data-size, data-invalid, data-disabled, and reference-style data-slot hooks for wrapper and native input styling.",
-    "dependencies": [
-      "cn"
-    ],
-    "description": "Reference-inspired Solid input control with wrapper styling, sizes, invalid state, and native input semantics.",
-    "files": [
+    customization:
+      "Use ui-input-control, ui-input, data-size, data-invalid, data-disabled, and reference-style data-slot hooks for wrapper and native input styling.",
+    dependencies: ["cn"],
+    description:
+      "Reference-inspired Solid input control with wrapper styling, sizes, invalid state, and native input semantics.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/input.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/input.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add input",
-    "keywords": [
-      "input",
-      "field",
-      "form",
-      "search",
-      "file"
-    ],
-    "limitations": "Standalone Input does not register with Core Field context. Use FieldControl for automatic Field label, description, error, validation, reset, and state wiring.",
-    "name": "input",
-    "parity": {
-      "visualReference": "Matches reference Input visual shape in Solid source form: control wrapper, native input part, sm/default/lg sizes, numeric native size passthrough, invalid/focus/disabled wrapper selectors, search decoration reset classes, and file input text/file styling. Intentional difference: no Base UI Input primitive dependency because the native input provides the needed semantics.",
-      "baseUi": "Keeps Base UI-aligned native input semantics through a real input element, pass-through form props/events, aria-invalid, disabled handling, and FieldControl as the Core-backed path for registration and validation.",
-      "kobalte": "Comparable to Kobalte TextField input anatomy when composed with FieldControl. Standalone Input remains a styled native control and intentionally does not own label/description/error IDs."
+    install: "mason add input",
+    keywords: ["input", "field", "form", "search", "file"],
+    limitations:
+      "Standalone Input does not register with Core Field context. Use FieldControl for automatic Field label, description, error, validation, reset, and state wiring.",
+    name: "input",
+    parity: {
+      visualReference:
+        "Matches reference Input visual shape in Solid source form: control wrapper, native input part, sm/default/lg sizes, numeric native size passthrough, invalid/focus/disabled wrapper selectors, search decoration reset classes, and file input text/file styling. Intentional difference: no Base UI Input primitive dependency because the native input provides the needed semantics.",
+      baseUi:
+        "Keeps Base UI-aligned native input semantics through a real input element, pass-through form props/events, aria-invalid, disabled handling, and FieldControl as the Core-backed path for registration and validation.",
+      kobalte:
+        "Comparable to Kobalte TextField input anatomy when composed with FieldControl. Standalone Input remains a styled native control and intentionally does not own label/description/error IDs.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/input.tsx"
-    ],
-    "title": "Input",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/input.tsx"],
+    title: "Input",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "SearchInput preserves the native input as the focus target, keeps the icon decorative, exposes loading as role=status, gives the clear button an accessible name, and runs onClear before internal clearing so event.preventDefault can take over.",
-    "anatomy": [
-      "root",
-      "icon",
-      "input",
-      "loading-indicator",
-      "clear"
-    ],
-    "api": "SearchInput is a native type=search input with size sm/default/lg, invalid, loading, loadingLabel, clearable, clearLabel, onClear, rootClass, and inputClass. It accepts normal input attributes except type and native size.",
-    "categories": [
-      "form",
-      "base",
-      "navigation"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "SearchInput preserves the native input as the focus target, keeps the icon decorative, exposes loading as role=status, gives the clear button an accessible name, and runs onClear before internal clearing so event.preventDefault can take over.",
+    anatomy: ["root", "icon", "input", "loading-indicator", "clear"],
+    api: "SearchInput is a native type=search input with size sm/default/lg, invalid, loading, loadingLabel, clearable, clearLabel, onClear, rootClass, and inputClass. It accepts normal input attributes except type and native size.",
+    categories: ["form", "base", "navigation"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Use ui-search-input classes and data-slot hooks for root, icon, input, loading-indicator, and clear button styling. Compose it into command triggers, table filters, topbars, and docs search without adopting a command primitive.",
-    "dependencies": [
-      "cn"
-    ],
-    "description": "Native Solid search input with search icon, optional clear button, loading state, and input-control styling hooks.",
-    "files": [
+    customization:
+      "Use ui-search-input classes and data-slot hooks for root, icon, input, loading-indicator, and clear button styling. Compose it into command triggers, table filters, topbars, and docs search without adopting a command primitive.",
+    dependencies: ["cn"],
+    description:
+      "Native Solid search input with search icon, optional clear button, loading state, and input-control styling hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/search-input.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/search-input.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add search-input",
-    "keywords": [
-      "search-input",
-      "search",
-      "filter",
-      "input",
-      "topbar",
-      "command"
-    ],
-    "limitations": "SearchInput does not filter data, open command palettes, or own query routing. Pair it with app state, TanStack Table filters, CommandMenu, or router search params for behavior.",
-    "name": "search-input",
-    "parity": {
-      "visualReference": "Matches shadcn-style search input composition in Solid source form: native search input, leading icon, optional clear affordance, loading indicator, invalid/focus/disabled hooks, and search-decoration resets.",
-      "baseUi": "No Core/Base UI primitive is needed because native search input semantics cover the intrinsic behavior. User handlers run before internal clear behavior and can prevent default.",
-      "kobalte": "Comparable to Kobalte TextField input composition when used with labels/descriptions externally. Keystone intentionally keeps SearchInput separate from command, autocomplete, and field registration behavior."
+    install: "mason add search-input",
+    keywords: ["search-input", "search", "filter", "input", "topbar", "command"],
+    limitations:
+      "SearchInput does not filter data, open command palettes, or own query routing. Pair it with app state, TanStack Table filters, CommandMenu, or router search params for behavior.",
+    name: "search-input",
+    parity: {
+      visualReference:
+        "Matches shadcn-style search input composition in Solid source form: native search input, leading icon, optional clear affordance, loading indicator, invalid/focus/disabled hooks, and search-decoration resets.",
+      baseUi:
+        "No Core/Base UI primitive is needed because native search input semantics cover the intrinsic behavior. User handlers run before internal clear behavior and can prevent default.",
+      kobalte:
+        "Comparable to Kobalte TextField input composition when used with labels/descriptions externally. Keystone intentionally keeps SearchInput separate from command, autocomplete, and field registration behavior.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/search-input.tsx"
-    ],
-    "title": "SearchInput",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/search-input.tsx"],
+    title: "SearchInput",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [],
-    "categories": [
-      "form",
-      "base"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    anatomy: [],
+    categories: ["form", "base"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Use the ui-textarea class and data-invalid attribute for resize, border, and validation-state styles.",
-    "dependencies": [
-      "cn"
-    ],
-    "description": "Solid textarea component with invalid state styling hooks.",
-    "files": [
+    customization:
+      "Use the ui-textarea class and data-invalid attribute for resize, border, and validation-state styles.",
+    dependencies: ["cn"],
+    description: "Solid textarea component with invalid state styling hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/textarea.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/textarea.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add textarea",
-    "keywords": [
-      "textarea",
-      "field",
-      "form"
-    ],
-    "name": "textarea",
-    "parity": {
-      "baseUi": "Thin UI textarea follows Base UI Input/Field direction for native textarea semantics, invalid/disabled styling data, and form participation. Gaps: autosize helpers, field registration, validation lifecycle, filled/focused state data, and character count composition remain follow-up work.",
-      "kobalte": "Comparable to Kobalte TextField textarea usage when composed with Field. Gaps: no standalone Keystone TextArea primitive for form-control ownership, reset listener behavior, or description/error ID registration yet."
+    install: "mason add textarea",
+    keywords: ["textarea", "field", "form"],
+    name: "textarea",
+    parity: {
+      baseUi:
+        "Thin UI textarea follows Base UI Input/Field direction for native textarea semantics, invalid/disabled styling data, and form participation. Gaps: autosize helpers, field registration, validation lifecycle, filled/focused state data, and character count composition remain follow-up work.",
+      kobalte:
+        "Comparable to Kobalte TextField textarea usage when composed with Field. Gaps: no standalone Keystone TextArea primitive for form-control ownership, reset listener behavior, or description/error ID registration yet.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/textarea.tsx"
-    ],
-    "title": "Textarea",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/textarea.tsx"],
+    title: "Textarea",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [],
-    "categories": [
-      "form",
-      "base"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    anatomy: [],
+    categories: ["form", "base"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style labels through ui-label and compose them into field shells when helper text or errors are needed.",
-    "dependencies": [
-      "cn"
-    ],
-    "description": "Solid label component for form controls and field shells.",
-    "files": [
+    customization:
+      "Style labels through ui-label and compose them into field shells when helper text or errors are needed.",
+    dependencies: ["cn"],
+    description: "Solid label component for form controls and field shells.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/label.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/label.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add label",
-    "keywords": [
-      "label",
-      "field",
-      "form"
-    ],
-    "name": "label",
-    "parity": {
-      "baseUi": "Thin UI label aligns with Base UI Field Label semantics by rendering a native label and styling hook. Gaps: automatic control registration, generated for/id wiring, required marker policy, and disabled propagation remain follow-up work.",
-      "kobalte": "Comparable to Kobalte form-control label composition when used inside Field. Gaps: context-driven ID registration and richer field state data are not owned by this standalone wrapper."
+    install: "mason add label",
+    keywords: ["label", "field", "form"],
+    name: "label",
+    parity: {
+      baseUi:
+        "Thin UI label aligns with Base UI Field Label semantics by rendering a native label and styling hook. Gaps: automatic control registration, generated for/id wiring, required marker policy, and disabled propagation remain follow-up work.",
+      kobalte:
+        "Comparable to Kobalte form-control label composition when used inside Field. Gaps: context-driven ID registration and richer field state data are not owned by this standalone wrapper.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/label.tsx"
-    ],
-    "title": "Label",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/label.tsx"],
+    title: "Label",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Field uses Keystone Core Field semantics. FieldLabel labels FieldControl, FieldDescription and FieldError participate in aria-describedby, FieldError uses alert semantics through Core, and FieldControl receives aria-invalid, aria-required, aria-readonly, aria-disabled, and state data attributes from Core.",
-    "anatomy": [
-      "root",
-      "label",
-      "item",
-      "control",
-      "description",
-      "error-message",
-      "hidden-input"
-    ],
-    "api": "Field exports Field, FieldLabel, FieldItem, FieldControl, FieldDescription, FieldError, FieldHiddenInput, and FieldPrimitive. Field and its semantic parts are backed by @keystone-ui/core/form for generated IDs, label/control relationships, aria-describedby, aria-invalid, required/disabled/readonly state, validation state, hidden inputs, and native reset handling.",
-    "categories": [
-      "form",
-      "base"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "Field uses Keystone Core Field semantics. FieldLabel labels FieldControl, FieldDescription and FieldError participate in aria-describedby, FieldError uses alert semantics through Core, and FieldControl receives aria-invalid, aria-required, aria-readonly, aria-disabled, and state data attributes from Core.",
+    anatomy: ["root", "label", "item", "control", "description", "error-message", "hidden-input"],
+    api: "Field exports Field, FieldLabel, FieldItem, FieldControl, FieldDescription, FieldError, FieldHiddenInput, and FieldPrimitive. Field and its semantic parts are backed by @keystone-ui/core/form for generated IDs, label/control relationships, aria-describedby, aria-invalid, required/disabled/readonly state, validation state, hidden inputs, and native reset handling.",
+    categories: ["form", "base"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the shell through ui-field classes, reference-style data-slot values, and Core data attributes for field state on root, label, control, description, error-message, and hidden-input parts.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Core-backed reference-inspired form field shell with label, control, description, error, and hidden-input parts.",
-    "files": [
+    customization:
+      "Style the shell through ui-field classes, reference-style data-slot values, and Core data attributes for field state on root, label, control, description, error-message, and hidden-input parts.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description:
+      "Core-backed reference-inspired form field shell with label, control, description, error, and hidden-input parts.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/field.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/field.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add field",
-    "keywords": [
-      "field",
-      "label",
-      "description",
-      "error",
-      "form",
-      "validation"
-    ],
-    "limitations": "FieldControl is the fully wired control part. A standalone Input nested directly under Field remains native/styled but cannot consume Core Field context until Keystone exposes a public UI field-control context bridge.",
-    "name": "field",
-    "parity": {
-      "visualReference": "Matches reference Field anatomy and styling direction in Solid source form: root, label, item, description, error, reference data-slot hooks, and compact form typography. Intentional difference: Keystone uses @keystone-ui/core/form instead of Base UI React, and exposes FieldControl/FieldHiddenInput rather than Base UI Control/Validity re-exports.",
-      "baseUi": "Meets the Base UI Field behavior target through Keystone Core Field: label/control relationships, description/error registration, required/disabled/invalid/read-only data, touched/dirty/filled/focused/validating state attributes, validation lifecycle, submit/reset hooks, and hidden-input support.",
-      "kobalte": "Follows Kobalte form-control direction with Solid context, generated IDs, aria-labelledby/describedby wiring, error alert semantics, data attributes, native reset integration, and control registration through Core Field."
+    install: "mason add field",
+    keywords: ["field", "label", "description", "error", "form", "validation"],
+    limitations:
+      "FieldControl is the fully wired control part. A standalone Input nested directly under Field remains native/styled but cannot consume Core Field context until Keystone exposes a public UI field-control context bridge.",
+    name: "field",
+    parity: {
+      visualReference:
+        "Matches reference Field anatomy and styling direction in Solid source form: root, label, item, description, error, reference data-slot hooks, and compact form typography. Intentional difference: Keystone uses @keystone-ui/core/form instead of Base UI React, and exposes FieldControl/FieldHiddenInput rather than Base UI Control/Validity re-exports.",
+      baseUi:
+        "Meets the Base UI Field behavior target through Keystone Core Field: label/control relationships, description/error registration, required/disabled/invalid/read-only data, touched/dirty/filled/focused/validating state attributes, validation lifecycle, submit/reset hooks, and hidden-input support.",
+      kobalte:
+        "Follows Kobalte form-control direction with Solid context, generated IDs, aria-labelledby/describedby wiring, error alert semantics, data attributes, native reset integration, and control registration through Core Field.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/field.tsx"
-    ],
-    "title": "Field",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/field.tsx"],
+    title: "Field",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "TanStackForm keeps native form semantics, sets aria-busy while submitting or validating, preserves preventDefault escape hatches through user onSubmit, exposes state-aware submit disabling, and exposes TanStackFormErrors with role=alert when form errors are present.",
-    "anatomy": [
-      "root",
-      "submit",
-      "errors"
-    ],
-    "api": "TanStackForm exports TanStackForm, TanStackFormSubmit, TanStackFormErrors, getTanStackFormState, TanStackFormState, and formatFieldError. TanStackForm wraps a native form element, runs user onSubmit first, optionally prevents default and stops propagation, calls form.handleSubmit, and mirrors submitting, validating, invalid, can-submit, dirty, touched, submitted, and submission-attempt metadata. TanStackFormSubmit can bind to the form state to disable while submitting or while canSubmit is false; use formId when the submit button targets an external native form owner.",
-    "categories": [
-      "form",
-      "tanstack"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    accessibility:
+      "TanStackForm keeps native form semantics, sets aria-busy while submitting or validating, preserves preventDefault escape hatches through user onSubmit, exposes state-aware submit disabling, and exposes TanStackFormErrors with role=alert when form errors are present.",
+    anatomy: ["root", "submit", "errors"],
+    api: "TanStackForm exports TanStackForm, TanStackFormSubmit, TanStackFormErrors, getTanStackFormState, TanStackFormState, and formatFieldError. TanStackForm wraps a native form element, runs user onSubmit first, optionally prevents default and stops propagation, calls form.handleSubmit, and mirrors submitting, validating, invalid, can-submit, dirty, touched, submitted, and submission-attempt metadata. TanStackFormSubmit can bind to the form state to disable while submitting or while canSubmit is false; use formId when the submit button targets an external native form owner.",
+    categories: ["form", "tanstack"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Style the generated form, submit, and form-error parts through ui-tanstack-form classes, form state data attributes, and neutral data-slot hooks while TanStack Form owns app form state.",
-    "dependencies": [
-      "@tanstack/solid-form",
-      "cn"
-    ],
-    "description": "Source-owned Solid form shell for TanStack Form submit and form-state metadata.",
-    "files": [
+    customization:
+      "Style the generated form, submit, and form-error parts through ui-tanstack-form classes, form state data attributes, and neutral data-slot hooks while TanStack Form owns app form state.",
+    dependencies: ["@tanstack/solid-form", "cn"],
+    description: "Source-owned Solid form shell for TanStack Form submit and form-state metadata.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/tanstack-form.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/tanstack-form.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add tanstack-form",
-    "keywords": [
-      "tanstack-form",
-      "form",
-      "submit",
-      "validation"
-    ],
-    "limitations": "Schema adapters, server action wiring, optimistic submission state, and route-level mutation orchestration stay app-owned. This source shell intentionally does not hide TanStack Form behind a new runtime abstraction.",
-    "name": "tanstack-form",
-    "parity": {
-      "tanstackForm": "First-class TanStack Form parity: source-owned native form wrapper around handleSubmit, form-state metadata for submitting/validating/can-submit/dirty/touched/submitted/submission-attempts, user-submit precedence, state-aware submit controls, and root error display.",
-      "baseUi": "Base UI is not the primary target for app form state; intrinsic ARIA and native form semantics are preserved while Keystone Core remains independent from TanStack app libraries.",
-      "kobalte": "Solid parity is native-form composition with explicit source-owned state hooks rather than a hidden context runtime."
+    install: "mason add tanstack-form",
+    keywords: ["tanstack-form", "form", "submit", "validation"],
+    limitations:
+      "Schema adapters, server action wiring, optimistic submission state, and route-level mutation orchestration stay app-owned. This source shell intentionally does not hide TanStack Form behind a new runtime abstraction.",
+    name: "tanstack-form",
+    parity: {
+      tanstackForm:
+        "First-class TanStack Form parity: source-owned native form wrapper around handleSubmit, form-state metadata for submitting/validating/can-submit/dirty/touched/submitted/submission-attempts, user-submit precedence, state-aware submit controls, and root error display.",
+      baseUi:
+        "Base UI is not the primary target for app form state; intrinsic ARIA and native form semantics are preserved while Keystone Core remains independent from TanStack app libraries.",
+      kobalte:
+        "Solid parity is native-form composition with explicit source-owned state hooks rather than a hidden context runtime.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/tanstack-form.tsx"
-    ],
-    "title": "TanStackForm",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/tanstack-form.tsx"],
+    title: "TanStackForm",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by @keystone-ui/core/form for generated IDs, label/control relationships, aria-describedby, aria-invalid, required/disabled/readonly metadata, touched/dirty/validating metadata, error alert wiring, external form-owner IDs, and stable field state data attributes. TanStack Form remains responsible for value, touched, dirty, validating, blur, and validation lifecycle state.",
-    "anatomy": [
-      "root",
-      "label",
-      "control-slot",
-      "description",
-      "error"
-    ],
-    "api": "TanStackField exports TanStackField plus TanStackFieldApi, TanStackFormApi, TanStackFieldRenderContext, and TanStackFieldProps types. It renders form.Field, derives first error and invalid state from TanStack field meta, creates a Keystone form-control contract, and passes control, controlId, labelId, descriptionId, errorId, field, value, invalid, firstError, focused, setFocused, touched, dirty, blurred, and validating to child renderers.",
-    "categories": [
-      "form",
-      "tanstack"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    accessibility:
+      "Backed by @keystone-ui/core/form for generated IDs, label/control relationships, aria-describedby, aria-invalid, required/disabled/readonly metadata, touched/dirty/validating metadata, error alert wiring, external form-owner IDs, and stable field state data attributes. TanStack Form remains responsible for value, touched, dirty, validating, blur, and validation lifecycle state.",
+    anatomy: ["root", "label", "control-slot", "description", "error"],
+    api: "TanStackField exports TanStackField plus TanStackFieldApi, TanStackFormApi, TanStackFieldRenderContext, and TanStackFieldProps types. It renders form.Field, derives first error and invalid state from TanStack field meta, creates a Keystone form-control contract, and passes control, controlId, labelId, descriptionId, errorId, field, value, invalid, firstError, focused, setFocused, touched, dirty, blurred, and validating to child renderers.",
+    categories: ["form", "tanstack"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Style the generated field shell, label, description, and error parts through ui-tanstack-field classes, Keystone Core data attributes, TanStack meta data attributes, and neutral data-slot hooks.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "@tanstack/solid-form",
-      "cn",
-      "tanstack-form"
-    ],
-    "description": "Source-owned Solid field adapter connecting TanStack Form field state to Keystone form-control semantics.",
-    "files": [
+    customization:
+      "Style the generated field shell, label, description, and error parts through ui-tanstack-field classes, Keystone Core data attributes, TanStack meta data attributes, and neutral data-slot hooks.",
+    dependencies: ["@keystone-ui/core", "@tanstack/solid-form", "cn", "tanstack-form"],
+    description:
+      "Source-owned Solid field adapter connecting TanStack Form field state to Keystone form-control semantics.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/tanstack-field.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/tanstack-field.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add tanstack-field",
-    "keywords": [
-      "tanstack-field",
-      "field",
-      "form",
-      "validation",
-      "keystone"
-    ],
-    "limitations": "TanStackField is a render-prop adapter instead of a hidden context runtime. Concrete controls still decide how to call handleChange and handleBlur so text, select, combobox, checkbox, and file controls can preserve their own primitive behavior. Field value state remains controlled by TanStack Form; the adapter only owns presentation metadata and transient focus state.",
-    "name": "tanstack-field",
-    "parity": {
-      "tanstackForm": "First-class TanStack Form parity: form.Field integration, validator pass-through, field value and meta access, touched-derived invalid state, dirty/touched/blurred/validating metadata, blur/change delegation, and source-owned render-prop composition.",
-      "baseUi": "Field semantics are inherited through Keystone Core FormControl: generated IDs, label/description/error relationships, invalid/required/disabled/read-only attributes, and stable data attributes.",
-      "kobalte": "Solid form-control parity follows Keystone Core Field/FormControl while preserving TanStack Form as the app-state owner."
+    install: "mason add tanstack-field",
+    keywords: ["tanstack-field", "field", "form", "validation", "keystone"],
+    limitations:
+      "TanStackField is a render-prop adapter instead of a hidden context runtime. Concrete controls still decide how to call handleChange and handleBlur so text, select, combobox, checkbox, and file controls can preserve their own primitive behavior. Field value state remains controlled by TanStack Form; the adapter only owns presentation metadata and transient focus state.",
+    name: "tanstack-field",
+    parity: {
+      tanstackForm:
+        "First-class TanStack Form parity: form.Field integration, validator pass-through, field value and meta access, touched-derived invalid state, dirty/touched/blurred/validating metadata, blur/change delegation, and source-owned render-prop composition.",
+      baseUi:
+        "Field semantics are inherited through Keystone Core FormControl: generated IDs, label/description/error relationships, invalid/required/disabled/read-only attributes, and stable data attributes.",
+      kobalte:
+        "Solid form-control parity follows Keystone Core Field/FormControl while preserving TanStack Form as the app-state owner.",
     },
-    "registryDependencies": [
-      "cn",
-      "tanstack-form"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/tanstack-field.tsx"
-    ],
-    "title": "TanStackField",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "tanstack-form"],
+    sourceFiles: ["packages/ui/src/default/ui/tanstack-field.tsx"],
+    title: "TanStackField",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by TanStackField for generated IDs, label/description/error relationships, aria-describedby, aria-invalid, required/disabled/readonly metadata, touched/dirty/blurred/validating metadata, and alert messaging. The rendered input receives the shared Core form-control props.",
-    "anatomy": [
-      "field-root",
-      "field-label",
-      "input",
-      "field-description",
-      "field-error"
-    ],
-    "api": "TextField exports TextField, TextFieldProps, and TextFieldValidators. It composes TanStackField with the styled Input item, passes validators to form.Field, derives touched error state through TanStackField, maps input events to field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId plus native input props.",
-    "categories": [
-      "form",
-      "tanstack"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    accessibility:
+      "Backed by TanStackField for generated IDs, label/description/error relationships, aria-describedby, aria-invalid, required/disabled/readonly metadata, touched/dirty/blurred/validating metadata, and alert messaging. The rendered input receives the shared Core form-control props.",
+    anatomy: ["field-root", "field-label", "input", "field-description", "field-error"],
+    api: "TextField exports TextField, TextFieldProps, and TextFieldValidators. It composes TanStackField with the styled Input item, passes validators to form.Field, derives touched error state through TanStackField, maps input events to field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId plus native input props.",
+    categories: ["form", "tanstack"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use ui-text-field classes, TanStackField shell classes, Input classes, Core data attributes, neutral data-slot hooks, and inputClass for generated-source styling.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "@tanstack/solid-form",
-      "cn",
-      "input",
-      "tanstack-field"
-    ],
-    "description": "TanStack Form text field composed with Keystone form-control semantics and UI styling hooks.",
-    "files": [
+    customization:
+      "Use ui-text-field classes, TanStackField shell classes, Input classes, Core data attributes, neutral data-slot hooks, and inputClass for generated-source styling.",
+    dependencies: ["@keystone-ui/core", "@tanstack/solid-form", "cn", "input", "tanstack-field"],
+    description:
+      "TanStack Form text field composed with Keystone form-control semantics and UI styling hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/text-field.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/text-field.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add text-field",
-    "keywords": [
-      "text-field",
-      "field",
-      "form",
-      "tanstack",
-      "keystone"
-    ],
-    "limitations": "Masked input, parse/format adapters, async validation examples, and schema-specific validation helpers remain app-owned composition.",
-    "name": "text-field",
-    "parity": {
-      "tanstackForm": "Evidence-backed TanStack Form coverage: form.Field integration, validators pass-through, controlled input value binding, blur/change delegation, and touched-derived invalid/error state. Gaps: async submit policy, schema conventions, and app-specific error copy remain host-owned.",
-      "baseUi": "Field behavior coverage comes through Keystone Core FormControl and native input semantics. Gaps: broader validation/reset examples and manual error announcement evidence remain open.",
-      "kobalte": "Solid composition follows Keystone Core Field/FormControl with user-owned source styling. Gaps: richer field-state examples and manual AT evidence remain follow-up work."
+    install: "mason add text-field",
+    keywords: ["text-field", "field", "form", "tanstack", "keystone"],
+    limitations:
+      "Masked input, parse/format adapters, async validation examples, and schema-specific validation helpers remain app-owned composition.",
+    name: "text-field",
+    parity: {
+      tanstackForm:
+        "Evidence-backed TanStack Form coverage: form.Field integration, validators pass-through, controlled input value binding, blur/change delegation, and touched-derived invalid/error state. Gaps: async submit policy, schema conventions, and app-specific error copy remain host-owned.",
+      baseUi:
+        "Field behavior coverage comes through Keystone Core FormControl and native input semantics. Gaps: broader validation/reset examples and manual error announcement evidence remain open.",
+      kobalte:
+        "Solid composition follows Keystone Core Field/FormControl with user-owned source styling. Gaps: richer field-state examples and manual AT evidence remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn",
-      "input",
-      "tanstack-field"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/text-field.tsx"
-    ],
-    "state": "TanStack Form owns value, touched, dirty, blurred, validating, and errors. TextField maps string input into TanStack field value and mirrors focus through the TanStackField shell.",
-    "title": "TextField",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "input", "tanstack-field"],
+    sourceFiles: ["packages/ui/src/default/ui/text-field.tsx"],
+    state:
+      "TanStack Form owns value, touched, dirty, blurred, validating, and errors. TextField maps string input into TanStack field value and mirrors focus through the TanStackField shell.",
+    title: "TextField",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by TanStackField for generated IDs, label/description/error relationships, touched-derived invalid state, and alert messaging. Backed by @keystone-ui/core/number-field for role=spinbutton, aria-valuemin, aria-valuemax, aria-valuenow, aria-valuetext, keyboard increment/decrement behavior, trigger aria-controls, native input naming, reset support, disabled/read-only/required state, and stable data attributes.",
-    "anatomy": [
+    accessibility:
+      "Backed by TanStackField for generated IDs, label/description/error relationships, touched-derived invalid state, and alert messaging. Backed by @keystone-ui/core/number-field for role=spinbutton, aria-valuemin, aria-valuemax, aria-valuenow, aria-valuetext, keyboard increment/decrement behavior, trigger aria-controls, native input naming, reset support, disabled/read-only/required state, and stable data attributes.",
+    anatomy: [
       "field-root",
       "field-label",
       "number-field",
@@ -1098,126 +843,92 @@ export const registryDocItems = [
       "input",
       "increment-trigger",
       "field-description",
-      "field-error"
+      "field-error",
     ],
-    "api": "NumberField exports NumberField, NumberFieldProps, and NumberFieldValidators. It composes TanStackField with @keystone-ui/core/number-field, passes validators to form.Field, maps number and undefined values to field.handleChange, maps blur to field.handleBlur, preserves Core min/max/step/parse/format behavior, and forwards disabled/readOnly/required/formId plus input and trigger props.",
-    "categories": [
-      "form",
-      "tanstack",
-      "input"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    api: "NumberField exports NumberField, NumberFieldProps, and NumberFieldValidators. It composes TanStackField with @keystone-ui/core/number-field, passes validators to form.Field, maps number and undefined values to field.handleChange, maps blur to field.handleBlur, preserves Core min/max/step/parse/format behavior, and forwards disabled/readOnly/required/formId plus input and trigger props.",
+    categories: ["form", "tanstack", "input"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use ui-number-field classes, TanStackField shell classes, Core data attributes, neutral data-slot hooks, inputProps, trigger props, inputClass, triggerClass, and class escape hatches for generated-source styling.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "@tanstack/solid-form",
-      "cn",
-      "tanstack-field"
-    ],
-    "description": "TanStack Form number field composed with Keystone NumberField behavior and UI styling hooks.",
-    "files": [
+    customization:
+      "Use ui-number-field classes, TanStackField shell classes, Core data attributes, neutral data-slot hooks, inputProps, trigger props, inputClass, triggerClass, and class escape hatches for generated-source styling.",
+    dependencies: ["@keystone-ui/core", "@tanstack/solid-form", "cn", "tanstack-field"],
+    description:
+      "TanStack Form number field composed with Keystone NumberField behavior and UI styling hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/number-field.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/number-field.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add number-field",
-    "keywords": [
-      "number-field",
-      "number",
-      "spinbutton",
-      "field",
-      "form",
-      "tanstack",
-      "keystone"
-    ],
-    "limitations": "Press-and-hold repeat, locale-specific number parsing, currency/percent adapters, wheel input policy, and app-specific validation copy remain follow-up or host-owned composition.",
-    "name": "number-field",
-    "parity": {
-      "tanstackForm": "Covers form.Field integration, validators pass-through, number binding, blur/change delegation, touched-derived invalid/error state, and generated-source prop escape hatches.",
-      "baseUi": "Primitive behavior coverage comes through Keystone Core NumberField for spinbutton ARIA, min/max/step keyboard behavior, controlled values, parse/format hooks, and data attributes.",
-      "kobalte": "Solid composition follows root/input/increment-trigger/decrement-trigger anatomy with Keystone Core behavior and user-owned UI source styling."
+    install: "mason add number-field",
+    keywords: ["number-field", "number", "spinbutton", "field", "form", "tanstack", "keystone"],
+    limitations:
+      "Press-and-hold repeat, locale-specific number parsing, currency/percent adapters, wheel input policy, and app-specific validation copy remain follow-up or host-owned composition.",
+    name: "number-field",
+    parity: {
+      tanstackForm:
+        "Covers form.Field integration, validators pass-through, number binding, blur/change delegation, touched-derived invalid/error state, and generated-source prop escape hatches.",
+      baseUi:
+        "Primitive behavior coverage comes through Keystone Core NumberField for spinbutton ARIA, min/max/step keyboard behavior, controlled values, parse/format hooks, and data attributes.",
+      kobalte:
+        "Solid composition follows root/input/increment-trigger/decrement-trigger anatomy with Keystone Core behavior and user-owned UI source styling.",
     },
-    "registryDependencies": [
-      "cn",
-      "tanstack-field"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/number-field.tsx"
-    ],
-    "state": "TanStack Form owns number field value, touched, dirty, blurred, validating, and errors. Keystone Core NumberField owns numeric parsing, formatting, clamping, step movement, keyboard behavior, trigger disablement at min/max, and form-control state mirroring.",
-    "title": "NumberField",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "tanstack-field"],
+    sourceFiles: ["packages/ui/src/default/ui/number-field.tsx"],
+    state:
+      "TanStack Form owns number field value, touched, dirty, blurred, validating, and errors. Keystone Core NumberField owns numeric parsing, formatting, clamping, step movement, keyboard behavior, trigger disablement at min/max, and form-control state mirroring.",
+    title: "NumberField",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by TanStackField for generated IDs, label/description/error relationships, aria-describedby, aria-invalid, required/disabled/readonly metadata, touched/dirty/blurred/validating metadata, and alert messaging. The rendered textarea receives the shared Core form-control props.",
-    "anatomy": [
-      "field-root",
-      "field-label",
-      "textarea",
-      "field-description",
-      "field-error"
-    ],
-    "api": "TextareaField exports TextareaField, TextareaFieldProps, and TextareaFieldValidators. It composes TanStackField with the styled Textarea item, passes validators to form.Field, derives touched error state through TanStackField, maps textarea input to field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId plus native textarea props.",
-    "categories": [
-      "form",
-      "tanstack"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    accessibility:
+      "Backed by TanStackField for generated IDs, label/description/error relationships, aria-describedby, aria-invalid, required/disabled/readonly metadata, touched/dirty/blurred/validating metadata, and alert messaging. The rendered textarea receives the shared Core form-control props.",
+    anatomy: ["field-root", "field-label", "textarea", "field-description", "field-error"],
+    api: "TextareaField exports TextareaField, TextareaFieldProps, and TextareaFieldValidators. It composes TanStackField with the styled Textarea item, passes validators to form.Field, derives touched error state through TanStackField, maps textarea input to field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId plus native textarea props.",
+    categories: ["form", "tanstack"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use ui-textarea-field classes, TanStackField shell classes, Textarea classes, Core data attributes, neutral data-slot hooks, and textareaClass for generated-source styling.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "@tanstack/solid-form",
-      "cn",
-      "textarea",
-      "tanstack-field"
-    ],
-    "description": "TanStack Form textarea field composed with Keystone form-control semantics and UI styling hooks.",
-    "files": [
+    customization:
+      "Use ui-textarea-field classes, TanStackField shell classes, Textarea classes, Core data attributes, neutral data-slot hooks, and textareaClass for generated-source styling.",
+    dependencies: ["@keystone-ui/core", "@tanstack/solid-form", "cn", "textarea", "tanstack-field"],
+    description:
+      "TanStack Form textarea field composed with Keystone form-control semantics and UI styling hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/textarea-field.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/textarea-field.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add textarea-field",
-    "keywords": [
-      "textarea-field",
-      "textarea",
-      "field",
-      "form",
-      "tanstack",
-      "keystone"
-    ],
-    "limitations": "Autosize, character count, markdown helpers, rich text, and schema-specific validation helpers remain app-owned composition.",
-    "name": "textarea-field",
-    "parity": {
-      "tanstackForm": "Evidence-backed TanStack Form coverage: form.Field integration, validators pass-through, controlled textarea value binding, blur/change delegation, and touched-derived invalid/error state. Gaps: async submit policy, schema conventions, and app-specific error copy remain host-owned.",
-      "baseUi": "Field behavior coverage comes through Keystone Core FormControl and native textarea semantics. Gaps: autosize policy, broader validation/reset examples, and manual error announcement evidence remain open.",
-      "kobalte": "Solid composition follows Keystone Core Field/FormControl with user-owned source styling. Gaps: richer field-state examples and manual AT evidence remain follow-up work."
+    install: "mason add textarea-field",
+    keywords: ["textarea-field", "textarea", "field", "form", "tanstack", "keystone"],
+    limitations:
+      "Autosize, character count, markdown helpers, rich text, and schema-specific validation helpers remain app-owned composition.",
+    name: "textarea-field",
+    parity: {
+      tanstackForm:
+        "Evidence-backed TanStack Form coverage: form.Field integration, validators pass-through, controlled textarea value binding, blur/change delegation, and touched-derived invalid/error state. Gaps: async submit policy, schema conventions, and app-specific error copy remain host-owned.",
+      baseUi:
+        "Field behavior coverage comes through Keystone Core FormControl and native textarea semantics. Gaps: autosize policy, broader validation/reset examples, and manual error announcement evidence remain open.",
+      kobalte:
+        "Solid composition follows Keystone Core Field/FormControl with user-owned source styling. Gaps: richer field-state examples and manual AT evidence remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn",
-      "textarea",
-      "tanstack-field"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/textarea-field.tsx"
-    ],
-    "state": "TanStack Form owns value, touched, dirty, blurred, validating, and errors. TextareaField maps string textarea input into TanStack field value and mirrors focus through the TanStackField shell.",
-    "title": "TextareaField",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "textarea", "tanstack-field"],
+    sourceFiles: ["packages/ui/src/default/ui/textarea-field.tsx"],
+    state:
+      "TanStack Form owns value, touched, dirty, blurred, validating, and errors. TextareaField maps string textarea input into TanStack field value and mirrors focus through the TanStackField shell.",
+    title: "TextareaField",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by TanStackField for field relationships and by @keystone-ui/core/checkbox for role=checkbox, aria-checked including mixed primitive support, Space keyboard toggling, hidden input submission, reset synchronization, and validation metadata. The checkbox control receives the shared Core form-control ID and ARIA props.",
-    "anatomy": [
+    accessibility:
+      "Backed by TanStackField for field relationships and by @keystone-ui/core/checkbox for role=checkbox, aria-checked including mixed primitive support, Space keyboard toggling, hidden input submission, reset synchronization, and validation metadata. The checkbox control receives the shared Core form-control ID and ARIA props.",
+    anatomy: [
       "field-root",
       "field-label",
       "checkbox-root",
@@ -1225,65 +936,50 @@ export const registryDocItems = [
       "indicator",
       "hidden-input",
       "field-description",
-      "field-error"
+      "field-error",
     ],
-    "api": "CheckboxField exports CheckboxField, CheckboxFieldProps, and CheckboxFieldValidators. It composes TanStackField with the styled Checkbox item, passes validators to form.Field, derives touched error state through TanStackField, maps checked changes to boolean field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId to Core Checkbox.",
-    "categories": [
-      "form",
-      "tanstack",
-      "selection"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    api: "CheckboxField exports CheckboxField, CheckboxFieldProps, and CheckboxFieldValidators. It composes TanStackField with the styled Checkbox item, passes validators to form.Field, derives touched error state through TanStackField, maps checked changes to boolean field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId to Core Checkbox.",
+    categories: ["form", "tanstack", "selection"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use ui-checkbox-field classes, TanStackField shell classes, Checkbox classes, Core data attributes, neutral data-slot hooks, checkboxProps, and checkboxClass for generated-source styling.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "@tanstack/solid-form",
-      "checkbox",
-      "cn",
-      "tanstack-field"
-    ],
-    "description": "TanStack Form checkbox field composed with Keystone Checkbox behavior and UI styling hooks.",
-    "files": [
+    customization:
+      "Use ui-checkbox-field classes, TanStackField shell classes, Checkbox classes, Core data attributes, neutral data-slot hooks, checkboxProps, and checkboxClass for generated-source styling.",
+    dependencies: ["@keystone-ui/core", "@tanstack/solid-form", "checkbox", "cn", "tanstack-field"],
+    description:
+      "TanStack Form checkbox field composed with Keystone Checkbox behavior and UI styling hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/checkbox-field.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/checkbox-field.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add checkbox-field",
-    "keywords": [
-      "checkbox-field",
-      "checkbox",
-      "field",
-      "form",
-      "tanstack",
-      "keystone"
-    ],
-    "limitations": "Tri-state app modeling, checkbox groups, and custom inline label layouts remain app-owned composition.",
-    "name": "checkbox-field",
-    "parity": {
-      "tanstackForm": "Evidence-backed TanStack Form coverage: form.Field integration, validators pass-through, boolean value binding, blur/change delegation, and touched-derived invalid/error state. Gaps: async submit policy, schema conventions, and app-specific error copy remain host-owned.",
-      "baseUi": "Primitive behavior coverage comes through Keystone Core Checkbox for checked state, keyboard toggling, hidden input submission, reset, disabled/read-only guards, and data attributes. Gaps: broader readonly/validation examples and manual mixed-state AT evidence remain open.",
-      "kobalte": "Solid composition follows Keystone Core Checkbox with explicit generated-source field wiring. Gaps: richer group composition and validation announcement evidence remain follow-up work."
+    install: "mason add checkbox-field",
+    keywords: ["checkbox-field", "checkbox", "field", "form", "tanstack", "keystone"],
+    limitations:
+      "Tri-state app modeling, checkbox groups, and custom inline label layouts remain app-owned composition.",
+    name: "checkbox-field",
+    parity: {
+      tanstackForm:
+        "Evidence-backed TanStack Form coverage: form.Field integration, validators pass-through, boolean value binding, blur/change delegation, and touched-derived invalid/error state. Gaps: async submit policy, schema conventions, and app-specific error copy remain host-owned.",
+      baseUi:
+        "Primitive behavior coverage comes through Keystone Core Checkbox for checked state, keyboard toggling, hidden input submission, reset, disabled/read-only guards, and data attributes. Gaps: broader readonly/validation examples and manual mixed-state AT evidence remain open.",
+      kobalte:
+        "Solid composition follows Keystone Core Checkbox with explicit generated-source field wiring. Gaps: richer group composition and validation announcement evidence remain follow-up work.",
     },
-    "registryDependencies": [
-      "checkbox",
-      "cn",
-      "tanstack-field"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/checkbox-field.tsx"
-    ],
-    "state": "TanStack Form owns the boolean field value, touched, dirty, blurred, validating, and errors. CheckboxField treats true as checked and all other values as unchecked.",
-    "title": "CheckboxField",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["checkbox", "cn", "tanstack-field"],
+    sourceFiles: ["packages/ui/src/default/ui/checkbox-field.tsx"],
+    state:
+      "TanStack Form owns the boolean field value, touched, dirty, blurred, validating, and errors. CheckboxField treats true as checked and all other values as unchecked.",
+    title: "CheckboxField",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by TanStackField for field relationships and by @keystone-ui/core/radio-group for radiogroup semantics, radio items, roving tabindex, arrow/Home/End keyboard selection, hidden radio input submission, reset synchronization, and validation metadata. The radiogroup root receives the shared Core form-control ID and ARIA props.",
-    "anatomy": [
+    accessibility:
+      "Backed by TanStackField for field relationships and by @keystone-ui/core/radio-group for radiogroup semantics, radio items, roving tabindex, arrow/Home/End keyboard selection, hidden radio input submission, reset synchronization, and validation metadata. The radiogroup root receives the shared Core form-control ID and ARIA props.",
+    anatomy: [
       "field-root",
       "field-label",
       "radio-group",
@@ -1293,65 +989,56 @@ export const registryDocItems = [
       "item-label",
       "hidden-input",
       "field-description",
-      "field-error"
+      "field-error",
     ],
-    "api": "RadioGroupField exports RadioGroupField, RadioGroupFieldOption, RadioGroupFieldProps, and RadioGroupFieldValidators. It composes TanStackField with the styled RadioGroup item, passes validators to form.Field, derives touched error state through TanStackField, maps value changes to string field.handleChange, maps blur to field.handleBlur, supports disabled options and custom indicators, and forwards disabled/readOnly/required/formId to Core RadioGroup.",
-    "categories": [
-      "form",
-      "tanstack",
-      "selection"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    api: "RadioGroupField exports RadioGroupField, RadioGroupFieldOption, RadioGroupFieldProps, and RadioGroupFieldValidators. It composes TanStackField with the styled RadioGroup item, passes validators to form.Field, derives touched error state through TanStackField, maps value changes to string field.handleChange, maps blur to field.handleBlur, supports disabled options and custom indicators, and forwards disabled/readOnly/required/formId to Core RadioGroup.",
+    categories: ["form", "tanstack", "selection"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use ui-radio-group-field classes, TanStackField shell classes, RadioGroup classes, Core data attributes, neutral data-slot hooks, radioGroupProps, itemProps, radioGroupClass, and itemClass for generated-source styling.",
-    "dependencies": [
+    customization:
+      "Use ui-radio-group-field classes, TanStackField shell classes, RadioGroup classes, Core data attributes, neutral data-slot hooks, radioGroupProps, itemProps, radioGroupClass, and itemClass for generated-source styling.",
+    dependencies: [
       "@keystone-ui/core",
       "@tanstack/solid-form",
       "cn",
       "radio-group",
-      "tanstack-field"
+      "tanstack-field",
     ],
-    "description": "TanStack Form radio group field composed with Keystone RadioGroup behavior and UI styling hooks.",
-    "files": [
+    description:
+      "TanStack Form radio group field composed with Keystone RadioGroup behavior and UI styling hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/radio-group-field.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/radio-group-field.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add radio-group-field",
-    "keywords": [
-      "radio-group-field",
-      "radio-group",
-      "field",
-      "form",
-      "tanstack",
-      "keystone"
-    ],
-    "limitations": "Object value adapters, rich item descriptions, toolbar/nested composite policies, and async option loading remain app-owned composition.",
-    "name": "radio-group-field",
-    "parity": {
-      "tanstackForm": "Evidence-backed TanStack Form coverage: form.Field integration, validators pass-through, string value binding, blur/change delegation, and touched-derived invalid/error state. Gaps: async submit policy, schema conventions, and app-specific error copy remain host-owned.",
-      "baseUi": "Primitive behavior coverage comes through Keystone Core RadioGroup for controlled value, roving focus, keyboard selection, hidden native inputs, disabled items, and data attributes. Gaps: toolbar nesting, validation/reset semantics, and manual group AT evidence remain open.",
-      "kobalte": "Solid composition follows Keystone Core RadioGroup with explicit generated-source field wiring. Gaps: richer group labeling and validation announcement evidence remain follow-up work."
+    install: "mason add radio-group-field",
+    keywords: ["radio-group-field", "radio-group", "field", "form", "tanstack", "keystone"],
+    limitations:
+      "Object value adapters, rich item descriptions, toolbar/nested composite policies, and async option loading remain app-owned composition.",
+    name: "radio-group-field",
+    parity: {
+      tanstackForm:
+        "Evidence-backed TanStack Form coverage: form.Field integration, validators pass-through, string value binding, blur/change delegation, and touched-derived invalid/error state. Gaps: async submit policy, schema conventions, and app-specific error copy remain host-owned.",
+      baseUi:
+        "Primitive behavior coverage comes through Keystone Core RadioGroup for controlled value, roving focus, keyboard selection, hidden native inputs, disabled items, and data attributes. Gaps: toolbar nesting, validation/reset semantics, and manual group AT evidence remain open.",
+      kobalte:
+        "Solid composition follows Keystone Core RadioGroup with explicit generated-source field wiring. Gaps: richer group labeling and validation announcement evidence remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn",
-      "radio-group",
-      "tanstack-field"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/radio-group-field.tsx"
-    ],
-    "state": "TanStack Form owns string field value, touched, dirty, blurred, validating, and errors. RadioGroupField maps undefined Core values to the empty string for field state.",
-    "title": "RadioGroupField",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "radio-group", "tanstack-field"],
+    sourceFiles: ["packages/ui/src/default/ui/radio-group-field.tsx"],
+    state:
+      "TanStack Form owns string field value, touched, dirty, blurred, validating, and errors. RadioGroupField maps undefined Core values to the empty string for field state.",
+    title: "RadioGroupField",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by TanStackField for field relationships and by @keystone-ui/core/switch for role=switch, aria-checked, Space keyboard toggling, hidden checkbox submission, reset synchronization, and validation metadata. The switch control receives the shared Core form-control ID and ARIA props.",
-    "anatomy": [
+    accessibility:
+      "Backed by TanStackField for field relationships and by @keystone-ui/core/switch for role=switch, aria-checked, Space keyboard toggling, hidden checkbox submission, reset synchronization, and validation metadata. The switch control receives the shared Core form-control ID and ARIA props.",
+    anatomy: [
       "field-root",
       "field-label",
       "switch-root",
@@ -1359,65 +1046,50 @@ export const registryDocItems = [
       "thumb",
       "hidden-input",
       "field-description",
-      "field-error"
+      "field-error",
     ],
-    "api": "SwitchField exports SwitchField, SwitchFieldProps, and SwitchFieldValidators. It composes TanStackField with the styled Switch item, passes validators to form.Field, derives touched error state through TanStackField, maps checked changes to boolean field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId to Core Switch.",
-    "categories": [
-      "form",
-      "tanstack",
-      "selection"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    api: "SwitchField exports SwitchField, SwitchFieldProps, and SwitchFieldValidators. It composes TanStackField with the styled Switch item, passes validators to form.Field, derives touched error state through TanStackField, maps checked changes to boolean field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId to Core Switch.",
+    categories: ["form", "tanstack", "selection"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use ui-switch-field classes, TanStackField shell classes, Switch classes, Core data attributes, neutral data-slot hooks, switchProps, and switchClass for generated-source styling.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "@tanstack/solid-form",
-      "cn",
-      "switch",
-      "tanstack-field"
-    ],
-    "description": "TanStack Form switch field composed with Keystone Switch behavior and UI styling hooks.",
-    "files": [
+    customization:
+      "Use ui-switch-field classes, TanStackField shell classes, Switch classes, Core data attributes, neutral data-slot hooks, switchProps, and switchClass for generated-source styling.",
+    dependencies: ["@keystone-ui/core", "@tanstack/solid-form", "cn", "switch", "tanstack-field"],
+    description:
+      "TanStack Form switch field composed with Keystone Switch behavior and UI styling hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/switch-field.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/switch-field.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add switch-field",
-    "keywords": [
-      "switch-field",
-      "switch",
-      "field",
-      "form",
-      "tanstack",
-      "keystone"
-    ],
-    "limitations": "Drag gestures, optimistic preference persistence, and custom inline label layouts remain app-owned composition.",
-    "name": "switch-field",
-    "parity": {
-      "tanstackForm": "Evidence-backed TanStack Form coverage: form.Field integration, validators pass-through, boolean value binding, blur/change delegation, and touched-derived invalid/error state. Gaps: async submit policy, schema conventions, and app-specific error copy remain host-owned.",
-      "baseUi": "Primitive behavior coverage comes through Keystone Core Switch for checked state, keyboard toggling, hidden input submission, reset, disabled/read-only guards, and data attributes. Gaps: broader readonly/validation examples and manual switch AT evidence remain open.",
-      "kobalte": "Solid composition follows Keystone Core Switch with explicit generated-source field wiring. Gaps: richer field examples and validation announcement evidence remain follow-up work."
+    install: "mason add switch-field",
+    keywords: ["switch-field", "switch", "field", "form", "tanstack", "keystone"],
+    limitations:
+      "Drag gestures, optimistic preference persistence, and custom inline label layouts remain app-owned composition.",
+    name: "switch-field",
+    parity: {
+      tanstackForm:
+        "Evidence-backed TanStack Form coverage: form.Field integration, validators pass-through, boolean value binding, blur/change delegation, and touched-derived invalid/error state. Gaps: async submit policy, schema conventions, and app-specific error copy remain host-owned.",
+      baseUi:
+        "Primitive behavior coverage comes through Keystone Core Switch for checked state, keyboard toggling, hidden input submission, reset, disabled/read-only guards, and data attributes. Gaps: broader readonly/validation examples and manual switch AT evidence remain open.",
+      kobalte:
+        "Solid composition follows Keystone Core Switch with explicit generated-source field wiring. Gaps: richer field examples and validation announcement evidence remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn",
-      "switch",
-      "tanstack-field"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/switch-field.tsx"
-    ],
-    "state": "TanStack Form owns the boolean field value, touched, dirty, blurred, validating, and errors. SwitchField treats true as checked and all other values as unchecked.",
-    "title": "SwitchField",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "switch", "tanstack-field"],
+    sourceFiles: ["packages/ui/src/default/ui/switch-field.tsx"],
+    state:
+      "TanStack Form owns the boolean field value, touched, dirty, blurred, validating, and errors. SwitchField treats true as checked and all other values as unchecked.",
+    title: "SwitchField",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "The root renders role=group with optional aria-labelledby, aria-describedby, aria-invalid, description, and FormMessage-backed alert output. Action helpers default to type=button so array mutations do not submit the form.",
-    "anatomy": [
+    accessibility:
+      "The root renders role=group with optional aria-labelledby, aria-describedby, aria-invalid, description, and FormMessage-backed alert output. Action helpers default to type=button so array mutations do not submit the form.",
+    anatomy: [
       "root",
       "label",
       "items",
@@ -1427,170 +1099,139 @@ export const registryDocItems = [
       "error",
       "add",
       "remove",
-      "move"
+      "move",
     ],
-    "api": "FieldArray exports FieldArray, FieldArrayItems, FieldArrayItem, FieldArrayAdd, FieldArrayRemove, FieldArrayMove, FieldArrayApi, FieldArrayFormApi, FieldArrayRenderContext, and prop types. FieldArray renders form.Field with mode=\"array\", passes items, count, field, add, remove, swap, move, itemName, invalid, and firstError to children, and supports defaultValue for add actions.",
-    "categories": [
-      "form",
-      "tanstack"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    api: 'FieldArray exports FieldArray, FieldArrayItems, FieldArrayItem, FieldArrayAdd, FieldArrayRemove, FieldArrayMove, FieldArrayApi, FieldArrayFormApi, FieldArrayRenderContext, and prop types. FieldArray renders form.Field with mode="array", passes items, count, field, add, remove, swap, move, itemName, invalid, and firstError to children, and supports defaultValue for add actions.',
+    categories: ["form", "tanstack"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Style generated array roots, labels, item containers, empty states, messages, and action controls through ui-field-array classes, state data attributes, and neutral data-slot hooks.",
-    "dataAttributes": "Stable hooks include data-scope=\"ui-field-array\", data-count, data-empty, data-invalid, data-dirty, data-touched, data-validating, and per-part data-slot values.",
-    "dependencies": [
-      "@tanstack/solid-form",
-      "cn",
-      "form-message"
-    ],
-    "description": "TanStack Form array field adapter with Solid Index rendering, array actions, validation message wiring, and source-owned UI anatomy.",
-    "files": [
+    customization:
+      "Style generated array roots, labels, item containers, empty states, messages, and action controls through ui-field-array classes, state data attributes, and neutral data-slot hooks.",
+    dataAttributes:
+      'Stable hooks include data-scope="ui-field-array", data-count, data-empty, data-invalid, data-dirty, data-touched, data-validating, and per-part data-slot values.',
+    dependencies: ["@tanstack/solid-form", "cn", "form-message"],
+    description:
+      "TanStack Form array field adapter with Solid Index rendering, array actions, validation message wiring, and source-owned UI anatomy.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/field-array.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/field-array.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add field-array",
-    "keywords": [
-      "field-array",
-      "array",
-      "form",
-      "tanstack"
-    ],
-    "limitations": "Nested item field structure remains app-owned composition through itemName. FieldArray intentionally does not invent schema adapters, drag-and-drop sorting, virtualization, or object-specific row layouts.",
-    "name": "field-array",
-    "parity": {
-      "tanstackForm": "First-class TanStack Form parity: form.Field mode=\"array\", Solid Index item rendering, push/remove/swap/move array operations, and validation metadata pass-through.",
-      "baseUi": "Base UI is not the primary target for app array state; group, description, invalid, and alert semantics preserve accessible composition while Core remains independent from TanStack app libraries.",
-      "kobalte": "Solid parity follows explicit render-prop composition with stable owner-controlled array state.",
-      "shadcn": "Source-owned helper components mirror copy-paste registry ergonomics without hiding TanStack Form behind a new runtime abstraction."
+    install: "mason add field-array",
+    keywords: ["field-array", "array", "form", "tanstack"],
+    limitations:
+      "Nested item field structure remains app-owned composition through itemName. FieldArray intentionally does not invent schema adapters, drag-and-drop sorting, virtualization, or object-specific row layouts.",
+    name: "field-array",
+    parity: {
+      tanstackForm:
+        'First-class TanStack Form parity: form.Field mode="array", Solid Index item rendering, push/remove/swap/move array operations, and validation metadata pass-through.',
+      baseUi:
+        "Base UI is not the primary target for app array state; group, description, invalid, and alert semantics preserve accessible composition while Core remains independent from TanStack app libraries.",
+      kobalte:
+        "Solid parity follows explicit render-prop composition with stable owner-controlled array state.",
+      shadcn:
+        "Source-owned helper components mirror copy-paste registry ergonomics without hiding TanStack Form behind a new runtime abstraction.",
     },
-    "registryDependencies": [
-      "cn",
-      "form-message"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/field-array.tsx"
-    ],
-    "ssr": "Uses Solid createUniqueId for deterministic relationship IDs, Solid Index for array item rendering, and no browser globals.",
-    "state": "TanStack Form owns array values, touched, dirty, validating, and errors. FieldArray delegates pushValue, removeValue, swapValues, and moveValue when available and only falls back to handleChange for custom compatible field objects.",
-    "title": "FieldArray",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "form-message"],
+    sourceFiles: ["packages/ui/src/default/ui/field-array.tsx"],
+    ssr: "Uses Solid createUniqueId for deterministic relationship IDs, Solid Index for array item rendering, and no browser globals.",
+    state:
+      "TanStack Form owns array values, touched, dirty, validating, and errors. FieldArray delegates pushValue, removeValue, swapValues, and moveValue when available and only falls back to handleChange for custom compatible field objects.",
+    title: "FieldArray",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "When invalid message content is present, FormMessage renders role=alert with aria-live=polite. Empty messages do not render unless forceMount is set, avoiding empty live regions.",
-    "anatomy": [
-      "root"
-    ],
-    "api": "FormMessage exports FormMessage and FormMessageProps. It accepts children, explicit errors, a TanStack field, or a TanStack form and formats validation errors through the shared formatFieldError helper. forceMount keeps the message node in the DOM for layout-stable custom compositions.",
-    "categories": [
-      "form",
-      "tanstack"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    accessibility:
+      "When invalid message content is present, FormMessage renders role=alert with aria-live=polite. Empty messages do not render unless forceMount is set, avoiding empty live regions.",
+    anatomy: ["root"],
+    api: "FormMessage exports FormMessage and FormMessageProps. It accepts children, explicit errors, a TanStack field, or a TanStack form and formats validation errors through the shared formatFieldError helper. forceMount keeps the message node in the DOM for layout-stable custom compositions.",
+    categories: ["form", "tanstack"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Style generated messages through ui-form-message, data-invalid, data-touched, data-validating, and neutral data-slot hooks.",
-    "dependencies": [
-      "@tanstack/solid-form",
-      "cn",
-      "tanstack-form"
-    ],
-    "description": "Reusable TanStack Form-aware validation message surface with alert semantics and source-owned styling hooks.",
-    "files": [
+    customization:
+      "Style generated messages through ui-form-message, data-invalid, data-touched, data-validating, and neutral data-slot hooks.",
+    dependencies: ["@tanstack/solid-form", "cn", "tanstack-form"],
+    description:
+      "Reusable TanStack Form-aware validation message surface with alert semantics and source-owned styling hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/form-message.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/form-message.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add form-message",
-    "keywords": [
-      "form-message",
-      "validation",
-      "message",
-      "tanstack"
-    ],
-    "limitations": "FormMessage does not create label/control relationships by itself. Use TanStackField or Keystone Core form-control helpers for aria-describedby wiring on concrete controls.",
-    "name": "form-message",
-    "parity": {
-      "tanstackForm": "First-class TanStack Form parity: reads field or form errors, supports explicit error overrides, and keeps validation lifecycle state app-owned.",
-      "baseUi": "Base UI-style field message semantics are represented through alert/live-region behavior while Core remains the owner of intrinsic control relationships.",
-      "kobalte": "Solid parity is a small composable message primitive with explicit props rather than hidden context requirements.",
-      "shadcn": "Source-owned message ergonomics match copy-paste UI conventions with stable class and data-slot hooks."
+    install: "mason add form-message",
+    keywords: ["form-message", "validation", "message", "tanstack"],
+    limitations:
+      "FormMessage does not create label/control relationships by itself. Use TanStackField or Keystone Core form-control helpers for aria-describedby wiring on concrete controls.",
+    name: "form-message",
+    parity: {
+      tanstackForm:
+        "First-class TanStack Form parity: reads field or form errors, supports explicit error overrides, and keeps validation lifecycle state app-owned.",
+      baseUi:
+        "Base UI-style field message semantics are represented through alert/live-region behavior while Core remains the owner of intrinsic control relationships.",
+      kobalte:
+        "Solid parity is a small composable message primitive with explicit props rather than hidden context requirements.",
+      shadcn:
+        "Source-owned message ergonomics match copy-paste UI conventions with stable class and data-slot hooks.",
     },
-    "registryDependencies": [
-      "cn",
-      "tanstack-form"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/form-message.tsx"
-    ],
-    "ssr": "Uses only props and Solid rendering; no browser globals are read, and forceMount allows deterministic layout where needed.",
-    "state": "TanStack Form owns field and form error state. FormMessage only reads errors, touched, and validating metadata and mirrors those values through data attributes.",
-    "title": "FormMessage",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "tanstack-form"],
+    sourceFiles: ["packages/ui/src/default/ui/form-message.tsx"],
+    ssr: "Uses only props and Solid rendering; no browser globals are read, and forceMount allows deterministic layout where needed.",
+    state:
+      "TanStack Form owns field and form error state. FormMessage only reads errors, touched, and validating metadata and mirrors those values through data attributes.",
+    title: "FormMessage",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Preserves native button semantics and disabled behavior while exposing submitting and can-submit state through TanStackFormSubmit metadata.",
-    "anatomy": [
-      "root"
-    ],
-    "api": "FormSubmit exports FormSubmit and FormSubmitProps. It exposes a stable ui-form-submit data contract, native type=submit default, optional form state binding through the form prop, native external form ownership through formId, disableWhenSubmitting, and disableWhenCannotSubmit.",
-    "categories": [
-      "form",
-      "tanstack"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    accessibility:
+      "Preserves native button semantics and disabled behavior while exposing submitting and can-submit state through TanStackFormSubmit metadata.",
+    anatomy: ["root"],
+    api: "FormSubmit exports FormSubmit and FormSubmitProps. It exposes a stable ui-form-submit data contract, native type=submit default, optional form state binding through the form prop, native external form ownership through formId, disableWhenSubmitting, and disableWhenCannotSubmit.",
+    categories: ["form", "tanstack"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use ui-form-submit classes, TanStackFormSubmit classes, form-state data attributes, and neutral data-slot hooks for generated-source styling.",
-    "dependencies": [
-      "@tanstack/solid-form",
-      "cn",
-      "tanstack-form"
-    ],
-    "description": "Source-owned submit control for TanStack Form state and native form submission.",
-    "files": [
+    customization:
+      "Use ui-form-submit classes, TanStackFormSubmit classes, form-state data attributes, and neutral data-slot hooks for generated-source styling.",
+    dependencies: ["@tanstack/solid-form", "cn", "tanstack-form"],
+    description: "Source-owned submit control for TanStack Form state and native form submission.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/form-submit.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/form-submit.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add form-submit",
-    "keywords": [
-      "form-submit",
-      "submit",
-      "form",
-      "tanstack"
-    ],
-    "limitations": "Pending indicators, optimistic submission copy, server action wiring, and route mutation orchestration remain app-owned composition.",
-    "name": "form-submit",
-    "parity": {
-      "tanstackForm": "First-class TanStack Form parity: submit control bound to form state with native submit behavior and generated-source escape hatches.",
-      "baseUi": "Base UI is not the primary target for app form submission state.",
-      "kobalte": "Solid parity is native button composition with explicit form-state metadata."
+    install: "mason add form-submit",
+    keywords: ["form-submit", "submit", "form", "tanstack"],
+    limitations:
+      "Pending indicators, optimistic submission copy, server action wiring, and route mutation orchestration remain app-owned composition.",
+    name: "form-submit",
+    parity: {
+      tanstackForm:
+        "First-class TanStack Form parity: submit control bound to form state with native submit behavior and generated-source escape hatches.",
+      baseUi: "Base UI is not the primary target for app form submission state.",
+      kobalte: "Solid parity is native button composition with explicit form-state metadata.",
     },
-    "registryDependencies": [
-      "cn",
-      "tanstack-form"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/form-submit.tsx"
-    ],
-    "state": "TanStack Form owns submitting and canSubmit state. FormSubmit reads those values from the form prop, disables while submitting and when canSubmit is false by default unless callers opt out.",
-    "title": "FormSubmit",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "tanstack-form"],
+    sourceFiles: ["packages/ui/src/default/ui/form-submit.tsx"],
+    state:
+      "TanStack Form owns submitting and canSubmit state. FormSubmit reads those values from the form prop, disables while submitting and when canSubmit is false by default unless callers opt out.",
+    title: "FormSubmit",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by @keystone-ui/core/select for button/listbox roles, active descendant, highlighted and selected item state, disabled item handling, Escape dismissal, typeahead, hidden form value serialization, and native form reset support.",
-    "anatomy": [
+    accessibility:
+      "Backed by @keystone-ui/core/select for button/listbox roles, active descendant, highlighted and selected item state, disabled item handling, Escape dismissal, typeahead, hidden form value serialization, and native form reset support.",
+    anatomy: [
       "root",
       "button",
       "button-label",
@@ -1608,57 +1249,48 @@ export const registryDocItems = [
       "item-text",
       "item-indicator",
       "arrow",
-      "separator"
+      "separator",
     ],
-    "api": "Select exports Select, SelectButton, SelectTrigger, SelectValue, SelectContent, SelectPopup, SelectPortal, SelectPositioner, SelectListbox, SelectGroup, SelectGroupLabel, SelectLabel, SelectItem, SelectItemText, SelectItemIndicator, SelectArrow, SelectSeparator, and SelectPrimitive. Core owns open/value state, controlled and uncontrolled values, multiple values, hidden form inputs, keyboard navigation, typeahead, collection registration, popup positioning, and data attributes.",
-    "categories": [
-      "form",
-      "listbox",
-      "select"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    api: "Select exports Select, SelectButton, SelectTrigger, SelectValue, SelectContent, SelectPopup, SelectPortal, SelectPositioner, SelectListbox, SelectGroup, SelectGroupLabel, SelectLabel, SelectItem, SelectItemText, SelectItemIndicator, SelectArrow, SelectSeparator, and SelectPrimitive. Core owns open/value state, controlled and uncontrolled values, multiple values, hidden form inputs, keyboard navigation, typeahead, collection registration, popup positioning, and data attributes.",
+    categories: ["form", "listbox", "select"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style trigger, value, popup surface, listbox, groups, items, indicators, labels, and separators through ui-select classes, Core data attributes, and neutral data-slot hooks.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Keystone-backed styled select with trigger, value, popup, listbox, group, item, and form-value behavior.",
-    "files": [
+    customization:
+      "Style trigger, value, popup surface, listbox, groups, items, indicators, labels, and separators through ui-select classes, Core data attributes, and neutral data-slot hooks.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description:
+      "Keystone-backed styled select with trigger, value, popup, listbox, group, item, and form-value behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/select.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/select.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add select",
-    "keywords": [
-      "select",
-      "listbox",
-      "form",
-      "keystone"
-    ],
-    "limitations": "Scroll arrow affordances and object-value item helpers are not reimplemented in UI; Keystone Core owns the primitive contract and UI keeps those as future Core/API decisions.",
-    "name": "select",
-    "parity": {
-      "visualReference": "Matches the reference select visual shape in Solid source form: dense trigger sizing, value truncation, popup surface, listbox padding, grouped options, item indicator column, separator, labels, data-slot hooks, and pointer/focus/invalid styling.",
-      "baseUi": "Evidence-backed coverage comes through Keystone Core Select for collection registration, keyboard navigation, typeahead, hidden inputs, controlled/uncontrolled open and value, multiple value support, positioning, and state data attributes. Gaps: large-list and virtualization policy, richer typeahead edge cases, scroll affordances, and manual AT evidence remain open.",
-      "kobalte": "Solid composition follows the Select/Listbox/Popper direction with trigger, value, portal, positioner, content, listbox, groups, group labels, items, item text, item indicators, and form participation. Gaps: reset/submission edge evidence, large collections, and manual select/listbox AT notes remain follow-up work."
+    install: "mason add select",
+    keywords: ["select", "listbox", "form", "keystone"],
+    limitations:
+      "Scroll arrow affordances and object-value item helpers are not reimplemented in UI; Keystone Core owns the primitive contract and UI keeps those as future Core/API decisions.",
+    name: "select",
+    parity: {
+      visualReference:
+        "Matches the reference select visual shape in Solid source form: dense trigger sizing, value truncation, popup surface, listbox padding, grouped options, item indicator column, separator, labels, data-slot hooks, and pointer/focus/invalid styling.",
+      baseUi:
+        "Evidence-backed coverage comes through Keystone Core Select for collection registration, keyboard navigation, typeahead, hidden inputs, controlled/uncontrolled open and value, multiple value support, positioning, and state data attributes. Gaps: large-list and virtualization policy, richer typeahead edge cases, scroll affordances, and manual AT evidence remain open.",
+      kobalte:
+        "Solid composition follows the Select/Listbox/Popper direction with trigger, value, portal, positioner, content, listbox, groups, group labels, items, item text, item indicators, and form participation. Gaps: reset/submission edge evidence, large collections, and manual select/listbox AT notes remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/select.tsx"
-    ],
-    "title": "Select",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/select.tsx"],
+    title: "Select",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by TanStackField for label, description, error, aria-describedby, invalid state, and alert messaging, and by @keystone-ui/core/select for trigger/listbox roles, active descendant, highlighted and selected item state, disabled items and groups, hidden form value serialization, Escape dismissal, typeahead, and native reset support. SelectField wires the trigger to TanStackField label/description/error IDs through aria-labelledby and aria-describedby while Core owns the popup/listbox relationship.",
-    "anatomy": [
+    accessibility:
+      "Backed by TanStackField for label, description, error, aria-describedby, invalid state, and alert messaging, and by @keystone-ui/core/select for trigger/listbox roles, active descendant, highlighted and selected item state, disabled items and groups, hidden form value serialization, Escape dismissal, typeahead, and native reset support. SelectField wires the trigger to TanStackField label/description/error IDs through aria-labelledby and aria-describedby while Core owns the popup/listbox relationship.",
+    anatomy: [
       "field-root",
       "field-label",
       "trigger",
@@ -1672,67 +1304,53 @@ export const registryDocItems = [
       "item-indicator",
       "empty",
       "field-description",
-      "field-error"
+      "field-error",
     ],
-    "api": "SelectField exports SelectField, SelectFieldOption, SelectFieldOptionGroup, SelectFieldProps, and SelectFieldValidators. It composes TanStackField with the styled Select item, passes validators to form.Field, derives touched error state through TanStackField, maps Select value changes to field.handleChange, maps popup close to field.handleBlur, treats the empty string as no selection for placeholder rendering, supports grouped and disabled options, uses textValue for typeahead/value text when labels are JSX, exposes an empty state, forwards disabled/readOnly/required/formId to Core Select, and accepts select/trigger/content/listbox/group/item class and prop escape hatches.",
-    "categories": [
-      "form",
-      "tanstack",
-      "select"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    api: "SelectField exports SelectField, SelectFieldOption, SelectFieldOptionGroup, SelectFieldProps, and SelectFieldValidators. It composes TanStackField with the styled Select item, passes validators to form.Field, derives touched error state through TanStackField, maps Select value changes to field.handleChange, maps popup close to field.handleBlur, treats the empty string as no selection for placeholder rendering, supports grouped and disabled options, uses textValue for typeahead/value text when labels are JSX, exposes an empty state, forwards disabled/readOnly/required/formId to Core Select, and accepts select/trigger/content/listbox/group/item class and prop escape hatches.",
+    categories: ["form", "tanstack", "select"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use ui-select-field classes, TanStackField shell classes, Select classes, Core data attributes, neutral data-slot hooks, selectProps, and trigger/content/listbox/group/item escape hatches while TanStack Form owns field state and Core owns listbox behavior.",
-    "dataAttributes": "Generated source exposes ui-select-field data slots including data-slot=\"select-field-trigger\", data-slot=\"select-field-content\", data-slot=\"select-field-group\", data-slot=\"select-field-group-label\", data-slot=\"select-field-item\", and data-slot=\"select-field-empty\"; Core Select additionally exposes select data-scope/data-part states such as data-state, data-disabled, data-invalid, data-placeholder, data-required, data-readonly, data-highlighted, and data-selected.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "@tanstack/solid-form",
-      "cn",
-      "select",
-      "tanstack-field"
-    ],
-    "description": "TanStack Form select field composed with Keystone Select behavior and UI styling hooks.",
-    "files": [
+    customization:
+      "Use ui-select-field classes, TanStackField shell classes, Select classes, Core data attributes, neutral data-slot hooks, selectProps, and trigger/content/listbox/group/item escape hatches while TanStack Form owns field state and Core owns listbox behavior.",
+    dataAttributes:
+      'Generated source exposes ui-select-field data slots including data-slot="select-field-trigger", data-slot="select-field-content", data-slot="select-field-group", data-slot="select-field-group-label", data-slot="select-field-item", and data-slot="select-field-empty"; Core Select additionally exposes select data-scope/data-part states such as data-state, data-disabled, data-invalid, data-placeholder, data-required, data-readonly, data-highlighted, and data-selected.',
+    dependencies: ["@keystone-ui/core", "@tanstack/solid-form", "cn", "select", "tanstack-field"],
+    description:
+      "TanStack Form select field composed with Keystone Select behavior and UI styling hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/select-field.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/select-field.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add select-field",
-    "keywords": [
-      "select-field",
-      "select",
-      "field",
-      "form",
-      "tanstack",
-      "keystone"
-    ],
-    "limitations": "SelectField is intentionally single-value string-first and reserves the empty string as the no-selection value for placeholder display. Multi-select values, object value adapters, async option loading, filtering, virtualization, and schema-specific validation helpers remain app-owned composition until the underlying Select API grows those contracts.",
-    "name": "select-field",
-    "parity": {
-      "tanstackForm": "Evidence-backed TanStack Form coverage: SelectField composes TanStackField, passes validators through form.Field, maps Core Select value and blur events into TanStack field handlers, and exposes field-driven touched/invalid/error state. Gaps: async submit policy, schema conventions, and app-specific error copy remain host-owned.",
-      "baseUi": "Underlying select coverage comes through Keystone Core Select for collection registration, keyboard navigation, typeahead, positioning, hidden form value, data attributes, disabled items, and reset support. Gaps: large-list policy and manual select AT evidence remain open.",
-      "kobalte": "Solid reference is Kobalte Select plus form-control composition. SelectField follows that shape through TanStackField for form-control relationships and Keystone Select for trigger, portal, listbox, item, and value behavior. Gaps: richer validation/reset examples and manual error announcement evidence remain follow-up work."
+    install: "mason add select-field",
+    keywords: ["select-field", "select", "field", "form", "tanstack", "keystone"],
+    limitations:
+      "SelectField is intentionally single-value string-first and reserves the empty string as the no-selection value for placeholder display. Multi-select values, object value adapters, async option loading, filtering, virtualization, and schema-specific validation helpers remain app-owned composition until the underlying Select API grows those contracts.",
+    name: "select-field",
+    parity: {
+      tanstackForm:
+        "Evidence-backed TanStack Form coverage: SelectField composes TanStackField, passes validators through form.Field, maps Core Select value and blur events into TanStack field handlers, and exposes field-driven touched/invalid/error state. Gaps: async submit policy, schema conventions, and app-specific error copy remain host-owned.",
+      baseUi:
+        "Underlying select coverage comes through Keystone Core Select for collection registration, keyboard navigation, typeahead, positioning, hidden form value, data attributes, disabled items, and reset support. Gaps: large-list policy and manual select AT evidence remain open.",
+      kobalte:
+        "Solid reference is Kobalte Select plus form-control composition. SelectField follows that shape through TanStackField for form-control relationships and Keystone Select for trigger, portal, listbox, item, and value behavior. Gaps: richer validation/reset examples and manual error announcement evidence remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn",
-      "select",
-      "tanstack-field"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/select-field.tsx"
-    ],
-    "ssr": "Initial placeholder/value output, hidden input serialization, and TanStackField relationship IDs are deterministic. Portal mounting, collection registration, floating measurement, and active descendant movement remain client-side Core Select effects.",
-    "state": "TanStack Form owns value, touched, dirty, blurred, validating, and errors. SelectField maps undefined Core Select values back to an empty string for field state, maps non-empty strings into Core Select value, marks the field focused while the popup is open, and calls field.handleBlur when the popup closes.",
-    "title": "SelectField",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "select", "tanstack-field"],
+    sourceFiles: ["packages/ui/src/default/ui/select-field.tsx"],
+    ssr: "Initial placeholder/value output, hidden input serialization, and TanStackField relationship IDs are deterministic. Portal mounting, collection registration, floating measurement, and active descendant movement remain client-side Core Select effects.",
+    state:
+      "TanStack Form owns value, touched, dirty, blurred, validating, and errors. SelectField maps undefined Core Select values back to an empty string for field state, maps non-empty strings into Core Select value, marks the field focused while the popup is open, and calls field.handleBlur when the popup closes.",
+    title: "SelectField",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by TanStackField for label, description, error, aria-describedby, invalid state, and alert messaging, and by @keystone-ui/core/combobox for input/listbox roles, active descendant, selected/highlighted state, hidden form value, clear/trigger semantics, Escape dismissal, and reset support.",
-    "anatomy": [
+    accessibility:
+      "Backed by TanStackField for label, description, error, aria-describedby, invalid state, and alert messaging, and by @keystone-ui/core/combobox for input/listbox roles, active descendant, selected/highlighted state, hidden form value, clear/trigger semantics, Escape dismissal, and reset support.",
+    anatomy: [
       "field-root",
       "field-label",
       "input",
@@ -1743,118 +1361,85 @@ export const registryDocItems = [
       "item",
       "empty",
       "field-description",
-      "field-error"
+      "field-error",
     ],
-    "api": "ComboboxField exports ComboboxField, ComboboxFieldOption, ComboboxFieldOptionGroup, ComboboxFieldProps, and ComboboxFieldValidators. It composes TanStackField with Keystone Combobox, passes validators to form.Field, maps selected values to string field.handleChange, maps popup close/input blur to field.handleBlur, supports grouped/disabled options, textValue labels, empty state, and forwards disabled/readOnly/required/formId.",
-    "categories": [
-      "form",
-      "tanstack",
-      "autocomplete"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    api: "ComboboxField exports ComboboxField, ComboboxFieldOption, ComboboxFieldOptionGroup, ComboboxFieldProps, and ComboboxFieldValidators. It composes TanStackField with Keystone Combobox, passes validators to form.Field, maps selected values to string field.handleChange, maps popup close/input blur to field.handleBlur, supports grouped/disabled options, textValue labels, empty state, and forwards disabled/readOnly/required/formId.",
+    categories: ["form", "tanstack", "autocomplete"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use ui-combobox-field classes, TanStackField shell classes, Combobox classes, Core data attributes, neutral data-slot hooks, and combobox/input/content/listbox/group/item prop and class escape hatches.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "@tanstack/solid-form",
-      "cn",
-      "combobox",
-      "tanstack-field"
-    ],
-    "description": "TanStack Form combobox field composed with Keystone Combobox behavior and UI styling hooks.",
-    "files": [
+    customization:
+      "Use ui-combobox-field classes, TanStackField shell classes, Combobox classes, Core data attributes, neutral data-slot hooks, and combobox/input/content/listbox/group/item prop and class escape hatches.",
+    dependencies: ["@keystone-ui/core", "@tanstack/solid-form", "cn", "combobox", "tanstack-field"],
+    description:
+      "TanStack Form combobox field composed with Keystone Combobox behavior and UI styling hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/combobox-field.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/combobox-field.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add combobox-field",
-    "keywords": [
-      "combobox-field",
-      "combobox",
-      "field",
-      "form",
-      "tanstack",
-      "keystone"
-    ],
-    "limitations": "Multi-select, chips, async filtering, object-value adapters, and virtualization remain app-owned composition.",
-    "name": "combobox-field",
-    "parity": {
-      "tanstackForm": "Covers form.Field integration, validators pass-through, string value binding, blur/change delegation, and touched-derived invalid/error state.",
-      "baseUi": "Primitive behavior coverage comes through Keystone Core Combobox for input value, selected value, keyboard navigation, popup positioning, hidden input, data attributes, and reset support.",
-      "kobalte": "Solid composition follows the Combobox/Listbox/Popper direction with generated-source field wiring."
+    install: "mason add combobox-field",
+    keywords: ["combobox-field", "combobox", "field", "form", "tanstack", "keystone"],
+    limitations:
+      "Multi-select, chips, async filtering, object-value adapters, and virtualization remain app-owned composition.",
+    name: "combobox-field",
+    parity: {
+      tanstackForm:
+        "Covers form.Field integration, validators pass-through, string value binding, blur/change delegation, and touched-derived invalid/error state.",
+      baseUi:
+        "Primitive behavior coverage comes through Keystone Core Combobox for input value, selected value, keyboard navigation, popup positioning, hidden input, data attributes, and reset support.",
+      kobalte:
+        "Solid composition follows the Combobox/Listbox/Popper direction with generated-source field wiring.",
     },
-    "registryDependencies": [
-      "cn",
-      "combobox",
-      "tanstack-field"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/combobox-field.tsx"
-    ],
-    "state": "TanStack Form owns string field value, touched, dirty, blurred, validating, and errors. ComboboxField treats the empty string as no selected value and leaves filtering/input-value ownership to Core/app composition.",
-    "title": "ComboboxField",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "combobox", "tanstack-field"],
+    sourceFiles: ["packages/ui/src/default/ui/combobox-field.tsx"],
+    state:
+      "TanStack Form owns string field value, touched, dirty, blurred, validating, and errors. ComboboxField treats the empty string as no selected value and leaves filtering/input-value ownership to Core/app composition.",
+    title: "ComboboxField",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [
-      "root",
-      "track",
-      "range",
-      "thumb",
-      "hidden-input"
-    ],
-    "categories": [
-      "form",
-      "input",
-      "range"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    anatomy: ["root", "track", "range", "thumb", "hidden-input"],
+    categories: ["form", "input", "range"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-slider classes while Keystone keeps range math, thumb ARIA, controlled state, RTL-aware keyboard and pointer math, minimum thumb distance, pointer commits, hidden input form serialization, data attributes, and CSS variables.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid slider component backed by Keystone range, thumb, keyboard, and pointer behavior.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-slider classes while Keystone keeps range math, thumb ARIA, controlled state, RTL-aware keyboard and pointer math, minimum thumb distance, pointer commits, hidden input form serialization, data attributes, and CSS variables.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description:
+      "Styled Solid slider component backed by Keystone range, thumb, keyboard, and pointer behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/slider.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/slider.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add slider",
-    "keywords": [
-      "slider",
-      "range",
-      "input",
-      "keystone",
-      "tanstack-ranger"
-    ],
-    "name": "slider",
-    "parity": {
-      "baseUi": "Thin vertical covers controlled/uncontrolled values, multi-thumb sorting, minimum thumb distance, thumb ARIA, direction/orientation metadata, read-only/invalid/required state attributes, RTL-aware keyboard step/page/home/end, pointer track selection, hidden input form serialization/reset, data attributes, CSS variables, and UI wrapper metadata. Gaps: root-level focus coordination, richer field validation, and edge-case pointer capture remain follow-up work.",
-      "kobalte": "Matches Solid Slider anatomy direction for root/track/range/thumb, controlled values, orientation and direction, keyboard stepping, hidden input form submission/reset, and data attributes. Gaps: origin/tooltip helpers, richer touch behavior, and broader SSR/form tests remain follow-up work.",
-      "tanstackRanger": "TanStack Ranger remains an exception reference for range math: compare active handle lifecycle, tick helpers, interpolation, touch behavior, and commit timing before deepening Keystone beyond the current intrinsic primitive."
+    install: "mason add slider",
+    keywords: ["slider", "range", "input", "keystone", "tanstack-ranger"],
+    name: "slider",
+    parity: {
+      baseUi:
+        "Thin vertical covers controlled/uncontrolled values, multi-thumb sorting, minimum thumb distance, thumb ARIA, direction/orientation metadata, read-only/invalid/required state attributes, RTL-aware keyboard step/page/home/end, pointer track selection, hidden input form serialization/reset, data attributes, CSS variables, and UI wrapper metadata. Gaps: root-level focus coordination, richer field validation, and edge-case pointer capture remain follow-up work.",
+      kobalte:
+        "Matches Solid Slider anatomy direction for root/track/range/thumb, controlled values, orientation and direction, keyboard stepping, hidden input form submission/reset, and data attributes. Gaps: origin/tooltip helpers, richer touch behavior, and broader SSR/form tests remain follow-up work.",
+      tanstackRanger:
+        "TanStack Ranger remains an exception reference for range math: compare active handle lifecycle, tick helpers, interpolation, touch behavior, and commit timing before deepening Keystone beyond the current intrinsic primitive.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/slider.tsx"
-    ],
-    "title": "Slider",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/slider.tsx"],
+    title: "Slider",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by TanStackField for field relationships and by @keystone-ui/core/slider for thumb ARIA, orientation, keyboard/pointer range behavior, hidden input serialization, reset support, min/max/step, invalid/read-only/required state, and data attributes.",
-    "anatomy": [
+    accessibility:
+      "Backed by TanStackField for field relationships and by @keystone-ui/core/slider for thumb ARIA, orientation, keyboard/pointer range behavior, hidden input serialization, reset support, min/max/step, invalid/read-only/required state, and data attributes.",
+    anatomy: [
       "field-root",
       "field-label",
       "slider",
@@ -1863,130 +1448,91 @@ export const registryDocItems = [
       "thumb",
       "hidden-input",
       "field-description",
-      "field-error"
+      "field-error",
     ],
-    "api": "SliderField exports SliderField, SliderFieldProps, and SliderFieldValidators. It composes TanStackField with Keystone Slider, passes validators to form.Field, maps readonly number array values to field.handleChange, maps value commit and blur to field.handleBlur, renders one thumb and hidden input per value, and forwards disabled/readOnly/required/formId.",
-    "categories": [
-      "form",
-      "tanstack",
-      "range"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    api: "SliderField exports SliderField, SliderFieldProps, and SliderFieldValidators. It composes TanStackField with Keystone Slider, passes validators to form.Field, maps readonly number array values to field.handleChange, maps value commit and blur to field.handleBlur, renders one thumb and hidden input per value, and forwards disabled/readOnly/required/formId.",
+    categories: ["form", "tanstack", "range"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use ui-slider-field classes, TanStackField shell classes, Slider classes, Core data attributes, neutral data-slot hooks, sliderProps, trackProps, thumbProps, hiddenInputProps, and class escape hatches.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "@tanstack/solid-form",
-      "cn",
-      "slider",
-      "tanstack-field"
-    ],
-    "description": "TanStack Form slider field composed with Keystone Slider behavior and UI styling hooks.",
-    "files": [
+    customization:
+      "Use ui-slider-field classes, TanStackField shell classes, Slider classes, Core data attributes, neutral data-slot hooks, sliderProps, trackProps, thumbProps, hiddenInputProps, and class escape hatches.",
+    dependencies: ["@keystone-ui/core", "@tanstack/solid-form", "cn", "slider", "tanstack-field"],
+    description:
+      "TanStack Form slider field composed with Keystone Slider behavior and UI styling hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/slider-field.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/slider-field.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add slider-field",
-    "keywords": [
-      "slider-field",
-      "slider",
-      "range",
-      "field",
-      "form",
-      "tanstack",
-      "keystone"
-    ],
-    "limitations": "Number formatting, live output labels, marks, tick rendering, and object adapters remain app-owned composition.",
-    "name": "slider-field",
-    "parity": {
-      "tanstackForm": "Covers form.Field integration, validators pass-through, number-array binding, blur/commit/change delegation, and touched-derived invalid/error state.",
-      "baseUi": "Primitive behavior coverage comes through Keystone Core Slider for controlled values, multi-thumb sorting, keyboard/pointer input, hidden inputs, CSS variables, and data attributes.",
-      "kobalte": "Solid composition follows root/track/range/thumb/hidden-input anatomy with generated-source field wiring."
+    install: "mason add slider-field",
+    keywords: ["slider-field", "slider", "range", "field", "form", "tanstack", "keystone"],
+    limitations:
+      "Number formatting, live output labels, marks, tick rendering, and object adapters remain app-owned composition.",
+    name: "slider-field",
+    parity: {
+      tanstackForm:
+        "Covers form.Field integration, validators pass-through, number-array binding, blur/commit/change delegation, and touched-derived invalid/error state.",
+      baseUi:
+        "Primitive behavior coverage comes through Keystone Core Slider for controlled values, multi-thumb sorting, keyboard/pointer input, hidden inputs, CSS variables, and data attributes.",
+      kobalte:
+        "Solid composition follows root/track/range/thumb/hidden-input anatomy with generated-source field wiring.",
     },
-    "registryDependencies": [
-      "cn",
-      "slider",
-      "tanstack-field"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/slider-field.tsx"
-    ],
-    "state": "TanStack Form owns readonly number array field value, touched, dirty, blurred, validating, and errors. SliderField preserves Core multi-thumb behavior and uses [0] only when the field value is not yet an array.",
-    "title": "SliderField",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "slider", "tanstack-field"],
+    sourceFiles: ["packages/ui/src/default/ui/slider-field.tsx"],
+    state:
+      "TanStack Form owns readonly number array field value, touched, dirty, blurred, validating, and errors. SliderField preserves Core multi-thumb behavior and uses [0] only when the field value is not yet an array.",
+    title: "SliderField",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by TanStackField for generated IDs, label/description/error relationships, aria-describedby, aria-invalid, required/disabled/readonly metadata, and alert messaging. Native input type=file owns platform file picker behavior and browser form upload semantics.",
-    "anatomy": [
-      "field-root",
-      "field-label",
-      "input",
-      "field-description",
-      "field-error"
-    ],
-    "api": "FileField exports FileField, FileFieldProps, and FileFieldValidators. It composes TanStackField with the styled Input item, passes validators to form.Field, maps native FileList input events to readonly File[] field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId plus native file input props such as multiple and accept.",
-    "categories": [
-      "form",
-      "tanstack",
-      "file"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    accessibility:
+      "Backed by TanStackField for generated IDs, label/description/error relationships, aria-describedby, aria-invalid, required/disabled/readonly metadata, and alert messaging. Native input type=file owns platform file picker behavior and browser form upload semantics.",
+    anatomy: ["field-root", "field-label", "input", "field-description", "field-error"],
+    api: "FileField exports FileField, FileFieldProps, and FileFieldValidators. It composes TanStackField with the styled Input item, passes validators to form.Field, maps native FileList input events to readonly File[] field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId plus native file input props such as multiple and accept.",
+    categories: ["form", "tanstack", "file"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use ui-file-field classes, TanStackField shell classes, Input classes, Core data attributes, neutral data-slot hooks, and inputClass for generated-source styling.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "@tanstack/solid-form",
-      "cn",
-      "input",
-      "tanstack-field"
-    ],
-    "description": "TanStack Form file input field composed with Keystone field semantics and UI input styling hooks.",
-    "files": [
+    customization:
+      "Use ui-file-field classes, TanStackField shell classes, Input classes, Core data attributes, neutral data-slot hooks, and inputClass for generated-source styling.",
+    dependencies: ["@keystone-ui/core", "@tanstack/solid-form", "cn", "input", "tanstack-field"],
+    description:
+      "TanStack Form file input field composed with Keystone field semantics and UI input styling hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/file-field.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/file-field.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add file-field",
-    "keywords": [
-      "file-field",
-      "file",
-      "upload",
-      "field",
-      "form",
-      "tanstack",
-      "keystone"
-    ],
-    "limitations": "Drag-and-drop zones, previews, upload transport, size/type validation helpers, and object URL lifecycle remain app-owned composition.",
-    "name": "file-field",
-    "parity": {
-      "tanstackForm": "Covers form.Field integration, validators pass-through, file-array input binding, blur/change delegation, and touched-derived invalid/error state.",
-      "baseUi": "File picker behavior intentionally uses the native file input while Keystone FormControl supplies field relationships.",
-      "kobalte": "Solid composition follows native input plus generated-source field wiring; richer upload primitives remain future work."
+    install: "mason add file-field",
+    keywords: ["file-field", "file", "upload", "field", "form", "tanstack", "keystone"],
+    limitations:
+      "Drag-and-drop zones, previews, upload transport, size/type validation helpers, and object URL lifecycle remain app-owned composition.",
+    name: "file-field",
+    parity: {
+      tanstackForm:
+        "Covers form.Field integration, validators pass-through, file-array input binding, blur/change delegation, and touched-derived invalid/error state.",
+      baseUi:
+        "File picker behavior intentionally uses the native file input while Keystone FormControl supplies field relationships.",
+      kobalte:
+        "Solid composition follows native input plus generated-source field wiring; richer upload primitives remain future work.",
     },
-    "registryDependencies": [
-      "cn",
-      "input",
-      "tanstack-field"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/file-field.tsx"
-    ],
-    "state": "TanStack Form owns readonly File[] field value, touched, dirty, blurred, validating, and errors. The native file input remains uncontrolled because browsers do not allow programmatic file value setting.",
-    "title": "FileField",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "input", "tanstack-field"],
+    sourceFiles: ["packages/ui/src/default/ui/file-field.tsx"],
+    state:
+      "TanStack Form owns readonly File[] field value, touched, dirty, blurred, validating, and errors. The native file input remains uncontrolled because browsers do not allow programmatic file value setting.",
+    title: "FileField",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": {
-      "calendar": [
+    anatomy: {
+      calendar: [
         "root",
         "header",
         "prev-trigger",
@@ -1998,62 +1544,45 @@ export const registryDocItems = [
         "row",
         "column-header",
         "cell",
-        "cell-trigger"
+        "cell-trigger",
       ],
-      "datePicker": [
-        "root",
-        "trigger",
-        "content"
-      ]
+      datePicker: ["root", "trigger", "content"],
     },
-    "categories": [
-      "form",
-      "input",
-      "calendar"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    categories: ["form", "input", "calendar"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-date-picker and ui-calendar classes while Keystone keeps calendar grid generation, single-date and range state, unavailable dates, locale week starts, month navigation, keyboard movement, ARIA roles, and data attributes.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid date picker and calendar components backed by Keystone date selection behavior.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-date-picker and ui-calendar classes while Keystone keeps calendar grid generation, single-date and range state, unavailable dates, locale week starts, month navigation, keyboard movement, ARIA roles, and data attributes.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description:
+      "Styled Solid date picker and calendar components backed by Keystone date selection behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/date-picker.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/date-picker.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add date-picker",
-    "keywords": [
-      "date-picker",
-      "calendar",
-      "date",
-      "keystone",
-      "kobalte",
-      "base-ui"
-    ],
-    "name": "date-picker",
-    "parity": {
-      "baseUi": "Covers calendar grid and popup trigger contract, selected date state, range state, unavailable date policy, disabled bounds, locale week starts, month navigation, keyboard movement, ARIA roles, and UI metadata. Gaps: date field segment editing, validation/form semantics, multi-month rendering, focus restoration depth, and full locale calendar systems remain follow-up work.",
-      "kobalte": "Matches the Solid calendar/date-picker direction for grid parts, trigger/content composition, controlled selected value, controlled range value, min/max bounds, granular unavailable dates, locale week starts, and keyboard navigation. Gaps: DateField segments, DateRangePicker composition, multi-month rendering, full locale/calendar-system depth, and reset/submission tests remain follow-up work."
+    install: "mason add date-picker",
+    keywords: ["date-picker", "calendar", "date", "keystone", "kobalte", "base-ui"],
+    name: "date-picker",
+    parity: {
+      baseUi:
+        "Covers calendar grid and popup trigger contract, selected date state, range state, unavailable date policy, disabled bounds, locale week starts, month navigation, keyboard movement, ARIA roles, and UI metadata. Gaps: date field segment editing, validation/form semantics, multi-month rendering, focus restoration depth, and full locale calendar systems remain follow-up work.",
+      kobalte:
+        "Matches the Solid calendar/date-picker direction for grid parts, trigger/content composition, controlled selected value, controlled range value, min/max bounds, granular unavailable dates, locale week starts, and keyboard navigation. Gaps: DateField segments, DateRangePicker composition, multi-month rendering, full locale/calendar-system depth, and reset/submission tests remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/date-picker.tsx"
-    ],
-    "title": "DatePicker",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/date-picker.tsx"],
+    title: "DatePicker",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by TanStackField for field relationships and by @keystone-ui/core/date-picker for trigger dialog semantics, calendar grid roles, selected/today/unavailable state, keyboard movement, month navigation, locale week starts, disabled bounds, and popup state data attributes.",
-    "anatomy": [
+    accessibility:
+      "Backed by TanStackField for field relationships and by @keystone-ui/core/date-picker for trigger dialog semantics, calendar grid roles, selected/today/unavailable state, keyboard movement, month navigation, locale week starts, disabled bounds, and popup state data attributes.",
+    anatomy: [
       "field-root",
       "field-label",
       "date-picker",
@@ -2063,119 +1592,99 @@ export const registryDocItems = [
       "calendar",
       "grid",
       "field-description",
-      "field-error"
+      "field-error",
     ],
-    "api": "DatePickerField exports DatePickerField, DatePickerFieldProps, and DatePickerFieldValidators. It composes TanStackField with Keystone DatePicker, passes validators to form.Field, maps ISO date string selection to field.handleChange, maps popup close/trigger blur to field.handleBlur, renders a hidden input for browser form value participation, and forwards disabled/formId/required plus date picker, trigger, content, and calendar props.",
-    "categories": [
-      "form",
-      "tanstack",
-      "calendar"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    api: "DatePickerField exports DatePickerField, DatePickerFieldProps, and DatePickerFieldValidators. It composes TanStackField with Keystone DatePicker, passes validators to form.Field, maps ISO date string selection to field.handleChange, maps popup close/trigger blur to field.handleBlur, renders a hidden input for browser form value participation, and forwards disabled/formId/required plus date picker, trigger, content, and calendar props.",
+    categories: ["form", "tanstack", "calendar"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use ui-date-picker-field classes, TanStackField shell classes, DatePicker/Calendar classes, Core data attributes, neutral data-slot hooks, datePickerProps, triggerProps, contentProps, calendarProps, and class escape hatches.",
-    "dependencies": [
+    customization:
+      "Use ui-date-picker-field classes, TanStackField shell classes, DatePicker/Calendar classes, Core data attributes, neutral data-slot hooks, datePickerProps, triggerProps, contentProps, calendarProps, and class escape hatches.",
+    dependencies: [
       "@keystone-ui/core",
       "@tanstack/solid-form",
       "cn",
       "date-picker",
-      "tanstack-field"
+      "tanstack-field",
     ],
-    "description": "TanStack Form date picker field composed with Keystone DatePicker behavior and UI styling hooks.",
-    "files": [
+    description:
+      "TanStack Form date picker field composed with Keystone DatePicker behavior and UI styling hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/date-picker-field.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/date-picker-field.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add date-picker-field",
-    "keywords": [
+    install: "mason add date-picker-field",
+    keywords: [
       "date-picker-field",
       "date-picker",
       "calendar",
       "field",
       "form",
       "tanstack",
-      "keystone"
+      "keystone",
     ],
-    "limitations": "DateField segment editing, range field adapters, date parsing/formatting adapters, multi-month rendering, and non-Gregorian calendar systems remain future composition.",
-    "name": "date-picker-field",
-    "parity": {
-      "tanstackForm": "Covers form.Field integration, validators pass-through, string date binding, blur/open/change delegation, hidden form value, and touched-derived invalid/error state.",
-      "baseUi": "Primitive behavior coverage comes through Keystone Core DatePicker for popup trigger, calendar grid, keyboard movement, month navigation, selected/unavailable state, and data attributes.",
-      "kobalte": "Solid composition follows DatePicker/Calendar anatomy with generated-source field wiring."
+    limitations:
+      "DateField segment editing, range field adapters, date parsing/formatting adapters, multi-month rendering, and non-Gregorian calendar systems remain future composition.",
+    name: "date-picker-field",
+    parity: {
+      tanstackForm:
+        "Covers form.Field integration, validators pass-through, string date binding, blur/open/change delegation, hidden form value, and touched-derived invalid/error state.",
+      baseUi:
+        "Primitive behavior coverage comes through Keystone Core DatePicker for popup trigger, calendar grid, keyboard movement, month navigation, selected/unavailable state, and data attributes.",
+      kobalte:
+        "Solid composition follows DatePicker/Calendar anatomy with generated-source field wiring.",
     },
-    "registryDependencies": [
-      "cn",
-      "date-picker",
-      "tanstack-field"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/date-picker-field.tsx"
-    ],
-    "state": "TanStack Form owns string field value, touched, dirty, blurred, validating, and errors. DatePickerField stores dates as Keystone ISO date strings and treats the empty string as no selection.",
-    "title": "DatePickerField",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "date-picker", "tanstack-field"],
+    sourceFiles: ["packages/ui/src/default/ui/date-picker-field.tsx"],
+    state:
+      "TanStack Form owns string field value, touched, dirty, blurred, validating, and errors. DatePickerField stores dates as Keystone ISO date strings and treats the empty string as no selection.",
+    title: "DatePickerField",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Keystone Core owns role=tablist/tab/tabpanel, aria-selected, aria-controls, aria-labelledby, horizontal and vertical keyboard navigation, RTL-aware horizontal arrows, disabled trigger semantics, and panel tabIndex heuristics.",
-    "anatomy": [
-      "Tabs",
-      "TabsList",
-      "TabsTrigger",
-      "TabsIndicator",
-      "TabsContent"
-    ],
-    "categories": [
-      "navigation",
-      "disclosure",
-      "layout"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "Keystone Core owns role=tablist/tab/tabpanel, aria-selected, aria-controls, aria-labelledby, horizontal and vertical keyboard navigation, RTL-aware horizontal arrows, disabled trigger semantics, and panel tabIndex heuristics.",
+    anatomy: ["Tabs", "TabsList", "TabsTrigger", "TabsIndicator", "TabsContent"],
+    categories: ["navigation", "disclosure", "layout"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-tabs classes while Keystone keeps tablist roles, selection state, keyboard navigation, ARIA relationships, measured indicator variables, dynamic trigger removal fallback, panel focus heuristics, and data attributes.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid tabs component backed by Keystone tablist, trigger, and panel behavior.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-tabs classes while Keystone keeps tablist roles, selection state, keyboard navigation, ARIA relationships, measured indicator variables, dynamic trigger removal fallback, panel focus heuristics, and data attributes.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description:
+      "Styled Solid tabs component backed by Keystone tablist, trigger, and panel behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/tabs.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/tabs.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add tabs",
-    "keywords": [
-      "tabs",
-      "tablist",
-      "tabpanel",
-      "navigation",
-      "keystone"
-    ],
-    "name": "tabs",
-    "parity": {
-      "baseUi": "Covers controlled and uncontrolled value state, disabled triggers, horizontal and vertical roving focus, RTL-aware horizontal keys, automatic/manual activation, tablist/tabpanel ARIA, measured indicator CSS variables, dynamic removal focus/selection fallback, force-mounted panels, styled generated source, UI wrapper metadata, and behavior tests. Intentional gaps: app-owned delete/closable tab coordination, activation latency policy for heavy panels, and broader touch/cursor tests.",
-      "kobalte": "Matches Solid Tabs Root/List/Trigger/Content direction with controlled value, orientation, direction, activation mode, disabled triggers, forceMount, panel focus heuristics, measured indicator variables, dynamic tab lifecycle fallback, and stable data attributes. Intentional gaps: app-owned delete/closable tab coordination and deeper touch/cursor edge coverage."
+    install: "mason add tabs",
+    keywords: ["tabs", "tablist", "tabpanel", "navigation", "keystone"],
+    name: "tabs",
+    parity: {
+      baseUi:
+        "Covers controlled and uncontrolled value state, disabled triggers, horizontal and vertical roving focus, RTL-aware horizontal keys, automatic/manual activation, tablist/tabpanel ARIA, measured indicator CSS variables, dynamic removal focus/selection fallback, force-mounted panels, styled generated source, UI wrapper metadata, and behavior tests. Intentional gaps: app-owned delete/closable tab coordination, activation latency policy for heavy panels, and broader touch/cursor tests.",
+      kobalte:
+        "Matches Solid Tabs Root/List/Trigger/Content direction with controlled value, orientation, direction, activation mode, disabled triggers, forceMount, panel focus heuristics, measured indicator variables, dynamic tab lifecycle fallback, and stable data attributes. Intentional gaps: app-owned delete/closable tab coordination and deeper touch/cursor edge coverage.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/tabs.tsx"
-    ],
-    "title": "Tabs",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/tabs.tsx"],
+    title: "Tabs",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by @keystone-ui/core/combobox for native input behavior, listbox roles, active descendant, highlighted and selected item state, disabled item handling, Escape dismissal, clear semantics, hidden form value serialization, and native form reset support.",
-    "anatomy": [
+    accessibility:
+      "Backed by @keystone-ui/core/combobox for native input behavior, listbox roles, active descendant, highlighted and selected item state, disabled item handling, Escape dismissal, clear semantics, hidden form value serialization, and native form reset support.",
+    anatomy: [
       "root",
       "input-group",
       "start-addon",
@@ -2197,57 +1706,48 @@ export const registryDocItems = [
       "separator",
       "empty",
       "status",
-      "value"
+      "value",
     ],
-    "api": "Combobox exports Combobox, ComboboxInput, ComboboxChipsInput, ComboboxTrigger, ComboboxClear, ComboboxContent, ComboboxPopup, ComboboxPortal, ComboboxPositioner, ComboboxListbox, ComboboxList, ComboboxGroup, ComboboxGroupLabel, ComboboxItem, ComboboxItemText, ComboboxItemIndicator, ComboboxArrow, ComboboxSeparator, ComboboxEmpty, ComboboxStatus, ComboboxValue, and ComboboxPrimitive. Core owns input value, selected value, open state, clear action, hidden form input, keyboard navigation, collection registration, popup positioning, and state data attributes.",
-    "categories": [
-      "form",
-      "listbox",
-      "autocomplete"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    api: "Combobox exports Combobox, ComboboxInput, ComboboxChipsInput, ComboboxTrigger, ComboboxClear, ComboboxContent, ComboboxPopup, ComboboxPortal, ComboboxPositioner, ComboboxListbox, ComboboxList, ComboboxGroup, ComboboxGroupLabel, ComboboxItem, ComboboxItemText, ComboboxItemIndicator, ComboboxArrow, ComboboxSeparator, ComboboxEmpty, ComboboxStatus, ComboboxValue, and ComboboxPrimitive. Core owns input value, selected value, open state, clear action, hidden form input, keyboard navigation, collection registration, popup positioning, and state data attributes.",
+    categories: ["form", "listbox", "autocomplete"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated input group, input, trigger, clear action, popup surface, listbox, groups, items, indicators, empty state, status row, arrow, and separators through ui-combobox classes, Core data attributes, and neutral data-slot hooks.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid combobox backed by Keystone input, listbox, selection, and floating behavior.",
-    "files": [
+    customization:
+      "Style the generated input group, input, trigger, clear action, popup surface, listbox, groups, items, indicators, empty state, status row, arrow, and separators through ui-combobox classes, Core data attributes, and neutral data-slot hooks.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description:
+      "Styled Solid combobox backed by Keystone input, listbox, selection, and floating behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/combobox.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/combobox.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add combobox",
-    "keywords": [
-      "combobox",
-      "autocomplete",
-      "listbox",
-      "keystone"
-    ],
-    "limitations": "Filtering strategy, async loading state ownership, chips container composition, and object-value helpers remain app-level composition decisions; Keystone Core owns the primitive combobox contract while UI keeps styling and ergonomic wrappers.",
-    "name": "combobox",
-    "parity": {
-      "visualReference": "Matches the reference combobox visual shape in Solid source form: dense input sizing, optional start add-on, trigger and clear affordances, popup surface, listbox padding, grouped options, item indicator column, empty/status rows, separator, data-slot hooks, and pointer/focus/invalid styling.",
-      "baseUi": "Evidence-backed coverage comes through Keystone Core Combobox for input value, selected value, clear action, keyboard navigation, highlighted and selected item state, hidden input, controlled/uncontrolled open and value, positioning, and state data attributes. Gaps: filtering orchestration, async loading, multi-select, virtualization, hidden select parity, richer typeahead edge cases, and manual AT evidence remain open.",
-      "kobalte": "Solid composition follows the Combobox/Listbox/Popper direction with input, trigger, clear, portal, positioner, content, listbox, groups, group labels, items, item text, item indicators, arrow, and form participation. Gaps: richer collection APIs, async filtering helpers, reset coverage, and manual combobox AT notes remain follow-up work."
+    install: "mason add combobox",
+    keywords: ["combobox", "autocomplete", "listbox", "keystone"],
+    limitations:
+      "Filtering strategy, async loading state ownership, chips container composition, and object-value helpers remain app-level composition decisions; Keystone Core owns the primitive combobox contract while UI keeps styling and ergonomic wrappers.",
+    name: "combobox",
+    parity: {
+      visualReference:
+        "Matches the reference combobox visual shape in Solid source form: dense input sizing, optional start add-on, trigger and clear affordances, popup surface, listbox padding, grouped options, item indicator column, empty/status rows, separator, data-slot hooks, and pointer/focus/invalid styling.",
+      baseUi:
+        "Evidence-backed coverage comes through Keystone Core Combobox for input value, selected value, clear action, keyboard navigation, highlighted and selected item state, hidden input, controlled/uncontrolled open and value, positioning, and state data attributes. Gaps: filtering orchestration, async loading, multi-select, virtualization, hidden select parity, richer typeahead edge cases, and manual AT evidence remain open.",
+      kobalte:
+        "Solid composition follows the Combobox/Listbox/Popper direction with input, trigger, clear, portal, positioner, content, listbox, groups, group labels, items, item text, item indicators, arrow, and form participation. Gaps: richer collection APIs, async filtering helpers, reset coverage, and manual combobox AT notes remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/combobox.tsx"
-    ],
-    "title": "Combobox",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/combobox.tsx"],
+    title: "Combobox",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Keystone Command owns input/listbox roles, aria-activedescendant, highlighted item state, disabled and hidden item skipping, typeahead/list keyboard behavior, portal positioning, dismissal, and controlled open/input state. UI only adds command item data, filtering, shortcut display, and app-level shortcut registration.",
-    "anatomy": [
+    accessibility:
+      "Keystone Command owns input/listbox roles, aria-activedescendant, highlighted item state, disabled and hidden item skipping, typeahead/list keyboard behavior, portal positioning, dismissal, and controlled open/input state. UI only adds command item data, filtering, shortcut display, and app-level shortcut registration.",
+    anatomy: [
       "root",
       "trigger",
       "portal",
@@ -2268,127 +1768,113 @@ export const registryDocItems = [
       "shortcut",
       "empty",
       "separator",
-      "footer"
+      "footer",
     ],
-    "api": "CommandMenu exports createCommandMenuStore, CommandMenu, CommandMenuRoot, CommandMenuTrigger, CommandMenuPortal, CommandMenuPositioner, CommandMenuBackdrop, CommandMenuContent, CommandMenuInput, CommandMenuPanel, CommandMenuList, CommandMenuGroup, CommandMenuGroupLabel, CommandMenuItem, CommandMenuItemText, CommandMenuShortcut, CommandMenuEmpty, CommandMenuSeparator, and CommandMenuFooter. The high-level component accepts items, filter, filteredItems, trigger, empty, footer, class escape hatches, showBackdrop, an optional shared CommandStore, and hotkey options while Core Command owns primitive open/input/value behavior.",
-    "categories": [
-      "command",
-      "combobox",
-      "tanstack",
-      "hotkeys"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    api: "CommandMenu exports createCommandMenuStore, CommandMenu, CommandMenuRoot, CommandMenuTrigger, CommandMenuPortal, CommandMenuPositioner, CommandMenuBackdrop, CommandMenuContent, CommandMenuInput, CommandMenuPanel, CommandMenuList, CommandMenuGroup, CommandMenuGroupLabel, CommandMenuItem, CommandMenuItemText, CommandMenuShortcut, CommandMenuEmpty, CommandMenuSeparator, and CommandMenuFooter. The high-level component accepts items, filter, filteredItems, trigger, empty, footer, class escape hatches, showBackdrop, an optional shared CommandStore, and hotkey options while Core Command owns primitive open/input/value behavior.",
+    categories: ["command", "combobox", "tanstack", "hotkeys"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use ui-command-menu classes, data-part values, and neutral data-slot hooks for trigger, backdrop, positioner, content, input-row, input-icon, input, panel, list, group, group-label, item, item-text, item-label, item-description, shortcut, empty, separator, and footer. The default visual treatment uses a dense command palette structure: blurred backdrop, rounded max-w-xl popover, transparent search row, bordered results panel, dense grouped rows, compact shortcut kbd, and optional footer.",
-    "dependencies": [
+    customization:
+      "Use ui-command-menu classes, data-part values, and neutral data-slot hooks for trigger, backdrop, positioner, content, input-row, input-icon, input, panel, list, group, group-label, item, item-text, item-label, item-description, shortcut, empty, separator, and footer. The default visual treatment uses a dense command palette structure: blurred backdrop, rounded max-w-xl popover, transparent search row, bordered results panel, dense grouped rows, compact shortcut kbd, and optional footer.",
+    dependencies: [
       "@keystone-ui/core",
       "@tanstack/solid-store",
       "@tanstack/solid-hotkeys",
       "command-store",
-      "cn"
+      "cn",
     ],
-    "description": "Command palette source built from Keystone Command behavior, TanStack Store command state, and preview TanStack Hotkeys shortcuts.",
-    "files": [
+    description:
+      "Command palette source built from Keystone Command behavior, TanStack Store command state, and preview TanStack Hotkeys shortcuts.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/command-menu.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/command-menu.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add command-menu",
-    "keywords": [
+    install: "mason add command-menu",
+    keywords: [
       "command-menu",
       "command-palette",
       "combobox",
       "store",
       "hotkeys",
       "keystone",
-      "tanstack"
+      "tanstack",
     ],
-    "limitations": "This source is a local command palette pattern. It does not include async search orchestration, nested command pages, command history, user preference persistence, route-specific command discovery, copy-command footer behavior, or a final Hotkeys API guarantee.",
-    "name": "command-menu",
-    "parity": {
-      "visualReference": "Uses a dense command palette visual structure in Solid source form: blurred backdrop, rounded popover shell, translucent-muted inner overlay, transparent search input row with search icon, bordered results panel, grouped list rows, kbd shortcut styling, separator, and footer slot.",
-      "baseUi": "Runtime behavior intentionally leans on Keystone Command toward accessible combobox/listbox depth: input ownership, aria-activedescendant, item highlighting, disabled and hidden items, typeahead/list navigation, overlay positioning, and dismissal. The UI source now mirrors Base UI's filtering posture with robust normalized default matching plus filter and filteredItems escape hatches for app-owned search. Gaps: nested command pages, async collection loading, and command history remain app-code follow-up work.",
-      "kobalte": "Solid primitive shape tracks Kobalte-style command composition through root/input/content/listbox/group/item parts, plus command-specific panel/footer wrappers. Gaps: richer command-specific examples, virtualized command lists, and route-scoped collection discovery remain follow-up work.",
-      "tanstackStore": "TanStack Store is used through the command-store registry item for app-level command menu state that benefits from sharing across shell controls: open, query, selected command id, recent command ids, command registry, scope, and loading/error metadata. It deliberately does not replace Core primitive state or list navigation.",
-      "tanstackHotkeys": "TanStack Hotkeys powers preview app shortcuts for opening the menu and invoking command items, with shortcut display via formatForDisplay. Caveat: Hotkeys remains preview/alpha, so UI metadata and source comments keep this integration removable while the API stabilizes."
+    limitations:
+      "This source is a local command palette pattern. It does not include async search orchestration, nested command pages, command history, user preference persistence, route-specific command discovery, copy-command footer behavior, or a final Hotkeys API guarantee.",
+    name: "command-menu",
+    parity: {
+      visualReference:
+        "Uses a dense command palette visual structure in Solid source form: blurred backdrop, rounded popover shell, translucent-muted inner overlay, transparent search input row with search icon, bordered results panel, grouped list rows, kbd shortcut styling, separator, and footer slot.",
+      baseUi:
+        "Runtime behavior intentionally leans on Keystone Command toward accessible combobox/listbox depth: input ownership, aria-activedescendant, item highlighting, disabled and hidden items, typeahead/list navigation, overlay positioning, and dismissal. The UI source now mirrors Base UI's filtering posture with robust normalized default matching plus filter and filteredItems escape hatches for app-owned search. Gaps: nested command pages, async collection loading, and command history remain app-code follow-up work.",
+      kobalte:
+        "Solid primitive shape tracks Kobalte-style command composition through root/input/content/listbox/group/item parts, plus command-specific panel/footer wrappers. Gaps: richer command-specific examples, virtualized command lists, and route-scoped collection discovery remain follow-up work.",
+      tanstackStore:
+        "TanStack Store is used through the command-store registry item for app-level command menu state that benefits from sharing across shell controls: open, query, selected command id, recent command ids, command registry, scope, and loading/error metadata. It deliberately does not replace Core primitive state or list navigation.",
+      tanstackHotkeys:
+        "TanStack Hotkeys powers preview app shortcuts for opening the menu and invoking command items, with shortcut display via formatForDisplay. Caveat: Hotkeys remains preview/alpha, so UI metadata and source comments keep this integration removable while the API stabilizes.",
     },
-    "registryDependencies": [
-      "cn",
-      "command-store"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/command-menu.tsx"
-    ],
-    "title": "CommandMenu",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "command-store"],
+    sourceFiles: ["packages/ui/src/default/ui/command-menu.tsx"],
+    title: "CommandMenu",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Uses header/topbar slot, aside landmarks for sidebar and inspector, and a main landmark. NavList owns native link/button navigation semantics, while CommandMenu owns its combobox/dialog-like command behavior through existing UI/Core composition.",
-    "anatomy": [
-      "root",
-      "topbar",
-      "sidebar",
-      "main",
-      "inspector",
-      "command-surface"
-    ],
-    "api": "Exports AppShell plus root, topbar, sidebar, main, inspector, and command-surface parts. High-level AppShell accepts topbar, sidebar, main/children, inspector, commandMenu, and sidebarState slots.",
-    "categories": [
-      "layout",
-      "app-shell",
-      "workspace"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    accessibility:
+      "Uses header/topbar slot, aside landmarks for sidebar and inspector, and a main landmark. NavList owns native link/button navigation semantics, while CommandMenu owns its combobox/dialog-like command behavior through existing UI/Core composition.",
+    anatomy: ["root", "topbar", "sidebar", "main", "inspector", "command-surface"],
+    api: "Exports AppShell plus root, topbar, sidebar, main, inspector, and command-surface parts. High-level AppShell accepts topbar, sidebar, main/children, inspector, commandMenu, and sidebarState slots.",
+    categories: ["layout", "app-shell", "workspace"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Slots are intentionally broad so apps can compose Topbar, NavList, SidebarStore triggers, CommandMenu, inspector panels, and router-aware content without AppShell owning routing or domain data.",
-    "dependencies": [],
-    "description": "Central app composition surface for topbar, sidebar navigation, main content, inspector rail, and command menu integration.",
-    "files": [
+    customization:
+      "Slots are intentionally broad so apps can compose Topbar, NavList, SidebarStore triggers, CommandMenu, inspector panels, and router-aware content without AppShell owning routing or domain data.",
+    dependencies: [],
+    description:
+      "Central app composition surface for topbar, sidebar navigation, main content, inspector rail, and command menu integration.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/app-shell.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/app-shell.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add app-shell",
-    "keywords": [
-      "app-shell",
-      "topbar",
-      "sidebar",
-      "inspector",
-      "command-menu",
-      "workspace"
-    ],
-    "name": "app-shell",
-    "parity": {
-      "shadcn": "Follows source-owned shell composition and editable classes while avoiding a hard dependency on any single router.",
-      "dataDenseWorkspace": "Covers the central composition surface required by developer consoles, admin control planes, and workspace examples: topbar, sidebar/nav, main content, inspector, and command integration.",
-      "tanstack": "Pairs with app-layer TanStack Store/Router/Hotkeys code through slots and state props while keeping Core independent from TanStack libraries.",
-      "keystoneCore": "Does not introduce Core app-shell APIs. It composes existing UI source and app state."
+    install: "mason add app-shell",
+    keywords: ["app-shell", "topbar", "sidebar", "inspector", "command-menu", "workspace"],
+    name: "app-shell",
+    parity: {
+      shadcn:
+        "Follows source-owned shell composition and editable classes while avoiding a hard dependency on any single router.",
+      dataDenseWorkspace:
+        "Covers the central composition surface required by developer consoles, admin control planes, and workspace examples: topbar, sidebar/nav, main content, inspector, and command integration.",
+      tanstack:
+        "Pairs with app-layer TanStack Store/Router/Hotkeys code through slots and state props while keeping Core independent from TanStack libraries.",
+      keystoneCore:
+        "Does not introduce Core app-shell APIs. It composes existing UI source and app state.",
     },
-    "registryDependencies": [
+    registryDependencies: [
       "topbar",
       "nav-list",
       "command-menu",
       "sidebar-store",
       "use-media-query",
-      "cn"
+      "cn",
     ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/app-shell.tsx"
-    ],
-    "title": "AppShell",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    sourceFiles: ["packages/ui/src/default/ui/app-shell.tsx"],
+    title: "AppShell",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Renders a header landmark. Command trigger is a native button built from UI Button. Navigation, breadcrumbs, search, and actions are caller-provided so their labels and route semantics stay app-owned.",
-    "anatomy": [
+    accessibility:
+      "Renders a header landmark. Command trigger is a native button built from UI Button. Navigation, breadcrumbs, search, and actions are caller-provided so their labels and route semantics stay app-owned.",
+    anatomy: [
       "root",
       "brand",
       "brand-mark",
@@ -2397,56 +1883,46 @@ export const registryDocItems = [
       "search",
       "command-trigger",
       "status",
-      "actions"
+      "actions",
     ],
-    "api": "Exports Topbar plus root, brand, title, navigation, search, command trigger, status, and actions parts. High-level Topbar accepts slots for brand/title/navigation/search/command/status/actions and an onCommand handler.",
-    "categories": [
-      "layout",
-      "app-shell",
-      "navigation"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    api: "Exports Topbar plus root, brand, title, navigation, search, command trigger, status, and actions parts. High-level Topbar accepts slots for brand/title/navigation/search/command/status/actions and an onCommand handler.",
+    categories: ["layout", "app-shell", "navigation"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Compose NavList, Breadcrumb, SearchInput, CommandMenu triggers, Badge, ShortcutDisplay, and Button source through the exposed slots. Style with data-scope=\"ui-topbar\" and data-part hooks.",
-    "dependencies": [],
-    "description": "Generic app header surface for brand, title, navigation, search, command trigger, status, and actions.",
-    "files": [
+    customization:
+      'Compose NavList, Breadcrumb, SearchInput, CommandMenu triggers, Badge, ShortcutDisplay, and Button source through the exposed slots. Style with data-scope="ui-topbar" and data-part hooks.',
+    dependencies: [],
+    description:
+      "Generic app header surface for brand, title, navigation, search, command trigger, status, and actions.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/topbar.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/topbar.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add topbar",
-    "keywords": [
-      "topbar",
-      "header",
-      "command-trigger",
-      "app-shell",
-      "navigation"
-    ],
-    "name": "topbar",
-    "parity": {
-      "shadcn": "Matches source-owned app header composition rather than a sealed primitive: teams edit slots and classes after install.",
-      "keystoneUi": "Composes existing UI Button and ShortcutDisplay and is intended to host NavList, Breadcrumb, SearchInput, CommandMenu, Badge, and app actions.",
-      "keystoneCore": "Introduces no Core layout behavior; landmark and slot composition stay in generated UI source."
+    install: "mason add topbar",
+    keywords: ["topbar", "header", "command-trigger", "app-shell", "navigation"],
+    name: "topbar",
+    parity: {
+      shadcn:
+        "Matches source-owned app header composition rather than a sealed primitive: teams edit slots and classes after install.",
+      keystoneUi:
+        "Composes existing UI Button and ShortcutDisplay and is intended to host NavList, Breadcrumb, SearchInput, CommandMenu, Badge, and app actions.",
+      keystoneCore:
+        "Introduces no Core layout behavior; landmark and slot composition stay in generated UI source.",
     },
-    "registryDependencies": [
-      "button",
-      "shortcut-display",
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/topbar.tsx"
-    ],
-    "title": "Topbar",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["button", "shortcut-display", "cn"],
+    sourceFiles: ["packages/ui/src/default/ui/topbar.tsx"],
+    title: "Topbar",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Uses native anchor elements for href items and native buttons for action items. It intentionally avoids menu, menubar, and navigation-menu roles because persistent app navigation is not a composite menu.",
-    "anatomy": [
+    accessibility:
+      "Uses native anchor elements for href items and native buttons for action items. It intentionally avoids menu, menubar, and navigation-menu roles because persistent app navigation is not a composite menu.",
+    anatomy: [
       "root",
       "group",
       "group-label",
@@ -2459,220 +1935,181 @@ export const registryDocItems = [
       "item-description",
       "item-status",
       "item-badge",
-      "item-shortcut"
+      "item-shortcut",
     ],
-    "api": "Exports NavList, NavListRoot, NavListGroup, NavListGroupLabel, NavListItems, NavListItem, NavListItemContent, and item/group/state types. High-level NavList accepts items or groups plus getItemState for app/router-owned active and disabled state.",
-    "categories": [
-      "navigation",
-      "app-shell",
-      "sidebar"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    api: "Exports NavList, NavListRoot, NavListGroup, NavListGroupLabel, NavListItems, NavListItem, NavListItemContent, and item/group/state types. High-level NavList accepts items or groups plus getItemState for app/router-owned active and disabled state.",
+    categories: ["navigation", "app-shell", "sidebar"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use stable data-scope=\"ui-nav-list\" and data-part hooks for styling dense sidebar and horizontal topbar variants. Badge/count, shortcut, status, icon, label, and description slots are source-owned and replaceable.",
-    "dependencies": [],
-    "description": "Simple app navigation list source for route-aware sidebar and topbar links without menu semantics.",
-    "files": [
+    customization:
+      'Use stable data-scope="ui-nav-list" and data-part hooks for styling dense sidebar and horizontal topbar variants. Badge/count, shortcut, status, icon, label, and description slots are source-owned and replaceable.',
+    dependencies: [],
+    description:
+      "Simple app navigation list source for route-aware sidebar and topbar links without menu semantics.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/nav-list.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/nav-list.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add nav-list",
-    "keywords": [
-      "nav-list",
-      "nav-item",
-      "sidebar",
-      "topbar",
-      "route"
-    ],
-    "name": "nav-list",
-    "parity": {
-      "shadcn": "Follows source-owned app navigation ergonomics with readable link/button rows, icon/label/badge/shortcut slots, and route-active data hooks.",
-      "baseUi": "Deliberately does not copy Menu or NavigationMenu behavior because the target surface is persistent app navigation, not a composite popup/menu widget.",
-      "kobalte": "Keeps Solid-first JSX data and component composition while avoiding primitive roles that would overstate the interaction model."
+    install: "mason add nav-list",
+    keywords: ["nav-list", "nav-item", "sidebar", "topbar", "route"],
+    name: "nav-list",
+    parity: {
+      shadcn:
+        "Follows source-owned app navigation ergonomics with readable link/button rows, icon/label/badge/shortcut slots, and route-active data hooks.",
+      baseUi:
+        "Deliberately does not copy Menu or NavigationMenu behavior because the target surface is persistent app navigation, not a composite popup/menu widget.",
+      kobalte:
+        "Keeps Solid-first JSX data and component composition while avoiding primitive roles that would overstate the interaction model.",
     },
-    "registryDependencies": [
-      "badge",
-      "shortcut-display",
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/nav-list.tsx"
-    ],
-    "title": "NavList",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["badge", "shortcut-display", "cn"],
+    sourceFiles: ["packages/ui/src/default/ui/nav-list.tsx"],
+    title: "NavList",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [],
-    "api": "Exports useMediaQuery/createMediaQuery accessors, useIsMobile, normalizeMediaQuery, createBreakpointQuery, createPointerQuery, mediaQueryBreakpoints, breakpoint shorthand query types, and related option/input types.",
-    "categories": [
-      "hook",
-      "responsive",
-      "media-query"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    anatomy: [],
+    api: "Exports useMediaQuery/createMediaQuery accessors, useIsMobile, normalizeMediaQuery, createBreakpointQuery, createPointerQuery, mediaQueryBreakpoints, breakpoint shorthand query types, and related option/input types.",
+    categories: ["hook", "responsive", "media-query"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "dependencies": [],
-    "description": "SSR-safe Solid media query hook with string, breakpoint, pointer, orientation, and preference helpers.",
-    "files": [
+    dependencies: [],
+    description:
+      "SSR-safe Solid media query hook with string, breakpoint, pointer, orientation, and preference helpers.",
+    files: [
       {
-        "path": "packages/ui/src/default/hooks/use-media-query.ts",
-        "type": "registry:hook"
-      }
+        path: "packages/ui/src/default/hooks/use-media-query.ts",
+        type: "registry:hook",
+      },
     ],
-    "install": "mason add use-media-query",
-    "keywords": [
-      "use-media-query",
-      "create-media-query",
-      "responsive",
-      "breakpoint",
-      "solid"
-    ],
-    "limitations": "This hook is UI generated source. It is not a Core utility, does not observe container queries, and does not persist responsive state.",
-    "name": "use-media-query",
-    "parity": {
-      "coss": "Covers the tracked Coss useMediaQuery gap with Solid-native accessors, breakpoint helpers, pointer helpers, and SSR-safe defaults.",
-      "solid": "Uses createSignal and onMount instead of React effect/state conventions.",
-      "keystoneCore": "Intentionally remains in UI source because responsive shell behavior is app-owned and does not require a Core primitive or kernel export."
+    install: "mason add use-media-query",
+    keywords: ["use-media-query", "create-media-query", "responsive", "breakpoint", "solid"],
+    limitations:
+      "This hook is UI generated source. It is not a Core utility, does not observe container queries, and does not persist responsive state.",
+    name: "use-media-query",
+    parity: {
+      coss: "Covers the tracked Coss useMediaQuery gap with Solid-native accessors, breakpoint helpers, pointer helpers, and SSR-safe defaults.",
+      solid: "Uses createSignal and onMount instead of React effect/state conventions.",
+      keystoneCore:
+        "Intentionally remains in UI source because responsive shell behavior is app-owned and does not require a Core primitive or kernel export.",
     },
-    "registryDependencies": [],
-    "sourceFiles": [
-      "packages/ui/src/default/hooks/use-media-query.ts"
-    ],
-    "ssr": "The accessor starts from defaultValue and does not read window or matchMedia until Solid onMount runs. Pass a window option for tests or embedded documents.",
-    "title": "useMediaQuery",
-    "type": "registry:hook",
-    "version": "0.1.0"
+    registryDependencies: [],
+    sourceFiles: ["packages/ui/src/default/hooks/use-media-query.ts"],
+    ssr: "The accessor starts from defaultValue and does not read window or matchMedia until Solid onMount runs. Pass a window option for tests or embedded documents.",
+    title: "useMediaQuery",
+    type: "registry:hook",
+    version: "0.1.0",
   },
   {
-    "accessibility": "The hook is state only. Components using it should expose copied/error feedback with accessible names or live regions appropriate to the surface.",
-    "anatomy": [],
-    "api": "Exports createCopyToClipboard with copied, status, error, isSupported, reset, and async copy(value). Options include copiedDuration, onCopy, onError, and test/embed window injection. copiedDuration defaults to 2000ms and 0 keeps copied state until reset.",
-    "categories": [
-      "hook",
-      "clipboard",
-      "feedback"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "The hook is state only. Components using it should expose copied/error feedback with accessible names or live regions appropriate to the surface.",
+    anatomy: [],
+    api: "Exports createCopyToClipboard with copied, status, error, isSupported, reset, and async copy(value). Options include copiedDuration, onCopy, onError, and test/embed window injection. copiedDuration defaults to 2000ms and 0 keeps copied state until reset.",
+    categories: ["hook", "clipboard", "feedback"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "dependencies": [],
-    "description": "UI-owned Solid clipboard helper with copied/error state, callbacks, timer reset, and SSR-safe capability checks.",
-    "files": [
+    dependencies: [],
+    description:
+      "UI-owned Solid clipboard helper with copied/error state, callbacks, timer reset, and SSR-safe capability checks.",
+    files: [
       {
-        "path": "packages/ui/src/default/hooks/use-copy-to-clipboard.ts",
-        "type": "registry:hook"
-      }
+        path: "packages/ui/src/default/hooks/use-copy-to-clipboard.ts",
+        type: "registry:hook",
+      },
     ],
-    "install": "mason add use-copy-to-clipboard",
-    "keywords": [
-      "clipboard",
-      "copy",
-      "hook",
-      "solid",
-      "use-copy-to-clipboard"
-    ],
-    "limitations": "This generated UI hook is not a Core primitive and does not include legacy execCommand fallback. Clipboard permission behavior remains browser-owned.",
-    "name": "use-copy-to-clipboard",
-    "parity": {
-      "coss": "Covers the tracked useCopyToClipboard gap with Solid-native accessors, temporary copied state, failure state, callbacks, and browser capability guards.",
-      "solid": "Uses createSignal/onCleanup and an explicit createCopyToClipboard factory instead of React hook state/effects.",
-      "keystoneCore": "Intentionally remains in UI generated source because clipboard feedback is app/documentation behavior, not intrinsic Core primitive behavior."
+    install: "mason add use-copy-to-clipboard",
+    keywords: ["clipboard", "copy", "hook", "solid", "use-copy-to-clipboard"],
+    limitations:
+      "This generated UI hook is not a Core primitive and does not include legacy execCommand fallback. Clipboard permission behavior remains browser-owned.",
+    name: "use-copy-to-clipboard",
+    parity: {
+      coss: "Covers the tracked useCopyToClipboard gap with Solid-native accessors, temporary copied state, failure state, callbacks, and browser capability guards.",
+      solid:
+        "Uses createSignal/onCleanup and an explicit createCopyToClipboard factory instead of React hook state/effects.",
+      keystoneCore:
+        "Intentionally remains in UI generated source because clipboard feedback is app/documentation behavior, not intrinsic Core primitive behavior.",
     },
-    "registryDependencies": [],
-    "sourceFiles": [
-      "packages/ui/src/default/hooks/use-copy-to-clipboard.ts"
-    ],
-    "ssr": "Does not touch window or navigator until copy/isSupported is called. A window option supports tests and embedded document contexts.",
-    "title": "useCopyToClipboard",
-    "type": "registry:hook",
-    "version": "0.1.0"
+    registryDependencies: [],
+    sourceFiles: ["packages/ui/src/default/hooks/use-copy-to-clipboard.ts"],
+    ssr: "Does not touch window or navigator until copy/isSupported is called. A window option supports tests and embedded document contexts.",
+    title: "useCopyToClipboard",
+    type: "registry:hook",
+    version: "0.1.0",
   },
   {
-    "anatomy": [],
-    "api": "CommandStore exports createCommandStore, CommandStoreCommand, CommandStoreState, CommandStoreOptions, CommandStore, RegisterCommandsOptions, and SelectCommandOptions. The store exposes Solid-friendly state through TanStack Store plus explicit actions for open/query state, selection, recent command ids, command registration, route/workspace scope, and loading/error metadata.",
-    "categories": [
-      "command",
-      "store",
-      "tanstack"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    anatomy: [],
+    api: "CommandStore exports createCommandStore, CommandStoreCommand, CommandStoreState, CommandStoreOptions, CommandStore, RegisterCommandsOptions, and SelectCommandOptions. The store exposes Solid-friendly state through TanStack Store plus explicit actions for open/query state, selection, recent command ids, command registration, route/workspace scope, and loading/error metadata.",
+    categories: ["command", "store", "tanstack"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "dataAttributes": "CommandStore is state-only and renders no DOM. Styling hooks belong to surfaces such as CommandMenu and ShortcutDisplay.",
-    "dependencies": [
-      "@tanstack/solid-store"
-    ],
-    "description": "TanStack Store-backed command state for coordinating command menus, shell triggers, and route-scoped command registries.",
-    "files": [
+    dataAttributes:
+      "CommandStore is state-only and renders no DOM. Styling hooks belong to surfaces such as CommandMenu and ShortcutDisplay.",
+    dependencies: ["@tanstack/solid-store"],
+    description:
+      "TanStack Store-backed command state for coordinating command menus, shell triggers, and route-scoped command registries.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/command-store.ts",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/command-store.ts",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add command-store",
-    "keywords": [
-      "command-store",
-      "command-menu",
-      "store",
-      "tanstack",
-      "keystone"
-    ],
-    "limitations": "This is not a Core primitive, command router, fuzzy scorer, permissions engine, async discovery service, shortcut manager, or persistence layer. AppStoreProvider integration remains optional follow-up work.",
-    "name": "command-store",
-    "parity": {
-      "tanstackStore": "First-class reference is TanStack Store: CommandStore uses a small source-owned Store with explicit actions rather than reducers or singleton state. It preserves Solid-friendly access through store.state, store.get(), subscriptions, and useSelector in consuming components.",
-      "tanstackHotkeys": "CommandStore intentionally does not register shortcuts. KeyboardShortcuts and CommandMenu hotkey registration remain separate so app shortcuts do not blur into command state.",
-      "shadcn": "Matches source-owned ergonomics: applications can install, read, modify, or remove the generated store without hidden runtime coupling.",
-      "keystoneCore": "Keeps Core/UI boundaries intact. Core primitives own intrinsic keyboard, focus, overlay, collection, and ARIA behavior; CommandStore only coordinates app state used around those primitives."
+    install: "mason add command-store",
+    keywords: ["command-store", "command-menu", "store", "tanstack", "keystone"],
+    limitations:
+      "This is not a Core primitive, command router, fuzzy scorer, permissions engine, async discovery service, shortcut manager, or persistence layer. AppStoreProvider integration remains optional follow-up work.",
+    name: "command-store",
+    parity: {
+      tanstackStore:
+        "First-class reference is TanStack Store: CommandStore uses a small source-owned Store with explicit actions rather than reducers or singleton state. It preserves Solid-friendly access through store.state, store.get(), subscriptions, and useSelector in consuming components.",
+      tanstackHotkeys:
+        "CommandStore intentionally does not register shortcuts. KeyboardShortcuts and CommandMenu hotkey registration remain separate so app shortcuts do not blur into command state.",
+      shadcn:
+        "Matches source-owned ergonomics: applications can install, read, modify, or remove the generated store without hidden runtime coupling.",
+      keystoneCore:
+        "Keeps Core/UI boundaries intact. Core primitives own intrinsic keyboard, focus, overlay, collection, and ARIA behavior; CommandStore only coordinates app state used around those primitives.",
     },
-    "registryDependencies": [],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/command-store.ts"
-    ],
-    "ssr": "CommandStore does not read window, document, HTMLElement, or other browser globals during construction. It is safe to create during SSR and hydrate later with app-owned command registration.",
-    "state": "State includes open, query, selectedCommandId, recentlyUsedCommandIds, commands, optional scope, loading, and error. lastSelectedValue remains as a compatibility alias for the 0.1 CommandMenu proof.",
-    "title": "CommandStore",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: [],
+    sourceFiles: ["packages/ui/src/default/ui/command-store.ts"],
+    ssr: "CommandStore does not read window, document, HTMLElement, or other browser globals during construction. It is safe to create during SSR and hydrate later with app-owned command registration.",
+    state:
+      "State includes open, query, selectedCommandId, recentlyUsedCommandIds, commands, optional scope, loading, and error. lastSelectedValue remains as a compatibility alias for the 0.1 CommandMenu proof.",
+    title: "CommandStore",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "AppStoreProvider has no widget role and does not replace Core primitive keyboard, focus, or ARIA behavior. It renders a neutral div with stable ui-app-store provider data attributes so generated app shells can style or inspect the provider without adding semantics.",
-    "anatomy": [
-      "provider"
-    ],
-    "api": "Exports createAppStore, AppStoreProvider, useAppStore, useRequiredAppStore, and useAppStoreSelector. createAppStore returns a TanStack Store plus Solid-native actions for command menu visibility/query/selection, command group registration, shortcut preferences/scope, shell theme/sidebar state, and app-owned workspace values.",
-    "categories": [
-      "store",
-      "app-shell",
-      "tanstack"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    accessibility:
+      "AppStoreProvider has no widget role and does not replace Core primitive keyboard, focus, or ARIA behavior. It renders a neutral div with stable ui-app-store provider data attributes so generated app shells can style or inspect the provider without adding semantics.",
+    anatomy: ["provider"],
+    api: "Exports createAppStore, AppStoreProvider, useAppStore, useRequiredAppStore, and useAppStoreSelector. createAppStore returns a TanStack Store plus Solid-native actions for command menu visibility/query/selection, command group registration, shortcut preferences/scope, shell theme/sidebar state, and app-owned workspace values.",
+    categories: ["store", "app-shell", "tanstack"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "dataAttributes": "The root provider emits data-scope=\"ui-app-store\", data-part=\"provider\", and data-slot=\"app-store-provider\".",
-    "dependencies": [
-      "@tanstack/solid-store",
-      "cn"
-    ],
-    "description": "Optional Solid app-shell state provider for generated UI source that coordinates TanStack Store-backed command, shortcut, shell, and workspace state.",
-    "files": [
+    dataAttributes:
+      'The root provider emits data-scope="ui-app-store", data-part="provider", and data-slot="app-store-provider".',
+    dependencies: ["@tanstack/solid-store", "cn"],
+    description:
+      "Optional Solid app-shell state provider for generated UI source that coordinates TanStack Store-backed command, shortcut, shell, and workspace state.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/app-store-provider.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/app-store-provider.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add app-store-provider",
-    "keywords": [
+    install: "mason add app-store-provider",
+    keywords: [
       "app-store",
       "provider",
       "store",
@@ -2680,545 +2117,433 @@ export const registryDocItems = [
       "shortcuts",
       "shell",
       "workspace",
-      "tanstack"
-    ],
-    "limitations": "This source coordinates app-shell state only. It does not register keyboard shortcuts, persist preferences, implement command search/ranking, own route permissions, or provide Core primitive behavior.",
-    "name": "app-store-provider",
-    "parity": {
-      "visualReference": "No visual reference is required because AppStoreProvider is a neutral app-shell state provider, not a styled visible widget.",
-      "baseUi": "Intentionally differs from Base UI because Base UI owns primitive interaction state; this provider only shares app-level state across generated UI source.",
-      "kobalte": "Intentionally differs from Kobalte primitive context shape by exposing app-shell store actions instead of widget-scoped primitive APIs.",
-      "tanstackStore": "Uses TanStack Store as the provider state engine and exposes Solid selectors through useSelector so generated UI can subscribe to narrow state slices.",
-      "tanstackHotkeys": "Stores shortcut preferences and active shortcut scope for app-level hotkey integrations, but leaves actual registration to KeyboardShortcuts or user-owned source because TanStack Hotkeys remains preview/alpha."
-    },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/app-store-provider.tsx"
-    ],
-    "title": "AppStoreProvider",
-    "type": "registry:ui",
-    "version": "0.1.0"
-  },
-  {
-    "accessibility": "No ARIA roles are introduced because this is app state source, not an interactive widget. Toggle buttons or menus built on top should provide their own labels and pressed/selected state.",
-    "anatomy": [],
-    "api": "createThemeStore returns a TanStack Store plus Solid accessors and actions for theme, systemTheme, resolvedTheme, setTheme, setSystemTheme, cycleTheme, applyTheme, and mounted state. ThemeProvider provides optional context through useThemeStore, and ThemeScript can be rendered before hydration to avoid an initial theme flash.",
-    "categories": [
-      "store",
-      "theme",
-      "tanstack"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
-    },
-    "dataAttributes": "applyTheme writes data-ui-theme and data-ui-resolved-theme to the document element. With the default class strategy it also applies light or dark classes; data-theme can be selected when a project uses attribute-based theming.",
-    "dependencies": [
-      "@tanstack/solid-store"
-    ],
-    "description": "TanStack Store-backed Solid theme state with source-owned provider, system preference resolution, persistence, and SSR theme script.",
-    "files": [
-      {
-        "path": "packages/ui/src/default/stores/theme-store.tsx",
-        "type": "registry:ui"
-      }
-    ],
-    "install": "mason add theme-store",
-    "keywords": [
-      "theme",
-      "dark-mode",
-      "tanstack-store",
-      "solid"
-    ],
-    "limitations": "This item intentionally owns app theme state only. It does not ship a visual theme editor, token registry format, or framework-specific cookie bridge.",
-    "name": "theme-store",
-    "parity": {
-      "tanstackStore": "Uses TanStack Store for app-level theme state while exposing Solid accessors and source-owned actions. This keeps theme coordination in UI rather than Core.",
-      "shadcn": "Follows shadcn dark-mode ergonomics: provider plus hook, light/dark/system modes, localStorage persistence, document class toggling, and optional no-flash script. Keystone differs by using Solid and TanStack Store instead of React state/context alone."
-    },
-    "registryDependencies": [],
-    "sourceFiles": [
-      "packages/ui/src/default/stores/theme-store.tsx"
-    ],
-    "ssr": "No browser globals are read while creating the store. mountThemeStore performs localStorage, matchMedia, and document writes after mount. ThemeScript is available for server-rendered shells that need pre-hydration theme application.",
-    "state": "Supports light, dark, and system modes. resolvedTheme is always light or dark and follows system preference when theme is system.",
-    "title": "ThemeStore",
-    "type": "registry:ui",
-    "version": "0.1.0"
-  },
-  {
-    "accessibility": "No ARIA roles are introduced because this is app shell state source. Sidebar components built on top should connect trigger aria-expanded to the relevant open accessor, label the trigger, and manage landmark/navigation semantics.",
-    "anatomy": [],
-    "api": "createSidebarStore returns a TanStack Store plus Solid accessors and actions for open, openMobile, isMobile, state, activeItemId, setOpen, setOpenMobile, setIsMobile, setActiveItemId, expand, collapse, and toggle. SidebarProvider provides optional context through useSidebarStore.",
-    "categories": [
-      "store",
-      "sidebar",
       "tanstack",
-      "layout"
     ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    limitations:
+      "This source coordinates app-shell state only. It does not register keyboard shortcuts, persist preferences, implement command search/ranking, own route permissions, or provide Core primitive behavior.",
+    name: "app-store-provider",
+    parity: {
+      visualReference:
+        "No visual reference is required because AppStoreProvider is a neutral app-shell state provider, not a styled visible widget.",
+      baseUi:
+        "Intentionally differs from Base UI because Base UI owns primitive interaction state; this provider only shares app-level state across generated UI source.",
+      kobalte:
+        "Intentionally differs from Kobalte primitive context shape by exposing app-shell store actions instead of widget-scoped primitive APIs.",
+      tanstackStore:
+        "Uses TanStack Store as the provider state engine and exposes Solid selectors through useSelector so generated UI can subscribe to narrow state slices.",
+      tanstackHotkeys:
+        "Stores shortcut preferences and active shortcut scope for app-level hotkey integrations, but leaves actual registration to KeyboardShortcuts or user-owned source because TanStack Hotkeys remains preview/alpha.",
     },
-    "dataAttributes": "The store does not render DOM. Generated sidebar UI should project state through stable data-scope/data-part hooks and data-state values such as expanded/collapsed.",
-    "dependencies": [
-      "@tanstack/solid-store"
-    ],
-    "description": "TanStack Store-backed Solid sidebar app state with desktop/mobile open state, active item tracking, persistence, media-query sync, and keyboard toggling.",
-    "files": [
-      {
-        "path": "packages/ui/src/default/stores/sidebar-store.tsx",
-        "type": "registry:ui"
-      }
-    ],
-    "install": "mason add sidebar-store",
-    "keywords": [
-      "sidebar",
-      "app-shell",
-      "tanstack-store",
-      "solid",
-      "keyboard"
-    ],
-    "limitations": "This item intentionally owns shared app shell state only. The visual Sidebar registry item composes this store for source-owned aside/nav/button/link anatomy. Focus trapping and drawer dismissal remain app composition concerns unless future Core overlay composition is explicitly needed.",
-    "name": "sidebar-store",
-    "parity": {
-      "tanstackStore": "Uses TanStack Store for reusable app-shell state with Solid accessors and actions, keeping layout coordination in the UI app layer.",
-      "shadcn": "Adapts shadcn sidebar state ideas: provider plus hook ergonomics, desktop and mobile open state, collapsed/expanded state, persistence, media query awareness, and Mod+B toggling. Keystone differs by shipping store source separately from the visual sidebar component."
-    },
-    "registryDependencies": [],
-    "sourceFiles": [
-      "packages/ui/src/default/stores/sidebar-store.tsx"
-    ],
-    "ssr": "No browser globals are read while creating the store. mountSidebarStore performs localStorage, matchMedia, and keydown registration after mount.",
-    "state": "Tracks desktop open state separately from mobile open state. state resolves to expanded or collapsed from desktop open state, while toggle targets openMobile whenever the configured media query is active.",
-    "title": "SidebarStore",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/app-store-provider.tsx"],
+    title: "AppStoreProvider",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "The root renders as an aside with an aria-label, navigation renders as nav, the trigger is a button with aria-expanded and optional aria-controls, active links expose aria-current=page, disabled generated links use aria-disabled and prevent navigation, and the mobile panel renders role=dialog with aria-modal.",
-    "anatomy": "The desktop sidebar is an aside inside SidebarLayout. Content uses header/content/footer, group, group action, nav, menu, menu item, link/button, menu action, badge, skeleton, submenu, trigger, rail, input, separator, mobile dialog panel, and inset parts. SidebarItems is a convenience renderer for simple source-owned navigation arrays.",
-    "api": "Exports SidebarProvider, useSidebar, SidebarLayout, Sidebar, SidebarMobile, SidebarHeader, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarGroupAction, SidebarGroupContent, SidebarNav, SidebarMenu, SidebarMenuItem, SidebarMenuLink, SidebarMenuButton, SidebarMenuAction, SidebarMenuBadge, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton, SidebarTrigger, SidebarRail, SidebarInset, SidebarInput, SidebarSeparator, and SidebarItems.",
-    "categories": [
-      "layout",
-      "sidebar",
-      "navigation",
-      "app-shell"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    accessibility:
+      "No ARIA roles are introduced because this is app state source, not an interactive widget. Toggle buttons or menus built on top should provide their own labels and pressed/selected state.",
+    anatomy: [],
+    api: "createThemeStore returns a TanStack Store plus Solid accessors and actions for theme, systemTheme, resolvedTheme, setTheme, setSystemTheme, cycleTheme, applyTheme, and mounted state. ThemeProvider provides optional context through useThemeStore, and ThemeScript can be rendered before hydration to avoid an initial theme flash.",
+    categories: ["store", "theme", "tanstack"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "dataAttributes": "Stable hooks use data-scope=\"ui-sidebar\" and data-part values for layout, root, mobile, header, content, footer, group, group-label, group-action, group-content, nav, menu, menu-item, menu-link, menu-button, menu-action, menu-badge, menu-skeleton, menu-sub, menu-sub-item, menu-sub-button, trigger, rail, inset, input, separator, menu-icon, and menu-badge. State hooks include data-state=expanded|collapsed, data-mobile, data-open-mobile, data-active, data-side, data-variant, data-size, and data-collapsible.",
-    "dependencies": [
-      "@tanstack/solid-store",
-      "button",
-      "cn",
-      "input",
-      "separator",
-      "sidebar-store"
-    ],
-    "description": "Source-owned Solid app sidebar with desktop collapse state, mobile panel state, navigation anatomy, active item tracking, and stable styling hooks.",
-    "files": [
+    dataAttributes:
+      "applyTheme writes data-ui-theme and data-ui-resolved-theme to the document element. With the default class strategy it also applies light or dark classes; data-theme can be selected when a project uses attribute-based theming.",
+    dependencies: ["@tanstack/solid-store"],
+    description:
+      "TanStack Store-backed Solid theme state with source-owned provider, system preference resolution, persistence, and SSR theme script.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/sidebar.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/stores/theme-store.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add sidebar",
-    "keywords": [
-      "sidebar",
-      "app-shell",
-      "navigation",
-      "tanstack-store",
-      "solid"
-    ],
-    "limitations": "This item does not implement route integration, animated width measurement, tooltip-on-collapsed labels, persisted nested menu state, or enforced mobile focus trapping. Those belong in app composition, future blocks, or Core overlay composition where needed.",
-    "name": "sidebar",
-    "parity": {
-      "shadcn": "Matches shadcn-style source ownership, provider/hook ergonomics through sidebar-store, desktop/mobile open state, variants, rail, group action, menu action, badge, skeleton, submenus, sidebar input/separator, active item source helpers, CSS variable widths, data-state hooks, and Mod+B shortcut behavior. Keystone differs by keeping visual Sidebar and TanStack Store state as separate registry items and using Solid-native components instead of React asChild/useRender.",
-      "tanstackStore": "Uses TanStack Store only for app-shell state coordination, not intrinsic widget behavior. This keeps Core independent from TanStack app libraries.",
-      "coreBoundary": "No Core primitive is added because the shipped behavior is layout/navigation composition over native aside/nav/button/link semantics."
+    install: "mason add theme-store",
+    keywords: ["theme", "dark-mode", "tanstack-store", "solid"],
+    limitations:
+      "This item intentionally owns app theme state only. It does not ship a visual theme editor, token registry format, or framework-specific cookie bridge.",
+    name: "theme-store",
+    parity: {
+      tanstackStore:
+        "Uses TanStack Store for app-level theme state while exposing Solid accessors and source-owned actions. This keeps theme coordination in UI rather than Core.",
+      shadcn:
+        "Follows shadcn dark-mode ergonomics: provider plus hook, light/dark/system modes, localStorage persistence, document class toggling, and optional no-flash script. Keystone differs by using Solid and TanStack Store instead of React state/context alone.",
     },
-    "registryDependencies": [
-      "button",
-      "cn",
-      "input",
-      "separator",
-      "sidebar-store"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/sidebar.tsx"
-    ],
-    "ssr": "The visual component reads only Solid store accessors during render. Browser-only localStorage, matchMedia, and keydown wiring remain inside mountSidebarStore after mount.",
-    "title": "Sidebar",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: [],
+    sourceFiles: ["packages/ui/src/default/stores/theme-store.tsx"],
+    ssr: "No browser globals are read while creating the store. mountThemeStore performs localStorage, matchMedia, and document writes after mount. ThemeScript is available for server-rendered shells that need pre-hydration theme application.",
+    state:
+      "Supports light, dark, and system modes. resolvedTheme is always light or dark and follows system preference when theme is system.",
+    title: "ThemeStore",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "This item renders no UI by default and adds no ARIA roles. It is for app shortcuts that open surfaces or invoke commands; Core primitives keep owning intrinsic widget keyboard behavior.",
-    "anatomy": [],
-    "api": "KeyboardShortcuts accepts shortcut definitions with id, hotkey, label, description, scope, enabled flags, per-shortcut Hotkeys options, and onTrigger callbacks. It also exports getKeyboardShortcutConflicts for testing, preferences UIs, and command help surfaces.",
-    "categories": [
-      "shortcut",
-      "hotkeys",
-      "tanstack"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    accessibility:
+      "No ARIA roles are introduced because this is app shell state source. Sidebar components built on top should connect trigger aria-expanded to the relevant open accessor, label the trigger, and manage landmark/navigation semantics.",
+    anatomy: [],
+    api: "createSidebarStore returns a TanStack Store plus Solid accessors and actions for open, openMobile, isMobile, state, activeItemId, setOpen, setOpenMobile, setIsMobile, setActiveItemId, expand, collapse, and toggle. SidebarProvider provides optional context through useSidebarStore.",
+    categories: ["store", "sidebar", "tanstack", "layout"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "dataAttributes": "KeyboardShortcuts is registration-only and renders no DOM. Display hooks belong to ShortcutDisplay and recorder items.",
-    "dependencies": [
-      "@tanstack/solid-hotkeys"
-    ],
-    "description": "Preview TanStack Hotkeys registration source for app-level shortcuts with scope filtering and conflict reporting.",
-    "files": [
+    dataAttributes:
+      "The store does not render DOM. Generated sidebar UI should project state through stable data-scope/data-part hooks and data-state values such as expanded/collapsed.",
+    dependencies: ["@tanstack/solid-store"],
+    description:
+      "TanStack Store-backed Solid sidebar app state with desktop/mobile open state, active item tracking, persistence, media-query sync, and keyboard toggling.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/keyboard-shortcuts.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/stores/sidebar-store.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add keyboard-shortcuts",
-    "keywords": [
-      "keyboard-shortcuts",
-      "hotkeys",
-      "shortcut",
-      "scope",
-      "tanstack"
-    ],
-    "limitations": "TanStack Hotkeys is still preview/alpha. This source keeps registration easy to remove or adapt and does not implement persistence, permissions, shortcut editing, or Core primitive behavior.",
-    "name": "keyboard-shortcuts",
-    "parity": {
-      "tanstackHotkeys": "Uses createHotkeys as the first-class app shortcut registration engine and preserves TanStack options for target, ignoreInputs, preventDefault, requireReset, and stopPropagation.",
-      "tanstackStore": "Does not require app store state. Teams can pair it with AppStoreProvider or their own TanStack Store preferences when persistence or user customization is needed.",
-      "shadcn": "Follows source-owned ergonomics: shortcuts are readable data objects with callbacks and can be edited after install.",
-      "keystoneCore": "Strictly separates app shortcuts from Core primitive keyboard behavior, focus, list navigation, overlays, and ARIA semantics."
+    install: "mason add sidebar-store",
+    keywords: ["sidebar", "app-shell", "tanstack-store", "solid", "keyboard"],
+    limitations:
+      "This item intentionally owns shared app shell state only. The visual Sidebar registry item composes this store for source-owned aside/nav/button/link anatomy. Focus trapping and drawer dismissal remain app composition concerns unless future Core overlay composition is explicitly needed.",
+    name: "sidebar-store",
+    parity: {
+      tanstackStore:
+        "Uses TanStack Store for reusable app-shell state with Solid accessors and actions, keeping layout coordination in the UI app layer.",
+      shadcn:
+        "Adapts shadcn sidebar state ideas: provider plus hook ergonomics, desktop and mobile open state, collapsed/expanded state, persistence, media query awareness, and Mod+B toggling. Keystone differs by shipping store source separately from the visual sidebar component.",
     },
-    "registryDependencies": [],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/keyboard-shortcuts.tsx"
-    ],
-    "ssr": "When no DOM target exists, TanStack Hotkeys skips registration. Pass target null to intentionally suppress registration during SSR, tests, or inactive app shells.",
-    "title": "KeyboardShortcuts",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: [],
+    sourceFiles: ["packages/ui/src/default/stores/sidebar-store.tsx"],
+    ssr: "No browser globals are read while creating the store. mountSidebarStore performs localStorage, matchMedia, and keydown registration after mount.",
+    state:
+      "Tracks desktop open state separately from mobile open state. state resolves to expanded or collapsed from desktop open state, while toggle targets openMobile whenever the configured media query is active.",
+    title: "SidebarStore",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "ShortcutDisplay renders passive kbd text. It does not add widget roles, keyboard handlers, or command behavior; consuming buttons, menus, and command rows own their labels and interactions.",
-    "anatomy": [
-      "root",
-      "step",
-      "key",
-      "separator",
-      "sequence-separator"
-    ],
-    "api": "ShortcutDisplay accepts hotkey, sequence, or explicit label props, plus TanStack formatOptions, keyClass, separatorClass, sequenceSeparator, and sequenceSeparatorClass. It renders display-only kbd markup and does not register shortcuts.",
-    "categories": [
-      "shortcut",
-      "hotkeys",
-      "display",
-      "tanstack"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    accessibility:
+      "The root renders as an aside with an aria-label, navigation renders as nav, the trigger is a button with aria-expanded and optional aria-controls, active links expose aria-current=page, disabled generated links use aria-disabled and prevent navigation, and the mobile panel renders role=dialog with aria-modal.",
+    anatomy:
+      "The desktop sidebar is an aside inside SidebarLayout. Content uses header/content/footer, group, group action, nav, menu, menu item, link/button, menu action, badge, skeleton, submenu, trigger, rail, input, separator, mobile dialog panel, and inset parts. SidebarItems is a convenience renderer for simple source-owned navigation arrays.",
+    api: "Exports SidebarProvider, useSidebar, SidebarLayout, Sidebar, SidebarMobile, SidebarHeader, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarGroupAction, SidebarGroupContent, SidebarNav, SidebarMenu, SidebarMenuItem, SidebarMenuLink, SidebarMenuButton, SidebarMenuAction, SidebarMenuBadge, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton, SidebarTrigger, SidebarRail, SidebarInset, SidebarInput, SidebarSeparator, and SidebarItems.",
+    categories: ["layout", "sidebar", "navigation", "app-shell"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "dataAttributes": "Stable hooks use data-scope=\"ui-shortcut-display\" and data-part values for root, step, key, separator, and sequence-separator. Each key part also exposes data-key.",
-    "dependencies": [
-      "@tanstack/solid-hotkeys",
-      "cn"
-    ],
-    "description": "Display-only shortcut label source with platform-aware TanStack Hotkeys formatting and stable key-part data attributes.",
-    "files": [
+    dataAttributes:
+      'Stable hooks use data-scope="ui-sidebar" and data-part values for layout, root, mobile, header, content, footer, group, group-label, group-action, group-content, nav, menu, menu-item, menu-link, menu-button, menu-action, menu-badge, menu-skeleton, menu-sub, menu-sub-item, menu-sub-button, trigger, rail, inset, input, separator, menu-icon, and menu-badge. State hooks include data-state=expanded|collapsed, data-mobile, data-open-mobile, data-active, data-side, data-variant, data-size, and data-collapsible.',
+    dependencies: ["@tanstack/solid-store", "button", "cn", "input", "separator", "sidebar-store"],
+    description:
+      "Source-owned Solid app sidebar with desktop collapse state, mobile panel state, navigation anatomy, active item tracking, and stable styling hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/shortcut-display.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/sidebar.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add shortcut-display",
-    "keywords": [
-      "shortcut-display",
-      "hotkey",
-      "keyboard",
-      "kbd",
-      "tanstack"
-    ],
-    "limitations": "ShortcutDisplay is display-only. Registration belongs to KeyboardShortcuts or app-owned source, and editing belongs to ShortcutRecorder or ShortcutSequenceRecorder.",
-    "name": "shortcut-display",
-    "parity": {
-      "tanstackHotkeys": "Uses TanStack Hotkeys formatForDisplay for platform-aware labels and supports registerable hotkey values and sequence arrays.",
-      "shadcn": "Matches source-owned kbd ergonomics for compact shortcut labels while keeping each key and separator addressable through data attributes.",
-      "keystoneCore": "Intentionally remains UI-only passive markup. Core primitive keyboard behavior is not involved."
+    install: "mason add sidebar",
+    keywords: ["sidebar", "app-shell", "navigation", "tanstack-store", "solid"],
+    limitations:
+      "This item does not implement route integration, animated width measurement, tooltip-on-collapsed labels, persisted nested menu state, or enforced mobile focus trapping. Those belong in app composition, future blocks, or Core overlay composition where needed.",
+    name: "sidebar",
+    parity: {
+      shadcn:
+        "Matches shadcn-style source ownership, provider/hook ergonomics through sidebar-store, desktop/mobile open state, variants, rail, group action, menu action, badge, skeleton, submenus, sidebar input/separator, active item source helpers, CSS variable widths, data-state hooks, and Mod+B shortcut behavior. Keystone differs by keeping visual Sidebar and TanStack Store state as separate registry items and using Solid-native components instead of React asChild/useRender.",
+      tanstackStore:
+        "Uses TanStack Store only for app-shell state coordination, not intrinsic widget behavior. This keeps Core independent from TanStack app libraries.",
+      coreBoundary:
+        "No Core primitive is added because the shipped behavior is layout/navigation composition over native aside/nav/button/link semantics.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/shortcut-display.tsx"
-    ],
-    "ssr": "Formatting is deterministic from props and TanStack Hotkeys formatForDisplay. Pass formatOptions.platform when server-rendered output must exactly match a known client platform.",
-    "title": "ShortcutDisplay",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["button", "cn", "input", "separator", "sidebar-store"],
+    sourceFiles: ["packages/ui/src/default/ui/sidebar.tsx"],
+    ssr: "The visual component reads only Solid store accessors during render. Browser-only localStorage, matchMedia, and keydown wiring remain inside mountSidebarStore after mount.",
+    title: "Sidebar",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "ShortcutRecorder renders a native button, defaults type=button, sets aria-pressed while recording, and preserves caller labels through children. Applications should place it in a labelled settings row when editing user preferences.",
-    "anatomy": [
-      "trigger",
-      "label",
-      "value",
-      "placeholder"
-    ],
-    "api": "ShortcutRecorder is a button-like control with value, onValueChange, onCancel, onClear, recorderOptions, placeholder, recordingLabel, and ShortcutDisplay formatOptions props.",
-    "categories": [
-      "shortcut",
-      "hotkeys",
-      "recorder",
-      "tanstack"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    accessibility:
+      "This item renders no UI by default and adds no ARIA roles. It is for app shortcuts that open surfaces or invoke commands; Core primitives keep owning intrinsic widget keyboard behavior.",
+    anatomy: [],
+    api: "KeyboardShortcuts accepts shortcut definitions with id, hotkey, label, description, scope, enabled flags, per-shortcut Hotkeys options, and onTrigger callbacks. It also exports getKeyboardShortcutConflicts for testing, preferences UIs, and command help surfaces.",
+    categories: ["shortcut", "hotkeys", "tanstack"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "dataAttributes": "Stable hooks use data-scope=\"ui-shortcut-recorder\" and data-part values for trigger, label, value, and placeholder. Trigger exposes data-recording and data-empty.",
-    "dependencies": [
-      "@tanstack/solid-hotkeys",
-      "shortcut-display",
-      "cn"
-    ],
-    "description": "Source-owned shortcut recorder control backed by TanStack Hotkeys recorder state and ShortcutDisplay.",
-    "files": [
+    dataAttributes:
+      "KeyboardShortcuts is registration-only and renders no DOM. Display hooks belong to ShortcutDisplay and recorder items.",
+    dependencies: ["@tanstack/solid-hotkeys"],
+    description:
+      "Preview TanStack Hotkeys registration source for app-level shortcuts with scope filtering and conflict reporting.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/shortcut-recorder.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/keyboard-shortcuts.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add shortcut-recorder",
-    "keywords": [
-      "shortcut-recorder",
-      "hotkey",
-      "keyboard",
-      "settings",
-      "tanstack"
-    ],
-    "limitations": "This records one chord. Multi-step Vim-style sequences belong to ShortcutSequenceRecorder. Persistence, conflict resolution, and user preference storage stay in app-owned source.",
-    "name": "shortcut-recorder",
-    "parity": {
-      "tanstackHotkeys": "Wraps createHotkeyRecorder and preserves recorderOptions while adding generated UI markup and data attributes.",
-      "shadcn": "Source-owned settings-control ergonomics: a native button with compact kbd display, easy to restyle or replace after install.",
-      "keystoneCore": "Does not add Core primitive behavior. It is an app settings control for user shortcut preferences."
+    install: "mason add keyboard-shortcuts",
+    keywords: ["keyboard-shortcuts", "hotkeys", "shortcut", "scope", "tanstack"],
+    limitations:
+      "TanStack Hotkeys is still preview/alpha. This source keeps registration easy to remove or adapt and does not implement persistence, permissions, shortcut editing, or Core primitive behavior.",
+    name: "keyboard-shortcuts",
+    parity: {
+      tanstackHotkeys:
+        "Uses createHotkeys as the first-class app shortcut registration engine and preserves TanStack options for target, ignoreInputs, preventDefault, requireReset, and stopPropagation.",
+      tanstackStore:
+        "Does not require app store state. Teams can pair it with AppStoreProvider or their own TanStack Store preferences when persistence or user customization is needed.",
+      shadcn:
+        "Follows source-owned ergonomics: shortcuts are readable data objects with callbacks and can be edited after install.",
+      keystoneCore:
+        "Strictly separates app shortcuts from Core primitive keyboard behavior, focus, list navigation, overlays, and ARIA semantics.",
     },
-    "registryDependencies": [
-      "cn",
-      "shortcut-display"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/shortcut-recorder.tsx"
-    ],
-    "ssr": "Rendering does not read browser globals. Recording starts only from user interaction after hydration through TanStack Hotkeys recorder source.",
-    "title": "ShortcutRecorder",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: [],
+    sourceFiles: ["packages/ui/src/default/ui/keyboard-shortcuts.tsx"],
+    ssr: "When no DOM target exists, TanStack Hotkeys skips registration. Pass target null to intentionally suppress registration during SSR, tests, or inactive app shells.",
+    title: "KeyboardShortcuts",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "ShortcutSequenceRecorder renders a native button, defaults type=button, sets aria-pressed while recording, and preserves caller labels through children. Applications should place it in a labelled settings row when editing sequence preferences.",
-    "anatomy": [
-      "trigger",
-      "label",
-      "value",
-      "placeholder"
-    ],
-    "api": "ShortcutSequenceRecorder is a button-like control with value, onValueChange, onCancel, onClear, recorderOptions, placeholder, recordingLabel, sequenceSeparator, and ShortcutDisplay formatOptions props.",
-    "categories": [
-      "shortcut",
-      "hotkeys",
-      "recorder",
-      "sequence",
-      "tanstack"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    accessibility:
+      "ShortcutDisplay renders passive kbd text. It does not add widget roles, keyboard handlers, or command behavior; consuming buttons, menus, and command rows own their labels and interactions.",
+    anatomy: ["root", "step", "key", "separator", "sequence-separator"],
+    api: "ShortcutDisplay accepts hotkey, sequence, or explicit label props, plus TanStack formatOptions, keyClass, separatorClass, sequenceSeparator, and sequenceSeparatorClass. It renders display-only kbd markup and does not register shortcuts.",
+    categories: ["shortcut", "hotkeys", "display", "tanstack"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "dataAttributes": "Stable hooks use data-scope=\"ui-shortcut-sequence-recorder\" and data-part values for trigger, label, value, and placeholder. Trigger exposes data-recording and data-empty.",
-    "dependencies": [
-      "@tanstack/solid-hotkeys",
-      "shortcut-display",
-      "cn"
-    ],
-    "description": "Source-owned multi-chord shortcut sequence recorder backed by TanStack Hotkeys sequence recorder state and ShortcutDisplay.",
-    "files": [
+    dataAttributes:
+      'Stable hooks use data-scope="ui-shortcut-display" and data-part values for root, step, key, separator, and sequence-separator. Each key part also exposes data-key.',
+    dependencies: ["@tanstack/solid-hotkeys", "cn"],
+    description:
+      "Display-only shortcut label source with platform-aware TanStack Hotkeys formatting and stable key-part data attributes.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/shortcut-sequence-recorder.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/shortcut-display.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add shortcut-sequence-recorder",
-    "keywords": [
-      "shortcut-sequence-recorder",
-      "hotkey",
-      "keyboard",
-      "sequence",
-      "vim",
-      "tanstack"
-    ],
-    "limitations": "This records multi-step sequences only. Single-chord shortcuts can use ShortcutRecorder. Persistence, conflict resolution, and user preference storage stay in app-owned source.",
-    "name": "shortcut-sequence-recorder",
-    "parity": {
-      "tanstackHotkeys": "Wraps createHotkeySequenceRecorder and preserves sequence recorder options while adding generated UI markup and data attributes.",
-      "shadcn": "Source-owned settings-control ergonomics for command-heavy apps that need Vim-style sequence preference editing.",
-      "keystoneCore": "Does not add Core primitive behavior. It is an app settings control for user shortcut sequence preferences."
+    install: "mason add shortcut-display",
+    keywords: ["shortcut-display", "hotkey", "keyboard", "kbd", "tanstack"],
+    limitations:
+      "ShortcutDisplay is display-only. Registration belongs to KeyboardShortcuts or app-owned source, and editing belongs to ShortcutRecorder or ShortcutSequenceRecorder.",
+    name: "shortcut-display",
+    parity: {
+      tanstackHotkeys:
+        "Uses TanStack Hotkeys formatForDisplay for platform-aware labels and supports registerable hotkey values and sequence arrays.",
+      shadcn:
+        "Matches source-owned kbd ergonomics for compact shortcut labels while keeping each key and separator addressable through data attributes.",
+      keystoneCore:
+        "Intentionally remains UI-only passive markup. Core primitive keyboard behavior is not involved.",
     },
-    "registryDependencies": [
-      "cn",
-      "shortcut-display"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/shortcut-sequence-recorder.tsx"
-    ],
-    "ssr": "Rendering does not read browser globals. Sequence recording starts only from user interaction after hydration through TanStack Hotkeys recorder source.",
-    "title": "ShortcutSequenceRecorder",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/shortcut-display.tsx"],
+    ssr: "Formatting is deterministic from props and TanStack Hotkeys formatForDisplay. Pass formatOptions.platform when server-rendered output must exactly match a known client platform.",
+    title: "ShortcutDisplay",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [],
-    "categories": [
-      "form",
-      "listbox",
-      "autocomplete"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "ShortcutRecorder renders a native button, defaults type=button, sets aria-pressed while recording, and preserves caller labels through children. Applications should place it in a labelled settings row when editing user preferences.",
+    anatomy: ["trigger", "label", "value", "placeholder"],
+    api: "ShortcutRecorder is a button-like control with value, onValueChange, onCancel, onClear, recorderOptions, placeholder, recordingLabel, and ShortcutDisplay formatOptions props.",
+    categories: ["shortcut", "hotkeys", "recorder", "tanstack"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-autocomplete classes while Core owns input/listbox roles, selection, form value, and positioning.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid autocomplete component backed by Keystone combobox behavior.",
-    "files": [
+    dataAttributes:
+      'Stable hooks use data-scope="ui-shortcut-recorder" and data-part values for trigger, label, value, and placeholder. Trigger exposes data-recording and data-empty.',
+    dependencies: ["@tanstack/solid-hotkeys", "shortcut-display", "cn"],
+    description:
+      "Source-owned shortcut recorder control backed by TanStack Hotkeys recorder state and ShortcutDisplay.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/autocomplete.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/shortcut-recorder.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add autocomplete",
-    "keywords": [
-      "autocomplete",
-      "combobox",
-      "listbox",
-      "keystone"
-    ],
-    "name": "autocomplete",
-    "parity": {
-      "baseUi": "Thin vertical reuses Keystone combobox behavior for input/listbox roles, controlled value surface, option highlighting, selection, form value, and floating positioning. Gaps: Base UI depth around filtering orchestration, inline completion, detached triggers, grouped collections, virtualized lists, scroll buttons, and advanced pointer/touch behavior remain follow-up work.",
-      "kobalte": "Matches the Solid composition direction of Combobox/Listbox/Popper primitives with UI-owned styling. Gaps: richer collection APIs, multi-select, async filtering helpers, hidden select parity, robust typeahead edge cases, and form reset coverage remain follow-up work."
+    install: "mason add shortcut-recorder",
+    keywords: ["shortcut-recorder", "hotkey", "keyboard", "settings", "tanstack"],
+    limitations:
+      "This records one chord. Multi-step Vim-style sequences belong to ShortcutSequenceRecorder. Persistence, conflict resolution, and user preference storage stay in app-owned source.",
+    name: "shortcut-recorder",
+    parity: {
+      tanstackHotkeys:
+        "Wraps createHotkeyRecorder and preserves recorderOptions while adding generated UI markup and data attributes.",
+      shadcn:
+        "Source-owned settings-control ergonomics: a native button with compact kbd display, easy to restyle or replace after install.",
+      keystoneCore:
+        "Does not add Core primitive behavior. It is an app settings control for user shortcut preferences.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/autocomplete.tsx"
-    ],
-    "title": "Autocomplete",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "shortcut-display"],
+    sourceFiles: ["packages/ui/src/default/ui/shortcut-recorder.tsx"],
+    ssr: "Rendering does not read browser globals. Recording starts only from user interaction after hydration through TanStack Hotkeys recorder source.",
+    title: "ShortcutRecorder",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "The kit uses native table, caption, thead, tbody, th, tr, td, button, input, select, fieldset, legend, and label semantics. Headers expose scope and aria-sort, loading sets aria-busy with a status row, selected rows expose aria-selected, empty state uses role=status, pagination is a labelled navigation region, and toolbar controls have programmatic labels.",
-    "anatomy": [],
-    "api": "DataTable receives a TanStack Table instance and optional caption, toolbar slot, empty/loading slots, page size options, skeleton row count, and pagination toggle. useDataTable accepts data/columns as values or accessors for reactive row updates.",
-    "categories": [
-      "table",
-      "tanstack",
-      "data"
-    ],
-    "columns": "Columns are ordinary TanStack Table column definitions. Use DataTableColumnHeader in header renderers and column meta for toolbar filters.",
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    accessibility:
+      "ShortcutSequenceRecorder renders a native button, defaults type=button, sets aria-pressed while recording, and preserves caller labels through children. Applications should place it in a labelled settings row when editing sequence preferences.",
+    anatomy: ["trigger", "label", "value", "placeholder"],
+    api: "ShortcutSequenceRecorder is a button-like control with value, onValueChange, onCancel, onClear, recorderOptions, placeholder, recordingLabel, sequenceSeparator, and ShortcutDisplay formatOptions props.",
+    categories: ["shortcut", "hotkeys", "recorder", "sequence", "tanstack"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use ui-data-table classes and data-part values for root, toolbar, search, faceted-filter, table, header, row, cell, empty, skeleton, row-actions, and pagination.",
-    "dataAttributes": "Stable styling hooks use data-scope=\"ui-data-table\" and data-part values for root, header-slot, viewport, table, caption, header, header-row, head, body, row, cell, empty-row, empty, skeleton-status-row, skeleton-status, skeleton-row, skeleton-cell, column-header, sort-trigger, sort-clear, column-hide, toolbar, search, reset, toolbar-actions, faceted-filter, faceted-option, faceted-control, faceted-count, faceted-clear, view-options, view-options-search, view-option, view-option-control, row-actions, row-action, pagination, selected-summary, page-summary, page-size, page-size-select, page-buttons, and page-button. Root exposes data-loading and data-empty; rows expose data-selected/data-state; headers expose data-sort; filters expose data-state/data-value; pagination buttons expose data-page.",
-    "dataShape": "Pass an array of row objects through data and TanStack ColumnDef<TData, unknown>[] through columns. Use getRowId when the row key is not stable by index.",
-    "dependencies": [
-      "@tanstack/solid-table",
-      "table",
-      "cn"
+    dataAttributes:
+      'Stable hooks use data-scope="ui-shortcut-sequence-recorder" and data-part values for trigger, label, value, and placeholder. Trigger exposes data-recording and data-empty.',
+    dependencies: ["@tanstack/solid-hotkeys", "shortcut-display", "cn"],
+    description:
+      "Source-owned multi-chord shortcut sequence recorder backed by TanStack Hotkeys sequence recorder state and ShortcutDisplay.",
+    files: [
+      {
+        path: "packages/ui/src/default/ui/shortcut-sequence-recorder.tsx",
+        type: "registry:ui",
+      },
     ],
-    "description": "TanStack Table source kit with local state, toolbar, filters, pagination, column visibility, skeletons, empty state, and row actions.",
-    "files": [
-      {
-        "path": "packages/ui/src/default/components/data-table/data-table.tsx",
-        "type": "registry:ui"
-      },
-      {
-        "path": "packages/ui/src/default/components/data-table/data-table-column-header.tsx",
-        "type": "registry:ui"
-      },
-      {
-        "path": "packages/ui/src/default/components/data-table/data-table-empty-state.tsx",
-        "type": "registry:ui"
-      },
-      {
-        "path": "packages/ui/src/default/components/data-table/data-table-faceted-filter.tsx",
-        "type": "registry:ui"
-      },
-      {
-        "path": "packages/ui/src/default/components/data-table/data-table-pagination.tsx",
-        "type": "registry:ui"
-      },
-      {
-        "path": "packages/ui/src/default/components/data-table/data-table-row-actions.tsx",
-        "type": "registry:ui"
-      },
-      {
-        "path": "packages/ui/src/default/components/data-table/data-table-skeleton.tsx",
-        "type": "registry:ui"
-      },
-      {
-        "path": "packages/ui/src/default/components/data-table/data-table-toolbar.tsx",
-        "type": "registry:ui"
-      },
-      {
-        "path": "packages/ui/src/default/components/data-table/data-table-view-options.tsx",
-        "type": "registry:ui"
-      },
-      {
-        "path": "packages/ui/src/default/components/data-table/types.ts",
-        "type": "registry:ui"
-      },
-      {
-        "path": "packages/ui/src/default/components/data-table/use-data-table.ts",
-        "type": "registry:ui"
-      }
-    ],
-    "install": "mason add data-table",
-    "keywords": [
-      "data-table",
-      "table",
-      "tanstack",
-      "sorting",
-      "filtering",
-      "pagination"
-    ],
-    "limitations": "This source is a TanStack Table composition kit, not a custom table engine. Virtualization, persisted column preferences, async fetching/loading orchestration, drag column ordering/sizing, and advanced query builders should be layered in app code or future companion registry items.",
-    "name": "data-table",
-    "parity": {
-      "tanstackTable": "First-class comparison is TanStack Table: the kit uses Solid Table column definitions, local sorting, filtering, pagination, column visibility, row actions, and toolbar composition. Gaps: server-side orchestration, virtualization, persisted views, async loading policy, column sizing/ordering, and advanced filter builders remain app-code follow-up work.",
-      "shadcn": "Comparable to shadcn data-table source kits in copy-paste ownership and composable subcomponents, with Solid-native accessors and Mason multi-file install metadata. Gaps: no CLI-generated schema, no baked-in URL state without the adapter, and no opinionated server data layer."
+    install: "mason add shortcut-sequence-recorder",
+    keywords: ["shortcut-sequence-recorder", "hotkey", "keyboard", "sequence", "vim", "tanstack"],
+    limitations:
+      "This records multi-step sequences only. Single-chord shortcuts can use ShortcutRecorder. Persistence, conflict resolution, and user preference storage stay in app-owned source.",
+    name: "shortcut-sequence-recorder",
+    parity: {
+      tanstackHotkeys:
+        "Wraps createHotkeySequenceRecorder and preserves sequence recorder options while adding generated UI markup and data attributes.",
+      shadcn:
+        "Source-owned settings-control ergonomics for command-heavy apps that need Vim-style sequence preference editing.",
+      keystoneCore:
+        "Does not add Core primitive behavior. It is an app settings control for user shortcut sequence preferences.",
     },
-    "registryDependencies": [
-      "table",
-      "cn"
+    registryDependencies: ["cn", "shortcut-display"],
+    sourceFiles: ["packages/ui/src/default/ui/shortcut-sequence-recorder.tsx"],
+    ssr: "Rendering does not read browser globals. Sequence recording starts only from user interaction after hydration through TanStack Hotkeys recorder source.",
+    title: "ShortcutSequenceRecorder",
+    type: "registry:ui",
+    version: "0.1.0",
+  },
+  {
+    anatomy: [],
+    categories: ["form", "listbox", "autocomplete"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
+    },
+    customization:
+      "Style the generated wrappers through ui-autocomplete classes while Core owns input/listbox roles, selection, form value, and positioning.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description: "Styled Solid autocomplete component backed by Keystone combobox behavior.",
+    files: [
+      {
+        path: "packages/ui/src/default/ui/autocomplete.tsx",
+        type: "registry:ui",
+      },
     ],
-    "routerAdapter": "Install data-table-tanstack-router for URL-backed search param state with TanStack Router.",
-    "sourceFiles": [
+    install: "mason add autocomplete",
+    keywords: ["autocomplete", "combobox", "listbox", "keystone"],
+    name: "autocomplete",
+    parity: {
+      baseUi:
+        "Thin vertical reuses Keystone combobox behavior for input/listbox roles, controlled value surface, option highlighting, selection, form value, and floating positioning. Gaps: Base UI depth around filtering orchestration, inline completion, detached triggers, grouped collections, virtualized lists, scroll buttons, and advanced pointer/touch behavior remain follow-up work.",
+      kobalte:
+        "Matches the Solid composition direction of Combobox/Listbox/Popper primitives with UI-owned styling. Gaps: richer collection APIs, multi-select, async filtering helpers, hidden select parity, robust typeahead edge cases, and form reset coverage remain follow-up work.",
+    },
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/autocomplete.tsx"],
+    title: "Autocomplete",
+    type: "registry:ui",
+    version: "0.1.0",
+  },
+  {
+    accessibility:
+      "The kit uses native table, caption, thead, tbody, th, tr, td, button, input, select, fieldset, legend, and label semantics. Headers expose scope and aria-sort, loading sets aria-busy with a status row, selected rows expose aria-selected, empty state uses role=status, pagination is a labelled navigation region, and toolbar controls have programmatic labels.",
+    anatomy: [],
+    api: "DataTable receives a TanStack Table instance and optional caption, toolbar slot, empty/loading slots, page size options, skeleton row count, and pagination toggle. useDataTable accepts data/columns as values or accessors for reactive row updates.",
+    categories: ["table", "tanstack", "data"],
+    columns:
+      "Columns are ordinary TanStack Table column definitions. Use DataTableColumnHeader in header renderers and column meta for toolbar filters.",
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
+    },
+    customization:
+      "Use ui-data-table classes and data-part values for root, toolbar, search, faceted-filter, table, header, row, cell, empty, skeleton, row-actions, and pagination.",
+    dataAttributes:
+      'Stable styling hooks use data-scope="ui-data-table" and data-part values for root, header-slot, viewport, table, caption, header, header-row, head, body, row, cell, empty-row, empty, skeleton-status-row, skeleton-status, skeleton-row, skeleton-cell, column-header, sort-trigger, sort-clear, column-hide, toolbar, search, reset, toolbar-actions, faceted-filter, faceted-option, faceted-control, faceted-count, faceted-clear, view-options, view-options-search, view-option, view-option-control, row-actions, row-action, pagination, selected-summary, page-summary, page-size, page-size-select, page-buttons, and page-button. Root exposes data-loading and data-empty; rows expose data-selected/data-state; headers expose data-sort; filters expose data-state/data-value; pagination buttons expose data-page.',
+    dataShape:
+      "Pass an array of row objects through data and TanStack ColumnDef<TData, unknown>[] through columns. Use getRowId when the row key is not stable by index.",
+    dependencies: ["@tanstack/solid-table", "table", "cn"],
+    description:
+      "TanStack Table source kit with local state, toolbar, filters, pagination, column visibility, skeletons, empty state, and row actions.",
+    files: [
+      {
+        path: "packages/ui/src/default/components/data-table/data-table.tsx",
+        type: "registry:ui",
+      },
+      {
+        path: "packages/ui/src/default/components/data-table/data-table-column-header.tsx",
+        type: "registry:ui",
+      },
+      {
+        path: "packages/ui/src/default/components/data-table/data-table-empty-state.tsx",
+        type: "registry:ui",
+      },
+      {
+        path: "packages/ui/src/default/components/data-table/data-table-faceted-filter.tsx",
+        type: "registry:ui",
+      },
+      {
+        path: "packages/ui/src/default/components/data-table/data-table-pagination.tsx",
+        type: "registry:ui",
+      },
+      {
+        path: "packages/ui/src/default/components/data-table/data-table-row-actions.tsx",
+        type: "registry:ui",
+      },
+      {
+        path: "packages/ui/src/default/components/data-table/data-table-skeleton.tsx",
+        type: "registry:ui",
+      },
+      {
+        path: "packages/ui/src/default/components/data-table/data-table-toolbar.tsx",
+        type: "registry:ui",
+      },
+      {
+        path: "packages/ui/src/default/components/data-table/data-table-view-options.tsx",
+        type: "registry:ui",
+      },
+      {
+        path: "packages/ui/src/default/components/data-table/types.ts",
+        type: "registry:ui",
+      },
+      {
+        path: "packages/ui/src/default/components/data-table/use-data-table.ts",
+        type: "registry:ui",
+      },
+    ],
+    install: "mason add data-table",
+    keywords: ["data-table", "table", "tanstack", "sorting", "filtering", "pagination"],
+    limitations:
+      "This source is a TanStack Table composition kit, not a custom table engine. Virtualization, persisted column preferences, async fetching/loading orchestration, drag column ordering/sizing, and advanced query builders should be layered in app code or future companion registry items.",
+    name: "data-table",
+    parity: {
+      tanstackTable:
+        "First-class comparison is TanStack Table: the kit uses Solid Table column definitions, local sorting, filtering, pagination, column visibility, row actions, and toolbar composition. Gaps: server-side orchestration, virtualization, persisted views, async loading policy, column sizing/ordering, and advanced filter builders remain app-code follow-up work.",
+      shadcn:
+        "Comparable to shadcn data-table source kits in copy-paste ownership and composable subcomponents, with Solid-native accessors and Mason multi-file install metadata. Gaps: no CLI-generated schema, no baked-in URL state without the adapter, and no opinionated server data layer.",
+    },
+    registryDependencies: ["table", "cn"],
+    routerAdapter:
+      "Install data-table-tanstack-router for URL-backed search param state with TanStack Router.",
+    sourceFiles: [
       "packages/ui/src/default/components/data-table/data-table.tsx",
       "packages/ui/src/default/components/data-table/data-table-column-header.tsx",
       "packages/ui/src/default/components/data-table/data-table-empty-state.tsx",
@@ -3229,145 +2554,110 @@ export const registryDocItems = [
       "packages/ui/src/default/components/data-table/data-table-toolbar.tsx",
       "packages/ui/src/default/components/data-table/data-table-view-options.tsx",
       "packages/ui/src/default/components/data-table/types.ts",
-      "packages/ui/src/default/components/data-table/use-data-table.ts"
+      "packages/ui/src/default/components/data-table/use-data-table.ts",
     ],
-    "ssr": "The table renders deterministic native markup and does not read browser globals during render. Hydration-sensitive row identity should come from getRowId rather than row index when data can reorder or update frequently.",
-    "state": "useDataTable is uncontrolled by default through Solid signals initialized from initialState. Pass state plus onSortingChange, onColumnFiltersChange, onColumnVisibilityChange, onPaginationChange, or onRowSelectionChange to control individual TanStack state slices; use manualSorting, manualFiltering, manualPagination, and pageCount for server-owned row models.",
-    "title": "DataTable",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    ssr: "The table renders deterministic native markup and does not read browser globals during render. Hydration-sensitive row identity should come from getRowId rather than row index when data can reorder or update frequently.",
+    state:
+      "useDataTable is uncontrolled by default through Solid signals initialized from initialState. Pass state plus onSortingChange, onColumnFiltersChange, onColumnVisibilityChange, onPaginationChange, or onRowSelectionChange to control individual TanStack state slices; use manualSorting, manualFiltering, manualPagination, and pageCount for server-owned row models.",
+    title: "DataTable",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "The component preserves native table, caption, thead, tbody, tfoot, tr, th, and td semantics. Consumers own caption text, header scope, aria-sort, labelled regions, selected-row announcements, and any interactive controls placed inside cells.",
-    "anatomy": [
-      "container",
-      "root",
-      "caption",
-      "header",
-      "body",
-      "footer",
-      "row",
-      "head",
-      "cell"
-    ],
-    "api": "Table exports TableContainer, Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, and TableCaption. Every part forwards native HTML props, class, children, and data-scope/data-part/data-slot overrides for app-layer wrappers.",
-    "categories": [
-      "base",
-      "table",
-      "data"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "The component preserves native table, caption, thead, tbody, tfoot, tr, th, and td semantics. Consumers own caption text, header scope, aria-sort, labelled regions, selected-row announcements, and any interactive controls placed inside cells.",
+    anatomy: ["container", "root", "caption", "header", "body", "footer", "row", "head", "cell"],
+    api: "Table exports TableContainer, Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, and TableCaption. Every part forwards native HTML props, class, children, and data-scope/data-part/data-slot overrides for app-layer wrappers.",
+    categories: ["base", "table", "data"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Customize the native anatomy through ui-table classes, shadcn-style data-slot values, and stable data-scope=\"ui-table\" data-part hooks.",
-    "dataAttributes": "Defaults use data-scope=\"ui-table\" and data-part values container, root, caption, header, body, footer, row, head, and cell. data-slot values are table-container, table, table-caption, table-header, table-body, table-footer, table-row, table-head, and table-cell. App-layer components may override those attributes while retaining native elements and classes.",
-    "dependencies": [
-      "cn"
-    ],
-    "description": "Presentational native table anatomy for readable data grids and TanStack Table app-layer composition.",
-    "files": [
+    customization:
+      'Customize the native anatomy through ui-table classes, shadcn-style data-slot values, and stable data-scope="ui-table" data-part hooks.',
+    dataAttributes:
+      'Defaults use data-scope="ui-table" and data-part values container, root, caption, header, body, footer, row, head, and cell. data-slot values are table-container, table, table-caption, table-header, table-body, table-footer, table-row, table-head, and table-cell. App-layer components may override those attributes while retaining native elements and classes.',
+    dependencies: ["cn"],
+    description:
+      "Presentational native table anatomy for readable data grids and TanStack Table app-layer composition.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/table.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/table.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add table",
-    "keywords": [
-      "table",
-      "thead",
-      "tbody",
-      "caption",
-      "tanstack-table",
-      "data-table"
-    ],
-    "limitations": "Table is presentational source, not a grid engine. It does not implement sorting, filtering, pagination, virtualization, roving focus, column sizing, column reordering, row selection, or async loading policy.",
-    "name": "table",
-    "parity": {
-      "html": "Keeps native table semantics as the contract: Keystone does not replace table markup with ARIA grid roles unless a future app component requires that behavior explicitly.",
-      "shadcn": "Matches the copy-paste anatomy shape and data-slot ergonomics in Solid source form, with Keystone tokens, compact styling, and a TableContainer part compatible with CardFrame table-container clipping.",
-      "tanstackTable": "The base parts are intentionally engine-agnostic and are consumed by the first-party DataTable kit, where TanStack Table owns row models, sorting, filtering, pagination, selection, and column visibility."
+    install: "mason add table",
+    keywords: ["table", "thead", "tbody", "caption", "tanstack-table", "data-table"],
+    limitations:
+      "Table is presentational source, not a grid engine. It does not implement sorting, filtering, pagination, virtualization, roving focus, column sizing, column reordering, row selection, or async loading policy.",
+    name: "table",
+    parity: {
+      html: "Keeps native table semantics as the contract: Keystone does not replace table markup with ARIA grid roles unless a future app component requires that behavior explicitly.",
+      shadcn:
+        "Matches the copy-paste anatomy shape and data-slot ergonomics in Solid source form, with Keystone tokens, compact styling, and a TableContainer part compatible with CardFrame table-container clipping.",
+      tanstackTable:
+        "The base parts are intentionally engine-agnostic and are consumed by the first-party DataTable kit, where TanStack Table owns row models, sorting, filtering, pagination, selection, and column visibility.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/table.tsx"
-    ],
-    "ssr": "Renders deterministic native markup with no browser globals, effects, generated IDs, or hydration-sensitive state.",
-    "state": "No controlled or uncontrolled state. Sorting, filtering, pagination, selection, column visibility, and row identity belong to app-layer engines such as TanStack Table or to host application state.",
-    "title": "Table",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/table.tsx"],
+    ssr: "Renders deterministic native markup with no browser globals, effects, generated IDs, or hydration-sensitive state.",
+    state:
+      "No controlled or uncontrolled state. Sorting, filtering, pagination, selection, column visibility, and row identity belong to app-layer engines such as TanStack Table or to host application state.",
+    title: "Table",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [],
-    "categories": [
-      "table",
-      "tanstack",
-      "router",
-      "data"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0",
-      "tanstack-router": ">=1.168.0 <2.0.0"
+    anatomy: [],
+    categories: ["table", "tanstack", "router", "data"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
+      "tanstack-router": ">=1.168.0 <2.0.0",
     },
-    "dependencies": [
-      "@tanstack/solid-router",
-      "data-table"
-    ],
-    "description": "URL-backed DataTable state adapter for TanStack Router search params.",
-    "files": [
+    dependencies: ["@tanstack/solid-router", "data-table"],
+    description: "URL-backed DataTable state adapter for TanStack Router search params.",
+    files: [
       {
-        "path": "packages/ui/src/default/components/data-table/data-table-search.ts",
-        "type": "registry:ui"
+        path: "packages/ui/src/default/components/data-table/data-table-search.ts",
+        type: "registry:ui",
       },
       {
-        "path": "packages/ui/src/default/components/data-table/use-data-table-router.ts",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/components/data-table/use-data-table-router.ts",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add data-table-tanstack-router",
-    "keywords": [
-      "data-table",
-      "table",
-      "tanstack-router",
-      "search-params",
-      "url-state"
-    ],
-    "limitations": "The adapter keeps row selection local and does not implement server fetching, virtualization, saved views, or advanced filter builders.",
-    "name": "data-table-tanstack-router",
-    "parity": {
-      "tanstackRouter": "First-class comparison is TanStack Router: the adapter maps validated search params to pagination, sorting, filters, and visibility state while row selection stays local. Gaps: server fetching, route loader integration, saved views, debounced URL writes, and complex filter serialization remain follow-up work.",
-      "tanstackTable": "Complements the DataTable kit by keeping TanStack Table state URL-addressable without replacing table behavior. Gaps: no virtualization, no server-side pagination contract, and no global table preference persistence."
+    install: "mason add data-table-tanstack-router",
+    keywords: ["data-table", "table", "tanstack-router", "search-params", "url-state"],
+    limitations:
+      "The adapter keeps row selection local and does not implement server fetching, virtualization, saved views, or advanced filter builders.",
+    name: "data-table-tanstack-router",
+    parity: {
+      tanstackRouter:
+        "First-class comparison is TanStack Router: the adapter maps validated search params to pagination, sorting, filters, and visibility state while row selection stays local. Gaps: server fetching, route loader integration, saved views, debounced URL writes, and complex filter serialization remain follow-up work.",
+      tanstackTable:
+        "Complements the DataTable kit by keeping TanStack Table state URL-addressable without replacing table behavior. Gaps: no virtualization, no server-side pagination contract, and no global table preference persistence.",
     },
-    "registryDependencies": [
-      "data-table"
-    ],
-    "sourceFiles": [
+    registryDependencies: ["data-table"],
+    sourceFiles: [
       "packages/ui/src/default/components/data-table/data-table-search.ts",
-      "packages/ui/src/default/components/data-table/use-data-table-router.ts"
+      "packages/ui/src/default/components/data-table/use-data-table-router.ts",
     ],
-    "title": "DataTable TanStack Router Adapter",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    title: "DataTable TanStack Router Adapter",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [],
-    "categories": [
-      "template",
-      "tanstack-start",
-      "dashboard",
-      "app"
-    ],
-    "compatibility": {
-      "solid": ">=1.9.9 <2.0.0",
+    anatomy: [],
+    categories: ["template", "tanstack-start", "dashboard", "app"],
+    compatibility: {
+      solid: ">=1.9.9 <2.0.0",
       "tanstack-router": ">=1.168.0 <2.0.0",
-      "tanstack-start": ">=1.167.0 <2.0.0"
+      "tanstack-start": ">=1.167.0 <2.0.0",
     },
-    "customization": "Use src/routes/index.tsx as the first route integration point, replace the generated route tree through TanStack Router generation, and move shared tokens into your app stylesheet.",
-    "dependencies": [
+    customization:
+      "Use src/routes/index.tsx as the first route integration point, replace the generated route tree through TanStack Router generation, and move shared tokens into your app stylesheet.",
+    dependencies: [
       "@keystone-ui/core",
       "@tailwindcss/vite",
       "@tanstack/solid-form",
@@ -3376,61 +2666,58 @@ export const registryDocItems = [
       "@tanstack/solid-store",
       "@tanstack/solid-table",
       "solid-js",
-      "tailwindcss"
+      "tailwindcss",
     ],
-    "description": "Solid TanStack Start app shape that mounts the invoice dashboard block as the first route.",
-    "files": [
+    description:
+      "Solid TanStack Start app shape that mounts the invoice dashboard block as the first route.",
+    files: [
       {
-        "path": "packages/ui/src/default/templates/tanstack-start-dashboard/package.json",
-        "type": "registry:template"
+        path: "packages/ui/src/default/templates/tanstack-start-dashboard/package.json",
+        type: "registry:template",
       },
       {
-        "path": "packages/ui/src/default/templates/tanstack-start-dashboard/tsconfig.json",
-        "type": "registry:template"
+        path: "packages/ui/src/default/templates/tanstack-start-dashboard/tsconfig.json",
+        type: "registry:template",
       },
       {
-        "path": "packages/ui/src/default/templates/tanstack-start-dashboard/vite.config.ts",
-        "type": "registry:template"
+        path: "packages/ui/src/default/templates/tanstack-start-dashboard/vite.config.ts",
+        type: "registry:template",
       },
       {
-        "path": "packages/ui/src/default/templates/tanstack-start-dashboard/src/router.tsx",
-        "type": "registry:template"
+        path: "packages/ui/src/default/templates/tanstack-start-dashboard/src/router.tsx",
+        type: "registry:template",
       },
       {
-        "path": "packages/ui/src/default/templates/tanstack-start-dashboard/src/routes/__root.tsx",
-        "type": "registry:template"
+        path: "packages/ui/src/default/templates/tanstack-start-dashboard/src/routes/__root.tsx",
+        type: "registry:template",
       },
       {
-        "path": "packages/ui/src/default/templates/tanstack-start-dashboard/src/routes/index.tsx",
-        "type": "registry:template"
+        path: "packages/ui/src/default/templates/tanstack-start-dashboard/src/routes/index.tsx",
+        type: "registry:template",
       },
       {
-        "path": "packages/ui/src/default/templates/tanstack-start-dashboard/src/routeTree.gen.ts",
-        "type": "registry:template"
+        path: "packages/ui/src/default/templates/tanstack-start-dashboard/src/routeTree.gen.ts",
+        type: "registry:template",
       },
       {
-        "path": "packages/ui/src/default/templates/tanstack-start-dashboard/src/styles.css",
-        "type": "registry:template"
-      }
+        path: "packages/ui/src/default/templates/tanstack-start-dashboard/src/styles.css",
+        type: "registry:template",
+      },
     ],
-    "install": "Use this template as the app scaffold, then run mason add invoice-dashboard inside the generated project.",
-    "keywords": [
-      "tanstack-start",
-      "solid-start",
-      "dashboard",
-      "invoice-dashboard",
-      "template"
-    ],
-    "name": "tanstack-start-dashboard",
-    "parity": {
-      "tanstackStart": "Uses the same TanStack Start route/document/router shape as the docs app, but trims it to a product dashboard scaffold. Gaps: route generation is represented by a placeholder routeTree.gen.ts and should be regenerated in a real app.",
-      "shadcn": "Template follows source-owned app scaffolding conventions while delegating UI source to registry dependencies. Gaps: no CLI create command or themed marketing shell yet.",
-      "mason": "Documents the registry dependency on invoice-dashboard and framework assumptions for future template install support. Gaps: registry:template is validated but not installed by the current add command."
+    install:
+      "Use this template as the app scaffold, then run mason add invoice-dashboard inside the generated project.",
+    keywords: ["tanstack-start", "solid-start", "dashboard", "invoice-dashboard", "template"],
+    name: "tanstack-start-dashboard",
+    parity: {
+      tanstackStart:
+        "Uses the same TanStack Start route/document/router shape as the docs app, but trims it to a product dashboard scaffold. Gaps: route generation is represented by a placeholder routeTree.gen.ts and should be regenerated in a real app.",
+      shadcn:
+        "Template follows source-owned app scaffolding conventions while delegating UI source to registry dependencies. Gaps: no CLI create command or themed marketing shell yet.",
+      mason:
+        "Documents the registry dependency on invoice-dashboard and framework assumptions for future template install support. Gaps: registry:template is validated but not installed by the current add command.",
     },
-    "registryDependencies": [
-      "invoice-dashboard"
-    ],
-    "sourceFiles": [
+    registryDependencies: ["invoice-dashboard"],
+    sourceFiles: [
       "packages/ui/src/default/templates/tanstack-start-dashboard/package.json",
       "packages/ui/src/default/templates/tanstack-start-dashboard/tsconfig.json",
       "packages/ui/src/default/templates/tanstack-start-dashboard/vite.config.ts",
@@ -3438,15 +2725,16 @@ export const registryDocItems = [
       "packages/ui/src/default/templates/tanstack-start-dashboard/src/routes/__root.tsx",
       "packages/ui/src/default/templates/tanstack-start-dashboard/src/routes/index.tsx",
       "packages/ui/src/default/templates/tanstack-start-dashboard/src/routeTree.gen.ts",
-      "packages/ui/src/default/templates/tanstack-start-dashboard/src/styles.css"
+      "packages/ui/src/default/templates/tanstack-start-dashboard/src/styles.css",
     ],
-    "title": "TanStack Start Dashboard Template",
-    "type": "registry:template",
-    "version": "0.1.0"
+    title: "TanStack Start Dashboard Template",
+    type: "registry:template",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Card remains a presentational native div surface by default. Consumers own heading levels, labelled regions, links, buttons, and form controls inside cards through native HTML and ARIA props passed to each part.",
-    "anatomy": [
+    accessibility:
+      "Card remains a presentational native div surface by default. Consumers own heading levels, labelled regions, links, buttons, and form controls inside cards through native HTML and ARIA props passed to each part.",
+    anatomy: [
       "root",
       "header",
       "title",
@@ -3459,170 +2747,127 @@ export const registryDocItems = [
       "frame-title",
       "frame-description",
       "frame-action",
-      "frame-footer"
+      "frame-footer",
     ],
-    "api": "Card exports Card, CardHeader, CardTitle, CardDescription, CardAction, CardPanel, CardContent, CardFooter, CardFrame, CardFrameHeader, CardFrameTitle, CardFrameDescription, CardFrameAction, and CardFrameFooter. CardContent is an alias of CardPanel, matching the reference card-panel data-slot.",
-    "categories": [
-      "layout",
-      "base"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    api: "Card exports Card, CardHeader, CardTitle, CardDescription, CardAction, CardPanel, CardContent, CardFooter, CardFrame, CardFrameHeader, CardFrameTitle, CardFrameDescription, CardFrameAction, and CardFrameFooter. CardContent is an alias of CardPanel, matching the reference card-panel data-slot.",
+    categories: ["layout", "base"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Customize each part through ui-card classes, reference-style data-slot values, and stable data-part values across card and card-frame anatomy.",
-    "dependencies": [
-      "cn"
-    ],
-    "description": "Composable reference-inspired card and card-frame parts for grouped content.",
-    "files": [
+    customization:
+      "Customize each part through ui-card classes, reference-style data-slot values, and stable data-part values across card and card-frame anatomy.",
+    dependencies: ["cn"],
+    description: "Composable reference-inspired card and card-frame parts for grouped content.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/card.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/card.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add card",
-    "keywords": [
-      "card",
-      "panel",
-      "content",
-      "frame",
-      "surface"
-    ],
-    "limitations": "Card intentionally does not create roles, headings, focus behavior, keyboard behavior, or interactive-card semantics. Use native buttons/links inside cards or future LinkButton/IconButton surfaces for actions.",
-    "name": "card",
-    "parity": {
-      "visualReference": "Matches the reference Card source shape in Solid form: root surface styling, CardPanel/CardContent alias content area, CardAction, CardFrame, frame header/title/description/action/footer, reference data-slot names, nested card clipping variables, and table-container frame affordances. Intentional difference: no Base UI render prop until Keystone has a public Solid-native polymorphic UI convention.",
-      "baseUi": "Base UI has no first-class Card primitive, so parity is source-owned anatomy and native semantics: presentational div parts, pass-through HTML/ARIA props, and no invented state machine. Interactive behavior remains owned by nested buttons, links, forms, or future primitives.",
-      "kobalte": "Kobalte has no direct Card primitive; this remains a styled Solid composition component with stable data-scope/data-part hooks and reference-style data-slot hooks. Heading level and labelled-region semantics remain caller-owned by design."
+    install: "mason add card",
+    keywords: ["card", "panel", "content", "frame", "surface"],
+    limitations:
+      "Card intentionally does not create roles, headings, focus behavior, keyboard behavior, or interactive-card semantics. Use native buttons/links inside cards or future LinkButton/IconButton surfaces for actions.",
+    name: "card",
+    parity: {
+      visualReference:
+        "Matches the reference Card source shape in Solid form: root surface styling, CardPanel/CardContent alias content area, CardAction, CardFrame, frame header/title/description/action/footer, reference data-slot names, nested card clipping variables, and table-container frame affordances. Intentional difference: no Base UI render prop until Keystone has a public Solid-native polymorphic UI convention.",
+      baseUi:
+        "Base UI has no first-class Card primitive, so parity is source-owned anatomy and native semantics: presentational div parts, pass-through HTML/ARIA props, and no invented state machine. Interactive behavior remains owned by nested buttons, links, forms, or future primitives.",
+      kobalte:
+        "Kobalte has no direct Card primitive; this remains a styled Solid composition component with stable data-scope/data-part hooks and reference-style data-slot hooks. Heading level and labelled-region semantics remain caller-owned by design.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/card.tsx"
-    ],
-    "title": "Card",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/card.tsx"],
+    title: "Card",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Group is presentational by default and does not create keyboard, focus, label, or form semantics. Add role=group with aria-label or aria-labelledby when the grouping needs an accessible name. Labels and descriptions are visual composition parts unless the consumer wires them with native ARIA attributes.",
-    "anatomy": [
-      "root",
-      "item",
-      "label",
-      "description"
-    ],
-    "api": "Group exports Group, GroupItem, GroupLabel, and GroupDescription. Group accepts orientation horizontal/vertical, variant default/attached/inset, size sm/default/lg, and disabled/invalid/selected props that project data attributes for styling only.",
-    "categories": [
-      "layout",
-      "base",
-      "actions"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "Group is presentational by default and does not create keyboard, focus, label, or form semantics. Add role=group with aria-label or aria-labelledby when the grouping needs an accessible name. Labels and descriptions are visual composition parts unless the consumer wires them with native ARIA attributes.",
+    anatomy: ["root", "item", "label", "description"],
+    api: "Group exports Group, GroupItem, GroupLabel, and GroupDescription. Group accepts orientation horizontal/vertical, variant default/attached/inset, size sm/default/lg, and disabled/invalid/selected props that project data attributes for styling only.",
+    categories: ["layout", "base", "actions"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Customize the generated source through ui-group classes, data-variant, data-orientation, data-size, data-slot values, and stable data-scope/data-part hooks. Attached styling targets child button, input-control, and group-item slots without owning child behavior.",
-    "dependencies": [
-      "cn"
-    ],
-    "description": "Source-owned grouped control and content container for compact horizontal, vertical, attached, and inset UI composition.",
-    "files": [
+    customization:
+      "Customize the generated source through ui-group classes, data-variant, data-orientation, data-size, data-slot values, and stable data-scope/data-part hooks. Attached styling targets child button, input-control, and group-item slots without owning child behavior.",
+    dependencies: ["cn"],
+    description:
+      "Source-owned grouped control and content container for compact horizontal, vertical, attached, and inset UI composition.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/group.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/group.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add group",
-    "keywords": [
-      "group",
-      "button-group",
-      "control-group",
-      "attached",
-      "inset",
-      "dense"
-    ],
-    "limitations": "Group intentionally introduces no Core primitive behavior, no roving focus, no form-control context, no fieldset/legend semantics, no card surface anatomy, and no validation or selection state machine.",
-    "name": "group",
-    "parity": {
-      "visualReference": "Maps the Coss Group concept into Solid source: a compact grouped container with root/item/label/description anatomy, horizontal and vertical orientation, inset grouping, attached control grouping, stable styling hooks, and source-owned customization. Keystone keeps it smaller than Card, FieldGroup, or Toolbar.",
-      "baseUi": "Base UI has no direct Group primitive. Keystone treats Group as presentational UI source, with native prop pass-through and optional consumer-owned role=group naming when semantics are needed. Runtime behavior stays in nested controls or Core-backed components.",
-      "kobalte": "Kobalte has no direct generic Group primitive. Solid parity is simple component composition with stable data attributes and no invented context, focus management, or form semantics."
+    install: "mason add group",
+    keywords: ["group", "button-group", "control-group", "attached", "inset", "dense"],
+    limitations:
+      "Group intentionally introduces no Core primitive behavior, no roving focus, no form-control context, no fieldset/legend semantics, no card surface anatomy, and no validation or selection state machine.",
+    name: "group",
+    parity: {
+      visualReference:
+        "Maps the Coss Group concept into Solid source: a compact grouped container with root/item/label/description anatomy, horizontal and vertical orientation, inset grouping, attached control grouping, stable styling hooks, and source-owned customization. Keystone keeps it smaller than Card, FieldGroup, or Toolbar.",
+      baseUi:
+        "Base UI has no direct Group primitive. Keystone treats Group as presentational UI source, with native prop pass-through and optional consumer-owned role=group naming when semantics are needed. Runtime behavior stays in nested controls or Core-backed components.",
+      kobalte:
+        "Kobalte has no direct generic Group primitive. Solid parity is simple component composition with stable data attributes and no invented context, focus management, or form semantics.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/group.tsx"
-    ],
-    "title": "Group",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/group.tsx"],
+    title: "Group",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Renders a figure with optional figcaption, pre/code text semantics, language metadata as data-language, and a native CopyButton action. Syntax highlighting is intentionally caller/tooling-owned.",
-    "anatomy": [
-      "root",
-      "header",
-      "title",
-      "description",
-      "actions",
-      "pre",
-      "code"
-    ],
-    "api": "CodeBlock accepts code, language, title, description, copy, copyLabel, actions, wrap, preClass, codeClass, and copyClass. It also exports CodeBlockHeader, CodeBlockTitle, CodeBlockDescription, CodeBlockActions, CodeBlockPre, and CodeBlockCode.",
-    "categories": [
-      "base",
-      "docs",
-      "content"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "Renders a figure with optional figcaption, pre/code text semantics, language metadata as data-language, and a native CopyButton action. Syntax highlighting is intentionally caller/tooling-owned.",
+    anatomy: ["root", "header", "title", "description", "actions", "pre", "code"],
+    api: "CodeBlock accepts code, language, title, description, copy, copyLabel, actions, wrap, preClass, codeClass, and copyClass. It also exports CodeBlockHeader, CodeBlockTitle, CodeBlockDescription, CodeBlockActions, CodeBlockPre, and CodeBlockCode.",
+    categories: ["base", "docs", "content"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Use ui-code-block classes and data-slot hooks for root, header, title, description, actions, pre, and code. Compose extra actions beside the generated CopyButton.",
-    "dependencies": [
-      "cn",
-      "copy-button"
-    ],
-    "description": "Source-owned Solid code block for docs and product surfaces with caption metadata, copy action, wrapping, and stable anatomy hooks.",
-    "files": [
+    customization:
+      "Use ui-code-block classes and data-slot hooks for root, header, title, description, actions, pre, and code. Compose extra actions beside the generated CopyButton.",
+    dependencies: ["cn", "copy-button"],
+    description:
+      "Source-owned Solid code block for docs and product surfaces with caption metadata, copy action, wrapping, and stable anatomy hooks.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/code-block.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/code-block.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add code-block",
-    "keywords": [
-      "code-block",
-      "code",
-      "pre",
-      "docs",
-      "copy"
-    ],
-    "limitations": "CodeBlock does not parse markdown, tokenize syntax, virtualize long files, or own a syntax highlighter. Add highlighted markup or build-time transforms in docs/app code when needed.",
-    "name": "code-block",
-    "parity": {
-      "visualReference": "Matches shadcn-style code block source ergonomics in Solid form: framed pre/code surface, header metadata, copy affordance, wrapping option, and stable data hooks.",
-      "baseUi": "No Core/Base UI primitive is needed because native figure/pre/code/button semantics cover the behavior. Copy behavior is delegated to CopyButton and the UI clipboard hook.",
-      "kobalte": "Comparable to Solid display composition rather than a primitive. Keystone intentionally keeps syntax highlighting and docs routing outside this base component."
+    install: "mason add code-block",
+    keywords: ["code-block", "code", "pre", "docs", "copy"],
+    limitations:
+      "CodeBlock does not parse markdown, tokenize syntax, virtualize long files, or own a syntax highlighter. Add highlighted markup or build-time transforms in docs/app code when needed.",
+    name: "code-block",
+    parity: {
+      visualReference:
+        "Matches shadcn-style code block source ergonomics in Solid form: framed pre/code surface, header metadata, copy affordance, wrapping option, and stable data hooks.",
+      baseUi:
+        "No Core/Base UI primitive is needed because native figure/pre/code/button semantics cover the behavior. Copy behavior is delegated to CopyButton and the UI clipboard hook.",
+      kobalte:
+        "Comparable to Solid display composition rather than a primitive. Keystone intentionally keeps syntax highlighting and docs routing outside this base component.",
     },
-    "registryDependencies": [
-      "cn",
-      "copy-button"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/code-block.tsx"
-    ],
-    "title": "CodeBlock",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "copy-button"],
+    sourceFiles: ["packages/ui/src/default/ui/code-block.tsx"],
+    title: "CodeBlock",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Frame is presentational by default and renders a section without inventing widget behavior. Consumers own heading levels and labels. Loading and empty states use role=status; error uses role=alert. Actions are native buttons or links supplied by the app.",
-    "anatomy": [
+    accessibility:
+      "Frame is presentational by default and renders a section without inventing widget behavior. Consumers own heading levels and labels. Loading and empty states use role=status; error uses role=alert. Actions are native buttons or links supplied by the app.",
+    anatomy: [
       "root",
       "header",
       "title",
@@ -3633,253 +2878,195 @@ export const registryDocItems = [
       "content",
       "footer",
       "status",
-      "loading-indicator"
+      "loading-indicator",
     ],
-    "api": "Exports Frame plus root, header, title, description, actions, viewport, content, footer, status, loading, empty, and error parts. High-level Frame accepts title, description, actions, footer, loading, empty, error, variant, and aspect props.",
-    "categories": [
-      "layout",
-      "preview",
-      "panel"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.9 <2.0.0"
+    api: "Exports Frame plus root, header, title, description, actions, viewport, content, footer, status, loading, empty, and error parts. High-level Frame accepts title, description, actions, footer, loading, empty, error, variant, and aspect props.",
+    categories: ["layout", "preview", "panel"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.9 <2.0.0",
     },
-    "customization": "Use data-scope=\"ui-frame\" and data-part hooks for frame root, header, title, description, actions, separator, viewport, content, footer, status, and loading-indicator. Override slots for screenshots, demos, embedded panels, inspector surfaces, loading skeletons, empty states, or alert/callout errors.",
-    "dependencies": [],
-    "description": "Source-owned framed preview and embedded panel container with header, viewport, status, and aspect-ratio anatomy.",
-    "files": [
+    customization:
+      'Use data-scope="ui-frame" and data-part hooks for frame root, header, title, description, actions, separator, viewport, content, footer, status, and loading-indicator. Override slots for screenshots, demos, embedded panels, inspector surfaces, loading skeletons, empty states, or alert/callout errors.',
+    dependencies: [],
+    description:
+      "Source-owned framed preview and embedded panel container with header, viewport, status, and aspect-ratio anatomy.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/frame.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/frame.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add frame",
-    "keywords": [
-      "frame",
-      "preview",
-      "demo",
-      "embed",
-      "inspector",
-      "viewport"
-    ],
-    "limitations": "Frame does not implement iframe sandboxing, screenshot capture, resizing, focus trapping, drawer behavior, route state, or app-shell layout. Those remain app composition or future specialized UI block concerns.",
-    "name": "frame",
-    "parity": {
-      "coss": "Maps to the Coss Frame concept as a reusable container for framed previews, embedded content, screenshots, demos, device/browser-like panels, and inspectable surfaces.",
-      "shadcn": "Follows source-owned composition with editable classes, stable data hooks, Card-like surface treatment, and slot-based loading/empty/error replacement.",
-      "keystoneUi": "Builds from existing UI Button, Card, Separator, and cn source instead of introducing a Core primitive or app shell abstraction.",
-      "keystoneCore": "No Core behavior is introduced because Frame is a styled layout/presentation container."
+    install: "mason add frame",
+    keywords: ["frame", "preview", "demo", "embed", "inspector", "viewport"],
+    limitations:
+      "Frame does not implement iframe sandboxing, screenshot capture, resizing, focus trapping, drawer behavior, route state, or app-shell layout. Those remain app composition or future specialized UI block concerns.",
+    name: "frame",
+    parity: {
+      coss: "Maps to the Coss Frame concept as a reusable container for framed previews, embedded content, screenshots, demos, device/browser-like panels, and inspectable surfaces.",
+      shadcn:
+        "Follows source-owned composition with editable classes, stable data hooks, Card-like surface treatment, and slot-based loading/empty/error replacement.",
+      keystoneUi:
+        "Builds from existing UI Button, Card, Separator, and cn source instead of introducing a Core primitive or app shell abstraction.",
+      keystoneCore:
+        "No Core behavior is introduced because Frame is a styled layout/presentation container.",
     },
-    "registryDependencies": [
-      "button",
-      "card",
-      "separator",
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/frame.tsx"
-    ],
-    "title": "Frame",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["button", "card", "separator", "cn"],
+    sourceFiles: ["packages/ui/src/default/ui/frame.tsx"],
+    title: "Frame",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "EmptyRoot defaults to role=status so newly rendered empty states can be announced politely by assistive technology. Consumers may override role, aria-label, aria-labelledby, or aria-describedby when the empty state is a static note, labelled region, table fallback, or onboarding prompt. Icon and media slots are aria-hidden by default unless callers opt into meaningful accessible content.",
-    "anatomy": [
-      "root",
-      "media",
-      "icon",
-      "body",
-      "title",
-      "description",
-      "action"
-    ],
-    "api": "Exports Empty plus EmptyRoot, EmptyMedia, EmptyIcon, EmptyBody, EmptyTitle, EmptyDescription, and EmptyAction. Empty accepts icon, media, title, description, action, variant bordered|plain|surface, and size compact|default|lg.",
-    "categories": [
-      "base",
-      "feedback",
-      "layout"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "EmptyRoot defaults to role=status so newly rendered empty states can be announced politely by assistive technology. Consumers may override role, aria-label, aria-labelledby, or aria-describedby when the empty state is a static note, labelled region, table fallback, or onboarding prompt. Icon and media slots are aria-hidden by default unless callers opt into meaningful accessible content.",
+    anatomy: ["root", "media", "icon", "body", "title", "description", "action"],
+    api: "Exports Empty plus EmptyRoot, EmptyMedia, EmptyIcon, EmptyBody, EmptyTitle, EmptyDescription, and EmptyAction. Empty accepts icon, media, title, description, action, variant bordered|plain|surface, and size compact|default|lg.",
+    categories: ["base", "feedback", "layout"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Use data-scope=\"ui-empty\" and data-part hooks for root, media, icon, body, title, description, and action. Replace icon/media/action slots for table empty states, inspector panels, terminal logs, onboarding prompts, search no-results, or permission-limited views.",
-    "dependencies": [],
-    "description": "Source-owned Solid empty state surface with icon/media, title, description, and action anatomy for panels, tables, search results, and onboarding gaps.",
-    "files": [
+    customization:
+      'Use data-scope="ui-empty" and data-part hooks for root, media, icon, body, title, description, and action. Replace icon/media/action slots for table empty states, inspector panels, terminal logs, onboarding prompts, search no-results, or permission-limited views.',
+    dependencies: [],
+    description:
+      "Source-owned Solid empty state surface with icon/media, title, description, and action anatomy for panels, tables, search results, and onboarding gaps.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/empty.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/empty.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add empty",
-    "keywords": [
-      "empty",
-      "empty-state",
-      "blank-slate",
-      "status",
-      "no-results",
-      "onboarding"
-    ],
-    "limitations": "Empty does not own illustration generation, analytics, retry behavior, pagination reset, route links, table colSpan, or form reset behavior. Specialized surfaces such as DataTableEmpty may wrap this item later when table semantics need to be preserved.",
-    "name": "empty",
-    "parity": {
-      "shadcn": "Matches shadcn-style copy-paste source ownership and empty state anatomy with editable classes, stable data-slot/data-part hooks, icon/media/title/description/action slots, and variant/size styling.",
-      "baseUi": "No Base UI/Core primitive is needed because Empty has no intrinsic widget behavior beyond native status/section semantics and caller-owned actions.",
-      "kobalte": "Kobalte has no direct Empty primitive; Keystone keeps this as Solid source composition with native ARIA pass-through and no state machine.",
-      "keystoneUi": "Complements existing FrameEmpty and DataTableEmpty by providing the reusable base item those specialized surfaces can compose in future work."
+    install: "mason add empty",
+    keywords: ["empty", "empty-state", "blank-slate", "status", "no-results", "onboarding"],
+    limitations:
+      "Empty does not own illustration generation, analytics, retry behavior, pagination reset, route links, table colSpan, or form reset behavior. Specialized surfaces such as DataTableEmpty may wrap this item later when table semantics need to be preserved.",
+    name: "empty",
+    parity: {
+      shadcn:
+        "Matches shadcn-style copy-paste source ownership and empty state anatomy with editable classes, stable data-slot/data-part hooks, icon/media/title/description/action slots, and variant/size styling.",
+      baseUi:
+        "No Base UI/Core primitive is needed because Empty has no intrinsic widget behavior beyond native status/section semantics and caller-owned actions.",
+      kobalte:
+        "Kobalte has no direct Empty primitive; Keystone keeps this as Solid source composition with native ARIA pass-through and no state machine.",
+      keystoneUi:
+        "Complements existing FrameEmpty and DataTableEmpty by providing the reusable base item those specialized surfaces can compose in future work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/empty.tsx"
-    ],
-    "ssr": "SSR and hydration are deterministic because the component renders native elements, static attributes, and caller-supplied children without browser-only effects.",
-    "state": "No controlled or uncontrolled state. Stable data attributes expose size and variant only: data-size=compact|default|lg and data-variant=bordered|plain|surface.",
-    "title": "Empty",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/empty.tsx"],
+    ssr: "SSR and hydration are deterministic because the component renders native elements, static attributes, and caller-supplied children without browser-only effects.",
+    state:
+      "No controlled or uncontrolled state. Stable data attributes expose size and variant only: data-size=compact|default|lg and data-variant=bordered|plain|surface.",
+    title: "Empty",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Badge is presentational by default and does not create a role, live region, keyboard behavior, pointer behavior, focus behavior, form behavior, or removable state. Consumers own semantic roles such as status, aria-label text for icon-only badges, and live-region announcements when a badge value changes dynamically.",
-    "anatomy": [
-      "root"
-    ],
-    "api": "Badge supports variant default, primary, solid compatibility alias, destructive, info, success, warning, error, muted, and outline; size default, md compatibility alias, sm, and lg. It renders a span and passes through native span HTML and ARIA props.",
-    "categories": [
-      "status",
-      "base"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "Badge is presentational by default and does not create a role, live region, keyboard behavior, pointer behavior, focus behavior, form behavior, or removable state. Consumers own semantic roles such as status, aria-label text for icon-only badges, and live-region announcements when a badge value changes dynamically.",
+    anatomy: ["root"],
+    api: "Badge supports variant default, primary, solid compatibility alias, destructive, info, success, warning, error, muted, and outline; size default, md compatibility alias, sm, and lg. It renders a span and passes through native span HTML and ARIA props.",
+    categories: ["status", "base"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Customize visual treatment through badgeClass, ui-badge classes, data-slot=badge, and data-variant/data-size attributes.",
-    "dependencies": [
-      "cn"
-    ],
-    "description": "Presentational Solid badge for inline labels, statuses, counts, and compact metadata.",
-    "files": [
+    customization:
+      "Customize visual treatment through badgeClass, ui-badge classes, data-slot=badge, and data-variant/data-size attributes.",
+    dependencies: ["cn"],
+    description:
+      "Presentational Solid badge for inline labels, statuses, counts, and compact metadata.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/badge.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/badge.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add badge",
-    "keywords": [
-      "badge",
-      "status",
-      "label",
-      "count",
-      "metadata"
-    ],
-    "limitations": "Badge intentionally remains a non-interactive presentational UI component. Removable badges, notification counters with live announcements, and link/action badges should be separate components composed from native buttons, links, or future primitives.",
-    "name": "badge",
-    "parity": {
-      "visualReference": "Matches the reference badge source contract in Solid form: compact inline-flex shape, sm/default/lg sizes, primary/destructive filled variants, soft info/success/warning/error variants, muted and outline variants, icon normalization, stable data-slot, and source-owned class helper export. Intentional differences: Solid class conventions, no React Slot/asChild API, and solid/md aliases retained for existing Keystone source.",
-      "baseUi": "Base UI has no first-class Badge primitive, so parity is scoped to UI display semantics: stable span root, pass-through HTML/ARIA props, no invented interaction state, caller-owned roles/live regions, and data-variant/data-size styling hooks.",
-      "kobalte": "Comparable to Kobalte Badge as a Solid presentational display component with stable data attributes, variant metadata, and source-owned styling. Keystone intentionally does not expose a dedicated polymorphic API until there is a repo-wide Solid-native polymorphic convention."
+    install: "mason add badge",
+    keywords: ["badge", "status", "label", "count", "metadata"],
+    limitations:
+      "Badge intentionally remains a non-interactive presentational UI component. Removable badges, notification counters with live announcements, and link/action badges should be separate components composed from native buttons, links, or future primitives.",
+    name: "badge",
+    parity: {
+      visualReference:
+        "Matches the reference badge source contract in Solid form: compact inline-flex shape, sm/default/lg sizes, primary/destructive filled variants, soft info/success/warning/error variants, muted and outline variants, icon normalization, stable data-slot, and source-owned class helper export. Intentional differences: Solid class conventions, no React Slot/asChild API, and solid/md aliases retained for existing Keystone source.",
+      baseUi:
+        "Base UI has no first-class Badge primitive, so parity is scoped to UI display semantics: stable span root, pass-through HTML/ARIA props, no invented interaction state, caller-owned roles/live regions, and data-variant/data-size styling hooks.",
+      kobalte:
+        "Comparable to Kobalte Badge as a Solid presentational display component with stable data attributes, variant metadata, and source-owned styling. Keystone intentionally does not expose a dedicated polymorphic API until there is a repo-wide Solid-native polymorphic convention.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/badge.tsx"
-    ],
-    "title": "Badge",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/badge.tsx"],
+    title: "Badge",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Kbd uses native kbd semantics for passive keyboard input text. It does not add widget roles, focus behavior, keyboard handlers, form behavior, or controlled state; consuming controls own accessible labels and actions.",
-    "anatomy": [
-      "root",
-      "group",
-      "separator"
-    ],
-    "api": "Kbd renders a native kbd element and accepts size sm, default, or lg plus variant default, muted, or outline. KbdGroup and KbdSeparator compose shortcut sequences without registering keyboard behavior.",
-    "categories": [
-      "display",
-      "shortcut",
-      "base"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "Kbd uses native kbd semantics for passive keyboard input text. It does not add widget roles, focus behavior, keyboard handlers, form behavior, or controlled state; consuming controls own accessible labels and actions.",
+    anatomy: ["root", "group", "separator"],
+    api: "Kbd renders a native kbd element and accepts size sm, default, or lg plus variant default, muted, or outline. KbdGroup and KbdSeparator compose shortcut sequences without registering keyboard behavior.",
+    categories: ["display", "shortcut", "base"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Customize the keycap surface through ui-kbd classes, data-size, data-variant, and the group/separator part hooks.",
-    "dataAttributes": "Stable hooks use data-scope=\"ui-kbd\" with data-part values root, group, and separator. Root also exposes data-size, data-variant, and data-slot=\"kbd\".",
-    "dependencies": [
-      "cn"
-    ],
-    "description": "Display-only keyboard input token with group and separator parts for shortcut labels.",
-    "files": [
+    customization:
+      "Customize the keycap surface through ui-kbd classes, data-size, data-variant, and the group/separator part hooks.",
+    dataAttributes:
+      'Stable hooks use data-scope="ui-kbd" with data-part values root, group, and separator. Root also exposes data-size, data-variant, and data-slot="kbd".',
+    dependencies: ["cn"],
+    description:
+      "Display-only keyboard input token with group and separator parts for shortcut labels.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/kbd.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/kbd.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add kbd",
-    "keywords": [
-      "kbd",
-      "keyboard",
-      "shortcut",
-      "hotkey",
-      "keycap"
-    ],
-    "limitations": "Kbd is intentionally display-only. Shortcut registration belongs to KeyboardShortcuts, platform-aware formatting belongs to ShortcutDisplay, and editable recording belongs to ShortcutRecorder or ShortcutSequenceRecorder.",
-    "name": "kbd",
-    "parity": {
-      "html": "Uses native kbd markup for presentational keyboard input text and keeps grouping/separator wrappers passive. Gaps: native HTML does not define visual variants or shortcut sequence anatomy, so Keystone owns those UI hooks.",
-      "shadcn": "Matches shadcn-style source-owned keyboard token ergonomics with copy-pasteable styling, compact keycap sizing, and no runtime primitive dependency. Intentional difference: Keystone exposes explicit KbdGroup and KbdSeparator parts instead of relying only on ad hoc inline separators.",
-      "keystoneCore": "Intentionally remains UI-only passive markup because Core has no intrinsic behavior to own for a display keycap."
+    install: "mason add kbd",
+    keywords: ["kbd", "keyboard", "shortcut", "hotkey", "keycap"],
+    limitations:
+      "Kbd is intentionally display-only. Shortcut registration belongs to KeyboardShortcuts, platform-aware formatting belongs to ShortcutDisplay, and editable recording belongs to ShortcutRecorder or ShortcutSequenceRecorder.",
+    name: "kbd",
+    parity: {
+      html: "Uses native kbd markup for presentational keyboard input text and keeps grouping/separator wrappers passive. Gaps: native HTML does not define visual variants or shortcut sequence anatomy, so Keystone owns those UI hooks.",
+      shadcn:
+        "Matches shadcn-style source-owned keyboard token ergonomics with copy-pasteable styling, compact keycap sizing, and no runtime primitive dependency. Intentional difference: Keystone exposes explicit KbdGroup and KbdSeparator parts instead of relying only on ad hoc inline separators.",
+      keystoneCore:
+        "Intentionally remains UI-only passive markup because Core has no intrinsic behavior to own for a display keycap.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/kbd.tsx"
-    ],
-    "ssr": "Kbd is deterministic passive markup with no effects, portals, browser-only state, or hydration-sensitive behavior.",
-    "title": "Kbd",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/kbd.tsx"],
+    ssr: "Kbd is deterministic passive markup with no effects, portals, browser-only state, or hydration-sensitive behavior.",
+    title: "Kbd",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "The viewport remains an ordinary div with native overflow. Consumers should add aria-label, aria-labelledby, role=region, tabindex, or semantic containers only when the scrollable content needs an announced landmark or keyboard focus target. Decorative scrollbar/thumb/corner parts are aria-hidden and non-interactive.",
-    "anatomy": [
-      "root",
-      "viewport",
-      "scrollbar",
-      "thumb",
-      "corner"
-    ],
-    "api": "Exports ScrollArea plus ScrollAreaRoot, ScrollAreaViewport, ScrollAreaScrollbar, ScrollAreaThumb, and ScrollAreaCorner. ScrollArea accepts orientation=\"vertical\"|\"horizontal\"|\"both\" and viewportClass for common source-owned composition.",
-    "categories": [
-      "layout",
-      "panel",
-      "data-display"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "The viewport remains an ordinary div with native overflow. Consumers should add aria-label, aria-labelledby, role=region, tabindex, or semantic containers only when the scrollable content needs an announced landmark or keyboard focus target. Decorative scrollbar/thumb/corner parts are aria-hidden and non-interactive.",
+    anatomy: ["root", "viewport", "scrollbar", "thumb", "corner"],
+    api: 'Exports ScrollArea plus ScrollAreaRoot, ScrollAreaViewport, ScrollAreaScrollbar, ScrollAreaThumb, and ScrollAreaCorner. ScrollArea accepts orientation="vertical"|"horizontal"|"both" and viewportClass for common source-owned composition.',
+    categories: ["layout", "panel", "data-display"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Use data-scope=\"ui-scroll-area\" and data-part hooks for root, viewport, scrollbar, thumb, and corner. The viewport includes native scrollbar CSS hooks for Firefox and WebKit; apps can replace those classes for dense panels, terminal logs, tables, inspectors, and split panes.",
-    "dependencies": [
-      "cn"
-    ],
-    "description": "Source-owned Solid scroll container with native overflow behavior, styled scrollbar hooks, and stable root/viewport/scrollbar/thumb/corner anatomy.",
-    "files": [
+    customization:
+      'Use data-scope="ui-scroll-area" and data-part hooks for root, viewport, scrollbar, thumb, and corner. The viewport includes native scrollbar CSS hooks for Firefox and WebKit; apps can replace those classes for dense panels, terminal logs, tables, inspectors, and split panes.',
+    dependencies: ["cn"],
+    description:
+      "Source-owned Solid scroll container with native overflow behavior, styled scrollbar hooks, and stable root/viewport/scrollbar/thumb/corner anatomy.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/scroll-area.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/scroll-area.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add scroll-area",
-    "keywords": [
+    install: "mason add scroll-area",
+    keywords: [
       "scroll-area",
       "scroll",
       "scrollbar",
@@ -3887,179 +3074,145 @@ export const registryDocItems = [
       "panel",
       "terminal",
       "inspector",
-      "table"
+      "table",
     ],
-    "name": "scroll-area",
-    "parity": {
-      "coss": "Maps to the Coss Scroll Area item as a bounded overflow container with styled native scrollbar treatment and root/viewport/scrollbar/thumb/corner anatomy.",
-      "baseUi": "Core/Base UI composition is deferred because Keystone Core does not yet ship ScrollArea. Once Core owns custom scrollbar behavior, this UI item should become a thin styled wrapper around Core root, viewport, scrollbar, thumb, and corner parts.",
-      "kobalte": "Kobalte does not provide a dedicated ScrollArea primitive to mirror. Keystone keeps this source-owned and native-first until intrinsic behavior exists in Core.",
-      "shadcn": "Matches shadcn-style source ownership and anatomy naming while intentionally avoiding Radix-style custom scrollbar behavior until Keystone Core owns that behavior."
+    name: "scroll-area",
+    parity: {
+      coss: "Maps to the Coss Scroll Area item as a bounded overflow container with styled native scrollbar treatment and root/viewport/scrollbar/thumb/corner anatomy.",
+      baseUi:
+        "Core/Base UI composition is deferred because Keystone Core does not yet ship ScrollArea. Once Core owns custom scrollbar behavior, this UI item should become a thin styled wrapper around Core root, viewport, scrollbar, thumb, and corner parts.",
+      kobalte:
+        "Kobalte does not provide a dedicated ScrollArea primitive to mirror. Keystone keeps this source-owned and native-first until intrinsic behavior exists in Core.",
+      shadcn:
+        "Matches shadcn-style source ownership and anatomy naming while intentionally avoiding Radix-style custom scrollbar behavior until Keystone Core owns that behavior.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/scroll-area.tsx"
-    ],
-    "title": "ScrollArea",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/scroll-area.tsx"],
+    title: "ScrollArea",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Renders a native button with dynamic aria-label/title text, visible or screen-reader-only status label, and data state hooks for copied/error/unsupported feedback.",
-    "anatomy": [
-      "root"
-    ],
-    "api": "CopyButton accepts value, label, copiedLabel, errorLabel, copiedDuration, showLabel, onCopy, onCopyError, and normal button attributes. User onClick runs before copying and event.preventDefault cancels internal copy behavior.",
-    "categories": [
-      "base",
-      "feedback",
-      "docs"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "Renders a native button with dynamic aria-label/title text, visible or screen-reader-only status label, and data state hooks for copied/error/unsupported feedback.",
+    anatomy: ["root"],
+    api: "CopyButton accepts value, label, copiedLabel, errorLabel, copiedDuration, showLabel, onCopy, onCopyError, and normal button attributes. User onClick runs before copying and event.preventDefault cancels internal copy behavior.",
+    categories: ["base", "feedback", "docs"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Use ui-copy-button classes and data-slot/data-copied/data-error hooks to style icon-only or labelled copy controls.",
-    "dependencies": [
-      "cn",
-      "use-copy-to-clipboard"
-    ],
-    "description": "Accessible Solid button for copying text with copied/error visual state and UI-owned clipboard helper behavior.",
-    "files": [
+    customization:
+      "Use ui-copy-button classes and data-slot/data-copied/data-error hooks to style icon-only or labelled copy controls.",
+    dependencies: ["cn", "use-copy-to-clipboard"],
+    description:
+      "Accessible Solid button for copying text with copied/error visual state and UI-owned clipboard helper behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/copy-button.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/copy-button.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add copy-button",
-    "keywords": [
-      "copy",
-      "clipboard",
-      "button",
-      "code",
-      "docs"
-    ],
-    "limitations": "CopyButton copies plain text only and does not render a tooltip or toast by itself. Compose those surfaces in app/docs code when persistent feedback is needed.",
-    "name": "copy-button",
-    "parity": {
-      "visualReference": "Matches shadcn-style source-owned copy button behavior in Solid form: icon button default, optional visible label, copied/error state, and data attributes for styling.",
-      "baseUi": "No Core/Base UI primitive is needed because the native button and generated clipboard hook cover the intrinsic semantics and browser boundary.",
-      "kobalte": "Comparable to a Kobalte button composition while remaining UI-owned source. Keystone keeps clipboard state out of Core and exposes cancellable user-first click handling."
+    install: "mason add copy-button",
+    keywords: ["copy", "clipboard", "button", "code", "docs"],
+    limitations:
+      "CopyButton copies plain text only and does not render a tooltip or toast by itself. Compose those surfaces in app/docs code when persistent feedback is needed.",
+    name: "copy-button",
+    parity: {
+      visualReference:
+        "Matches shadcn-style source-owned copy button behavior in Solid form: icon button default, optional visible label, copied/error state, and data attributes for styling.",
+      baseUi:
+        "No Core/Base UI primitive is needed because the native button and generated clipboard hook cover the intrinsic semantics and browser boundary.",
+      kobalte:
+        "Comparable to a Kobalte button composition while remaining UI-owned source. Keystone keeps clipboard state out of Core and exposes cancellable user-first click handling.",
     },
-    "registryDependencies": [
-      "cn",
-      "use-copy-to-clipboard"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/copy-button.tsx"
-    ],
-    "title": "CopyButton",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn", "use-copy-to-clipboard"],
+    sourceFiles: ["packages/ui/src/default/ui/copy-button.tsx"],
+    title: "CopyButton",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Decorative separators render role=presentation with no aria-orientation. Semantic separators render role=separator and aria-orientation matching the orientation prop. Separator has no keyboard, pointer, focus, form, or live-region behavior.",
-    "anatomy": [
-      "root"
-    ],
-    "api": "Separator accepts orientation horizontal|vertical and decorative boolean. decorative defaults to true; set decorative={false} when the separator conveys structure that should be exposed to assistive technology.",
-    "categories": [
-      "layout",
-      "base"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "Decorative separators render role=presentation with no aria-orientation. Semantic separators render role=separator and aria-orientation matching the orientation prop. Separator has no keyboard, pointer, focus, form, or live-region behavior.",
+    anatomy: ["root"],
+    api: "Separator accepts orientation horizontal|vertical and decorative boolean. decorative defaults to true; set decorative={false} when the separator conveys structure that should be exposed to assistive technology.",
+    categories: ["layout", "base"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Use separatorClass, data-orientation, data-decorative, and ui-separator classes to style horizontal and vertical separators.",
-    "dataAttributes": "Root exposes data-scope=\"ui-separator\", data-part=\"root\", data-slot=\"separator\", data-orientation, and data-decorative when decorative.",
-    "dependencies": [
-      "cn"
-    ],
-    "description": "Decorative or semantic Solid separator with horizontal and vertical layout styling.",
-    "files": [
+    customization:
+      "Use separatorClass, data-orientation, data-decorative, and ui-separator classes to style horizontal and vertical separators.",
+    dataAttributes:
+      'Root exposes data-scope="ui-separator", data-part="root", data-slot="separator", data-orientation, and data-decorative when decorative.',
+    dependencies: ["cn"],
+    description:
+      "Decorative or semantic Solid separator with horizontal and vertical layout styling.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/separator.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/separator.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add separator",
-    "keywords": [
-      "separator",
-      "divider",
-      "layout"
-    ],
-    "limitations": "Separator does not implement resizable splitters or focusable handles. Use a dedicated splitter/resizable primitive for adjustable panes.",
-    "name": "separator",
-    "parity": {
-      "visualReference": "Matches the Keystone base component direction: a compact border-color rule, horizontal h-px/w-full default, vertical h-full/w-px option, and stable data hooks for source-owned customization.",
-      "baseUi": "Matches Base UI Separator's decorative-by-default orientation model and native semantic fallback without adding unnecessary Core behavior.",
-      "kobalte": "Comparable to Kobalte Separator with Solid pass-through props, orientation metadata, and decorative-vs-semantic accessibility. No Core primitive dependency is needed for this simple native surface."
+    install: "mason add separator",
+    keywords: ["separator", "divider", "layout"],
+    limitations:
+      "Separator does not implement resizable splitters or focusable handles. Use a dedicated splitter/resizable primitive for adjustable panes.",
+    name: "separator",
+    parity: {
+      visualReference:
+        "Matches the Keystone base component direction: a compact border-color rule, horizontal h-px/w-full default, vertical h-full/w-px option, and stable data hooks for source-owned customization.",
+      baseUi:
+        "Matches Base UI Separator's decorative-by-default orientation model and native semantic fallback without adding unnecessary Core behavior.",
+      kobalte:
+        "Comparable to Kobalte Separator with Solid pass-through props, orientation metadata, and decorative-vs-semantic accessibility. No Core primitive dependency is needed for this simple native surface.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/separator.tsx"
-    ],
-    "ssr": "SSR and hydration are stable because the component renders deterministic native markup with no effects, browser APIs, ids, portals, or measurement.",
-    "state": "No controlled or uncontrolled state contract applies; Separator is a stateless native layout and semantics surface.",
-    "title": "Separator",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/separator.tsx"],
+    ssr: "SSR and hydration are stable because the component renders deterministic native markup with no effects, browser APIs, ids, portals, or measurement.",
+    state:
+      "No controlled or uncontrolled state contract applies; Separator is a stateless native layout and semantics surface.",
+    title: "Separator",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [
-      "root",
-      "trigger",
-      "content"
-    ],
-    "categories": [
-      "disclosure",
-      "layout"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    anatomy: ["root", "trigger", "content"],
+    categories: ["disclosure", "layout"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-collapsible classes while Keystone keeps open state, ARIA relationships, hidden-until-found behavior, and data attributes.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid collapsible component backed by Keystone disclosure behavior.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-collapsible classes while Keystone keeps open state, ARIA relationships, hidden-until-found behavior, and data attributes.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description: "Styled Solid collapsible component backed by Keystone disclosure behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/collapsible.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/collapsible.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add collapsible",
-    "keywords": [
-      "collapsible",
-      "disclosure",
-      "keystone"
-    ],
-    "name": "collapsible",
-    "parity": {
-      "baseUi": "Thin vertical covers controlled and uncontrolled disclosure state, Root/Trigger/Panel-style anatomy, trigger ARIA, data-state hooks, and hidden-until-found browser find reveal behavior. Gaps: measured height/width CSS variables, transition status metadata, and deeper browser-find coverage remain follow-up work.",
-      "kobalte": "Matches Solid Root/Trigger/Content composition, controlled state, default open state, disabled guards, and stable part attributes. Gaps: create-transition parity, force-mount lifecycle depth, and additional edge-case tests remain follow-up work."
+    install: "mason add collapsible",
+    keywords: ["collapsible", "disclosure", "keystone"],
+    name: "collapsible",
+    parity: {
+      baseUi:
+        "Thin vertical covers controlled and uncontrolled disclosure state, Root/Trigger/Panel-style anatomy, trigger ARIA, data-state hooks, and hidden-until-found browser find reveal behavior. Gaps: measured height/width CSS variables, transition status metadata, and deeper browser-find coverage remain follow-up work.",
+      kobalte:
+        "Matches Solid Root/Trigger/Content composition, controlled state, default open state, disabled guards, and stable part attributes. Gaps: create-transition parity, force-mount lifecycle depth, and additional edge-case tests remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/collapsible.tsx"
-    ],
-    "title": "Collapsible",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/collapsible.tsx"],
+    title: "Collapsible",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by @keystone-ui/core/dialog for role=dialog, aria-modal, title and description relationships, controlled and uncontrolled open state, Escape and outside dismissal, focus entry, focus trap, focus restore, modal outside hiding, scroll lock, preventable events, and hidden force-mounted content semantics.",
-    "anatomy": [
+    accessibility:
+      "Backed by @keystone-ui/core/dialog for role=dialog, aria-modal, title and description relationships, controlled and uncontrolled open state, Escape and outside dismissal, focus entry, focus trap, focus restore, modal outside hiding, scroll lock, preventable events, and hidden force-mounted content semantics.",
+    anatomy: [
       "root",
       "trigger",
       "portal",
@@ -4071,56 +3224,47 @@ export const registryDocItems = [
       "footer",
       "title",
       "description",
-      "close"
+      "close",
     ],
-    "api": "Dialog exports Dialog, DialogTrigger, DialogPortal, DialogBackdrop, DialogPositioner, DialogContent, DialogPanel, DialogHeader, DialogFooter, DialogTitle, DialogDescription, DialogClose, and DialogPrimitive. DialogContent composes portal, backdrop, positioner, content, an optional close button, mobile bottom-stick behavior, and class escape hatches while Core owns open state, modal behavior, focus, dismissal, presence, and ARIA.",
-    "categories": [
-      "overlay",
-      "feedback"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    api: "Dialog exports Dialog, DialogTrigger, DialogPortal, DialogBackdrop, DialogPositioner, DialogContent, DialogPanel, DialogHeader, DialogFooter, DialogTitle, DialogDescription, DialogClose, and DialogPrimitive. DialogContent composes portal, backdrop, positioner, content, an optional close button, mobile bottom-stick behavior, and class escape hatches while Core owns open state, modal behavior, focus, dismissal, presence, and ARIA.",
+    categories: ["overlay", "feedback"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-dialog classes while Keystone keeps focus, dismissal, layering, and ARIA behavior.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid dialog component backed by Keystone overlay behavior.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-dialog classes while Keystone keeps focus, dismissal, layering, and ARIA behavior.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description: "Styled Solid dialog component backed by Keystone overlay behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/dialog.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/dialog.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add dialog",
-    "keywords": [
-      "dialog",
-      "modal",
-      "overlay",
-      "keystone"
-    ],
-    "limitations": "Scrollable body composition is provided through DialogPanel rather than a dedicated ScrollArea dependency, and alert-dialog semantics remain a separate future UI item. Overlay behavior stays in Keystone Core.",
-    "name": "dialog",
-    "parity": {
-      "visualReference": "Matches the reference dialog visual shape in Solid source form: blurred backdrop, centered desktop popup, bottom-stuck mobile sheet behavior, rounded popover surface, close affordance, header/footer/panel spacing, transition status styling, and neutral data-slot hooks.",
-      "baseUi": "Evidence-backed coverage includes Root/Trigger/Portal/Backdrop/Content anatomy, controlled and uncontrolled open state, modal dismissal, Escape handling, focus entry/restore/trap, force-mounted presence lifecycle, transition status metadata, outside pointer blocking, modal scroll lock, and stable data attributes through Keystone overlay internals. Gaps: nested modal edges, broader browser matrix, and manual screen-reader evidence remain open before stable.",
-      "kobalte": "Solid composition follows Dialog with trigger, portal, overlay/content, title, description, controlled state, dismissable-layer direction, preventable outside/autofocus events, and hide-outside behavior for existing and newly inserted outside DOM. Follow-up: extracting hide-outside as a standalone utility, documenting nested overlay policy, and deeper browser/AT coverage."
+    install: "mason add dialog",
+    keywords: ["dialog", "modal", "overlay", "keystone"],
+    limitations:
+      "Scrollable body composition is provided through DialogPanel rather than a dedicated ScrollArea dependency, and alert-dialog semantics remain a separate future UI item. Overlay behavior stays in Keystone Core.",
+    name: "dialog",
+    parity: {
+      visualReference:
+        "Matches the reference dialog visual shape in Solid source form: blurred backdrop, centered desktop popup, bottom-stuck mobile sheet behavior, rounded popover surface, close affordance, header/footer/panel spacing, transition status styling, and neutral data-slot hooks.",
+      baseUi:
+        "Evidence-backed coverage includes Root/Trigger/Portal/Backdrop/Content anatomy, controlled and uncontrolled open state, modal dismissal, Escape handling, focus entry/restore/trap, force-mounted presence lifecycle, transition status metadata, outside pointer blocking, modal scroll lock, and stable data attributes through Keystone overlay internals. Gaps: nested modal edges, broader browser matrix, and manual screen-reader evidence remain open before stable.",
+      kobalte:
+        "Solid composition follows Dialog with trigger, portal, overlay/content, title, description, controlled state, dismissable-layer direction, preventable outside/autofocus events, and hide-outside behavior for existing and newly inserted outside DOM. Follow-up: extracting hide-outside as a standalone utility, documenting nested overlay policy, and deeper browser/AT coverage.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/dialog.tsx"
-    ],
-    "title": "Dialog",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/dialog.tsx"],
+    title: "Dialog",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by @keystone-ui/core/popover for trigger aria-haspopup/expanded relationships, role=dialog content, controlled and uncontrolled open state, Escape and outside dismissal, modal outside pointer blocking when requested, portal rendering, force-mounted presence, and floating placement metadata.",
-    "anatomy": [
+    accessibility:
+      "Backed by @keystone-ui/core/popover for trigger aria-haspopup/expanded relationships, role=dialog content, controlled and uncontrolled open state, Escape and outside dismissal, modal outside pointer blocking when requested, portal rendering, force-mounted presence, and floating placement metadata.",
+    anatomy: [
       "root",
       "trigger",
       "portal",
@@ -4131,150 +3275,114 @@ export const registryDocItems = [
       "header",
       "footer",
       "title",
-      "description"
+      "description",
     ],
-    "api": "Popover exports Popover, PopoverTrigger, PopoverPortal, PopoverPositioner, PopoverContent, PopoverPopup, PopoverArrow, PopoverHeader, PopoverFooter, PopoverTitle, PopoverDescription, and PopoverPrimitive. PopoverContent composes portal, positioner, popup surface, viewport, optional tooltip-style density, and class escape hatches while Core owns open state, positioning, modal option, dismissal, layer ordering, and state data attributes.",
-    "categories": [
-      "overlay",
-      "disclosure"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    api: "Popover exports Popover, PopoverTrigger, PopoverPortal, PopoverPositioner, PopoverContent, PopoverPopup, PopoverArrow, PopoverHeader, PopoverFooter, PopoverTitle, PopoverDescription, and PopoverPrimitive. PopoverContent composes portal, positioner, popup surface, viewport, optional tooltip-style density, and class escape hatches while Core owns open state, positioning, modal option, dismissal, layer ordering, and state data attributes.",
+    categories: ["overlay", "disclosure"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-popover classes while Core owns positioning, dismissal, and layer ordering.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid popover component backed by Keystone overlay positioning and dismissal.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-popover classes while Core owns positioning, dismissal, and layer ordering.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description:
+      "Styled Solid popover component backed by Keystone overlay positioning and dismissal.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/popover.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/popover.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add popover",
-    "keywords": [
-      "popover",
-      "overlay",
-      "floating",
-      "keystone"
-    ],
-    "limitations": "Title and description are styled UI composition helpers, not automatic ARIA relationships. Close controls remain app composition because Core Popover does not expose a close part yet.",
-    "name": "popover",
-    "parity": {
-      "visualReference": "Matches the reference popover visual shape in Solid source form: z-layered positioner, rounded popover surface, viewport padding, dense tooltip-style option, calendar-friendly padding hooks, transition status styling, floating CSS variables, and neutral data-slot hooks.",
-      "baseUi": "Evidence-backed coverage comes through Keystone Core Popover for Root/Trigger/Portal/Positioner/Content anatomy, controlled open state, modal option, floating placement, same-width and fit-viewport options, arrow geometry, outside and Escape dismissal, and presence metadata. Gaps: modal nuances, nested overlay policy, browser matrix, and manual AT evidence remain open.",
-      "kobalte": "Solid composition follows Popover/Popper for trigger, portal/content, controlled state, positioning, arrow, dismissable-layer direction, modal option, force-mounted lifecycle, and focus restoration through Keystone overlay internals. Gaps: deeper force-mount, nested focus restoration, and manual evidence remain follow-up work."
+    install: "mason add popover",
+    keywords: ["popover", "overlay", "floating", "keystone"],
+    limitations:
+      "Title and description are styled UI composition helpers, not automatic ARIA relationships. Close controls remain app composition because Core Popover does not expose a close part yet.",
+    name: "popover",
+    parity: {
+      visualReference:
+        "Matches the reference popover visual shape in Solid source form: z-layered positioner, rounded popover surface, viewport padding, dense tooltip-style option, calendar-friendly padding hooks, transition status styling, floating CSS variables, and neutral data-slot hooks.",
+      baseUi:
+        "Evidence-backed coverage comes through Keystone Core Popover for Root/Trigger/Portal/Positioner/Content anatomy, controlled open state, modal option, floating placement, same-width and fit-viewport options, arrow geometry, outside and Escape dismissal, and presence metadata. Gaps: modal nuances, nested overlay policy, browser matrix, and manual AT evidence remain open.",
+      kobalte:
+        "Solid composition follows Popover/Popper for trigger, portal/content, controlled state, positioning, arrow, dismissable-layer direction, modal option, force-mounted lifecycle, and focus restoration through Keystone overlay internals. Gaps: deeper force-mount, nested focus restoration, and manual evidence remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/popover.tsx"
-    ],
-    "title": "Popover",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/popover.tsx"],
+    title: "Popover",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [
-      "trigger",
-      "positioner",
-      "arrow",
-      "content"
-    ],
-    "categories": [
-      "overlay",
-      "preview"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    anatomy: ["trigger", "positioner", "arrow", "content"],
+    categories: ["overlay", "preview"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-hover-card classes while Core owns preview timing, positioning, and dismissal.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid hover card component backed by Keystone overlay positioning and pointer/focus preview behavior.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-hover-card classes while Core owns preview timing, positioning, and dismissal.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description:
+      "Styled Solid hover card component backed by Keystone overlay positioning and pointer/focus preview behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/hover-card.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/hover-card.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add hover-card",
-    "keywords": [
-      "hover-card",
-      "preview",
-      "overlay",
-      "floating",
-      "keystone"
-    ],
-    "name": "hover-card",
-    "parity": {
-      "baseUi": "Matches the PreviewCard Root/Trigger/Portal/Positioner/Popup/Arrow baseline through Keystone Root, Trigger, Portal, Positioner, Content, and Arrow parts. Keystone intentionally names the primitive HoverCard for Solid/Kobalte familiarity. Gaps: detached triggers, multiple trigger payloads, Backdrop, Viewport, and trigger-id coordination remain follow-up work.",
-      "kobalte": "Matches HoverCard Root/Trigger/Portal/Content/Arrow shape, custom open/close delays, controlled state, forceMount direction, safe-area hover traversal, and screen-reader-hidden preview intent."
+    install: "mason add hover-card",
+    keywords: ["hover-card", "preview", "overlay", "floating", "keystone"],
+    name: "hover-card",
+    parity: {
+      baseUi:
+        "Matches the PreviewCard Root/Trigger/Portal/Positioner/Popup/Arrow baseline through Keystone Root, Trigger, Portal, Positioner, Content, and Arrow parts. Keystone intentionally names the primitive HoverCard for Solid/Kobalte familiarity. Gaps: detached triggers, multiple trigger payloads, Backdrop, Viewport, and trigger-id coordination remain follow-up work.",
+      kobalte:
+        "Matches HoverCard Root/Trigger/Portal/Content/Arrow shape, custom open/close delays, controlled state, forceMount direction, safe-area hover traversal, and screen-reader-hidden preview intent.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/hover-card.tsx"
-    ],
-    "title": "HoverCard",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/hover-card.tsx"],
+    title: "HoverCard",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [],
-    "categories": [
-      "overlay",
-      "navigation"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    anatomy: [],
+    categories: ["overlay", "navigation"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-menu classes while Core owns menu roles, roving focus, typeahead, dismissal, and positioning.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid menu component backed by Keystone menu navigation, typeahead, and overlay behavior.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-menu classes while Core owns menu roles, roving focus, typeahead, dismissal, and positioning.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description:
+      "Styled Solid menu component backed by Keystone menu navigation, typeahead, and overlay behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/menu.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/menu.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add menu",
-    "keywords": [
-      "menu",
-      "overlay",
-      "typeahead",
-      "keystone"
-    ],
-    "name": "menu",
-    "parity": {
-      "baseUi": "Thin vertical covers core Menu popup, item roles, roving focus, typeahead, disabled skipping, groups/separators, overlay positioning, and dismissal. Gaps: submenu pointer grace, checkbox/radio item groups, scroll buttons, modal backdrop nuances, and animation lifecycle metadata remain follow-up work.",
-      "kobalte": "Matches Kobalte Menu direction for Solid root/content/item parts, keyboard navigation, typeahead, disabled items, and portal/popover composition. Gaps: richer item checked state, nested menu intent, and full dismissable-layer parity remain follow-up work."
+    install: "mason add menu",
+    keywords: ["menu", "overlay", "typeahead", "keystone"],
+    name: "menu",
+    parity: {
+      baseUi:
+        "Thin vertical covers core Menu popup, item roles, roving focus, typeahead, disabled skipping, groups/separators, overlay positioning, and dismissal. Gaps: submenu pointer grace, checkbox/radio item groups, scroll buttons, modal backdrop nuances, and animation lifecycle metadata remain follow-up work.",
+      kobalte:
+        "Matches Kobalte Menu direction for Solid root/content/item parts, keyboard navigation, typeahead, disabled items, and portal/popover composition. Gaps: richer item checked state, nested menu intent, and full dismissable-layer parity remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/menu.tsx"
-    ],
-    "title": "Menu",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/menu.tsx"],
+    title: "Menu",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by @keystone-ui/core/dropdown-menu for trigger aria-haspopup/expanded relationships, menu and menuitem roles, disabled item skipping, highlighted state, typeahead, checkbox and radio item roles, groups and labels, separators, Escape and outside dismissal, focus restoration, and submenu keyboard behavior.",
-    "anatomy": [
+    accessibility:
+      "Backed by @keystone-ui/core/dropdown-menu for trigger aria-haspopup/expanded relationships, menu and menuitem roles, disabled item skipping, highlighted state, typeahead, checkbox and radio item roles, groups and labels, separators, Escape and outside dismissal, focus restoration, and submenu keyboard behavior.",
+    anatomy: [
       "root",
       "trigger",
       "portal",
@@ -4296,142 +3404,112 @@ export const registryDocItems = [
       "shortcut",
       "sub",
       "sub-trigger",
-      "sub-content"
+      "sub-content",
     ],
-    "api": "DropdownMenu exports DropdownMenu, DropdownMenuTrigger, DropdownMenuPortal, DropdownMenuPositioner, DropdownMenuContent, DropdownMenuPopup, DropdownMenuArrow, DropdownMenuGroup, DropdownMenuGroupLabel, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem, DropdownMenuLink, DropdownMenuCheckboxItem, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuItemIndicator, DropdownMenuItemLabel, DropdownMenuItemDescription, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent, and DropdownMenuPrimitive. Core owns open state, roving focus, typeahead, checkbox/radio state, link/item selection, submenus, dismissal, and positioning.",
-    "categories": [
-      "overlay",
-      "navigation"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    api: "DropdownMenu exports DropdownMenu, DropdownMenuTrigger, DropdownMenuPortal, DropdownMenuPositioner, DropdownMenuContent, DropdownMenuPopup, DropdownMenuArrow, DropdownMenuGroup, DropdownMenuGroupLabel, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem, DropdownMenuLink, DropdownMenuCheckboxItem, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuItemIndicator, DropdownMenuItemLabel, DropdownMenuItemDescription, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent, and DropdownMenuPrimitive. Core owns open state, roving focus, typeahead, checkbox/radio state, link/item selection, submenus, dismissal, and positioning.",
+    categories: ["overlay", "navigation"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-dropdown-menu classes while Core owns menu roles, roving focus, typeahead, dismissal, and positioning.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid dropdown menu backed by Keystone menu navigation, typeahead, and overlay behavior.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-dropdown-menu classes while Core owns menu roles, roving focus, typeahead, dismissal, and positioning.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description:
+      "Styled Solid dropdown menu backed by Keystone menu navigation, typeahead, and overlay behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/dropdown-menu.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/dropdown-menu.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add dropdown-menu",
-    "keywords": [
-      "dropdown-menu",
-      "menu",
-      "overlay",
-      "keystone"
-    ],
-    "limitations": "Submenu pointer grace follows the current Core menu contract, and scroll arrow affordances are not implemented in UI. The generated source keeps behavior in Core and reserves visual density, indicators, shortcuts, and switch-style checkbox items for app-owned styling.",
-    "name": "dropdown-menu",
-    "parity": {
-      "visualReference": "Matches the reference menu visual shape in Solid source form: rounded popover surface, viewport padding, dense items, inset items, destructive variant, grouped labels, separators, check/radio indicators, switch-style checkbox item, shortcuts, submenus, and neutral data-slot hooks.",
-      "baseUi": "Evidence-backed coverage comes through Keystone Core DropdownMenu for trigger/content positioning, modal option, item roles, roving focus, typeahead, disabled skipping, checkbox/radio item state, groups, labels, separators, link items, submenu keyboard flow, dismissal, and overlay layering. Gaps: submenu pointer grace, scroll affordances, nested layer edge cases, and manual AT evidence remain open.",
-      "kobalte": "Solid composition follows DropdownMenu/Menu for trigger, portal content, keyboard navigation, item parts, groups, disabled state, checkbox and radio items, submenus, dismissable-layer behavior, and focus restoration through Keystone Core. Gaps: advanced submenu intent, modality nuance, and manual menu AT notes remain follow-up work."
+    install: "mason add dropdown-menu",
+    keywords: ["dropdown-menu", "menu", "overlay", "keystone"],
+    limitations:
+      "Submenu pointer grace follows the current Core menu contract, and scroll arrow affordances are not implemented in UI. The generated source keeps behavior in Core and reserves visual density, indicators, shortcuts, and switch-style checkbox items for app-owned styling.",
+    name: "dropdown-menu",
+    parity: {
+      visualReference:
+        "Matches the reference menu visual shape in Solid source form: rounded popover surface, viewport padding, dense items, inset items, destructive variant, grouped labels, separators, check/radio indicators, switch-style checkbox item, shortcuts, submenus, and neutral data-slot hooks.",
+      baseUi:
+        "Evidence-backed coverage comes through Keystone Core DropdownMenu for trigger/content positioning, modal option, item roles, roving focus, typeahead, disabled skipping, checkbox/radio item state, groups, labels, separators, link items, submenu keyboard flow, dismissal, and overlay layering. Gaps: submenu pointer grace, scroll affordances, nested layer edge cases, and manual AT evidence remain open.",
+      kobalte:
+        "Solid composition follows DropdownMenu/Menu for trigger, portal content, keyboard navigation, item parts, groups, disabled state, checkbox and radio items, submenus, dismissable-layer behavior, and focus restoration through Keystone Core. Gaps: advanced submenu intent, modality nuance, and manual menu AT notes remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/dropdown-menu.tsx"
-    ],
-    "title": "DropdownMenu",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/dropdown-menu.tsx"],
+    title: "DropdownMenu",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [],
-    "categories": [
-      "overlay",
-      "navigation"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    anatomy: [],
+    categories: ["overlay", "navigation"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-context-menu classes while Core owns menu roles, roving focus, typeahead, dismissal, and positioning.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid context menu backed by Keystone menu navigation, typeahead, and overlay behavior.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-context-menu classes while Core owns menu roles, roving focus, typeahead, dismissal, and positioning.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description:
+      "Styled Solid context menu backed by Keystone menu navigation, typeahead, and overlay behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/context-menu.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/context-menu.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add context-menu",
-    "keywords": [
-      "context-menu",
-      "menu",
-      "overlay",
-      "keystone"
-    ],
-    "name": "context-menu",
-    "parity": {
-      "baseUi": "Thin vertical covers menu roles, roving focus, typeahead, disabled skipping, submenu-capable item structure, context trigger positioning, dismissal, and UI classes. Gaps: pointer grace areas, collision-aware submenu placement, checkbox/radio item groups, animation status metadata, and nested layer edge tests remain follow-up work.",
-      "kobalte": "Matches Solid ContextMenu/Menu anatomy direction with trigger, portal/content, items, separators, groups, and keyboard navigation. Gaps: advanced submenu intent, modality nuances, item checked state helpers, and deeper dismissable-layer coordination remain follow-up work."
+    install: "mason add context-menu",
+    keywords: ["context-menu", "menu", "overlay", "keystone"],
+    name: "context-menu",
+    parity: {
+      baseUi:
+        "Thin vertical covers menu roles, roving focus, typeahead, disabled skipping, submenu-capable item structure, context trigger positioning, dismissal, and UI classes. Gaps: pointer grace areas, collision-aware submenu placement, checkbox/radio item groups, animation status metadata, and nested layer edge tests remain follow-up work.",
+      kobalte:
+        "Matches Solid ContextMenu/Menu anatomy direction with trigger, portal/content, items, separators, groups, and keyboard navigation. Gaps: advanced submenu intent, modality nuances, item checked state helpers, and deeper dismissable-layer coordination remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/context-menu.tsx"
-    ],
-    "title": "ContextMenu",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/context-menu.tsx"],
+    title: "ContextMenu",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [],
-    "categories": [
-      "navigation"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    anatomy: [],
+    categories: ["navigation"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-menubar classes while Core owns menu roles, roving focus, typeahead, and item state behavior.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid menubar backed by Keystone menu navigation, typeahead, and item state behavior.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-menubar classes while Core owns menu roles, roving focus, typeahead, and item state behavior.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description:
+      "Styled Solid menubar backed by Keystone menu navigation, typeahead, and item state behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/menubar.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/menubar.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add menubar",
-    "keywords": [
-      "menubar",
-      "menu",
-      "navigation",
-      "keystone"
-    ],
-    "name": "menubar",
-    "parity": {
-      "baseUi": "Thin vertical covers horizontal menubar role, roving focus, menu item activation, nested popup positioning, typeahead, disabled skipping, groups, separators, and UI classes. Gaps: complex submenu hover intent, RTL edge cases, checkbox/radio item groups, and robust pointer/keyboard modality tests remain follow-up work.",
-      "kobalte": "Matches Kobalte Menubar/Menu composition direction with Solid menubar root, trigger/content, items, and keyboard navigation. Gaps: advanced nested menu coordination, focus restoration across route links, and checked item helpers remain follow-up work."
+    install: "mason add menubar",
+    keywords: ["menubar", "menu", "navigation", "keystone"],
+    name: "menubar",
+    parity: {
+      baseUi:
+        "Thin vertical covers horizontal menubar role, roving focus, menu item activation, nested popup positioning, typeahead, disabled skipping, groups, separators, and UI classes. Gaps: complex submenu hover intent, RTL edge cases, checkbox/radio item groups, and robust pointer/keyboard modality tests remain follow-up work.",
+      kobalte:
+        "Matches Kobalte Menubar/Menu composition direction with Solid menubar root, trigger/content, items, and keyboard navigation. Gaps: advanced nested menu coordination, focus restoration across route links, and checked item helpers remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/menubar.tsx"
-    ],
-    "title": "Menubar",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/menubar.tsx"],
+    title: "Menubar",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [
+    anatomy: [
       "trigger",
       "list",
       "menu",
@@ -4444,123 +3522,89 @@ export const registryDocItems = [
       "separator",
       "item",
       "link",
-      "item-indicator"
+      "item-indicator",
     ],
-    "categories": [
-      "navigation"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    categories: ["navigation"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-navigation-menu classes while Core owns nav/list/menu anatomy, menubar roles, item navigation, typeahead, overlay positioning, and item state behavior.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid navigation menu backed by Keystone menu navigation, typeahead, and overlay behavior.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-navigation-menu classes while Core owns nav/list/menu anatomy, menubar roles, item navigation, typeahead, overlay positioning, and item state behavior.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description:
+      "Styled Solid navigation menu backed by Keystone menu navigation, typeahead, and overlay behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/navigation-menu.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/navigation-menu.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add navigation-menu",
-    "keywords": [
-      "navigation-menu",
-      "menubar",
-      "menu",
-      "navigation",
-      "keystone"
-    ],
-    "name": "navigation-menu",
-    "parity": {
-      "baseUi": "Covers the core NavigationMenu trigger/content item/link contract through Keystone overlay positioning, menubar semantics, navigation root/list/menu anatomy, viewport, and indicator data parts. Gaps: Popup-specific layout APIs, animation metadata, touch pointer intent, and edge-case tests remain follow-up work.",
-      "kobalte": "Maps Root/List/Menu/Trigger/Content/Viewport/Indicator/Item/Link/Group/Separator behavior onto Keystone menu kernel with navigation-menu scope, controlled open state, typeahead, disabled skipping, routed anchor activation, and UI wrappers. Gaps: hover intent tuning, submenu cursor safety, focus restoration across dynamic route transitions, and richer nested coordination remain follow-up work."
+    install: "mason add navigation-menu",
+    keywords: ["navigation-menu", "menubar", "menu", "navigation", "keystone"],
+    name: "navigation-menu",
+    parity: {
+      baseUi:
+        "Covers the core NavigationMenu trigger/content item/link contract through Keystone overlay positioning, menubar semantics, navigation root/list/menu anatomy, viewport, and indicator data parts. Gaps: Popup-specific layout APIs, animation metadata, touch pointer intent, and edge-case tests remain follow-up work.",
+      kobalte:
+        "Maps Root/List/Menu/Trigger/Content/Viewport/Indicator/Item/Link/Group/Separator behavior onto Keystone menu kernel with navigation-menu scope, controlled open state, typeahead, disabled skipping, routed anchor activation, and UI wrappers. Gaps: hover intent tuning, submenu cursor safety, focus restoration across dynamic route transitions, and richer nested coordination remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/navigation-menu.tsx"
-    ],
-    "title": "NavigationMenu",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/navigation-menu.tsx"],
+    title: "NavigationMenu",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Breadcrumb renders a nav landmark with aria-label and an ordered list. Links remain anchors, separators are presentation-only, the current page uses aria-current=page, and ellipsis is a named button suitable for a menu trigger.",
-    "anatomy": [
-      "root",
-      "list",
-      "item",
-      "link",
-      "page",
-      "separator",
-      "ellipsis"
-    ],
-    "api": "Breadcrumb accepts items, label, separator, listClass, linkClass, pageClass, and separatorClass for route-generated trails. BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, and BreadcrumbEllipsis are exported for source-owned composition.",
-    "categories": [
-      "navigation",
-      "base"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    accessibility:
+      "Breadcrumb renders a nav landmark with aria-label and an ordered list. Links remain anchors, separators are presentation-only, the current page uses aria-current=page, and ellipsis is a named button suitable for a menu trigger.",
+    anatomy: ["root", "list", "item", "link", "page", "separator", "ellipsis"],
+    api: "Breadcrumb accepts items, label, separator, listClass, linkClass, pageClass, and separatorClass for route-generated trails. BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, and BreadcrumbEllipsis are exported for source-owned composition.",
+    categories: ["navigation", "base"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Use ui-breadcrumb classes and data-slot hooks for root, list, item, link, page, separator, and ellipsis styling. Pass items for simple route trails or compose parts directly for menus and app topbars.",
-    "dependencies": [
-      "cn"
-    ],
-    "description": "Source-owned Solid breadcrumb navigation for docs, app routes, and dense topbar composition.",
-    "files": [
+    customization:
+      "Use ui-breadcrumb classes and data-slot hooks for root, list, item, link, page, separator, and ellipsis styling. Pass items for simple route trails or compose parts directly for menus and app topbars.",
+    dependencies: ["cn"],
+    description:
+      "Source-owned Solid breadcrumb navigation for docs, app routes, and dense topbar composition.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/breadcrumb.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/breadcrumb.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add breadcrumb",
-    "keywords": [
-      "breadcrumb",
-      "navigation",
-      "route",
-      "topbar",
-      "docs"
-    ],
-    "limitations": "Breadcrumb is display/navigation source and has no Core dependency because it owns no intrinsic state. Route matching, truncation menus, and responsive collapse policy stay in app code or composed menu source.",
-    "name": "breadcrumb",
-    "parity": {
-      "visualReference": "Matches shadcn-style source-owned breadcrumb ergonomics in Solid form: nav root, ordered list, item/link/page/separator parts, current page semantics, customizable separator, and ellipsis trigger for collapsed trails.",
-      "baseUi": "Base UI has no dedicated Breadcrumb primitive, so parity is scoped to native landmark/list/link semantics and accessible current-page state.",
-      "kobalte": "Comparable to Kobalte-style Solid composition through explicit parts and data attributes. Keystone intentionally keeps route state and collapse behavior outside this display component."
+    install: "mason add breadcrumb",
+    keywords: ["breadcrumb", "navigation", "route", "topbar", "docs"],
+    limitations:
+      "Breadcrumb is display/navigation source and has no Core dependency because it owns no intrinsic state. Route matching, truncation menus, and responsive collapse policy stay in app code or composed menu source.",
+    name: "breadcrumb",
+    parity: {
+      visualReference:
+        "Matches shadcn-style source-owned breadcrumb ergonomics in Solid form: nav root, ordered list, item/link/page/separator parts, current page semantics, customizable separator, and ellipsis trigger for collapsed trails.",
+      baseUi:
+        "Base UI has no dedicated Breadcrumb primitive, so parity is scoped to native landmark/list/link semantics and accessible current-page state.",
+      kobalte:
+        "Comparable to Kobalte-style Solid composition through explicit parts and data attributes. Keystone intentionally keeps route state and collapse behavior outside this display component.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/breadcrumb.tsx"
-    ],
-    "title": "Breadcrumb",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/breadcrumb.tsx"],
+    title: "Breadcrumb",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": [
+    accessibility: [
       "Viewport renders a labeled region and visible toasts as list items through Core.",
       "Toast priority maps to status or alert roles through Core.",
       "Title and description relationships, action callbacks, close labeling, hover pause, focus pause, duration, limit, and dismiss behavior remain Core-owned.",
-      "The UI icon slot is decorative and marked aria-hidden."
+      "The UI icon slot is decorative and marked aria-hidden.",
     ],
-    "anatomy": {
-      "coreParts": [
-        "viewport",
-        "root",
-        "title",
-        "description",
-        "action",
-        "close"
-      ],
-      "uiSlots": [
+    anatomy: {
+      coreParts: ["viewport", "root", "title", "description", "action", "close"],
+      uiSlots: [
         "toast-viewport",
         "toast",
         "toast-content",
@@ -4568,10 +3612,10 @@ export const registryDocItems = [
         "toast-title",
         "toast-description",
         "toast-action",
-        "toast-close"
-      ]
+        "toast-close",
+      ],
     },
-    "api": [
+    api: [
       "Toaster",
       "toaster",
       "ToastProvider",
@@ -4583,110 +3627,82 @@ export const registryDocItems = [
       "ToastDescription",
       "ToastAction",
       "ToastClose",
-      "ToastPrimitive"
+      "ToastPrimitive",
     ],
-    "categories": [
-      "feedback",
-      "overlay",
-      "notification"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    categories: ["feedback", "overlay", "notification"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style generated ui-toast classes, data-slot hooks, position classes, stack classes, and toast CSS variables while Core owns manager updates, promise lifecycle updates, live-region roles, dismissal, timer scheduling, page-idle pause/resume, viewport limits, hotkey focus, and stable toast data attributes.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "lucide-solid",
-      "cn"
-    ],
-    "description": "Styled Solid toast component backed by Keystone notification manager, viewport, timer, and live-region behavior.",
-    "files": [
+    customization:
+      "Style generated ui-toast classes, data-slot hooks, position classes, stack classes, and toast CSS variables while Core owns manager updates, promise lifecycle updates, live-region roles, dismissal, timer scheduling, page-idle pause/resume, viewport limits, hotkey focus, and stable toast data attributes.",
+    dependencies: ["@keystone-ui/core", "lucide-solid", "cn"],
+    description:
+      "Styled Solid toast component backed by Keystone notification manager, viewport, timer, and live-region behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/toast.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/toast.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add toast",
-    "keywords": [
-      "toast",
-      "notification",
-      "sonner",
-      "keystone"
-    ],
-    "limitations": [
+    install: "mason add toast",
+    keywords: ["toast", "notification", "sonner", "keystone"],
+    limitations: [
       "Swipe gestures, anchored/contextual toasts, a progress-bar part, and cancel-action sugar are intentionally deferred to Core or a later UI helper.",
-      "Toast does not participate in focus trapping, outside hiding, inerting, prevent-scroll, or overlay layering."
+      "Toast does not participate in focus trapping, outside hiding, inerting, prevent-scroll, or overlay layering.",
     ],
-    "name": "toast",
-    "parity": {
-      "baseUi": "Base UI is a first-class reference for the stacked viewport: visible limit defaults to three, render metadata exposes front index/order, UI measures toast height for expanded stack offsets, the root shell carries coss-style stacked transforms and keyframed entry motion, and Core owns manager updates, actions, close parts, timer pause/resume, hotkey focus, roles, and viewport filtering. Gaps: anchored positioner, swipe dismissal, transition-status exit states, and progress parts remain later Core work.",
-      "kobalte": "Kobalte is a first-class Solid/accessibility reference: Keystone keeps Solid compound composition, region filtering, duration overrides, viewport limits, hover/focus pause, page-idle timer pausing, hotkey access to the notification region, polite/assertive roles, and programmatic update/dismiss. Gaps: progress track/fill and swipe CSS variables remain deferred.",
-      "sonner": "Sonner is a first-class ergonomic reference: toaster is callable, typed helpers update by id, promise helpers move loading to success/error, default Toaster shows three visible toasts in the bottom-right corner, enter motion slides from the screen edge with coss/Sonner-style easing, hover/focus expands the stack, action clicks dismiss unless prevented, close button remains opt-in, tone icons mirror Sonner expectations, and custom render hooks receive toast metadata. Gaps: per-toast position routing, cancel action sugar, rich color mode, and swipe physics remain explicit follow-ups."
+    name: "toast",
+    parity: {
+      baseUi:
+        "Base UI is a first-class reference for the stacked viewport: visible limit defaults to three, render metadata exposes front index/order, UI measures toast height for expanded stack offsets, the root shell carries coss-style stacked transforms and keyframed entry motion, and Core owns manager updates, actions, close parts, timer pause/resume, hotkey focus, roles, and viewport filtering. Gaps: anchored positioner, swipe dismissal, transition-status exit states, and progress parts remain later Core work.",
+      kobalte:
+        "Kobalte is a first-class Solid/accessibility reference: Keystone keeps Solid compound composition, region filtering, duration overrides, viewport limits, hover/focus pause, page-idle timer pausing, hotkey access to the notification region, polite/assertive roles, and programmatic update/dismiss. Gaps: progress track/fill and swipe CSS variables remain deferred.",
+      sonner:
+        "Sonner is a first-class ergonomic reference: toaster is callable, typed helpers update by id, promise helpers move loading to success/error, default Toaster shows three visible toasts in the bottom-right corner, enter motion slides from the screen edge with coss/Sonner-style easing, hover/focus expands the stack, action clicks dismiss unless prevented, close button remains opt-in, tone icons mirror Sonner expectations, and custom render hooks receive toast metadata. Gaps: per-toast position routing, cancel action sugar, rich color mode, and swipe physics remain explicit follow-ups.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/toast.tsx"
-    ],
-    "title": "Toast",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/toast.tsx"],
+    title: "Toast",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [
-      "root",
-      "button",
-      "link",
-      "separator"
-    ],
-    "categories": [
-      "forms",
-      "navigation",
-      "actions"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    anatomy: ["root", "button", "link", "separator"],
+    categories: ["forms", "navigation", "actions"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-toolbar classes while Keystone keeps toolbar roles, orientation, roving focus, disabled skipping, and data attributes.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid toolbar component backed by Keystone roving focus and orientation behavior.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-toolbar classes while Keystone keeps toolbar roles, orientation, roving focus, disabled skipping, and data attributes.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description:
+      "Styled Solid toolbar component backed by Keystone roving focus and orientation behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/toolbar.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/toolbar.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add toolbar",
-    "keywords": [
-      "toolbar",
-      "roving-focus",
-      "actions",
-      "keystone"
-    ],
-    "name": "toolbar",
-    "parity": {
-      "baseUi": "Thin vertical covers toolbar role, horizontal and vertical orientation, RTL-aware horizontal keys, roving focus, disabled item skipping, pressed button metadata, separator semantics, UI wrappers, and registry metadata. Gaps: toggle-group coordination, radio-group coordination, richer cursor/touch behavior, nested toolbar/menu coordination, focus restoration from popover/menu tools, controlled active item state, and broader edge-case tests remain follow-up work.",
-      "kobalte": "Kobalte has related toggle, toggle-group, and composite primitives rather than a direct toolbar surface; Solid parity is scoped to roving focus, orientation, disabled skipping, and part composition. Gaps: toggle/radio group integration and nested composite policy remain follow-up work."
+    install: "mason add toolbar",
+    keywords: ["toolbar", "roving-focus", "actions", "keystone"],
+    name: "toolbar",
+    parity: {
+      baseUi:
+        "Thin vertical covers toolbar role, horizontal and vertical orientation, RTL-aware horizontal keys, roving focus, disabled item skipping, pressed button metadata, separator semantics, UI wrappers, and registry metadata. Gaps: toggle-group coordination, radio-group coordination, richer cursor/touch behavior, nested toolbar/menu coordination, focus restoration from popover/menu tools, controlled active item state, and broader edge-case tests remain follow-up work.",
+      kobalte:
+        "Kobalte has related toggle, toggle-group, and composite primitives rather than a direct toolbar surface; Solid parity is scoped to roving focus, orientation, disabled skipping, and part composition. Gaps: toggle/radio group integration and nested composite policy remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/toolbar.tsx"
-    ],
-    "title": "Toolbar",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/toolbar.tsx"],
+    title: "Toolbar",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "accessibility": "Backed by @keystone-ui/core/tooltip for role=tooltip, trigger aria-describedby, hover and focus opening, close and skip-delay timing, hoverable content, pointer grace area, Escape dismissal, portal rendering, controlled and uncontrolled open state, and floating placement metadata.",
-    "anatomy": [
+    accessibility:
+      "Backed by @keystone-ui/core/tooltip for role=tooltip, trigger aria-describedby, hover and focus opening, close and skip-delay timing, hoverable content, pointer grace area, Escape dismissal, portal rendering, controlled and uncontrolled open state, and floating placement metadata.",
+    anatomy: [
       "provider",
       "root",
       "trigger",
@@ -4694,95 +3710,74 @@ export const registryDocItems = [
       "positioner",
       "content",
       "viewport",
-      "arrow"
+      "arrow",
     ],
-    "api": "Tooltip exports TooltipProvider, Tooltip, TooltipTrigger, TooltipPortal, TooltipPositioner, TooltipContent, TooltipPopup, TooltipArrow, and TooltipPrimitive. TooltipContent composes portal, positioner, popup surface, viewport, and class escape hatches while Core owns delay groups, hover/focus interactions, open state, pointer grace area, Escape dismissal, positioning, and aria-describedby wiring.",
-    "categories": [
-      "overlay",
-      "help"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    api: "Tooltip exports TooltipProvider, Tooltip, TooltipTrigger, TooltipPortal, TooltipPositioner, TooltipContent, TooltipPopup, TooltipArrow, and TooltipPrimitive. TooltipContent composes portal, positioner, popup surface, viewport, and class escape hatches while Core owns delay groups, hover/focus interactions, open state, pointer grace area, Escape dismissal, positioning, and aria-describedby wiring.",
+    categories: ["overlay", "help"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-tooltip classes while Core owns positioning and trigger/content relationships.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid tooltip component backed by Keystone overlay positioning and Escape dismissal.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-tooltip classes while Core owns positioning and trigger/content relationships.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description:
+      "Styled Solid tooltip component backed by Keystone overlay positioning and Escape dismissal.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/tooltip.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/tooltip.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add tooltip",
-    "keywords": [
-      "tooltip",
-      "overlay",
-      "floating",
-      "keystone"
-    ],
-    "limitations": "The UI item styles the popup and viewport only; custom arrow artwork and disabled-trigger composition remain app-level choices while Core owns tooltip behavior.",
-    "name": "tooltip",
-    "parity": {
-      "visualReference": "Matches the reference tooltip visual shape in Solid source form: compact text-balanced popup, rounded bordered popover surface, small viewport padding, transition status styling, z-layered positioner, floating CSS variables, and neutral data-slot hooks.",
-      "baseUi": "Evidence-backed coverage comes through Keystone Core Tooltip for provider-level delay groups, controlled open state, hover/focus trigger intent, hoverable content policy, pointer grace area, Escape dismissal, floating placement, arrow geometry, portal rendering, and transition status metadata. Gaps: manual AT evidence, browser pointer/touch matrix, force-mounted portal evidence, and aria-describedby announcement timing remain open.",
-      "kobalte": "Solid composition follows Tooltip/Popper with trigger, portal/content, delay and skip-delay timing, controlled state, aria-describedby wiring, force-mounted lifecycle, arrow part, and pointer safe-area behavior through Keystone overlay internals. Gaps: deeper force-mount evidence and manual tooltip AT notes remain follow-up work."
+    install: "mason add tooltip",
+    keywords: ["tooltip", "overlay", "floating", "keystone"],
+    limitations:
+      "The UI item styles the popup and viewport only; custom arrow artwork and disabled-trigger composition remain app-level choices while Core owns tooltip behavior.",
+    name: "tooltip",
+    parity: {
+      visualReference:
+        "Matches the reference tooltip visual shape in Solid source form: compact text-balanced popup, rounded bordered popover surface, small viewport padding, transition status styling, z-layered positioner, floating CSS variables, and neutral data-slot hooks.",
+      baseUi:
+        "Evidence-backed coverage comes through Keystone Core Tooltip for provider-level delay groups, controlled open state, hover/focus trigger intent, hoverable content policy, pointer grace area, Escape dismissal, floating placement, arrow geometry, portal rendering, and transition status metadata. Gaps: manual AT evidence, browser pointer/touch matrix, force-mounted portal evidence, and aria-describedby announcement timing remain open.",
+      kobalte:
+        "Solid composition follows Tooltip/Popper with trigger, portal/content, delay and skip-delay timing, controlled state, aria-describedby wiring, force-mounted lifecycle, arrow part, and pointer safe-area behavior through Keystone overlay internals. Gaps: deeper force-mount evidence and manual tooltip AT notes remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/tooltip.tsx"
-    ],
-    "title": "Tooltip",
-    "type": "registry:ui",
-    "version": "0.1.0"
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/tooltip.tsx"],
+    title: "Tooltip",
+    type: "registry:ui",
+    version: "0.1.0",
   },
   {
-    "anatomy": [],
-    "categories": [
-      "overlay",
-      "navigation"
-    ],
-    "compatibility": {
-      "mason": ">=0.1.0 <0.2.0",
-      "solid": ">=1.9.0 <2.0.0"
+    anatomy: [],
+    categories: ["overlay", "navigation"],
+    compatibility: {
+      mason: ">=0.1.0 <0.2.0",
+      solid: ">=1.9.0 <2.0.0",
     },
-    "customization": "Style the generated wrappers through ui-sheet classes while Core owns focus, dismissal, pointer blocking, and side data.",
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
-    "description": "Styled Solid sheet component backed by Keystone modal overlay behavior.",
-    "files": [
+    customization:
+      "Style the generated wrappers through ui-sheet classes while Core owns focus, dismissal, pointer blocking, and side data.",
+    dependencies: ["@keystone-ui/core", "cn"],
+    description: "Styled Solid sheet component backed by Keystone modal overlay behavior.",
+    files: [
       {
-        "path": "packages/ui/src/default/ui/sheet.tsx",
-        "type": "registry:ui"
-      }
+        path: "packages/ui/src/default/ui/sheet.tsx",
+        type: "registry:ui",
+      },
     ],
-    "install": "mason add sheet",
-    "keywords": [
-      "sheet",
-      "drawer",
-      "overlay",
-      "keystone"
-    ],
-    "name": "sheet",
-    "parity": {
-      "baseUi": "Thin vertical composes Dialog/Drawer-style overlay behavior with side metadata, backdrop/content parts, controlled open state, focus/dismissal, pointer blocking, and UI side classes. Gaps: Base UI Drawer gesture depth, nested modal edge cases, transition status data, scroll lock polish, and responsive viewport geometry remain follow-up work.",
-      "kobalte": "Kobalte has Dialog rather than a dedicated Sheet primitive; parity is through Solid dialog/dismissable-layer/focus-scope behavior, including ref-counted outside hiding. Gaps: create-transition parity and route-navigation restoration remain follow-up work."
+    install: "mason add sheet",
+    keywords: ["sheet", "drawer", "overlay", "keystone"],
+    name: "sheet",
+    parity: {
+      baseUi:
+        "Thin vertical composes Dialog/Drawer-style overlay behavior with side metadata, backdrop/content parts, controlled open state, focus/dismissal, pointer blocking, and UI side classes. Gaps: Base UI Drawer gesture depth, nested modal edge cases, transition status data, scroll lock polish, and responsive viewport geometry remain follow-up work.",
+      kobalte:
+        "Kobalte has Dialog rather than a dedicated Sheet primitive; parity is through Solid dialog/dismissable-layer/focus-scope behavior, including ref-counted outside hiding. Gaps: create-transition parity and route-navigation restoration remain follow-up work.",
     },
-    "registryDependencies": [
-      "cn"
-    ],
-    "sourceFiles": [
-      "packages/ui/src/default/ui/sheet.tsx"
-    ],
-    "title": "Sheet",
-    "type": "registry:ui",
-    "version": "0.1.0"
-  }
+    registryDependencies: ["cn"],
+    sourceFiles: ["packages/ui/src/default/ui/sheet.tsx"],
+    title: "Sheet",
+    type: "registry:ui",
+    version: "0.1.0",
+  },
 ] as const satisfies readonly RegistryDocItem[];

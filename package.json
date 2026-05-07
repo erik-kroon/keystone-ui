@@ -24,7 +24,7 @@
     "verify:example-app": "bun scripts/verify-example-app.ts",
     "verify:release": "bun run check && bun run check-types && bun run test:core && bun run test:docs && bun run test:mason && bun run verify:example-app && bun run build",
     "dev:docs": "turbo -F web dev",
-    "check": "oxlint && oxfmt --write"
+    "check": "oxlint apps packages scripts registry docs && oxfmt --write"
   },
   "devDependencies": {
     "@tanstack/solid-hotkeys": "^0.10.0",

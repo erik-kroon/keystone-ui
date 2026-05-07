@@ -16,11 +16,12 @@ describe("overlay presence", () => {
     );
 
     expect(transitionStatus?.values).toEqual(["closed", "closing", "opening", "open"]);
-    expect(metadata?.dataAttributes.some((attribute) => attribute.name === "data-starting-style"))
-      .toBe(true);
-    expect(metadata?.dataAttributes.some((attribute) => attribute.name === "data-ending-style")).toBe(
-      true,
-    );
+    expect(
+      metadata?.dataAttributes.some((attribute) => attribute.name === "data-starting-style"),
+    ).toBe(true);
+    expect(
+      metadata?.dataAttributes.some((attribute) => attribute.name === "data-ending-style"),
+    ).toBe(true);
   });
 
   test("retains mounted content until close transitions complete", async () => {

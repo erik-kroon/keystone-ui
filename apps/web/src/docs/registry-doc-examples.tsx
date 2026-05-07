@@ -95,6 +95,8 @@ function AccordionItemList() {
   );
 }
 
+const alertPreviewClass = "w-full max-w-xl";
+
 export function SingleAccordionExample() {
   return (
     <Accordion class="w-full">
@@ -293,7 +295,7 @@ export function Component() {
 
 export function AlertExample() {
   return (
-    <Alert variant="info" class="w-full max-w-3xl">
+    <Alert variant="info" class={alertPreviewClass}>
       <AlertIcon>
         <Info />
       </AlertIcon>
@@ -305,7 +307,7 @@ export function AlertExample() {
 
 export function WarningAlertExample() {
   return (
-    <Alert variant="warning" class="w-full max-w-3xl">
+    <Alert variant="warning" class={alertPreviewClass}>
       <AlertIcon>
         <TriangleAlert />
       </AlertIcon>
@@ -317,7 +319,7 @@ export function WarningAlertExample() {
 
 export function ErrorAlertExample() {
   return (
-    <Alert variant="error" class="w-full max-w-3xl">
+    <Alert variant="error" class={alertPreviewClass}>
       <AlertIcon>
         <CircleAlert />
       </AlertIcon>
@@ -329,7 +331,7 @@ export function ErrorAlertExample() {
 
 export function AlertActionExample() {
   return (
-    <Alert class="w-full max-w-3xl">
+    <Alert class={alertPreviewClass}>
       <AlertIcon>
         <Info />
       </AlertIcon>
@@ -696,17 +698,34 @@ export function Component() {
 export function DialogExample() {
   return (
     <Dialog>
-      <DialogTrigger type="button">Open dialog</DialogTrigger>
-      <DialogContent>
+      <DialogTrigger
+        class="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-primary bg-primary px-3 text-primary-foreground text-sm font-medium leading-none shadow-xs/5 outline-none transition-colors hover:bg-primary/90 focus-visible:ring-3 focus-visible:ring-ring/24 sm:min-h-8"
+        type="button"
+      >
+        Open dialog
+      </DialogTrigger>
+      <DialogContent class="sm:w-96">
         <DialogHeader>
-          <DialogTitle>Invite teammate</DialogTitle>
-          <DialogDescription>Send an invitation to join this Keystone workspace.</DialogDescription>
+          <DialogTitle>Edit profile</DialogTitle>
+          <DialogDescription>
+            Make changes to your profile here. Click save when you're done.
+          </DialogDescription>
         </DialogHeader>
-        <DialogPanel>Dialog content is rendered through Core overlay behavior.</DialogPanel>
+        <DialogPanel class="grid gap-4">
+          <label class="grid gap-2 text-sm font-medium">
+            Name
+            <Input defaultValue="Margaret Welsh" />
+          </label>
+          <label class="grid gap-2 text-sm font-medium">
+            Username
+            <Input defaultValue="@maggie.welsh" />
+          </label>
+        </DialogPanel>
         <DialogFooter>
-          <DialogClose as={Button} type="button">
-            Send invite
+          <DialogClose as={Button} type="button" variant="ghost">
+            Cancel
           </DialogClose>
+          <Button type="button">Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -725,21 +744,34 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 export function Component() {
   return (
     <Dialog>
       <DialogTrigger type="button">Open dialog</DialogTrigger>
-      <DialogContent>
+      <DialogContent class="sm:w-96">
         <DialogHeader>
-          <DialogTitle>Invite teammate</DialogTitle>
-          <DialogDescription>Send an invitation to join this Keystone workspace.</DialogDescription>
+          <DialogTitle>Edit profile</DialogTitle>
+          <DialogDescription>
+            Make changes to your profile here. Click save when you're done.
+          </DialogDescription>
         </DialogHeader>
-        <DialogPanel>Dialog content is rendered through Core overlay behavior.</DialogPanel>
+        <DialogPanel class="grid gap-4">
+          <label class="grid gap-2 text-sm font-medium">
+            Name
+            <Input defaultValue="Margaret Welsh" />
+          </label>
+          <label class="grid gap-2 text-sm font-medium">
+            Username
+            <Input defaultValue="@maggie.welsh" />
+          </label>
+        </DialogPanel>
         <DialogFooter>
-          <DialogClose as={Button} type="button">
-            Send invite
+          <DialogClose as={Button} type="button" variant="ghost">
+            Cancel
           </DialogClose>
+          <Button type="button">Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -758,21 +790,34 @@ export const dialogUsageCode = `import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function Component() {
   return (
     <Dialog>
       <DialogTrigger type="button">Open dialog</DialogTrigger>
-      <DialogContent>
+      <DialogContent class="sm:w-96">
         <DialogHeader>
-          <DialogTitle>Invite teammate</DialogTitle>
-          <DialogDescription>Send an invitation.</DialogDescription>
+          <DialogTitle>Edit profile</DialogTitle>
+          <DialogDescription>
+            Make changes to your profile here. Click save when you're done.
+          </DialogDescription>
         </DialogHeader>
-        <DialogPanel>Review teammate details before sending.</DialogPanel>
+        <DialogPanel class="grid gap-4">
+          <label class="grid gap-2 text-sm font-medium">
+            Name
+            <Input defaultValue="Margaret Welsh" />
+          </label>
+          <label class="grid gap-2 text-sm font-medium">
+            Username
+            <Input defaultValue="@maggie.welsh" />
+          </label>
+        </DialogPanel>
         <DialogFooter>
-          <DialogClose as={Button} type="button">
-            Send invite
+          <DialogClose as={Button} type="button" variant="ghost">
+            Cancel
           </DialogClose>
+          <Button type="button">Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -783,7 +828,12 @@ export function PopoverExample() {
   const [open, setOpen] = createSignal(false);
   return (
     <Popover open={open()} onOpenChange={setOpen}>
-      <PopoverTrigger type="button">Open Popover</PopoverTrigger>
+      <PopoverTrigger
+        class="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-input bg-popover px-3 text-foreground text-sm font-medium leading-none shadow-xs/5 outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/24 sm:min-h-8"
+        type="button"
+      >
+        Open Popover
+      </PopoverTrigger>
       <PopoverContent class="w-[18rem] sm:w-[20rem]">
         <PopoverHeader>
           <PopoverTitle>Send us feedback</PopoverTitle>
@@ -999,7 +1049,12 @@ export function TooltipExample() {
   return (
     <TooltipProvider delayDuration={120}>
       <Tooltip>
-        <TooltipTrigger type="button">Hover or focus</TooltipTrigger>
+        <TooltipTrigger
+          class="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-input bg-popover px-3 text-foreground text-sm font-medium leading-none shadow-xs/5 outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/24 sm:min-h-8"
+          type="button"
+        >
+          Hover or focus
+        </TooltipTrigger>
         <TooltipContent>Tooltip content follows the trigger.</TooltipContent>
       </Tooltip>
     </TooltipProvider>

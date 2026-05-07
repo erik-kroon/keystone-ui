@@ -49,6 +49,7 @@ coverage
 .cache
 tmp
 temp
+.context/
 inspo/
 references/
 !skills/**/references/

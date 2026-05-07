@@ -389,12 +389,12 @@ describe("Mason registry validation tracer", () => {
     expect(source).toContain(
       'aria-live={local["aria-live"] ?? (role() === "status" ? "polite" : undefined)}',
     );
-    expect(source).toContain('"grid-cols-[1rem_minmax(0,1fr)]"');
+    expect(source).toContain('"has-data-[slot=alert-icon]:grid-cols-[calc(var(--spacing)*4)_1fr]"');
     expect(source).toContain(
-      '"sm:has-data-[slot=alert-action]:grid-cols-[1rem_minmax(0,1fr)_auto]"',
+      '"has-data-[slot=alert-icon]:has-data-[slot=alert-action]:grid-cols-[calc(var(--spacing)*4)_1fr_auto]"',
     );
-    expect(source).toContain('"border-emerald-500/32"');
-    expect(source).toContain('"border-amber-500/32"');
+    expect(source).toContain('"border-success/32"');
+    expect(source).toContain('"border-warning/32"');
   });
 
   test("validates docs-ready metadata on the real default separator item", async () => {
@@ -430,10 +430,12 @@ describe("Mason registry validation tracer", () => {
     expect(source).toContain('data-slot="separator"');
     expect(source).toContain('data-decorative={decorative() ? "" : undefined}');
     expect(source).toContain("data-orientation={orientation()}");
-    expect(source).toContain('"h-px"');
-    expect(source).toContain('"w-full"');
-    expect(source).toContain('"h-full"');
-    expect(source).toContain('"w-px"');
+    expect(source).toContain('"data-[orientation=horizontal]:h-px"');
+    expect(source).toContain('"data-[orientation=horizontal]:w-full"');
+    expect(source).toContain(
+      "\"data-[orientation=vertical]:not-[[class^='h-']]:not-[[class*='_h-']]:self-stretch\"",
+    );
+    expect(source).toContain('"data-[orientation=vertical]:w-px"');
     expect(source).toContain('"bg-border"');
   });
 
@@ -883,7 +885,7 @@ describe("Mason registry validation tracer", () => {
 
     expect(source).toContain("tabsRootClass");
     expect(source).toContain("tabsIndicatorClass");
-    expect(source).toContain("--keystone-tabs-indicator-x");
+    expect(source).toContain("data-selected:[anchor-name:--keystone-tabs-active]");
     expect(source).toContain("--active-tab-left");
     expect(source).toContain("--active-tab-width");
     expect(source).toContain("data-[orientation=vertical]:flex-col");
@@ -1624,7 +1626,6 @@ describe("Mason registry validation tracer", () => {
         "description",
         "action",
         "panel",
-        "content",
         "footer",
         "frame",
         "frame-header",
@@ -1646,7 +1647,7 @@ describe("Mason registry validation tracer", () => {
     expect(source).toContain("export function CardFrame");
     expect(source).toContain("export function CardAction");
     expect(source).toContain("export function CardPanel");
-    expect(source).toContain("export function CardContent");
+    expect(source).toContain("export const CardContent = CardPanel");
     expect(source).toContain('"rounded-2xl"');
     expect(source).toContain('"bg-card"');
     expect(source).toContain("[--clip-bottom:-1rem]");

@@ -134,9 +134,7 @@ const visibleSidebarMaturityGroups = sidebarMaturityGroups.filter((group) =>
 const visibleHookDocs = showFullDocsCatalog ? hookDocs : [];
 const routableDocs = showFullDocsCatalog ? docsItems : publicComponentDocs;
 
-export const searchableComponentDocs = showFullDocsCatalog
-  ? componentDocs
-  : publicComponentDocs;
+export const searchableComponentDocs = showFullDocsCatalog ? componentDocs : publicComponentDocs;
 export const searchableHookDocs = visibleHookDocs;
 
 export const overviewPage: DocsPage = {
