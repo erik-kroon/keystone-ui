@@ -38,7 +38,7 @@ export function PopoverTrigger(props: PopoverTriggerProps) {
     <CorePopover.Trigger
       {...rest}
       data-slot="popover-trigger"
-      class={cn("ui-popover-trigger", local.class)}
+      class={cn("ui-popover-trigger cursor-pointer", local.class)}
     />
   );
 }

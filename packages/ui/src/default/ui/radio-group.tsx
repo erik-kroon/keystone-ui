@@ -22,6 +22,7 @@ const radioClass = classes(
   "inline-flex",
   "size-4.5",
   "shrink-0",
+  "cursor-pointer",
   "items-center",
   "justify-center",
   "rounded-full",
@@ -88,7 +89,10 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
     <CoreRadioGroup.Item
       {...rest}
       data-slot="radio-group-item"
-      class={cn("ui-radio-group-item inline-flex items-center gap-2 text-sm", local.class)}
+      class={cn(
+        "ui-radio-group-item inline-flex cursor-pointer items-center gap-2 text-sm data-disabled:cursor-not-allowed",
+        local.class,
+      )}
     >
       <span
         data-scope="ui-radio-group"

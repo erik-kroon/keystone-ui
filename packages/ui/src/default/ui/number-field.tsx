@@ -202,6 +202,7 @@ function NumberFieldControl(
         "h-full",
         "w-8.5",
         "shrink-0",
+        "cursor-pointer",
         "items-center",
         "justify-center",
         "border-input",

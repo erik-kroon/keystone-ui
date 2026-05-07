@@ -71,7 +71,7 @@ export function DialogTrigger(props: DialogTriggerProps) {
     <CoreDialog.Trigger
       {...rest}
       data-slot="dialog-trigger"
-      class={cn("ui-dialog-trigger", local.class)}
+      class={cn("ui-dialog-trigger cursor-pointer", local.class)}
     />
   );
 }

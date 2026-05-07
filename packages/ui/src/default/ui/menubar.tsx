@@ -40,7 +40,9 @@ export function Menubar(props: MenubarProps) {
 
 export function MenubarTrigger(props: MenubarTriggerProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <CoreMenubar.Trigger {...rest} class={cn("ui-menubar-trigger", local.class)} />;
+  return (
+    <CoreMenubar.Trigger {...rest} class={cn("ui-menubar-trigger cursor-pointer", local.class)} />
+  );
 }
 
 export function MenubarPortal(props: MenubarPortalProps) {
@@ -57,7 +59,13 @@ export function MenubarContent(props: MenubarContentProps) {
   return (
     <MenubarPortal {...local.portal}>
       <MenubarPositioner class={local.positionerClass}>
-        <CoreMenubar.Content {...rest} class={cn("ui-menubar-content", local.class)}>
+        <CoreMenubar.Content
+          {...rest}
+          class={cn(
+            "ui-menubar-content origin-(--transform-origin) transition-[width,height,scale,opacity] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] will-change-[scale,opacity] data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0",
+            local.class,
+          )}
+        >
           {local.children}
         </CoreMenubar.Content>
       </MenubarPositioner>
@@ -82,12 +90,14 @@ export function MenubarSeparator(props: MenubarSeparatorProps) {
 
 export function MenubarItem(props: MenubarItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <CoreMenubar.Item {...rest} class={cn("ui-menubar-item", local.class)} />;
+  return <CoreMenubar.Item {...rest} class={cn("ui-menubar-item cursor-pointer", local.class)} />;
 }
 
 export function MenubarCheckboxItem(props: MenubarCheckboxItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <CoreMenubar.CheckboxItem {...rest} class={cn("ui-menubar-item", local.class)} />;
+  return (
+    <CoreMenubar.CheckboxItem {...rest} class={cn("ui-menubar-item cursor-pointer", local.class)} />
+  );
 }
 
 export function MenubarRadioGroup(props: MenubarRadioGroupProps) {
@@ -96,7 +106,9 @@ export function MenubarRadioGroup(props: MenubarRadioGroupProps) {
 
 export function MenubarRadioItem(props: MenubarRadioItemProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <CoreMenubar.RadioItem {...rest} class={cn("ui-menubar-item", local.class)} />;
+  return (
+    <CoreMenubar.RadioItem {...rest} class={cn("ui-menubar-item cursor-pointer", local.class)} />
+  );
 }
 
 export function MenubarItemIndicator(props: MenubarItemIndicatorProps) {

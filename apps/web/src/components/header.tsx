@@ -62,7 +62,7 @@ export default function Header() {
             class="mx-3.5 hidden h-5 w-px shrink-0 bg-border md:block dark:bg-border/90"
           />
           <a
-            class="hidden size-5 items-center justify-center rounded-md outline-none transition-colors hover:text-accent-foreground focus-visible:text-accent-foreground sm:flex"
+            class="mr-2 hidden size-5 items-center justify-center rounded-md outline-none transition-colors hover:text-accent-foreground focus-visible:text-accent-foreground sm:flex"
             href="https://github.com/erik-kroon/keystone-ui"
             rel="noreferrer"
             target="_blank"

@@ -46,6 +46,7 @@ export function DataTableFacetedFilter<TData extends RowData>(props: {
                 data-part="faceted-option"
                 data-state={checked() ? "checked" : "unchecked"}
                 data-value={option.value}
+                class="cursor-pointer"
               >
                 <input
                   type={props.multiple === false ? "radio" : "checkbox"}
@@ -86,6 +87,7 @@ export function DataTableFacetedFilter<TData extends RowData>(props: {
           aria-label={`Clear ${props.title} filter`}
           data-scope="ui-data-table"
           data-part="faceted-clear"
+          class="cursor-pointer"
           onClick={() => {
             column()?.setFilterValue(undefined);
             props.table.setPageIndex(0);

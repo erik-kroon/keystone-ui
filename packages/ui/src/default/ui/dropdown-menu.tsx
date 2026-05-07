@@ -102,7 +102,7 @@ function itemClass(inset?: boolean, variant?: "default" | "destructive") {
   return classes(
     "flex",
     "min-h-8",
-    "cursor-default",
+    "cursor-pointer",
     "select-none",
     "items-center",
     "gap-2",
@@ -134,7 +134,7 @@ function checkableItemClass(variant?: "default" | "switch") {
     "grid",
     "min-h-8",
     "in-data-[side=none]:min-w-[calc(var(--anchor-width)+1.25rem)]",
-    "cursor-default",
+    "cursor-pointer",
     "items-center",
     "gap-2",
     "rounded-sm",
@@ -169,7 +169,7 @@ export function DropdownMenuTrigger(props: DropdownMenuTriggerProps) {
     <CoreDropdownMenu.Trigger
       {...rest}
       data-slot="dropdown-menu-trigger"
-      class={cn("ui-dropdown-menu-trigger", local.class)}
+      class={cn("ui-dropdown-menu-trigger cursor-pointer", local.class)}
     />
   );
 }
@@ -217,11 +217,19 @@ export function DropdownMenuContent(props: DropdownMenuContentProps) {
               "not-dark:bg-clip-padding",
               "shadow-lg/5",
               "outline-none",
+              "transition-[width,height,scale,opacity]",
+              "duration-150",
+              "ease-[cubic-bezier(0.23,1,0.32,1)]",
+              "will-change-[scale,opacity]",
               "before:pointer-events-none",
               "before:absolute",
               "before:inset-0",
               "before:rounded-[calc(var(--radius-lg)-1px)]",
               "before:shadow-[0_1px_--theme(--color-black/4%)]",
+              "data-ending-style:scale-98",
+              "data-starting-style:scale-98",
+              "data-ending-style:opacity-0",
+              "data-starting-style:opacity-0",
               "focus:outline-none",
               "dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
             ),
@@ -518,6 +526,7 @@ export function DropdownMenuSubTrigger(props: DropdownMenuSubTriggerProps) {
           "ui-dropdown-menu-sub-trigger",
           "flex",
           "min-h-8",
+          "cursor-pointer",
           "items-center",
           "gap-2",
           "rounded-sm",

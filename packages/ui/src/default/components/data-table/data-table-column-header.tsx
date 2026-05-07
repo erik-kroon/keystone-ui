@@ -26,6 +26,7 @@ export function DataTableColumnHeader<TData extends RowData, TValue>(props: {
         aria-label={`Sort ${label()}`}
         data-scope="ui-data-table"
         data-part="sort-trigger"
+        class="cursor-pointer disabled:pointer-events-none"
         onClick={props.column.getToggleSortingHandler()}
       >
         <span>{props.title}</span>
@@ -39,6 +40,7 @@ export function DataTableColumnHeader<TData extends RowData, TValue>(props: {
           aria-label={`Clear ${label()} sorting`}
           data-scope="ui-data-table"
           data-part="sort-clear"
+          class="cursor-pointer"
           onClick={() => props.column.clearSorting()}
         >
           Clear
@@ -50,6 +52,7 @@ export function DataTableColumnHeader<TData extends RowData, TValue>(props: {
           aria-label={`Hide ${label()} column`}
           data-scope="ui-data-table"
           data-part="column-hide"
+          class="cursor-pointer"
           onClick={() => props.column.toggleVisibility(false)}
         >
           Hide

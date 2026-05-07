@@ -42,7 +42,7 @@ export function CalendarPreviousTrigger(props: CalendarNavigationTriggerProps) {
   return (
     <CoreCalendar.PreviousTrigger
       {...rest}
-      class={cn("ui-calendar-navigation-trigger", local.class)}
+      class={cn("ui-calendar-navigation-trigger cursor-pointer", local.class)}
     />
   );
 }
@@ -51,7 +51,10 @@ export function CalendarNextTrigger(props: CalendarNavigationTriggerProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
   return (
-    <CoreCalendar.NextTrigger {...rest} class={cn("ui-calendar-navigation-trigger", local.class)} />
+    <CoreCalendar.NextTrigger
+      {...rest}
+      class={cn("ui-calendar-navigation-trigger cursor-pointer", local.class)}
+    />
   );
 }
 
@@ -76,7 +79,12 @@ export function DatePicker(props: DatePickerProps) {
 export function DatePickerTrigger(props: DatePickerTriggerProps) {
   const [local, rest] = splitProps(props, ["class"]);
 
-  return <CoreDatePicker.Trigger {...rest} class={cn("ui-date-picker-trigger", local.class)} />;
+  return (
+    <CoreDatePicker.Trigger
+      {...rest}
+      class={cn("ui-date-picker-trigger cursor-pointer", local.class)}
+    />
+  );
 }
 
 export function DatePickerContent(props: DatePickerContentProps) {

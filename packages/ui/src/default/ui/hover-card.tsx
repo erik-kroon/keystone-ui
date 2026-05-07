@@ -26,7 +26,12 @@ export function HoverCard(props: HoverCardProps) {
 
 export function HoverCardTrigger(props: HoverCardTriggerProps) {
   const [local, rest] = splitProps(props, ["class"]);
-  return <CoreHoverCard.Trigger {...rest} class={cn("ui-hover-card-trigger", local.class)} />;
+  return (
+    <CoreHoverCard.Trigger
+      {...rest}
+      class={cn("ui-hover-card-trigger cursor-pointer", local.class)}
+    />
+  );
 }
 
 export function HoverCardPortal(props: HoverCardPortalProps) {
@@ -49,7 +54,13 @@ export function HoverCardContent(props: HoverCardContentProps) {
   return (
     <HoverCardPortal {...local.portal}>
       <HoverCardPositioner class={local.positionerClass}>
-        <CoreHoverCard.Content {...rest} class={cn("ui-hover-card-content", local.class)}>
+        <CoreHoverCard.Content
+          {...rest}
+          class={cn(
+            "ui-hover-card-content origin-(--transform-origin) transition-[width,height,scale,opacity] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] will-change-[scale,opacity] data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0",
+            local.class,
+          )}
+        >
           {local.children}
         </CoreHoverCard.Content>
       </HoverCardPositioner>

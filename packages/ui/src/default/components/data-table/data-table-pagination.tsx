@@ -44,6 +44,7 @@ export function DataTablePagination<TData extends RowData>(props: {
           data-scope="ui-data-table"
           data-part="page-button"
           data-page="first"
+          class="cursor-pointer disabled:pointer-events-none"
           onClick={() => props.table.setPageIndex(0)}
           disabled={!props.table.getCanPreviousPage()}
         >
@@ -55,6 +56,7 @@ export function DataTablePagination<TData extends RowData>(props: {
           data-scope="ui-data-table"
           data-part="page-button"
           data-page="previous"
+          class="cursor-pointer disabled:pointer-events-none"
           onClick={() => props.table.previousPage()}
           disabled={!props.table.getCanPreviousPage()}
         >
@@ -66,6 +68,7 @@ export function DataTablePagination<TData extends RowData>(props: {
           data-scope="ui-data-table"
           data-part="page-button"
           data-page="next"
+          class="cursor-pointer disabled:pointer-events-none"
           onClick={() => props.table.nextPage()}
           disabled={!props.table.getCanNextPage()}
         >
@@ -77,6 +80,7 @@ export function DataTablePagination<TData extends RowData>(props: {
           data-scope="ui-data-table"
           data-part="page-button"
           data-page="last"
+          class="cursor-pointer disabled:pointer-events-none"
           onClick={() => props.table.setPageIndex(props.table.getPageCount() - 1)}
           disabled={!props.table.getCanNextPage()}
         >

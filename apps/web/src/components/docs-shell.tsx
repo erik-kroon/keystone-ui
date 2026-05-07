@@ -1,4 +1,4 @@
-import { Check, ChevronDown, Clipboard, FileText, Menu, Package, X } from "lucide-solid";
+import { Check, ChevronDown, Clipboard, Menu, Package, X } from "lucide-solid";
 import { createSignal, For, type JSX, Show, splitProps } from "solid-js";
 import { Link, useRouterState } from "@tanstack/solid-router";
 
@@ -101,10 +101,11 @@ export function CopyButton(props: Readonly<{ value: string; label?: string; clas
     <button
       aria-label={copied() ? "Copied" : (props.label ?? "Copy code")}
       class={cn(
-        "absolute top-1.5 right-1.5 z-10 inline-flex size-9 items-center justify-center rounded-md border border-transparent bg-code text-code-foreground opacity-70 outline-none transition-colors hover:bg-code-highlight hover:opacity-100 focus-visible:bg-code-highlight focus-visible:opacity-100 data-copied:bg-code-highlight data-copied:opacity-100 sm:size-8",
+        "absolute top-1.5 right-1.5 z-10 inline-flex size-9 items-center justify-center rounded-md border-0 bg-code text-code-foreground opacity-70 outline-none transition-colors hover:bg-code-highlight hover:opacity-100 focus-visible:bg-code-highlight focus-visible:opacity-100 data-copied:bg-code-highlight data-copied:opacity-100 sm:size-8",
         props.class,
       )}
       data-copied={copied() ? "" : undefined}
+      data-slot="copy-button"
       onClick={copy}
       title={copied() ? "Copied" : (props.label ?? "Copy code")}
       type="button"
@@ -120,13 +121,29 @@ export function CopyButton(props: Readonly<{ value: string; label?: string; clas
 export function CopyPageButton(
   props: Readonly<{ class?: string; icon?: JSX.Element; markdown: string }>,
 ) {
+  const [copied, setCopied] = createSignal(false);
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+  const copy = async () => {
+    if (typeof navigator === "undefined" || !navigator.clipboard) return;
+    await navigator.clipboard.writeText(props.markdown);
+    setCopied(true);
+    if (timeoutId) clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => setCopied(false), 1600);
+  };
+
   return (
     <button
+      aria-label={copied() ? "Copied markdown" : "Copy markdown"}
       class={cn(buttonClass, secondaryButtonClass, props.class)}
-      onClick={async () => navigator.clipboard?.writeText(props.markdown)}
+      data-copied={copied() ? "" : undefined}
+      onClick={copy}
+      title={copied() ? "Copied markdown" : "Copy markdown"}
       type="button"
     >
-      {props.icon ?? <FileText size={15} />}
+      <Show when={copied()} fallback={props.icon ?? <Clipboard size={15} />}>
+        <Check size={15} />
+      </Show>
       Copy Markdown
     </button>
   );

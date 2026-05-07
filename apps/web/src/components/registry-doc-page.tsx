@@ -1,4 +1,4 @@
-import { ChevronRight, Clipboard, Copy, Puzzle, Terminal } from "lucide-solid";
+import { Clipboard, Copy, ExternalLink, Puzzle, Terminal } from "lucide-solid";
 import { For, Show, createSignal, type JSX } from "solid-js";
 
 import { ComponentPreview } from "@/components/component-preview";
@@ -97,7 +97,7 @@ type ComponentDocsBlueprint = {
 };
 
 const pageHeaderActionClass =
-  "min-h-7.5 gap-1.25 rounded-lg px-2.5 text-sm shadow-none [&>svg]:size-3.75 [&>svg]:opacity-80";
+  "!h-7 !min-h-7 gap-1 rounded-md px-2 text-sm shadow-none sm:!h-6 sm:!min-h-6 sm:text-xs [&>svg]:size-4 [&>svg]:opacity-80 sm:[&>svg]:size-3.5";
 
 function maturityBadgeClass(maturity: string) {
   switch (maturity.toLowerCase()) {
@@ -124,6 +124,7 @@ const componentDocsOverrides: Record<string, ComponentDocsBlueprint> = {
   accordion: {
     description: "A set of collapsible panels with headings and content.",
     maturity: "Stable",
+    previewAlign: "start",
     usageCode: accordionUsageCode,
     apiItems: [
       {
@@ -614,7 +615,7 @@ function RegistryDocContent(
                 class={`${secondaryButtonClass} ${pageHeaderActionClass}`}
                 href="#api-reference"
               >
-                <ChevronRight size={16} />
+                <ExternalLink size={16} />
                 API Reference
               </ActionLink>
             </Show>
@@ -859,14 +860,18 @@ function InstallationSection(props: Readonly<{ install: string; item: RegistryDo
     ].join("\n");
 
   return (
-    <Tabs onValueChange={(value) => setMode(value === "manual" ? "manual" : "cli")} value={mode()}>
+    <Tabs
+      class="gap-0.5"
+      onValueChange={(value) => setMode(value === "manual" ? "manual" : "cli")}
+      value={mode()}
+    >
       <TabsList>
         <TabsTrigger value="cli">CLI</TabsTrigger>
         <TabsTrigger value="manual">Manual</TabsTrigger>
       </TabsList>
-      <TabsContent class="mt-1" value="cli">
+      <TabsContent value="cli">
         <Show when={mode() === "cli"}>
-          <div data-rehype-pretty-code-figure="" class="relative mt-0">
+          <div data-rehype-pretty-code-figure="" class="relative !mt-0">
             <div class="flex min-h-11 items-center gap-2 border-border/64 border-b px-4 py-1 font-mono">
               <Terminal class="size-4 text-code-foreground" aria-hidden="true" />
               <div class="flex items-center gap-0.5">
@@ -883,7 +888,7 @@ function InstallationSection(props: Readonly<{ install: string; item: RegistryDo
             </div>
             <CopyInstallButton command={cliCommands()[manager()]} />
             <div class="px-4 py-3.5">
-              <pre class="m-0 overflow-x-auto font-mono text-[0.8125rem] leading-none">
+              <pre class="scrollbar-none m-0 overflow-x-auto overflow-y-hidden font-mono text-[0.8125rem] leading-none">
                 <code class="inline-flex min-w-max items-center gap-2">
                   <span
                     aria-hidden="true"
@@ -898,8 +903,10 @@ function InstallationSection(props: Readonly<{ install: string; item: RegistryDo
           </div>
         </Show>
       </TabsContent>
-      <TabsContent class="mt-1" value="manual">
-        <CodeBlock code={manualInstructions()} language="shell" title="Manual install" />
+      <TabsContent value="manual">
+        <div class="[&_[data-rehype-pretty-code-figure]]:!mt-0 [&_[data-slot=copy-button]]:border-0">
+          <CodeBlock code={manualInstructions()} language="shell" title="Manual install" />
+        </div>
       </TabsContent>
     </Tabs>
   );
@@ -1013,29 +1020,56 @@ function DocSection(
 
 function ApiReference(props: Readonly<{ items: readonly ApiReferenceItem[] }>) {
   return (
-    <div class="overflow-x-auto rounded-xl border border-border bg-card">
-      <table class="w-full min-w-[44rem] border-collapse text-sm">
-        <thead>
-          <tr class="border-border border-b bg-muted/56">
-            <th class="w-56 px-4 py-3 text-left font-semibold text-foreground">Export</th>
-            <th class="px-4 py-3 text-left font-semibold text-foreground">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <For each={props.items}>
-            {(item) => (
-              <tr class="border-border border-b last:border-b-0">
-                <td class="px-4 py-3 align-top font-mono text-foreground text-xs">{item.name}</td>
-                <td class="px-4 py-3 align-top text-muted-foreground leading-6">
-                  {item.description}
-                </td>
-              </tr>
-            )}
-          </For>
-        </tbody>
-      </table>
+    <div class="mt-3 grid gap-10">
+      <For each={props.items}>
+        {(item) => (
+          <article class="scroll-mt-24">
+            <h3
+              class="m-0 scroll-mt-24 font-semibold text-foreground text-lg leading-tight"
+              id={`api-${apiReferenceId(item.name)}`}
+            >
+              <a
+                class="no-underline hover:underline hover:underline-offset-4"
+                href={`#api-${apiReferenceId(item.name)}`}
+              >
+                {item.name}
+              </a>
+            </h3>
+            <ApiReferenceDescription text={item.description} />
+          </article>
+        )}
+      </For>
     </div>
   );
+}
+
+function ApiReferenceDescription(props: Readonly<{ text: string }>) {
+  const parts = () => props.text.split(/(`[^`]+`)/g).filter(Boolean);
+
+  return (
+    <p class="m-0 mt-6 max-w-3xl text-muted-foreground text-base leading-relaxed">
+      <For each={parts()}>
+        {(part) =>
+          part.startsWith("`") && part.endsWith("`") ? (
+            <code class="rounded-md bg-muted px-[0.3rem] py-[0.2rem] font-mono text-[0.8125rem] text-muted-foreground">
+              {part.slice(1, -1)}
+            </code>
+          ) : (
+            part
+          )
+        }
+      </For>
+    </p>
+  );
+}
+
+function apiReferenceId(name: string) {
+  return name
+    .trim()
+    .replace(/['?]/g, "")
+    .replace(/[^a-zA-Z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .toLowerCase();
 }
 
 function previewFrameClass(variant: PreviewVariant, align: PreviewAlign) {

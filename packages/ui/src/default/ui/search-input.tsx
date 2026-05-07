@@ -246,6 +246,7 @@ export function SearchInput(props: SearchInputProps) {
               "z-10",
               "inline-flex",
               "size-6",
+              "cursor-pointer",
               "items-center",
               "justify-center",
               "rounded-md",

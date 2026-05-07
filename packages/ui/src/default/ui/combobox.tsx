@@ -447,7 +447,7 @@ export function ComboboxItem(props: ComboboxItemProps) {
           "grid",
           "min-h-8",
           "in-data-[side=none]:min-w-[calc(var(--anchor-width)+1.25rem)]",
-          "cursor-default",
+          "cursor-pointer",
           "grid-cols-[1rem_1fr]",
           "items-center",
           "gap-2",
