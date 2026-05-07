@@ -1,3 +1,8 @@
 {
-  "ignorePatterns": ["*/routeTree.gen.ts", ".context/**", ".playwright-mcp/**"]
+  "ignorePatterns": [
+    "*/routeTree.gen.ts",
+    "apps/web/src/lib/registry-docs.gen.ts",
+    ".context/**",
+    ".playwright-mcp/**"
+  ]
 }
