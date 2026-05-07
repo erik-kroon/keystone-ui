@@ -94,12 +94,9 @@ export function AccordionPanel(props: AccordionContentProps) {
     <CoreAccordion.Content
       {...rest}
       data-slot="accordion-panel"
-      class={cn(
-        "ui-accordion-panel h-(--accordion-panel-height) overflow-hidden text-muted-foreground text-sm transition-[height] duration-200 ease-in-out data-ending-style:h-0 data-starting-style:h-0",
-        local.class,
-      )}
+      class="ui-accordion-panel h-(--accordion-panel-height) overflow-hidden text-muted-foreground text-sm transition-[height] duration-200 ease-in-out data-ending-style:h-0 data-starting-style:h-0"
     >
-      <div data-scope="ui-accordion" data-part="content-inner" class="pt-0 pb-4">
+      <div data-scope="ui-accordion" data-part="content-inner" class={cn("pt-0 pb-4", local.class)}>
         {local.children}
       </div>
     </CoreAccordion.Content>

@@ -64,6 +64,7 @@ import {
 } from "@/docs/examples/accordion";
 
 type CodeExample = {
+  align?: PreviewAlign;
   code: string;
   description: string;
   id: string;
@@ -78,6 +79,7 @@ type ApiReferenceItem = {
 };
 
 type PreviewVariant = "centered" | "dense" | "full" | "inline";
+type PreviewAlign = "center" | "end" | "start";
 
 type ComponentDocsBlueprint = {
   apiItems?: readonly ApiReferenceItem[];
@@ -89,6 +91,7 @@ type ComponentDocsBlueprint = {
   heroVariant?: PreviewVariant;
   keyboardInteractions?: readonly string[];
   maturity?: string;
+  previewAlign?: PreviewAlign;
   usageCode: string;
   cssVariables?: readonly (readonly [string, string])[];
 };
@@ -597,13 +600,9 @@ function RegistryDocContent(
           </div>
         </PageHeader>
 
-        <DocSection
-          id="preview"
-          title="Preview"
-          description="Interactive example from the shipped component source."
-        >
+        <section id="preview" class="mt-8 scroll-mt-24">
           <HeroPreviewSection item={props.item} docsBlueprint={props.docsBlueprint} />
-        </DocSection>
+        </section>
 
         <DocSection
           id="installation"
@@ -643,6 +642,7 @@ function RegistryDocContent(
                     <PreviewCodeTabs
                       preview={example.preview}
                       code={example.code}
+                      align={example.align ?? props.docsBlueprint.previewAlign}
                       variant={example.variant ?? props.docsBlueprint.heroVariant ?? "centered"}
                     />
                   </article>
@@ -924,28 +924,35 @@ function HeroPreviewSection(
     <PreviewCodeTabs
       preview={() => heroExample().preview()}
       code={firstCode()}
+      align={heroExample().align ?? props.docsBlueprint.previewAlign}
       variant={heroExample().variant ?? props.docsBlueprint.heroVariant ?? "centered"}
     />
   );
 }
 
 function PreviewCodeTabs(
-  props: Readonly<{ preview: () => JSX.Element; code: string; variant?: PreviewVariant }>,
+  props: Readonly<{
+    align?: PreviewAlign;
+    preview: () => JSX.Element;
+    code: string;
+    variant?: PreviewVariant;
+  }>,
 ) {
   const [tab, setTab] = createSignal<"preview" | "code">("preview");
   const selectTab = (value: string) => {
     if (value === "preview" || value === "code") setTab(value);
   };
+  const align = () => props.align ?? "start";
 
   return (
     <div class="group relative mt-4 mb-12 flex flex-col gap-2">
       <Tabs onValueChange={selectTab} value={tab()}>
         <div class="flex items-center justify-between">
           <TabsList class="bg-transparent! p-0! *:data-[slot=tab-indicator]:rounded-lg *:data-[slot=tab-indicator]:bg-accent *:data-[slot=tab-indicator]:shadow-none">
-            <TabsTrigger class="rounded-lg data-selected:text-accent-foreground" value="preview">
+            <TabsTrigger class="rounded-lg" value="preview">
               Preview
             </TabsTrigger>
-            <TabsTrigger class="rounded-lg data-selected:text-accent-foreground" value="code">
+            <TabsTrigger class="rounded-lg" value="code">
               Code
             </TabsTrigger>
           </TabsList>
@@ -954,10 +961,13 @@ function PreviewCodeTabs(
       <div class="relative rounded-xl border not-dark:bg-card" data-tab={tab()}>
         <div class="invisible data-[active=true]:visible" data-active={tab() === "preview"}>
           <div
-            class="flex h-[450px] w-full justify-center overflow-y-auto p-10 data-[align=center]:items-center data-[align=end]:items-end data-[align=start]:items-start max-sm:px-6"
-            data-align="center"
+            class="flex h-[450px] w-full justify-center overflow-y-auto p-10 data-[align=start]:items-start data-[align=end]:items-end data-[align=center]:items-center max-sm:px-6"
+            data-align={align()}
           >
-            <div class={previewFrameClass(props.variant ?? "centered")} data-slot="preview">
+            <div
+              class={previewFrameClass(props.variant ?? "centered", align())}
+              data-slot="preview"
+            >
               {props.preview()}
             </div>
           </div>
@@ -1020,17 +1030,29 @@ function ApiReference(props: Readonly<{ items: readonly ApiReferenceItem[] }>) {
   );
 }
 
-function previewFrameClass(variant: PreviewVariant) {
+function previewFrameClass(variant: PreviewVariant, align: PreviewAlign) {
   const base = "flex w-full justify-center";
+  const aligned = `${base} ${previewFrameAlignClass(align)}`;
   switch (variant) {
     case "inline":
-      return `${base} items-center`;
+      return aligned;
     case "full":
       return `${base} items-stretch`;
     case "dense":
       return `${base} items-stretch`;
     case "centered":
-      return `${base} items-center`;
+      return aligned;
+  }
+}
+
+function previewFrameAlignClass(align: PreviewAlign) {
+  switch (align) {
+    case "center":
+      return "items-center";
+    case "end":
+      return "items-end";
+    case "start":
+      return "items-start";
   }
 }
 

@@ -1,0 +1,14 @@
+{
+  "name": "Keystone",
+  "short_name": "Keystone",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ],
+  "theme_color": "#FAF9F5",
+  "background_color": "#FAF9F5",
+  "display": "standalone"
+}

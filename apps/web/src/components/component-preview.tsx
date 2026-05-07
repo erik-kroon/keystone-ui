@@ -26,6 +26,24 @@ import { Input } from "@keystone-ui/ui/default/ui/input.tsx";
 import { Badge } from "@/components/docs-shell";
 import type { RegistryDocItem } from "@/lib/registry-docs.gen";
 
+const accordionItems = [
+  {
+    content: "Keystone UI is source-owned Solid component source backed by Core behavior.",
+    id: "item-1",
+    title: "What is Keystone UI?",
+  },
+  {
+    content: "Install components with Mason, then edit the generated source in your app.",
+    id: "item-2",
+    title: "How do I get started?",
+  },
+  {
+    content: "Yes. The wrappers keep behavior in Core and styling in the UI layer.",
+    id: "item-3",
+    title: "Can I use it for my project?",
+  },
+];
+
 export function ComponentPreview(props: Readonly<{ item: RegistryDocItem }>) {
   return (
     <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
@@ -37,24 +55,12 @@ export function ComponentPreview(props: Readonly<{ item: RegistryDocItem }>) {
         <Switch fallback={<GenericPreview item={props.item} />}>
           <Match when={props.item.name === "accordion"}>
             <Accordion defaultValue={["item-3"]} class="w-full max-w-md">
-              <AccordionItem value="item-1">
-                <AccordionTrigger>What is Keystone UI?</AccordionTrigger>
-                <AccordionContent>
-                  Keystone UI is source-owned Solid component source backed by Core behavior.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2">
-                <AccordionTrigger>How do I get started?</AccordionTrigger>
-                <AccordionContent>
-                  Install components with Mason, then edit the generated source in your app.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3">
-                <AccordionTrigger>Can I use it for my project?</AccordionTrigger>
-                <AccordionContent>
-                  Yes. The wrappers keep behavior in Core and styling in the UI layer.
-                </AccordionContent>
-              </AccordionItem>
+              {accordionItems.map((item) => (
+                <AccordionItem value={item.id}>
+                  <AccordionTrigger>{item.title}</AccordionTrigger>
+                  <AccordionContent>{item.content}</AccordionContent>
+                </AccordionItem>
+              ))}
             </Accordion>
           </Match>
           <Match when={props.item.name === "button"}>

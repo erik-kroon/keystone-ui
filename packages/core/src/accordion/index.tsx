@@ -341,6 +341,9 @@ function Content(props: AccordionContentProps) {
     ...others,
     hiddenUntilFound: local.hiddenUntilFound,
   });
+  // Accordion owns close presence so panels can animate before becoming hidden.
+  delete contentProps.hidden;
+  delete contentProps["attr:hidden"];
   const [present, setPresent] = createSignal(
     local.forceMount || local.hiddenUntilFound || item.open(),
   );
@@ -394,20 +397,31 @@ function Content(props: AccordionContentProps) {
     if (!present()) return;
 
     measurePanel();
-    setTransitionState("ending");
-    fallbackTimer = setTimeout(() => {
-      setPresent(false);
-      setTransitionState("idle");
-    }, ACCORDION_CONTENT_TRANSITION_MS);
+    setTransitionState("idle");
+    scheduleFrame(() => {
+      if (contentElement) void contentElement.offsetHeight;
+      setTransitionState("ending");
+      fallbackTimer = setTimeout(() => {
+        setPresent(false);
+        setTransitionState("idle");
+      }, ACCORDION_CONTENT_TRANSITION_MS);
+    });
   });
 
   onCleanup(clearTransitionWork);
 
   const hidden = () => {
     if (item.open() || transitionState() !== "idle") return undefined;
-    if (local.hiddenUntilFound) return undefined;
     return local.forceMount ? true : undefined;
   };
+  const hiddenUntilFound = () =>
+    !item.open() && transitionState() === "idle" && local.hiddenUntilFound
+      ? "until-found"
+      : undefined;
+  const visibilityProps = () => ({
+    hidden: hidden(),
+    "attr:hidden": hiddenUntilFound(),
+  });
   const contentStyle = () => {
     const heightVariable = { "--accordion-panel-height": `${panelHeight()}px` };
     if (typeof local.style === "string") {
@@ -425,9 +439,9 @@ function Content(props: AccordionContentProps) {
     <Show when={present()}>
       <div
         {...contentProps}
+        {...visibilityProps()}
         data-ending-style={transitionState() === "ending" ? "" : undefined}
         data-starting-style={transitionState() === "starting" ? "" : undefined}
-        hidden={hidden()}
         onTransitionEnd={(event) => {
           callEventHandler(local.onTransitionEnd, event);
           if (event.target !== contentElement || transitionState() !== "ending") return;

@@ -1,8 +1,40 @@
 import { createRoot, createSignal } from "solid-js";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { Accordion } from "../src/accordion/index";
 import { Collapsible, createCollapsible } from "../src/collapsible/index";
 import { click, getByPart, keyDown, queryByPart, render, settled } from "./harness";
+
+function stubAnimationFrames() {
+  const originalAnimationFrame = globalThis.requestAnimationFrame;
+  const originalCancelAnimationFrame = globalThis.cancelAnimationFrame;
+  const frames = new Map<number, FrameRequestCallback>();
+  let nextFrame = 1;
+
+  vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => {
+    const frame = nextFrame;
+    nextFrame += 1;
+    frames.set(frame, callback);
+    return frame;
+  });
+  vi.stubGlobal("cancelAnimationFrame", (frame: number) => {
+    frames.delete(frame);
+  });
+
+  return {
+    flush: () => {
+      const callbacks = Array.from(frames.values());
+      frames.clear();
+      for (const callback of callbacks) {
+        callback(performance.now());
+      }
+    },
+    reset: () => frames.clear(),
+    restore: () => {
+      vi.stubGlobal("requestAnimationFrame", originalAnimationFrame);
+      vi.stubGlobal("cancelAnimationFrame", originalCancelAnimationFrame);
+    },
+  };
+}
 
 describe("Collapsible behavior", () => {
   test("toggles open state and exposes the core ARIA and part contract", async () => {
@@ -201,5 +233,107 @@ describe("Accordion behavior", () => {
     expect(reasons).toEqual(["browser-find"]);
     expect(trigger.getAttribute("aria-expanded")).toBe("true");
     expect(content.hasAttribute("hidden")).toBe(false);
+  });
+
+  test("keeps the previous single item visible while switching to another item", async () => {
+    const animationFrames = stubAnimationFrames();
+
+    try {
+      render(() => (
+        <Accordion.Root defaultValue={["account"]}>
+          <Accordion.Item value="account">
+            <Accordion.Header>
+              <Accordion.Trigger>Account</Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Content>Account settings</Accordion.Content>
+          </Accordion.Item>
+          <Accordion.Item value="billing">
+            <Accordion.Header>
+              <Accordion.Trigger>Billing</Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Content>Billing settings</Accordion.Content>
+          </Accordion.Item>
+        </Accordion.Root>
+      ));
+
+      animationFrames.reset();
+
+      const triggers = Array.from(
+        document.body.querySelectorAll<HTMLButtonElement>(
+          '[data-scope="accordion"][data-part="trigger"]',
+        ),
+      );
+      const accountContent = getByPart("accordion", "content");
+
+      click(triggers[1]);
+      await settled();
+
+      expect(triggers[0].getAttribute("aria-expanded")).toBe("false");
+      expect(triggers[1].getAttribute("aria-expanded")).toBe("true");
+      expect(queryByPart("accordion", "content")).toBe(accountContent);
+      expect(accountContent.getAttribute("data-state")).toBe("closed");
+      expect(accountContent.hasAttribute("hidden")).toBe(false);
+
+      animationFrames.flush();
+      await settled();
+
+      expect(accountContent.hasAttribute("data-ending-style")).toBe(true);
+      expect(accountContent.hasAttribute("hidden")).toBe(false);
+
+      accountContent.dispatchEvent(new Event("transitionend", { bubbles: true }));
+      await settled();
+
+      const contents = Array.from(
+        document.body.querySelectorAll<HTMLElement>(
+          '[data-scope="accordion"][data-part="content"]',
+        ),
+      );
+      expect(contents).toHaveLength(1);
+      expect(contents[0].textContent).toBe("Billing settings");
+    } finally {
+      animationFrames.restore();
+    }
+  });
+
+  test("keeps closing content visible while height animates to zero", async () => {
+    const animationFrames = stubAnimationFrames();
+
+    try {
+      render(() => (
+        <Accordion.Root defaultValue={["account"]}>
+          <Accordion.Item value="account">
+            <Accordion.Header>
+              <Accordion.Trigger>Account</Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Content>Account settings</Accordion.Content>
+          </Accordion.Item>
+        </Accordion.Root>
+      ));
+
+      animationFrames.reset();
+
+      const trigger = getByPart("accordion", "trigger");
+      const content = getByPart("accordion", "content");
+
+      click(trigger);
+      await settled();
+
+      expect(trigger.getAttribute("aria-expanded")).toBe("false");
+      expect(queryByPart("accordion", "content")).toBe(content);
+      expect(content.hasAttribute("hidden")).toBe(false);
+
+      animationFrames.flush();
+      await settled();
+
+      expect(content.hasAttribute("data-ending-style")).toBe(true);
+      expect(content.hasAttribute("hidden")).toBe(false);
+
+      content.dispatchEvent(new Event("transitionend", { bubbles: true }));
+      await settled();
+
+      expect(queryByPart("accordion", "content")).toBeNull();
+    } finally {
+      animationFrames.restore();
+    }
   });
 });
