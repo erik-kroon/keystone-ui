@@ -16,6 +16,9 @@
     "test": {
       "outputs": []
     },
+    "test:perf": {
+      "outputs": []
+    },
     "dev": {
       "cache": false,
       "persistent": true
