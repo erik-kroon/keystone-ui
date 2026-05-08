@@ -50,7 +50,8 @@
   "scripts": {
     "bench:listbox": "bun scripts/bench-listbox.ts",
     "check-types": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run --exclude '**/*.performance.test.ts' --exclude '**/*.performance.test.tsx'",
+    "test:perf": "vitest run test/listbox.performance.test.tsx test/select.performance.test.tsx"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.6",
