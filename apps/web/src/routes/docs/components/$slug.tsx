@@ -4,7 +4,7 @@ import { RegistryDocPage } from "@/components/registry-doc-page";
 import { findDocItem } from "@/lib/docs-data";
 import { seo } from "@/lib/utils";
 
-export const Route = createFileRoute("/_docs/docs/components/$slug")({
+export const Route = createFileRoute("/docs/components/$slug")({
   component: ComponentDocRoute,
   head: ({ params }) => {
     const item = findDocItem(params.slug);
