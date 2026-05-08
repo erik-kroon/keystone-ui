@@ -11,7 +11,7 @@ export const Route = createFileRoute("/docs/")({
   component: DocsOverview,
   head: () => ({
     meta: seo({
-      title: "Keystone UI · Solid Components and Primitives",
+      title: "Introduction · Keystone UI",
       description: overviewDescription,
     }),
   }),
