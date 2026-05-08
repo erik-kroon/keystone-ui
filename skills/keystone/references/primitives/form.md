@@ -4,10 +4,10 @@ Use this guide for Keystone field wiring, TanStack Form adapters, validation dis
 
 ## Source
 
-- Core-backed field source: `packages/ui/src/default/ui/field.tsx`
-- TanStack form shell: `packages/ui/src/default/ui/tanstack-form.tsx`
-- TanStack field adapter: `packages/ui/src/default/ui/tanstack-field.tsx`
-- Common controls: `packages/ui/src/default/ui/text-field.tsx`, `select-field.tsx`, `combobox-field.tsx`
+- Core-backed field source: `packages/ui/src/ui/field.tsx`
+- TanStack form shell: `packages/ui/src/ui/tanstack-form.tsx`
+- TanStack field adapter: `packages/ui/src/ui/tanstack-field.tsx`
+- Common controls: `packages/ui/src/ui/text-field.tsx`, `select-field.tsx`, `combobox-field.tsx`
 - Core primitive: `@keystone-ui/core/form`
 - Registry items: `field`, `tanstack-form`, `tanstack-field`, `text-field`, `select-field`, `combobox-field`
 - Mason install: `mason add tanstack-form tanstack-field text-field`

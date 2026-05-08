@@ -4,21 +4,21 @@ Use this file to choose the right Keystone UI source item and inspect its files 
 
 ## Actions And Display
 
-- **Button**: `packages/ui/src/default/ui/button.tsx`, registry `button`
-- **Alert**: `packages/ui/src/default/ui/alert.tsx`, registry `alert`
-- **Badge**: `packages/ui/src/default/ui/badge.tsx`, registry `badge`
-- **Kbd**: `packages/ui/src/default/ui/kbd.tsx`, registry `kbd`
-- **Card**: `packages/ui/src/default/ui/card.tsx`, registry `card`
-- **Empty**: `packages/ui/src/default/ui/empty.tsx`, registry `empty`
-- **Separator**: `packages/ui/src/default/ui/separator.tsx`, registry `separator`
+- **Button**: `packages/ui/src/ui/button.tsx`, registry `button`
+- **Alert**: `packages/ui/src/ui/alert.tsx`, registry `alert`
+- **Badge**: `packages/ui/src/ui/badge.tsx`, registry `badge`
+- **Kbd**: `packages/ui/src/ui/kbd.tsx`, registry `kbd`
+- **Card**: `packages/ui/src/ui/card.tsx`, registry `card`
+- **Empty**: `packages/ui/src/ui/empty.tsx`, registry `empty`
+- **Separator**: `packages/ui/src/ui/separator.tsx`, registry `separator`
 
 ## Fields And Forms
 
-- **Input**: `packages/ui/src/default/ui/input.tsx`, registry `input`
+- **Input**: `packages/ui/src/ui/input.tsx`, registry `input`
 - **Input Group Pattern**: no standalone registry item yet; use `references/primitives/input-group.md`
-- **Textarea**: `packages/ui/src/default/ui/textarea.tsx`, registry `textarea`
-- **Label**: `packages/ui/src/default/ui/label.tsx`, registry `label`
-- **Field**: `packages/ui/src/default/ui/field.tsx`, registry `field`
+- **Textarea**: `packages/ui/src/ui/textarea.tsx`, registry `textarea`
+- **Label**: `packages/ui/src/ui/label.tsx`, registry `label`
+- **Field**: `packages/ui/src/ui/field.tsx`, registry `field`
 - **TextField**: registry `text-field`
 - **NumberField**: registry `number-field`
 - **TextareaField**: registry `textarea-field`
@@ -35,19 +35,19 @@ Use this file to choose the right Keystone UI source item and inspect its files 
 
 ## Selection And Input Primitives
 
-- **Checkbox**: `packages/ui/src/default/ui/checkbox.tsx`, registry `checkbox`
-- **RadioGroup**: `packages/ui/src/default/ui/radio-group.tsx`, registry `radio-group`
-- **Switch**: `packages/ui/src/default/ui/switch.tsx`, registry `switch`
-- **Slider**: `packages/ui/src/default/ui/slider.tsx`, registry `slider`
-- **Select**: `packages/ui/src/default/ui/select.tsx`, registry `select`
-- **Combobox**: `packages/ui/src/default/ui/combobox.tsx`, registry `combobox`
-- **Autocomplete**: `packages/ui/src/default/ui/autocomplete.tsx`, registry `autocomplete`
+- **Checkbox**: `packages/ui/src/ui/checkbox.tsx`, registry `checkbox`
+- **RadioGroup**: `packages/ui/src/ui/radio-group.tsx`, registry `radio-group`
+- **Switch**: `packages/ui/src/ui/switch.tsx`, registry `switch`
+- **Slider**: `packages/ui/src/ui/slider.tsx`, registry `slider`
+- **Select**: `packages/ui/src/ui/select.tsx`, registry `select`
+- **Combobox**: `packages/ui/src/ui/combobox.tsx`, registry `combobox`
+- **Autocomplete**: `packages/ui/src/ui/autocomplete.tsx`, registry `autocomplete`
 - **DatePicker**: registry `date-picker`
 - Focused guides: `references/primitives/select.md`, `references/primitives/combobox.md`
 
 ## Overlays And Menus
 
-- **Dialog**: `packages/ui/src/default/ui/dialog.tsx`, registry `dialog`
+- **Dialog**: `packages/ui/src/ui/dialog.tsx`, registry `dialog`
 - **Sheet**: registry `sheet`
 - **Popover**: registry `popover`
 - **HoverCard**: registry `hover-card`
@@ -66,20 +66,20 @@ Use this file to choose the right Keystone UI source item and inspect its files 
 - **Collapsible**: registry `collapsible`
 - **Tabs**: registry `tabs`
 - **Toolbar**: registry `toolbar`
-- **ScrollArea**: `packages/ui/src/default/ui/scroll-area.tsx`, registry `scroll-area`
+- **ScrollArea**: `packages/ui/src/ui/scroll-area.tsx`, registry `scroll-area`
 - **CommandMenu**: registry `command-menu`
-- **Table**: `packages/ui/src/default/ui/table.tsx`, registry `table`
+- **Table**: `packages/ui/src/ui/table.tsx`, registry `table`
 - **DataTable**: registry `data-table`
 - **DataTableTanStackRouter**: registry `data-table-tanstack-router`
 - Focused guide: `references/primitives/data-table.md`
 
 ## Blocks
 
-- **AccountSettings**: `packages/ui/src/default/blocks/account-settings.tsx`, registry `account-settings`
-- **InvoiceDashboard**: `packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard.tsx`, registry `invoice-dashboard`
-- **KeyboardCommandSurface**: `packages/ui/src/default/blocks/keyboard-command-surface.tsx`, registry `keyboard-command-surface`
-- **RealtimeDataTable**: `packages/ui/src/default/blocks/realtime-data-table/realtime-data-table.tsx`, registry `realtime-data-table`
-- **ResizableWorkspaceShell**: `packages/ui/src/default/blocks/resizable-workspace-shell.tsx`, registry `resizable-workspace-shell`
+- **AccountSettings**: `packages/ui/src/blocks/account-settings.tsx`, registry `account-settings`
+- **InvoiceDashboard**: `packages/ui/src/blocks/invoice-dashboard/invoice-dashboard.tsx`, registry `invoice-dashboard`
+- **KeyboardCommandSurface**: `packages/ui/src/blocks/keyboard-command-surface.tsx`, registry `keyboard-command-surface`
+- **RealtimeDataTable**: `packages/ui/src/blocks/realtime-data-table/realtime-data-table.tsx`, registry `realtime-data-table`
+- **ResizableWorkspaceShell**: `packages/ui/src/blocks/resizable-workspace-shell.tsx`, registry `resizable-workspace-shell`
 
 ## Stores
 

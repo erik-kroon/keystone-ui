@@ -1,5 +1,5 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "command-menu",
   "type": "registry:ui",
   "title": "CommandMenu",
@@ -11,10 +11,16 @@
     "@tanstack/solid-hotkeys@^0.10.0"
   ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["command", "combobox", "tanstack", "hotkeys"],
+  "categories": [
+    "command",
+    "combobox",
+    "tanstack",
+    "hotkeys"
+  ],
   "keywords": [
     "command-menu",
     "command-palette",
@@ -25,9 +31,12 @@
     "tanstack"
   ],
   "docs": "https://keystone-ui.dev/docs/ui/command-menu",
-  "registryDependencies": ["cn", "command-store"],
+  "registryDependencies": [
+    "cn",
+    "command-store"
+  ],
   "meta": {
-    "install": "mason add command-menu",
+    "install": "shadcn add https://keystone-ui.dev/r/command-menu.json",
     "commandItems": "Pass readable CommandMenuItemData objects with value, label, optional description, group, keywords, disabled state, shortcut, and per-item onSelect handlers. The generated component filters by label, value, group, description, and keywords.",
     "searchFiltering": "The high-level CommandMenu controls Keystone Command inputValue from the command store and renders ranked matching items. The default matcher normalizes case, accents, and punctuation, handles initials, multi-term queries, values, descriptions, groups, and keywords, and preserves source order as a tie breaker. Pass filter for custom local matching, filter={null} to disable internal filtering, or filteredItems when the app owns remote search, permissions, or external ranking.",
     "store": "CommandMenu uses the command-store registry item for TanStack Store-backed app-level open/query/selectedCommandId/recent command coordination. createCommandMenuStore remains a compatibility alias around createCommandStore for existing generated source.",
@@ -74,7 +83,9 @@
       "--color-ring"
     ],
     "limitations": "This source is a local command palette pattern. It does not include async search orchestration, nested command pages, command history, user preference persistence, route-specific command discovery, copy-command footer behavior, or a final Hotkeys API guarantee.",
-    "sourceFiles": ["packages/ui/src/default/ui/command-menu.tsx"],
+    "sourceFiles": [
+      "packages/ui/src/components/command-menu.tsx"
+    ],
     "dependencies": [
       "@keystone-ui/core",
       "@tanstack/solid-store",
@@ -92,8 +103,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/command-menu.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/command-menu.tsx",
+      "type": "registry:ui",
+      "target": "@ui/command-menu.tsx"
     }
   ]
 }

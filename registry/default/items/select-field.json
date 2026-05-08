@@ -1,24 +1,51 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "select-field",
   "type": "registry:ui",
   "title": "SelectField",
   "description": "TanStack Form select field composed with Keystone Select behavior and UI styling hooks.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0",
+    "@tanstack/solid-form@^1.29.1"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "tanstack", "select"],
-  "keywords": ["select-field", "select", "field", "form", "tanstack", "keystone"],
+  "categories": [
+    "form",
+    "tanstack",
+    "select"
+  ],
+  "keywords": [
+    "select-field",
+    "select",
+    "field",
+    "form",
+    "tanstack",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/select-field",
-  "registryDependencies": ["cn", "select", "tanstack-field"],
+  "registryDependencies": [
+    "cn",
+    "select",
+    "tanstack-field"
+  ],
   "meta": {
-    "install": "mason add select-field",
+    "install": "shadcn add https://keystone-ui.dev/r/select-field.json",
     "customization": "Use ui-select-field classes, TanStackField shell classes, Select classes, Core data attributes, neutral data-slot hooks, selectProps, and trigger/content/listbox/group/item escape hatches while TanStack Form owns field state and Core owns listbox behavior.",
-    "sourceFiles": ["packages/ui/src/default/ui/select-field.tsx"],
-    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn", "select", "tanstack-field"],
+    "sourceFiles": [
+      "packages/ui/src/components/select-field.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "@tanstack/solid-form",
+      "cn",
+      "select",
+      "tanstack-field"
+    ],
     "api": "SelectField exports SelectField, SelectFieldOption, SelectFieldOptionGroup, SelectFieldProps, and SelectFieldValidators. It composes TanStackField with the styled Select item, passes validators to form.Field, derives touched error state through TanStackField, maps Select value changes to field.handleChange, maps popup close to field.handleBlur, treats the empty string as no selection for placeholder rendering, supports grouped and disabled options, uses textValue for typeahead/value text when labels are JSX, exposes an empty state, forwards disabled/readOnly/required/formId to Core Select, and accepts select/trigger/content/listbox/group/item class and prop escape hatches.",
     "accessibility": "Backed by TanStackField for label, description, error, aria-describedby, invalid state, and alert messaging, and by @keystone-ui/core/select for trigger/listbox roles, active descendant, highlighted and selected item state, disabled items and groups, hidden form value serialization, Escape dismissal, typeahead, and native reset support. SelectField wires the trigger to TanStackField label/description/error IDs through aria-labelledby and aria-describedby while Core owns the popup/listbox relationship.",
     "anatomy": [
@@ -64,8 +91,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/select-field.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/select-field.tsx",
+      "type": "registry:ui",
+      "target": "@ui/select-field.tsx"
     }
   ]
 }

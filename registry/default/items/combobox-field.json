@@ -1,23 +1,44 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "combobox-field",
   "type": "registry:ui",
   "title": "ComboboxField",
   "description": "TanStack Form combobox field composed with Keystone Combobox behavior and UI styling hooks.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0",
+    "@tanstack/solid-form@^1.29.1"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "tanstack", "autocomplete"],
-  "keywords": ["combobox-field", "combobox", "field", "form", "tanstack", "keystone"],
+  "categories": [
+    "form",
+    "tanstack",
+    "autocomplete"
+  ],
+  "keywords": [
+    "combobox-field",
+    "combobox",
+    "field",
+    "form",
+    "tanstack",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/combobox-field",
-  "registryDependencies": ["cn", "combobox", "tanstack-field"],
+  "registryDependencies": [
+    "cn",
+    "combobox",
+    "tanstack-field"
+  ],
   "meta": {
-    "install": "mason add combobox-field",
+    "install": "shadcn add https://keystone-ui.dev/r/combobox-field.json",
     "customization": "Use ui-combobox-field classes, TanStackField shell classes, Combobox classes, Core data attributes, neutral data-slot hooks, and combobox/input/content/listbox/group/item prop and class escape hatches.",
-    "sourceFiles": ["packages/ui/src/default/ui/combobox-field.tsx"],
+    "sourceFiles": [
+      "packages/ui/src/components/combobox-field.tsx"
+    ],
     "dependencies": [
       "@keystone-ui/core",
       "@tanstack/solid-form",
@@ -50,8 +71,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/combobox-field.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/combobox-field.tsx",
+      "type": "registry:ui",
+      "target": "@ui/combobox-field.tsx"
     }
   ]
 }

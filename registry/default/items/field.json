@@ -1,27 +1,55 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "field",
   "type": "registry:ui",
   "title": "Field",
   "description": "Core-backed reference-inspired form field shell with label, control, description, error, and hidden-input parts.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "base"],
-  "keywords": ["field", "label", "description", "error", "form", "validation"],
+  "categories": [
+    "form",
+    "base"
+  ],
+  "keywords": [
+    "field",
+    "label",
+    "description",
+    "error",
+    "form",
+    "validation"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/field",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add field",
+    "install": "shadcn add https://keystone-ui.dev/r/field.json",
     "customization": "Style the shell through ui-field classes, reference-style data-slot values, and Core data attributes for field state on root, label, control, description, error-message, and hidden-input parts.",
-    "sourceFiles": ["packages/ui/src/default/ui/field.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/field.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
     "api": "Field exports Field, FieldLabel, FieldItem, FieldControl, FieldDescription, FieldError, FieldHiddenInput, and FieldPrimitive. Field and its semantic parts are backed by @keystone-ui/core/form for generated IDs, label/control relationships, aria-describedby, aria-invalid, required/disabled/readonly state, validation state, hidden inputs, and native reset handling.",
     "accessibility": "Field uses Keystone Core Field semantics. FieldLabel labels FieldControl, FieldDescription and FieldError participate in aria-describedby, FieldError uses alert semantics through Core, and FieldControl receives aria-invalid, aria-required, aria-readonly, aria-disabled, and state data attributes from Core.",
-    "anatomy": ["root", "label", "item", "control", "description", "error-message", "hidden-input"],
+    "anatomy": [
+      "root",
+      "label",
+      "item",
+      "control",
+      "description",
+      "error-message",
+      "hidden-input"
+    ],
     "cssVariables": [
       "--color-foreground",
       "--color-muted-foreground",
@@ -39,8 +67,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/field.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/field.tsx",
+      "type": "registry:ui",
+      "target": "@ui/field.tsx"
     }
   ]
 }

@@ -7,6 +7,7 @@ export type MasonConfig = {
   $schema: string;
   style: "default";
   aliases: {
+    components?: string;
     ui: string;
     hooks: string;
     lib: string;
@@ -34,6 +35,7 @@ export function createDefaultConfig(project: ProjectShape): MasonConfig {
     $schema: "https://mason.build/schema/config.json",
     style: "default",
     aliases: {
+      components: `${srcAlias}components`,
       ui: `${srcAlias}components/ui`,
       hooks: `${srcAlias}hooks`,
       lib: `${srcAlias}lib`,

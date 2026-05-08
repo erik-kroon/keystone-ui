@@ -1,5 +1,5 @@
 {
-  "$schema": "https://mason.build/schema/registry.json",
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "ui-default",
   "homepage": "https://keystone-ui.dev",
   "items": [
@@ -341,7 +341,7 @@
     },
     {
       "name": "tanstack-start-dashboard",
-      "type": "registry:template",
+      "type": "registry:item",
       "title": "TanStack Start Dashboard Template",
       "description": "Solid TanStack Start app shape that mounts the invoice dashboard block as the first route."
     },

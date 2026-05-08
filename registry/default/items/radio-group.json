@@ -1,25 +1,49 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "radio-group",
   "type": "registry:ui",
   "title": "RadioGroup",
   "description": "Styled Solid radio group component backed by Keystone roving selection behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["forms", "selection", "input"],
-  "keywords": ["radio", "radio-group", "checked", "keystone"],
+  "categories": [
+    "forms",
+    "selection",
+    "input"
+  ],
+  "keywords": [
+    "radio",
+    "radio-group",
+    "checked",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/radio-group",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add radio-group",
+    "install": "shadcn add https://keystone-ui.dev/r/radio-group.json",
     "customization": "Style the generated wrappers through ui-radio-group classes while Keystone keeps radiogroup semantics, roving focus, RTL-aware horizontal keyboard selection, hidden radio inputs, and data attributes.",
-    "sourceFiles": ["packages/ui/src/default/ui/radio-group.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
-    "parts": ["root", "item", "item-indicator", "hidden-input"],
+    "sourceFiles": [
+      "packages/ui/src/components/radio-group.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
+    "parts": [
+      "root",
+      "item",
+      "item-indicator",
+      "hidden-input"
+    ],
     "parity": {
       "baseUi": "Thin vertical covers controlled and uncontrolled value state, disabled items, radiogroup ARIA, roving tabindex, RTL-aware arrow/Home/End keyboard selection, hidden radio submission, hidden-input state metadata, and UI wrapper metadata. Gaps: toolbar/nested coordination, richer label composition, form validation edge cases, and hydration edge tests remain follow-up work.",
       "kobalte": "Matches Solid RadioGroup Root/Item/Input/Control/Indicator direction with single selection, hidden native inputs, disabled state, orientation, and stable data attributes. Gaps: form-control group composition, validation/reset semantics, and nested composite-widget policy remain follow-up work."
@@ -27,8 +51,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/radio-group.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/radio-group.tsx",
+      "type": "registry:ui",
+      "target": "@ui/radio-group.tsx"
     }
   ]
 }

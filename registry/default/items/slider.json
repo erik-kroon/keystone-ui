@@ -1,25 +1,51 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "slider",
   "type": "registry:ui",
   "title": "Slider",
   "description": "Styled Solid slider component backed by Keystone range, thumb, keyboard, and pointer behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "input", "range"],
-  "keywords": ["slider", "range", "input", "keystone", "tanstack-ranger"],
+  "categories": [
+    "form",
+    "input",
+    "range"
+  ],
+  "keywords": [
+    "slider",
+    "range",
+    "input",
+    "keystone",
+    "tanstack-ranger"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/slider",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add slider",
+    "install": "shadcn add https://keystone-ui.dev/r/slider.json",
     "customization": "Style the generated wrappers through ui-slider classes while Keystone keeps range math, thumb ARIA, controlled state, RTL-aware keyboard and pointer math, minimum thumb distance, pointer commits, hidden input form serialization, data attributes, and CSS variables.",
-    "sourceFiles": ["packages/ui/src/default/ui/slider.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
-    "parts": ["root", "track", "range", "thumb", "hidden-input"],
+    "sourceFiles": [
+      "packages/ui/src/components/slider.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
+    "parts": [
+      "root",
+      "track",
+      "range",
+      "thumb",
+      "hidden-input"
+    ],
     "cssVars": [
       "--keystone-slider-range-start",
       "--keystone-slider-range-end",
@@ -33,8 +59,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/slider.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/slider.tsx",
+      "type": "registry:ui",
+      "target": "@ui/slider.tsx"
     }
   ]
 }

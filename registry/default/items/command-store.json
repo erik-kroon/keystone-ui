@@ -1,20 +1,33 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "command-store",
   "type": "registry:ui",
   "title": "CommandStore",
   "description": "TanStack Store-backed command state for coordinating command menus, shell triggers, and route-scoped command registries.",
   "version": "0.1.0",
-  "dependencies": ["@tanstack/solid-store@^0.11.0"],
+  "dependencies": [
+    "@tanstack/solid-store@^0.11.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["command", "store", "tanstack"],
-  "keywords": ["command-store", "command-menu", "store", "tanstack", "keystone"],
+  "categories": [
+    "command",
+    "store",
+    "tanstack"
+  ],
+  "keywords": [
+    "command-store",
+    "command-menu",
+    "store",
+    "tanstack",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/command-store",
   "meta": {
-    "install": "mason add command-store",
+    "install": "shadcn add https://keystone-ui.dev/r/command-store.json",
     "api": "CommandStore exports createCommandStore, CommandStoreCommand, CommandStoreState, CommandStoreOptions, CommandStore, RegisterCommandsOptions, and SelectCommandOptions. The store exposes Solid-friendly state through TanStack Store plus explicit actions for open/query state, selection, recent command ids, command registration, route/workspace scope, and loading/error metadata.",
     "state": "State includes open, query, selectedCommandId, recentlyUsedCommandIds, commands, optional scope, loading, and error. lastSelectedValue remains as a compatibility alias for the 0.1 CommandMenu proof.",
     "behavior": "CommandStore coordinates app-level command state only. It does not own combobox roles, active descendant state, item highlighting, list navigation, focus, overlay positioning, filtering/ranking, permissions, or command execution.",
@@ -22,8 +35,12 @@
     "ssr": "CommandStore does not read window, document, HTMLElement, or other browser globals during construction. It is safe to create during SSR and hydrate later with app-owned command registration.",
     "dataAttributes": "CommandStore is state-only and renders no DOM. Styling hooks belong to surfaces such as CommandMenu and ShortcutDisplay.",
     "limitations": "This is not a Core primitive, command router, fuzzy scorer, permissions engine, async discovery service, shortcut manager, or persistence layer. AppStoreProvider integration remains optional follow-up work.",
-    "sourceFiles": ["packages/ui/src/default/ui/command-store.ts"],
-    "dependencies": ["@tanstack/solid-store"],
+    "sourceFiles": [
+      "packages/ui/src/components/command-store.ts"
+    ],
+    "dependencies": [
+      "@tanstack/solid-store"
+    ],
     "parity": {
       "tanstackStore": "First-class reference is TanStack Store: CommandStore uses a small source-owned Store with explicit actions rather than reducers or singleton state. It preserves Solid-friendly access through store.state, store.get(), subscriptions, and useSelector in consuming components.",
       "tanstackHotkeys": "CommandStore intentionally does not register shortcuts. KeyboardShortcuts and CommandMenu hotkey registration remain separate so app shortcuts do not blur into command state.",
@@ -33,8 +50,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/command-store.ts",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/command-store.ts",
+      "type": "registry:ui",
+      "target": "@ui/command-store.ts"
     }
   ]
 }

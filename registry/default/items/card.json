@@ -1,23 +1,39 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "card",
   "type": "registry:ui",
   "title": "Card",
   "description": "Composable reference-inspired card and card-frame parts for grouped content.",
   "version": "0.1.0",
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["layout", "base"],
-  "keywords": ["card", "panel", "content", "frame", "surface"],
+  "categories": [
+    "layout",
+    "base"
+  ],
+  "keywords": [
+    "card",
+    "panel",
+    "content",
+    "frame",
+    "surface"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/card",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add card",
+    "install": "shadcn add https://keystone-ui.dev/r/card.json",
     "customization": "Customize each part through ui-card classes, reference-style data-slot values, and stable data-part values across card and card-frame anatomy.",
-    "sourceFiles": ["packages/ui/src/default/ui/card.tsx"],
-    "dependencies": ["cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/card.tsx"
+    ],
+    "dependencies": [
+      "cn"
+    ],
     "api": "Card exports Card, CardHeader, CardTitle, CardDescription, CardAction, CardPanel, CardContent, CardFooter, CardFrame, CardFrameHeader, CardFrameTitle, CardFrameDescription, CardFrameAction, and CardFrameFooter. CardContent is an alias of CardPanel, matching the reference card-panel data-slot.",
     "accessibility": "Card remains a presentational native div surface by default. Consumers own heading levels, labelled regions, links, buttons, and form controls inside cards through native HTML and ARIA props passed to each part.",
     "anatomy": [
@@ -54,8 +70,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/card.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/card.tsx",
+      "type": "registry:ui",
+      "target": "@ui/card.tsx"
     }
   ]
 }

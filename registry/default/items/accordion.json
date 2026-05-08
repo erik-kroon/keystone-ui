@@ -1,25 +1,52 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "accordion",
   "type": "registry:ui",
   "title": "Accordion",
   "description": "Styled Solid accordion component backed by Keystone disclosure coordination.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0", "lucide-solid@^1.8.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0",
+    "lucide-solid@^1.8.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["disclosure", "navigation", "layout"],
-  "keywords": ["accordion", "collapsible", "disclosure", "keystone"],
+  "categories": [
+    "disclosure",
+    "navigation",
+    "layout"
+  ],
+  "keywords": [
+    "accordion",
+    "collapsible",
+    "disclosure",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/accordion",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add accordion",
+    "install": "shadcn add https://keystone-ui.dev/r/accordion.json",
     "customization": "Style the generated wrappers through ui-accordion classes while Keystone keeps item coordination, trigger ARIA, keyboard navigation, hidden-until-found behavior, and data attributes.",
-    "sourceFiles": ["packages/ui/src/default/ui/accordion.tsx"],
-    "dependencies": ["@keystone-ui/core", "lucide-solid", "cn"],
-    "parts": ["root", "item", "header", "trigger", "content"],
+    "sourceFiles": [
+      "packages/ui/src/components/accordion.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "lucide-solid",
+      "cn"
+    ],
+    "parts": [
+      "root",
+      "item",
+      "header",
+      "trigger",
+      "content"
+    ],
     "parity": {
       "baseUi": "Thin vertical covers Root/Item/Header/Trigger/Panel-style anatomy, single and multiple value state, disabled items, trigger ARIA, vertical keyboard movement, hidden-until-found behavior, and UI metadata. Gaps: measured panel CSS variables, transition lifecycle status, RTL horizontal keyboard behavior, and broader browser-find edge cases remain follow-up work.",
       "kobalte": "Thin vertical matches Solid Root/Item/Header/Trigger/Content composition, controlled and uncontrolled values, collapsible single mode, multiple mode, disabled item guards, and stable data attributes. Gaps: richer transition hooks, DOM measurement helpers, and expanded accessibility regression coverage remain follow-up work."
@@ -27,8 +54,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/accordion.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/accordion.tsx",
+      "type": "registry:ui",
+      "target": "@ui/accordion.tsx"
     }
   ]
 }

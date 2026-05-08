@@ -1,27 +1,58 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "text-field",
   "type": "registry:ui",
   "title": "TextField",
   "description": "TanStack Form text field composed with Keystone form-control semantics and UI styling hooks.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0",
+    "@tanstack/solid-form@^1.29.1"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "tanstack"],
-  "keywords": ["text-field", "field", "form", "tanstack", "keystone"],
+  "categories": [
+    "form",
+    "tanstack"
+  ],
+  "keywords": [
+    "text-field",
+    "field",
+    "form",
+    "tanstack",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/text-field",
-  "registryDependencies": ["cn", "input", "tanstack-field"],
+  "registryDependencies": [
+    "cn",
+    "input",
+    "tanstack-field"
+  ],
   "meta": {
-    "install": "mason add text-field",
+    "install": "shadcn add https://keystone-ui.dev/r/text-field.json",
     "customization": "Use ui-text-field classes, TanStackField shell classes, Input classes, Core data attributes, neutral data-slot hooks, and inputClass for generated-source styling.",
-    "sourceFiles": ["packages/ui/src/default/ui/text-field.tsx"],
-    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn", "input", "tanstack-field"],
+    "sourceFiles": [
+      "packages/ui/src/components/text-field.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "@tanstack/solid-form",
+      "cn",
+      "input",
+      "tanstack-field"
+    ],
     "api": "TextField exports TextField, TextFieldProps, and TextFieldValidators. It composes TanStackField with the styled Input item, passes validators to form.Field, derives touched error state through TanStackField, maps input events to field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId plus native input props.",
     "accessibility": "Backed by TanStackField for generated IDs, label/description/error relationships, aria-describedby, aria-invalid, required/disabled/readonly metadata, touched/dirty/blurred/validating metadata, and alert messaging. The rendered input receives the shared Core form-control props.",
-    "anatomy": ["field-root", "field-label", "input", "field-description", "field-error"],
+    "anatomy": [
+      "field-root",
+      "field-label",
+      "input",
+      "field-description",
+      "field-error"
+    ],
     "state": "TanStack Form owns value, touched, dirty, blurred, validating, and errors. TextField maps string input into TanStack field value and mirrors focus through the TanStackField shell.",
     "limitations": "Masked input, parse/format adapters, async validation examples, and schema-specific validation helpers remain app-owned composition.",
     "parity": {
@@ -32,8 +63,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/text-field.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/text-field.tsx",
+      "type": "registry:ui",
+      "target": "@ui/text-field.tsx"
     }
   ]
 }

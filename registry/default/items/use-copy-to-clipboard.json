@@ -1,27 +1,40 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "use-copy-to-clipboard",
   "type": "registry:hook",
   "title": "useCopyToClipboard",
   "description": "UI-owned Solid clipboard helper with copied/error state, callbacks, timer reset, and SSR-safe capability checks.",
   "version": "0.1.0",
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["hook", "clipboard", "feedback"],
-  "keywords": ["clipboard", "copy", "hook", "solid", "use-copy-to-clipboard"],
+  "categories": [
+    "hook",
+    "clipboard",
+    "feedback"
+  ],
+  "keywords": [
+    "clipboard",
+    "copy",
+    "hook",
+    "solid",
+    "use-copy-to-clipboard"
+  ],
   "docs": "https://keystone-ui.dev/docs/hooks/use-copy-to-clipboard",
-  "filesRoot": "packages/ui/src/default/hooks",
+  "filesRoot": "packages/ui/src/hooks",
   "targetRoot": "src/hooks",
   "meta": {
-    "install": "mason add use-copy-to-clipboard",
+    "install": "shadcn add https://keystone-ui.dev/r/use-copy-to-clipboard.json",
     "api": "Exports createCopyToClipboard with copied, status, error, isSupported, reset, and async copy(value). Options include copiedDuration, onCopy, onError, and test/embed window injection. copiedDuration defaults to 2000ms and 0 keeps copied state until reset.",
     "accessibility": "The hook is state only. Components using it should expose copied/error feedback with accessible names or live regions appropriate to the surface.",
     "behavior": "Uses navigator.clipboard.writeText when available, returns false instead of throwing when unsupported or rejected, stores error state, and clears copied state after the configured duration.",
     "ssr": "Does not touch window or navigator until copy/isSupported is called. A window option supports tests and embedded document contexts.",
     "limitations": "This generated UI hook is not a Core primitive and does not include legacy execCommand fallback. Clipboard permission behavior remains browser-owned.",
-    "sourceFiles": ["packages/ui/src/default/hooks/use-copy-to-clipboard.ts"],
+    "sourceFiles": [
+      "packages/ui/src/hooks/use-copy-to-clipboard.ts"
+    ],
     "parity": {
       "coss": "Covers the tracked useCopyToClipboard gap with Solid-native accessors, temporary copied state, failure state, callbacks, and browser capability guards.",
       "solid": "Uses createSignal/onCleanup and an explicit createCopyToClipboard factory instead of React hook state/effects.",
@@ -30,8 +43,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/hooks/use-copy-to-clipboard.ts",
-      "type": "registry:hook"
+      "path": "packages/ui/src/hooks/use-copy-to-clipboard.ts",
+      "type": "registry:hook",
+      "target": "@hooks/use-copy-to-clipboard.ts"
     }
   ]
 }

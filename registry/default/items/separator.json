@@ -1,26 +1,42 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "separator",
   "type": "registry:ui",
   "title": "Separator",
   "description": "Decorative or semantic Solid separator with horizontal and vertical layout styling.",
   "version": "0.1.0",
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["layout", "base"],
-  "keywords": ["separator", "divider", "layout"],
+  "categories": [
+    "layout",
+    "base"
+  ],
+  "keywords": [
+    "separator",
+    "divider",
+    "layout"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/separator",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add separator",
+    "install": "shadcn add https://keystone-ui.dev/r/separator.json",
     "customization": "Use separatorClass, data-orientation, data-decorative, and ui-separator classes to style horizontal and vertical separators.",
-    "sourceFiles": ["packages/ui/src/default/ui/separator.tsx"],
-    "dependencies": ["cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/separator.tsx"
+    ],
+    "dependencies": [
+      "cn"
+    ],
     "api": "Separator accepts orientation horizontal|vertical and decorative boolean. decorative defaults to true; set decorative={false} when the separator conveys structure that should be exposed to assistive technology.",
     "accessibility": "Decorative separators render role=presentation with no aria-orientation. Semantic separators render role=separator and aria-orientation matching the orientation prop. Separator has no keyboard, pointer, focus, form, or live-region behavior.",
-    "anatomy": ["root"],
+    "anatomy": [
+      "root"
+    ],
     "dataAttributes": "Root exposes data-scope=\"ui-separator\", data-part=\"root\", data-slot=\"separator\", data-orientation, and data-decorative when decorative.",
     "state": "No controlled or uncontrolled state contract applies; Separator is a stateless native layout and semantics surface.",
     "ssr": "SSR and hydration are stable because the component renders deterministic native markup with no effects, browser APIs, ids, portals, or measurement.",
@@ -34,8 +50,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/separator.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/separator.tsx",
+      "type": "registry:ui",
+      "target": "@ui/separator.tsx"
     }
   ]
 }

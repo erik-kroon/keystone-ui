@@ -1,26 +1,39 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "use-media-query",
   "type": "registry:hook",
   "title": "useMediaQuery",
   "description": "SSR-safe Solid media query hook with string, breakpoint, pointer, orientation, and preference helpers.",
   "version": "0.1.0",
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["hook", "responsive", "media-query"],
-  "keywords": ["use-media-query", "create-media-query", "responsive", "breakpoint", "solid"],
+  "categories": [
+    "hook",
+    "responsive",
+    "media-query"
+  ],
+  "keywords": [
+    "use-media-query",
+    "create-media-query",
+    "responsive",
+    "breakpoint",
+    "solid"
+  ],
   "docs": "https://keystone-ui.dev/docs/hooks/use-media-query",
-  "filesRoot": "packages/ui/src/default/hooks",
+  "filesRoot": "packages/ui/src/hooks",
   "targetRoot": "src/hooks",
   "meta": {
-    "install": "mason add use-media-query",
+    "install": "shadcn add https://keystone-ui.dev/r/use-media-query.json",
     "api": "Exports useMediaQuery/createMediaQuery accessors, useIsMobile, normalizeMediaQuery, createBreakpointQuery, createPointerQuery, mediaQueryBreakpoints, breakpoint shorthand query types, and related option/input types.",
     "ssr": "The accessor starts from defaultValue and does not read window or matchMedia until Solid onMount runs. Pass a window option for tests or embedded documents.",
     "behavior": "Supports Tailwind-like breakpoint shorthand strings, raw media query strings, and structured min/max/orientation/pointer/preference objects. Listener cleanup handles modern addEventListener and legacy addListener MediaQueryList APIs.",
     "limitations": "This hook is UI generated source. It is not a Core utility, does not observe container queries, and does not persist responsive state.",
-    "sourceFiles": ["packages/ui/src/default/hooks/use-media-query.ts"],
+    "sourceFiles": [
+      "packages/ui/src/hooks/use-media-query.ts"
+    ],
     "parity": {
       "coss": "Covers the tracked Coss useMediaQuery gap with Solid-native accessors, breakpoint helpers, pointer helpers, and SSR-safe defaults.",
       "solid": "Uses createSignal and onMount instead of React effect/state conventions.",
@@ -29,8 +42,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/hooks/use-media-query.ts",
-      "type": "registry:hook"
+      "path": "packages/ui/src/hooks/use-media-query.ts",
+      "type": "registry:hook",
+      "target": "@hooks/use-media-query.ts"
     }
   ]
 }

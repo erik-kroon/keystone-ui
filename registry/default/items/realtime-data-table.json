@@ -1,17 +1,25 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "realtime-data-table",
   "type": "registry:block",
   "title": "RealtimeDataTableBlock",
   "description": "TanStack-backed realtime data table pattern for frequent row and cell updates.",
   "version": "0.1.0",
-  "dependencies": ["@tanstack/solid-table@^8.21.3"],
+  "dependencies": [
+    "@tanstack/solid-table@^8.21.3"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
+    "registryTooling": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.9 <2.0.0",
-    "tanstack-table": ">=8.21.0 <9.0.0"
+    "tanstack-table": ">=8.21.0 <9.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["table", "tanstack", "data-dense", "block"],
+  "categories": [
+    "table",
+    "tanstack",
+    "data-dense",
+    "block"
+  ],
   "keywords": [
     "realtime-data-table",
     "data-table",
@@ -21,11 +29,20 @@
     "empty-state"
   ],
   "docs": "https://keystone-ui.dev/docs/blocks/realtime-data-table",
-  "registryDependencies": ["badge", "button", "data-table"],
+  "registryDependencies": [
+    "badge",
+    "button",
+    "data-table"
+  ],
   "meta": {
-    "install": "mason add realtime-data-table",
+    "install": "shadcn add https://keystone-ui.dev/r/realtime-data-table.json",
     "fileTree": "Installs realtime-data-table.tsx, realtime-data-table-columns.tsx, and realtime-data-table-data.ts as user-owned source under src/components/blocks/realtime-data-table/.",
-    "dependencies": ["@tanstack/solid-table", "badge", "button", "data-table"],
+    "dependencies": [
+      "@tanstack/solid-table",
+      "badge",
+      "button",
+      "data-table"
+    ],
     "realtimeBehavior": "Rows are held in a Solid signal and passed to useDataTable as an accessor, so frequent row/cell updates flow through TanStack Table without replacing the table kit. The sample tick mutates latency, throughput, error-rate, status, and updated-at cells while preserving row object IDs.",
     "sorting": "Initial sorting orders by latency descending and sortable numeric headers use DataTableColumnHeader, proving sort state remains available during repeated row updates.",
     "rowIdentity": "The block passes getRowId: row.id to avoid array-index identity when data reorders, filters, clears, reloads, or updates frequently.",
@@ -33,9 +50,9 @@
     "accessibility": "Controls are native buttons in a labelled group, update status is aria-live=polite, loading is delegated to DataTable aria-busy/status semantics, and sorting/filter/view controls remain keyboard reachable through the DataTable kit.",
     "customization": "Replace realtime-data-table-data.ts with route loader, websocket, SSE, polling, or TanStack Store data. Keep stable row IDs and pass loading from the host app's fetch/subscription lifecycle.",
     "sourceFiles": [
-      "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table.tsx",
-      "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table-columns.tsx",
-      "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table-data.ts"
+      "packages/ui/src/blocks/realtime-data-table/realtime-data-table.tsx",
+      "packages/ui/src/blocks/realtime-data-table/realtime-data-table-columns.tsx",
+      "packages/ui/src/blocks/realtime-data-table/realtime-data-table-data.ts"
     ],
     "parity": {
       "tanstackTable": "Uses TanStack Solid Table state, ColumnDef definitions, getRowId, sorting, filtering, pagination, and reactive data accessors. Gaps: no virtualization, server streaming contract, optimistic mutation queue, or persisted view state.",
@@ -45,17 +62,17 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table.tsx",
+      "path": "packages/ui/src/blocks/realtime-data-table/realtime-data-table.tsx",
       "type": "registry:block",
       "target": "src/components/blocks/realtime-data-table/realtime-data-table.tsx"
     },
     {
-      "path": "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table-columns.tsx",
+      "path": "packages/ui/src/blocks/realtime-data-table/realtime-data-table-columns.tsx",
       "type": "registry:block",
       "target": "src/components/blocks/realtime-data-table/realtime-data-table-columns.tsx"
     },
     {
-      "path": "packages/ui/src/default/blocks/realtime-data-table/realtime-data-table-data.ts",
+      "path": "packages/ui/src/blocks/realtime-data-table/realtime-data-table-data.ts",
       "type": "registry:block",
       "target": "src/components/blocks/realtime-data-table/realtime-data-table-data.ts"
     }

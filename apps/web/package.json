@@ -4,11 +4,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "bun run generate:registry-items && vite build",
+    "build": "bun run generate:registry-items && bun run generate:shadcn-registry && vite build",
     "deploy": "bun run build && bunx --bun wrangler@4 deploy",
     "deploy:production": "bun run deploy",
     "deploy:production:dry-run": "bun run build && bunx --bun wrangler@4 deploy --dry-run",
     "generate:registry-items": "bun ../../scripts/generate-docs-registry-items.ts",
+    "generate:shadcn-registry": "bun ../../scripts/generate-shadcn-registry.ts",
     "serve": "vite preview",
     "start": "node .output/server/index.mjs",
     "test": "bun test",

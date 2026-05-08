@@ -23,6 +23,31 @@ function targetFromRoot(
   return path.posix.join(options.targetRoot, relativePath);
 }
 
+function pathForTargetSafety(target: string): string {
+  if (target === "~") return ".";
+  if (target.startsWith("~/")) return target.slice("~/".length);
+
+  const match = /^@([^/]+)\/(.+)$/.exec(target);
+  if (!match) return target;
+
+  const placeholder = match[1];
+  const rest = match[2];
+  if (!placeholder || !rest) return target;
+
+  switch (placeholder) {
+    case "components":
+      return path.posix.join("components", rest);
+    case "ui":
+      return path.posix.join("components/ui", rest);
+    case "lib":
+      return path.posix.join("lib", rest);
+    case "hooks":
+      return path.posix.join("hooks", rest);
+    default:
+      return path.posix.join(placeholder, rest);
+  }
+}
+
 export function validateFiles(
   files: FileDescriptor[],
   options: ValidateFilesOptions = {},
@@ -97,15 +122,16 @@ export function validateFiles(
 
     const target = targetFromRoot(file, options);
     if (target) {
+      const safetyTarget = pathForTargetSafety(target);
       errors.push(
-        ...validateRegistryPath(target, {
+        ...validateRegistryPath(safetyTarget, {
           field: "target",
           path: ["files", index, "target"],
           projectRoot: options.projectRoot,
           checkSymlinkEscape: true,
         }),
       );
-      if (targets.has(target)) {
+      if (targets.has(safetyTarget)) {
         errors.push({
           code: "file.duplicateTarget",
           message: `Duplicate registry file target: ${target}`,
@@ -114,7 +140,7 @@ export function validateFiles(
           value: target,
         });
       }
-      targets.add(target);
+      targets.add(safetyTarget);
     }
   }
 

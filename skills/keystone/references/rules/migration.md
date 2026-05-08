@@ -16,7 +16,7 @@ Use this when adapting snippets from shadcn, Radix, React, or Base UI-shaped exa
 ## Behavior Translation
 
 - Do not assume every shadcn/Radix prop exists.
-- Inspect `packages/ui/src/default/ui/<component>.tsx` and the relevant Core primitive export first.
+- Inspect `packages/ui/src/ui/<component>.tsx` and the relevant Core primitive export first.
 - Replace Radix overlay behavior with Keystone Core-backed wrappers.
 - Replace one-off app behavior with existing store or TanStack app-layer items when available.
 - Use Mason registry items instead of shadcn registry names.

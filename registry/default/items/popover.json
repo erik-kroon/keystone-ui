@@ -1,24 +1,42 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "popover",
   "type": "registry:ui",
   "title": "Popover",
   "description": "Styled Solid popover component backed by Keystone overlay positioning and dismissal.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["overlay", "disclosure"],
-  "keywords": ["popover", "overlay", "floating", "keystone"],
+  "categories": [
+    "overlay",
+    "disclosure"
+  ],
+  "keywords": [
+    "popover",
+    "overlay",
+    "floating",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/popover",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add popover",
+    "install": "shadcn add https://keystone-ui.dev/r/popover.json",
     "customization": "Style the generated wrappers through ui-popover classes while Core owns positioning, dismissal, and layer ordering.",
-    "sourceFiles": ["packages/ui/src/default/ui/popover.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/popover.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
     "api": "Popover exports Popover, PopoverTrigger, PopoverPortal, PopoverPositioner, PopoverContent, PopoverPopup, PopoverArrow, PopoverHeader, PopoverFooter, PopoverTitle, PopoverDescription, and PopoverPrimitive. PopoverContent composes portal, positioner, popup surface, viewport, optional tooltip-style density, and class escape hatches while Core owns open state, positioning, modal option, dismissal, layer ordering, and state data attributes.",
     "accessibility": "Backed by @keystone-ui/core/popover for trigger aria-haspopup/expanded relationships, role=dialog content, controlled and uncontrolled open state, Escape and outside dismissal, modal outside pointer blocking when requested, portal rendering, force-mounted presence, and floating placement metadata.",
     "anatomy": [
@@ -58,8 +76,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/popover.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/popover.tsx",
+      "type": "registry:ui",
+      "target": "@ui/popover.tsx"
     }
   ]
 }

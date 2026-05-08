@@ -1,25 +1,49 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "hover-card",
   "type": "registry:ui",
   "title": "HoverCard",
   "description": "Styled Solid hover card component backed by Keystone overlay positioning and pointer/focus preview behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["overlay", "preview"],
-  "keywords": ["hover-card", "preview", "overlay", "floating", "keystone"],
+  "categories": [
+    "overlay",
+    "preview"
+  ],
+  "keywords": [
+    "hover-card",
+    "preview",
+    "overlay",
+    "floating",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/hover-card",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add hover-card",
+    "install": "shadcn add https://keystone-ui.dev/r/hover-card.json",
     "customization": "Style the generated wrappers through ui-hover-card classes while Core owns preview timing, positioning, and dismissal.",
-    "sourceFiles": ["packages/ui/src/default/ui/hover-card.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
-    "parts": ["trigger", "positioner", "arrow", "content"],
+    "sourceFiles": [
+      "packages/ui/src/components/hover-card.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
+    "parts": [
+      "trigger",
+      "positioner",
+      "arrow",
+      "content"
+    ],
     "parity": {
       "baseUi": "Matches the PreviewCard Root/Trigger/Portal/Positioner/Popup/Arrow baseline through Keystone Root, Trigger, Portal, Positioner, Content, and Arrow parts. Keystone intentionally names the primitive HoverCard for Solid/Kobalte familiarity. Gaps: detached triggers, multiple trigger payloads, Backdrop, Viewport, and trigger-id coordination remain follow-up work.",
       "kobalte": "Matches HoverCard Root/Trigger/Portal/Content/Arrow shape, custom open/close delays, controlled state, forceMount direction, safe-area hover traversal, and screen-reader-hidden preview intent."
@@ -27,8 +51,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/hover-card.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/hover-card.tsx",
+      "type": "registry:ui",
+      "target": "@ui/hover-card.tsx"
     }
   ]
 }

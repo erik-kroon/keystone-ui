@@ -1,26 +1,45 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "input",
   "type": "registry:ui",
   "title": "Input",
   "description": "Reference-inspired Solid input control with wrapper styling, sizes, invalid state, and native input semantics.",
   "version": "0.1.0",
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "base"],
-  "keywords": ["input", "field", "form", "search", "file"],
+  "categories": [
+    "form",
+    "base"
+  ],
+  "keywords": [
+    "input",
+    "field",
+    "form",
+    "search",
+    "file"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/input",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add input",
+    "install": "shadcn add https://keystone-ui.dev/r/input.json",
     "customization": "Use ui-input-control, ui-input, data-size, data-invalid, data-disabled, and reference-style data-slot hooks for wrapper and native input styling.",
-    "sourceFiles": ["packages/ui/src/default/ui/input.tsx"],
-    "dependencies": ["cn"],
-    "api": "Input supports size sm, default, lg, or a numeric native size attribute; invalid mirrors aria-invalid and data-invalid; unstyled removes the wrapper surface classes; nativeInput is accepted as a compatibility no-op because this Solid implementation always renders a native input.",
-    "accessibility": "Input renders a native input inside a presentational span wrapper. Type, name, value, disabled, required, autocomplete, placeholder, aria-* attributes, events, and form participation pass through to the native input. For labelled form flows, compose with FieldControl or wire labels/descriptions manually.",
-    "anatomy": ["root", "input"],
+    "sourceFiles": [
+      "packages/ui/src/components/input.tsx"
+    ],
+    "dependencies": [
+      "cn"
+    ],
+    "api": "Input supports defaultValue for uncontrolled initial values; size sm, default, lg, or a numeric native size attribute; invalid mirrors aria-invalid and data-invalid; unstyled removes the wrapper surface classes; nativeInput is accepted as a compatibility no-op because this Solid implementation always renders a native input.",
+    "accessibility": "Input renders a native input inside a presentational span wrapper. Type, name, value, defaultValue, disabled, required, autocomplete, placeholder, aria-* attributes, events, and form participation pass through to the native input. For labelled form flows, compose with FieldControl or wire labels/descriptions manually.",
+    "anatomy": [
+      "root",
+      "input"
+    ],
     "cssVariables": [
       "--radius-lg",
       "--color-input",
@@ -39,8 +58,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/input.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/input.tsx",
+      "type": "registry:ui",
+      "target": "@ui/input.tsx"
     }
   ]
 }

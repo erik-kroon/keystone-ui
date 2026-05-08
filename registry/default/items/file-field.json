@@ -1,27 +1,61 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "file-field",
   "type": "registry:ui",
   "title": "FileField",
   "description": "TanStack Form file input field composed with Keystone field semantics and UI input styling hooks.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0",
+    "@tanstack/solid-form@^1.29.1"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "tanstack", "file"],
-  "keywords": ["file-field", "file", "upload", "field", "form", "tanstack", "keystone"],
+  "categories": [
+    "form",
+    "tanstack",
+    "file"
+  ],
+  "keywords": [
+    "file-field",
+    "file",
+    "upload",
+    "field",
+    "form",
+    "tanstack",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/file-field",
-  "registryDependencies": ["cn", "input", "tanstack-field"],
+  "registryDependencies": [
+    "cn",
+    "input",
+    "tanstack-field"
+  ],
   "meta": {
-    "install": "mason add file-field",
+    "install": "shadcn add https://keystone-ui.dev/r/file-field.json",
     "customization": "Use ui-file-field classes, TanStackField shell classes, Input classes, Core data attributes, neutral data-slot hooks, and inputClass for generated-source styling.",
-    "sourceFiles": ["packages/ui/src/default/ui/file-field.tsx"],
-    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn", "input", "tanstack-field"],
+    "sourceFiles": [
+      "packages/ui/src/components/file-field.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "@tanstack/solid-form",
+      "cn",
+      "input",
+      "tanstack-field"
+    ],
     "api": "FileField exports FileField, FileFieldProps, and FileFieldValidators. It composes TanStackField with the styled Input item, passes validators to form.Field, maps native FileList input events to readonly File[] field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId plus native file input props such as multiple and accept.",
     "accessibility": "Backed by TanStackField for generated IDs, label/description/error relationships, aria-describedby, aria-invalid, required/disabled/readonly metadata, and alert messaging. Native input type=file owns platform file picker behavior and browser form upload semantics.",
-    "anatomy": ["field-root", "field-label", "input", "field-description", "field-error"],
+    "anatomy": [
+      "field-root",
+      "field-label",
+      "input",
+      "field-description",
+      "field-error"
+    ],
     "state": "TanStack Form owns readonly File[] field value, touched, dirty, blurred, validating, and errors. The native file input remains uncontrolled because browsers do not allow programmatic file value setting.",
     "limitations": "Drag-and-drop zones, previews, upload transport, size/type validation helpers, and object URL lifecycle remain app-owned composition.",
     "parity": {
@@ -32,8 +66,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/file-field.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/file-field.tsx",
+      "type": "registry:ui",
+      "target": "@ui/file-field.tsx"
     }
   ]
 }

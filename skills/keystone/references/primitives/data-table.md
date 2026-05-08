@@ -4,13 +4,13 @@ Use this guide for data-dense tabular views with sorting, filtering, pagination,
 
 ## Source
 
-- Component source root: `packages/ui/src/default/components/data-table/`
-- Presentational table source: `packages/ui/src/default/ui/table.tsx`
+- Component source root: `packages/ui/src/components/data-table/`
+- Presentational table source: `packages/ui/src/ui/table.tsx`
 - Main table: `data-table.tsx`
 - Hook: `use-data-table.ts`
 - Types: `types.ts`
 - Registry item: `registry/default/items/data-table.json`
-- Mason install: `mason add data-table`
+- Shadcn registry install: `shadcn add https://keystone-ui.dev/r/data-table.json`
 
 ## Boundary
 

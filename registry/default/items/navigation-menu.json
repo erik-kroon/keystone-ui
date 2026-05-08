@@ -1,24 +1,42 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "navigation-menu",
   "type": "registry:ui",
   "title": "NavigationMenu",
   "description": "Styled Solid navigation menu backed by Keystone menu navigation, typeahead, and overlay behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["navigation"],
-  "keywords": ["navigation-menu", "menubar", "menu", "navigation", "keystone"],
+  "categories": [
+    "navigation"
+  ],
+  "keywords": [
+    "navigation-menu",
+    "menubar",
+    "menu",
+    "navigation",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/navigation-menu",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add navigation-menu",
+    "install": "shadcn add https://keystone-ui.dev/r/navigation-menu.json",
     "customization": "Style the generated wrappers through ui-navigation-menu classes while Core owns nav/list/menu anatomy, menubar roles, item navigation, typeahead, overlay positioning, and item state behavior.",
-    "sourceFiles": ["packages/ui/src/default/ui/navigation-menu.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/navigation-menu.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
     "parts": [
       "trigger",
       "list",
@@ -41,8 +59,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/navigation-menu.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/navigation-menu.tsx",
+      "type": "registry:ui",
+      "target": "@ui/navigation-menu.tsx"
     }
   ]
 }

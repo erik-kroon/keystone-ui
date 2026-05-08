@@ -18,12 +18,17 @@ Keystone UI is in early development and is not recommended for production applic
 This repository currently contains:
 
 - **Keystone Core**: headless, accessible, unstyled Solid primitives.
-- **Keystone UI**: first-party styled component source, app components, blocks, and examples built for Solid.
+- **Keystone UI**: first-party styled component source, app components, blocks, and examples built for Solid and distributed through a shadcn-compatible registry.
 - **Docs site**: a Solid + TanStack Router site for component docs, previews, and project documentation.
 
 Core owns the behavior layer: accessibility, focus management, keyboard navigation, dismissal, positioning, form semantics, SSR, hydration, and controlled or uncontrolled state.
 
 UI owns the source layer: styled components, composition patterns, application UI, and TanStack-backed integrations where they fit.
+
+The intended public distribution split is:
+
+- `@keystone-ui/core` through npm for primitive runtime behavior.
+- Keystone UI source through shadcn registry items, so installed files remain editable project source.
 
 ## Design Goals
 
@@ -40,7 +45,7 @@ UI owns the source layer: styled components, composition patterns, application U
 Useful starting points:
 
 - [packages/core/src](packages/core/src): primitive implementation source.
-- [packages/ui/src/default](packages/ui/src/default): first-party component and block source.
+- [packages/ui/src](packages/ui/src): first-party component and block source.
 - [apps/web/src/components/docs-overview.tsx](apps/web/src/components/docs-overview.tsx): current overview page copy.
 - [docs/design-system.md](docs/design-system.md): visual language, tokens, and styling direction.
 - [docs/roadmap/canonical-roadmap.md](docs/roadmap/canonical-roadmap.md): current sequencing and maturity posture.

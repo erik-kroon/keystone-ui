@@ -4,7 +4,7 @@ Use this guide when building modal dialogs, confirmation flows, editor panels, a
 
 ## Source
 
-- UI source: `packages/ui/src/default/ui/dialog.tsx`
+- UI source: `packages/ui/src/ui/dialog.tsx`
 - Core primitive: `@keystone-ui/core/dialog`
 - Registry item: `registry/default/items/dialog.json`
 - Mason install: `mason add dialog`

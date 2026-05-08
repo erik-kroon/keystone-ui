@@ -1,28 +1,45 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "keyboard-shortcuts",
   "type": "registry:ui",
   "title": "KeyboardShortcuts",
   "description": "Preview TanStack Hotkeys registration source for app-level shortcuts with scope filtering and conflict reporting.",
   "version": "0.1.0",
-  "dependencies": ["@tanstack/solid-hotkeys@^0.10.0"],
+  "dependencies": [
+    "@tanstack/solid-hotkeys@^0.10.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["shortcut", "hotkeys", "tanstack"],
-  "keywords": ["keyboard-shortcuts", "hotkeys", "shortcut", "scope", "tanstack"],
+  "categories": [
+    "shortcut",
+    "hotkeys",
+    "tanstack"
+  ],
+  "keywords": [
+    "keyboard-shortcuts",
+    "hotkeys",
+    "shortcut",
+    "scope",
+    "tanstack"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/keyboard-shortcuts",
   "meta": {
-    "install": "mason add keyboard-shortcuts",
+    "install": "shadcn add https://keystone-ui.dev/r/keyboard-shortcuts.json",
     "api": "KeyboardShortcuts accepts shortcut definitions with id, hotkey, label, description, scope, enabled flags, per-shortcut Hotkeys options, and onTrigger callbacks. It also exports getKeyboardShortcutConflicts for testing, preferences UIs, and command help surfaces.",
     "behavior": "Registers app-level shortcuts through @tanstack/solid-hotkeys createHotkeys, filters by activeScope, supports soft disabling, and reports duplicate active hotkeys within the same scope through onConflictsChange.",
     "accessibility": "This item renders no UI by default and adds no ARIA roles. It is for app shortcuts that open surfaces or invoke commands; Core primitives keep owning intrinsic widget keyboard behavior.",
     "ssr": "When no DOM target exists, TanStack Hotkeys skips registration. Pass target null to intentionally suppress registration during SSR, tests, or inactive app shells.",
     "dataAttributes": "KeyboardShortcuts is registration-only and renders no DOM. Display hooks belong to ShortcutDisplay and recorder items.",
     "limitations": "TanStack Hotkeys is still preview/alpha. This source keeps registration easy to remove or adapt and does not implement persistence, permissions, shortcut editing, or Core primitive behavior.",
-    "sourceFiles": ["packages/ui/src/default/ui/keyboard-shortcuts.tsx"],
-    "dependencies": ["@tanstack/solid-hotkeys"],
+    "sourceFiles": [
+      "packages/ui/src/components/keyboard-shortcuts.tsx"
+    ],
+    "dependencies": [
+      "@tanstack/solid-hotkeys"
+    ],
     "parity": {
       "tanstackHotkeys": "Uses createHotkeys as the first-class app shortcut registration engine and preserves TanStack options for target, ignoreInputs, preventDefault, requireReset, and stopPropagation.",
       "tanstackStore": "Does not require app store state. Teams can pair it with AppStoreProvider or their own TanStack Store preferences when persistence or user customization is needed.",
@@ -32,8 +49,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/keyboard-shortcuts.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/keyboard-shortcuts.tsx",
+      "type": "registry:ui",
+      "target": "@ui/keyboard-shortcuts.tsx"
     }
   ]
 }

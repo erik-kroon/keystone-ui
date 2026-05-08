@@ -1,30 +1,40 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "cn",
   "type": "registry:lib",
   "title": "Class Name Utility",
   "description": "Small class name composition helper shared by UI base components.",
   "version": "0.1.0",
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["utility"],
-  "keywords": ["classes", "utility", "styling"],
+  "categories": [
+    "utility"
+  ],
+  "keywords": [
+    "classes",
+    "utility",
+    "styling"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/cn",
   "meta": {
-    "install": "mason add cn",
+    "install": "shadcn add https://keystone-ui.dev/r/cn.json",
     "customization": "Extend this helper when your project needs conditional class maps, array flattening, or conflict-aware class merging.",
-    "sourceFiles": ["packages/ui/src/default/lib/cn.ts"],
+    "sourceFiles": [
+      "packages/ui/src/lib/cn.ts"
+    ],
     "parity": {
-      "mason": "Utility item, not a primitive. Parity is scoped to Mason registry ergonomics: one small copy-paste class composer shared by base components. Gaps: conflict-aware Tailwind merging, array/object conditional inputs, and project-specific class policy are intentionally left to user customization.",
+      "registryTooling": "Utility item, not a primitive. Parity is scoped to Keystone registry ergonomics: one small copy-paste class composer shared by base components. Gaps: conflict-aware Tailwind merging, array/object conditional inputs, and project-specific class policy are intentionally left to user customization.",
       "shadcn": "Comparable to shadcn cn helpers in role and install shape, but currently thinner. Gaps: no clsx/tailwind-merge dependency by default and no registry option to choose a stricter merge strategy."
     }
   },
   "files": [
     {
-      "path": "packages/ui/src/default/lib/cn.ts",
-      "type": "registry:lib"
+      "path": "packages/ui/src/lib/cn.ts",
+      "type": "registry:lib",
+      "target": "@lib/cn.ts"
     }
   ]
 }

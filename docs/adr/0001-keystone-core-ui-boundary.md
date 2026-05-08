@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+Accepted, amended by [ADR 0005](0005-shadcn-registry-distribution.md)
 
 ## Date
 
@@ -14,7 +14,7 @@ The product direction describes two connected but distinct layers:
 
 - Core: headless, accessible, unstyled primitives for Solid.
 - UI source: copy-paste styled components, blocks, templates, and app-layer source for Solid.
-- Mason: registry and CLI machinery for UI source.
+- Registry tooling: internal machinery for UI source validation and shadcn-compatible registry payloads.
 
 The main architecture risk is mixing primitive behavior with styled registry output too early. If Keystone knows about UI, the primitive layer becomes harder to reuse for design systems and harder to keep unstyled. If UI reimplements behavior, accessibility and interaction fixes cannot be centralized.
 
@@ -36,7 +36,7 @@ Core internals
 
 Core should be designed as one public primitive package with subpath exports, such as `@scope/core/dialog`, unless a later ADR supersedes this decision.
 
-Mason should have Solid-specific CLI and registry packages, while remaining compatible with shadcn-style registry concepts where practical.
+Styled UI source should be distributed through a shadcn-compatible Keystone registry. Mason remains internal tooling unless a later ADR restores a public Keystone-specific installer.
 
 ## Consequences
 
@@ -49,5 +49,5 @@ Mason should have Solid-specific CLI and registry packages, while remaining comp
 
 - Confirm final public names after package, trademark, domain, and handle clearance.
 - Write a Core API RFC.
-- Write a Mason registry RFC.
+- Use ADR 0005 for public distribution and keep the Mason registry RFC as historical/internal-tooling context.
 - Write an accessibility testing plan.

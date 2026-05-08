@@ -22,7 +22,13 @@
     "rootDirs": ["."],
     "paths": {
       "@/*": ["./src/*"],
-      "@keystone-ui/ui/default/*": ["../../packages/ui/src/default/*"]
+      "@keystone-ui/ui/blocks/*": ["../../packages/ui/src/blocks/*"],
+      "@keystone-ui/ui/components/*": ["../../packages/ui/src/components/*"],
+      "@keystone-ui/ui/hooks/*": ["../../packages/ui/src/hooks/*"],
+      "@keystone-ui/ui/lib/*": ["../../packages/ui/src/lib/*"],
+      "@keystone-ui/ui/stores/*": ["../../packages/ui/src/stores/*"],
+      "@keystone-ui/ui/templates/*": ["../../packages/ui/src/templates/*"],
+      "@keystone-ui/ui/*": ["../../packages/ui/src/components/*"]
     }
   }
 }

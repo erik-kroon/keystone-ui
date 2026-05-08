@@ -1,32 +1,51 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "data-table-tanstack-router",
   "type": "registry:ui",
   "title": "DataTable TanStack Router Adapter",
   "description": "URL-backed DataTable state adapter for TanStack Router search params.",
   "version": "0.1.0",
-  "dependencies": ["@tanstack/solid-router@^1.168.20"],
+  "dependencies": [
+    "@tanstack/solid-router@^1.168.20"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
+    "registryTooling": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.9 <2.0.0",
-    "tanstack-router": ">=1.168.0 <2.0.0"
+    "tanstack-router": ">=1.168.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["table", "tanstack", "router", "data"],
-  "keywords": ["data-table", "table", "tanstack-router", "search-params", "url-state"],
+  "categories": [
+    "table",
+    "tanstack",
+    "router",
+    "data"
+  ],
+  "keywords": [
+    "data-table",
+    "table",
+    "tanstack-router",
+    "search-params",
+    "url-state"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/data-table#tanstack-router",
-  "registryDependencies": ["data-table"],
-  "filesRoot": "packages/ui/src/default/components/data-table",
+  "registryDependencies": [
+    "data-table"
+  ],
+  "filesRoot": "packages/ui/src/components/data-table",
   "targetRoot": "src/components/data-table",
   "meta": {
-    "install": "mason add data-table-tanstack-router",
+    "install": "shadcn add https://keystone-ui.dev/r/data-table-tanstack-router.json",
     "searchParams": "Use validateDataTableSearch in route validateSearch, then pass Route.useSearch() and useNavigate({ from: Route.fullPath }) to useDataTableRouter.",
     "stateMapping": "page and perPage map to TanStack pagination; sort maps to sorting; filters maps to columnFilters; visibility maps to columnVisibility.",
     "limitations": "The adapter keeps row selection local and does not implement server fetching, virtualization, saved views, or advanced filter builders.",
     "sourceFiles": [
-      "packages/ui/src/default/components/data-table/data-table-search.ts",
-      "packages/ui/src/default/components/data-table/use-data-table-router.ts"
+      "packages/ui/src/components/data-table/data-table-search.ts",
+      "packages/ui/src/components/data-table/use-data-table-router.ts"
     ],
-    "dependencies": ["@tanstack/solid-router", "data-table"],
+    "dependencies": [
+      "@tanstack/solid-router",
+      "data-table"
+    ],
     "parity": {
       "tanstackRouter": "First-class comparison is TanStack Router: the adapter maps validated search params to pagination, sorting, filters, and visibility state while row selection stays local. Gaps: server fetching, route loader integration, saved views, debounced URL writes, and complex filter serialization remain follow-up work.",
       "tanstackTable": "Complements the DataTable kit by keeping TanStack Table state URL-addressable without replacing table behavior. Gaps: no virtualization, no server-side pagination contract, and no global table preference persistence."
@@ -34,12 +53,14 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/components/data-table/data-table-search.ts",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/data-table/data-table-search.ts",
+      "type": "registry:ui",
+      "target": "@components/data-table/data-table-search.ts"
     },
     {
-      "path": "packages/ui/src/default/components/data-table/use-data-table-router.ts",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/data-table/use-data-table-router.ts",
+      "type": "registry:ui",
+      "target": "@components/data-table/use-data-table-router.ts"
     }
   ]
 }

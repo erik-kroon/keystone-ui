@@ -1,23 +1,44 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "checkbox-field",
   "type": "registry:ui",
   "title": "CheckboxField",
   "description": "TanStack Form checkbox field composed with Keystone Checkbox behavior and UI styling hooks.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0",
+    "@tanstack/solid-form@^1.29.1"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "tanstack", "selection"],
-  "keywords": ["checkbox-field", "checkbox", "field", "form", "tanstack", "keystone"],
+  "categories": [
+    "form",
+    "tanstack",
+    "selection"
+  ],
+  "keywords": [
+    "checkbox-field",
+    "checkbox",
+    "field",
+    "form",
+    "tanstack",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/checkbox-field",
-  "registryDependencies": ["checkbox", "cn", "tanstack-field"],
+  "registryDependencies": [
+    "checkbox",
+    "cn",
+    "tanstack-field"
+  ],
   "meta": {
-    "install": "mason add checkbox-field",
+    "install": "shadcn add https://keystone-ui.dev/r/checkbox-field.json",
     "customization": "Use ui-checkbox-field classes, TanStackField shell classes, Checkbox classes, Core data attributes, neutral data-slot hooks, checkboxProps, and checkboxClass for generated-source styling.",
-    "sourceFiles": ["packages/ui/src/default/ui/checkbox-field.tsx"],
+    "sourceFiles": [
+      "packages/ui/src/components/checkbox-field.tsx"
+    ],
     "dependencies": [
       "@keystone-ui/core",
       "@tanstack/solid-form",
@@ -47,8 +68,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/checkbox-field.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/checkbox-field.tsx",
+      "type": "registry:ui",
+      "target": "@ui/checkbox-field.tsx"
     }
   ]
 }

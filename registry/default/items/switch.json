@@ -1,27 +1,51 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "switch",
   "type": "registry:ui",
   "title": "Switch",
   "description": "Styled Solid switch component backed by Keystone selection-control behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["forms", "selection", "input"],
-  "keywords": ["switch", "toggle", "checked", "keystone"],
+  "categories": [
+    "forms",
+    "selection",
+    "input"
+  ],
+  "keywords": [
+    "switch",
+    "toggle",
+    "checked",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/switch",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add switch",
+    "install": "shadcn add https://keystone-ui.dev/r/switch.json",
     "customization": "Style the generated root, control, thumb, and hidden input through ui-switch classes, Core data attributes, CSS thumb-size variable, and neutral data-slot hooks while Keystone keeps role=switch, checked state, hidden input, form reset, validation, and preventable toggle behavior.",
-    "sourceFiles": ["packages/ui/src/default/ui/switch.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/switch.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
     "api": "Switch exports Switch, SwitchControl, SwitchThumb, SwitchHiddenInput, and SwitchPrimitive. The default Switch renders a styled control, animated thumb, and hidden native input when no custom children are provided; custom children can compose the same Core-backed parts directly.",
     "accessibility": "Backed by @keystone-ui/core/switch for role=switch, aria-checked, Space keyboard toggling, disabled/read-only guards, required and invalid state metadata, hidden native checkbox submission, user-handler precedence, and form reset synchronization.",
-    "anatomy": ["root", "control", "thumb", "hidden-input"],
+    "anatomy": [
+      "root",
+      "control",
+      "thumb",
+      "hidden-input"
+    ],
     "cssVariables": [
       "--thumb-size",
       "--color-input",
@@ -38,8 +62,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/switch.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/switch.tsx",
+      "type": "registry:ui",
+      "target": "@ui/switch.tsx"
     }
   ]
 }

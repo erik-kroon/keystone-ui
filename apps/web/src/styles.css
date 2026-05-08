@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@source "../../../packages/ui/src/default";
+@source "../../../packages/ui/src";
 
 @theme inline {
   --breakpoint-3xl: 1600px;

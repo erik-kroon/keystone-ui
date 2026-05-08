@@ -1,24 +1,43 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "select",
   "type": "registry:ui",
   "title": "Select",
   "description": "Keystone-backed styled select with trigger, value, popup, listbox, group, item, and form-value behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "listbox", "select"],
-  "keywords": ["select", "listbox", "form", "keystone"],
+  "categories": [
+    "form",
+    "listbox",
+    "select"
+  ],
+  "keywords": [
+    "select",
+    "listbox",
+    "form",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/select",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add select",
+    "install": "shadcn add https://keystone-ui.dev/r/select.json",
     "customization": "Style trigger, value, popup surface, listbox, groups, items, indicators, labels, and separators through ui-select classes, Core data attributes, and neutral data-slot hooks.",
-    "sourceFiles": ["packages/ui/src/default/ui/select.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/select.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
     "api": "Select exports Select, SelectButton, SelectTrigger, SelectValue, SelectContent, SelectPopup, SelectPortal, SelectPositioner, SelectListbox, SelectGroup, SelectGroupLabel, SelectLabel, SelectItem, SelectItemText, SelectItemIndicator, SelectArrow, SelectSeparator, and SelectPrimitive. Core owns open/value state, controlled and uncontrolled values, multiple values, hidden form inputs, keyboard navigation, typeahead, collection registration, popup positioning, and data attributes.",
     "accessibility": "Backed by @keystone-ui/core/select for button/listbox roles, active descendant, highlighted and selected item state, disabled item handling, Escape dismissal, typeahead, hidden form value serialization, and native form reset support.",
     "anatomy": [
@@ -65,8 +84,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/select.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/select.tsx",
+      "type": "registry:ui",
+      "target": "@ui/select.tsx"
     }
   ]
 }

@@ -139,7 +139,7 @@ export const searchableHookDocs = visibleHookDocs;
 
 export const overviewPage: DocsPage = {
   description:
-    "Solid primitives, source-owned UI components, Mason install metadata, and app-layer registry guidance.",
+    "Solid primitives, source-owned UI components, shadcn-compatible registry metadata, and app-layer registry guidance.",
   href: "/docs",
   label: "Introduction",
   title: "Introduction",

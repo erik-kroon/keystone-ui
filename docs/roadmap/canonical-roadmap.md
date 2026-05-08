@@ -50,7 +50,7 @@ Near-term constraints:
 - Keep private kernels private until several primitives prove their shape.
 - Label primitive maturity honestly.
 - Keep TanStack app-layer dependencies in UI.
-- Keep data-dense workspace blocks aspirational until Core kernels and Mason registry/CLI are reliable enough to support them.
+- Keep data-dense workspace blocks aspirational until Core kernels and shadcn-compatible registry payloads are reliable enough to support them.
 
 ## Issue Milestones
 
@@ -118,15 +118,15 @@ Avoid:
 - Claiming all exported primitives are stable.
 - Hiding accessibility gaps.
 
-## Phase 3: Mason Registry Maturity
+## Phase 3: Registry Maturity
 
 Goal: make UI feel like a serious source registry.
 
 Tasks:
 
 - Make multi-file registry items normal install units with deterministic targets.
-- Improve default registry flow.
-- Improve diff, update, remove, and doctor workflows.
+- Improve shadcn-compatible default registry flow.
+- Improve validation, generated payloads, and install evidence.
 - Strengthen installed metadata and conflict detection.
 - Keep generated source readable and user-owned.
 - Keep parity metadata required for first-party registry items.

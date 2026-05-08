@@ -25,6 +25,9 @@ export type SliderDirection = CoreDirection;
 export type SliderPartProps<T extends HTMLElement = HTMLElement> = {
   children?: JSX.Element;
   class?: string;
+  "data-part"?: string;
+  "data-scope"?: string;
+  "data-slot"?: string;
   id?: string;
   ref?: T | ((element: T) => void);
   style?: JSX.CSSProperties | string;
