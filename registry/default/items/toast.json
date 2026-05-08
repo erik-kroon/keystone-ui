@@ -104,12 +104,13 @@
       "action",
       "close"
     ],
+    "maturity": "Experimental",
     "limitations": [
       "Swipe gestures, anchored/contextual toasts, a progress-bar part, and cancel-action sugar are intentionally deferred to Core or a later UI helper.",
       "Toast does not participate in focus trapping, outside hiding, inerting, prevent-scroll, or overlay layering."
     ],
     "parity": {
-      "baseUi": "Base UI is a first-class reference for the stacked viewport: visible limit defaults to three, render metadata exposes front index/order, UI measures toast height for expanded stack offsets, the root shell carries coss-style stacked transforms plus keyframed entry and status-driven exit motion, and Core owns manager updates, actions, close parts, timer pause/resume, hotkey focus, roles, exit-duration retention, and viewport filtering. Gaps: anchored positioner, swipe dismissal, and progress parts remain later Core work.",
+      "baseUi": "Base UI is a first-class reference for the stacked viewport: visible limit defaults to three, render metadata exposes front index/order, UI measures toast height for expanded stack offsets, the root shell carries coss-style stacked transforms plus interruptible starting transform and status-driven exit motion, and Core owns manager updates, actions, close parts, timer pause/resume, hotkey focus, roles, exit-duration retention, and viewport filtering. Gaps: anchored positioner, swipe dismissal, and progress parts remain later Core work.",
       "kobalte": "Kobalte is a first-class Solid/accessibility reference: Keystone keeps Solid compound composition, region filtering, duration overrides, viewport limits, hover/focus pause, page-idle timer pausing, hotkey access to the notification region, polite/assertive roles, and programmatic update/dismiss. Gaps: progress track/fill and swipe CSS variables remain deferred.",
       "sonner": "Sonner is a first-class ergonomic reference: toaster is callable, typed helpers update by id, promise helpers move loading to success/error, default Toaster shows three visible toasts in the bottom-right corner, enter motion slides from the screen edge with coss/Sonner-style easing, dismissed toasts remain mounted long enough to exit, hover/focus expands the stack, action clicks dismiss unless prevented, close button remains opt-in, tone icons mirror Sonner expectations, and custom render hooks receive toast metadata. Gaps: per-toast position routing, cancel action sugar, rich color mode, and swipe physics remain explicit follow-ups."
     }

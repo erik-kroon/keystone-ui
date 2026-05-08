@@ -33,7 +33,7 @@ function NewBadge(props: Readonly<{ children: string }>) {
     <UiBadge
       class="h-auto min-h-0 min-w-0 rounded-md px-1.5 py-0.5 text-[0.68rem] leading-none sm:h-auto sm:min-h-0 sm:min-w-0 sm:text-[0.68rem]"
       size="sm"
-      variant={props.children === "Experimental" ? "warning" : "info"}
+      variant={props.children === "Preview" ? "warning" : "info"}
     >
       {props.children}
     </UiBadge>

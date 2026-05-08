@@ -89,32 +89,9 @@ const DEFAULT_VISIBLE_TOASTS = 3;
 const DEFAULT_TOAST_GAP = 12;
 const DEFAULT_TOAST_OFFSET = "2rem";
 const DEFAULT_TOAST_WIDTH = "22.5rem";
-const TOAST_ENTER_DURATION = 500;
 const TOAST_EXIT_DURATION = 360;
 const toastAnimationStyles = `
-@keyframes ui-toast-enter-bottom {
-  from {
-    transform: translateY(calc(100% + var(--toast-offset)));
-  }
-  to {
-    transform: translateX(var(--toast-swipe-movement-x)) translateY(0) scale(1);
-  }
-}
-
-@keyframes ui-toast-enter-top {
-  from {
-    transform: translateY(calc(-100% - var(--toast-offset)));
-  }
-  to {
-    transform: translateX(var(--toast-swipe-movement-x)) translateY(0) scale(1);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  [data-slot="toast"][data-entering] {
-    animation: none !important;
-  }
-
   [data-slot="toast"] {
     transition-duration: 1ms !important;
   }
@@ -241,7 +218,7 @@ export function Toast(props: ToastProps) {
 
   onMount(() => {
     if (local.stack) {
-      enterTimer = setTimeout(() => setEntering(false), TOAST_ENTER_DURATION);
+      enterTimer = setTimeout(() => setEntering(false), 0);
     }
   });
 
@@ -266,14 +243,17 @@ export function Toast(props: ToastProps) {
       "--toast-stack-offset": `${local.stack.offset}px`,
       "--toast-swipe-movement-x": "0px",
       "--toast-swipe-movement-y": "0px",
-      transform: getToastStackTransform({
-        expanded: local.stack.expanded,
-        height: calcHeightValue,
-        index: local.stack.index,
-        offset: local.stack.offset,
-        position: local.stack.position,
-        scale,
-      }),
+      transform:
+        entering() && local.stack.index === 0 && props.toast?.status !== "closed"
+          ? getToastEnterTransform(local.stack.position)
+          : getToastStackTransform({
+              expanded: local.stack.expanded,
+              height: calcHeightValue,
+              index: local.stack.index,
+              offset: local.stack.offset,
+              position: local.stack.position,
+              scale,
+            }),
       "z-index": String(9999 - local.stack.index),
       height: rootHeight,
     } as JSX.CSSProperties;
@@ -290,11 +270,6 @@ export function Toast(props: ToastProps) {
     <CoreToast.Root
       {...rest}
       data-behind={local.stack && local.stack.index > 0 ? "" : undefined}
-      data-entering={
-        local.stack && local.stack.index === 0 && props.toast?.status !== "closed" && entering()
-          ? ""
-          : undefined
-      }
       data-expanded={local.stack?.expanded ? "" : undefined}
       data-inset={local.inset ? "" : undefined}
       data-position={local.stack?.position}
@@ -343,9 +318,6 @@ export function Toast(props: ToastProps) {
           "data-[stacked]:after:left-0",
           "data-[stacked]:after:h-[calc(var(--toast-gap)+1px)]",
           "data-[stacked]:after:w-full",
-          "data-[entering]:[animation-duration:.5s]",
-          "data-[entering]:[animation-fill-mode:both]",
-          "data-[entering]:[animation-timing-function:cubic-bezier(.22,1,.36,1)]",
           "data-[position*=center]:right-0",
           "data-[position*=center]:left-0",
           "data-[position*=left]:right-auto",
@@ -354,7 +326,6 @@ export function Toast(props: ToastProps) {
           "data-[position*=right]:left-auto",
           "data-[position*=bottom]:bottom-0",
           "data-[position*=bottom]:top-auto",
-          "data-[position*=bottom]:data-[entering]:[animation-name:ui-toast-enter-bottom]",
           "data-[position*=bottom]:origin-[50%_calc(50%+50%*min(var(--toast-index,0),1))]",
           "data-[position*=bottom]:after:bottom-full",
           "data-[position*=bottom]:transform-[translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--toast-swipe-movement-y)-(var(--toast-index)*var(--toast-peek))-(var(--toast-shrink)*var(--toast-height))))_scale(var(--toast-scale))]",
@@ -362,7 +333,6 @@ export function Toast(props: ToastProps) {
           "data-[position*=bottom]:data-[status=closed]:transform-[translateY(calc(100%+var(--toast-offset)))]",
           "data-[position*=top]:top-0",
           "data-[position*=top]:bottom-auto",
-          "data-[position*=top]:data-[entering]:[animation-name:ui-toast-enter-top]",
           "data-[position*=top]:origin-[50%_calc(50%-50%*min(var(--toast-index,0),1))]",
           "data-[position*=top]:after:top-full",
           "data-[position*=top]:transform-[translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--toast-swipe-movement-y)+(var(--toast-index)*var(--toast-peek))+(var(--toast-shrink)*var(--toast-height))))_scale(var(--toast-scale))]",
@@ -751,6 +721,11 @@ function getToastStackTransform(props: {
   const distance = props.index * DEFAULT_TOAST_GAP + shrink * props.height;
   const offset = props.position.startsWith("top") ? distance : distance * -1;
   return `translateX(0px) translateY(${offset}px) scale(${props.scale})`;
+}
+
+function getToastEnterTransform(position: ToastPosition) {
+  const direction = position.startsWith("top") ? "-1" : "1";
+  return `translateX(0px) translateY(calc(${direction} * (100% + var(--toast-offset)))) scale(1)`;
 }
 
 function callEventHandler(handler: unknown, event: Event) {

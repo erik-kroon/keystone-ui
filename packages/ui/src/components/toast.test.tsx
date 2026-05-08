@@ -120,6 +120,39 @@ describe("Toaster", () => {
     host.remove();
   });
 
+  test("does not keep a transform animation on rapidly stacked toasts", async () => {
+    vi.useFakeTimers();
+    const host = document.createElement("div");
+    document.body.append(host);
+    const manager = createToastManager();
+    const dispose = render(() => <Toaster manager={manager} />, host);
+
+    manager.success({ id: "one", title: "Saved" });
+    await flushed();
+
+    const firstToast = host.querySelector<HTMLElement>("[data-slot='toast']") as HTMLElement & {
+      __toastMark?: string;
+    };
+    firstToast.__toastMark = "one";
+
+    manager.error({ id: "two", title: "Failed" });
+    await flushed();
+
+    const toasts = host.querySelectorAll<HTMLElement>("[data-slot='toast']");
+    expect(toasts).toHaveLength(2);
+    expect(toasts[0]).toBe(firstToast);
+    expect((toasts[0] as HTMLElement & { __toastMark?: string }).__toastMark).toBe("one");
+    expect(toasts[0]?.style.transform).toContain("scale(0.9)");
+    expect(toasts[0]?.style.transform).not.toContain("100% + var(--toast-offset)");
+    expect([...toasts].some((toast) => toast.hasAttribute("data-entering"))).toBe(false);
+
+    await vi.advanceTimersByTimeAsync(0);
+    expect(toasts[1]?.style.transform).toContain("scale(1)");
+
+    dispose();
+    host.remove();
+  });
+
   test("keeps dismissed toasts mounted long enough for exit motion", async () => {
     vi.useFakeTimers();
     const host = document.createElement("div");
