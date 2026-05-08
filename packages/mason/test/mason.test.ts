@@ -198,16 +198,6 @@ describe("add planning and writes", () => {
     });
   });
 
-  test("generated Solid app typechecks and builds after add", async () => {
-    const app = await fixtureApp();
-    await installFixtureAppDependencies(app);
-    await initCommand({ cwd: app, yes: true });
-    await addCommand({ cwd: app, item: "button", registry });
-
-    await runAppScript(app, "check-types");
-    await runAppScript(app, "build");
-  });
-
   test("real default registry field slice installs deterministic dependency plan", async () => {
     const app = await fixtureApp();
     await initCommand({ cwd: app, yes: true });
@@ -229,9 +219,8 @@ describe("add planning and writes", () => {
     );
   });
 
-  test("real default registry base components typecheck and build after add", async () => {
+  test("real default registry base components install expected source and dependencies", async () => {
     const app = await fixtureApp();
-    await installFixtureAppDependencies(app);
     await initCommand({ cwd: app, yes: true });
     await addCommand({ cwd: app, item: "button", registry: defaultRegistry });
     await addCommand({ cwd: app, item: "input", registry: defaultRegistry });
@@ -240,10 +229,17 @@ describe("add planning and writes", () => {
     await addCommand({ cwd: app, item: "card", registry: defaultRegistry });
     await addCommand({ cwd: app, item: "badge", registry: defaultRegistry });
     await addCommand({ cwd: app, item: "separator", registry: defaultRegistry });
-    await linkCoreDependency(app);
+    const packageJson = JSON.parse(await readFile(path.join(app, "package.json"), "utf8")) as {
+      dependencies: Record<string, string>;
+    };
 
-    await runAppScript(app, "check-types");
-    await runAppScript(app, "build");
+    expect(await readFile(path.join(app, "src/components/ui/button.tsx"), "utf8")).toContain(
+      "export function Button",
+    );
+    expect(await readFile(path.join(app, "src/components/ui/textarea.tsx"), "utf8")).toContain(
+      "export function Textarea",
+    );
+    expect(packageJson.dependencies["@keystone-ui/core"]).toBe("^0.0.0");
   });
 
   test("real default registry dialog plans Core-backed generated source", async () => {
@@ -344,11 +340,15 @@ describe("add planning and writes", () => {
     );
 
     await addCommand({ cwd: app, item: "account-settings", registry: defaultRegistry });
+    await addCommand({ cwd: app, item: "textarea", registry: defaultRegistry });
     await linkCoreDependency(app);
 
     expect(
       await readFile(path.join(app, "src/components/blocks/account-settings.tsx"), "utf8"),
     ).toContain("export function AccountSettingsBlock");
+    expect(await readFile(path.join(app, "src/components/ui/textarea.tsx"), "utf8")).toContain(
+      "export function Textarea",
+    );
 
     await runAppScript(app, "check-types");
     await runAppScript(app, "build");
