@@ -1,9 +1,12 @@
 import {
   For,
   Show,
+  createEffect,
   createContext,
   createMemo,
+  createSignal,
   createUniqueId,
+  onCleanup,
   splitProps,
   useContext,
   type JSX,
@@ -41,7 +44,7 @@ export type CalendarMonthChangeDetail = {
 };
 export type DatePickerOpenChangeDetail = {
   event?: Event;
-  reason: "trigger" | "select" | "programmatic";
+  reason: "trigger" | "select" | "outside" | "programmatic";
 };
 
 export type CalendarPartProps<T extends HTMLElement = HTMLElement> = {
@@ -170,7 +173,10 @@ export type DatePickerApi = {
   contentId: string;
   open: () => boolean;
   presence: OverlayPresenceApi;
+  setContentElement: (element: HTMLDivElement) => void;
   setOpen: (open: boolean, detail: DatePickerOpenChangeDetail) => boolean;
+  setRootElement: (element: HTMLDivElement) => void;
+  setTriggerElement: (element: HTMLButtonElement) => void;
 };
 
 const CalendarContext = createContext<CalendarApi>();
@@ -303,12 +309,15 @@ export function createCalendar(options: CreateCalendarOptions = {}): CalendarApi
 export function createDatePicker(options: CreateDatePickerOptions = {}): DatePickerApi {
   let pendingOpenDetail: DatePickerOpenChangeDetail | undefined;
   let calendar: CalendarApi;
+  const [contentElement, setContentElement] = createSignal<HTMLDivElement>();
   const [open, setOpenState] = createControllableBooleanSignal({
     value: options.open,
     defaultValue: options.defaultOpen ?? false,
     onChange: (nextOpen) =>
       options.onOpenChange?.(nextOpen, pendingOpenDetail ?? { reason: "programmatic" }),
   });
+  const [rootElement, setRootElement] = createSignal<HTMLDivElement>();
+  const [triggerElement, setTriggerElement] = createSignal<HTMLButtonElement>();
   const presence = createOverlayPresence({ open });
   const setOpen = (nextOpen: boolean, detail: DatePickerOpenChangeDetail) => {
     if (calendar.disabled() && detail.reason !== "programmatic") return open();
@@ -321,12 +330,32 @@ export function createDatePicker(options: CreateDatePickerOptions = {}): DatePic
     ...options,
     onValueChange: (nextValue, detail) => {
       options.onValueChange?.(nextValue, detail);
-      setOpen(false, { event: detail.event, reason: "select" });
     },
     onRangeValueChange: (nextRangeValue, detail) => {
       options.onRangeValueChange?.(nextRangeValue, detail);
-      if (detail.complete) setOpen(false, { event: detail.event, reason: "select" });
     },
+  });
+
+  createEffect(() => {
+    if (!open() || typeof document === "undefined") return;
+
+    const ownerDocument = rootElement()?.ownerDocument ?? document;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!open()) return;
+
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+
+      const insideElements = [rootElement(), triggerElement(), contentElement()];
+      if (insideElements.some((element) => element?.contains(target))) {
+        return;
+      }
+
+      setOpen(false, { event, reason: "outside" });
+    };
+
+    ownerDocument.addEventListener("pointerdown", onPointerDown, true);
+    onCleanup(() => ownerDocument.removeEventListener("pointerdown", onPointerDown, true));
   });
 
   return {
@@ -334,7 +363,10 @@ export function createDatePicker(options: CreateDatePickerOptions = {}): DatePic
     contentId: `keystone-date-picker-content-${createUniqueId()}`,
     open,
     presence,
+    setContentElement,
     setOpen,
+    setRootElement,
+    setTriggerElement,
   };
 }
 
@@ -588,6 +620,7 @@ function DatePickerRoot(props: DatePickerRootProps) {
     "onValueChange",
     "open",
     "rangeValue",
+    "ref",
     "selectionMode",
     "unavailable",
     "value",
@@ -621,6 +654,10 @@ function DatePickerRoot(props: DatePickerRootProps) {
       <CalendarContext.Provider value={datePicker.calendar}>
         <div
           {...others}
+          ref={(element) => {
+            datePicker.setRootElement(element);
+            assignRef(local.ref, element);
+          }}
           data-disabled={dataBoolean(datePicker.calendar.disabled())}
           data-end-value={datePicker.calendar.rangeValue()?.end}
           data-selection-mode={datePicker.calendar.selectionMode()}
@@ -638,13 +675,17 @@ function DatePickerRoot(props: DatePickerRootProps) {
 
 function Trigger(props: DatePickerTriggerProps) {
   const datePicker = useDatePicker("Trigger");
-  const [local, others] = splitProps(props, ["children", "onClick", "placeholder", "type"]);
+  const [local, others] = splitProps(props, ["children", "onClick", "placeholder", "ref", "type"]);
   const selectedValue = createMemo(() => datePicker.calendar.value());
   const rangeLabel = createMemo(() => formatRangeValue(datePicker.calendar.rangeValue()));
 
   return (
     <button
       {...others}
+      ref={(element) => {
+        datePicker.setTriggerElement(element);
+        assignRef(local.ref, element);
+      }}
       type={local.type ?? "button"}
       aria-controls={datePicker.contentId}
       aria-expanded={datePicker.open()}
@@ -682,6 +723,7 @@ function Content(props: DatePickerContentProps) {
       <div
         {...others}
         ref={(element) => {
+          datePicker.setContentElement(element);
           datePicker.presence.setElement(element);
           assignRef(local.ref, element);
         }}

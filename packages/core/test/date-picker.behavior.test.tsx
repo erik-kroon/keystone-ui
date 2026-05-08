@@ -2,7 +2,7 @@ import { createRoot, createSignal } from "solid-js";
 import { describe, expect, test } from "vitest";
 import { Calendar, DatePicker, createCalendar } from "../src/date-picker/index";
 import { Locale } from "../src/locale/index";
-import { click, getByPart, keyDown, queryByPart, render, settled } from "./harness";
+import { click, getByPart, keyDown, pointerDown, queryByPart, render, settled } from "./harness";
 
 function getDay(value: string, root: ParentNode = document.body) {
   const element = root.querySelector<HTMLButtonElement>(
@@ -11,6 +11,10 @@ function getDay(value: string, root: ParentNode = document.body) {
 
   if (!element) throw new Error(`Unable to find calendar day ${value}`);
   return element;
+}
+
+function animationFrame() {
+  return new Promise((resolve) => requestAnimationFrame(resolve));
 }
 
 describe("Calendar behavior", () => {
@@ -194,7 +198,7 @@ describe("Calendar behavior", () => {
 });
 
 describe("DatePicker behavior", () => {
-  test("opens calendar content from the trigger and closes after selection", async () => {
+  test("opens calendar content from the trigger and stays open after selection", async () => {
     const openChanges: string[] = [];
     const values: string[] = [];
 
@@ -221,15 +225,15 @@ describe("DatePicker behavior", () => {
     expect(openChanges).toEqual(["true:trigger"]);
 
     click(getDay("2026-05-18"));
-    await settled();
 
     expect(values).toEqual(["2026-05-18"]);
-    expect(openChanges).toEqual(["true:trigger", "false:select"]);
-    expect(queryByPart("date-picker", "content")).toBeNull();
+    expect(getDay("2026-05-18").getAttribute("data-selected")).toBe("");
+    expect(openChanges).toEqual(["true:trigger"]);
+    expect(queryByPart("date-picker", "content")).not.toBeNull();
     expect(trigger.textContent).toBe("2026-05-18");
   });
 
-  test("marks content with transition attributes while opening and closing", async () => {
+  test("unmounts content immediately when closing from the trigger", async () => {
     render(() => (
       <DatePicker.Root defaultMonth="2026-05">
         <DatePicker.Trigger placeholder="Pick a date" />
@@ -238,19 +242,46 @@ describe("DatePicker behavior", () => {
     ));
 
     click(getByPart("date-picker", "trigger"));
-
-    const content = getByPart("date-picker", "content");
-    expect(content.getAttribute("data-transition-status")).toBe("opening");
-    expect(content.getAttribute("data-starting-style")).toBe("");
+    expect(queryByPart("date-picker", "content")).not.toBeNull();
 
     await settled();
     click(getByPart("date-picker", "trigger"));
+    await animationFrame();
 
-    expect(content.getAttribute("data-transition-status")).toBe("closing");
-    expect(content.getAttribute("data-ending-style")).toBe("");
+    expect(queryByPart("date-picker", "content")).toBeNull();
   });
 
-  test("does not focus a later calendar after selection closes the current popup", async () => {
+  test("closes when pressing outside the date picker", async () => {
+    const openChanges: string[] = [];
+
+    render(() => (
+      <>
+        <DatePicker.Root
+          defaultMonth="2026-05"
+          defaultOpen
+          onOpenChange={(open, detail) => openChanges.push(`${open}:${detail.reason}`)}
+        >
+          <DatePicker.Trigger placeholder="Pick a date" />
+          <DatePicker.Content />
+        </DatePicker.Root>
+        <button type="button" data-testid="outside">
+          Outside
+        </button>
+      </>
+    ));
+
+    const trigger = getByPart("date-picker", "trigger");
+    expect(trigger.getAttribute("aria-expanded")).toBe("true");
+
+    pointerDown(document.querySelector<HTMLElement>('[data-testid="outside"]')!);
+    await settled();
+
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    expect(queryByPart("date-picker", "content")).toBeNull();
+    expect(openChanges).toEqual(["false:outside"]);
+  });
+
+  test("does not move focus into another open calendar after selection", async () => {
     render(() => (
       <>
         <DatePicker.Root defaultMonth="2026-05" defaultOpen>
@@ -274,11 +305,11 @@ describe("DatePicker behavior", () => {
     click(firstDay);
     await settled();
 
-    expect(firstContent?.isConnected).toBe(false);
+    expect(firstContent?.isConnected).toBe(true);
     expect(document.activeElement).not.toBe(secondDay);
   });
 
-  test("keeps range picker open until the range has an end date", async () => {
+  test("keeps range picker open after completing the range", async () => {
     const openChanges: string[] = [];
     const ranges: string[] = [];
 
@@ -312,8 +343,8 @@ describe("DatePicker behavior", () => {
     await settled();
 
     expect(ranges).toEqual(["2026-05-10::false", "2026-05-10:2026-05-12:true"]);
-    expect(openChanges).toEqual(["true:trigger", "false:select"]);
-    expect(queryByPart("date-picker", "content")).toBeNull();
+    expect(openChanges).toEqual(["true:trigger"]);
+    expect(queryByPart("date-picker", "content")).not.toBeNull();
     expect(trigger.textContent).toBe("2026-05-10 - 2026-05-12");
   });
 
