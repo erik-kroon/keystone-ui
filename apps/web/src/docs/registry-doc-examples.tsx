@@ -7,13 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@keystone-ui/ui/accordion";
-import {
-  Alert,
-  AlertAction,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-} from "@keystone-ui/ui/alert";
+import { Alert, AlertAction, AlertDescription, AlertIcon, AlertTitle } from "@keystone-ui/ui/alert";
 import { Badge } from "@keystone-ui/ui/badge";
 import { Button } from "@keystone-ui/ui/button";
 import {
@@ -54,15 +48,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@keystone-ui/ui/select";
+import { Switch } from "@keystone-ui/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@keystone-ui/ui/tabs";
 import { Textarea } from "@keystone-ui/ui/textarea";
 import { Toaster } from "@keystone-ui/ui/toast";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@keystone-ui/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@keystone-ui/ui/tooltip";
 import type { CodeExample } from "./registry-doc-types";
 
 type DocsExampleOptions = Omit<CodeExample, "preview"> & {
@@ -91,7 +81,8 @@ const accordionItems = [
     title: "What is Keystone UI?",
   },
   {
-    content: "Install components with the shadcn CLI, then own the generated source in your application.",
+    content:
+      "Install components with the shadcn CLI, then own the generated source in your application.",
     id: "item-2",
     title: "How do I get started?",
   },
@@ -887,6 +878,366 @@ export function Component() {
     <Label>
       <Checkbox />
       Accept terms and conditions
+    </Label>
+  );
+}`;
+
+export function LabelExample() {
+  return (
+    <div class="grid w-full max-w-64 gap-2">
+      <Label for="preview-email">Email</Label>
+      <Input id="preview-email" placeholder="name@example.com" type="email" />
+    </div>
+  );
+}
+
+export function LabelRequiredExample() {
+  return (
+    <div class="grid w-full max-w-64 gap-2">
+      <Label for="preview-workspace">
+        Workspace name
+        <span class="text-destructive" aria-hidden="true">
+          *
+        </span>
+      </Label>
+      <Input id="preview-workspace" placeholder="Acme Studio" required />
+      <p class="m-0 text-muted-foreground text-sm">Shown in navigation and billing emails.</p>
+    </div>
+  );
+}
+
+export const labelExampleCode = `import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+export function Component() {
+  return (
+    <div class="grid w-full max-w-64 gap-2">
+      <Label for="email">Email</Label>
+      <Input id="email" placeholder="name@example.com" type="email" />
+    </div>
+  );
+}`;
+
+export const labelRequiredExampleCode = `import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+export function Component() {
+  return (
+    <div class="grid w-full max-w-64 gap-2">
+      <Label for="workspace">
+        Workspace name
+        <span class="text-destructive" aria-hidden="true">
+          *
+        </span>
+      </Label>
+      <Input id="workspace" placeholder="Acme Studio" required />
+      <p class="m-0 text-muted-foreground text-sm">Shown in navigation and billing emails.</p>
+    </div>
+  );
+}`;
+
+export const labelExample = defineCodeExample({
+  code: labelExampleCode,
+  component: LabelExample,
+  description: "Native label associated with an input by id.",
+  id: "with-input",
+  title: "With Input",
+  variant: "inline",
+});
+
+export const labelRequiredExample = defineCodeExample({
+  code: labelRequiredExampleCode,
+  component: LabelRequiredExample,
+  description: "Compose label text, required marker, helper copy, and a control.",
+  id: "required-field",
+  title: "Required Field",
+  variant: "inline",
+});
+
+export const labelExamples = [labelExample, labelRequiredExample] satisfies readonly CodeExample[];
+
+export const labelUsageCode = `import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+export function Component() {
+  return (
+    <div class="grid gap-2">
+      <Label for="email">Email</Label>
+      <Input id="email" type="email" />
+    </div>
+  );
+}`;
+
+export function InputExample() {
+  return (
+    <div class="grid w-full max-w-64 gap-2">
+      <Label for="preview-search">Search</Label>
+      <Input id="preview-search" placeholder="Search components..." type="search" />
+    </div>
+  );
+}
+
+export function InputSizesExample() {
+  return (
+    <div class="grid w-full max-w-64 gap-3">
+      <Input aria-label="Small input" placeholder="Small" size="sm" />
+      <Input aria-label="Default input" placeholder="Default" />
+      <Input aria-label="Large input" placeholder="Large" size="lg" />
+    </div>
+  );
+}
+
+export function InputInvalidExample() {
+  return (
+    <div class="grid w-full max-w-64 gap-2">
+      <Label for="preview-invalid-email">Email</Label>
+      <Input id="preview-invalid-email" defaultValue="not-an-email" invalid type="email" />
+      <p class="m-0 text-destructive text-sm">Enter a valid email address.</p>
+    </div>
+  );
+}
+
+export function InputFileExample() {
+  return (
+    <div class="grid w-full max-w-64 gap-2">
+      <Label for="preview-file">Avatar</Label>
+      <Input id="preview-file" type="file" />
+    </div>
+  );
+}
+
+export const inputExampleCode = `import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+export function Component() {
+  return (
+    <div class="grid w-full max-w-64 gap-2">
+      <Label for="search">Search</Label>
+      <Input id="search" placeholder="Search components..." type="search" />
+    </div>
+  );
+}`;
+
+export const inputSizesExampleCode = `import { Input } from "@/components/ui/input";
+
+export function Component() {
+  return (
+    <div class="grid w-full max-w-64 gap-3">
+      <Input aria-label="Small input" placeholder="Small" size="sm" />
+      <Input aria-label="Default input" placeholder="Default" />
+      <Input aria-label="Large input" placeholder="Large" size="lg" />
+    </div>
+  );
+}`;
+
+export const inputInvalidExampleCode = `import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+export function Component() {
+  return (
+    <div class="grid w-full max-w-64 gap-2">
+      <Label for="email">Email</Label>
+      <Input id="email" defaultValue="not-an-email" invalid type="email" />
+      <p class="m-0 text-destructive text-sm">Enter a valid email address.</p>
+    </div>
+  );
+}`;
+
+export const inputFileExampleCode = `import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+export function Component() {
+  return (
+    <div class="grid w-full max-w-64 gap-2">
+      <Label for="avatar">Avatar</Label>
+      <Input id="avatar" type="file" />
+    </div>
+  );
+}`;
+
+export const inputExample = defineCodeExample({
+  code: inputExampleCode,
+  component: InputExample,
+  description: "Text input with an associated label.",
+  id: "basic",
+  title: "Basic Input",
+  variant: "inline",
+});
+
+export const inputSizesExample = defineCodeExample({
+  code: inputSizesExampleCode,
+  component: InputSizesExample,
+  description: "Small, default, and large input sizes.",
+  id: "sizes",
+  title: "Sizes",
+  variant: "inline",
+});
+
+export const inputInvalidExample = defineCodeExample({
+  code: inputInvalidExampleCode,
+  component: InputInvalidExample,
+  description: "Invalid state mirrored to aria-invalid and wrapper data attributes.",
+  id: "invalid",
+  title: "Invalid State",
+  variant: "inline",
+});
+
+export const inputFileExample = defineCodeExample({
+  code: inputFileExampleCode,
+  component: InputFileExample,
+  description: "Native file input using the same wrapper contract.",
+  id: "file",
+  title: "File Input",
+  variant: "inline",
+});
+
+export const inputExamples = [
+  inputExample,
+  inputSizesExample,
+  inputInvalidExample,
+  inputFileExample,
+] satisfies readonly CodeExample[];
+
+export const inputUsageCode = `import { Input } from "@/components/ui/input";
+
+export function Component() {
+  return <Input placeholder="Email" type="email" />;
+}`;
+
+export function SwitchExample() {
+  const [checked, setChecked] = createSignal(false);
+  return (
+    <Label class="gap-3">
+      <Switch checked={checked()} onCheckedChange={setChecked} name="notifications" />
+      Enable notifications
+    </Label>
+  );
+}
+
+export function SwitchDisabledExample() {
+  return (
+    <div class="grid gap-3">
+      <Label class="gap-3">
+        <Switch defaultChecked disabled name="email-digest" />
+        Email digest
+      </Label>
+      <Label class="gap-3 text-muted-foreground">
+        <Switch disabled name="desktop-alerts" />
+        Desktop alerts
+      </Label>
+    </div>
+  );
+}
+
+export function SwitchCompositionExample() {
+  return (
+    <div class="grid w-full max-w-md gap-3 rounded-lg border border-border bg-card p-4">
+      <Label class="flex items-start justify-between gap-4">
+        <div class="grid gap-1">
+          <span class="leading-5">Background sync</span>
+          <p class="m-0 text-muted-foreground text-sm">
+            Keep workspace data fresh while the app is open.
+          </p>
+        </div>
+        <Switch defaultChecked name="background-sync" />
+      </Label>
+    </div>
+  );
+}
+
+export const switchExampleCode = `import { createSignal } from "solid-js";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+
+export function Component() {
+  const [checked, setChecked] = createSignal(false);
+
+  return (
+    <Label class="gap-3">
+      <Switch checked={checked()} onCheckedChange={setChecked} name="notifications" />
+      Enable notifications
+    </Label>
+  );
+}`;
+
+export const switchDisabledExampleCode = `import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+
+export function Component() {
+  return (
+    <div class="grid gap-3">
+      <Label class="gap-3">
+        <Switch defaultChecked disabled name="email-digest" />
+        Email digest
+      </Label>
+      <Label class="gap-3 text-muted-foreground">
+        <Switch disabled name="desktop-alerts" />
+        Desktop alerts
+      </Label>
+    </div>
+  );
+}`;
+
+export const switchCompositionExampleCode = `import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+
+export function Component() {
+  return (
+    <div class="grid w-full max-w-md gap-3 rounded-lg border border-border bg-card p-4">
+      <Label class="flex items-start justify-between gap-4">
+        <div class="grid gap-1">
+          <span class="leading-5">Background sync</span>
+          <p class="m-0 text-muted-foreground text-sm">
+            Keep workspace data fresh while the app is open.
+          </p>
+        </div>
+        <Switch defaultChecked name="background-sync" />
+      </Label>
+    </div>
+  );
+}`;
+
+export const switchExample = defineCodeExample({
+  code: switchExampleCode,
+  component: SwitchExample,
+  description: "Controlled switch composed with a visible label.",
+  id: "controlled",
+  title: "Controlled Switch",
+  variant: "inline",
+});
+
+export const switchDisabledExample = defineCodeExample({
+  code: switchDisabledExampleCode,
+  component: SwitchDisabledExample,
+  description: "Disabled switches preserve checked state while blocking interaction.",
+  id: "disabled",
+  title: "Disabled",
+  variant: "inline",
+});
+
+export const switchCompositionExample = defineCodeExample({
+  code: switchCompositionExampleCode,
+  component: SwitchCompositionExample,
+  description: "Switch placed in a settings row with label and helper copy.",
+  id: "settings-row",
+  title: "Settings Row",
+  variant: "inline",
+});
+
+export const switchExamples = [
+  switchExample,
+  switchDisabledExample,
+  switchCompositionExample,
+] satisfies readonly CodeExample[];
+
+export const switchUsageCode = `import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+
+export function Component() {
+  return (
+    <Label>
+      <Switch name="notifications" />
+      Enable notifications
     </Label>
   );
 }`;

@@ -63,7 +63,8 @@ export function SwitchControl(props: SwitchControlProps) {
           "focus-visible:ring-offset-background",
           "data-disabled:cursor-not-allowed",
           "data-checked:bg-primary",
-          "data-unchecked:bg-input",
+          "data-[state=checked]:bg-primary",
+          "data-[state=unchecked]:bg-input",
           "data-disabled:opacity-64",
           "sm:[--thumb-size:--spacing(4)]",
         ),
@@ -111,7 +112,7 @@ export function SwitchHiddenInput(props: SwitchHiddenInputProps) {
     <CoreSwitch.HiddenInput
       {...rest}
       data-slot="switch-input"
-      class={cn("ui-switch-input", local.class)}
+      class={cn("ui-switch-input sr-only", local.class)}
     />
   );
 }

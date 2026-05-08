@@ -65,9 +65,9 @@ function RootDocument(props: Readonly<{ children: JSX.Element }>) {
     <html lang="en" class="dark">
       <head>
         <HydrationScript />
-        <HeadContent />
       </head>
       <body>
+        <HeadContent />
         {props.children}
         <Scripts />
       </body>

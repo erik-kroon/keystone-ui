@@ -21,6 +21,11 @@ function renderToastHarness(manager = createToastManager(), limit?: number) {
   return manager;
 }
 
+async function flushed() {
+  await Promise.resolve();
+  await Promise.resolve();
+}
+
 describe("Toast behavior harness", () => {
   afterEach(() => {
     vi.useRealTimers();
@@ -64,6 +69,39 @@ describe("Toast behavior harness", () => {
     manager.dismiss("sync");
     await settled();
 
+    expect(queryByPart("toast", "root")).toBeNull();
+  });
+
+  test("can keep dismissed toasts mounted as closed during exit motion", async () => {
+    vi.useFakeTimers();
+    const manager = createToastManager();
+
+    render(() => (
+      <Toast.Provider exitDuration={200} manager={manager}>
+        <Toast.Viewport>
+          {(toast) => (
+            <Toast.Root toast={toast}>
+              <Toast.Title />
+            </Toast.Root>
+          )}
+        </Toast.Viewport>
+      </Toast.Provider>
+    ));
+
+    manager.add({ id: "exit", title: "Exit cleanly" });
+    await flushed();
+
+    manager.dismiss("exit");
+    await flushed();
+
+    expect(manager.getToasts()).toHaveLength(0);
+    expect(getByPart("toast", "root").getAttribute("data-status")).toBe("closed");
+
+    await vi.advanceTimersByTimeAsync(199);
+    expect(queryByPart("toast", "root")).not.toBeNull();
+
+    await vi.advanceTimersByTimeAsync(1);
+    await flushed();
     expect(queryByPart("toast", "root")).toBeNull();
   });
 

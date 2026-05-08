@@ -4774,7 +4774,7 @@ export const registryDocItems = [
       "solid": ">=1.9.0 <2.0.0",
       "shadcn": "registry-item schema"
     },
-    "customization": "Style generated ui-toast classes, data-slot hooks, position classes, stack classes, and toast CSS variables while Core owns manager updates, promise lifecycle updates, live-region roles, dismissal, timer scheduling, page-idle pause/resume, viewport limits, hotkey focus, and stable toast data attributes.",
+    "customization": "Style generated ui-toast classes, data-slot hooks, position classes, stack classes, and toast CSS variables while Core owns manager updates, promise lifecycle updates, live-region roles, dismissal, exit-duration status retention, timer scheduling, page-idle pause/resume, viewport limits, hotkey focus, and stable toast data attributes.",
     "dependencies": [
       "@keystone-ui/core",
       "lucide-solid",
@@ -4801,9 +4801,9 @@ export const registryDocItems = [
     ],
     "name": "toast",
     "parity": {
-      "baseUi": "Base UI is a first-class reference for the stacked viewport: visible limit defaults to three, render metadata exposes front index/order, UI measures toast height for expanded stack offsets, the root shell carries coss-style stacked transforms and keyframed entry motion, and Core owns manager updates, actions, close parts, timer pause/resume, hotkey focus, roles, and viewport filtering. Gaps: anchored positioner, swipe dismissal, transition-status exit states, and progress parts remain later Core work.",
+      "baseUi": "Base UI is a first-class reference for the stacked viewport: visible limit defaults to three, render metadata exposes front index/order, UI measures toast height for expanded stack offsets, the root shell carries coss-style stacked transforms plus keyframed entry and status-driven exit motion, and Core owns manager updates, actions, close parts, timer pause/resume, hotkey focus, roles, exit-duration retention, and viewport filtering. Gaps: anchored positioner, swipe dismissal, and progress parts remain later Core work.",
       "kobalte": "Kobalte is a first-class Solid/accessibility reference: Keystone keeps Solid compound composition, region filtering, duration overrides, viewport limits, hover/focus pause, page-idle timer pausing, hotkey access to the notification region, polite/assertive roles, and programmatic update/dismiss. Gaps: progress track/fill and swipe CSS variables remain deferred.",
-      "sonner": "Sonner is a first-class ergonomic reference: toaster is callable, typed helpers update by id, promise helpers move loading to success/error, default Toaster shows three visible toasts in the bottom-right corner, enter motion slides from the screen edge with coss/Sonner-style easing, hover/focus expands the stack, action clicks dismiss unless prevented, close button remains opt-in, tone icons mirror Sonner expectations, and custom render hooks receive toast metadata. Gaps: per-toast position routing, cancel action sugar, rich color mode, and swipe physics remain explicit follow-ups."
+      "sonner": "Sonner is a first-class ergonomic reference: toaster is callable, typed helpers update by id, promise helpers move loading to success/error, default Toaster shows three visible toasts in the bottom-right corner, enter motion slides from the screen edge with coss/Sonner-style easing, dismissed toasts remain mounted long enough to exit, hover/focus expands the stack, action clicks dismiss unless prevented, close button remains opt-in, tone icons mirror Sonner expectations, and custom render hooks receive toast metadata. Gaps: per-toast position routing, cancel action sugar, rich color mode, and swipe physics remain explicit follow-ups."
     },
     "registryDependencies": [
       "cn"
