@@ -1,23 +1,40 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "data-table",
   "type": "registry:ui",
   "title": "DataTable",
   "description": "TanStack Table source kit with local state, toolbar, filters, pagination, column visibility, skeletons, empty state, and row actions.",
   "version": "0.1.0",
-  "dependencies": ["@tanstack/solid-table@^8.21.3"],
+  "dependencies": [
+    "@tanstack/solid-table@^8.21.3"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["table", "tanstack", "data"],
-  "keywords": ["data-table", "table", "tanstack", "sorting", "filtering", "pagination"],
+  "categories": [
+    "table",
+    "tanstack",
+    "data"
+  ],
+  "keywords": [
+    "data-table",
+    "table",
+    "tanstack",
+    "sorting",
+    "filtering",
+    "pagination"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/data-table",
-  "registryDependencies": ["table", "cn"],
-  "filesRoot": "packages/ui/src/default/components/data-table",
+  "registryDependencies": [
+    "table",
+    "cn"
+  ],
+  "filesRoot": "packages/ui/src/components/data-table",
   "targetRoot": "src/components/data-table",
   "meta": {
-    "install": "mason add data-table",
+    "install": "shadcn add https://keystone-ui.dev/r/data-table.json",
     "dataShape": "Pass an array of row objects through data and TanStack ColumnDef<TData, unknown>[] through columns. Use getRowId when the row key is not stable by index.",
     "columns": "Columns are ordinary TanStack Table column definitions. Use DataTableColumnHeader in header renderers and column meta for toolbar filters.",
     "api": "DataTable receives a TanStack Table instance and optional caption, toolbar slot, empty/loading slots, page size options, skeleton row count, and pagination toggle. useDataTable accepts data/columns as values or accessors for reactive row updates.",
@@ -33,68 +50,83 @@
     "ssr": "The table renders deterministic native markup and does not read browser globals during render. Hydration-sensitive row identity should come from getRowId rather than row index when data can reorder or update frequently.",
     "limitations": "This source is a TanStack Table composition kit, not a custom table engine. Virtualization, persisted column preferences, async fetching/loading orchestration, drag column ordering/sizing, and advanced query builders should be layered in app code or future companion registry items.",
     "sourceFiles": [
-      "packages/ui/src/default/components/data-table/data-table.tsx",
-      "packages/ui/src/default/components/data-table/data-table-column-header.tsx",
-      "packages/ui/src/default/components/data-table/data-table-empty-state.tsx",
-      "packages/ui/src/default/components/data-table/data-table-faceted-filter.tsx",
-      "packages/ui/src/default/components/data-table/data-table-pagination.tsx",
-      "packages/ui/src/default/components/data-table/data-table-row-actions.tsx",
-      "packages/ui/src/default/components/data-table/data-table-skeleton.tsx",
-      "packages/ui/src/default/components/data-table/data-table-toolbar.tsx",
-      "packages/ui/src/default/components/data-table/data-table-view-options.tsx",
-      "packages/ui/src/default/components/data-table/types.ts",
-      "packages/ui/src/default/components/data-table/use-data-table.ts"
+      "packages/ui/src/components/data-table/data-table.tsx",
+      "packages/ui/src/components/data-table/data-table-column-header.tsx",
+      "packages/ui/src/components/data-table/data-table-empty-state.tsx",
+      "packages/ui/src/components/data-table/data-table-faceted-filter.tsx",
+      "packages/ui/src/components/data-table/data-table-pagination.tsx",
+      "packages/ui/src/components/data-table/data-table-row-actions.tsx",
+      "packages/ui/src/components/data-table/data-table-skeleton.tsx",
+      "packages/ui/src/components/data-table/data-table-toolbar.tsx",
+      "packages/ui/src/components/data-table/data-table-view-options.tsx",
+      "packages/ui/src/components/data-table/types.ts",
+      "packages/ui/src/components/data-table/use-data-table.ts"
     ],
-    "dependencies": ["@tanstack/solid-table", "table", "cn"],
+    "dependencies": [
+      "@tanstack/solid-table",
+      "table",
+      "cn"
+    ],
     "parity": {
       "tanstackTable": "First-class comparison is TanStack Table: the kit uses Solid Table column definitions, local sorting, filtering, pagination, column visibility, row actions, and toolbar composition. Gaps: server-side orchestration, virtualization, persisted views, async loading policy, column sizing/ordering, and advanced filter builders remain app-code follow-up work.",
-      "shadcn": "Comparable to shadcn data-table source kits in copy-paste ownership and composable subcomponents, with Solid-native accessors and Mason multi-file install metadata. Gaps: no CLI-generated schema, no baked-in URL state without the adapter, and no opinionated server data layer."
+      "shadcn": "Comparable to shadcn data-table source kits in copy-paste ownership and composable subcomponents, with Solid-native accessors and shadcn-compatible multi-file install metadata. Gaps: no CLI-generated schema, no baked-in URL state without the adapter, and no opinionated server data layer."
     }
   },
   "files": [
     {
-      "path": "packages/ui/src/default/components/data-table/data-table.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/data-table/data-table.tsx",
+      "type": "registry:ui",
+      "target": "@components/data-table/data-table.tsx"
     },
     {
-      "path": "packages/ui/src/default/components/data-table/data-table-column-header.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/data-table/data-table-column-header.tsx",
+      "type": "registry:ui",
+      "target": "@components/data-table/data-table-column-header.tsx"
     },
     {
-      "path": "packages/ui/src/default/components/data-table/data-table-empty-state.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/data-table/data-table-empty-state.tsx",
+      "type": "registry:ui",
+      "target": "@components/data-table/data-table-empty-state.tsx"
     },
     {
-      "path": "packages/ui/src/default/components/data-table/data-table-faceted-filter.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/data-table/data-table-faceted-filter.tsx",
+      "type": "registry:ui",
+      "target": "@components/data-table/data-table-faceted-filter.tsx"
     },
     {
-      "path": "packages/ui/src/default/components/data-table/data-table-pagination.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/data-table/data-table-pagination.tsx",
+      "type": "registry:ui",
+      "target": "@components/data-table/data-table-pagination.tsx"
     },
     {
-      "path": "packages/ui/src/default/components/data-table/data-table-row-actions.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/data-table/data-table-row-actions.tsx",
+      "type": "registry:ui",
+      "target": "@components/data-table/data-table-row-actions.tsx"
     },
     {
-      "path": "packages/ui/src/default/components/data-table/data-table-skeleton.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/data-table/data-table-skeleton.tsx",
+      "type": "registry:ui",
+      "target": "@components/data-table/data-table-skeleton.tsx"
     },
     {
-      "path": "packages/ui/src/default/components/data-table/data-table-toolbar.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/data-table/data-table-toolbar.tsx",
+      "type": "registry:ui",
+      "target": "@components/data-table/data-table-toolbar.tsx"
     },
     {
-      "path": "packages/ui/src/default/components/data-table/data-table-view-options.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/data-table/data-table-view-options.tsx",
+      "type": "registry:ui",
+      "target": "@components/data-table/data-table-view-options.tsx"
     },
     {
-      "path": "packages/ui/src/default/components/data-table/types.ts",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/data-table/types.ts",
+      "type": "registry:ui",
+      "target": "@components/data-table/types.ts"
     },
     {
-      "path": "packages/ui/src/default/components/data-table/use-data-table.ts",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/data-table/use-data-table.ts",
+      "type": "registry:ui",
+      "target": "@components/data-table/use-data-table.ts"
     }
   ]
 }

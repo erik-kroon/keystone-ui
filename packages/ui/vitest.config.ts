@@ -7,19 +7,19 @@ export default defineConfig({
     alias: [
       {
         find: "@/components/ui",
-        replacement: fileURLToPath(new URL("./src/default/ui", import.meta.url)),
+        replacement: fileURLToPath(new URL("./src/components", import.meta.url)),
       },
       {
         find: "@/components/data-table",
-        replacement: fileURLToPath(new URL("./src/default/components/data-table", import.meta.url)),
+        replacement: fileURLToPath(new URL("./src/components/data-table", import.meta.url)),
       },
       {
         find: "@/lib",
-        replacement: fileURLToPath(new URL("./src/default/lib", import.meta.url)),
+        replacement: fileURLToPath(new URL("./src/lib", import.meta.url)),
       },
       {
         find: "@",
-        replacement: fileURLToPath(new URL("./src/default", import.meta.url)),
+        replacement: fileURLToPath(new URL("./src", import.meta.url)),
       },
     ],
   },

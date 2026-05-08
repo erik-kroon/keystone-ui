@@ -1,6 +1,6 @@
 # Keystone Design System
 
-This is the first-party Keystone visual system for the docs site, component registry, and Mason UI previews. It is the implementation spec for Keystone-owned Solid source, Tailwind v4 tokens, component styling, registry metadata, and application shells.
+This is the first-party Keystone visual system for the docs site, component registry, and UI previews. It is the implementation spec for Keystone-owned Solid source, Tailwind v4 tokens, component styling, registry metadata, and application shells.
 
 ## Design Position
 
@@ -704,7 +704,7 @@ Sidebar is a full UI component, not just docs navigation.
 - Footer:
   - Left side shows Enter/go affordance.
   - Right side can show install command and copy shortcut.
-- Keystone implementation should use Keystone registry names and Mason commands, for example `mason add button`.
+- Keystone implementation should use Keystone registry names and shadcn commands, for example `shadcn add https://keystone-ui.dev/r/button.json`.
 
 ### Kbd
 

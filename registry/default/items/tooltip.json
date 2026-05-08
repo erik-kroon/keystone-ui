@@ -1,24 +1,42 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "tooltip",
   "type": "registry:ui",
   "title": "Tooltip",
   "description": "Styled Solid tooltip component backed by Keystone overlay positioning and Escape dismissal.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["overlay", "help"],
-  "keywords": ["tooltip", "overlay", "floating", "keystone"],
+  "categories": [
+    "overlay",
+    "help"
+  ],
+  "keywords": [
+    "tooltip",
+    "overlay",
+    "floating",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/tooltip",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add tooltip",
+    "install": "shadcn add https://keystone-ui.dev/r/tooltip.json",
     "customization": "Style the generated wrappers through ui-tooltip classes while Core owns positioning and trigger/content relationships.",
-    "sourceFiles": ["packages/ui/src/default/ui/tooltip.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/tooltip.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
     "api": "Tooltip exports TooltipProvider, Tooltip, TooltipTrigger, TooltipPortal, TooltipPositioner, TooltipContent, TooltipPopup, TooltipArrow, and TooltipPrimitive. TooltipContent composes portal, positioner, popup surface, viewport, and class escape hatches while Core owns delay groups, hover/focus interactions, open state, pointer grace area, Escape dismissal, positioning, and aria-describedby wiring.",
     "accessibility": "Backed by @keystone-ui/core/tooltip for role=tooltip, trigger aria-describedby, hover and focus opening, close and skip-delay timing, hoverable content, pointer grace area, Escape dismissal, portal rendering, controlled and uncontrolled open state, and floating placement metadata.",
     "anatomy": [
@@ -52,8 +70,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/tooltip.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/tooltip.tsx",
+      "type": "registry:ui",
+      "target": "@ui/tooltip.tsx"
     }
   ]
 }

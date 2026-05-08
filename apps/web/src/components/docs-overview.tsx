@@ -4,7 +4,7 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
-} from "@keystone-ui/ui/default/ui/alert.tsx";
+} from "@keystone-ui/ui/alert";
 
 import { DocsPageFrame, PageHeader, PageHeaderHeading } from "@/components/docs-shell";
 import { MdxContent, MdxH2, MdxList, MdxP } from "@/components/mdx-components";
@@ -106,8 +106,9 @@ export function DocsOverview() {
           <MdxP class={proseClass}>
             Keystone follows the source-owned ethos of{" "}
             <strong class="font-medium text-foreground">shadcn/ui</strong>. Readable component files
-            live in your project, where you can adapt them as your product changes. Mason is the
-            planned registry and CLI layer for that workflow, but the source model comes first.
+            live in your project, where you can adapt them as your product changes. Keystone UI
+            source is distributed through a shadcn-compatible registry, while Keystone Core ships as
+            the npm primitive package.
           </MdxP>
           <MdxList class={listClass}>
             <li>

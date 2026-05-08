@@ -2,16 +2,16 @@
 
 ## Area
 
-Early Keystone UI monorepo bootstrap for a Solid primitive library and Mason registry ecosystem.
+Early Keystone UI monorepo bootstrap for a Solid primitive library and shadcn-compatible source registry ecosystem.
 
 ## Domain Terms
 
 - `Keystone`: Solid-native primitive layer.
 - `UI`: copy-paste registry, CLI, blocks, templates, and styled source layer.
 - `kernel`: shared primitive internals that should be built before visible components.
-- `registry`: UI distribution model for components, blocks, templates, themes, and related files.
+- `registry`: shadcn-compatible UI distribution model for components, blocks, templates, themes, and related files.
 - `docs`: product documentation and API guidance, served through `apps/web`.
-- `TanStack app layer`: Mason's preferred app-behavior layer for forms, tables, shared state, and app-level shortcuts.
+- `TanStack app layer`: UI's preferred app-behavior layer for forms, tables, shared state, and app-level shortcuts.
 
 ## Module Map
 
@@ -22,9 +22,9 @@ Early Keystone UI monorepo bootstrap for a Solid primitive library and Mason reg
   - Early primitive package with overlay, disclosure, menu, select/combobox, field, selection-control, tabs, toolbar, slider, date-picker, toast, metadata, and utility surfaces.
   - Current breadth is useful for proving UI wrappers, but the next quality bar is deeper shared internals.
 - `packages/mason`
-  - Early CLI tracer for init/add planning and writes, plus registry schema, validation, dependency resolution, path safety, and tests.
+  - Internal registry tooling tracer for schema experiments, validation, dependency resolution, path safety, and tests. It is not the public installer.
 - `registry`
-  - UI first-party UI component, TanStack-backed app component, utility, and block source.
+  - First-party shadcn-compatible UI component, TanStack-backed app component, utility, and block metadata.
   - Registry item metadata should include parity notes against the most relevant references.
 - `docs/adr`
   - Durable architecture decisions for product/package boundaries, scope, names, license, and governance.
@@ -37,8 +37,8 @@ The PRD's end-state structure points toward these future areas:
 
 - `packages/core`: primitive package with kernel systems and subpath exports.
 - `packages/core-labs`: experimental primitives.
-- `packages/mason`: CLI commands, project detection, transforms, prompts, diff handling, schema, validation, build, and resolution logic.
-- `registry/default`: UI UI, blocks, themes, and templates.
+- `packages/mason`: internal registry validation, shadcn payload generation support, dependency graph checks, path safety experiments, and future migration research.
+- `registry/default`: UI components, blocks, themes, hooks, utilities, and templates distributed through shadcn-compatible payloads.
 - `examples`: install and compatibility targets.
 - `apps/web`: public docs/product surface, API references, examples, and registry previews.
 
@@ -60,7 +60,7 @@ Intended product flow:
 ```txt
 Core kernel
   -> Core primitives
-    -> Mason registry components
+    -> shadcn-compatible registry components
       -> UI blocks
         -> UI templates and user apps
 ```
@@ -76,10 +76,11 @@ Core kernel
 - [docs/adr/0002-scope-names-license-governance.md](docs/adr/0002-scope-names-license-governance.md): provisional names, package scope, license intent, and governance.
 - [docs/adr/0004-core-kernel-api-boundary.md](docs/adr/0004-core-kernel-api-boundary.md): public/private Core kernel API boundary.
 - [docs/rfcs/core-api.md](docs/rfcs/core-api.md): Core compound API, low-level creators, state, polymorphism, styling contracts, SSR, and first primitives.
-- [docs/rfcs/mason-registry.md](docs/rfcs/mason-registry.md): Mason registry schema, CLI semantics, path safety, project detection, and first proving item.
-- [docs/adr/0003-ui-tanstack-app-layer.md](docs/adr/0003-ui-tanstack-app-layer.md): Mason's TanStack app-layer decision.
+- [docs/adr/0005-shadcn-registry-distribution.md](docs/adr/0005-shadcn-registry-distribution.md): Core npm distribution, shadcn registry distribution for UI, and Mason as internal tooling.
+- [docs/rfcs/mason-registry.md](docs/rfcs/mason-registry.md): superseded public Mason plan, retained for internal tooling background.
+- [docs/adr/0003-ui-tanstack-app-layer.md](docs/adr/0003-ui-tanstack-app-layer.md): UI TanStack app-layer decision.
 - [docs/accessibility/testing-plan.md](docs/accessibility/testing-plan.md): accessibility release gates, automated/manual testing matrix, and first primitive coverage.
-- [registry/default](registry/default): first-party Mason registry source and item metadata.
+- [registry/default](registry/default): first-party shadcn-compatible registry source and item metadata.
 
 ## What To Ignore For Now
 

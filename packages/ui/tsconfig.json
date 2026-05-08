@@ -7,14 +7,14 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/default/*"],
-      "@/components/ui/*": ["src/default/ui/*"],
-      "@/components/data-table/*": ["src/default/components/data-table/*"],
-      "@/hooks/*": ["src/default/hooks/*"],
-      "@/lib/*": ["src/default/lib/*"]
+      "@/*": ["src/*"],
+      "@/components/ui/*": ["src/components/*"],
+      "@/components/data-table/*": ["src/components/data-table/*"],
+      "@/hooks/*": ["src/hooks/*"],
+      "@/lib/*": ["src/lib/*"]
     },
     "types": []
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["src/default/templates"]
+  "exclude": ["src/templates"]
 }

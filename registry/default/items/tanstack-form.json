@@ -1,41 +1,68 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "tanstack-form",
   "type": "registry:ui",
   "title": "TanStackForm",
   "description": "Source-owned Solid form shell for TanStack Form submit and form-state metadata.",
   "version": "0.1.0",
-  "dependencies": ["@tanstack/solid-form@^1.29.1"],
+  "dependencies": [
+    "@tanstack/solid-form@^1.29.1"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "tanstack"],
-  "keywords": ["tanstack-form", "form", "submit", "validation"],
+  "categories": [
+    "form",
+    "tanstack"
+  ],
+  "keywords": [
+    "tanstack-form",
+    "form",
+    "submit",
+    "validation"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/tanstack-form",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add tanstack-form",
+    "install": "shadcn add https://keystone-ui.dev/r/tanstack-form.json",
     "audit": "Current Form coverage is split deliberately: Core form-control owns label/control relationships, description and error IDs, native reset/submit hooks, required/disabled/readonly/invalid state, hidden inputs, SSR-safe IDs, and data attributes; UI already has TanStackField plus concrete TextField, TextareaField, SelectField, CheckboxField, SwitchField, RadioGroupField, ComboboxField, DatePickerField, SliderField, FileField, FieldArray, FormMessage, and FormSubmit adapters. This item is the app-layer form shell: native submit orchestration, state metadata, root errors, and state-aware submit buttons. Missing work is intentionally app-owned server actions, schema adapter choice, optimistic mutations, and route-level persistence rather than a Keystone runtime.",
     "customization": "Style the generated form, submit, and form-error parts through ui-tanstack-form classes, form state data attributes, and neutral data-slot hooks while TanStack Form owns app form state.",
-    "sourceFiles": ["packages/ui/src/default/ui/tanstack-form.tsx"],
-    "dependencies": ["@tanstack/solid-form", "cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/tanstack-form.tsx"
+    ],
+    "dependencies": [
+      "@tanstack/solid-form",
+      "cn"
+    ],
     "api": "TanStackForm exports TanStackForm, TanStackFormSubmit, TanStackFormErrors, getTanStackFormState, TanStackFormState, and formatFieldError. TanStackForm wraps a native form element, runs user onSubmit first, optionally prevents default and stops propagation, calls form.handleSubmit, and mirrors submitting, validating, invalid, can-submit, dirty, touched, submitted, and submission-attempt metadata. TanStackFormSubmit can bind to the form state to disable while submitting or while canSubmit is false; use formId when the submit button targets an external native form owner.",
     "accessibility": "TanStackForm keeps native form semantics, sets aria-busy while submitting or validating, preserves preventDefault escape hatches through user onSubmit, exposes state-aware submit disabling, and exposes TanStackFormErrors with role=alert when form errors are present.",
-    "anatomy": ["root", "submit", "errors"],
-    "cssVariables": ["--color-destructive-foreground"],
+    "anatomy": [
+      "root",
+      "submit",
+      "errors"
+    ],
+    "cssVariables": [
+      "--color-destructive-foreground"
+    ],
     "limitations": "Schema adapters, server action wiring, optimistic submission state, and route-level mutation orchestration stay app-owned. This source shell intentionally does not hide TanStack Form behind a new runtime abstraction.",
     "parity": {
       "tanstackForm": "First-class TanStack Form parity: source-owned native form wrapper around handleSubmit, form-state metadata for submitting/validating/can-submit/dirty/touched/submitted/submission-attempts, user-submit precedence, state-aware submit controls, and root error display.",
       "baseUi": "Base UI is not the primary target for app form state; intrinsic ARIA and native form semantics are preserved while Keystone Core remains independent from TanStack app libraries.",
       "kobalte": "Solid parity is native-form composition with explicit source-owned state hooks rather than a hidden context runtime."
     },
-    "tests": ["packages/ui/src/default/ui/tanstack-form.test.tsx"]
+    "tests": [
+      "packages/ui/src/components/tanstack-form.test.tsx"
+    ]
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/tanstack-form.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/tanstack-form.tsx",
+      "type": "registry:ui",
+      "target": "@ui/tanstack-form.tsx"
     }
   ]
 }

@@ -5,7 +5,7 @@ Status: accepted as an experimental Core primitive.
 ## Audit
 
 - No dedicated Core Command primitive existed before this RFC.
-- `packages/ui/src/default/ui/command-menu.tsx` already composed command-palette behavior from Core Combobox plus UI-owned TanStack Store and Hotkeys.
+- `packages/ui/src/components/command-menu.tsx` already composed command-palette behavior from Core Combobox plus UI-owned TanStack Store and Hotkeys.
 - The reusable Core behavior is the combobox/listbox popup kernel: controlled and uncontrolled input, value, and open state; keyboard highlight and selection; disabled and grouped items; portal/floating geometry; form hidden input serialization; reset behavior; and stable part attributes.
 - UI-owned behavior remains outside Core: command filtering, ranking, shortcuts, command stores, visual sections, previews, and app-level routing or action dispatch.
 
@@ -54,7 +54,7 @@ This keeps Core independent from TanStack Store and Hotkeys while letting UI bui
 
 ## UI CommandMenu End-State Status
 
-Issue #226 audited the UI Command surface after Core Command became credible. The current first-party UI outcome is `command-menu`, backed by `packages/ui/src/default/ui/command-menu.tsx`, `packages/ui/src/default/ui/command-store.ts`, registry metadata in `registry/default/items/command-menu.json`, and the workspace block in `packages/ui/src/default/blocks/keyboard-command-surface.tsx`.
+Issue #226 audited the UI Command surface after Core Command became credible. The current first-party UI outcome is `command-menu`, backed by `packages/ui/src/components/command-menu.tsx`, `packages/ui/src/components/command-store.ts`, registry metadata in `registry/default/items/command-menu.json`, and the workspace block in `packages/ui/src/blocks/keyboard-command-surface.tsx`.
 
 End-state contract:
 

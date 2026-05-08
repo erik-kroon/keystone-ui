@@ -1,26 +1,46 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "button",
   "type": "registry:ui",
   "title": "Button",
   "description": "Solid button component with reference-inspired UI styling, loading state, and native form semantics.",
   "version": "0.1.0",
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["action", "base"],
-  "keywords": ["button", "action", "form", "loading", "icon"],
+  "categories": [
+    "action",
+    "base"
+  ],
+  "keywords": [
+    "button",
+    "action",
+    "form",
+    "loading",
+    "icon"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/button",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add button",
+    "install": "shadcn add https://keystone-ui.dev/r/button.json",
     "customization": "Customize visual treatment through buttonClass, ui-button classes, data-variant/data-size attributes, and the root/loading part hooks.",
-    "sourceFiles": ["packages/ui/src/default/ui/button.tsx"],
-    "dependencies": ["cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/button.tsx"
+    ],
+    "dependencies": [
+      "cn"
+    ],
     "api": "Button supports variant default, secondary, destructive, destructive-outline, outline, ghost, link, and solid compatibility alias; size default, xs, sm, md, lg, xl, icon-xs, icon-sm, icon, icon-lg, and icon-xl; loading disables the native button and adds data-loading, aria-busy, aria-disabled, and a loading indicator.",
     "accessibility": "Renders a native button, defaults type to button, preserves explicit submit/reset types, uses native disabled for disabled and loading states, exposes aria-pressed when pressed is provided, and keeps icon-only labeling as caller-owned through aria-label.",
-    "anatomy": ["root", "loading-indicator", "loading-label"],
+    "anatomy": [
+      "root",
+      "loading-indicator",
+      "loading-label"
+    ],
     "cssVariables": [
       "--radius-lg",
       "--radius-md",
@@ -44,8 +64,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/button.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/button.tsx",
+      "type": "registry:ui",
+      "target": "@ui/button.tsx"
     }
   ]
 }

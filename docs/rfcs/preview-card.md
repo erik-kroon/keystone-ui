@@ -31,7 +31,7 @@ Reusable implementation now exists in:
 
 - `packages/core/src/hover-card/index.tsx`
 - `packages/core/src/overlay/*`
-- `packages/ui/src/default/ui/hover-card.tsx`
+- `packages/ui/src/components/hover-card.tsx`
 - `registry/default/items/hover-card.json`
 - `packages/core/src/metadata/index.ts`
 

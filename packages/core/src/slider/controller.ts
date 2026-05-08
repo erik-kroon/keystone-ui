@@ -227,9 +227,9 @@ export function createSliderController(options: SliderControllerOptions = {}): S
       const { index, ...inputProps } = props;
 
       return {
+        ...partDataAttributes("slider", "hidden-input"),
         ...inputProps,
         type: "hidden",
-        ...partDataAttributes("slider", "hidden-input"),
         get disabled() {
           return inputProps.disabled ?? disabled();
         },
@@ -291,8 +291,8 @@ export function createSliderController(options: SliderControllerOptions = {}): S
     },
     getPercent,
     getRangeProps: (props) => ({
-      ...props,
       ...partDataAttributes("slider", "range"),
+      ...props,
       get "data-disabled"() {
         return dataBoolean(disabled());
       },
@@ -325,8 +325,8 @@ export function createSliderController(options: SliderControllerOptions = {}): S
       },
     }),
     getRootProps: (props) => ({
-      ...props,
       ...partDataAttributes("slider", "root"),
+      ...props,
       get "data-disabled"() {
         return dataBoolean(disabled());
       },
@@ -350,10 +350,10 @@ export function createSliderController(options: SliderControllerOptions = {}): S
       const { index, ...thumbProps } = props;
 
       return {
+        ...partDataAttributes("slider", "thumb"),
         ...thumbProps,
         type: thumbProps.type ?? "button",
         role: "slider",
-        ...partDataAttributes("slider", "thumb"),
         get "aria-disabled"() {
           return disabled() ? "true" : undefined;
         },
@@ -438,12 +438,12 @@ export function createSliderController(options: SliderControllerOptions = {}): S
       };
     },
     getTrackProps: (props) => ({
+      ...partDataAttributes("slider", "track"),
       ...props,
       ref: (element: HTMLDivElement) => {
         trackElement = element;
         if (typeof props.ref === "function") props.ref(element);
       },
-      ...partDataAttributes("slider", "track"),
       get "data-disabled"() {
         return dataBoolean(disabled());
       },

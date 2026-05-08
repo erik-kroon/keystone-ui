@@ -1,25 +1,46 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "collapsible",
   "type": "registry:ui",
   "title": "Collapsible",
   "description": "Styled Solid collapsible component backed by Keystone disclosure behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["disclosure", "layout"],
-  "keywords": ["collapsible", "disclosure", "keystone"],
+  "categories": [
+    "disclosure",
+    "layout"
+  ],
+  "keywords": [
+    "collapsible",
+    "disclosure",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/collapsible",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add collapsible",
+    "install": "shadcn add https://keystone-ui.dev/r/collapsible.json",
     "customization": "Style the generated wrappers through ui-collapsible classes while Keystone keeps open state, ARIA relationships, hidden-until-found behavior, and data attributes.",
-    "sourceFiles": ["packages/ui/src/default/ui/collapsible.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
-    "parts": ["root", "trigger", "content"],
+    "sourceFiles": [
+      "packages/ui/src/components/collapsible.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
+    "parts": [
+      "root",
+      "trigger",
+      "content"
+    ],
     "parity": {
       "baseUi": "Thin vertical covers controlled and uncontrolled disclosure state, Root/Trigger/Panel-style anatomy, trigger ARIA, data-state hooks, and hidden-until-found browser find reveal behavior. Gaps: measured height/width CSS variables, transition status metadata, and deeper browser-find coverage remain follow-up work.",
       "kobalte": "Matches Solid Root/Trigger/Content composition, controlled state, default open state, disabled guards, and stable part attributes. Gaps: create-transition parity, force-mount lifecycle depth, and additional edge-case tests remain follow-up work."
@@ -27,8 +48,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/collapsible.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/collapsible.tsx",
+      "type": "registry:ui",
+      "target": "@ui/collapsible.tsx"
     }
   ]
 }

@@ -1,24 +1,51 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "switch-field",
   "type": "registry:ui",
   "title": "SwitchField",
   "description": "TanStack Form switch field composed with Keystone Switch behavior and UI styling hooks.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0",
+    "@tanstack/solid-form@^1.29.1"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "tanstack", "selection"],
-  "keywords": ["switch-field", "switch", "field", "form", "tanstack", "keystone"],
+  "categories": [
+    "form",
+    "tanstack",
+    "selection"
+  ],
+  "keywords": [
+    "switch-field",
+    "switch",
+    "field",
+    "form",
+    "tanstack",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/switch-field",
-  "registryDependencies": ["cn", "switch", "tanstack-field"],
+  "registryDependencies": [
+    "cn",
+    "switch",
+    "tanstack-field"
+  ],
   "meta": {
-    "install": "mason add switch-field",
+    "install": "shadcn add https://keystone-ui.dev/r/switch-field.json",
     "customization": "Use ui-switch-field classes, TanStackField shell classes, Switch classes, Core data attributes, neutral data-slot hooks, switchProps, and switchClass for generated-source styling.",
-    "sourceFiles": ["packages/ui/src/default/ui/switch-field.tsx"],
-    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn", "switch", "tanstack-field"],
+    "sourceFiles": [
+      "packages/ui/src/components/switch-field.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "@tanstack/solid-form",
+      "cn",
+      "switch",
+      "tanstack-field"
+    ],
     "api": "SwitchField exports SwitchField, SwitchFieldProps, and SwitchFieldValidators. It composes TanStackField with the styled Switch item, passes validators to form.Field, derives touched error state through TanStackField, maps checked changes to boolean field.handleChange, maps blur to field.handleBlur, and forwards disabled/readOnly/required/formId to Core Switch.",
     "accessibility": "Backed by TanStackField for field relationships and by @keystone-ui/core/switch for role=switch, aria-checked, Space keyboard toggling, hidden checkbox submission, reset synchronization, and validation metadata. The switch control receives the shared Core form-control ID and ARIA props.",
     "anatomy": [
@@ -41,8 +68,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/switch-field.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/switch-field.tsx",
+      "type": "registry:ui",
+      "target": "@ui/switch-field.tsx"
     }
   ]
 }

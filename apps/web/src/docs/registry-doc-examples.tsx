@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createSignal, type JSX } from "solid-js";
 import { CircleAlert, Info, TriangleAlert } from "lucide-solid";
 import { createToastManager } from "@keystone-ui/core/toast";
 import {
@@ -6,16 +6,16 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@keystone-ui/ui/default/ui/accordion.tsx";
+} from "@keystone-ui/ui/accordion";
 import {
   Alert,
   AlertAction,
   AlertDescription,
   AlertIcon,
   AlertTitle,
-} from "@keystone-ui/ui/default/ui/alert.tsx";
-import { Badge } from "@keystone-ui/ui/default/ui/badge.tsx";
-import { Button } from "@keystone-ui/ui/default/ui/button.tsx";
+} from "@keystone-ui/ui/alert";
+import { Badge } from "@keystone-ui/ui/badge";
+import { Button } from "@keystone-ui/ui/button";
 import {
   Card,
   CardDescription,
@@ -23,8 +23,9 @@ import {
   CardHeader,
   CardPanel,
   CardTitle,
-} from "@keystone-ui/ui/default/ui/card.tsx";
-import { Checkbox } from "@keystone-ui/ui/default/ui/checkbox.tsx";
+} from "@keystone-ui/ui/card";
+import { Checkbox } from "@keystone-ui/ui/checkbox";
+import { Label } from "@keystone-ui/ui/label";
 import {
   Dialog,
   DialogClose,
@@ -35,8 +36,8 @@ import {
   DialogPanel,
   DialogTitle,
   DialogTrigger,
-} from "@keystone-ui/ui/default/ui/dialog.tsx";
-import { Input } from "@keystone-ui/ui/default/ui/input.tsx";
+} from "@keystone-ui/ui/dialog";
+import { Input } from "@keystone-ui/ui/input";
 import {
   Popover,
   PopoverContent,
@@ -45,23 +46,42 @@ import {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-} from "@keystone-ui/ui/default/ui/popover.tsx";
+} from "@keystone-ui/ui/popover";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@keystone-ui/ui/default/ui/select.tsx";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@keystone-ui/ui/default/ui/tabs.tsx";
-import { Textarea } from "@keystone-ui/ui/default/ui/textarea.tsx";
-import { Toaster } from "@keystone-ui/ui/default/ui/toast.tsx";
+} from "@keystone-ui/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@keystone-ui/ui/tabs";
+import { Textarea } from "@keystone-ui/ui/textarea";
+import { Toaster } from "@keystone-ui/ui/toast";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@keystone-ui/ui/default/ui/tooltip.tsx";
+} from "@keystone-ui/ui/tooltip";
+import type { CodeExample } from "./registry-doc-types";
+
+type DocsExampleOptions = Omit<CodeExample, "preview"> & {
+  component: () => JSX.Element;
+};
+
+function defineCodeExample(options: DocsExampleOptions): CodeExample {
+  const Component = options.component;
+
+  return {
+    code: options.code,
+    description: options.description,
+    id: options.id,
+    preview: () => <Component />,
+    title: options.title,
+    variant: options.variant,
+    ...(options.align ? { align: options.align } : {}),
+  };
+}
 
 const accordionItems = [
   {
@@ -71,7 +91,7 @@ const accordionItems = [
     title: "What is Keystone UI?",
   },
   {
-    content: "Install components with Mason, then own the generated source in your application.",
+    content: "Install components with the shadcn CLI, then own the generated source in your application.",
     id: "item-2",
     title: "How do I get started?",
   },
@@ -167,7 +187,7 @@ export function Component() {
     },
     {
       content:
-        "Install components with Mason, then own the generated source in your application.",
+        "Install components with the shadcn CLI, then own the generated source in your application.",
       id: "item-2",
       title: "How do I get started?",
     },
@@ -198,24 +218,34 @@ export const multipleAccordionCode = `import {
 } from "@/components/ui/accordion";
 
 export function Component() {
+  const items = [
+    {
+      content:
+        "Keystone UI is a source-owned Solid component system for design systems and web apps.",
+      id: "item-1",
+      title: "What is Keystone UI?",
+    },
+    {
+      content:
+        "Install components with the shadcn CLI, then own the generated source in your application.",
+      id: "item-2",
+      title: "How do I get started?",
+    },
+    {
+      content: "Yes. Components are copy-paste source backed by Keystone Core.",
+      id: "item-3",
+      title: "Can I use it for my project?",
+    },
+  ];
+
   return (
     <Accordion defaultValue={["item-1", "item-2"]} class="w-full" multiple>
-      <AccordionItem value="item-1">
-        <AccordionTrigger>What is Keystone UI?</AccordionTrigger>
-        <AccordionContent>
-          Keystone UI is a source-owned Solid component system for design systems and web apps.
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="item-2">
-        <AccordionTrigger>How do I get started?</AccordionTrigger>
-        <AccordionContent>
-          Install components with Mason, then own the generated source in your application.
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="item-3">
-        <AccordionTrigger>Can I use it for my project?</AccordionTrigger>
-        <AccordionContent>Yes. Components are copy-paste source backed by Keystone Core.</AccordionContent>
-      </AccordionItem>
+      {items.map((item) => (
+        <AccordionItem value={item.id}>
+          <AccordionTrigger>{item.title}</AccordionTrigger>
+          <AccordionContent>{item.content}</AccordionContent>
+        </AccordionItem>
+      ))}
     </Accordion>
   );
 }`;
@@ -227,29 +257,49 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 
 export function Component() {
   const [value, setValue] = createSignal<string[]>([]);
+  const items = [
+    {
+      content:
+        "Keystone UI is a source-owned Solid component system for design systems and web apps.",
+      id: "item-1",
+      title: "What is Keystone UI?",
+    },
+    {
+      content:
+        "Install components with the shadcn CLI, then own the generated source in your application.",
+      id: "item-2",
+      title: "How do I get started?",
+    },
+    {
+      content: "Yes. Components are copy-paste source backed by Keystone Core.",
+      id: "item-3",
+      title: "Can I use it for my project?",
+    },
+  ];
 
   return (
-    <Accordion value={value()} class="w-full" onValueChange={setValue}>
-      <AccordionItem value="item-1">
-        <AccordionTrigger>What is Keystone UI?</AccordionTrigger>
-        <AccordionContent>
-          Keystone UI is a source-owned Solid component system for design systems and web apps.
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="item-2">
-        <AccordionTrigger>How do I get started?</AccordionTrigger>
-        <AccordionContent>
-          Install components with Mason, then own the generated source in your application.
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="item-3">
-        <AccordionTrigger>Can I use it for my project?</AccordionTrigger>
-        <AccordionContent>Yes. Components are copy-paste source backed by Keystone Core.</AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <div class="flex w-full flex-col gap-4">
+      <Accordion value={value()} class="w-full" onValueChange={setValue}>
+        {items.map((item) => (
+          <AccordionItem value={item.id}>
+            <AccordionTrigger>{item.title}</AccordionTrigger>
+            <AccordionContent>{item.content}</AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+      <div class="flex flex-col items-start gap-4">
+        <Button onClick={() => setValue(["item-1", "item-2"])} type="button" variant="outline">
+          Open first two
+        </Button>
+        <p class="m-0 text-muted-foreground text-sm">
+          Open items: {value().length > 0 ? value().join(", ") : "None"}
+        </p>
+      </div>
+    </div>
   );
 }`;
 
@@ -274,6 +324,49 @@ export function Component() {
     </Accordion>
   );
 }`;
+
+export const singleAccordionExample = defineCodeExample({
+  code: singleAccordionCode,
+  component: SingleAccordionExample,
+  description: "A single-open accordion that starts closed.",
+  id: "single",
+  title: "Single Accordion",
+  variant: "centered",
+});
+
+export const multipleAccordionExample = defineCodeExample({
+  code: multipleAccordionCode,
+  component: MultipleAccordionExample,
+  description: "Open more than one item at a time.",
+  id: "multiple",
+  title: "Multiple Accordion",
+  variant: "centered",
+});
+
+export const controlledAccordionExample = defineCodeExample({
+  code: controlledAccordionCode,
+  component: ControlledAccordionExample,
+  description: "Drive open items from parent state.",
+  id: "controlled",
+  title: "Controlled Accordion",
+  variant: "centered",
+});
+
+export const disabledAccordionExample = defineCodeExample({
+  code: disabledAccordionCode,
+  component: DisabledItemAccordionExample,
+  description: "Disable specific items while keeping keyboard navigation.",
+  id: "disabled",
+  title: "Disabled Item",
+  variant: "centered",
+});
+
+export const accordionExamples = [
+  singleAccordionExample,
+  multipleAccordionExample,
+  controlledAccordionExample,
+  disabledAccordionExample,
+] satisfies readonly CodeExample[];
 
 export const accordionUsageCode = `import {
   Accordion,
@@ -359,7 +452,7 @@ import { TriangleAlert } from "lucide-solid";
 
 export function Component() {
   return (
-    <Alert variant="warning">
+    <Alert variant="warning" class="w-full max-w-xl">
       <AlertIcon>
         <TriangleAlert />
       </AlertIcon>
@@ -379,7 +472,7 @@ import { CircleAlert } from "lucide-solid";
 
 export function Component() {
   return (
-    <Alert variant="error">
+    <Alert variant="error" class="w-full max-w-xl">
       <AlertIcon>
         <CircleAlert />
       </AlertIcon>
@@ -401,7 +494,7 @@ import { Button } from "@/components/ui/button";
 
 export function Component() {
   return (
-    <Alert>
+    <Alert class="w-full max-w-xl">
       <AlertIcon>
         <Info />
       </AlertIcon>
@@ -429,7 +522,7 @@ import {
 
 export function Component() {
   return (
-    <Alert variant="info">
+    <Alert variant="info" class="w-full max-w-xl">
       <AlertIcon>
         <Info />
       </AlertIcon>
@@ -438,6 +531,49 @@ export function Component() {
     </Alert>
   );
 }`;
+
+export const alertWarningExample = defineCodeExample({
+  code: alertWarningExampleCode,
+  component: WarningAlertExample,
+  description: "Warning alert for important guidance that needs attention.",
+  id: "warning-alert",
+  title: "Warning Alert",
+  variant: "inline",
+});
+
+export const alertErrorExample = defineCodeExample({
+  code: alertErrorExampleCode,
+  component: ErrorAlertExample,
+  description: "Error alert for failed or blocked states.",
+  id: "error-alert",
+  title: "Error Alert",
+  variant: "inline",
+});
+
+export const alertActionExample = defineCodeExample({
+  code: alertActionExampleCode,
+  component: AlertActionExample,
+  description: "Alert composition with an icon and app-owned action buttons.",
+  id: "with-icon-and-action-buttons",
+  title: "With Icon and Action Buttons",
+  variant: "inline",
+});
+
+export const alertInfoExample = defineCodeExample({
+  code: alertInfoExampleCode,
+  component: AlertExample,
+  description: "Informational alert for neutral contextual feedback.",
+  id: "info-alert",
+  title: "Info Alert",
+  variant: "inline",
+});
+
+export const alertExamples = [
+  alertWarningExample,
+  alertErrorExample,
+  alertActionExample,
+  alertInfoExample,
+] satisfies readonly CodeExample[];
 
 export const alertUsageCode = `import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
@@ -465,7 +601,7 @@ export const buttonExampleCode = `import { Button } from "@/components/ui/button
 
 export function Component() {
   return (
-    <div class="flex flex-wrap items-center gap-3">
+    <div class="flex flex-wrap items-center justify-center gap-3">
       <Button>Save changes</Button>
       <Button variant="outline">Preview</Button>
       <Button variant="secondary">Cancel</Button>
@@ -473,6 +609,17 @@ export function Component() {
     </div>
   );
 }`;
+
+export const buttonExample = defineCodeExample({
+  code: buttonExampleCode,
+  component: ButtonExample,
+  description: "Common button variants rendered from the installable UI source.",
+  id: "variants",
+  title: "Variants",
+  variant: "inline",
+});
+
+export const buttonExamples = [buttonExample] satisfies readonly CodeExample[];
 
 export const buttonUsageCode = `import { Button } from "@/components/ui/button";
 
@@ -512,7 +659,7 @@ export const badgeExampleCode = `import { Badge } from "@/components/ui/badge";
 
 export function Component() {
   return (
-    <div class="flex flex-wrap items-center gap-2.5">
+    <div class="flex flex-wrap items-center justify-center gap-2.5 p-1">
       <Badge>Default</Badge>
       <Badge variant="info">Info</Badge>
       <Badge variant="success">Success</Badge>
@@ -528,7 +675,7 @@ export const badgeSizeExampleCode = `import { Badge } from "@/components/ui/badg
 
 export function Component() {
   return (
-    <div class="flex flex-wrap items-center gap-2.5">
+    <div class="flex flex-wrap items-center justify-center gap-2.5 p-1">
       <Badge size="sm" variant="outline">
         Small
       </Badge>
@@ -539,6 +686,26 @@ export function Component() {
     </div>
   );
 }`;
+
+export const badgeExample = defineCodeExample({
+  code: badgeExampleCode,
+  component: BadgeExample,
+  description: "Common badge variants rendered from the installable UI source.",
+  id: "variants",
+  title: "Variants",
+  variant: "inline",
+});
+
+export const badgeSizeExample = defineCodeExample({
+  code: badgeSizeExampleCode,
+  component: BadgeSizeExample,
+  description: "Badge sizes for compact labels and slightly larger metadata chips.",
+  id: "sizes",
+  title: "Sizes",
+  variant: "inline",
+});
+
+export const badgeExamples = [badgeExample, badgeSizeExample] satisfies readonly CodeExample[];
 
 export const badgeUsageCode = `import { Badge } from "@/components/ui/badge";
 
@@ -643,6 +810,17 @@ export function Component() {
   );
 }`;
 
+export const cardExample = defineCodeExample({
+  code: cardExampleCode,
+  component: CardExample,
+  description: "A project creation card with inputs, select, and footer action.",
+  id: "project-card",
+  title: "Project Card",
+  variant: "centered",
+});
+
+export const cardExamples = [cardExample] satisfies readonly CodeExample[];
+
 export const cardUsageCode = `import {
   Card,
   CardDescription,
@@ -668,31 +846,49 @@ export function Component() {
 export function CheckboxExample() {
   const [checked, setChecked] = createSignal(true);
   return (
-    <label class="flex items-center gap-3 text-sm">
+    <Label class="gap-3">
       <Checkbox checked={checked()} onCheckedChange={setChecked} />
       Enable weekly digest
-    </label>
+    </Label>
   );
 }
 
 export const checkboxExampleCode = `import { createSignal } from "solid-js";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 export function Component() {
   const [checked, setChecked] = createSignal(true);
 
   return (
-    <label class="flex items-center gap-3 text-sm">
+    <Label class="gap-3">
       <Checkbox checked={checked()} onCheckedChange={setChecked} />
       Enable weekly digest
-    </label>
+    </Label>
   );
 }`;
 
+export const checkboxExample = defineCodeExample({
+  code: checkboxExampleCode,
+  component: CheckboxExample,
+  description: "Controlled checkbox with a visible label.",
+  id: "controlled",
+  title: "Controlled Checkbox",
+  variant: "inline",
+});
+
+export const checkboxExamples = [checkboxExample] satisfies readonly CodeExample[];
+
 export const checkboxUsageCode = `import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 export function Component() {
-  return <Checkbox name="digest" defaultChecked />;
+  return (
+    <Label>
+      <Checkbox />
+      Accept terms and conditions
+    </Label>
+  );
 }`;
 
 export function DialogExample() {
@@ -749,7 +945,12 @@ import { Input } from "@/components/ui/input";
 export function Component() {
   return (
     <Dialog>
-      <DialogTrigger type="button">Open dialog</DialogTrigger>
+      <DialogTrigger
+        class="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-primary bg-primary px-3 text-primary-foreground text-sm font-medium leading-none shadow-xs/5 outline-none transition-colors hover:bg-primary/90 focus-visible:ring-3 focus-visible:ring-ring/24 sm:min-h-8"
+        type="button"
+      >
+        Open dialog
+      </DialogTrigger>
       <DialogContent class="sm:w-96">
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
@@ -777,6 +978,17 @@ export function Component() {
     </Dialog>
   );
 }`;
+
+export const dialogExample = defineCodeExample({
+  code: dialogExampleCode,
+  component: DialogExample,
+  description: "A modal dialog with title, description, body, and footer action.",
+  id: "basic",
+  title: "Basic Dialog",
+  variant: "centered",
+});
+
+export const dialogExamples = [dialogExample] satisfies readonly CodeExample[];
 
 export const dialogUsageCode = `import {
   Dialog,
@@ -873,13 +1085,23 @@ export function Component() {
 
   return (
     <Popover open={open()} onOpenChange={setOpen}>
-      <PopoverTrigger type="button">Open Popover</PopoverTrigger>
-      <PopoverContent class="w-[20rem]">
+      <PopoverTrigger
+        class="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-input bg-popover px-3 text-foreground text-sm font-medium leading-none shadow-xs/5 outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/24 sm:min-h-8"
+        type="button"
+      >
+        Open Popover
+      </PopoverTrigger>
+      <PopoverContent class="w-[18rem] sm:w-[20rem]">
         <PopoverHeader>
           <PopoverTitle>Send us feedback</PopoverTitle>
           <PopoverDescription>Let us know how we can improve.</PopoverDescription>
         </PopoverHeader>
-        <Textarea aria-label="Feedback" placeholder="How can we improve?" size="lg" />
+        <Textarea
+          aria-label="Feedback"
+          class="min-h-20"
+          placeholder="How can we improve?"
+          size="lg"
+        />
         <PopoverFooter>
           <Button class="w-full" onClick={() => setOpen(false)} type="button">
             Send feedback
@@ -889,6 +1111,17 @@ export function Component() {
     </Popover>
   );
 }`;
+
+export const popoverExample = defineCodeExample({
+  code: popoverExampleCode,
+  component: PopoverExample,
+  description: "Contextual panel with title, description, content, and footer action.",
+  id: "basic",
+  title: "Basic Popover",
+  variant: "centered",
+});
+
+export const popoverExamples = [popoverExample] satisfies readonly CodeExample[];
 
 export const popoverUsageCode = `import {
   Popover,
@@ -943,6 +1176,17 @@ export function Component() {
   );
 }`;
 
+export const selectExample = defineCodeExample({
+  code: selectExampleCode,
+  component: SelectExample,
+  description: "Single value select with three options.",
+  id: "basic",
+  title: "Basic Select",
+  variant: "centered",
+});
+
+export const selectExamples = [selectExample] satisfies readonly CodeExample[];
+
 export const selectUsageCode = `import {
   Select,
   SelectContent,
@@ -994,18 +1238,35 @@ export const tabsExampleCode = `import {
 
 export function Component() {
   return (
-    <Tabs defaultValue="overview">
+    <Tabs defaultValue="overview" class="w-full max-w-md">
       <TabsList>
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="activity">Activity</TabsTrigger>
         <TabsTrigger value="settings">Settings</TabsTrigger>
       </TabsList>
-      <TabsContent value="overview">Track the current workspace state.</TabsContent>
-      <TabsContent value="activity">Review recent changes.</TabsContent>
-      <TabsContent value="settings">Configure defaults and permissions.</TabsContent>
+      <TabsContent value="overview" class="rounded-lg border border-border p-4 text-sm">
+        Track the current workspace state.
+      </TabsContent>
+      <TabsContent value="activity" class="rounded-lg border border-border p-4 text-sm">
+        Review recent changes.
+      </TabsContent>
+      <TabsContent value="settings" class="rounded-lg border border-border p-4 text-sm">
+        Configure defaults and permissions.
+      </TabsContent>
     </Tabs>
   );
 }`;
+
+export const tabsExample = defineCodeExample({
+  code: tabsExampleCode,
+  component: TabsExample,
+  description: "Horizontal tabs with three panels.",
+  id: "basic",
+  title: "Basic Tabs",
+  variant: "centered",
+});
+
+export const tabsExamples = [tabsExample] satisfies readonly CodeExample[];
 
 export const tabsUsageCode = `import {
   Tabs,
@@ -1072,12 +1333,28 @@ export function Component() {
   return (
     <TooltipProvider delayDuration={120}>
       <Tooltip>
-        <TooltipTrigger type="button">Hover or focus</TooltipTrigger>
+        <TooltipTrigger
+          class="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-input bg-popover px-3 text-foreground text-sm font-medium leading-none shadow-xs/5 outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/24 sm:min-h-8"
+          type="button"
+        >
+          Hover or focus
+        </TooltipTrigger>
         <TooltipContent>Tooltip content follows the trigger.</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
 }`;
+
+export const tooltipExample = defineCodeExample({
+  code: tooltipExampleCode,
+  component: TooltipExample,
+  description: "Tooltip attached to a focusable trigger.",
+  id: "basic",
+  title: "Basic Tooltip",
+  variant: "inline",
+});
+
+export const tooltipExamples = [tooltipExample] satisfies readonly CodeExample[];
 
 export const tooltipUsageCode = `import {
   Tooltip,

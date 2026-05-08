@@ -1,26 +1,44 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "badge",
   "type": "registry:ui",
   "title": "Badge",
   "description": "Presentational Solid badge for inline labels, statuses, counts, and compact metadata.",
   "version": "0.1.0",
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["status", "base"],
-  "keywords": ["badge", "status", "label", "count", "metadata"],
+  "categories": [
+    "status",
+    "base"
+  ],
+  "keywords": [
+    "badge",
+    "status",
+    "label",
+    "count",
+    "metadata"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/badge",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add badge",
+    "install": "shadcn add https://keystone-ui.dev/r/badge.json",
     "customization": "Customize visual treatment through badgeClass, ui-badge classes, data-slot=badge, and data-variant/data-size attributes.",
-    "sourceFiles": ["packages/ui/src/default/ui/badge.tsx"],
-    "dependencies": ["cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/badge.tsx"
+    ],
+    "dependencies": [
+      "cn"
+    ],
     "api": "Badge supports variant default, primary, solid compatibility alias, destructive, info, success, warning, error, muted, and outline; size default, md compatibility alias, sm, and lg. It renders a span and passes through native span HTML and ARIA props.",
     "accessibility": "Badge is presentational by default and does not create a role, live region, keyboard behavior, pointer behavior, focus behavior, form behavior, or removable state. Consumers own semantic roles such as status, aria-label text for icon-only badges, and live-region announcements when a badge value changes dynamically.",
-    "anatomy": ["root"],
+    "anatomy": [
+      "root"
+    ],
     "cssVariables": [
       "--radius-sm",
       "--color-primary",
@@ -42,8 +60,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/badge.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/badge.tsx",
+      "type": "registry:ui",
+      "target": "@ui/badge.tsx"
     }
   ]
 }

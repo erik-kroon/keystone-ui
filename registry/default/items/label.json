@@ -1,23 +1,37 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "label",
   "type": "registry:ui",
   "title": "Label",
   "description": "Solid label component for form controls and field shells.",
   "version": "0.1.0",
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "base"],
-  "keywords": ["label", "field", "form"],
+  "categories": [
+    "form",
+    "base"
+  ],
+  "keywords": [
+    "label",
+    "field",
+    "form"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/label",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add label",
+    "install": "shadcn add https://keystone-ui.dev/r/label.json",
     "customization": "Style labels through ui-label and compose them into field shells when helper text or errors are needed.",
-    "sourceFiles": ["packages/ui/src/default/ui/label.tsx"],
-    "dependencies": ["cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/label.tsx"
+    ],
+    "dependencies": [
+      "cn"
+    ],
     "parity": {
       "baseUi": "Thin UI label aligns with Base UI Field Label semantics by rendering a native label and styling hook. Gaps: automatic control registration, generated for/id wiring, required marker policy, and disabled propagation remain follow-up work.",
       "kobalte": "Comparable to Kobalte form-control label composition when used inside Field. Gaps: context-driven ID registration and richer field state data are not owned by this standalone wrapper."
@@ -25,8 +39,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/label.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/label.tsx",
+      "type": "registry:ui",
+      "target": "@ui/label.tsx"
     }
   ]
 }

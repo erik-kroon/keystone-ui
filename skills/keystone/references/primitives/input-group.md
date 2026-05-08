@@ -4,10 +4,10 @@ Use this guide for input compositions with icons, prefixes, suffixes, clear butt
 
 ## Source
 
-- Input source: `packages/ui/src/default/ui/input.tsx`
-- Combobox input group source: `packages/ui/src/default/ui/combobox.tsx`
-- Text field source: `packages/ui/src/default/ui/text-field.tsx`
-- Field source: `packages/ui/src/default/ui/field.tsx`
+- Input source: `packages/ui/src/ui/input.tsx`
+- Combobox input group source: `packages/ui/src/ui/combobox.tsx`
+- Text field source: `packages/ui/src/ui/text-field.tsx`
+- Field source: `packages/ui/src/ui/field.tsx`
 - Registry items: `input`, `text-field`, `combobox`, `combobox-field`
 - Mason install: `mason add input` or the concrete field/control item
 

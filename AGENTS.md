@@ -6,7 +6,7 @@ This repository is the early Keystone UI monorepo. Treat `Keystone` as the provi
 
 - Core is the headless, accessible, unstyled primitive layer for Solid.
 - UI components are the copy-paste styled component, block, template, and app-layer source for Solid.
-- Mason is the registry and CLI layer that installs UI source.
+- UI source is distributed through a shadcn-compatible Keystone registry. Mason is internal registry tooling, not the public installer.
 - UI may depend on Core primitives; Core must not depend on UI.
 - Build depth before breadth: kernel utilities, overlays, fields/forms, then select/combobox before broad styled component catalogs.
 - UI first-party app components are TanStack-native where useful: Form for forms, Table for data tables, Store for shared app state, and Hotkeys for app-level shortcuts.
@@ -18,7 +18,7 @@ This repository is the early Keystone UI monorepo. Treat `Keystone` as the provi
 
 - Package manager: Bun (`bun@1.3.9` in `package.json`).
 - Monorepo runner: Turborepo.
-- Use the repo-local Keystone skill at [skills/keystone/SKILL.md](skills/keystone/SKILL.md) when building or changing Keystone UI components, primitives, registry source, Mason install behavior, docs examples, or shadcn/Radix-style migrations.
+- Use the repo-local Keystone skill at [skills/keystone/SKILL.md](skills/keystone/SKILL.md) when building or changing Keystone UI components, primitives, registry source, internal registry tooling, docs examples, or shadcn/Radix-style migrations.
 - Main commands:
   - `bun install`
   - `bun run dev`

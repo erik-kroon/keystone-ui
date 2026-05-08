@@ -2,6 +2,7 @@ import { splitProps, type JSX } from "solid-js";
 import { cn } from "@/lib/cn";
 
 export type InputSize = "sm" | "default" | "lg" | number;
+export type InputValue = string | number | readonly string[];
 
 type KeystoneDataAttributes = {
   "data-part"?: string;
@@ -10,6 +11,7 @@ type KeystoneDataAttributes = {
 };
 
 export type InputProps = Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "size"> & {
+  defaultValue?: InputValue;
   invalid?: boolean;
   nativeInput?: boolean;
   size?: InputSize;
@@ -18,6 +20,17 @@ export type InputProps = Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "size">
 
 const classes = (...tokens: string[]) => tokens.join(" ");
 
+function inputValue(value: InputProps["defaultValue"]) {
+  if (Array.isArray(value)) return value.join(",");
+  return value == null ? "" : String(value);
+}
+
+function assignInputRef(ref: InputProps["ref"] | undefined, element: HTMLInputElement) {
+  if (typeof ref === "function") {
+    ref(element);
+  }
+}
+
 export function Input(props: InputProps) {
   const [local, rest] = splitProps(props, [
     "aria-invalid",
@@ -25,15 +38,27 @@ export function Input(props: InputProps) {
     "data-part",
     "data-scope",
     "data-slot",
+    "defaultValue",
     "disabled",
     "invalid",
     "nativeInput",
+    "ref",
     "size",
     "type",
     "unstyled",
+    "value",
   ]);
   const size = () => local.size ?? "default";
   const invalid = () => Boolean(local.invalid || local["aria-invalid"]);
+  const setInputRef = (element: HTMLInputElement) => {
+    if (local.value === undefined && local.defaultValue !== undefined && local.type !== "file") {
+      const value = inputValue(local.defaultValue);
+      element.defaultValue = value;
+      element.value = value;
+    }
+
+    assignInputRef(local.ref, element);
+  };
   const inputClass = () =>
     cn(
       classes(
@@ -128,6 +153,7 @@ export function Input(props: InputProps) {
     >
       <input
         {...rest}
+        ref={setInputRef}
         aria-invalid={invalid() || undefined}
         disabled={local.disabled}
         data-scope={local["data-scope"] ?? "ui-input"}
@@ -135,6 +161,7 @@ export function Input(props: InputProps) {
         data-slot={local["data-slot"] ?? "input"}
         size={typeof size() === "number" ? size() : undefined}
         type={local.type}
+        value={local.value}
         class={inputClass()}
       />
     </span>

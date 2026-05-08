@@ -1,27 +1,49 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "form-submit",
   "type": "registry:ui",
   "title": "FormSubmit",
   "description": "Source-owned submit control for TanStack Form state and native form submission.",
   "version": "0.1.0",
-  "dependencies": ["@tanstack/solid-form@^1.29.1"],
+  "dependencies": [
+    "@tanstack/solid-form@^1.29.1"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "tanstack"],
-  "keywords": ["form-submit", "submit", "form", "tanstack"],
+  "categories": [
+    "form",
+    "tanstack"
+  ],
+  "keywords": [
+    "form-submit",
+    "submit",
+    "form",
+    "tanstack"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/form-submit",
-  "registryDependencies": ["cn", "tanstack-form"],
+  "registryDependencies": [
+    "cn",
+    "tanstack-form"
+  ],
   "meta": {
-    "install": "mason add form-submit",
+    "install": "shadcn add https://keystone-ui.dev/r/form-submit.json",
     "customization": "Use ui-form-submit classes, TanStackFormSubmit classes, form-state data attributes, and neutral data-slot hooks for generated-source styling.",
-    "sourceFiles": ["packages/ui/src/default/ui/form-submit.tsx"],
-    "dependencies": ["@tanstack/solid-form", "cn", "tanstack-form"],
+    "sourceFiles": [
+      "packages/ui/src/components/form-submit.tsx"
+    ],
+    "dependencies": [
+      "@tanstack/solid-form",
+      "cn",
+      "tanstack-form"
+    ],
     "api": "FormSubmit exports FormSubmit and FormSubmitProps. It exposes a stable ui-form-submit data contract, native type=submit default, optional form state binding through the form prop, native external form ownership through formId, disableWhenSubmitting, and disableWhenCannotSubmit.",
     "accessibility": "Preserves native button semantics and disabled behavior while exposing submitting and can-submit state through TanStackFormSubmit metadata.",
-    "anatomy": ["root"],
+    "anatomy": [
+      "root"
+    ],
     "state": "TanStack Form owns submitting and canSubmit state. FormSubmit reads those values from the form prop, disables while submitting and when canSubmit is false by default unless callers opt out.",
     "limitations": "Pending indicators, optimistic submission copy, server action wiring, and route mutation orchestration remain app-owned composition.",
     "parity": {
@@ -32,8 +54,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/form-submit.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/form-submit.tsx",
+      "type": "registry:ui",
+      "target": "@ui/form-submit.tsx"
     }
   ]
 }

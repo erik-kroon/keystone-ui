@@ -1,26 +1,49 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "alert",
   "type": "registry:ui",
   "title": "Alert",
   "description": "Presentational Solid alert/callout surface with semantic status and error roles.",
   "version": "0.1.0",
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["feedback", "status", "base"],
-  "keywords": ["alert", "callout", "status", "feedback", "message"],
+  "categories": [
+    "feedback",
+    "status",
+    "base"
+  ],
+  "keywords": [
+    "alert",
+    "callout",
+    "status",
+    "feedback",
+    "message"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/alert",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add alert",
+    "install": "shadcn add https://keystone-ui.dev/r/alert.json",
     "customization": "Customize tone and layout through ui-alert classes, data-variant, and the icon/title/description/action parts.",
-    "sourceFiles": ["packages/ui/src/default/ui/alert.tsx"],
-    "dependencies": ["cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/alert.tsx"
+    ],
+    "dependencies": [
+      "cn"
+    ],
     "api": "Alert accepts variant default|info|success|warning|error. Non-error variants default to role=status with aria-live=polite; error defaults to role=alert. Consumers may override role and aria-live when the message is purely decorative or already announced elsewhere.",
     "accessibility": "Alert is presentational UI with native live-region semantics instead of custom keyboard behavior: non-error variants default to role=status and error defaults to role=alert. Use AlertTitle and AlertDescription to provide a readable accessible name/description; place interactive controls in AlertAction as native buttons or links.",
-    "anatomy": ["root", "icon", "title", "description", "action"],
+    "anatomy": [
+      "root",
+      "icon",
+      "title",
+      "description",
+      "action"
+    ],
     "dataAttributes": "Root exposes data-scope=\"ui-alert\", data-part=\"root\", data-slot=\"alert\", and data-variant. Parts expose data-scope=\"ui-alert\", data-part, and data-slot=\"alert-*\".",
     "state": "No controlled or uncontrolled state contract applies; Alert is a presentational surface and all interactive state belongs to child controls supplied by the app.",
     "ssr": "SSR and hydration are stable because the component renders deterministic native elements with no effects, ids, browser APIs, portals, or measurement.",
@@ -34,8 +57,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/alert.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/alert.tsx",
+      "type": "registry:ui",
+      "target": "@ui/alert.tsx"
     }
   ]
 }

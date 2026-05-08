@@ -1,26 +1,54 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "table",
   "type": "registry:ui",
   "title": "Table",
   "description": "Presentational native table anatomy for readable data grids and TanStack Table app-layer composition.",
   "version": "0.1.0",
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["base", "table", "data"],
-  "keywords": ["table", "thead", "tbody", "caption", "tanstack-table", "data-table"],
+  "categories": [
+    "base",
+    "table",
+    "data"
+  ],
+  "keywords": [
+    "table",
+    "thead",
+    "tbody",
+    "caption",
+    "tanstack-table",
+    "data-table"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/table",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add table",
+    "install": "shadcn add https://keystone-ui.dev/r/table.json",
     "customization": "Customize the native anatomy through ui-table classes, shadcn-style data-slot values, and stable data-scope=\"ui-table\" data-part hooks.",
-    "sourceFiles": ["packages/ui/src/default/ui/table.tsx"],
-    "dependencies": ["cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/table.tsx"
+    ],
+    "dependencies": [
+      "cn"
+    ],
     "api": "Table exports TableContainer, Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, and TableCaption. Every part forwards native HTML props, class, children, and data-scope/data-part/data-slot overrides for app-layer wrappers.",
     "accessibility": "The component preserves native table, caption, thead, tbody, tfoot, tr, th, and td semantics. Consumers own caption text, header scope, aria-sort, labelled regions, selected-row announcements, and any interactive controls placed inside cells.",
-    "anatomy": ["container", "root", "caption", "header", "body", "footer", "row", "head", "cell"],
+    "anatomy": [
+      "container",
+      "root",
+      "caption",
+      "header",
+      "body",
+      "footer",
+      "row",
+      "head",
+      "cell"
+    ],
     "dataAttributes": "Defaults use data-scope=\"ui-table\" and data-part values container, root, caption, header, body, footer, row, head, and cell. data-slot values are table-container, table, table-caption, table-header, table-body, table-footer, table-row, table-head, and table-cell. App-layer components may override those attributes while retaining native elements and classes.",
     "state": "No controlled or uncontrolled state. Sorting, filtering, pagination, selection, column visibility, and row identity belong to app-layer engines such as TanStack Table or to host application state.",
     "ssr": "Renders deterministic native markup with no browser globals, effects, generated IDs, or hydration-sensitive state.",
@@ -33,8 +61,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/table.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/table.tsx",
+      "type": "registry:ui",
+      "target": "@ui/table.tsx"
     }
   ]
 }

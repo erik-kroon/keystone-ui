@@ -1,30 +1,64 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "group",
   "type": "registry:ui",
   "title": "Group",
   "description": "Source-owned grouped control and content container for compact horizontal, vertical, attached, and inset UI composition.",
   "version": "0.1.0",
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["layout", "base", "actions"],
-  "keywords": ["group", "button-group", "control-group", "attached", "inset", "dense"],
+  "categories": [
+    "layout",
+    "base",
+    "actions"
+  ],
+  "keywords": [
+    "group",
+    "button-group",
+    "control-group",
+    "attached",
+    "inset",
+    "dense"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/group",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add group",
+    "install": "shadcn add https://keystone-ui.dev/r/group.json",
     "customization": "Customize the generated source through ui-group classes, data-variant, data-orientation, data-size, data-slot values, and stable data-scope/data-part hooks. Attached styling targets child button, input-control, and group-item slots without owning child behavior.",
-    "sourceFiles": ["packages/ui/src/default/ui/group.tsx"],
-    "dependencies": ["cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/group.tsx"
+    ],
+    "dependencies": [
+      "cn"
+    ],
     "api": "Group exports Group, GroupItem, GroupLabel, and GroupDescription. Group accepts orientation horizontal/vertical, variant default/attached/inset, size sm/default/lg, and disabled/invalid/selected props that project data attributes for styling only.",
     "accessibility": "Group is presentational by default and does not create keyboard, focus, label, or form semantics. Add role=group with aria-label or aria-labelledby when the grouping needs an accessible name. Labels and descriptions are visual composition parts unless the consumer wires them with native ARIA attributes.",
-    "anatomy": ["root", "item", "label", "description"],
+    "anatomy": [
+      "root",
+      "item",
+      "label",
+      "description"
+    ],
     "variants": {
-      "orientation": ["horizontal", "vertical"],
-      "variant": ["default", "attached", "inset"],
-      "size": ["sm", "default", "lg"]
+      "orientation": [
+        "horizontal",
+        "vertical"
+      ],
+      "variant": [
+        "default",
+        "attached",
+        "inset"
+      ],
+      "size": [
+        "sm",
+        "default",
+        "lg"
+      ]
     },
     "statePassThrough": "disabled, invalid, and selected project data-disabled, data-invalid, and data-selected on the root for parent-state styling. They do not disable, validate, select, or change nested controls; child Button, Input, Field, Toolbar, or custom controls own their native and ARIA behavior.",
     "composition": "Use Group for compact related controls, segmented metadata, attached buttons and inputs, and small inset clusters. Use FieldGroup for form labelling/validation structure, Toolbar for roving-focus toolbars, and Card for larger content surfaces with header/content/footer anatomy.",
@@ -47,8 +81,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/group.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/group.tsx",
+      "type": "registry:ui",
+      "target": "@ui/group.tsx"
     }
   ]
 }

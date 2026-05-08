@@ -2,12 +2,17 @@ import path from "node:path";
 import { z } from "zod";
 
 export const registryItemTypes = [
+  "registry:base",
   "registry:ui",
+  "registry:component",
   "registry:block",
+  "registry:font",
   "registry:hook",
   "registry:lib",
   "registry:theme",
+  "registry:style",
   "registry:page",
+  "registry:item",
   "registry:template",
   "registry:config",
   "registry:rule",
@@ -17,12 +22,15 @@ export const registryItemTypes = [
 
 export const installSupportedItemTypes = [
   "registry:ui",
+  "registry:component",
   "registry:block",
   "registry:hook",
   "registry:lib",
   "registry:theme",
+  "registry:style",
   "registry:config",
   "registry:file",
+  "registry:item",
 ] as const;
 
 export const targetRequiredFileTypes = [

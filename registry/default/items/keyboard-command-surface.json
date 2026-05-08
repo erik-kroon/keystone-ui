@@ -1,5 +1,5 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "keyboard-command-surface",
   "type": "registry:block",
   "title": "KeyboardCommandSurfaceBlock",
@@ -11,10 +11,17 @@
     "@tanstack/solid-store@^0.11.0"
   ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["command", "workspace", "keyboard", "data-dense", "block"],
+  "categories": [
+    "command",
+    "workspace",
+    "keyboard",
+    "data-dense",
+    "block"
+  ],
   "keywords": [
     "keyboard-command-surface",
     "command-surface",
@@ -24,9 +31,13 @@
     "data-dense"
   ],
   "docs": "https://keystone-ui.dev/docs/blocks/keyboard-command-surface",
-  "registryDependencies": ["cn", "command-menu", "shortcut-display"],
+  "registryDependencies": [
+    "cn",
+    "command-menu",
+    "shortcut-display"
+  ],
   "meta": {
-    "install": "mason add keyboard-command-surface",
+    "install": "shadcn add https://keystone-ui.dev/r/keyboard-command-surface.json",
     "fileTree": "Installs keyboard-command-surface.tsx as user-owned source under src/components/blocks/keyboard-command-surface.tsx.",
     "dependencies": [
       "@keystone-ui/core",
@@ -42,7 +53,9 @@
     "dataAttributes": "Stable styling hooks use data-scope=\"ui-block\" and data-part values for keyboard-command-surface, command-surface-header, command-surface-grid, command-surface-list, command-row, command-surface-shortcuts, shortcut-row, and command-surface-status.",
     "customization": "Replace the default command data with route, table, panel, or editor commands. Keep CommandMenu as the interactive command surface and ShortcutDisplay as display-only markup unless the app needs a different installed UI item.",
     "limitations": "This block does not include nested command pages, fuzzy ranking, async command discovery, route prefetching, persisted shortcut preferences, or conflict resolution. Those stay app-owned or belong to specialized UI items.",
-    "sourceFiles": ["packages/ui/src/default/blocks/keyboard-command-surface.tsx"],
+    "sourceFiles": [
+      "packages/ui/src/blocks/keyboard-command-surface.tsx"
+    ],
     "parity": {
       "baseUi": "Primitive behavior is inherited through CommandMenu, which leans on Keystone Command for Base UI-style input/listbox focus, highlighted item state, disabled skipping, portal positioning, and dismissal. This block only adds source-owned workspace composition around it.",
       "kobalte": "Composition follows Solid-friendly command data and compound UI parts through CommandMenu, with grouped list semantics and display-only shortcut pieces that remain easy to inspect and replace.",
@@ -53,7 +66,7 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/blocks/keyboard-command-surface.tsx",
+      "path": "packages/ui/src/blocks/keyboard-command-surface.tsx",
       "type": "registry:block",
       "target": "src/components/blocks/keyboard-command-surface.tsx"
     }

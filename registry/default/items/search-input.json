@@ -1,26 +1,50 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "search-input",
   "type": "registry:ui",
   "title": "SearchInput",
   "description": "Native Solid search input with search icon, optional clear button, loading state, and input-control styling hooks.",
   "version": "0.1.0",
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "base", "navigation"],
-  "keywords": ["search-input", "search", "filter", "input", "topbar", "command"],
+  "categories": [
+    "form",
+    "base",
+    "navigation"
+  ],
+  "keywords": [
+    "search-input",
+    "search",
+    "filter",
+    "input",
+    "topbar",
+    "command"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/search-input",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add search-input",
+    "install": "shadcn add https://keystone-ui.dev/r/search-input.json",
     "customization": "Use ui-search-input classes and data-slot hooks for root, icon, input, loading-indicator, and clear button styling. Compose it into command triggers, table filters, topbars, and docs search without adopting a command primitive.",
-    "sourceFiles": ["packages/ui/src/default/ui/search-input.tsx"],
-    "dependencies": ["cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/search-input.tsx"
+    ],
+    "dependencies": [
+      "cn"
+    ],
     "api": "SearchInput is a native type=search input with size sm/default/lg, invalid, loading, loadingLabel, clearable, clearLabel, onClear, rootClass, and inputClass. It accepts normal input attributes except type and native size.",
     "accessibility": "SearchInput preserves the native input as the focus target, keeps the icon decorative, exposes loading as role=status, gives the clear button an accessible name, and runs onClear before internal clearing so event.preventDefault can take over.",
-    "anatomy": ["root", "icon", "input", "loading-indicator", "clear"],
+    "anatomy": [
+      "root",
+      "icon",
+      "input",
+      "loading-indicator",
+      "clear"
+    ],
     "cssVariables": [
       "--radius-lg",
       "--color-input",
@@ -39,8 +63,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/search-input.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/search-input.tsx",
+      "type": "registry:ui",
+      "target": "@ui/search-input.tsx"
     }
   ]
 }

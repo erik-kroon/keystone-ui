@@ -1,19 +1,34 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "invoice-dashboard",
   "type": "registry:block",
   "title": "InvoiceDashboardBlock",
   "description": "Multi-file invoice workspace block composed from Keystone UI source and TanStack app components.",
   "version": "0.1.0",
-  "dependencies": ["@tanstack/solid-form@^1.29.1", "@tanstack/solid-table@^8.21.3"],
+  "dependencies": [
+    "@tanstack/solid-form@^1.29.1",
+    "@tanstack/solid-table@^8.21.3"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
+    "registryTooling": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.9 <2.0.0",
     "tanstack-form": ">=1.29.0 <2.0.0",
-    "tanstack-table": ">=8.21.0 <9.0.0"
+    "tanstack-table": ">=8.21.0 <9.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["dashboard", "form", "table", "block"],
-  "keywords": ["invoice-dashboard", "dashboard", "settings", "data-table", "tanstack-form"],
+  "categories": [
+    "dashboard",
+    "form",
+    "table",
+    "block"
+  ],
+  "keywords": [
+    "invoice-dashboard",
+    "dashboard",
+    "settings",
+    "data-table",
+    "tanstack-form"
+  ],
   "docs": "https://keystone-ui.dev/docs/blocks/invoice-dashboard",
   "registryDependencies": [
     "badge",
@@ -28,7 +43,7 @@
     "toast"
   ],
   "meta": {
-    "install": "mason add invoice-dashboard",
+    "install": "shadcn add https://keystone-ui.dev/r/invoice-dashboard.json",
     "fileTree": "Installs invoice-dashboard.tsx, invoice-dashboard-columns.tsx, and invoice-dashboard-data.ts as user-owned source under src/components/blocks/invoice-dashboard/.",
     "dependencies": [
       "@tanstack/solid-form",
@@ -45,11 +60,11 @@
       "toast"
     ],
     "customization": "Replace the sample invoice data with route loader or app-store data, adjust columns in invoice-dashboard-columns.tsx, and wire submit/toast actions to real mutations.",
-    "frameworkAssumptions": "Designed for Solid apps using the Mason default @ alias, Tailwind-compatible class tokens, TanStack Form, and TanStack Table.",
+    "frameworkAssumptions": "Designed for Solid apps using the shadcn components.json aliases, Tailwind-compatible class tokens, TanStack Form, and TanStack Table.",
     "sourceFiles": [
-      "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard.tsx",
-      "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard-columns.tsx",
-      "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard-data.ts"
+      "packages/ui/src/blocks/invoice-dashboard/invoice-dashboard.tsx",
+      "packages/ui/src/blocks/invoice-dashboard/invoice-dashboard-columns.tsx",
+      "packages/ui/src/blocks/invoice-dashboard/invoice-dashboard-data.ts"
     ],
     "interactions": "Representative workflow covers command menu launch, draft creation form validation/submission, toast feedback, table sorting/filtering/pagination, and row actions.",
     "parity": {
@@ -61,17 +76,17 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard.tsx",
+      "path": "packages/ui/src/blocks/invoice-dashboard/invoice-dashboard.tsx",
       "type": "registry:block",
       "target": "src/components/blocks/invoice-dashboard/invoice-dashboard.tsx"
     },
     {
-      "path": "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard-columns.tsx",
+      "path": "packages/ui/src/blocks/invoice-dashboard/invoice-dashboard-columns.tsx",
       "type": "registry:block",
       "target": "src/components/blocks/invoice-dashboard/invoice-dashboard-columns.tsx"
     },
     {
-      "path": "packages/ui/src/default/blocks/invoice-dashboard/invoice-dashboard-data.ts",
+      "path": "packages/ui/src/blocks/invoice-dashboard/invoice-dashboard-data.ts",
       "type": "registry:block",
       "target": "src/components/blocks/invoice-dashboard/invoice-dashboard-data.ts"
     }

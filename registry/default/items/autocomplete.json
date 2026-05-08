@@ -1,24 +1,43 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "autocomplete",
   "type": "registry:ui",
   "title": "Autocomplete",
   "description": "Styled Solid autocomplete component backed by Keystone combobox behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "listbox", "autocomplete"],
-  "keywords": ["autocomplete", "combobox", "listbox", "keystone"],
+  "categories": [
+    "form",
+    "listbox",
+    "autocomplete"
+  ],
+  "keywords": [
+    "autocomplete",
+    "combobox",
+    "listbox",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/autocomplete",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add autocomplete",
+    "install": "shadcn add https://keystone-ui.dev/r/autocomplete.json",
     "customization": "Style the generated wrappers through ui-autocomplete classes while Core owns input/listbox roles, selection, form value, and positioning.",
-    "sourceFiles": ["packages/ui/src/default/ui/autocomplete.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/autocomplete.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
     "parity": {
       "baseUi": "Thin vertical reuses Keystone combobox behavior for input/listbox roles, controlled value surface, option highlighting, selection, form value, and floating positioning. Gaps: Base UI depth around filtering orchestration, inline completion, detached triggers, grouped collections, virtualized lists, scroll buttons, and advanced pointer/touch behavior remain follow-up work.",
       "kobalte": "Matches the Solid composition direction of Combobox/Listbox/Popper primitives with UI-owned styling. Gaps: richer collection APIs, multi-select, async filtering helpers, hidden select parity, robust typeahead edge cases, and form reset coverage remain follow-up work."
@@ -26,8 +45,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/autocomplete.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/autocomplete.tsx",
+      "type": "registry:ui",
+      "target": "@ui/autocomplete.tsx"
     }
   ]
 }

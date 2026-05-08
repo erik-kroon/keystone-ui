@@ -1,24 +1,42 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "dialog",
   "type": "registry:ui",
   "title": "Dialog",
   "description": "Styled Solid dialog component backed by Keystone overlay behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["overlay", "feedback"],
-  "keywords": ["dialog", "modal", "overlay", "keystone"],
+  "categories": [
+    "overlay",
+    "feedback"
+  ],
+  "keywords": [
+    "dialog",
+    "modal",
+    "overlay",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/dialog",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add dialog",
+    "install": "shadcn add https://keystone-ui.dev/r/dialog.json",
     "customization": "Style the generated wrappers through ui-dialog classes while Keystone keeps focus, dismissal, layering, and ARIA behavior.",
-    "sourceFiles": ["packages/ui/src/default/ui/dialog.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/dialog.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
     "api": "Dialog exports Dialog, DialogTrigger, DialogPortal, DialogBackdrop, DialogPositioner, DialogContent, DialogPanel, DialogHeader, DialogFooter, DialogTitle, DialogDescription, DialogClose, and DialogPrimitive. DialogContent composes portal, backdrop, positioner, content, an optional close button, mobile bottom-stick behavior, and class escape hatches while Core owns open state, modal behavior, focus, dismissal, presence, and ARIA.",
     "accessibility": "Backed by @keystone-ui/core/dialog for role=dialog, aria-modal, title and description relationships, controlled and uncontrolled open state, Escape and outside dismissal, focus entry, focus trap, focus restore, modal outside hiding, scroll lock, preventable events, and hidden force-mounted content semantics.",
     "anatomy": [
@@ -54,8 +72,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/dialog.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/dialog.tsx",
+      "type": "registry:ui",
+      "target": "@ui/dialog.tsx"
     }
   ]
 }

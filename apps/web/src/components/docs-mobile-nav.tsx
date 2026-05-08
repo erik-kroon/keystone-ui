@@ -6,7 +6,7 @@ import {
   SheetPanel,
   SheetTitle,
   SheetTrigger,
-} from "@keystone-ui/ui/default/ui/sheet.tsx";
+} from "@keystone-ui/ui/sheet";
 
 import type { NavGroup } from "@/lib/docs-data";
 

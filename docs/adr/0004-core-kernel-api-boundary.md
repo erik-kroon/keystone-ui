@@ -54,7 +54,7 @@ The end-state boundary is:
    - `Popper` and `createPopper` for low-level positioning without disclosure
      state, dismissal, focus management, portals, roles, or overlay stack APIs.
    - `Direction`, `Locale`, and `LiveAnnouncer` provider/creator surfaces.
-   - Metadata getters and metadata types used by docs and Mason registry
+   - Metadata getters and metadata types used by docs and registry
      validation.
 
 3. Public low-level form support:

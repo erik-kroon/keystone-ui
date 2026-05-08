@@ -1,24 +1,44 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "field-array",
   "type": "registry:ui",
   "title": "FieldArray",
   "description": "TanStack Form array field adapter with Solid Index rendering, array actions, validation message wiring, and source-owned UI anatomy.",
   "version": "0.1.0",
-  "dependencies": ["@tanstack/solid-form@^1.29.1"],
+  "dependencies": [
+    "@tanstack/solid-form@^1.29.1"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "tanstack"],
-  "keywords": ["field-array", "array", "form", "tanstack"],
+  "categories": [
+    "form",
+    "tanstack"
+  ],
+  "keywords": [
+    "field-array",
+    "array",
+    "form",
+    "tanstack"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/field-array",
-  "registryDependencies": ["cn", "form-message"],
+  "registryDependencies": [
+    "cn",
+    "form-message"
+  ],
   "meta": {
-    "install": "mason add field-array",
+    "install": "shadcn add https://keystone-ui.dev/r/field-array.json",
     "customization": "Style generated array roots, labels, item containers, empty states, messages, and action controls through ui-field-array classes, state data attributes, and neutral data-slot hooks.",
-    "sourceFiles": ["packages/ui/src/default/ui/field-array.tsx"],
-    "dependencies": ["@tanstack/solid-form", "cn", "form-message"],
+    "sourceFiles": [
+      "packages/ui/src/components/field-array.tsx"
+    ],
+    "dependencies": [
+      "@tanstack/solid-form",
+      "cn",
+      "form-message"
+    ],
     "api": "FieldArray exports FieldArray, FieldArrayItems, FieldArrayItem, FieldArrayAdd, FieldArrayRemove, FieldArrayMove, FieldArrayApi, FieldArrayFormApi, FieldArrayRenderContext, and prop types. FieldArray renders form.Field with mode=\"array\", passes items, count, field, add, remove, swap, move, itemName, invalid, and firstError to children, and supports defaultValue for add actions.",
     "accessibility": "The root renders role=group with optional aria-labelledby, aria-describedby, aria-invalid, description, and FormMessage-backed alert output. Action helpers default to type=button so array mutations do not submit the form.",
     "anatomy": [
@@ -46,8 +66,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/field-array.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/field-array.tsx",
+      "type": "registry:ui",
+      "target": "@ui/field-array.tsx"
     }
   ]
 }

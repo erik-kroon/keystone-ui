@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Superseded by [ADR 0005: Shadcn Registry Distribution](../adr/0005-shadcn-registry-distribution.md)
 
 ## Date
 
@@ -15,6 +15,16 @@ Draft
 - [RFC: Core API](core-api.md)
 
 ## Summary
+
+This RFC is retained as historical and internal-tooling context. It no longer defines the public install path for Keystone UI source.
+
+The accepted direction is:
+
+- Keystone Core primitives are distributed through the npm package `@keystone-ui/core`.
+- Keystone styled UI source is distributed through a shadcn-compatible Keystone registry.
+- Mason is internal registry tooling only, useful for validation, dependency graph checks, path safety experiments, docs support, and future migration research.
+
+The sections below describe the older Mason public CLI plan and should not be used as current public installation guidance.
 
 UI is the Solid-native copy-paste registry and CLI layer for Core-backed UI.
 

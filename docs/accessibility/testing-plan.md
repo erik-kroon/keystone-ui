@@ -60,9 +60,9 @@ A stable Core primitive requires:
 - Manual screen-reader testing on the supported assistive technology matrix.
 - Documented known limitations, if any.
 
-### Mason Registry Item
+### Registry Item
 
-A Mason registry item requires:
+A first-party shadcn-compatible registry item requires:
 
 - Core imports for primitive behavior when a Core primitive exists.
 - No local reimplementation of focus traps, dismissable layers, roving focus, typeahead, select, combobox, or dialog behavior.

@@ -1,26 +1,58 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "tabs",
   "type": "registry:ui",
   "title": "Tabs",
   "description": "Styled Solid tabs component backed by Keystone tablist, trigger, and panel behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["navigation", "disclosure", "layout"],
-  "keywords": ["tabs", "tablist", "tabpanel", "navigation", "keystone"],
+  "categories": [
+    "navigation",
+    "disclosure",
+    "layout"
+  ],
+  "keywords": [
+    "tabs",
+    "tablist",
+    "tabpanel",
+    "navigation",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/tabs",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add tabs",
+    "install": "shadcn add https://keystone-ui.dev/r/tabs.json",
     "customization": "Style the generated wrappers through ui-tabs classes while Keystone keeps tablist roles, selection state, keyboard navigation, ARIA relationships, measured indicator variables, dynamic trigger removal fallback, panel focus heuristics, and data attributes.",
-    "sourceFiles": ["packages/ui/src/default/ui/tabs.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
-    "anatomy": ["Tabs", "TabsList", "TabsTrigger", "TabsIndicator", "TabsContent"],
-    "parts": ["root", "list", "trigger", "indicator", "content"],
+    "sourceFiles": [
+      "packages/ui/src/components/tabs.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
+    "anatomy": [
+      "Tabs",
+      "TabsList",
+      "TabsTrigger",
+      "TabsIndicator",
+      "TabsContent"
+    ],
+    "parts": [
+      "root",
+      "list",
+      "trigger",
+      "indicator",
+      "content"
+    ],
     "cssVariables": [
       "--keystone-tabs-indicator-x",
       "--keystone-tabs-indicator-y",
@@ -40,8 +72,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/tabs.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/tabs.tsx",
+      "type": "registry:ui",
+      "target": "@ui/tabs.tsx"
     }
   ]
 }

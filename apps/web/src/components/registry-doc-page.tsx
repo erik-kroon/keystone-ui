@@ -30,7 +30,7 @@ import type {
 } from "../docs/registry-doc-types";
 import { componentMaturity, findDocItem, itemToc, type DocsPage } from "@/lib/docs-data";
 import type { RegistryDocItem } from "@/lib/registry-docs.gen";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@keystone-ui/ui/default/ui/tabs.tsx";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@keystone-ui/ui/tabs";
 
 const pageHeaderActionClass =
   "!h-7 !min-h-7 gap-1 rounded-md px-2 text-sm shadow-none sm:!h-6 sm:!min-h-6 sm:text-xs [&>svg]:size-4 [&>svg]:opacity-80 sm:[&>svg]:size-3.5";
@@ -265,28 +265,32 @@ function isCodeColumn(column: string) {
 function InstallationSection(props: Readonly<{ install: string; item: RegistryDocItem }>) {
   const [mode, setMode] = createSignal<"cli" | "manual">("cli");
   const [manager, setManager] = createSignal<"bun" | "npm" | "pnpm" | "yarn">("bun");
-  const packageName = () => props.install.replace(/^mason add\s+/, "");
+  const registryRef = () =>
+    props.install.replace(/^(?:mason|shadcn) add\s+/, "") ||
+    `https://keystone-ui.dev/r/${props.item.name}.json`;
 
   const cliCommands = () => {
-    const name = packageName();
+    const ref = registryRef();
     return {
-      bun: `bunx mason add ${name}`,
-      npm: `npx -y mason add ${name}`,
-      pnpm: `pnpm dlx mason add ${name}`,
-      yarn: `yarn dlx mason add ${name}`,
+      bun: `bunx shadcn@latest add ${ref}`,
+      npm: `npx shadcn@latest add ${ref}`,
+      pnpm: `pnpm dlx shadcn@latest add ${ref}`,
+      yarn: `yarn dlx shadcn@latest add ${ref}`,
     };
   };
 
   const manualInstructions = () =>
     [
-      "# Copy source files from the registry default source path.",
-      ...props.item.sourceFiles.map((file) => `cp ${file} ${manualTargetRoot(props.item)}`),
+      "# Copy source files from the registry source path to the shadcn target path.",
+      ...props.item.files.map(
+        (file) => `cp ${file.path} ${file.target ?? manualTargetRoot(props.item)}`,
+      ),
       "# Install runtime dependencies in your app.",
       runtimeDependencyCommand(props.item),
       "",
-      "# If your app uses local registry mode:",
+      "# If your app uses local registry mode, build the registry and add the generated item.",
       props.item.registryDependencies.length
-        ? `mason add ${packageName()} --registry <path-to-keystone>/registry/default`
+        ? `pnpm dlx shadcn@latest add <path-to-keystone>/apps/web/public/r/${props.item.name}.json`
         : "No extra registry dependencies were declared.",
     ].join("\n");
 

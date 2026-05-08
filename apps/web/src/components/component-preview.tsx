@@ -5,23 +5,23 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@keystone-ui/ui/default/ui/accordion.tsx";
+} from "@keystone-ui/ui/accordion";
 import {
   Alert,
   AlertDescription,
   AlertIcon,
   AlertTitle,
-} from "@keystone-ui/ui/default/ui/alert.tsx";
-import { Badge as KeystoneBadge } from "@keystone-ui/ui/default/ui/badge.tsx";
-import { Button } from "@keystone-ui/ui/default/ui/button.tsx";
+} from "@keystone-ui/ui/alert";
+import { Badge as KeystoneBadge } from "@keystone-ui/ui/badge";
+import { Button } from "@keystone-ui/ui/button";
 import {
   Card,
   CardDescription,
   CardHeader,
   CardPanel,
   CardTitle,
-} from "@keystone-ui/ui/default/ui/card.tsx";
-import { Input } from "@keystone-ui/ui/default/ui/input.tsx";
+} from "@keystone-ui/ui/card";
+import { Input } from "@keystone-ui/ui/input";
 
 import { Badge } from "@/components/docs-shell";
 import type { RegistryDocItem } from "@/lib/registry-docs.gen";
@@ -33,7 +33,7 @@ const accordionItems = [
     title: "What is Keystone UI?",
   },
   {
-    content: "Install components with Mason, then edit the generated source in your app.",
+    content: "Install components with the shadcn CLI, then edit the generated source in your app.",
     id: "item-2",
     title: "How do I get started?",
   },

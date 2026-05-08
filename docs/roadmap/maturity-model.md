@@ -139,16 +139,16 @@ Stable status requires closing or explicitly deferring the relevant API, browser
 
 ## UI Labels
 
-Mason registry items should use the same labels, but the evidence is different:
+First-party registry items should use the same labels, but the evidence is different:
 
-- Registry validation and dependency resolution.
+- Shadcn-compatible registry payload validation and dependency resolution.
 - Generated app typecheck/build.
 - Source readability.
 - Keystone delegation where behavior is primitive-owned.
 - TanStack integration correctness where app engines are used.
 - Metadata completeness, including parity notes.
 
-Data-dense UI items remain experimental until the underlying Core kernels and Mason registry lifecycle are mature enough to support them.
+Data-dense UI items remain experimental until the underlying Core kernels and registry payload lifecycle are mature enough to support them.
 
 ## Backlog Milestones
 

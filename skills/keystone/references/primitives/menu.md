@@ -4,7 +4,7 @@ Use this guide for action menus, row actions, toolbar menus, and trigger-based c
 
 ## Source
 
-- UI source: `packages/ui/src/default/ui/menu.tsx`
+- UI source: `packages/ui/src/ui/menu.tsx`
 - Core primitive: `@keystone-ui/core/menu`
 - Registry item: `registry/default/items/menu.json`
 - Mason install: `mason add menu`

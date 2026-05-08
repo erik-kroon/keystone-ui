@@ -67,6 +67,7 @@ export function createListCollectionManager<T extends CollectionItem>(
 
   const highlightItem = (item: T | undefined) => {
     activeDescendant.setHighlightedValue(item?.value);
+    scrollItemIntoView(item);
     return item;
   };
 
@@ -122,4 +123,14 @@ export function createListCollectionManager<T extends CollectionItem>(
     setHighlightedValue: activeDescendant.setHighlightedValue,
     typeahead,
   };
+}
+
+function scrollItemIntoView<T extends CollectionItem>(item: T | undefined) {
+  const element = item?.element?.();
+
+  if (!element || typeof element.scrollIntoView !== "function") {
+    return;
+  }
+
+  element.scrollIntoView({ block: "nearest", inline: "nearest" });
 }

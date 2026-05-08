@@ -1,24 +1,52 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "slider-field",
   "type": "registry:ui",
   "title": "SliderField",
   "description": "TanStack Form slider field composed with Keystone Slider behavior and UI styling hooks.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0",
+    "@tanstack/solid-form@^1.29.1"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "tanstack", "range"],
-  "keywords": ["slider-field", "slider", "range", "field", "form", "tanstack", "keystone"],
+  "categories": [
+    "form",
+    "tanstack",
+    "range"
+  ],
+  "keywords": [
+    "slider-field",
+    "slider",
+    "range",
+    "field",
+    "form",
+    "tanstack",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/slider-field",
-  "registryDependencies": ["cn", "slider", "tanstack-field"],
+  "registryDependencies": [
+    "cn",
+    "slider",
+    "tanstack-field"
+  ],
   "meta": {
-    "install": "mason add slider-field",
+    "install": "shadcn add https://keystone-ui.dev/r/slider-field.json",
     "customization": "Use ui-slider-field classes, TanStackField shell classes, Slider classes, Core data attributes, neutral data-slot hooks, sliderProps, trackProps, thumbProps, hiddenInputProps, and class escape hatches.",
-    "sourceFiles": ["packages/ui/src/default/ui/slider-field.tsx"],
-    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn", "slider", "tanstack-field"],
+    "sourceFiles": [
+      "packages/ui/src/components/slider-field.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "@tanstack/solid-form",
+      "cn",
+      "slider",
+      "tanstack-field"
+    ],
     "api": "SliderField exports SliderField, SliderFieldProps, and SliderFieldValidators. It composes TanStackField with Keystone Slider, passes validators to form.Field, maps readonly number array values to field.handleChange, maps value commit and blur to field.handleBlur, renders one thumb and hidden input per value, and forwards disabled/readOnly/required/formId.",
     "accessibility": "Backed by TanStackField for field relationships and by @keystone-ui/core/slider for thumb ARIA, orientation, keyboard/pointer range behavior, hidden input serialization, reset support, min/max/step, invalid/read-only/required state, and data attributes.",
     "anatomy": [
@@ -42,8 +70,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/slider-field.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/slider-field.tsx",
+      "type": "registry:ui",
+      "target": "@ui/slider-field.tsx"
     }
   ]
 }

@@ -1,22 +1,36 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "sidebar-store",
   "type": "registry:ui",
   "title": "SidebarStore",
   "description": "TanStack Store-backed Solid sidebar app state with desktop/mobile open state, active item tracking, persistence, media-query sync, and keyboard toggling.",
   "version": "0.1.0",
-  "dependencies": ["@tanstack/solid-store@^0.11.0"],
+  "dependencies": [
+    "@tanstack/solid-store@^0.11.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["store", "sidebar", "tanstack", "layout"],
-  "keywords": ["sidebar", "app-shell", "tanstack-store", "solid", "keyboard"],
+  "categories": [
+    "store",
+    "sidebar",
+    "tanstack",
+    "layout"
+  ],
+  "keywords": [
+    "sidebar",
+    "app-shell",
+    "tanstack-store",
+    "solid",
+    "keyboard"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/sidebar-store",
-  "filesRoot": "packages/ui/src/default/stores",
+  "filesRoot": "packages/ui/src/stores",
   "targetRoot": "src/stores",
   "meta": {
-    "install": "mason add sidebar-store",
+    "install": "shadcn add https://keystone-ui.dev/r/sidebar-store.json",
     "api": "createSidebarStore returns a TanStack Store plus Solid accessors and actions for open, openMobile, isMobile, state, activeItemId, setOpen, setOpenMobile, setIsMobile, setActiveItemId, expand, collapse, and toggle. SidebarProvider provides optional context through useSidebarStore.",
     "state": "Tracks desktop open state separately from mobile open state. state resolves to expanded or collapsed from desktop open state, while toggle targets openMobile whenever the configured media query is active.",
     "controlled": "SidebarProvider accepts open and onOpenChange for controlled desktop state. Without open, the store is uncontrolled and persists desktop open state through localStorage.",
@@ -25,8 +39,12 @@
     "dataAttributes": "The store does not render DOM. Generated sidebar UI should project state through stable data-scope/data-part hooks and data-state values such as expanded/collapsed.",
     "ssr": "No browser globals are read while creating the store. mountSidebarStore performs localStorage, matchMedia, and keydown registration after mount.",
     "limitations": "This item intentionally owns shared app shell state only. The visual Sidebar registry item composes this store for source-owned aside/nav/button/link anatomy. Focus trapping and drawer dismissal remain app composition concerns unless future Core overlay composition is explicitly needed.",
-    "sourceFiles": ["packages/ui/src/default/stores/sidebar-store.tsx"],
-    "dependencies": ["@tanstack/solid-store"],
+    "sourceFiles": [
+      "packages/ui/src/stores/sidebar-store.tsx"
+    ],
+    "dependencies": [
+      "@tanstack/solid-store"
+    ],
     "parity": {
       "tanstackStore": "Uses TanStack Store for reusable app-shell state with Solid accessors and actions, keeping layout coordination in the UI app layer.",
       "shadcn": "Adapts shadcn sidebar state ideas: provider plus hook ergonomics, desktop and mobile open state, collapsed/expanded state, persistence, media query awareness, and Mod+B toggling. Keystone differs by shipping store source separately from the visual sidebar component."
@@ -34,8 +52,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/stores/sidebar-store.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/stores/sidebar-store.tsx",
+      "type": "registry:ui",
+      "target": "@components/stores/sidebar-store.tsx"
     }
   ]
 }

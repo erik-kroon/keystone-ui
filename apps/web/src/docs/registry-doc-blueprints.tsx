@@ -25,40 +25,7 @@ export const componentDocsOverrides = {
         description: "Panel region rendered under a trigger with keyboard and state support.",
       },
     ],
-    examples: [
-      {
-        code: examples.singleAccordionCode,
-        description: "A single-open accordion that starts closed.",
-        id: "single",
-        preview: () => <examples.SingleAccordionExample />,
-        title: "Single Accordion",
-        variant: "centered",
-      },
-      {
-        code: examples.multipleAccordionCode,
-        description: "Open more than one item at a time.",
-        id: "multiple",
-        preview: () => <examples.MultipleAccordionExample />,
-        title: "Multiple Accordion",
-        variant: "centered",
-      },
-      {
-        code: examples.controlledAccordionCode,
-        description: "Drive open items from parent state.",
-        id: "controlled",
-        preview: () => <examples.ControlledAccordionExample />,
-        title: "Controlled Accordion",
-        variant: "centered",
-      },
-      {
-        code: examples.disabledAccordionCode,
-        description: "Disable specific items while keeping keyboard navigation.",
-        id: "disabled",
-        preview: () => <examples.DisabledItemAccordionExample />,
-        title: "Disabled Item",
-        variant: "centered",
-      },
-    ],
+    examples: examples.accordionExamples,
   },
   alert: {
     description: "A status or callout surface for contextual feedback.",
@@ -81,40 +48,7 @@ export const componentDocsOverrides = {
         description: "Optional action slot for native buttons or links supplied by the app.",
       },
     ],
-    examples: [
-      {
-        code: examples.alertWarningExampleCode,
-        description: "Warning alert for important guidance that needs attention.",
-        id: "warning-alert",
-        preview: () => <examples.WarningAlertExample />,
-        title: "Warning Alert",
-        variant: "inline",
-      },
-      {
-        code: examples.alertErrorExampleCode,
-        description: "Error alert for failed or blocked states.",
-        id: "error-alert",
-        preview: () => <examples.ErrorAlertExample />,
-        title: "Error Alert",
-        variant: "inline",
-      },
-      {
-        code: examples.alertActionExampleCode,
-        description: "Alert composition with an icon and app-owned action buttons.",
-        id: "with-icon-and-action-buttons",
-        preview: () => <examples.AlertActionExample />,
-        title: "With Icon and Action Buttons",
-        variant: "inline",
-      },
-      {
-        code: examples.alertInfoExampleCode,
-        description: "Informational alert for neutral contextual feedback.",
-        id: "info-alert",
-        preview: () => <examples.AlertExample />,
-        title: "Info Alert",
-        variant: "inline",
-      },
-    ],
+    examples: examples.alertExamples,
   },
   badge: {
     description: "A compact label for statuses, counts, and inline metadata.",
@@ -132,24 +66,7 @@ export const componentDocsOverrides = {
           "Class helper for composing badge variants and sizes onto compatible custom elements.",
       },
     ],
-    examples: [
-      {
-        code: examples.badgeExampleCode,
-        description: "Common badge variants rendered from the installable UI source.",
-        id: "variants",
-        preview: () => <examples.BadgeExample />,
-        title: "Variants",
-        variant: "inline",
-      },
-      {
-        code: examples.badgeSizeExampleCode,
-        description: "Badge sizes for compact labels and slightly larger metadata chips.",
-        id: "sizes",
-        preview: () => <examples.BadgeSizeExample />,
-        title: "Sizes",
-        variant: "inline",
-      },
-    ],
+    examples: examples.badgeExamples,
   },
   button: {
     description: "A styled button for actions, forms, and compact controls.",
@@ -162,16 +79,7 @@ export const componentDocsOverrides = {
           "Native button wrapper with Keystone UI variants, sizes, focus rings, and disabled states.",
       },
     ],
-    examples: [
-      {
-        code: examples.buttonExampleCode,
-        description: "Common button variants rendered from the installable UI source.",
-        id: "variants",
-        preview: () => <examples.ButtonExample />,
-        title: "Variants",
-        variant: "inline",
-      },
-    ],
+    examples: examples.buttonExamples,
   },
   card: {
     description: "A content container for grouping related information and actions.",
@@ -195,16 +103,7 @@ export const componentDocsOverrides = {
       { name: "CardPanel", description: "Main content region with default card padding." },
       { name: "CardFooter", description: "Bottom region for actions or secondary information." },
     ],
-    examples: [
-      {
-        code: examples.cardExampleCode,
-        description: "A project creation card with inputs, select, and footer action.",
-        id: "project-card",
-        preview: () => <examples.CardExample />,
-        title: "Project Card",
-        variant: "centered",
-      },
-    ],
+    examples: examples.cardExamples,
   },
   checkbox: {
     description: "A control that toggles checked, unchecked, and indeterminate states.",
@@ -228,16 +127,7 @@ export const componentDocsOverrides = {
         description: "Hidden input used for native form participation.",
       },
     ],
-    examples: [
-      {
-        code: examples.checkboxExampleCode,
-        description: "Controlled checkbox with a visible label.",
-        id: "controlled",
-        preview: () => <examples.CheckboxExample />,
-        title: "Controlled Checkbox",
-        variant: "inline",
-      },
-    ],
+    examples: examples.checkboxExamples,
   },
   dialog: {
     description: "A modal surface that interrupts the page for focused decisions or forms.",
@@ -257,16 +147,7 @@ export const componentDocsOverrides = {
         description: "Accessible description associated with the dialog content.",
       },
     ],
-    examples: [
-      {
-        code: examples.dialogExampleCode,
-        description: "A modal dialog with title, description, body, and footer action.",
-        id: "basic",
-        preview: () => <examples.DialogExample />,
-        title: "Basic Dialog",
-        variant: "centered",
-      },
-    ],
+    examples: examples.dialogExamples,
   },
   popover: {
     description: "A non-modal floating panel for contextual controls or supplemental content.",
@@ -288,16 +169,7 @@ export const componentDocsOverrides = {
         description: "Optional UI helpers for structured popover content.",
       },
     ],
-    examples: [
-      {
-        code: examples.popoverExampleCode,
-        description: "Contextual panel with title, description, content, and footer action.",
-        id: "basic",
-        preview: () => <examples.PopoverExample />,
-        title: "Basic Popover",
-        variant: "centered",
-      },
-    ],
+    examples: examples.popoverExamples,
   },
   select: {
     description: "A listbox-backed control for choosing one value from a set of options.",
@@ -316,16 +188,7 @@ export const componentDocsOverrides = {
       { name: "SelectContent", description: "Portaled popup surface containing the listbox." },
       { name: "SelectItem", description: "Selectable option with indicator and text parts." },
     ],
-    examples: [
-      {
-        code: examples.selectExampleCode,
-        description: "Single value select with three options.",
-        id: "basic",
-        preview: () => <examples.SelectExample />,
-        title: "Basic Select",
-        variant: "centered",
-      },
-    ],
+    examples: examples.selectExamples,
   },
   tabs: {
     description: "A set of layered sections where one panel is visible at a time.",
@@ -343,16 +206,7 @@ export const componentDocsOverrides = {
       },
       { name: "TabsContent", description: "Panel rendered for a matching tab value." },
     ],
-    examples: [
-      {
-        code: examples.tabsExampleCode,
-        description: "Horizontal tabs with three panels.",
-        id: "basic",
-        preview: () => <examples.TabsExample />,
-        title: "Basic Tabs",
-        variant: "centered",
-      },
-    ],
+    examples: examples.tabsExamples,
   },
   toast: {
     description: "A transient message system for confirmations, warnings, and async feedback.",
@@ -401,16 +255,7 @@ export const componentDocsOverrides = {
         description: "Portaled floating content with viewport sizing and transitions.",
       },
     ],
-    examples: [
-      {
-        code: examples.tooltipExampleCode,
-        description: "Tooltip attached to a focusable trigger.",
-        id: "basic",
-        preview: () => <examples.TooltipExample />,
-        title: "Basic Tooltip",
-        variant: "inline",
-      },
-    ],
+    examples: examples.tooltipExamples,
   },
 } satisfies Record<string, ComponentDocsBlueprint>;
 

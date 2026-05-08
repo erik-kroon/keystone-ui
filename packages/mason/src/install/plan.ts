@@ -183,7 +183,7 @@ function targetForFile(
   item: RegistryItem,
   file: RegistryItem["files"][number],
 ): string {
-  if (file.target) return file.target;
+  if (file.target) return targetFromRegistryTarget(config, file.target);
   if (item.filesRoot && item.targetRoot) {
     const relativePath = path.posix.relative(item.filesRoot, file.path);
     if (relativePath.startsWith("..") || path.posix.isAbsolute(relativePath)) {
@@ -204,6 +204,37 @@ function targetForFile(
       return aliasToPath(config.aliases.theme);
     default:
       throw new Error(`Registry file for ${item.name} needs an explicit target`);
+  }
+}
+
+function componentsAliasToPath(config: MasonConfig): string {
+  if (config.aliases.components) return aliasToPath(config.aliases.components);
+
+  const uiPath = aliasToPath(config.aliases.ui);
+  return uiPath.endsWith("/ui") ? uiPath.slice(0, -"/ui".length) : path.posix.dirname(uiPath);
+}
+
+function targetFromRegistryTarget(config: MasonConfig, target: string): string {
+  if (target.startsWith("~/")) return target.slice("~/".length);
+
+  const match = /^@([^/]+)\/(.+)$/.exec(target);
+  if (!match) return target;
+
+  const placeholder = match[1];
+  const rest = match[2];
+  if (!placeholder || !rest) return target;
+
+  switch (placeholder) {
+    case "components":
+      return path.posix.join(componentsAliasToPath(config), rest);
+    case "ui":
+      return path.posix.join(aliasToPath(config.aliases.ui), rest);
+    case "lib":
+      return path.posix.join(aliasToPath(config.aliases.lib), rest);
+    case "hooks":
+      return path.posix.join(aliasToPath(config.aliases.hooks), rest);
+    default:
+      return path.posix.join(placeholder, rest);
   }
 }
 

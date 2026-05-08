@@ -1,24 +1,41 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "menubar",
   "type": "registry:ui",
   "title": "Menubar",
   "description": "Styled Solid menubar backed by Keystone menu navigation, typeahead, and item state behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["navigation"],
-  "keywords": ["menubar", "menu", "navigation", "keystone"],
+  "categories": [
+    "navigation"
+  ],
+  "keywords": [
+    "menubar",
+    "menu",
+    "navigation",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/menubar",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add menubar",
+    "install": "shadcn add https://keystone-ui.dev/r/menubar.json",
     "customization": "Style the generated wrappers through ui-menubar classes while Core owns menu roles, roving focus, typeahead, and item state behavior.",
-    "sourceFiles": ["packages/ui/src/default/ui/menubar.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/menubar.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
     "parity": {
       "baseUi": "Thin vertical covers horizontal menubar role, roving focus, menu item activation, nested popup positioning, typeahead, disabled skipping, groups, separators, and UI classes. Gaps: complex submenu hover intent, RTL edge cases, checkbox/radio item groups, and robust pointer/keyboard modality tests remain follow-up work.",
       "kobalte": "Matches Kobalte Menubar/Menu composition direction with Solid menubar root, trigger/content, items, and keyboard navigation. Gaps: advanced nested menu coordination, focus restoration across route links, and checked item helpers remain follow-up work."
@@ -26,8 +43,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/menubar.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/menubar.tsx",
+      "type": "registry:ui",
+      "target": "@ui/menubar.tsx"
     }
   ]
 }

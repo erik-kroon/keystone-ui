@@ -2,6 +2,7 @@ import { createSignal } from "solid-js";
 import { render } from "solid-js/web";
 import { describe, expect, test } from "vitest";
 import { Checkbox } from "./checkbox";
+import { Label } from "./label";
 
 describe("Checkbox", () => {
   test("renders one visible control and toggles the indicator from that control", () => {
@@ -26,6 +27,32 @@ describe("Checkbox", () => {
 
     expect(checked()).toBe(true);
     expect(host.querySelector("[data-slot='checkbox-indicator']")).not.toBeNull();
+
+    dispose();
+    host.remove();
+  });
+
+  test("supports the label-wrapped composition API", () => {
+    const host = document.createElement("div");
+    document.body.append(host);
+    const [checked, setChecked] = createSignal(false);
+
+    const dispose = render(
+      () => (
+        <Label>
+          <Checkbox checked={checked()} onCheckedChange={setChecked} />
+          Accept terms and conditions
+        </Label>
+      ),
+      host,
+    );
+    const label = host.querySelector<HTMLLabelElement>("[data-slot='label']");
+
+    expect(label).not.toBeNull();
+
+    label?.click();
+
+    expect(checked()).toBe(true);
 
     dispose();
     host.remove();

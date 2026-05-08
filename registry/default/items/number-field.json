@@ -1,24 +1,50 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "number-field",
   "type": "registry:ui",
   "title": "NumberField",
   "description": "TanStack Form number field composed with Keystone NumberField behavior and UI styling hooks.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0",
+    "@tanstack/solid-form@^1.29.1"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "tanstack", "input"],
-  "keywords": ["number-field", "number", "spinbutton", "field", "form", "tanstack", "keystone"],
+  "categories": [
+    "form",
+    "tanstack",
+    "input"
+  ],
+  "keywords": [
+    "number-field",
+    "number",
+    "spinbutton",
+    "field",
+    "form",
+    "tanstack",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/number-field",
-  "registryDependencies": ["cn", "tanstack-field"],
+  "registryDependencies": [
+    "cn",
+    "tanstack-field"
+  ],
   "meta": {
-    "install": "mason add number-field",
+    "install": "shadcn add https://keystone-ui.dev/r/number-field.json",
     "customization": "Use ui-number-field classes, TanStackField shell classes, Core data attributes, neutral data-slot hooks, inputProps, trigger props, inputClass, triggerClass, and class escape hatches for generated-source styling.",
-    "sourceFiles": ["packages/ui/src/default/ui/number-field.tsx"],
-    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn", "tanstack-field"],
+    "sourceFiles": [
+      "packages/ui/src/components/number-field.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "@tanstack/solid-form",
+      "cn",
+      "tanstack-field"
+    ],
     "api": "NumberField exports NumberField, NumberFieldProps, and NumberFieldValidators. It composes TanStackField with @keystone-ui/core/number-field, passes validators to form.Field, maps number and undefined values to field.handleChange, maps blur to field.handleBlur, preserves Core min/max/step/parse/format behavior, and forwards disabled/readOnly/required/formId plus input and trigger props.",
     "accessibility": "Backed by TanStackField for generated IDs, label/description/error relationships, touched-derived invalid state, and alert messaging. Backed by @keystone-ui/core/number-field for role=spinbutton, aria-valuemin, aria-valuemax, aria-valuenow, aria-valuetext, keyboard increment/decrement behavior, trigger aria-controls, native input naming, reset support, disabled/read-only/required state, and stable data attributes.",
     "anatomy": [
@@ -38,12 +64,15 @@
       "baseUi": "Primitive behavior coverage comes through Keystone Core NumberField for spinbutton ARIA, min/max/step keyboard behavior, controlled values, parse/format hooks, and data attributes.",
       "kobalte": "Solid composition follows root/input/increment-trigger/decrement-trigger anatomy with Keystone Core behavior and user-owned UI source styling."
     },
-    "tests": ["packages/ui/src/default/ui/tanstack-field-components.test.tsx"]
+    "tests": [
+      "packages/ui/src/components/tanstack-field-components.test.tsx"
+    ]
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/number-field.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/number-field.tsx",
+      "type": "registry:ui",
+      "target": "@ui/number-field.tsx"
     }
   ]
 }

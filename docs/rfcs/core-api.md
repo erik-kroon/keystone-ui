@@ -37,7 +37,7 @@ Core should expose predictable Solid APIs without copying React-only patterns. T
 ## Non-Goals
 
 - Styled components, themes, or visual defaults.
-- Mason registry source conventions beyond the contracts UI needs to wrap Keystone.
+- Registry source conventions beyond the contracts UI needs to wrap Keystone.
 - A large primitive catalog before overlay and form behavior are proven.
 - Experimental advanced primitives such as data grids, schedulers, or rich multi-selects.
 

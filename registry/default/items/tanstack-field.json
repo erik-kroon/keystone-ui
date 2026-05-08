@@ -1,27 +1,56 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "tanstack-field",
   "type": "registry:ui",
   "title": "TanStackField",
   "description": "Source-owned Solid field adapter connecting TanStack Form field state to Keystone form-control semantics.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0", "@tanstack/solid-form@^1.29.1"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0",
+    "@tanstack/solid-form@^1.29.1"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "tanstack"],
-  "keywords": ["tanstack-field", "field", "form", "validation", "keystone"],
+  "categories": [
+    "form",
+    "tanstack"
+  ],
+  "keywords": [
+    "tanstack-field",
+    "field",
+    "form",
+    "validation",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/tanstack-field",
-  "registryDependencies": ["cn", "tanstack-form"],
+  "registryDependencies": [
+    "cn",
+    "tanstack-form"
+  ],
   "meta": {
-    "install": "mason add tanstack-field",
+    "install": "shadcn add https://keystone-ui.dev/r/tanstack-field.json",
     "customization": "Style the generated field shell, label, description, and error parts through ui-tanstack-field classes, Keystone Core data attributes, TanStack meta data attributes, and neutral data-slot hooks.",
-    "sourceFiles": ["packages/ui/src/default/ui/tanstack-field.tsx"],
-    "dependencies": ["@keystone-ui/core", "@tanstack/solid-form", "cn", "tanstack-form"],
+    "sourceFiles": [
+      "packages/ui/src/components/tanstack-field.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "@tanstack/solid-form",
+      "cn",
+      "tanstack-form"
+    ],
     "api": "TanStackField exports TanStackField plus TanStackFieldApi, TanStackFormApi, TanStackFieldRenderContext, and TanStackFieldProps types. It renders form.Field, derives first error and invalid state from TanStack field meta, creates a Keystone form-control contract, and passes control, controlId, labelId, descriptionId, errorId, field, value, invalid, firstError, focused, setFocused, touched, dirty, blurred, and validating to child renderers.",
     "accessibility": "Backed by @keystone-ui/core/form for generated IDs, label/control relationships, aria-describedby, aria-invalid, required/disabled/readonly metadata, touched/dirty/validating metadata, error alert wiring, external form-owner IDs, and stable field state data attributes. TanStack Form remains responsible for value, touched, dirty, validating, blur, and validation lifecycle state.",
-    "anatomy": ["root", "label", "control-slot", "description", "error"],
+    "anatomy": [
+      "root",
+      "label",
+      "control-slot",
+      "description",
+      "error"
+    ],
     "cssVariables": [
       "--color-foreground",
       "--color-muted-foreground",
@@ -36,8 +65,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/tanstack-field.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/tanstack-field.tsx",
+      "type": "registry:ui",
+      "target": "@ui/tanstack-field.tsx"
     }
   ]
 }

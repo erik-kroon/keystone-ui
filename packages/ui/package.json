@@ -5,7 +5,13 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    "./default/*": "./src/default/*"
+    "./blocks/*": "./src/blocks/*",
+    "./components/*": "./src/components/*",
+    "./hooks/*": "./src/hooks/*",
+    "./lib/*": "./src/lib/*",
+    "./stores/*": "./src/stores/*",
+    "./templates/*": "./src/templates/*",
+    "./*": "./src/components/*"
   },
   "scripts": {
     "check-types": "tsc --noEmit",

@@ -1,21 +1,41 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "sidebar",
   "type": "registry:ui",
   "title": "Sidebar",
   "description": "Source-owned Solid app sidebar with desktop collapse state, mobile panel state, navigation anatomy, active item tracking, and stable styling hooks.",
   "version": "0.1.0",
-  "dependencies": ["@tanstack/solid-store@^0.11.0"],
+  "dependencies": [
+    "@tanstack/solid-store@^0.11.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["layout", "sidebar", "navigation", "app-shell"],
-  "keywords": ["sidebar", "app-shell", "navigation", "tanstack-store", "solid"],
+  "categories": [
+    "layout",
+    "sidebar",
+    "navigation",
+    "app-shell"
+  ],
+  "keywords": [
+    "sidebar",
+    "app-shell",
+    "navigation",
+    "tanstack-store",
+    "solid"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/sidebar",
-  "registryDependencies": ["button", "cn", "input", "separator", "sidebar-store"],
+  "registryDependencies": [
+    "button",
+    "cn",
+    "input",
+    "separator",
+    "sidebar-store"
+  ],
   "meta": {
-    "install": "mason add sidebar",
+    "install": "shadcn add https://keystone-ui.dev/r/sidebar.json",
     "fileTree": "Installs sidebar.tsx as user-owned source under src/components/ui/sidebar.tsx and composes the sidebar-store registry item.",
     "dependencies": [
       "@tanstack/solid-store",
@@ -37,8 +57,12 @@
     "ssr": "The visual component reads only Solid store accessors during render. Browser-only localStorage, matchMedia, and keydown wiring remain inside mountSidebarStore after mount.",
     "primitiveBoundary": "Sidebar remains UI source because it is app layout, navigation presentation, app state, and generated-source ergonomics. It should not become a Core layout primitive unless a later ADR identifies reusable intrinsic accessibility behavior beyond native landmarks/buttons/links.",
     "limitations": "This item does not implement route integration, animated width measurement, tooltip-on-collapsed labels, persisted nested menu state, or enforced mobile focus trapping. Those belong in app composition, future blocks, or Core overlay composition where needed.",
-    "sourceFiles": ["packages/ui/src/default/ui/sidebar.tsx"],
-    "tests": ["packages/ui/src/default/ui/sidebar.test.tsx"],
+    "sourceFiles": [
+      "packages/ui/src/components/sidebar.tsx"
+    ],
+    "tests": [
+      "packages/ui/src/components/sidebar.test.tsx"
+    ],
     "parity": {
       "shadcn": "Matches shadcn-style source ownership, provider/hook ergonomics through sidebar-store, desktop/mobile open state, variants, rail, group action, menu action, badge, skeleton, submenus, sidebar input/separator, active item source helpers, CSS variable widths, data-state hooks, and Mod+B shortcut behavior. Keystone differs by keeping visual Sidebar and TanStack Store state as separate registry items and using Solid-native components instead of React asChild/useRender.",
       "tanstackStore": "Uses TanStack Store only for app-shell state coordination, not intrinsic widget behavior. This keeps Core independent from TanStack app libraries.",
@@ -47,8 +71,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/sidebar.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/sidebar.tsx",
+      "type": "registry:ui",
+      "target": "@ui/sidebar.tsx"
     }
   ]
 }

@@ -1,25 +1,49 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "toolbar",
   "type": "registry:ui",
   "title": "Toolbar",
   "description": "Styled Solid toolbar component backed by Keystone roving focus and orientation behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["forms", "navigation", "actions"],
-  "keywords": ["toolbar", "roving-focus", "actions", "keystone"],
+  "categories": [
+    "forms",
+    "navigation",
+    "actions"
+  ],
+  "keywords": [
+    "toolbar",
+    "roving-focus",
+    "actions",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/toolbar",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add toolbar",
+    "install": "shadcn add https://keystone-ui.dev/r/toolbar.json",
     "customization": "Style the generated wrappers through ui-toolbar classes while Keystone keeps toolbar roles, orientation, roving focus, disabled skipping, and data attributes.",
-    "sourceFiles": ["packages/ui/src/default/ui/toolbar.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
-    "parts": ["root", "button", "link", "separator"],
+    "sourceFiles": [
+      "packages/ui/src/components/toolbar.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
+    "parts": [
+      "root",
+      "button",
+      "link",
+      "separator"
+    ],
     "parity": {
       "baseUi": "Thin vertical covers toolbar role, horizontal and vertical orientation, RTL-aware horizontal keys, roving focus, disabled item skipping, pressed button metadata, separator semantics, UI wrappers, and registry metadata. Gaps: toggle-group coordination, radio-group coordination, richer cursor/touch behavior, nested toolbar/menu coordination, focus restoration from popover/menu tools, controlled active item state, and broader edge-case tests remain follow-up work.",
       "kobalte": "Kobalte has related toggle, toggle-group, and composite primitives rather than a direct toolbar surface; Solid parity is scoped to roving focus, orientation, disabled skipping, and part composition. Gaps: toggle/radio group integration and nested composite policy remain follow-up work."
@@ -27,8 +51,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/toolbar.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/toolbar.tsx",
+      "type": "registry:ui",
+      "target": "@ui/toolbar.tsx"
     }
   ]
 }

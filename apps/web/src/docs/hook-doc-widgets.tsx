@@ -1,7 +1,7 @@
 import { For, Show, type Accessor, type JSX } from "solid-js";
 
 import { cn } from "@/components/docs-shell";
-import { useMediaQuery } from "@keystone-ui/ui/default/hooks/use-media-query.ts";
+import { useMediaQuery } from "@keystone-ui/ui/hooks/use-media-query";
 
 export function InlineCode(props: Readonly<{ children: JSX.Element }>) {
   return (

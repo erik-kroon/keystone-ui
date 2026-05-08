@@ -1,24 +1,42 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "context-menu",
   "type": "registry:ui",
   "title": "ContextMenu",
   "description": "Styled Solid context menu backed by Keystone menu navigation, typeahead, and overlay behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["overlay", "navigation"],
-  "keywords": ["context-menu", "menu", "overlay", "keystone"],
+  "categories": [
+    "overlay",
+    "navigation"
+  ],
+  "keywords": [
+    "context-menu",
+    "menu",
+    "overlay",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/context-menu",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add context-menu",
+    "install": "shadcn add https://keystone-ui.dev/r/context-menu.json",
     "customization": "Style the generated wrappers through ui-context-menu classes while Core owns menu roles, roving focus, typeahead, dismissal, and positioning.",
-    "sourceFiles": ["packages/ui/src/default/ui/context-menu.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/context-menu.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
     "parity": {
       "baseUi": "Thin vertical covers menu roles, roving focus, typeahead, disabled skipping, submenu-capable item structure, context trigger positioning, dismissal, and UI classes. Gaps: pointer grace areas, collision-aware submenu placement, checkbox/radio item groups, animation status metadata, and nested layer edge tests remain follow-up work.",
       "kobalte": "Matches Solid ContextMenu/Menu anatomy direction with trigger, portal/content, items, separators, groups, and keyboard navigation. Gaps: advanced submenu intent, modality nuances, item checked state helpers, and deeper dismissable-layer coordination remain follow-up work."
@@ -26,8 +44,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/context-menu.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/context-menu.tsx",
+      "type": "registry:ui",
+      "target": "@ui/context-menu.tsx"
     }
   ]
 }

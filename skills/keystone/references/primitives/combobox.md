@@ -4,8 +4,8 @@ Use this guide for autocomplete, searchable selection, async option search, and 
 
 ## Source
 
-- UI source: `packages/ui/src/default/ui/combobox.tsx`
-- Field wrapper: `packages/ui/src/default/ui/combobox-field.tsx`
+- UI source: `packages/ui/src/ui/combobox.tsx`
+- Field wrapper: `packages/ui/src/ui/combobox-field.tsx`
 - Core primitive: `@keystone-ui/core/combobox`
 - Registry items: `registry/default/items/combobox.json`, `registry/default/items/combobox-field.json`
 - Mason install: `mason add combobox` or `mason add combobox-field`

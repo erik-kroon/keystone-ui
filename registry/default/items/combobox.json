@@ -1,24 +1,43 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "combobox",
   "type": "registry:ui",
   "title": "Combobox",
   "description": "Styled Solid combobox backed by Keystone input, listbox, selection, and floating behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["form", "listbox", "autocomplete"],
-  "keywords": ["combobox", "autocomplete", "listbox", "keystone"],
+  "categories": [
+    "form",
+    "listbox",
+    "autocomplete"
+  ],
+  "keywords": [
+    "combobox",
+    "autocomplete",
+    "listbox",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/combobox",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add combobox",
+    "install": "shadcn add https://keystone-ui.dev/r/combobox.json",
     "customization": "Style the generated input group, input, trigger, clear action, popup surface, listbox, groups, items, indicators, empty state, status row, arrow, and separators through ui-combobox classes, Core data attributes, and neutral data-slot hooks.",
-    "sourceFiles": ["packages/ui/src/default/ui/combobox.tsx"],
-    "dependencies": ["@keystone-ui/core", "cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/combobox.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "cn"
+    ],
     "api": "Combobox exports Combobox, ComboboxInput, ComboboxChipsInput, ComboboxTrigger, ComboboxClear, ComboboxContent, ComboboxPopup, ComboboxPortal, ComboboxPositioner, ComboboxListbox, ComboboxList, ComboboxGroup, ComboboxGroupLabel, ComboboxItem, ComboboxItemText, ComboboxItemIndicator, ComboboxArrow, ComboboxSeparator, ComboboxEmpty, ComboboxStatus, ComboboxValue, and ComboboxPrimitive. Core owns input value, selected value, open state, clear action, hidden form input, keyboard navigation, collection registration, popup positioning, and state data attributes.",
     "accessibility": "Backed by @keystone-ui/core/combobox for native input behavior, listbox roles, active descendant, highlighted and selected item state, disabled item handling, Escape dismissal, clear semantics, hidden form value serialization, and native form reset support.",
     "anatomy": [
@@ -70,8 +89,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/combobox.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/combobox.tsx",
+      "type": "registry:ui",
+      "target": "@ui/combobox.tsx"
     }
   ]
 }

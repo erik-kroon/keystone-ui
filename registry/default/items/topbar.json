@@ -1,20 +1,35 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "topbar",
   "type": "registry:ui",
   "title": "Topbar",
   "description": "Generic app header surface for brand, title, navigation, search, command trigger, status, and actions.",
   "version": "0.1.0",
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["layout", "app-shell", "navigation"],
-  "keywords": ["topbar", "header", "command-trigger", "app-shell", "navigation"],
+  "categories": [
+    "layout",
+    "app-shell",
+    "navigation"
+  ],
+  "keywords": [
+    "topbar",
+    "header",
+    "command-trigger",
+    "app-shell",
+    "navigation"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/topbar",
-  "registryDependencies": ["button", "shortcut-display", "cn"],
+  "registryDependencies": [
+    "button",
+    "shortcut-display",
+    "cn"
+  ],
   "meta": {
-    "install": "mason add topbar",
+    "install": "shadcn add https://keystone-ui.dev/r/topbar.json",
     "api": "Exports Topbar plus root, brand, title, navigation, search, command trigger, status, and actions parts. High-level Topbar accepts slots for brand/title/navigation/search/command/status/actions and an onCommand handler.",
     "anatomy": [
       "root",
@@ -30,7 +45,9 @@
     "accessibility": "Renders a header landmark. Command trigger is a native button built from UI Button. Navigation, breadcrumbs, search, and actions are caller-provided so their labels and route semantics stay app-owned.",
     "responsive": "The root wraps at narrow widths and switches to a single-line toolbar on medium screens. Navigation can scroll horizontally, search can shrink, and action/status zones stay keyboard reachable.",
     "customization": "Compose NavList, Breadcrumb, SearchInput, CommandMenu triggers, Badge, ShortcutDisplay, and Button source through the exposed slots. Style with data-scope=\"ui-topbar\" and data-part hooks.",
-    "sourceFiles": ["packages/ui/src/default/ui/topbar.tsx"],
+    "sourceFiles": [
+      "packages/ui/src/components/topbar.tsx"
+    ],
     "parity": {
       "shadcn": "Matches source-owned app header composition rather than a sealed primitive: teams edit slots and classes after install.",
       "keystoneUi": "Composes existing UI Button and ShortcutDisplay and is intended to host NavList, Breadcrumb, SearchInput, CommandMenu, Badge, and app actions.",
@@ -39,8 +56,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/topbar.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/topbar.tsx",
+      "type": "registry:ui",
+      "target": "@ui/topbar.tsx"
     }
   ]
 }

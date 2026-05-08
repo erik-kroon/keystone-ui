@@ -19,7 +19,7 @@ If the local CLI command is not available in the target project, inspect `packag
 
 - Registry root: `registry/default/registry.json`
 - Registry items: `registry/default/items/*.json`
-- UI source: `packages/ui/src/default/`
+- UI source: `packages/ui/src/`
 - Docs generation: `scripts/generate-docs-registry-items.ts`
 
 ## Manual Install

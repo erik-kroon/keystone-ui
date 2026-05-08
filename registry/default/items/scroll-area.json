@@ -1,15 +1,20 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "scroll-area",
   "type": "registry:ui",
   "title": "ScrollArea",
   "description": "Source-owned Solid scroll container with native overflow behavior, styled scrollbar hooks, and stable root/viewport/scrollbar/thumb/corner anatomy.",
   "version": "0.1.0",
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["layout", "panel", "data-display"],
+  "categories": [
+    "layout",
+    "panel",
+    "data-display"
+  ],
   "keywords": [
     "scroll-area",
     "scroll",
@@ -21,18 +26,32 @@
     "table"
   ],
   "docs": "https://keystone-ui.dev/docs/ui/scroll-area",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add scroll-area",
+    "install": "shadcn add https://keystone-ui.dev/r/scroll-area.json",
     "api": "Exports ScrollArea plus ScrollAreaRoot, ScrollAreaViewport, ScrollAreaScrollbar, ScrollAreaThumb, and ScrollAreaCorner. ScrollArea accepts orientation=\"vertical\"|\"horizontal\"|\"both\" and viewportClass for common source-owned composition.",
-    "anatomy": ["root", "viewport", "scrollbar", "thumb", "corner"],
+    "anatomy": [
+      "root",
+      "viewport",
+      "scrollbar",
+      "thumb",
+      "corner"
+    ],
     "behavior": "The current UI item uses native browser scrolling in the viewport. Vertical, horizontal, and two-axis overflow are selected with the orientation prop. Custom scrollbar dragging, thumb sizing, wheel routing, and scroll state synchronization are explicitly deferred until Core ScrollArea is accepted.",
     "accessibility": "The viewport remains an ordinary div with native overflow. Consumers should add aria-label, aria-labelledby, role=region, tabindex, or semantic containers only when the scrollable content needs an announced landmark or keyboard focus target. Decorative scrollbar/thumb/corner parts are aria-hidden and non-interactive.",
     "customization": "Use data-scope=\"ui-scroll-area\" and data-part hooks for root, viewport, scrollbar, thumb, and corner. The viewport includes native scrollbar CSS hooks for Firefox and WebKit; apps can replace those classes for dense panels, terminal logs, tables, inspectors, and split panes.",
     "usage": "Use ScrollArea for bounded panels with natural document content: dense inspector rails, detail panels, terminal or console output, wide tables, and compact settings panes. Prefer native page scrolling for full-page documents and avoid nesting scroll regions unless the product surface is intentionally pane-based.",
-    "dependencies": ["cn"],
-    "sourceFiles": ["packages/ui/src/default/ui/scroll-area.tsx"],
-    "tests": ["packages/ui/src/default/ui/scroll-area.test.tsx"],
+    "dependencies": [
+      "cn"
+    ],
+    "sourceFiles": [
+      "packages/ui/src/components/scroll-area.tsx"
+    ],
+    "tests": [
+      "packages/ui/src/components/scroll-area.test.tsx"
+    ],
     "parity": {
       "coss": "Maps to the Coss Scroll Area item as a bounded overflow container with styled native scrollbar treatment and root/viewport/scrollbar/thumb/corner anatomy.",
       "baseUi": "Core/Base UI composition is deferred because Keystone Core does not yet ship ScrollArea. Once Core owns custom scrollbar behavior, this UI item should become a thin styled wrapper around Core root, viewport, scrollbar, thumb, and corner parts.",
@@ -42,8 +61,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/scroll-area.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/scroll-area.tsx",
+      "type": "registry:ui",
+      "target": "@ui/scroll-area.tsx"
     }
   ]
 }

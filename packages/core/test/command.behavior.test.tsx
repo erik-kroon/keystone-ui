@@ -1,5 +1,5 @@
 import { createRoot, createSignal, For } from "solid-js";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { Command, createCommand } from "../src/command/index";
 import { click, getByPart, keyDown, render, settled } from "./harness";
 
@@ -162,6 +162,38 @@ describe("Command behavior harness", () => {
       document.querySelector('[data-scope="command"][data-part="item"][data-highlighted]')
         ?.textContent,
     ).toBe("Bravo");
+  });
+
+  test("scrolls the highlighted command option into view during keyboard navigation", () => {
+    const scrollIntoView = vi.fn();
+    const previousScrollIntoView = HTMLElement.prototype.scrollIntoView;
+    HTMLElement.prototype.scrollIntoView = scrollIntoView;
+
+    try {
+      render(() => (
+        <Command.Root defaultOpen>
+          <Command.Input />
+          <Command.Content>
+            <Command.Listbox>
+              <Command.Item value="alpha">Alpha</Command.Item>
+              <Command.Item value="bravo">Bravo</Command.Item>
+            </Command.Listbox>
+          </Command.Content>
+        </Command.Root>
+      ));
+
+      const input = getByPart("command", "input") as HTMLInputElement;
+      keyDown(input, "ArrowDown");
+      keyDown(input, "ArrowDown");
+
+      expect(scrollIntoView).toHaveBeenLastCalledWith({ block: "nearest", inline: "nearest" });
+      expect(
+        document.querySelector('[data-scope="command"][data-part="item"][data-highlighted]')
+          ?.textContent,
+      ).toBe("Bravo");
+    } finally {
+      HTMLElement.prototype.scrollIntoView = previousScrollIntoView;
+    }
   });
 
   test("auto-highlights the first visible command result after typing", async () => {

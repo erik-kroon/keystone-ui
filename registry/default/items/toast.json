@@ -1,24 +1,45 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "toast",
   "type": "registry:ui",
   "title": "Toast",
   "description": "Styled Solid toast component backed by Keystone notification manager, viewport, timer, and live-region behavior.",
   "version": "0.1.0",
-  "dependencies": ["@keystone-ui/core@^0.0.0", "lucide-solid@^1.8.0"],
+  "dependencies": [
+    "@keystone-ui/core@^0.0.0",
+    "lucide-solid@^1.8.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.0 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.0 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["feedback", "overlay", "notification"],
-  "keywords": ["toast", "notification", "sonner", "keystone"],
+  "categories": [
+    "feedback",
+    "overlay",
+    "notification"
+  ],
+  "keywords": [
+    "toast",
+    "notification",
+    "sonner",
+    "keystone"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/toast",
-  "registryDependencies": ["cn"],
+  "registryDependencies": [
+    "cn"
+  ],
   "meta": {
-    "install": "mason add toast",
+    "install": "shadcn add https://keystone-ui.dev/r/toast.json",
     "customization": "Style generated ui-toast classes, data-slot hooks, position classes, stack classes, and toast CSS variables while Core owns manager updates, promise lifecycle updates, live-region roles, dismissal, timer scheduling, page-idle pause/resume, viewport limits, hotkey focus, and stable toast data attributes.",
-    "sourceFiles": ["packages/ui/src/default/ui/toast.tsx"],
-    "dependencies": ["@keystone-ui/core", "lucide-solid", "cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/toast.tsx"
+    ],
+    "dependencies": [
+      "@keystone-ui/core",
+      "lucide-solid",
+      "cn"
+    ],
     "api": [
       "Toaster",
       "toaster",
@@ -34,7 +55,14 @@
       "ToastPrimitive"
     ],
     "anatomy": {
-      "coreParts": ["viewport", "root", "title", "description", "action", "close"],
+      "coreParts": [
+        "viewport",
+        "root",
+        "title",
+        "description",
+        "action",
+        "close"
+      ],
       "uiSlots": [
         "toast-viewport",
         "toast",
@@ -66,7 +94,16 @@
       "--toast-swipe-movement-y",
       "--toast-stack-offset"
     ],
-    "parts": ["viewport", "root", "content", "icon", "title", "description", "action", "close"],
+    "parts": [
+      "viewport",
+      "root",
+      "content",
+      "icon",
+      "title",
+      "description",
+      "action",
+      "close"
+    ],
     "limitations": [
       "Swipe gestures, anchored/contextual toasts, a progress-bar part, and cancel-action sugar are intentionally deferred to Core or a later UI helper.",
       "Toast does not participate in focus trapping, outside hiding, inerting, prevent-scroll, or overlay layering."
@@ -79,8 +116,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/toast.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/toast.tsx",
+      "type": "registry:ui",
+      "target": "@ui/toast.tsx"
     }
   ]
 }

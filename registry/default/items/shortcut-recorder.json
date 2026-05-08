@@ -1,30 +1,58 @@
 {
-  "$schema": "https://mason.build/schema/registry-item.json",
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "shortcut-recorder",
   "type": "registry:ui",
   "title": "ShortcutRecorder",
   "description": "Source-owned shortcut recorder control backed by TanStack Hotkeys recorder state and ShortcutDisplay.",
   "version": "0.1.0",
-  "dependencies": ["@tanstack/solid-hotkeys@^0.10.0"],
+  "dependencies": [
+    "@tanstack/solid-hotkeys@^0.10.0"
+  ],
   "compatibility": {
-    "mason": ">=0.1.0 <0.2.0",
-    "solid": ">=1.9.9 <2.0.0"
+    "registryTooling": ">=0.1.0 <0.2.0",
+    "solid": ">=1.9.9 <2.0.0",
+    "shadcn": "registry-item schema"
   },
-  "categories": ["shortcut", "hotkeys", "recorder", "tanstack"],
-  "keywords": ["shortcut-recorder", "hotkey", "keyboard", "settings", "tanstack"],
+  "categories": [
+    "shortcut",
+    "hotkeys",
+    "recorder",
+    "tanstack"
+  ],
+  "keywords": [
+    "shortcut-recorder",
+    "hotkey",
+    "keyboard",
+    "settings",
+    "tanstack"
+  ],
   "docs": "https://keystone-ui.dev/docs/ui/shortcut-recorder",
-  "registryDependencies": ["cn", "shortcut-display"],
+  "registryDependencies": [
+    "cn",
+    "shortcut-display"
+  ],
   "meta": {
-    "install": "mason add shortcut-recorder",
+    "install": "shadcn add https://keystone-ui.dev/r/shortcut-recorder.json",
     "api": "ShortcutRecorder is a button-like control with value, onValueChange, onCancel, onClear, recorderOptions, placeholder, recordingLabel, and ShortcutDisplay formatOptions props.",
     "behavior": "Clicking starts TanStack Hotkeys createHotkeyRecorder. Recording writes the captured hotkey through onValueChange, Escape cancels, and Backspace/Delete clears through onValueChange(undefined).",
-    "anatomy": ["trigger", "label", "value", "placeholder"],
+    "anatomy": [
+      "trigger",
+      "label",
+      "value",
+      "placeholder"
+    ],
     "accessibility": "ShortcutRecorder renders a native button, defaults type=button, sets aria-pressed while recording, and preserves caller labels through children. Applications should place it in a labelled settings row when editing user preferences.",
     "dataAttributes": "Stable hooks use data-scope=\"ui-shortcut-recorder\" and data-part values for trigger, label, value, and placeholder. Trigger exposes data-recording and data-empty.",
     "ssr": "Rendering does not read browser globals. Recording starts only from user interaction after hydration through TanStack Hotkeys recorder source.",
     "limitations": "This records one chord. Multi-step Vim-style sequences belong to ShortcutSequenceRecorder. Persistence, conflict resolution, and user preference storage stay in app-owned source.",
-    "sourceFiles": ["packages/ui/src/default/ui/shortcut-recorder.tsx"],
-    "dependencies": ["@tanstack/solid-hotkeys", "shortcut-display", "cn"],
+    "sourceFiles": [
+      "packages/ui/src/components/shortcut-recorder.tsx"
+    ],
+    "dependencies": [
+      "@tanstack/solid-hotkeys",
+      "shortcut-display",
+      "cn"
+    ],
     "parity": {
       "tanstackHotkeys": "Wraps createHotkeyRecorder and preserves recorderOptions while adding generated UI markup and data attributes.",
       "shadcn": "Source-owned settings-control ergonomics: a native button with compact kbd display, easy to restyle or replace after install.",
@@ -33,8 +61,9 @@
   },
   "files": [
     {
-      "path": "packages/ui/src/default/ui/shortcut-recorder.tsx",
-      "type": "registry:ui"
+      "path": "packages/ui/src/components/shortcut-recorder.tsx",
+      "type": "registry:ui",
+      "target": "@ui/shortcut-recorder.tsx"
     }
   ]
 }

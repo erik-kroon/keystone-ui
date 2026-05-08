@@ -4,10 +4,10 @@ Use this guide for transient notifications, status updates, undo actions, and ba
 
 ## Source
 
-- UI source: `packages/ui/src/default/ui/toast.tsx`
+- UI source: `packages/ui/src/ui/toast.tsx`
 - Core primitive: `@keystone-ui/core/toast`
 - Registry item: `registry/default/items/toast.json`
-- Mason install: `mason add toast`
+- Shadcn registry install: `shadcn add https://keystone-ui.dev/r/toast.json`
 
 ## Boundary
 

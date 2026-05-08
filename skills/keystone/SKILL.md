@@ -1,6 +1,6 @@
 ---
 name: keystone
-description: Helps implement Keystone UI components correctly. Use when building UIs with Keystone primitives and registry source such as buttons, dialogs, selects, forms, menus, tabs, inputs, toasts, data tables, command menus, and app shells; migrating from shadcn/Radix-style snippets to Keystone Core/Solid; composing trigger-based overlays; or troubleshooting Keystone component behavior. Covers imports, accessibility, Tailwind styling, Mason registry metadata, and common pitfalls.
+description: Helps implement Keystone UI components correctly. Use when building UIs with Keystone primitives and registry source such as buttons, dialogs, selects, forms, menus, tabs, inputs, toasts, data tables, command menus, and app shells; migrating from shadcn/Radix-style snippets to Keystone Core/Solid; composing trigger-based overlays; or troubleshooting Keystone component behavior. Covers imports, accessibility, Tailwind styling, shadcn-compatible registry metadata, and common pitfalls.
 ---
 
 # Keystone UI
@@ -8,7 +8,7 @@ description: Helps implement Keystone UI components correctly. Use when building
 Keystone UI is a Solid-native component and primitive system with two layers:
 
 - Core: headless, accessible, styling-agnostic primitives.
-- UI: copy-paste styled source, blocks, templates, stores, and app-layer components installed by Mason.
+- UI: copy-paste styled source, blocks, templates, stores, and app-layer components distributed through a shadcn-compatible Keystone registry.
 
 Use this skill to produce first-class Keystone UI code that follows the Keystone design system, registry styling contract, and current repo boundaries.
 
@@ -19,7 +19,7 @@ Use this skill to:
 - Pick the right Keystone UI source item or Core primitive for a UI task.
 - Write correct Keystone usage code with Solid imports, composition, props, and accessibility.
 - Avoid common migration mistakes from shadcn, Radix, React, and headless component assumptions.
-- Preserve Tailwind v4 styling, registry metadata, and Mason install behavior.
+- Preserve Tailwind v4 styling, shadcn-compatible registry metadata, and source-owned install behavior.
 - Reference registry examples and docs previews to produce practical, production-like patterns.
 
 ## Source Of Truth
@@ -27,7 +27,7 @@ Use this skill to:
 - Design system: `docs/design-system.md`
 - Product boundaries: `CONTEXT.md`
 - Current repo map: `CONTEXT-MAP.md`
-- Current UI source: `packages/ui/src/default/`
+- Current UI source: `packages/ui/src/`
 - Current registry metadata: `registry/default/items/`
 - Core primitive source: `packages/core/src/`
 - Component registry index: `references/component-registry.md`
@@ -40,14 +40,14 @@ Use this skill to:
 4. Prefer Solid-native APIs: `class`, signals, accessors, `splitProps`, `Show`, `For`, and Keystone Core compound parts.
 5. Keep UI source readable and user-owned. Avoid opaque helpers unless they remove real repetition.
 6. Use TanStack only in the UI/app layer for forms, tables, stores, router, and hotkeys.
-7. Keep Mason registry metadata accurate, including source files, dependencies, install commands, and `meta.parity`.
+7. Keep shadcn-compatible registry metadata accurate, including source files, targets, dependencies, install commands, and `meta.parity`.
 8. Preserve the documented visible styling when translating external patterns into Solid and Keystone Core composition.
 
 ## Out Of Scope
 
 - Moving styling into Core primitives.
 - Maintaining unrelated monorepo internals or build pipelines.
-- Rewriting registry metadata, docs structure, or Mason behavior unless the task touches installable source.
+- Rewriting registry metadata, docs structure, or internal registry tooling unless the task touches installable source.
 - Inventing new component APIs without first inspecting local source and accepted repo docs.
 
 ## Critical Rules
@@ -101,15 +101,15 @@ Focused primitive references, read when working on these high-risk items:
 
 ## Installation Reference
 
-Mason is the Keystone registry/CLI layer.
+Keystone styled UI source is distributed through a shadcn-compatible registry.
 
 ```bash
-mason add button
-mason add dialog
-mason add select-field
+pnpm dlx shadcn@latest add https://keystone-ui.dev/r/button.json
+pnpm dlx shadcn@latest add https://keystone-ui.dev/r/dialog.json
+pnpm dlx shadcn@latest add https://keystone-ui.dev/r/select-field.json
 ```
 
-If Mason is not available in the target project yet, give manual setup guidance:
+If the registry endpoint is not available in the target project yet, give manual setup guidance:
 
 - Copy every local source file referenced by the registry item.
 - Copy transitive local imports such as `cn`, stores, hooks, and child components.
@@ -119,7 +119,7 @@ If Mason is not available in the target project yet, give manual setup guidance:
 
 ## Styling Checklist
 
-Apply this checklist whenever editing `packages/ui/src/default/ui/*`, docs previews, or registry examples:
+Apply this checklist whenever editing `packages/ui/src/components/*`, docs previews, or registry examples:
 
 - Does the component still use the semantic Keystone tokens from `docs/design-system.md`?
 - Are light and dark mode classes both present where the documented component contract uses overlays or inset highlights?
