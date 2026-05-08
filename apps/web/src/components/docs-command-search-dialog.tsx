@@ -18,6 +18,7 @@ import type {
   searchableComponentDocs,
   searchableHookDocs,
 } from "@/lib/docs-data";
+import { docsItemTitle as getDocsItemTitle } from "@/lib/docs-data";
 
 type DocsCommandSearchDialogProps = {
   onOpenChange: (open: boolean) => void;
@@ -260,7 +261,7 @@ function createSearchItems(data: DocsSearchData) {
       href: data.componentHref(item.name),
       icon: "component" as const,
       keywords: [item.name, item.type, ...item.categories, ...item.keywords],
-      label: item.title,
+      label: getDocsItemTitle(item),
       value: data.componentHref(item.name),
     })),
     ...data.hookDocs.map((item) => ({

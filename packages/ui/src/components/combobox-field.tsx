@@ -230,6 +230,7 @@ function ComboboxFieldControl(props: {
         data-part="input"
         data-slot="combobox-field-input"
         id={props.controlId}
+        class={cn(!props.inputProps?.class && "w-full", props.inputProps?.class)}
         inputClass={cn("ui-combobox-field-input", props.inputProps?.inputClass, props.inputClass)}
         onBlur={(event) => {
           const onBlur = props.inputProps?.onBlur as

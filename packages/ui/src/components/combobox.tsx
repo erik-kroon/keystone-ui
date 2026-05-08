@@ -15,7 +15,7 @@ import {
   type ComboboxRootProps as CoreComboboxRootProps,
   type ComboboxTriggerProps as CoreComboboxTriggerProps,
 } from "@keystone-ui/core/combobox";
-import { splitProps, type JSX, type ParentProps } from "solid-js";
+import { children as resolveChildren, splitProps, type JSX, type ParentProps } from "solid-js";
 import { cn } from "@/lib/cn";
 
 export type ComboboxProps = CoreComboboxRootProps;
@@ -54,6 +54,19 @@ export type ComboboxEmptyProps = ParentProps<JSX.HTMLAttributes<HTMLDivElement>>
 export type ComboboxStatusProps = ParentProps<JSX.HTMLAttributes<HTMLDivElement>>;
 
 const classes = (...tokens: string[]) => tokens.join(" ");
+
+function textFromChildren(children: JSX.Element): string | undefined {
+  if (typeof children === "string" || typeof children === "number") {
+    return String(children);
+  }
+
+  if (Array.isArray(children)) {
+    const text = children.map((child) => textFromChildren(child)).join("");
+    return text.length > 0 ? text : undefined;
+  }
+
+  return undefined;
+}
 
 function TriggerIcon() {
   return (
@@ -168,8 +181,8 @@ export function ComboboxInput(props: ComboboxInputProps) {
         classes(
           "ui-combobox-input-group",
           "relative",
-          "w-full",
-          "not-has-[>*.w-full]:w-fit",
+          "inline-flex",
+          "max-w-full",
           "text-foreground",
           "has-disabled:opacity-64",
         ),
@@ -246,14 +259,22 @@ export function ComboboxInput(props: ComboboxInputProps) {
         )}
       />
       {(local.showTrigger ?? true) && (
-        <ComboboxTrigger class={actionButtonClass(size())} {...local.triggerProps}>
+        <ComboboxTrigger
+          aria-label="Toggle suggestions"
+          class={actionButtonClass(size())}
+          {...local.triggerProps}
+        >
           <span data-scope="ui-combobox" data-part="icon" data-slot="combobox-icon">
             <TriggerIcon />
           </span>
         </ComboboxTrigger>
       )}
       {local.showClear && (
-        <ComboboxClear class={actionButtonClass(size())} {...local.clearProps}>
+        <ComboboxClear
+          aria-label="Clear selection"
+          class={actionButtonClass(size())}
+          {...local.clearProps}
+        >
           <ClearIcon />
         </ComboboxClear>
       )}
@@ -347,7 +368,19 @@ export function ComboboxContent(props: ComboboxContentProps) {
               "bg-popover",
               "not-dark:bg-clip-padding",
               "shadow-lg/5",
-              "transition-[scale,opacity]",
+              "[transform:translate3d(0,0,0)_scale(1)]",
+              "transition-[transform,opacity]",
+              "duration-125",
+              "ease-[cubic-bezier(0.23,1,0.32,1)]",
+              "will-change-[transform,opacity]",
+              "data-ending-style:[transform:translate3d(0,-2px,0)_scale(.985)]",
+              "data-starting-style:[transform:translate3d(0,-2px,0)_scale(.985)]",
+              "data-ending-style:opacity-0",
+              "data-starting-style:opacity-0",
+              "motion-reduce:transition-opacity",
+              "motion-reduce:[transform:none]",
+              "motion-reduce:data-ending-style:[transform:none]",
+              "motion-reduce:data-starting-style:[transform:none]",
               "before:pointer-events-none",
               "before:absolute",
               "before:inset-0",
@@ -436,10 +469,15 @@ export function ComboboxGroupLabel(props: ComboboxGroupLabelProps) {
 }
 
 export function ComboboxItem(props: ComboboxItemProps) {
-  const [local, rest] = splitProps(props, ["children", "class", "indicator"]);
+  const [local, rest] = splitProps(props, ["children", "class", "indicator", "label", "value"]);
+  const resolvedChildren = resolveChildren(() => local.children);
+  const label = () => local.label ?? textFromChildren(resolvedChildren()) ?? local.value;
+
   return (
     <CoreCombobox.Item
       {...rest}
+      value={local.value}
+      label={label()}
       data-slot="combobox-item"
       class={cn(
         classes(
@@ -447,7 +485,7 @@ export function ComboboxItem(props: ComboboxItemProps) {
           "grid",
           "min-h-8",
           "in-data-[side=none]:min-w-[calc(var(--anchor-width)+1.25rem)]",
-          "cursor-pointer",
+          "cursor-default",
           "grid-cols-[1rem_1fr]",
           "items-center",
           "gap-2",
@@ -474,7 +512,7 @@ export function ComboboxItem(props: ComboboxItemProps) {
       <ComboboxItemIndicator class="col-start-1">
         {local.indicator ?? <CheckIcon />}
       </ComboboxItemIndicator>
-      <ComboboxItemText class="col-start-2">{local.children}</ComboboxItemText>
+      <ComboboxItemText class="col-start-2 min-w-0 truncate">{resolvedChildren()}</ComboboxItemText>
     </CoreCombobox.Item>
   );
 }

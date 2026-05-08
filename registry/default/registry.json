@@ -204,7 +204,7 @@
     {
       "name": "date-picker",
       "type": "registry:ui",
-      "title": "DatePicker",
+      "title": "Date Picker",
       "description": "Styled Solid date picker and calendar components backed by Keystone date selection behavior."
     },
     {

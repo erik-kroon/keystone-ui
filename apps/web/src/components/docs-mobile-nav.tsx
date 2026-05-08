@@ -1,12 +1,7 @@
 import { Link } from "@tanstack/solid-router";
 import { createSignal, For, type JSX, Show } from "solid-js";
-import {
-  Sheet,
-  SheetContent,
-  SheetPanel,
-  SheetTitle,
-  SheetTrigger,
-} from "@keystone-ui/ui/sheet";
+import { Sheet, SheetContent, SheetPanel, SheetTitle, SheetTrigger } from "@keystone-ui/ui/sheet";
+import { Badge as UiBadge } from "@keystone-ui/ui/badge";
 
 import type { NavGroup } from "@/lib/docs-data";
 
@@ -35,9 +30,13 @@ function MenuIcon() {
 
 function NewBadge(props: Readonly<{ children: string }>) {
   return (
-    <span class="inline-flex shrink-0 rounded-md bg-info/10 px-1.5 py-0.5 text-[0.68rem] font-medium leading-none text-info-foreground">
+    <UiBadge
+      class="h-auto min-h-0 min-w-0 rounded-md px-1.5 py-0.5 text-[0.68rem] leading-none sm:h-auto sm:min-h-0 sm:min-w-0 sm:text-[0.68rem]"
+      size="sm"
+      variant={props.children === "Experimental" ? "warning" : "info"}
+    >
       {props.children}
-    </span>
+    </UiBadge>
   );
 }
 

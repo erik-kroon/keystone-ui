@@ -10,6 +10,7 @@ import {
   splitProps,
 } from "solid-js";
 import { Link, useRouterState } from "@tanstack/solid-router";
+import { Badge as UiBadge } from "@keystone-ui/ui/badge";
 
 import {
   navGroups,
@@ -76,12 +77,15 @@ export function Badge(props: JSX.HTMLAttributes<HTMLSpanElement>) {
 
 export function NewBadge(props: JSX.HTMLAttributes<HTMLSpanElement>) {
   const [local, rest] = splitProps(props, ["class"]);
+  const variant = () => (props.children === "Experimental" ? "warning" : "info");
 
   return (
-    <span
+    <UiBadge
       {...rest}
+      size="sm"
+      variant={variant()}
       class={cn(
-        "inline-flex shrink-0 rounded-md bg-info/10 px-1.5 py-0.5 text-[0.68rem] font-medium leading-none text-info-foreground",
+        "h-auto min-h-0 min-w-0 rounded-md px-1.5 py-0.5 text-[0.68rem] leading-none sm:h-auto sm:min-h-0 sm:min-w-0 sm:text-[0.68rem]",
         local.class,
       )}
     />
@@ -401,7 +405,7 @@ export function ProductDropdown(props: Readonly<{ items: readonly NavItem[] }>) 
 export function DocsChrome(props: Readonly<{ children: JSX.Element }>) {
   return (
     <main class="flex min-h-0 flex-1 flex-col bg-sidebar text-foreground">
-      <div class="mx-auto grid min-h-[calc(100svh-var(--header-height))] w-full max-w-[1416px] grid-cols-1 px-0 [--sidebar-width:220px] [--top-spacing:0px] lg:grid-cols-[var(--sidebar-width)_minmax(0,1fr)] lg:[--sidebar-width:240px] lg:[--top-spacing:calc(var(--spacing)*3)] xl:grid-cols-[var(--sidebar-width)_minmax(0,1fr)_18rem]">
+      <div class="mx-auto grid min-h-[calc(100svh-var(--header-height))] w-full max-w-[1416px] grid-cols-1 px-0 [--sidebar-width:220px] [--top-spacing:0px] lg:grid-cols-[var(--sidebar-width)_minmax(0,1fr)] lg:[--sidebar-width:240px] lg:[--top-spacing:calc(var(--spacing)*3)] xl:grid-cols-[var(--sidebar-width)_minmax(0,1fr)_var(--sidebar-width)]">
         <aside class="hidden lg:block">
           <div class="scrollbar-none sticky top-(--header-height) h-[calc(100svh-var(--header-height))] overflow-y-auto py-2 pr-6 pl-4">
             <div class="h-(--top-spacing) shrink-0" />
@@ -417,8 +421,8 @@ export function DocsChrome(props: Readonly<{ children: JSX.Element }>) {
 export function DocsPageFrame(props: Readonly<{ children: JSX.Element; page: DocsPage }>) {
   return (
     <>
-      <article class="relative flex w-full min-w-0 flex-1 flex-col sm:m-4 sm:w-auto lg:mt-5 lg:mr-4 lg:mb-8 lg:ml-0">
-        <div class="flex min-h-full flex-col overflow-hidden border-sidebar-border bg-card text-card-foreground shadow-lg/5 sm:rounded-2xl sm:border">
+      <article class="relative flex w-full min-w-0 flex-1 flex-col sm:m-4 sm:w-auto lg:mt-5 lg:mr-4 lg:mb-5 lg:ml-0">
+        <div class="flex min-h-full flex-col overflow-hidden border-sidebar-border bg-card text-card-foreground shadow-lg/5 sm:rounded-xl sm:border">
           <div class="flex-1 bg-card">
             <div class="mx-auto w-full max-w-[960px] px-4 pt-4 pb-6 sm:px-12 sm:pt-9 sm:pb-10 lg:px-10 lg:pt-10 lg:pb-12">
               {props.children}
@@ -427,7 +431,7 @@ export function DocsPageFrame(props: Readonly<{ children: JSX.Element; page: Doc
           <SiteFooter />
         </div>
       </article>
-      <aside class="sticky top-(--header-height) z-30 ms-auto hidden h-[calc(100svh-var(--header-height))] w-72 flex-col overflow-hidden xl:flex">
+      <aside class="sticky top-(--header-height) z-30 hidden h-[calc(100svh-var(--header-height))] w-full flex-col overflow-hidden xl:flex">
         <div class="flex min-h-0 flex-col gap-2 overflow-y-auto pt-0 pb-2">
           <div class="h-(--top-spacing) shrink-0" />
           <DocsToc items={props.page.toc} />
@@ -486,7 +490,9 @@ export function DocsToc(props: Readonly<{ items: readonly TocItem[] }>) {
   const itemIds = createMemo(() =>
     props.items.map((item) => item.href.replace(/^#/, "")).filter(Boolean),
   );
-  const [activeId, setActiveId] = createSignal<string | undefined>();
+  const [activeId, setActiveId] = createSignal<string | undefined>(
+    props.items[0]?.href.replace(/^#/, ""),
+  );
   let tocElement: HTMLElement | undefined;
   let clickScrollId: string | undefined;
   let animationFrameId: number | undefined;
@@ -498,12 +504,18 @@ export function DocsToc(props: Readonly<{ items: readonly TocItem[] }>) {
     }
 
     const activationY = Math.min(Math.max(window.innerHeight * 0.2, 96), 180);
+    const scrollingElement = document.scrollingElement ?? document.documentElement;
+    const maxScrollY = Math.max(0, scrollingElement.scrollHeight - window.innerHeight);
+    const isAtPageEnd = window.scrollY >= maxScrollY - 1;
+    const endActivationY = isAtPageEnd
+      ? Math.max(activationY, window.innerHeight * 0.65)
+      : activationY;
     let nextActiveId = ids[0];
 
     for (const id of ids) {
       const element = document.getElementById(id);
       if (!element) continue;
-      if (element.getBoundingClientRect().top > activationY) break;
+      if (element.getBoundingClientRect().top > endActivationY) break;
       nextActiveId = id;
     }
 

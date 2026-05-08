@@ -35,10 +35,18 @@ const typeOrder: Record<string, number> = {
   "registry:template": 6,
 };
 
+const displayTitleByName: Readonly<Record<string, string>> = {
+  "radio-group": "Radio Group",
+};
+
+export function docsItemTitle(item: RegistryDocItem) {
+  return displayTitleByName[item.name] ?? item.title;
+}
+
 function compareItems(a: RegistryDocItem, b: RegistryDocItem) {
   const typeDelta = (typeOrder[a.type] ?? 99) - (typeOrder[b.type] ?? 99);
   if (typeDelta !== 0) return typeDelta;
-  return a.title.localeCompare(b.title);
+  return docsItemTitle(a).localeCompare(docsItemTitle(b));
 }
 
 export const docsItems = [...registryDocItems].sort(compareItems);
@@ -62,10 +70,14 @@ const componentMaturityByName: Readonly<Record<string, string>> = {
   button: "Stable",
   card: "Stable",
   checkbox: "Stable",
+  collapsible: "Experimental",
+  combobox: "Experimental",
+  "date-picker": "Experimental",
   dialog: "Stable",
   input: "Stable",
   label: "Stable",
   popover: "Stable",
+  "radio-group": "Experimental",
   select: "Stable",
   switch: "Stable",
   tabs: "Stable",
@@ -91,7 +103,7 @@ function componentMaturityKey(item: RegistryDocItem) {
 
 function isPublicComponentDoc(item: RegistryDocItem) {
   const maturity = componentMaturityKey(item);
-  return maturity === "stable" || maturity === "preview";
+  return maturity === "stable" || maturity === "preview" || maturity === "experimental";
 }
 
 function maturityGroupTitle(maturity: string) {
@@ -106,13 +118,13 @@ function compareMaturityGroups(a: NavGroup, b: NavGroup) {
   return a.title.localeCompare(b.title);
 }
 
-const stableSidebarComponentDocs = sidebarComponentDocs.filter(
-  (item) => componentMaturityKey(item) === "stable",
-);
 const publicComponentDocs = componentDocs.filter(isPublicComponentDoc);
+const visibleSidebarComponentDocs = sidebarComponentDocs.filter((item) =>
+  isPublicComponentDoc(item),
+);
 const sidebarMaturityGroups = Object.values(
   sidebarComponentDocs
-    .filter((item) => componentMaturityKey(item) !== "stable")
+    .filter((item) => !isPublicComponentDoc(item))
     .reduce<Record<string, NavGroup>>((groups, item) => {
       const title = maturityGroupTitle(componentMaturity(item));
       return {
@@ -123,17 +135,14 @@ const sidebarMaturityGroups = Object.values(
             ...(groups[title]?.items ?? []),
             {
               href: componentHref(item.name),
-              label: item.title,
+              label: docsItemTitle(item),
             },
           ],
         },
       };
     }, {}),
 ).sort(compareMaturityGroups);
-const visibleSidebarComponentDocs = stableSidebarComponentDocs;
-const visibleSidebarMaturityGroups = sidebarMaturityGroups.filter((group) =>
-  showFullDocsCatalog ? true : group.title.toLowerCase() === "preview",
-);
+const visibleSidebarMaturityGroups = showFullDocsCatalog ? sidebarMaturityGroups : [];
 const visibleHookDocs = showFullDocsCatalog ? hookDocs : [];
 const routableDocs = showFullDocsCatalog ? docsItems : publicComponentDocs;
 
@@ -147,12 +156,9 @@ export const overviewPage: DocsPage = {
   label: "Introduction",
   title: "Introduction",
   toc: [
-    { depth: 2, href: "#built-on-keystone-core", label: "Built on Keystone Core" },
-    { depth: 2, href: "#layers", label: "Primitives, Components, and App Patterns" },
-    { depth: 2, href: "#own-your-code", label: "Own Your Code" },
-    { depth: 2, href: "#readable-source", label: "Readable Source by Default" },
-    { depth: 2, href: "#open-development", label: "Built in the Open" },
-    { depth: 2, href: "#get-involved", label: "Get Involved" },
+    { depth: 2, href: "#built-on-keystone-core", label: "Core" },
+    { depth: 2, href: "#own-your-code", label: "Own your code" },
+    { depth: 2, href: "#get-involved", label: "Get involved" },
   ],
 };
 
@@ -165,7 +171,7 @@ export const navGroups: readonly NavGroup[] = [
     title: "Components",
     items: visibleSidebarComponentDocs.map((item) => ({
       href: componentHref(item.name),
-      label: item.title,
+      label: docsItemTitle(item),
     })),
   },
   ...visibleSidebarMaturityGroups,
@@ -175,7 +181,7 @@ export const navGroups: readonly NavGroup[] = [
           title: "Hooks",
           items: visibleHookDocs.map((item) => ({
             href: componentHref(item.name),
-            label: item.title,
+            label: docsItemTitle(item),
           })),
         },
       ]
@@ -259,8 +265,8 @@ export function itemPage(item: RegistryDocItem): DocsPage {
   return {
     description: item.description,
     href: componentHref(item.name),
-    label: item.title,
-    title: item.title,
+    label: docsItemTitle(item),
+    title: docsItemTitle(item),
     toc: itemToc(item),
   };
 }

@@ -15,6 +15,7 @@ import { Label } from "@keystone-ui/ui/label";
 import { Switch as KeystoneSwitch } from "@keystone-ui/ui/switch";
 
 import { Badge } from "@/components/docs-shell";
+import { docsItemTitle } from "@/lib/docs-data";
 import type { RegistryDocItem } from "@/lib/registry-docs.gen";
 
 const accordionItems = [
@@ -36,10 +37,12 @@ const accordionItems = [
 ];
 
 export function ComponentPreview(props: Readonly<{ item: RegistryDocItem }>) {
+  const title = () => docsItemTitle(props.item);
+
   return (
     <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
       <div class="flex min-h-11 items-center justify-between gap-3 border-border border-b px-4 py-2 text-muted-foreground text-sm">
-        <span>{props.item.title}</span>
+        <span>{title()}</span>
         <Badge>{props.item.type.replace("registry:", "")}</Badge>
       </div>
       <div class="flex min-h-52 items-center justify-center bg-background/60 p-6">
@@ -122,13 +125,15 @@ export function ComponentPreview(props: Readonly<{ item: RegistryDocItem }>) {
 }
 
 function GenericPreview(props: Readonly<{ item: RegistryDocItem }>) {
+  const title = () => docsItemTitle(props.item);
+
   return (
     <div class="grid max-w-md justify-items-center gap-3 text-center">
       <span class="inline-flex size-12 items-center justify-center rounded-lg border border-border bg-muted text-primary">
-        {props.item.title.slice(0, 1)}
+        {title().slice(0, 1)}
       </span>
       <div>
-        <h3 class="m-0 font-semibold text-base text-foreground">{props.item.title}</h3>
+        <h3 class="m-0 font-semibold text-base text-foreground">{title()}</h3>
         <p class="mt-1 text-muted-foreground text-sm leading-6">{props.item.description}</p>
       </div>
     </div>

@@ -72,6 +72,7 @@ export type PopupFieldKernelOptions<Detail> = PopupFieldStateOptions &
     anchorPart: string;
     contentPart?: string;
     listboxPart?: string;
+    onPointerDownOutside?: (event: PointerEvent) => void;
     open: PopupFieldOpenChangeOptions<Detail>;
     positionerPart?: string;
     scope: string;
@@ -107,6 +108,7 @@ export type PopupFieldKernelApi<
   listboxId: string;
   open: () => boolean;
   readOnly: () => boolean;
+  registerBranch: (element: HTMLElement) => () => void;
   required: () => boolean;
   setAnchorElement: (element: Anchor) => void;
   setOpen: (open: boolean, detail: Detail) => void;
@@ -122,6 +124,7 @@ export function createPopupFieldKernel<
   const contentId = createStableId(`${options.scope}-${options.contentPart ?? "content"}`);
   const listboxId = createStableId(`${options.scope}-${options.listboxPart ?? "listbox"}`);
   const [anchorElement, setAnchorElement] = createSignal<Anchor>();
+  const [branchElements, setBranchElements] = createSignal<readonly HTMLElement[]>([]);
   const [contentElement, setContentElement] = createSignal<HTMLDivElement>();
   const [positionerElement, setPositionerElement] = createSignal<HTMLDivElement>();
   const [open, setOpenState] = createControllableBooleanSignal<Detail>({
@@ -161,6 +164,41 @@ export function createPopupFieldKernel<
     get "data-align"() {
       return floating.align();
     },
+  });
+  const registerBranch = (element: HTMLElement) => {
+    setBranchElements((current) => (current.includes(element) ? current : [...current, element]));
+
+    return () => {
+      setBranchElements((current) => current.filter((branch) => branch !== element));
+    };
+  };
+
+  createEffect(() => {
+    if (!open()) return;
+
+    const ownerDocument = anchorElement()?.ownerDocument ?? document;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!open()) return;
+
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+
+      const insideElements = [
+        anchorElement(),
+        contentElement(),
+        positionerElement(),
+        ...branchElements(),
+      ];
+
+      if (insideElements.some((element) => element?.contains(target))) {
+        return;
+      }
+
+      options.onPointerDownOutside?.(event);
+    };
+
+    ownerDocument.addEventListener("pointerdown", onPointerDown, true);
+    onCleanup(() => ownerDocument.removeEventListener("pointerdown", onPointerDown, true));
   });
 
   return {
@@ -255,6 +293,7 @@ export function createPopupFieldKernel<
     listboxId: listboxId(),
     open,
     readOnly,
+    registerBranch,
     required,
     setAnchorElement,
     setOpen: setOpenState,

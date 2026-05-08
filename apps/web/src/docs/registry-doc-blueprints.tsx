@@ -129,6 +129,78 @@ export const componentDocsOverrides = {
     ],
     examples: examples.checkboxExamples,
   },
+  collapsible: {
+    description: "A disclosure region for showing and hiding a focused panel of content.",
+    maturity: "Experimental",
+    usageCode: examples.collapsibleUsageCode,
+    apiItems: [
+      {
+        name: "Collapsible",
+        description: "Root owner for controlled or uncontrolled open state.",
+      },
+      {
+        name: "CollapsibleTrigger",
+        description: "Button-like trigger with ARIA expansion and controls wiring.",
+      },
+      {
+        name: "CollapsibleContent",
+        description: "Panel content rendered when open, with state data attributes for animation.",
+      },
+    ],
+    examples: examples.collapsibleExamples,
+  },
+  combobox: {
+    description: "A searchable input and listbox popup for selecting an option.",
+    maturity: "Experimental",
+    usageCode: examples.comboboxUsageCode,
+    apiItems: [
+      {
+        name: "Combobox",
+        description: "Root owner for input value, selected value, open state, and form value.",
+      },
+      {
+        name: "ComboboxInput",
+        description: "Text input with optional trigger, clear action, and start add-on slots.",
+      },
+      {
+        name: "ComboboxContent",
+        description: "Portaled popup surface that contains the listbox and option groups.",
+      },
+      {
+        name: "ComboboxListbox",
+        description: "Listbox container for grouped and ungrouped selectable items.",
+      },
+      {
+        name: "ComboboxItem",
+        description: "Selectable option with highlighted, selected, and disabled state styling.",
+      },
+    ],
+    examples: examples.comboboxExamples,
+  },
+  "date-picker": {
+    description: "A trigger and calendar popup for selecting dates.",
+    maturity: "Experimental",
+    usageCode: examples.datePickerUsageCode,
+    apiItems: [
+      {
+        name: "DatePicker",
+        description: "Root owner for selected date, popup state, and calendar month state.",
+      },
+      {
+        name: "DatePickerTrigger",
+        description: "Button trigger that displays the selected date or placeholder.",
+      },
+      {
+        name: "DatePickerContent",
+        description: "Calendar popup content with grid navigation and selectable day cells.",
+      },
+      {
+        name: "Calendar",
+        description: "Standalone calendar root exported from the same registry source.",
+      },
+    ],
+    examples: examples.datePickerExamples,
+  },
   dialog: {
     description: "A modal surface that interrupts the page for focused decisions or forms.",
     maturity: "Stable",
@@ -212,6 +284,27 @@ export const componentDocsOverrides = {
     ],
     examples: examples.popoverExamples,
   },
+  "radio-group": {
+    description: "A roving-focus group for choosing one option from a small set.",
+    maturity: "Experimental",
+    usageCode: examples.radioGroupUsageCode,
+    apiItems: [
+      {
+        name: "RadioGroup",
+        description: "Root owner for selected value, orientation, disabled state, and form wiring.",
+      },
+      {
+        name: "RadioGroupItem",
+        description:
+          "Focusable radio option with visual control, label slot, and hidden native input.",
+      },
+      {
+        name: "RadioGroupHiddenInput",
+        description: "Hidden native radio input used for form submission and reset behavior.",
+      },
+    ],
+    examples: examples.radioGroupExamples,
+  },
   select: {
     description: "A listbox-backed control for choosing one value from a set of options.",
     maturity: "Stable",
@@ -243,7 +336,8 @@ export const componentDocsOverrides = {
       },
       {
         name: "SwitchControl",
-        description: "Styled button control with role=switch and checked, disabled, and focus state styling.",
+        description:
+          "Styled button control with role=switch and checked, disabled, and focus state styling.",
       },
       {
         name: "SwitchThumb",

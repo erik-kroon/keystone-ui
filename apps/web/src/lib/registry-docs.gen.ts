@@ -2092,6 +2092,7 @@ export const registryDocItems = [
     "customization": "Style the generated wrappers through ui-date-picker and ui-calendar classes while Keystone keeps calendar grid generation, single-date and range state, unavailable dates, locale week starts, month navigation, keyboard movement, ARIA roles, and data attributes.",
     "dependencies": [
       "@keystone-ui/core",
+      "lucide-solid",
       "cn"
     ],
     "description": "Styled Solid date picker and calendar components backed by Keystone date selection behavior.",
@@ -2122,7 +2123,7 @@ export const registryDocItems = [
     "sourceFiles": [
       "@ui/date-picker.tsx"
     ],
-    "title": "DatePicker",
+    "title": "Date Picker",
     "type": "registry:ui",
     "version": "0.1.0"
   },

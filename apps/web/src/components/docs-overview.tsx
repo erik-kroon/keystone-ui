@@ -1,10 +1,5 @@
 import { Info } from "lucide-solid";
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-} from "@keystone-ui/ui/alert";
+import { Alert, AlertDescription, AlertIcon, AlertTitle } from "@keystone-ui/ui/alert";
 
 import { DocsPageFrame, PageHeader, PageHeaderHeading } from "@/components/docs-shell";
 import { MdxContent, MdxH2, MdxList, MdxP } from "@/components/mdx-components";

@@ -4,6 +4,8 @@ import {
   createContext,
   createEffect,
   createMemo,
+  createSignal,
+  onCleanup,
   splitProps,
   useContext,
   type JSX,
@@ -42,7 +44,7 @@ export type ComboboxChangeDetail = {
 
 export type ComboboxOpenChangeDetail = {
   event?: Event;
-  reason: "input" | "trigger" | "keyboard" | "select" | "escape" | "programmatic";
+  reason: "input" | "trigger" | "keyboard" | "select" | "escape" | "outside" | "programmatic";
 };
 
 export type ComboboxItemData = {
@@ -238,6 +240,69 @@ type ComboboxFactoryOptions = {
 
 const ComboboxContext = createContext<ComboboxApi>();
 const ComboboxGroupContext = createContext<{ disabled?: boolean; value: string }>();
+const ComboboxItemContext = createContext<{ value: string }>();
+
+function textFromChildren(children: JSX.Element): string | undefined {
+  if (typeof children === "string" || typeof children === "number") {
+    return String(children);
+  }
+
+  if (Array.isArray(children)) {
+    const text = children.map((child) => textFromChildren(child)).join("");
+    return text.length > 0 ? text : undefined;
+  }
+
+  return undefined;
+}
+
+function prepareComboboxSearchQuery(query: string) {
+  const normalized = normalizeComboboxSearchText(query);
+  if (!normalized) return null;
+
+  return {
+    compact: normalized.replaceAll(" ", ""),
+    normalized,
+    terms: normalized.split(" ").filter(Boolean),
+  };
+}
+
+function normalizeComboboxSearchText(value: string) {
+  return value
+    .normalize("NFKD")
+    .replace(/\p{Diacritic}/gu, "")
+    .replace(/['’]/g, "")
+    .replace(/[^\p{Letter}\p{Number}]+/gu, " ")
+    .trim()
+    .toLocaleLowerCase();
+}
+
+function comboboxItemMatchesSearch(
+  label: string,
+  value: string,
+  query: NonNullable<ReturnType<typeof prepareComboboxSearchQuery>>,
+) {
+  const fields = [label, value].map((field) => normalizeComboboxSearchText(field)).filter(Boolean);
+
+  return fields.some((field) => comboboxSearchFieldMatches(field, query));
+}
+
+function comboboxSearchFieldMatches(
+  field: string,
+  query: NonNullable<ReturnType<typeof prepareComboboxSearchQuery>>,
+) {
+  const compactField = field.replaceAll(" ", "");
+  const words = field.split(" ").filter(Boolean);
+  const initials = words.map((word) => word[0]).join("");
+
+  if (field === query.normalized || compactField === query.compact) return true;
+  if (field.startsWith(query.normalized) || compactField.startsWith(query.compact)) return true;
+  if (field.includes(query.normalized) || compactField.includes(query.compact)) return true;
+  if (initials.startsWith(query.compact)) return true;
+  if (query.terms.every((term) => words.some((word) => word.startsWith(term)))) return true;
+  if (query.terms.every((term) => words.some((word) => word.includes(term)))) return true;
+
+  return false;
+}
 
 export function createCombobox(options: CreateComboboxOptions = {}): ComboboxApi {
   return createScopedCombobox({ ...options, scope: options.scope ?? "combobox" });
@@ -259,6 +324,7 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
     defaultDetail: { reason: "programmatic" },
     onChange: options.onInputValueChange,
   });
+  const [filterValue, setFilterValue] = createSignal("");
   const disabled = () => options.disabled?.() ?? false;
   const invalid = () => options.invalid?.() ?? false;
   const readOnly = () => options.readOnly?.() ?? false;
@@ -280,6 +346,7 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
       programmaticDetail: { reason: "programmatic" },
       onOpenChange: options.onOpenChange,
     },
+    onPointerDownOutside: (event) => setOpen(false, { event, reason: "outside" }),
     placement: options.placement,
     readOnly,
     required,
@@ -298,6 +365,7 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
   const setOpen = popup.setOpen;
   const setInputValue = (next: string, detail: ComboboxChangeDetail) => {
     setInputValueState(next, detail);
+    setFilterValue(detail.reason === "input" ? next : "");
   };
   const listbox = createListboxInteraction<ComboboxItemData, ComboboxChangeDetail>({
     id: listboxId,
@@ -407,13 +475,13 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
         return listbox.activeDescendant.id();
       },
       get disabled() {
-        return disabled();
+        return disabled() || undefined;
       },
       get readOnly() {
-        return readOnly();
+        return readOnly() || undefined;
       },
       get required() {
-        return required();
+        return required() || undefined;
       },
       get value() {
         return inputValue();
@@ -452,12 +520,15 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
         const target = event.currentTarget as HTMLInputElement;
         setInputValue(target.value, { event, reason: "input" });
         setOpen(true, { event, reason: "input" });
-        listbox.activeDescendant.setHighlightedValue(undefined);
+        listbox.keyboard.highlight("first");
       }),
-      onFocus: composeEventHandlers<FocusEvent>(props.onFocus, () => {
-        if (!disabled() && !readOnly() && inputValue()) {
-          setOpen(true, { reason: "input" });
+      onFocus: props.onFocus,
+      onClick: composeEventHandlers<MouseEvent>(props.onClick, (event) => {
+        if (disabled() || readOnly()) {
+          return;
         }
+
+        setOpen(true, { event, reason: "input" });
       }),
       onKeyDown: composeEventHandlers<KeyboardEvent>(props.onKeyDown, (event) => {
         if (disabled() || readOnly()) {
@@ -492,7 +563,10 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
 
         if (event.key === "Enter" && open()) {
           event.preventDefault();
-          listbox.selection.selectHighlighted({ event, reason: "keyboard" });
+          const selected = listbox.selection.selectHighlighted({ event, reason: "keyboard" });
+          if (selected) {
+            inputElement?.blur();
+          }
         }
       }),
     }),
@@ -510,12 +584,26 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
         "onPointerMove",
         "value",
       ]);
+      const hidden = () => {
+        if (local.hidden) return local.hidden;
+
+        if (scope === "command") {
+          return undefined;
+        }
+
+        const query = prepareComboboxSearchQuery(filterValue());
+        if (!query) return undefined;
+
+        return comboboxItemMatchesSearch(local.label, local.value, query) ? undefined : true;
+      };
 
       return listbox.getOptionProps({
         ...others,
         disabled: local.disabled,
         group: local.group,
-        hidden: local.hidden,
+        get hidden() {
+          return hidden();
+        },
         label: local.label,
         onClick: composeEventHandlers<MouseEvent>(local.onClick, (event) => {
           if (readOnly()) {
@@ -563,6 +651,8 @@ function createScopedCombobox(options: CreateComboboxOptions = {}): ComboboxApi 
         return dataBoolean(disabled());
       },
       ref: (element: HTMLButtonElement) => {
+        const unregister = popup.registerBranch(element);
+        onCleanup(unregister);
         assignRef(props.ref, element);
       },
       onClick: composeEventHandlers<MouseEvent>(props.onClick, (event) => {
@@ -630,6 +720,16 @@ function useCombobox(part: string) {
   }
 
   return combobox;
+}
+
+function useComboboxItem(part: string) {
+  const item = useContext(ComboboxItemContext);
+
+  if (!item) {
+    throw new Error(`Combobox.${part} must be used within Combobox.Item`);
+  }
+
+  return item;
 }
 
 function createComboboxNamespace(factoryOptions: ComboboxFactoryOptions) {
@@ -863,23 +963,25 @@ function createComboboxNamespace(factoryOptions: ComboboxFactoryOptions) {
       "onPointerMove",
       "value",
     ]);
-    const label = () => local.label ?? String(local.children ?? local.value);
+    const label = () => local.label ?? textFromChildren(local.children) ?? local.value;
 
     return (
-      <div
-        {...combobox.getItemProps({
-          ...others,
-          disabled: local.disabled ?? group?.disabled,
-          group: local.group ?? group?.value,
-          hidden: local.hidden,
-          label: label(),
-          onClick: local.onClick,
-          onPointerMove: local.onPointerMove,
-          value: local.value,
-        })}
-      >
-        {local.children}
-      </div>
+      <ComboboxItemContext.Provider value={{ value: local.value }}>
+        <div
+          {...combobox.getItemProps({
+            ...others,
+            disabled: local.disabled ?? group?.disabled,
+            group: local.group ?? group?.value,
+            hidden: local.hidden,
+            label: label(),
+            onClick: local.onClick,
+            onPointerMove: local.onPointerMove,
+            value: local.value,
+          })}
+        >
+          {local.children}
+        </div>
+      </ComboboxItemContext.Provider>
     );
   }
 
@@ -892,9 +994,14 @@ function createComboboxNamespace(factoryOptions: ComboboxFactoryOptions) {
 
   function ItemIndicator(props: ComboboxItemIndicatorProps) {
     const combobox = useCombobox("ItemIndicator");
+    const item = useComboboxItem("ItemIndicator");
     const [local, others] = splitProps(props, ["children"]);
 
-    return <span {...combobox.getItemIndicatorProps(others)}>{local.children}</span>;
+    return (
+      <Show when={combobox.listbox.selection.isSelected(item.value)}>
+        <span {...combobox.getItemIndicatorProps(others)}>{local.children}</span>
+      </Show>
+    );
   }
 
   return {

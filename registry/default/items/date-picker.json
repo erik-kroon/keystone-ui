@@ -2,44 +2,24 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "date-picker",
   "type": "registry:ui",
-  "title": "DatePicker",
+  "title": "Date Picker",
   "description": "Styled Solid date picker and calendar components backed by Keystone date selection behavior.",
   "version": "0.1.0",
-  "dependencies": [
-    "@keystone-ui/core@^0.0.0"
-  ],
+  "dependencies": ["@keystone-ui/core@^0.0.0", "lucide-solid@^1.8.0"],
   "compatibility": {
     "registryTooling": ">=0.1.0 <0.2.0",
     "solid": ">=1.9.0 <2.0.0",
     "shadcn": "registry-item schema"
   },
-  "categories": [
-    "form",
-    "input",
-    "calendar"
-  ],
-  "keywords": [
-    "date-picker",
-    "calendar",
-    "date",
-    "keystone",
-    "kobalte",
-    "base-ui"
-  ],
+  "categories": ["form", "input", "calendar"],
+  "keywords": ["date-picker", "calendar", "date", "keystone", "kobalte", "base-ui"],
   "docs": "https://keystone-ui.dev/docs/ui/date-picker",
-  "registryDependencies": [
-    "cn"
-  ],
+  "registryDependencies": ["cn"],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/date-picker.json",
     "customization": "Style the generated wrappers through ui-date-picker and ui-calendar classes while Keystone keeps calendar grid generation, single-date and range state, unavailable dates, locale week starts, month navigation, keyboard movement, ARIA roles, and data attributes.",
-    "sourceFiles": [
-      "packages/ui/src/components/date-picker.tsx"
-    ],
-    "dependencies": [
-      "@keystone-ui/core",
-      "cn"
-    ],
+    "sourceFiles": ["packages/ui/src/components/date-picker.tsx"],
+    "dependencies": ["@keystone-ui/core", "lucide-solid", "cn"],
     "parts": {
       "calendar": [
         "root",
@@ -55,11 +35,7 @@
         "cell",
         "cell-trigger"
       ],
-      "datePicker": [
-        "root",
-        "trigger",
-        "content"
-      ]
+      "datePicker": ["root", "trigger", "content"]
     },
     "parity": {
       "baseUi": "Covers calendar grid and popup trigger contract, selected date state, range state, unavailable date policy, disabled bounds, locale week starts, month navigation, keyboard movement, ARIA roles, and UI metadata. Gaps: date field segment editing, validation/form semantics, multi-month rendering, focus restoration depth, and full locale calendar systems remain follow-up work.",

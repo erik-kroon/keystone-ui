@@ -50,7 +50,7 @@ export function DocsCommandSearch() {
   return (
     <>
       <button
-        class="relative hidden h-9 w-fit cursor-pointer items-center justify-center gap-2 rounded-lg border border-input bg-popover px-[calc(--spacing(3)-1px)] text-foreground text-sm shadow-xs/5 outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] hover:bg-accent/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background dark:bg-input/32 dark:before:shadow-[0_-1px_--theme(--color-white/6%)] dark:hover:bg-input/64 sm:h-8 md:inline-flex"
+        class="relative hidden h-9 w-fit cursor-pointer items-center justify-center gap-2 rounded-lg border border-input bg-foreground/5 px-[calc(--spacing(3)-1px)] text-foreground text-sm shadow-xs/5 outline-none transition-colors before:pointer-events-none before:absolute before:inset-px before:rounded-[calc(var(--radius-lg)-1px)] before:bg-popover before:shadow-[0_1px_--theme(--color-black/4%)] before:transition-colors hover:bg-foreground/16 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background dark:before:bg-popover dark:before:shadow-[0_-1px_--theme(--color-white/6%)] sm:h-8 md:inline-flex [&>*]:relative [&>*]:z-10"
         aria-haspopup="dialog"
         aria-label="Search documentation"
         onFocus={ensureDialog}
