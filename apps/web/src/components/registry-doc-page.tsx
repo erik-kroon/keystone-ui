@@ -51,9 +51,9 @@ function maturityBadgeClass(maturity: string) {
       return "bg-success/8 text-success-foreground dark:bg-success/16";
     case "beta":
     case "preview":
-      return "bg-warning/8 text-warning-foreground dark:bg-warning/16";
-    case "experimental":
       return "bg-info/8 text-info-foreground dark:bg-info/16";
+    case "experimental":
+      return "bg-warning/8 text-warning-foreground dark:bg-warning/16";
     case "deprecated":
       return "bg-destructive/8 text-destructive-foreground dark:bg-destructive/16";
     case "draft":

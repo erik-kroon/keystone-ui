@@ -77,7 +77,7 @@ export function Badge(props: JSX.HTMLAttributes<HTMLSpanElement>) {
 
 export function NewBadge(props: JSX.HTMLAttributes<HTMLSpanElement>) {
   const [local, rest] = splitProps(props, ["class"]);
-  const variant = () => (props.children === "Experimental" ? "warning" : "info");
+  const variant = () => (props.children === "Preview" ? "warning" : "info");
 
   return (
     <UiBadge

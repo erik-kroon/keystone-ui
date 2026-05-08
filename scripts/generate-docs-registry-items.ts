@@ -36,6 +36,7 @@ type RegistryItem = {
     dependencies?: readonly string[];
     install?: string;
     limitations?: string;
+    maturity?: string;
     parity?: Record<string, string>;
     parts?: readonly string[];
     routerAdapter?: string;
@@ -78,6 +79,7 @@ async function main() {
     install: item.meta?.install ?? `shadcn add https://keystone-ui.dev/r/${item.name}.json`,
     keywords: item.keywords ?? [],
     limitations: item.meta?.limitations,
+    maturity: item.meta?.maturity,
     name: item.name,
     parity: item.meta?.parity ?? {},
     registryDependencies: item.registryDependencies ?? [],
@@ -112,6 +114,7 @@ export type RegistryDocItem = {
   install: string;
   keywords: readonly string[];
   limitations?: string;
+  maturity?: string;
   name: string;
   parity: Readonly<Record<string, string>>;
   registryDependencies: readonly string[];

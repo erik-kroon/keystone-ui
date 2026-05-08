@@ -131,7 +131,7 @@ export const componentDocsOverrides = {
   },
   collapsible: {
     description: "A disclosure region for showing and hiding a focused panel of content.",
-    maturity: "Experimental",
+    maturity: "Stable",
     usageCode: examples.collapsibleUsageCode,
     apiItems: [
       {
@@ -151,7 +151,7 @@ export const componentDocsOverrides = {
   },
   combobox: {
     description: "A searchable input and listbox popup for selecting an option.",
-    maturity: "Experimental",
+    maturity: "Stable",
     usageCode: examples.comboboxUsageCode,
     apiItems: [
       {
@@ -179,7 +179,7 @@ export const componentDocsOverrides = {
   },
   "date-picker": {
     description: "A trigger and calendar popup for selecting dates.",
-    maturity: "Experimental",
+    maturity: "Stable",
     usageCode: examples.datePickerUsageCode,
     apiItems: [
       {
@@ -286,7 +286,7 @@ export const componentDocsOverrides = {
   },
   "radio-group": {
     description: "A roving-focus group for choosing one option from a small set.",
-    maturity: "Experimental",
+    maturity: "Stable",
     usageCode: examples.radioGroupUsageCode,
     apiItems: [
       {
@@ -370,7 +370,7 @@ export const componentDocsOverrides = {
   },
   toast: {
     description: "A transient message system for confirmations, warnings, and async feedback.",
-    maturity: "Preview",
+    maturity: "Experimental",
     usageCode: examples.toastUsageCode,
     apiItems: [
       {

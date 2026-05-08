@@ -70,18 +70,17 @@ const componentMaturityByName: Readonly<Record<string, string>> = {
   button: "Stable",
   card: "Stable",
   checkbox: "Stable",
-  collapsible: "Experimental",
-  combobox: "Experimental",
-  "date-picker": "Experimental",
+  collapsible: "Stable",
+  combobox: "Stable",
+  "date-picker": "Stable",
   dialog: "Stable",
   input: "Stable",
   label: "Stable",
   popover: "Stable",
-  "radio-group": "Experimental",
+  "radio-group": "Stable",
   select: "Stable",
   switch: "Stable",
   tabs: "Stable",
-  toast: "Preview",
   tooltip: "Stable",
 };
 
@@ -94,7 +93,7 @@ const maturityOrder: Readonly<Record<string, number>> = {
 };
 
 export function componentMaturity(item: RegistryDocItem) {
-  return componentMaturityByName[item.name] ?? "Draft";
+  return item.maturity ?? componentMaturityByName[item.name] ?? "Draft";
 }
 
 function componentMaturityKey(item: RegistryDocItem) {

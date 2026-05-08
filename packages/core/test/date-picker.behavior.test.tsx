@@ -275,6 +275,7 @@ describe("DatePicker behavior", () => {
 
     pointerDown(document.querySelector<HTMLElement>('[data-testid="outside"]')!);
     await settled();
+    await animationFrame();
 
     expect(trigger.getAttribute("aria-expanded")).toBe("false");
     expect(queryByPart("date-picker", "content")).toBeNull();
