@@ -11,9 +11,9 @@ Use this guide for transient notifications, status updates, undo actions, and ba
 
 ## Boundary
 
-Keystone Core owns the toast manager, callable/message/typed/promise helpers, provider, viewport rendering, render metadata, live-region roles, title/description/action/close parts, timers, duration, limits, dismissal, hotkey focus, page-idle pause, hover/focus pause, and toast data attributes.
+Keystone Core owns the toast manager, callable/message/typed/promise helpers, provider, viewport rendering, render metadata, live-region roles, title/description/action/close parts, timers, duration, limits, dismissal, exit-duration status retention, hotkey focus, page-idle pause, hover/focus pause, and toast data attributes.
 
-Keystone UI owns `Toaster`, coss-style stacked viewport presentation, measured stack expansion, tone icons, viewport positioning classes, responsive viewport size, opt-in close button, custom render hook, and styled toast parts.
+Keystone UI owns `Toaster`, coss-style stacked viewport presentation, measured stack expansion, tone icons, viewport positioning classes, responsive viewport size, status-driven exit transition classes, opt-in close button, custom render hook, and styled toast parts.
 
 ## References
 
@@ -80,5 +80,5 @@ toaster.promise(saveSettings(), {
 
 - Run `bun run check-types` after toast source or manager usage changes.
 - Interaction check: close button dismisses, actions fire once and dismiss unless default-prevented, updates by ID replace the intended toast, and `toaster.promise()` moves loading to success/error.
-- Timing check: duration, hover pause, focus pause, page-idle pause, stack expansion, and viewport limit behave as expected.
+- Timing check: duration, hover pause, focus pause, page-idle pause, stack expansion, exit retention, and viewport limit behave as expected.
 - Accessibility check: success/info/warning/error states have textual title or description, not icon-only meaning.

@@ -6,22 +6,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@keystone-ui/ui/accordion";
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-} from "@keystone-ui/ui/alert";
+import { Alert, AlertDescription, AlertIcon, AlertTitle } from "@keystone-ui/ui/alert";
 import { Badge as KeystoneBadge } from "@keystone-ui/ui/badge";
 import { Button } from "@keystone-ui/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardPanel,
-  CardTitle,
-} from "@keystone-ui/ui/card";
+import { Card, CardDescription, CardHeader, CardPanel, CardTitle } from "@keystone-ui/ui/card";
 import { Input } from "@keystone-ui/ui/input";
+import { Label } from "@keystone-ui/ui/label";
+import { Switch as KeystoneSwitch } from "@keystone-ui/ui/switch";
 
 import { Badge } from "@/components/docs-shell";
 import type { RegistryDocItem } from "@/lib/registry-docs.gen";
@@ -92,9 +83,26 @@ export function ComponentPreview(props: Readonly<{ item: RegistryDocItem }>) {
             </Card>
           </Match>
           <Match when={props.item.name === "input"}>
-            <div class="w-full max-w-sm">
-              <Input placeholder="Search components..." />
+            <div class="grid w-full max-w-64 gap-2">
+              <Label for="component-preview-search">Search</Label>
+              <Input
+                id="component-preview-search"
+                placeholder="Search components..."
+                type="search"
+              />
             </div>
+          </Match>
+          <Match when={props.item.name === "label"}>
+            <div class="grid w-full max-w-64 gap-2">
+              <Label for="component-preview-email">Email</Label>
+              <Input id="component-preview-email" placeholder="name@example.com" type="email" />
+            </div>
+          </Match>
+          <Match when={props.item.name === "switch"}>
+            <Label class="gap-3">
+              <KeystoneSwitch name="component-preview-notifications" />
+              Enable notifications
+            </Label>
           </Match>
           <Match when={props.item.name === "alert"}>
             <Alert class="w-full max-w-md" variant="info">

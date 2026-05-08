@@ -149,6 +149,47 @@ export const componentDocsOverrides = {
     ],
     examples: examples.dialogExamples,
   },
+  input: {
+    description: "A native text input with Keystone wrapper styling and form semantics.",
+    maturity: "Stable",
+    usageCode: examples.inputUsageCode,
+    apiItems: [
+      {
+        name: "Input",
+        description:
+          "Native input rendered inside a styled control wrapper with size, invalid, disabled, search, file, and form prop passthrough.",
+      },
+      {
+        name: "Input size",
+        description:
+          "Use sm, default, lg, or a numeric native size attribute while preserving the wrapper data-size hook.",
+      },
+      {
+        name: "invalid",
+        description:
+          "Marks the native input aria-invalid and sets wrapper data-invalid for validation styling.",
+      },
+    ],
+    examples: examples.inputExamples,
+  },
+  label: {
+    description: "A native label with Keystone typography and stable styling hooks.",
+    maturity: "Stable",
+    usageCode: examples.labelUsageCode,
+    apiItems: [
+      {
+        name: "Label",
+        description:
+          "Native label element for associating text with a form control by nesting or using the for/id relationship.",
+      },
+      {
+        name: "data-slot",
+        description:
+          "Renders data-slot=label plus ui-label classes for downstream styling and composition.",
+      },
+    ],
+    examples: examples.labelExamples,
+  },
   popover: {
     description: "A non-modal floating panel for contextual controls or supplemental content.",
     maturity: "Stable",
@@ -189,6 +230,31 @@ export const componentDocsOverrides = {
       { name: "SelectItem", description: "Selectable option with indicator and text parts." },
     ],
     examples: examples.selectExamples,
+  },
+  switch: {
+    description: "A Core-backed switch for toggling a boolean setting.",
+    maturity: "Stable",
+    usageCode: examples.switchUsageCode,
+    apiItems: [
+      {
+        name: "Switch",
+        description:
+          "Root switch component that renders a styled control, animated thumb, and hidden native checkbox input by default.",
+      },
+      {
+        name: "SwitchControl",
+        description: "Styled button control with role=switch and checked, disabled, and focus state styling.",
+      },
+      {
+        name: "SwitchThumb",
+        description: "Animated visual thumb that follows checked state.",
+      },
+      {
+        name: "SwitchHiddenInput",
+        description: "Hidden checkbox used for native form submission and reset behavior.",
+      },
+    ],
+    examples: examples.switchExamples,
   },
   tabs: {
     description: "A set of layered sections where one panel is visible at a time.",

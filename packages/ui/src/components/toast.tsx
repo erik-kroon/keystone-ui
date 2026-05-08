@@ -90,6 +90,7 @@ const DEFAULT_TOAST_GAP = 12;
 const DEFAULT_TOAST_OFFSET = "2rem";
 const DEFAULT_TOAST_WIDTH = "22.5rem";
 const TOAST_ENTER_DURATION = 500;
+const TOAST_EXIT_DURATION = 360;
 const toastAnimationStyles = `
 @keyframes ui-toast-enter-bottom {
   from {
@@ -112,6 +113,10 @@ const toastAnimationStyles = `
 @media (prefers-reduced-motion: reduce) {
   [data-slot="toast"][data-entering] {
     animation: none !important;
+  }
+
+  [data-slot="toast"] {
+    transition-duration: 1ms !important;
   }
 }
 `;
@@ -249,6 +254,7 @@ export function Toast(props: ToastProps) {
     const toastHeight = measuredHeight > 0 ? `${measuredHeight}px` : "auto";
     const calcHeightValue = local.stack.frontHeight ?? measuredHeight;
     const calcHeight = calcHeightValue > 0 ? `${calcHeightValue}px` : "auto";
+    const rootHeight = local.stack.expanded ? toastHeight : calcHeight;
     const scale = local.stack.expanded ? 1 : Math.max(0, 1 - local.stack.index * 0.1);
 
     return {
@@ -260,7 +266,6 @@ export function Toast(props: ToastProps) {
       "--toast-stack-offset": `${local.stack.offset}px`,
       "--toast-swipe-movement-x": "0px",
       "--toast-swipe-movement-y": "0px",
-      height: calcHeight,
       transform: getToastStackTransform({
         expanded: local.stack.expanded,
         height: calcHeightValue,
@@ -270,6 +275,7 @@ export function Toast(props: ToastProps) {
         scale,
       }),
       "z-index": String(9999 - local.stack.index),
+      height: rootHeight,
     } as JSX.CSSProperties;
   };
   const mergedStyle = () => {
@@ -284,7 +290,11 @@ export function Toast(props: ToastProps) {
     <CoreToast.Root
       {...rest}
       data-behind={local.stack && local.stack.index > 0 ? "" : undefined}
-      data-entering={local.stack && local.stack.index === 0 && entering() ? "" : undefined}
+      data-entering={
+        local.stack && local.stack.index === 0 && props.toast?.status !== "closed" && entering()
+          ? ""
+          : undefined
+      }
       data-expanded={local.stack?.expanded ? "" : undefined}
       data-inset={local.inset ? "" : undefined}
       data-position={local.stack?.position}
@@ -319,6 +329,8 @@ export function Toast(props: ToastProps) {
           "focus-visible:ring-3",
           "focus-visible:ring-ring/24",
           "data-[expanded]:bg-popover",
+          "data-[expanded]:h-(--toast-height)",
+          "data-[status=closed]:pointer-events-none",
           "data-[status=closed]:opacity-0",
           "data-[type=error]:border-destructive/24",
           "data-[type=success]:border-success/24",
@@ -629,6 +641,7 @@ export function Toaster(props: ToasterProps) {
   return (
     <ToastProvider
       {...providerProps}
+      exitDuration={providerProps.exitDuration ?? TOAST_EXIT_DURATION}
       limit={providerProps.limit ?? local.visibleToasts ?? DEFAULT_VISIBLE_TOASTS}
     >
       <style>{toastAnimationStyles}</style>

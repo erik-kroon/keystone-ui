@@ -97,6 +97,7 @@ export type ToastManagerListener = (toasts: readonly ToastData[]) => void;
 export type ToastProviderProps = {
   children?: JSX.Element;
   duration?: number;
+  exitDuration?: number;
   limit?: number;
   manager?: ToastManager;
   pauseOnPageIdle?: boolean;
@@ -285,11 +286,14 @@ export function createToastManager(options: CreateToastManagerOptions = {}): Toa
 export const toaster = defaultToastManager;
 
 export function ToastProvider(props: ToastProviderProps) {
-  const [toasts, setToasts] = createSignal<readonly ToastData[]>([]);
+  const [sourceToasts, setSourceToasts] = createSignal<readonly ToastData[]>([]);
+  const [renderedToasts, setRenderedToasts] = createSignal<readonly ToastData[]>([]);
   const manager = createMemo(() => props.manager ?? defaultToastManager);
   const duration = createMemo(() => props.duration ?? defaultDuration);
+  const exitDuration = createMemo(() => Math.max(0, props.exitDuration ?? 0));
   const limit = createMemo(() => props.limit);
   const timers = new Map<string, ReturnType<typeof setTimeout>>();
+  const exitTimers = new Map<string, ReturnType<typeof setTimeout>>();
   const scheduledToasts = new Map<string, ToastData>();
   const paused = new Set<string>();
 
@@ -300,6 +304,65 @@ export function ToastProvider(props: ToastProviderProps) {
       timers.delete(id);
     }
     scheduledToasts.delete(id);
+  };
+  const clearExitTimer = (id: string) => {
+    const timer = exitTimers.get(id);
+    if (timer) {
+      clearTimeout(timer);
+      exitTimers.delete(id);
+    }
+  };
+  const scheduleExitRemoval = (id: string, timeout: number) => {
+    clearExitTimer(id);
+    if (timeout <= 0) {
+      return;
+    }
+    exitTimers.set(
+      id,
+      setTimeout(() => {
+        exitTimers.delete(id);
+        setRenderedToasts((current) => current.filter((toast) => toast.id !== id));
+      }, timeout),
+    );
+  };
+  const syncRenderedToasts = (nextSource: readonly ToastData[]) => {
+    const timeout = exitDuration();
+    const sourceById = new Map(nextSource.map((toast) => [toast.id, toast]));
+    const currentIds = new Set<string>();
+
+    setRenderedToasts((current) => {
+      const next: ToastData[] = [];
+
+      for (const toast of current) {
+        currentIds.add(toast.id);
+        const sourceToast = sourceById.get(toast.id);
+
+        if (sourceToast) {
+          clearExitTimer(toast.id);
+          next.push(sourceToast);
+          continue;
+        }
+
+        if (toast.status === "closed" && exitTimers.has(toast.id)) {
+          next.push(toast);
+          continue;
+        }
+
+        if (timeout > 0) {
+          const closingToast: ToastData = { ...toast, status: "closed" };
+          scheduleExitRemoval(toast.id, timeout);
+          next.push(closingToast);
+        }
+      }
+
+      for (const toast of nextSource) {
+        if (!currentIds.has(toast.id)) {
+          next.push(toast);
+        }
+      }
+
+      return next;
+    });
   };
 
   const schedule = (toast: ToastData) => {
@@ -320,7 +383,7 @@ export function ToastProvider(props: ToastProviderProps) {
   };
 
   const pause = (id?: string) => {
-    const ids = id ? [id] : toasts().map((toast) => toast.id);
+    const ids = id ? [id] : sourceToasts().map((toast) => toast.id);
     for (const toastId of ids) {
       paused.add(toastId);
       clearTimer(toastId);
@@ -328,10 +391,10 @@ export function ToastProvider(props: ToastProviderProps) {
   };
 
   const resume = (id?: string) => {
-    const ids = id ? [id] : toasts().map((toast) => toast.id);
+    const ids = id ? [id] : sourceToasts().map((toast) => toast.id);
     for (const toastId of ids) {
       paused.delete(toastId);
-      const toast = toasts().find((candidate) => candidate.id === toastId);
+      const toast = sourceToasts().find((candidate) => candidate.id === toastId);
       if (toast) {
         schedule(toast);
       }
@@ -339,7 +402,10 @@ export function ToastProvider(props: ToastProviderProps) {
   };
 
   createEffect(() => {
-    const unsubscribe = manager().subscribe((next) => setToasts(next));
+    const unsubscribe = manager().subscribe((next) => {
+      setSourceToasts(next);
+      syncRenderedToasts(next);
+    });
     onCleanup(unsubscribe);
   });
 
@@ -361,7 +427,7 @@ export function ToastProvider(props: ToastProviderProps) {
   });
 
   createEffect(() => {
-    const current = toasts();
+    const current = sourceToasts();
     const ids = new Set(current.map((toast) => toast.id));
     for (const id of timers.keys()) {
       if (!ids.has(id)) {
@@ -379,6 +445,9 @@ export function ToastProvider(props: ToastProviderProps) {
     for (const id of timers.keys()) {
       clearTimer(id);
     }
+    for (const id of exitTimers.keys()) {
+      clearExitTimer(id);
+    }
   });
 
   const context: ToastProviderContextValue = {
@@ -388,7 +457,7 @@ export function ToastProvider(props: ToastProviderProps) {
     manager: manager(),
     pause,
     resume,
-    toasts,
+    toasts: renderedToasts,
   };
 
   return (

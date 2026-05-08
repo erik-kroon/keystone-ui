@@ -1,6 +1,6 @@
 import { createToastManager } from "@keystone-ui/core/toast";
 import { render } from "solid-js/web";
-import { describe, expect, test } from "vitest";
+import { afterEach, describe, expect, test, vi } from "vitest";
 import { Toaster } from "./toast";
 
 async function settled() {
@@ -9,7 +9,16 @@ async function settled() {
   await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
+async function flushed() {
+  await Promise.resolve();
+  await Promise.resolve();
+}
+
 describe("Toaster", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   test("renders a coss-style stacked toaster with Sonner/Base defaults", async () => {
     const host = document.createElement("div");
     document.body.append(host);
@@ -106,6 +115,33 @@ describe("Toaster", () => {
     expect((toasts[0] as HTMLElement & { __toastMark?: string }).__toastMark).toBe("one");
     expect(toasts[0]?.style.transform).toContain("scale(0.9)");
     expect(toasts[1]?.style.transform).toContain("scale(1)");
+
+    dispose();
+    host.remove();
+  });
+
+  test("keeps dismissed toasts mounted long enough for exit motion", async () => {
+    vi.useFakeTimers();
+    const host = document.createElement("div");
+    document.body.append(host);
+    const manager = createToastManager();
+    const dispose = render(() => <Toaster manager={manager} />, host);
+
+    manager.success({ id: "exit", title: "Saved" });
+    await flushed();
+
+    manager.dismiss("exit");
+    await flushed();
+
+    expect(manager.getToasts()).toHaveLength(0);
+    expect(host.querySelector<HTMLElement>("[data-slot='toast']")?.dataset.status).toBe("closed");
+
+    await vi.advanceTimersByTimeAsync(359);
+    expect(host.querySelector("[data-slot='toast']")).not.toBeNull();
+
+    await vi.advanceTimersByTimeAsync(1);
+    await flushed();
+    expect(host.querySelector("[data-slot='toast']")).toBeNull();
 
     dispose();
     host.remove();
