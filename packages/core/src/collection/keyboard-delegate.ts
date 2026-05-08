@@ -20,8 +20,12 @@ export type ListKeyboardDelegate<T extends CollectionItem> = {
   previous?: (options: CollectionNavigationOptions<T>) => T | undefined;
 };
 
+export function isCollectionItemHidden(item: CollectionItem): boolean {
+  return typeof item.hidden === "function" ? item.hidden() : Boolean(item.hidden);
+}
+
 export function isCollectionItemEnabled(item: CollectionItem): boolean {
-  return !item.disabled && !item.hidden;
+  return !item.disabled && !isCollectionItemHidden(item);
 }
 
 export function firstEnabledItem<T extends CollectionItem>(items: readonly T[]): T | undefined {

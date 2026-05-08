@@ -95,7 +95,7 @@
   --code-foreground: var(--foreground);
   --code-highlight: --alpha(var(--color-black) / 4%);
   color: var(--foreground);
-  background: var(--background);
+  background: var(--sidebar);
   font-family: var(--font-sans);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -149,13 +149,14 @@
 }
 
 html {
+  background: var(--sidebar);
   scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   min-width: 320px;
-  background: var(--background);
+  background: var(--sidebar);
   color: var(--foreground);
 }
 

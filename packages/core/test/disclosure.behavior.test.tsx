@@ -116,6 +116,46 @@ describe("Collapsible behavior", () => {
     expect(trigger.getAttribute("aria-expanded")).toBe("true");
     expect(content.hasAttribute("hidden")).toBe(false);
   });
+
+  test("keeps closing content visible while height animates to zero", async () => {
+    const animationFrames = stubAnimationFrames();
+
+    try {
+      render(() => (
+        <Collapsible.Root defaultOpen>
+          <Collapsible.Trigger>Details</Collapsible.Trigger>
+          <Collapsible.Content>Expandable content</Collapsible.Content>
+        </Collapsible.Root>
+      ));
+
+      animationFrames.reset();
+
+      const trigger = getByPart("collapsible", "trigger");
+      const content = getByPart("collapsible", "content");
+
+      click(trigger);
+      await settled();
+
+      expect(trigger.getAttribute("aria-expanded")).toBe("false");
+      expect(trigger.hasAttribute("data-panel-open")).toBe(false);
+      expect(queryByPart("collapsible", "content")).toBe(content);
+      expect(content.hasAttribute("hidden")).toBe(false);
+      expect(content.hasAttribute("data-ending-style")).toBe(false);
+
+      animationFrames.flush();
+      await settled();
+
+      expect(content.hasAttribute("data-ending-style")).toBe(true);
+      expect(content.hasAttribute("hidden")).toBe(false);
+
+      content.dispatchEvent(new Event("transitionend", { bubbles: true }));
+      await settled();
+
+      expect(queryByPart("collapsible", "content")).toBeNull();
+    } finally {
+      animationFrames.restore();
+    }
+  });
 });
 
 describe("Accordion behavior", () => {

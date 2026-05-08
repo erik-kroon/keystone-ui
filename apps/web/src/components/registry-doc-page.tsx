@@ -28,7 +28,13 @@ import type {
   PreviewAlign,
   PreviewVariant,
 } from "../docs/registry-doc-types";
-import { componentMaturity, findDocItem, itemToc, type DocsPage } from "@/lib/docs-data";
+import {
+  componentMaturity,
+  docsItemTitle,
+  findDocItem,
+  itemToc,
+  type DocsPage,
+} from "@/lib/docs-data";
 import type { RegistryDocItem } from "@/lib/registry-docs.gen";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@keystone-ui/ui/tabs";
 
@@ -90,6 +96,7 @@ function RegistryDocContent(
   const markdown = () => pageMarkdown(props.item, props.docsBlueprint);
   const usageCode = () => props.docsBlueprint.usageCode || genericUsageCode(props.item);
   const description = () => props.docsBlueprint.description ?? props.item.description;
+  const displayTitle = () => docsItemTitle(props.item);
   const apiItems = () =>
     props.docsBlueprint.apiItems?.length
       ? props.docsBlueprint.apiItems
@@ -106,7 +113,7 @@ function RegistryDocContent(
         <PageHeader class="flex flex-col gap-6">
           <div class="flex flex-col gap-2">
             <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
-              <PageHeaderHeading>{props.item.title}</PageHeaderHeading>
+              <PageHeaderHeading>{displayTitle()}</PageHeaderHeading>
               <Badge class={`translate-y-0.5 ${maturityBadgeClass(maturity())}`}>
                 {maturity()}
               </Badge>
@@ -428,7 +435,7 @@ function PreviewCodeTabs(
       <div class="rounded-xl border not-dark:bg-card" data-tab={tab()}>
         <div class="hidden data-[active=true]:block" data-active={tab() === "preview"}>
           <div
-            class="flex min-h-[430px] w-full justify-center overflow-y-auto bg-sidebar/24 p-8 data-[align=start]:items-start data-[align=end]:items-end data-[align=center]:items-center sm:p-10 max-sm:min-h-[380px] max-sm:px-5"
+            class="flex min-h-[430px] w-full justify-center overflow-visible bg-sidebar/24 p-8 data-[align=start]:items-start data-[align=end]:items-end data-[align=center]:items-center sm:p-10 max-sm:min-h-[380px] max-sm:px-5"
             data-align={align()}
           >
             <div
@@ -572,8 +579,8 @@ function itemPageWithBlueprint(item: RegistryDocItem, blueprint: ComponentDocsBl
   return {
     description: blueprint.description ?? item.description,
     href: `/docs/components/${item.name}`,
-    label: item.title,
-    title: item.title,
+    label: docsItemTitle(item),
+    title: docsItemTitle(item),
     toc: hookDocs
       ? [
           { label: "Installation", href: "#installation" },

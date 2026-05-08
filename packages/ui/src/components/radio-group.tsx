@@ -37,7 +37,7 @@ const radioClass = classes(
   "before:absolute",
   "before:inset-0",
   "before:rounded-full",
-  "not-data-disabled:not-data-checked:not-aria-invalid:before:shadow-[0_1px_--theme(--color-black/4%)]",
+  "not-group-data-checked:not-group-data-disabled:not-aria-invalid:before:shadow-[0_1px_--theme(--color-black/4%)]",
   "focus-visible:ring-2",
   "focus-visible:ring-ring",
   "focus-visible:ring-offset-1",
@@ -48,10 +48,12 @@ const radioClass = classes(
   "data-disabled:cursor-not-allowed",
   "data-disabled:opacity-64",
   "sm:size-4",
-  "dark:not-data-checked:bg-input/32",
+  "dark:not-group-data-checked:bg-input/32",
   "dark:aria-invalid:ring-destructive/24",
-  "dark:not-data-disabled:not-data-checked:not-aria-invalid:before:shadow-[0_-1px_--theme(--color-white/6%)]",
-  "[[data-disabled],[data-checked],[aria-invalid]]:shadow-none",
+  "dark:not-group-data-disabled:not-group-data-checked:not-aria-invalid:before:shadow-[0_-1px_--theme(--color-white/6%)]",
+  "group-data-checked:shadow-none",
+  "group-data-disabled:shadow-none",
+  "aria-invalid:shadow-none",
 );
 
 const radioIndicatorClass = classes(
@@ -66,6 +68,7 @@ const radioIndicatorClass = classes(
   "before:rounded-full",
   "before:bg-primary-foreground",
   "data-checked:bg-primary",
+  "data-unchecked:hidden",
   "sm:size-4",
   "sm:before:size-1.5",
 );
@@ -90,7 +93,7 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
       {...rest}
       data-slot="radio-group-item"
       class={cn(
-        "ui-radio-group-item inline-flex cursor-pointer items-center gap-2 text-sm data-disabled:cursor-not-allowed",
+        "ui-radio-group-item group inline-flex cursor-pointer items-center gap-2 text-sm data-disabled:cursor-not-allowed",
         local.class,
       )}
     >
@@ -100,7 +103,7 @@ export function RadioGroupItem(props: RadioGroupItemProps) {
         data-slot="radio"
         class={cn(radioClass, "ui-radio-group-item-control")}
       >
-        <RadioGroupItemIndicator>{local.indicator ?? ""}</RadioGroupItemIndicator>
+        <RadioGroupItemIndicator forceMount>{local.indicator ?? ""}</RadioGroupItemIndicator>
       </span>
       <span data-scope="ui-radio-group" data-part="item-label" data-slot="radio-label">
         {local.children}
@@ -123,5 +126,13 @@ export function RadioGroupItemIndicator(props: RadioGroupItemIndicatorProps) {
 }
 
 export function RadioGroupHiddenInput(props: RadioGroupHiddenInputProps) {
-  return <CoreRadioGroup.HiddenInput {...props} class="ui-radio-group-input" />;
+  const [local, rest] = splitProps(props, ["class"]);
+
+  return (
+    <CoreRadioGroup.HiddenInput
+      {...rest}
+      data-slot="radio-group-input"
+      class={cn("ui-radio-group-input sr-only", local.class)}
+    />
+  );
 }

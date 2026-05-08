@@ -1,5 +1,5 @@
 import { createSignal, type JSX } from "solid-js";
-import { CircleAlert, Info, TriangleAlert } from "lucide-solid";
+import { CalendarDays, CircleAlert, Info, TriangleAlert } from "lucide-solid";
 import { createToastManager } from "@keystone-ui/core/toast";
 import {
   Accordion,
@@ -19,6 +19,15 @@ import {
   CardTitle,
 } from "@keystone-ui/ui/card";
 import { Checkbox } from "@keystone-ui/ui/checkbox";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@keystone-ui/ui/collapsible";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxListbox,
+} from "@keystone-ui/ui/combobox";
+import { DatePicker, DatePickerContent, DatePickerTrigger } from "@keystone-ui/ui/date-picker";
 import { Label } from "@keystone-ui/ui/label";
 import {
   Dialog,
@@ -48,6 +57,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@keystone-ui/ui/select";
+import { RadioGroup, RadioGroupItem } from "@keystone-ui/ui/radio-group";
 import { Switch } from "@keystone-ui/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@keystone-ui/ui/tabs";
 import { Textarea } from "@keystone-ui/ui/textarea";
@@ -374,6 +384,294 @@ export function Component() {
         <AccordionContent>Accordion is a Core-backed UI disclosure pattern.</AccordionContent>
       </AccordionItem>
     </Accordion>
+  );
+}`;
+
+export function CollapsibleExample() {
+  return (
+    <Collapsible defaultOpen class="w-full max-w-md rounded-lg border bg-card p-4 shadow-xs">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <h3 class="m-0 font-medium text-foreground text-sm">Registry details</h3>
+          <p class="mt-1 text-muted-foreground text-sm">Inspect source-owned install metadata.</p>
+        </div>
+        <CollapsibleTrigger class="inline-flex h-8 items-center rounded-md border px-3 text-sm shadow-xs transition-colors hover:bg-accent">
+          Toggle
+        </CollapsibleTrigger>
+      </div>
+      <CollapsibleContent class="pt-2">
+        <div class="rounded-md bg-muted/60 p-3 text-muted-foreground text-sm">
+          Includes files, dependencies, parity notes, and Core-backed disclosure behavior.
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
+
+export const collapsibleExampleCode = `import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+
+export function Component() {
+  return (
+    <Collapsible defaultOpen class="w-full max-w-md rounded-lg border bg-card p-4 shadow-xs">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <h3 class="m-0 font-medium text-foreground text-sm">Registry details</h3>
+          <p class="mt-1 text-muted-foreground text-sm">Inspect source-owned install metadata.</p>
+        </div>
+        <CollapsibleTrigger class="inline-flex h-8 items-center rounded-md border px-3 text-sm shadow-xs transition-colors hover:bg-accent">
+          Toggle
+        </CollapsibleTrigger>
+      </div>
+      <CollapsibleContent class="pt-2">
+        <div class="rounded-md bg-muted/60 p-3 text-muted-foreground text-sm">
+          Includes files, dependencies, parity notes, and Core-backed disclosure behavior.
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}`;
+
+export const collapsibleExample = defineCodeExample({
+  code: collapsibleExampleCode,
+  component: CollapsibleExample,
+  description: "A simple Core-backed disclosure region with UI-owned trigger and panel styling.",
+  id: "basic",
+  title: "Basic Collapsible",
+  variant: "inline",
+});
+
+export const collapsibleExamples = [collapsibleExample] satisfies readonly CodeExample[];
+
+export const collapsibleUsageCode = `import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+
+export function Component() {
+  return (
+    <Collapsible>
+      <CollapsibleTrigger>Toggle details</CollapsibleTrigger>
+      <CollapsibleContent>Hidden details render when open.</CollapsibleContent>
+    </Collapsible>
+  );
+}`;
+
+const comboboxOptions = [
+  { label: "Apple", value: "apple" },
+  { label: "Banana", value: "banana" },
+  { label: "Orange", value: "orange" },
+  { label: "Grape", value: "grape" },
+  { label: "Strawberry", value: "strawberry" },
+  { label: "Mango", value: "mango" },
+  { label: "Pineapple", value: "pineapple" },
+  { label: "Kiwi", value: "kiwi" },
+  { label: "Peach", value: "peach" },
+  { label: "Pear", value: "pear" },
+];
+
+export function ComboboxExample() {
+  return (
+    <Combobox>
+      <ComboboxInput aria-label="Select a fruit" class="w-64" placeholder="Select a fruit..." />
+      <ComboboxContent>
+        <ComboboxListbox>
+          {comboboxOptions.map((option) => (
+            <ComboboxItem value={option.value}>{option.label}</ComboboxItem>
+          ))}
+        </ComboboxListbox>
+      </ComboboxContent>
+    </Combobox>
+  );
+}
+
+export const comboboxExampleCode = `import {
+  Combobox,
+  ComboboxContent,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxListbox,
+} from "@/components/ui/combobox";
+
+export function Component() {
+  const options = [
+    { label: "Apple", value: "apple" },
+    { label: "Banana", value: "banana" },
+    { label: "Orange", value: "orange" },
+    { label: "Grape", value: "grape" },
+    { label: "Strawberry", value: "strawberry" },
+    { label: "Mango", value: "mango" },
+    { label: "Pineapple", value: "pineapple" },
+    { label: "Kiwi", value: "kiwi" },
+    { label: "Peach", value: "peach" },
+    { label: "Pear", value: "pear" },
+  ];
+
+  return (
+    <Combobox>
+      <ComboboxInput
+        aria-label="Select a fruit"
+        class="w-64"
+        placeholder="Select a fruit..."
+      />
+      <ComboboxContent>
+        <ComboboxListbox>
+          {options.map((option) => (
+            <ComboboxItem value={option.value}>{option.label}</ComboboxItem>
+          ))}
+        </ComboboxListbox>
+      </ComboboxContent>
+    </Combobox>
+  );
+}`;
+
+export const comboboxExample = defineCodeExample({
+  code: comboboxExampleCode,
+  component: ComboboxExample,
+  description: "A searchable listbox popup with fruit options.",
+  id: "fruit-list",
+  title: "Fruit List",
+  variant: "inline",
+});
+
+export const comboboxExamples = [comboboxExample] satisfies readonly CodeExample[];
+
+export const comboboxUsageCode = `import {
+  Combobox,
+  ComboboxContent,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxListbox,
+} from "@/components/ui/combobox";
+
+export function Component() {
+  return (
+    <Combobox>
+      <ComboboxInput aria-label="Select a fruit" placeholder="Select a fruit..." />
+      <ComboboxContent>
+        <ComboboxListbox>
+          <ComboboxItem value="apple">Apple</ComboboxItem>
+          <ComboboxItem value="banana">Banana</ComboboxItem>
+          <ComboboxItem value="orange">Orange</ComboboxItem>
+          <ComboboxItem value="grape">Grape</ComboboxItem>
+        </ComboboxListbox>
+      </ComboboxContent>
+    </Combobox>
+  );
+}`;
+
+export function RadioGroupExample() {
+  return (
+    <RadioGroup
+      defaultValue="email"
+      class="w-fit max-w-full rounded-lg border bg-card p-4 shadow-xs"
+    >
+      <RadioGroupItem value="email">Email notifications</RadioGroupItem>
+      <RadioGroupItem value="sms">SMS notifications</RadioGroupItem>
+      <RadioGroupItem value="none">No notifications</RadioGroupItem>
+    </RadioGroup>
+  );
+}
+
+export const radioGroupExampleCode = `import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+export function Component() {
+  return (
+    <RadioGroup defaultValue="email" class="w-fit max-w-full rounded-lg border bg-card p-4 shadow-xs">
+      <RadioGroupItem value="email">Email notifications</RadioGroupItem>
+      <RadioGroupItem value="sms">SMS notifications</RadioGroupItem>
+      <RadioGroupItem value="none">No notifications</RadioGroupItem>
+    </RadioGroup>
+  );
+}`;
+
+export const radioGroupExample = defineCodeExample({
+  code: radioGroupExampleCode,
+  component: RadioGroupExample,
+  description: "Single selection with hidden native inputs and roving focus behavior.",
+  id: "basic",
+  title: "Basic Radio Group",
+  variant: "inline",
+});
+
+export const radioGroupExamples = [radioGroupExample] satisfies readonly CodeExample[];
+
+export const radioGroupUsageCode = `import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+export function Component() {
+  return (
+    <RadioGroup defaultValue="email">
+      <RadioGroupItem value="email">Email</RadioGroupItem>
+      <RadioGroupItem value="sms">SMS</RadioGroupItem>
+      <RadioGroupItem value="none">None</RadioGroupItem>
+    </RadioGroup>
+  );
+}`;
+
+export function DatePickerExample() {
+  return (
+    <DatePicker defaultMonth="2026-05" defaultValue="2026-05-15">
+      <DatePickerTrigger
+        class="inline-flex h-8.5 w-48 items-center justify-between gap-2 rounded-lg border border-input bg-background px-3 text-sm shadow-xs transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        placeholder="Select date"
+      >
+        <span>2026-05-15</span>
+        <CalendarDays class="size-4 opacity-70" />
+      </DatePickerTrigger>
+      <DatePickerContent class="mt-2 rounded-lg border bg-popover p-3 shadow-lg/5 [&_[data-part=cell-trigger]]:size-8 [&_[data-part=cell-trigger]]:rounded-md [&_[data-part=cell-trigger]]:text-sm [&_[data-part=cell-trigger]]:hover:bg-accent [&_[data-part=cell-trigger][data-outside-month]]:text-muted-foreground/50 [&_[data-part=cell-trigger][data-selected]]:bg-primary [&_[data-part=cell-trigger][data-selected]]:text-primary-foreground [&_[data-part=column-header]]:h-7 [&_[data-part=column-header]]:text-muted-foreground [&_[data-part=column-header]]:text-xs [&_[data-part=heading]]:m-0 [&_[data-part=heading]]:font-medium [&_[data-part=heading]]:text-sm [&_[data-part=header]]:mb-2 [&_[data-part=header]]:flex [&_[data-part=header]]:items-center [&_[data-part=header]]:justify-between [&_[data-part=next-trigger]]:rounded-md [&_[data-part=next-trigger]]:px-2 [&_[data-part=next-trigger]]:py-1 [&_[data-part=next-trigger]]:text-sm [&_[data-part=prev-trigger]]:rounded-md [&_[data-part=prev-trigger]]:px-2 [&_[data-part=prev-trigger]]:py-1 [&_[data-part=prev-trigger]]:text-sm [&_table]:border-collapse" />
+    </DatePicker>
+  );
+}
+
+export const datePickerExampleCode = `import { CalendarDays } from "lucide-solid";
+import {
+  DatePicker,
+  DatePickerContent,
+  DatePickerTrigger,
+} from "@/components/ui/date-picker";
+
+export function Component() {
+  return (
+    <DatePicker defaultMonth="2026-05" defaultValue="2026-05-15">
+      <DatePickerTrigger
+        class="inline-flex h-8.5 w-48 items-center justify-between gap-2 rounded-lg border border-input bg-background px-3 text-sm shadow-xs transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        placeholder="Select date"
+      >
+        <span>2026-05-15</span>
+        <CalendarDays class="size-4 opacity-70" />
+      </DatePickerTrigger>
+      <DatePickerContent class="mt-2 rounded-lg border bg-popover p-3 shadow-lg/5 [&_[data-part=cell-trigger]]:size-8 [&_[data-part=cell-trigger]]:rounded-md [&_[data-part=cell-trigger]]:text-sm [&_[data-part=cell-trigger]]:hover:bg-accent [&_[data-part=cell-trigger][data-outside-month]]:text-muted-foreground/50 [&_[data-part=cell-trigger][data-selected]]:bg-primary [&_[data-part=cell-trigger][data-selected]]:text-primary-foreground [&_[data-part=column-header]]:h-7 [&_[data-part=column-header]]:text-muted-foreground [&_[data-part=column-header]]:text-xs [&_[data-part=heading]]:m-0 [&_[data-part=heading]]:font-medium [&_[data-part=heading]]:text-sm [&_[data-part=header]]:mb-2 [&_[data-part=header]]:flex [&_[data-part=header]]:items-center [&_[data-part=header]]:justify-between [&_[data-part=next-trigger]]:rounded-md [&_[data-part=next-trigger]]:px-2 [&_[data-part=next-trigger]]:py-1 [&_[data-part=next-trigger]]:text-sm [&_[data-part=prev-trigger]]:rounded-md [&_[data-part=prev-trigger]]:px-2 [&_[data-part=prev-trigger]]:py-1 [&_[data-part=prev-trigger]]:text-sm [&_table]:border-collapse" />
+    </DatePicker>
+  );
+}`;
+
+export const datePickerExample = defineCodeExample({
+  code: datePickerExampleCode,
+  component: DatePickerExample,
+  description: "A date picker trigger with a selected date and calendar popup.",
+  id: "basic",
+  title: "Basic Date Picker",
+  variant: "inline",
+});
+
+export const datePickerExamples = [datePickerExample] satisfies readonly CodeExample[];
+
+export const datePickerUsageCode = `import {
+  DatePicker,
+  DatePickerContent,
+  DatePickerTrigger,
+} from "@/components/ui/date-picker";
+
+export function Component() {
+  return (
+    <DatePicker>
+      <DatePickerTrigger placeholder="Select date" />
+      <DatePickerContent />
+    </DatePicker>
   );
 }`;
 

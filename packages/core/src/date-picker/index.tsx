@@ -9,6 +9,7 @@ import {
   type JSX,
 } from "solid-js";
 import { useLocale, type LocaleApi, type LocaleMessageKey } from "../i18n/locale";
+import { createOverlayPresence, type OverlayPresenceApi } from "../overlay/index";
 import {
   callEventHandler,
   createControllableBooleanSignal,
@@ -157,6 +158,7 @@ export type CalendarApi = {
   rangeValue: () => CalendarRangeValue | undefined;
   selectDate: (value: CalendarValue, detail: CalendarValueChangeDetail) => CalendarValue;
   setFocusedValue: (value: CalendarValue, detail: CalendarMonthChangeDetail) => void;
+  setRootElement: (element: HTMLDivElement) => void;
   selectionMode: () => CalendarSelectionMode;
   value: () => CalendarValue | undefined;
   weekDayLabels: () => string[];
@@ -167,6 +169,7 @@ export type DatePickerApi = {
   calendar: CalendarApi;
   contentId: string;
   open: () => boolean;
+  presence: OverlayPresenceApi;
   setOpen: (open: boolean, detail: DatePickerOpenChangeDetail) => boolean;
 };
 
@@ -177,6 +180,7 @@ export function createCalendar(options: CreateCalendarOptions = {}): CalendarApi
   let pendingValueDetail: CalendarValueChangeDetail | undefined;
   let pendingRangeValueDetail: CalendarRangeValueChangeDetail | undefined;
   let pendingMonthDetail: CalendarMonthChangeDetail | undefined;
+  let rootElement: HTMLDivElement | undefined;
   const today = todayValue();
   const initialRangeValue = options.defaultRangeValue ?? options.rangeValue?.();
   const initialValue = options.defaultValue ?? options.value?.() ?? initialRangeValue?.start;
@@ -239,7 +243,7 @@ export function createCalendar(options: CreateCalendarOptions = {}): CalendarApi
     const nextMonth = valueToMonth(nextValue);
     setFocusedValueState(nextValue);
     if (nextMonth !== month()) setMonth(nextMonth, detail);
-    focusDayButton(nextValue);
+    focusDayButton(rootElement, nextValue);
   };
 
   return {
@@ -276,6 +280,9 @@ export function createCalendar(options: CreateCalendarOptions = {}): CalendarApi
       return result ?? nextValue;
     },
     setFocusedValue: focusDate,
+    setRootElement: (element) => {
+      rootElement = element;
+    },
     selectionMode,
     value,
     weekDayLabels: () => getWeekDayLabels(locale(), weekStartsOn()),
@@ -302,6 +309,7 @@ export function createDatePicker(options: CreateDatePickerOptions = {}): DatePic
     onChange: (nextOpen) =>
       options.onOpenChange?.(nextOpen, pendingOpenDetail ?? { reason: "programmatic" }),
   });
+  const presence = createOverlayPresence({ open });
   const setOpen = (nextOpen: boolean, detail: DatePickerOpenChangeDetail) => {
     if (calendar.disabled() && detail.reason !== "programmatic") return open();
     pendingOpenDetail = detail;
@@ -325,6 +333,7 @@ export function createDatePicker(options: CreateDatePickerOptions = {}): DatePic
     calendar,
     contentId: `keystone-date-picker-content-${createUniqueId()}`,
     open,
+    presence,
     setOpen,
   };
 }
@@ -392,11 +401,15 @@ function CalendarRootView(
   props: CalendarPartProps<HTMLDivElement> & JSX.HTMLAttributes<HTMLDivElement>,
 ) {
   const calendar = useCalendar("Root");
-  const [local, others] = splitProps(props, ["children"]);
+  const [local, others] = splitProps(props, ["children", "ref"]);
 
   return (
     <div
       {...others}
+      ref={(element) => {
+        calendar.setRootElement(element);
+        assignRef(local.ref, element);
+      }}
       data-disabled={dataBoolean(calendar.disabled())}
       data-end-value={calendar.rangeValue()?.end}
       data-selection-mode={calendar.selectionMode()}
@@ -662,15 +675,23 @@ function Trigger(props: DatePickerTriggerProps) {
 
 function Content(props: DatePickerContentProps) {
   const datePicker = useDatePicker("Content");
-  const [local, others] = splitProps(props, ["children", "forceMount"]);
+  const [local, others] = splitProps(props, ["children", "forceMount", "ref"]);
 
   return (
-    <Show when={local.forceMount || datePicker.open()}>
+    <Show when={datePicker.presence.shouldMount(local.forceMount)}>
       <div
         {...others}
+        ref={(element) => {
+          datePicker.presence.setElement(element);
+          assignRef(local.ref, element);
+        }}
         id={datePicker.contentId}
         role="dialog"
+        hidden={datePicker.presence.hidden(local.forceMount) || undefined}
         data-state={getOpenClosedState(datePicker.open())}
+        data-transition-status={datePicker.presence.transitionStatus()}
+        data-starting-style={datePicker.presence.transitionStyle() === "starting" ? "" : undefined}
+        data-ending-style={datePicker.presence.transitionStyle() === "ending" ? "" : undefined}
         {...partDataAttributes("date-picker", "content")}
       >
         {local.children ?? defaultCalendarChildren()}
@@ -884,18 +905,22 @@ function defaultCalendarMessage(key: LocaleMessageKey) {
   return messages[key];
 }
 
-function focusDayButton(value: CalendarValue) {
+function focusDayButton(rootElement: HTMLDivElement | undefined, value: CalendarValue) {
   scheduleMicrotask(() => {
-    if (typeof document === "undefined") {
+    if (!rootElement?.isConnected) {
       return;
     }
 
-    document
-      .querySelector<HTMLButtonElement>(
-        `[data-scope="calendar"][data-part="cell-trigger"][data-date="${value}"]`,
-      )
+    rootElement
+      .querySelector<HTMLButtonElement>(`[data-part="cell-trigger"][data-date="${value}"]`)
       ?.focus();
   });
+}
+
+function assignRef<T>(ref: T | ((element: T) => void) | undefined, element: T) {
+  if (typeof ref === "function") {
+    (ref as (element: T) => void)(element);
+  }
 }
 
 function todayValue() {

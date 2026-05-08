@@ -36,16 +36,26 @@ export function CollapsibleTrigger(props: CollapsibleTriggerProps) {
 }
 
 export function CollapsibleContent(props: CollapsibleContentProps) {
-  const [local, rest] = splitProps(props, ["class"]);
+  const [local, rest] = splitProps(props, ["children", "class"]);
 
   return (
     <CoreCollapsible.Content
       {...rest}
-      data-slot="collapsible-content"
+      data-slot="collapsible-panel"
       class={cn(
-        "ui-collapsible-content overflow-hidden transition-[height] duration-200 data-ending-style:h-0 data-starting-style:h-0",
-        local.class,
+        "ui-collapsible-panel h-(--collapsible-panel-height) overflow-hidden transition-[height] duration-200 data-ending-style:h-0 data-starting-style:h-0 motion-reduce:transition-none",
       )}
-    />
+    >
+      <div
+        data-scope="ui-collapsible"
+        data-part="content-inner"
+        data-slot="collapsible-content"
+        class={cn("ui-collapsible-content", local.class)}
+      >
+        {local.children}
+      </div>
+    </CoreCollapsible.Content>
   );
 }
+
+export const CollapsiblePanel = CollapsibleContent;

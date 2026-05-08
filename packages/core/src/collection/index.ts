@@ -242,7 +242,7 @@ export function createListboxInteraction<T extends CollectionItem, Detail>(
         disabled: local.disabled,
         element,
         group: local.group,
-        hidden: Boolean(local.hidden),
+        hidden: () => Boolean(local.hidden),
         label: local.label,
         value: local.value,
       } as CollectionRegistration<T>);
@@ -252,7 +252,9 @@ export function createListboxInteraction<T extends CollectionItem, Detail>(
         id: options.optionId(local.value),
         role: "option",
         "aria-disabled": local.disabled ? "true" : undefined,
-        hidden: local.hidden,
+        get hidden() {
+          return local.hidden;
+        },
         ref: (element: HTMLDivElement) => {
           setElement(element);
           list.collection.scheduleRefreshOrder();
@@ -264,7 +266,9 @@ export function createListboxInteraction<T extends CollectionItem, Detail>(
         ...partProps(optionPart),
         "data-disabled": dataBoolean(local.disabled),
         "data-group": local.group,
-        "data-hidden": dataBoolean(Boolean(local.hidden)),
+        get "data-hidden"() {
+          return dataBoolean(Boolean(local.hidden));
+        },
         "data-value": local.value,
         get "data-highlighted"() {
           return dataBoolean(list.collection.isHighlighted(local.value));

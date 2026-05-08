@@ -1,6 +1,6 @@
 import { createSignal, onCleanup, type Accessor } from "solid-js";
 import type { CollectionItem } from "./collection-registry";
-import { isCollectionItemEnabled } from "./keyboard-delegate";
+import { isCollectionItemEnabled, isCollectionItemHidden } from "./keyboard-delegate";
 
 export type TypeaheadOptions<T extends CollectionItem> = {
   collator?: Intl.Collator;
@@ -134,7 +134,7 @@ function findTypeaheadMatch<T extends CollectionItem>(options: {
     if (
       item &&
       !item.disabled &&
-      !item.hidden &&
+      !isCollectionItemHidden(item) &&
       startsWithTypeahead(label, normalizedSearch, options.collator)
     ) {
       return item;

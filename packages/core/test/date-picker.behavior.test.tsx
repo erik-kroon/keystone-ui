@@ -4,8 +4,8 @@ import { Calendar, DatePicker, createCalendar } from "../src/date-picker/index";
 import { Locale } from "../src/locale/index";
 import { click, getByPart, keyDown, queryByPart, render, settled } from "./harness";
 
-function getDay(value: string) {
-  const element = document.body.querySelector<HTMLButtonElement>(
+function getDay(value: string, root: ParentNode = document.body) {
+  const element = root.querySelector<HTMLButtonElement>(
     `[data-scope="calendar"][data-part="cell-trigger"][data-date="${value}"]`,
   );
 
@@ -227,6 +227,55 @@ describe("DatePicker behavior", () => {
     expect(openChanges).toEqual(["true:trigger", "false:select"]);
     expect(queryByPart("date-picker", "content")).toBeNull();
     expect(trigger.textContent).toBe("2026-05-18");
+  });
+
+  test("marks content with transition attributes while opening and closing", async () => {
+    render(() => (
+      <DatePicker.Root defaultMonth="2026-05">
+        <DatePicker.Trigger placeholder="Pick a date" />
+        <DatePicker.Content />
+      </DatePicker.Root>
+    ));
+
+    click(getByPart("date-picker", "trigger"));
+
+    const content = getByPart("date-picker", "content");
+    expect(content.getAttribute("data-transition-status")).toBe("opening");
+    expect(content.getAttribute("data-starting-style")).toBe("");
+
+    await settled();
+    click(getByPart("date-picker", "trigger"));
+
+    expect(content.getAttribute("data-transition-status")).toBe("closing");
+    expect(content.getAttribute("data-ending-style")).toBe("");
+  });
+
+  test("does not focus a later calendar after selection closes the current popup", async () => {
+    render(() => (
+      <>
+        <DatePicker.Root defaultMonth="2026-05" defaultOpen>
+          <DatePicker.Trigger placeholder="First" />
+          <DatePicker.Content data-testid="first-content" />
+        </DatePicker.Root>
+        <DatePicker.Root defaultMonth="2026-05" defaultOpen>
+          <DatePicker.Trigger placeholder="Second" />
+          <DatePicker.Content data-testid="second-content" />
+        </DatePicker.Root>
+      </>
+    ));
+
+    const firstContent = document.body.querySelector<HTMLElement>('[data-testid="first-content"]');
+    const secondContent = document.body.querySelector<HTMLElement>(
+      '[data-testid="second-content"]',
+    );
+    const firstDay = getDay("2026-05-18", firstContent ?? undefined);
+    const secondDay = getDay("2026-05-18", secondContent ?? undefined);
+
+    click(firstDay);
+    await settled();
+
+    expect(firstContent?.isConnected).toBe(false);
+    expect(document.activeElement).not.toBe(secondDay);
   });
 
   test("keeps range picker open until the range has an end date", async () => {

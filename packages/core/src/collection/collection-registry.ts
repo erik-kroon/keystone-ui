@@ -5,7 +5,7 @@ export type CollectionItem = {
   disabled?: boolean;
   element?: Accessor<HTMLElement | undefined>;
   group?: string;
-  hidden?: boolean;
+  hidden?: boolean | Accessor<boolean>;
   label?: string;
   value: string;
 };

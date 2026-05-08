@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { createSignal, type Setter } from "solid-js";
 import { Autocomplete, Combobox } from "../src/combobox/index";
-import { click, getByPart, keyDown, render, settled } from "./harness";
+import { click, getByPart, keyDown, pointerDown, render, settled } from "./harness";
 
 function inputText(element: HTMLInputElement, value: string) {
   element.value = value;
@@ -9,6 +9,82 @@ function inputText(element: HTMLInputElement, value: string) {
 }
 
 describe("Combobox behavior harness", () => {
+  test("does not open only because the input receives focus", async () => {
+    render(() => (
+      <Combobox.Root defaultInputValue="Alpha">
+        <Combobox.Input placeholder="Project" />
+        <Combobox.Content>
+          <Combobox.Listbox>
+            <Combobox.Item value="alpha">Alpha</Combobox.Item>
+            <Combobox.Item value="bravo">Bravo</Combobox.Item>
+          </Combobox.Listbox>
+        </Combobox.Content>
+      </Combobox.Root>
+    ));
+
+    const input = getByPart("combobox", "input") as HTMLInputElement;
+    input.dispatchEvent(new FocusEvent("focus", { bubbles: false }));
+    await settled();
+
+    expect(input.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  test("opens from input click and reopens after selecting a value", async () => {
+    render(() => (
+      <Combobox.Root>
+        <Combobox.Input placeholder="Fruit" />
+        <Combobox.Content>
+          <Combobox.Listbox>
+            <Combobox.Item value="apple">Apple</Combobox.Item>
+            <Combobox.Item value="banana">Banana</Combobox.Item>
+          </Combobox.Listbox>
+        </Combobox.Content>
+      </Combobox.Root>
+    ));
+
+    const input = getByPart("combobox", "input") as HTMLInputElement;
+    click(input);
+    await settled();
+
+    expect(input.getAttribute("aria-expanded")).toBe("true");
+
+    click(document.querySelector<HTMLElement>('[data-value="apple"]')!);
+    await settled();
+
+    expect(input.value).toBe("Apple");
+    expect(input.getAttribute("aria-expanded")).toBe("false");
+
+    click(input);
+    await settled();
+
+    expect(input.getAttribute("aria-expanded")).toBe("true");
+  });
+
+  test("closes when pressing outside the combobox", async () => {
+    const reasons: string[] = [];
+
+    render(() => (
+      <Combobox.Root defaultOpen onOpenChange={(_open, detail) => reasons.push(detail.reason)}>
+        <Combobox.Input placeholder="Fruit" />
+        <Combobox.Content>
+          <Combobox.Listbox>
+            <Combobox.Item value="apple">Apple</Combobox.Item>
+            <Combobox.Item value="banana">Banana</Combobox.Item>
+          </Combobox.Listbox>
+        </Combobox.Content>
+      </Combobox.Root>
+    ));
+
+    const input = getByPart("combobox", "input") as HTMLInputElement;
+    expect(input.getAttribute("aria-expanded")).toBe("true");
+
+    pointerDown(document.body);
+    await settled();
+
+    expect(input.getAttribute("aria-expanded")).toBe("false");
+    expect(reasons).toEqual(["outside"]);
+  });
+
   test("opens from input, highlights with keyboard, and selects a value", async () => {
     const values: string[] = [];
     const inputs: string[] = [];
@@ -38,6 +114,15 @@ describe("Combobox behavior harness", () => {
 
     expect(input.getAttribute("aria-expanded")).toBe("true");
     expect(inputs).toEqual(["br"]);
+    expect(
+      document.querySelector<HTMLElement>('[data-value="alpha"]')?.hasAttribute("hidden"),
+    ).toBe(true);
+    expect(document.querySelector<HTMLElement>('[data-value="beta"]')?.hasAttribute("hidden")).toBe(
+      true,
+    );
+    expect(
+      document.querySelector<HTMLElement>('[data-value="bravo"]')?.hasAttribute("hidden"),
+    ).toBe(false);
 
     keyDown(input, "ArrowDown");
     keyDown(input, "ArrowDown");
@@ -55,6 +140,50 @@ describe("Combobox behavior harness", () => {
     expect(
       new FormData(document.querySelector("form") ?? document.createElement("form")).get("project"),
     ).toBeNull();
+  });
+
+  test("highlights the first filtered match so Enter selects it", async () => {
+    const values: string[] = [];
+
+    render(() => (
+      <Combobox.Root onValueChange={(value) => values.push(value ?? "")}>
+        <Combobox.Input placeholder="Fruit" />
+        <Combobox.Content>
+          <Combobox.Listbox>
+            <Combobox.Item value="apple">Apple</Combobox.Item>
+            <Combobox.Item value="banana">Banana</Combobox.Item>
+            <Combobox.Item value="pineapple">Pineapple</Combobox.Item>
+          </Combobox.Listbox>
+        </Combobox.Content>
+      </Combobox.Root>
+    ));
+
+    const input = getByPart("combobox", "input") as HTMLInputElement;
+    input.focus();
+    inputText(input, "app");
+    await settled();
+
+    expect(
+      document.querySelector<HTMLElement>('[data-value="apple"]')?.hasAttribute("hidden"),
+    ).toBe(false);
+    expect(
+      document.querySelector<HTMLElement>('[data-value="banana"]')?.hasAttribute("hidden"),
+    ).toBe(true);
+    expect(
+      document.querySelector<HTMLElement>('[data-value="pineapple"]')?.hasAttribute("hidden"),
+    ).toBe(false);
+    expect(
+      document.querySelector('[data-scope="combobox"][data-part="item"][data-highlighted]')
+        ?.textContent,
+    ).toBe("Apple");
+
+    keyDown(input, "Enter");
+    await settled();
+
+    expect(values).toEqual(["apple"]);
+    expect(input.value).toBe("Apple");
+    expect(input.getAttribute("aria-expanded")).toBe("false");
+    expect(document.activeElement).not.toBe(input);
   });
 
   test("serializes selected value through a hidden input and resets with its form", async () => {
