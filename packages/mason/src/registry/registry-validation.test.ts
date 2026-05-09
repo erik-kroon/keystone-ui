@@ -393,8 +393,8 @@ describe("Mason registry validation tracer", () => {
     expect(source).toContain(
       '"has-data-[slot=alert-icon]:has-data-[slot=alert-action]:grid-cols-[calc(var(--spacing)*4)_1fr_auto]"',
     );
-    expect(source).toContain('"border-success/32"');
-    expect(source).toContain('"border-warning/32"');
+    expect(source).toContain('"border-success/28"');
+    expect(source).toContain('"border-warning/28"');
   });
 
   test("validates docs-ready metadata on the real default separator item", async () => {

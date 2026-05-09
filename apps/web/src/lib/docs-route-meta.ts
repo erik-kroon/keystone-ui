@@ -126,12 +126,10 @@ const componentRouteMeta: Readonly<Record<string, DocsRouteMeta>> = {
 };
 
 const experimentalComponentRoutes = new Set([
-  "breadcrumb",
   "command-menu",
   "field",
   "kbd",
   "scroll-area",
-  "separator",
   "table",
   "tanstack-form",
   "toast",

@@ -50,7 +50,7 @@
     "cssVariables": "No component-specific CSS variables are required; styling uses Keystone semantic Tailwind tokens for border, background, foreground, and tone colors.",
     "limitations": "Alert does not manage dismissal, timers, focus, or notification queues. Use Toast or app-owned state for dismissible or time-based feedback.",
     "parity": {
-      "visualReference": "Matches the Keystone design-system Alert contract: grid layout, rounded-xl border surface, compact padding, one-rem icon column, semantic tone variants, description spacing, and responsive action placement.",
+      "visualReference": "Matches the Keystone design-system Alert contract: grid layout, rounded-lg border surface, compact padding, one-rem icon column, semantic tone variants, description spacing, and responsive action placement.",
       "baseUi": "Base UI does not provide a dedicated presentational Alert primitive; parity is intentionally native semantic HTML with stable anatomy and styling hooks. Core behavior is not needed because there is no intrinsic widget state.",
       "kobalte": "Kobalte has no first-class Alert primitive comparable to dialogs/toasts, so Keystone scopes this item to Solid-native composition, live-region defaults, and copy-paste source ownership."
     }

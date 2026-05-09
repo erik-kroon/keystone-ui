@@ -118,8 +118,8 @@ function compareMaturityGroups(a: NavGroup, b: NavGroup) {
 }
 
 const publicComponentDocs = componentDocs.filter(isPublicComponentDoc);
-const visibleSidebarComponentDocs = sidebarComponentDocs.filter((item) =>
-  isPublicComponentDoc(item) && componentMaturityKey(item) !== "experimental",
+const visibleSidebarComponentDocs = sidebarComponentDocs.filter(
+  (item) => isPublicComponentDoc(item) && componentMaturityKey(item) !== "experimental",
 );
 const sidebarMaturityGroups = Object.values(
   sidebarComponentDocs
@@ -151,6 +151,12 @@ const routableDocs = showFullDocsCatalog ? docsItems : publicComponentDocs;
 export const searchableComponentDocs = showFullDocsCatalog ? componentDocs : publicComponentDocs;
 export const searchableHookDocs = visibleHookDocs;
 
+const newComponentBadges = new Set(["breadcrumb", "separator"]);
+
+function componentBadge(name: string) {
+  return newComponentBadges.has(name) ? "New" : undefined;
+}
+
 export const overviewPage: DocsPage = {
   description:
     "Solid primitives, source-owned UI components, shadcn-compatible registry metadata, and app-layer registry guidance.",
@@ -172,6 +178,7 @@ export const navGroups: readonly NavGroup[] = [
   {
     title: "Components",
     items: visibleSidebarComponentDocs.map((item) => ({
+      badge: componentBadge(item.name),
       href: componentHref(item.name),
       label: docsItemTitle(item),
     })),

@@ -406,7 +406,7 @@ export const registryDocItems = [
     "limitations": "Alert does not manage dismissal, timers, focus, or notification queues. Use Toast or app-owned state for dismissible or time-based feedback.",
     "name": "alert",
     "parity": {
-      "visualReference": "Matches the Keystone design-system Alert contract: grid layout, rounded-xl border surface, compact padding, one-rem icon column, semantic tone variants, description spacing, and responsive action placement.",
+      "visualReference": "Matches the Keystone design-system Alert contract: grid layout, rounded-lg border surface, compact padding, one-rem icon column, semantic tone variants, description spacing, and responsive action placement.",
       "baseUi": "Base UI does not provide a dedicated presentational Alert primitive; parity is intentionally native semantic HTML with stable anatomy and styling hooks. Core behavior is not needed because there is no intrinsic widget state.",
       "kobalte": "Kobalte has no first-class Alert primitive comparable to dialogs/toasts, so Keystone scopes this item to Solid-native composition, live-region defaults, and copy-paste source ownership."
     },
@@ -4159,7 +4159,7 @@ export const registryDocItems = [
       "layout"
     ],
     "limitations": "Separator does not implement resizable splitters or focusable handles. Use a dedicated splitter/resizable primitive for adjustable panes.",
-    "maturity": "Experimental",
+    "maturity": "Stable",
     "name": "separator",
     "parity": {
       "visualReference": "Matches the Keystone base component direction: a compact border-color rule, horizontal h-px/w-full default, vertical h-full/w-px option, and stable data hooks for source-owned customization.",
@@ -4716,7 +4716,7 @@ export const registryDocItems = [
       "docs"
     ],
     "limitations": "Breadcrumb is display/navigation source and has no Core dependency because it owns no intrinsic state. Route matching, truncation menus, and responsive collapse policy stay in app code or composed menu source.",
-    "maturity": "Experimental",
+    "maturity": "Stable",
     "name": "breadcrumb",
     "parity": {
       "visualReference": "Matches shadcn-style source-owned breadcrumb ergonomics in Solid form: nav root, ordered list, item/link/page/separator parts, current page semantics, customizable separator, and ellipsis trigger for collapsed trails.",
