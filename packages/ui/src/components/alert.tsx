@@ -15,18 +15,34 @@ const classes = (...tokens: string[]) => tokens.join(" ");
 
 const alertVariantClass: Record<AlertVariant, string> = {
   default: classes(
-    "bg-transparent",
-    "dark:bg-input/32",
+    "bg-card/48",
+    "dark:bg-input/20",
     "*:data-[slot=alert-icon]:text-muted-foreground",
   ),
   error: classes(
-    "border-destructive/32",
-    "bg-destructive/4",
+    "border-destructive/28",
+    "bg-destructive/3",
+    "dark:bg-destructive/6",
     "*:data-[slot=alert-icon]:text-destructive",
   ),
-  info: classes("border-info/32", "bg-info/4", "*:data-[slot=alert-icon]:text-info"),
-  success: classes("border-success/32", "bg-success/4", "*:data-[slot=alert-icon]:text-success"),
-  warning: classes("border-warning/32", "bg-warning/4", "*:data-[slot=alert-icon]:text-warning"),
+  info: classes(
+    "border-info/28",
+    "bg-info/3",
+    "dark:bg-info/6",
+    "*:data-[slot=alert-icon]:text-info",
+  ),
+  success: classes(
+    "border-success/28",
+    "bg-success/3",
+    "dark:bg-success/6",
+    "*:data-[slot=alert-icon]:text-success",
+  ),
+  warning: classes(
+    "border-warning/28",
+    "bg-warning/3",
+    "dark:bg-warning/6",
+    "*:data-[slot=alert-icon]:text-warning",
+  ),
 };
 
 function alertPart(part: string, className: string, props: AlertPartProps) {
@@ -63,12 +79,13 @@ export function Alert(props: AlertProps) {
         "grid",
         "w-full",
         "items-start",
-        "gap-x-2",
-        "gap-y-0.5",
-        "rounded-xl",
+        "gap-x-2.5",
+        "gap-y-1",
+        "rounded-lg",
         "border",
-        "px-3.5",
-        "py-3",
+        "px-3",
+        "py-2.5",
+        "shadow-xs/5",
         "text-card-foreground",
         "text-sm",
         "has-data-[slot=alert-action]:grid-cols-[1fr_auto]",
@@ -97,6 +114,7 @@ export function AlertIcon(props: AlertPartProps) {
       "w-4",
       "items-center",
       "justify-center",
+      "pt-px",
     ),
     props,
   );
@@ -108,7 +126,9 @@ export function AlertTitle(props: AlertPartProps) {
     classes(
       "ui-alert-title",
       "[[data-slot=alert]:has(>[data-slot=alert-icon])>_&]:col-start-2",
+      "text-foreground",
       "font-medium",
+      "leading-5",
     ),
     props,
   );
@@ -122,8 +142,9 @@ export function AlertDescription(props: AlertPartProps) {
       "[[data-slot=alert]:has(>[data-slot=alert-icon])>_&]:col-start-2",
       "flex",
       "flex-col",
-      "gap-2.5",
+      "gap-2",
       "text-muted-foreground",
+      "leading-5",
       "[&_a:hover]:text-primary",
       "[&_a]:underline",
       "[&_a]:underline-offset-4",
@@ -141,7 +162,7 @@ export function AlertAction(props: AlertPartProps) {
       "gap-1",
       "[[data-slot=alert]:has(>[data-slot=alert-icon])>_&]:col-start-3",
       "max-sm:col-start-2",
-      "max-sm:mt-2",
+      "max-sm:mt-1.5",
       "sm:row-end-3",
       "sm:row-start-1",
       "sm:self-center",

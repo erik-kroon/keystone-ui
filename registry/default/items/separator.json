@@ -25,7 +25,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/separator.json",
-    "maturity": "Experimental",
+    "maturity": "Stable",
     "customization": "Use separatorClass, data-orientation, data-decorative, and ui-separator classes to style horizontal and vertical separators.",
     "sourceFiles": [
       "packages/ui/src/components/separator.tsx"

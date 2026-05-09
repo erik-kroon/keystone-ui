@@ -46,79 +46,81 @@ export function ComponentPreview(props: Readonly<{ item: RegistryDocItem }>) {
         <Badge>{props.item.type.replace("registry:", "")}</Badge>
       </div>
       <div class="flex min-h-52 items-center justify-center bg-background/60 p-6">
-        <Switch fallback={<GenericPreview item={props.item} />}>
-          <Match when={props.item.name === "accordion"}>
-            <Accordion class="w-full max-w-md">
-              {accordionItems.map((item) => (
-                <AccordionItem value={item.id}>
-                  <AccordionTrigger>{item.title}</AccordionTrigger>
-                  <AccordionContent>{item.content}</AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </Match>
-          <Match when={props.item.name === "button"}>
-            <div class="flex flex-wrap items-center gap-3">
-              <Button>Button</Button>
-              <Button variant="outline">Outline</Button>
-              <Button variant="secondary">Secondary</Button>
-            </div>
-          </Match>
-          <Match when={props.item.name === "badge"}>
-            <div class="flex flex-wrap items-center gap-2">
-              <KeystoneBadge>Default</KeystoneBadge>
-              <KeystoneBadge variant="success">Success</KeystoneBadge>
-              <KeystoneBadge variant="warning">Warning</KeystoneBadge>
-              <KeystoneBadge variant="outline">Outline</KeystoneBadge>
-            </div>
-          </Match>
-          <Match when={props.item.name === "card"}>
-            <Card class="w-full max-w-sm">
-              <CardHeader>
-                <CardTitle>Registry Card</CardTitle>
-                <CardDescription>
-                  Keystone card source rendered in the docs preview.
-                </CardDescription>
-              </CardHeader>
-              <CardPanel class="text-muted-foreground text-sm">
-                Component previews use the installable UI source where the web app can import it.
-              </CardPanel>
-            </Card>
-          </Match>
-          <Match when={props.item.name === "input"}>
-            <div class="grid w-full max-w-64 gap-2">
-              <Label for="component-preview-search">Search</Label>
-              <Input
-                id="component-preview-search"
-                placeholder="Search components..."
-                type="search"
-              />
-            </div>
-          </Match>
-          <Match when={props.item.name === "label"}>
-            <div class="grid w-full max-w-64 gap-2">
-              <Label for="component-preview-email">Email</Label>
-              <Input id="component-preview-email" placeholder="name@example.com" type="email" />
-            </div>
-          </Match>
-          <Match when={props.item.name === "switch"}>
-            <Label class="gap-3">
-              <KeystoneSwitch name="component-preview-notifications" />
-              Enable notifications
-            </Label>
-          </Match>
-          <Match when={props.item.name === "alert"}>
-            <Alert class="w-full max-w-md" variant="info">
-              <AlertIcon>
-                <CircleAlert />
-              </AlertIcon>
-              <AlertTitle>Source preview</AlertTitle>
-              <AlertDescription>
-                This alert is rendered from the Keystone UI registry source.
-              </AlertDescription>
-            </Alert>
-          </Match>
-        </Switch>
+        <div class="flex w-full max-w-md justify-center">
+          <Switch fallback={<GenericPreview item={props.item} />}>
+            <Match when={props.item.name === "accordion"}>
+              <Accordion class="w-full max-w-md">
+                {accordionItems.map((item) => (
+                  <AccordionItem value={item.id}>
+                    <AccordionTrigger>{item.title}</AccordionTrigger>
+                    <AccordionContent>{item.content}</AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </Match>
+            <Match when={props.item.name === "button"}>
+              <div class="flex flex-wrap items-center gap-3">
+                <Button>Button</Button>
+                <Button variant="outline">Outline</Button>
+                <Button variant="secondary">Secondary</Button>
+              </div>
+            </Match>
+            <Match when={props.item.name === "badge"}>
+              <div class="flex flex-wrap items-center gap-2">
+                <KeystoneBadge>Default</KeystoneBadge>
+                <KeystoneBadge variant="success">Success</KeystoneBadge>
+                <KeystoneBadge variant="warning">Warning</KeystoneBadge>
+                <KeystoneBadge variant="outline">Outline</KeystoneBadge>
+              </div>
+            </Match>
+            <Match when={props.item.name === "card"}>
+              <Card class="w-full max-w-sm">
+                <CardHeader>
+                  <CardTitle>Registry Card</CardTitle>
+                  <CardDescription>
+                    Keystone card source rendered in the docs preview.
+                  </CardDescription>
+                </CardHeader>
+                <CardPanel class="text-muted-foreground text-sm">
+                  Component previews use the installable UI source where the web app can import it.
+                </CardPanel>
+              </Card>
+            </Match>
+            <Match when={props.item.name === "input"}>
+              <div class="grid w-full max-w-64 gap-2">
+                <Label for="component-preview-search">Search</Label>
+                <Input
+                  id="component-preview-search"
+                  placeholder="Search components..."
+                  type="search"
+                />
+              </div>
+            </Match>
+            <Match when={props.item.name === "label"}>
+              <div class="grid w-full max-w-64 gap-2">
+                <Label for="component-preview-email">Email</Label>
+                <Input id="component-preview-email" placeholder="name@example.com" type="email" />
+              </div>
+            </Match>
+            <Match when={props.item.name === "switch"}>
+              <Label class="gap-3">
+                <KeystoneSwitch name="component-preview-notifications" />
+                Enable notifications
+              </Label>
+            </Match>
+            <Match when={props.item.name === "alert"}>
+              <Alert class="w-full max-w-md" variant="info">
+                <AlertIcon>
+                  <CircleAlert />
+                </AlertIcon>
+                <AlertTitle>Source preview</AlertTitle>
+                <AlertDescription>
+                  This alert is rendered from the Keystone UI registry source.
+                </AlertDescription>
+              </Alert>
+            </Match>
+          </Switch>
+        </div>
       </div>
     </div>
   );

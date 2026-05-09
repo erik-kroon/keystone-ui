@@ -19,6 +19,19 @@ Avoid:
 - Rounded pill-heavy UI except for intentionally tiny badges or mobile scroll pills.
 - Cards inside cards unless the inner card is a real preview/content surface inside a frame.
 
+## Visual Register
+
+Keystone's component library should feel compact, exact, and quietly distinct. The default posture is not decorative minimalism; it is dense product UI with a few recognizable moves: small tactile shadows, tight radii, crisp type rhythm, thin rules, and status color used as a signal rather than a surface flood.
+
+Apply this register before tuning individual components:
+
+- Prefer compact vertical rhythm: common two-line component rows should sit on `1.25rem` line-height with `0.25rem` to `0.5rem` internal row gaps.
+- Use smaller radii for controls and feedback surfaces than for layout containers. Rounded corners should imply precision, not softness.
+- Keep status surfaces quiet. Use low-alpha semantic backgrounds and borders, then let icons, focus rings, selected states, and destructive actions carry stronger color.
+- Use shadows as tactile edges. Default component shadows should be barely perceptible; avoid stacked elevation or glow effects.
+- Keep padding intentional and dense. Controls, alerts, list items, tabs, and menu rows should feel efficient; larger padding belongs to page sections, cards, dialogs, and preview frames.
+- Preserve strong focus and invalid states even when the resting surface is quiet.
+
 ## Core Layout
 
 ### Root Shell
@@ -280,7 +293,17 @@ Add two Tailwind theme breakpoints:
 | `--radius-lg` | `var(--radius)`             |
 | `--radius-xl` | `calc(var(--radius) + 4px)` |
 
-Use `rounded-lg` for buttons and inputs, `rounded-xl` for alerts/previews, and `rounded-2xl` for cards and frames. Badges use `rounded-sm`; tiny square pins use `2px`.
+Use `rounded-lg` for buttons, inputs, and alerts; use `rounded-xl` for preview surfaces; and use `rounded-2xl` for cards and frames. Badges use `rounded-sm`; tiny square pins use `2px`.
+
+Radius hierarchy:
+
+- `rounded-sm`: badges, dense metadata chips, menu item internals, and tiny framed marks.
+- `rounded-md`: active tab indicators and compact nested affordances inside larger controls.
+- `rounded-lg`: primary control and feedback surface radius for buttons, inputs, selects, alerts, popover/menu surfaces, tabs, sidebar items, and grouped controls.
+- `rounded-xl`: preview surfaces, embedded examples, and medium framed regions that should read as surfaces but not full cards.
+- `rounded-2xl`: cards, dialogs, sheets, high-level frames, and larger page-level containers.
+
+Do not increase radius to make a component feel more polished. If an element feels generic, first tune alignment, typography, border contrast, state treatment, and spacing.
 
 ### Fonts
 
@@ -383,6 +406,35 @@ Use shadows as tactile edges, not elevation drama:
 - Light inset top highlight: black or white alpha in `before` pseudo elements.
 - Dark inset top/bottom highlight: white alpha around `6%`.
 - Borders are usually `border`, `input`, `sidebar-border`, or `border / 64%`.
+- Avoid decorative glow shadows, stacked shadow recipes, or large soft shadows on ordinary product controls.
+- Popover, menu, dialog, and docs frame shadows may be stronger, but should still read as crisp separation rather than depth drama.
+
+### Status Surfaces
+
+Status variants should be recognizable without making the component visually loud:
+
+- Resting status surfaces use semantic background alpha around `3%` to `8%` in light mode and `6%` to `16%` in dark mode.
+- Status borders usually use semantic alpha around `24%` to `36%`, adjusted by component density and surrounding contrast.
+- Icons, leading marks, focus states, selected states, and destructive primary actions may use full semantic color.
+- Body text remains foreground or muted foreground; avoid tinting whole paragraphs with status foreground colors.
+- Reserve saturated fills for active controls, destructive buttons, selected indicators, and compact badges where the color is the main identifier.
+
+### Type And Density
+
+Component typography should preserve scan speed under repeated use:
+
+- Compact component text uses `text-sm` with `1.25rem` line-height.
+- Dense labels, metadata, shortcuts, and table-adjacent controls may use `text-xs` with explicit line-height.
+- Title/body pairs inside compact surfaces use a one-step hierarchy: foreground `font-medium` title, muted body, matching line-height, and a `0.25rem` to `0.5rem` row gap.
+- Buttons, inputs, tabs, menu items, alerts, and selection controls should avoid hero-scale type and avoid viewport-scaled font sizes.
+- Favor stable heights and explicit padding over letting dynamic content resize controls.
+
+Compact padding defaults:
+
+- Small controls and dense rows: about `0.375rem` to `0.5rem` block padding.
+- Default controls and alerts: about `0.625rem` block padding.
+- Menu, listbox, and command items: compact rows with enough height for pointer and keyboard use.
+- Cards, dialogs, sheets, and docs content may use larger padding because they frame work areas rather than individual controls.
 
 ## Component Contracts
 
@@ -549,18 +601,19 @@ Textarea uses the same wrapper shell as Input:
 
 ### Alert
 
-- Grid layout.
-- Radius `xl`.
-- Border.
-- Padding `0.875rem 0.75rem`.
-- Text `sm`.
-- Icon column width `1rem`.
+- Presentational live-region surface with stable `data-scope="ui-alert"`, `data-part`, `data-slot`, and `data-variant` hooks.
+- Grid layout with compact two-line rhythm.
+- Radius `lg`.
+- Border plus `shadow-xs/5`.
+- Padding `0.625rem 0.75rem`.
+- Text `sm`, with title and description line-height `1.25rem`.
+- Icon column width `1rem`; icons align to the title line and use semantic tone color.
 - Variants:
-  - Default transparent, dark input overlay.
-  - Info/success/warning/error use semantic border alpha `32%`, background alpha `4%`, and icon semantic color.
-- Title: `font-medium`.
-- Description: flex column, gap `0.625rem`, muted foreground.
-- Action: responsive grid placement, inline flex gap `0.25rem`.
+  - Default uses a faint card surface in light mode and input overlay in dark mode.
+  - Info/success/warning/error use semantic border alpha around `28%`, background alpha around `3%` light and `6%` dark, and icon semantic color.
+- Title: foreground, `font-medium`, line-height `1.25rem`.
+- Description: flex column, gap `0.5rem`, muted foreground, line-height `1.25rem`.
+- Action: responsive grid placement, inline flex gap `0.25rem`, tucked closer to body copy on mobile.
 
 ### Selection Controls
 

@@ -27,7 +27,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/breadcrumb.json",
-    "maturity": "Experimental",
+    "maturity": "Stable",
     "customization": "Use ui-breadcrumb classes and data-slot hooks for root, list, item, link, page, separator, and ellipsis styling. Pass items for simple route trails or compose parts directly for menus and app topbars.",
     "sourceFiles": [
       "packages/ui/src/components/breadcrumb.tsx"

@@ -81,7 +81,11 @@ import {
   TableHeader,
   TableRow,
 } from "@keystone-ui/ui/table";
-import { TanStackForm, TanStackFormErrors, TanStackFormSubmit } from "@keystone-ui/ui/tanstack-form";
+import {
+  TanStackForm,
+  TanStackFormErrors,
+  TanStackFormSubmit,
+} from "@keystone-ui/ui/tanstack-form";
 import { Textarea } from "@keystone-ui/ui/textarea";
 import { Toaster } from "@keystone-ui/ui/toast";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@keystone-ui/ui/tooltip";
@@ -138,7 +142,8 @@ function AccordionItemList() {
   );
 }
 
-const alertPreviewClass = "w-full max-w-xl";
+const alertPreviewClass = "w-full max-w-[25.2rem]";
+const alertActionPreviewClass = "w-full max-w-xl";
 
 export function SingleAccordionExample() {
   return (
@@ -458,6 +463,7 @@ export function Component() {
 }`;
 
 export const collapsibleExample = defineCodeExample({
+  align: "start",
   code: collapsibleExampleCode,
   component: CollapsibleExample,
   description: "A simple Core-backed disclosure region with UI-owned trigger and panel styling.",
@@ -735,7 +741,7 @@ export function ErrorAlertExample() {
 
 export function AlertActionExample() {
   return (
-    <Alert class={alertPreviewClass}>
+    <Alert class={alertActionPreviewClass}>
       <AlertIcon>
         <Info />
       </AlertIcon>
@@ -763,7 +769,7 @@ import { TriangleAlert } from "lucide-solid";
 
 export function Component() {
   return (
-    <Alert variant="warning" class="w-full max-w-xl">
+    <Alert variant="warning" class="w-full max-w-[25.2rem]">
       <AlertIcon>
         <TriangleAlert />
       </AlertIcon>
@@ -783,7 +789,7 @@ import { CircleAlert } from "lucide-solid";
 
 export function Component() {
   return (
-    <Alert variant="error" class="w-full max-w-xl">
+    <Alert variant="error" class="w-full max-w-[25.2rem]">
       <AlertIcon>
         <CircleAlert />
       </AlertIcon>
@@ -833,7 +839,7 @@ import {
 
 export function Component() {
   return (
-    <Alert variant="info" class="w-full max-w-xl">
+    <Alert variant="info" class="w-full max-w-[25.2rem]">
       <AlertIcon>
         <Info />
       </AlertIcon>
@@ -2047,18 +2053,18 @@ export function Component() {
 
 export function SeparatorExample() {
   return (
-    <div class="w-full max-w-sm">
+    <div class="w-full max-w-[22rem]">
       <div class="space-y-1">
-        <h4 class="font-medium text-foreground text-sm leading-none">Workspace</h4>
-        <p class="text-muted-foreground text-sm">Activity, ownership, and deployment metadata.</p>
+        <h4 class="font-medium text-foreground text-sm leading-none">Project Links</h4>
+        <p class="text-muted-foreground text-sm">Related resources grouped in a compact row.</p>
       </div>
       <Separator class="my-4" />
-      <div class="flex h-5 items-center gap-3 text-muted-foreground text-sm">
-        <span>Docs</span>
+      <div class="grid h-6 grid-cols-[1fr_auto_1fr_auto_1fr] items-center text-muted-foreground text-sm">
+        <span class="text-center">Docs</span>
         <Separator orientation="vertical" />
-        <span>Registry</span>
+        <span class="text-center">API</span>
         <Separator orientation="vertical" />
-        <span>Examples</span>
+        <span class="text-center">Examples</span>
       </div>
     </div>
   );
@@ -2068,20 +2074,20 @@ export const separatorExampleCode = `import { Separator } from "@/components/ui/
 
 export function Component() {
   return (
-    <div class="w-full max-w-sm">
+    <div class="w-full max-w-[22rem]">
       <div class="space-y-1">
-        <h4 class="font-medium text-foreground text-sm leading-none">Workspace</h4>
+        <h4 class="font-medium text-foreground text-sm leading-none">Project Links</h4>
         <p class="text-muted-foreground text-sm">
-          Activity, ownership, and deployment metadata.
+          Related resources grouped in a compact row.
         </p>
       </div>
       <Separator class="my-4" />
-      <div class="flex h-5 items-center gap-3 text-muted-foreground text-sm">
-        <span>Docs</span>
+      <div class="grid h-6 grid-cols-[1fr_auto_1fr_auto_1fr] items-center text-muted-foreground text-sm">
+        <span class="text-center">Docs</span>
         <Separator orientation="vertical" />
-        <span>Registry</span>
+        <span class="text-center">API</span>
         <Separator orientation="vertical" />
-        <span>Examples</span>
+        <span class="text-center">Examples</span>
       </div>
     </div>
   );
@@ -2090,7 +2096,7 @@ export function Component() {
 export const separatorExample = defineCodeExample({
   code: separatorExampleCode,
   component: SeparatorExample,
-  description: "Horizontal and vertical separators in a compact metadata group.",
+  description: "Horizontal and vertical separators dividing a compact resource group.",
   id: "basic",
   title: "Basic Separator",
   variant: "centered",

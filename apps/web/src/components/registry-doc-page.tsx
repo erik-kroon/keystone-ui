@@ -539,13 +539,13 @@ function previewFrameClass(variant: PreviewVariant, align: PreviewAlign) {
   const aligned = `${base} ${previewFrameAlignClass(align)}`;
   switch (variant) {
     case "inline":
-      return aligned;
+      return `${aligned} max-w-xl`;
     case "full":
       return `${base} items-stretch`;
     case "dense":
       return `${base} items-stretch`;
     case "centered":
-      return aligned;
+      return `${aligned} max-w-xl`;
   }
 }
 

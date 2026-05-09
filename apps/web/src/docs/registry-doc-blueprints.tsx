@@ -352,7 +352,7 @@ export const componentDocsOverrides = {
   },
   separator: {
     description: "A decorative or semantic rule for separating compact groups of content.",
-    maturity: "Experimental",
+    maturity: "Stable",
     usageCode: examples.separatorUsageCode,
     apiItems: [
       {
@@ -413,7 +413,7 @@ export const componentDocsOverrides = {
   },
   breadcrumb: {
     description: "A navigation trail for docs, app routes, and dense workspace headers.",
-    maturity: "Experimental",
+    maturity: "Stable",
     usageCode: examples.breadcrumbUsageCode,
     apiItems: [
       {
@@ -448,7 +448,8 @@ export const componentDocsOverrides = {
       },
       {
         name: "Table",
-        description: "Native table root with Keystone density, caption, and tabular-number styling.",
+        description:
+          "Native table root with Keystone density, caption, and tabular-number styling.",
       },
       {
         name: "TableHeader / TableBody / TableFooter",
@@ -510,7 +511,8 @@ export const componentDocsOverrides = {
       },
       {
         name: "TanStackFormErrors",
-        description: "Root error display that renders alert semantics when form errors are present.",
+        description:
+          "Root error display that renders alert semantics when form errors are present.",
       },
       {
         name: "getTanStackFormState / formatFieldError",
