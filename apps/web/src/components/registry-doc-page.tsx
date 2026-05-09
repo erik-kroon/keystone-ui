@@ -4,7 +4,6 @@ import { For, Show, createSignal, type JSX } from "solid-js";
 import { ComponentPreview } from "@/components/component-preview";
 import {
   ActionLink,
-  Badge,
   CodeBlock,
   CopyPageButton,
   DocsPageFrame,
@@ -36,6 +35,7 @@ import {
   type DocsPage,
 } from "@/lib/docs-data";
 import type { RegistryDocItem } from "@/lib/registry-docs.gen";
+import { Badge, type BadgeVariant } from "@keystone-ui/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@keystone-ui/ui/tabs";
 
 const pageHeaderActionClass =
@@ -45,25 +45,29 @@ const previewSectionClass = "mt-6 scroll-mt-24";
 
 const showInstallationSection = false;
 
-function maturityBadgeClass(maturity: string) {
+function maturityBadgeVariant(maturity: string): BadgeVariant {
   switch (maturity.toLowerCase()) {
     case "stable":
-      return "bg-success/8 text-success-foreground dark:bg-success/16";
+      return "success";
     case "beta":
     case "preview":
-      return "bg-info/8 text-info-foreground dark:bg-info/16";
+      return "info";
     case "experimental":
-      return "bg-warning/8 text-warning-foreground dark:bg-warning/16";
+      return "warning";
     case "deprecated":
-      return "bg-destructive/8 text-destructive-foreground dark:bg-destructive/16";
+      return "error";
     case "draft":
     default:
-      return "bg-muted text-muted-foreground dark:bg-muted/64";
+      return "muted";
   }
 }
 
 function maturityLabel(maturity: string | undefined) {
   return (maturity ?? "Draft").toLowerCase();
+}
+
+function isStableMaturity(maturity: string) {
+  return maturity === "stable";
 }
 
 export function RegistryDocPage(props: Readonly<{ slug: string }>) {
@@ -114,9 +118,12 @@ function RegistryDocContent(
           <div class="flex flex-col gap-2">
             <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
               <PageHeaderHeading>{displayTitle()}</PageHeaderHeading>
-              <Badge class={`translate-y-0.5 ${maturityBadgeClass(maturity())}`}>
-                {maturity()}
-              </Badge>
+              <div class="flex translate-y-0.5 flex-wrap items-center gap-1.5">
+                <Show when={isStableMaturity(maturity())}>
+                  <Badge variant="info">unreleased</Badge>
+                </Show>
+                <Badge variant={maturityBadgeVariant(maturity())}>{maturity()}</Badge>
+              </div>
             </div>
             <PageHeaderDescription>{description()}</PageHeaderDescription>
           </div>
