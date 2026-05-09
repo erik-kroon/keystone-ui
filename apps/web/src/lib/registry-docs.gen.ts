@@ -941,6 +941,7 @@ export const registryDocItems = [
       "validation"
     ],
     "limitations": "FieldControl is the fully wired control part. A standalone Input nested directly under Field remains native/styled but cannot consume Core Field context until Keystone exposes a public UI field-control context bridge.",
+    "maturity": "Experimental",
     "name": "field",
     "parity": {
       "visualReference": "Matches reference Field anatomy and styling direction in Solid source form: root, label, item, description, error, reference data-slot hooks, and compact form typography. Intentional difference: Keystone uses @keystone-ui/core/form instead of Base UI React, and exposes FieldControl/FieldHiddenInput rather than Base UI Control/Validity re-exports.",
@@ -995,6 +996,7 @@ export const registryDocItems = [
       "validation"
     ],
     "limitations": "Schema adapters, server action wiring, optimistic submission state, and route-level mutation orchestration stay app-owned. This source shell intentionally does not hide TanStack Form behind a new runtime abstraction.",
+    "maturity": "Experimental",
     "name": "tanstack-form",
     "parity": {
       "tanstackForm": "First-class TanStack Form parity: source-owned native form wrapper around handleSubmit, form-state metadata for submitting/validating/can-submit/dirty/touched/submitted/submission-attempts, user-submit precedence, state-aware submit controls, and root error display.",
@@ -2392,6 +2394,7 @@ export const registryDocItems = [
       "tanstack"
     ],
     "limitations": "This source is a local command palette pattern. It does not include async search orchestration, nested command pages, command history, user preference persistence, route-specific command discovery, copy-command footer behavior, or a final Hotkeys API guarantee.",
+    "maturity": "Experimental",
     "name": "command-menu",
     "parity": {
       "visualReference": "Uses a dense command palette visual structure in Solid source form: blurred backdrop, rounded popover shell, translucent-muted inner overlay, transparent search input row with search icon, bordered results panel, grouped list rows, kbd shortcut styling, separator, and footer slot.",
@@ -3411,6 +3414,7 @@ export const registryDocItems = [
       "data-table"
     ],
     "limitations": "Table is presentational source, not a grid engine. It does not implement sorting, filtering, pagination, virtualization, roving focus, column sizing, column reordering, row selection, or async loading policy.",
+    "maturity": "Experimental",
     "name": "table",
     "parity": {
       "html": "Keeps native table semantics as the contract: Keystone does not replace table markup with ARIA grid roles unless a future app component requires that behavior explicitly.",
@@ -3986,6 +3990,7 @@ export const registryDocItems = [
       "keycap"
     ],
     "limitations": "Kbd is intentionally display-only. Shortcut registration belongs to KeyboardShortcuts, platform-aware formatting belongs to ShortcutDisplay, and editable recording belongs to ShortcutRecorder or ShortcutSequenceRecorder.",
+    "maturity": "Experimental",
     "name": "kbd",
     "parity": {
       "html": "Uses native kbd markup for presentational keyboard input text and keeps grouping/separator wrappers passive. Gaps: native HTML does not define visual variants or shortcut sequence anatomy, so Keystone owns those UI hooks.",
@@ -4046,6 +4051,7 @@ export const registryDocItems = [
       "inspector",
       "table"
     ],
+    "maturity": "Experimental",
     "name": "scroll-area",
     "parity": {
       "coss": "Maps to the Coss Scroll Area item as a bounded overflow container with styled native scrollbar treatment and root/viewport/scrollbar/thumb/corner anatomy.",
@@ -4153,6 +4159,7 @@ export const registryDocItems = [
       "layout"
     ],
     "limitations": "Separator does not implement resizable splitters or focusable handles. Use a dedicated splitter/resizable primitive for adjustable panes.",
+    "maturity": "Experimental",
     "name": "separator",
     "parity": {
       "visualReference": "Matches the Keystone base component direction: a compact border-color rule, horizontal h-px/w-full default, vertical h-full/w-px option, and stable data hooks for source-owned customization.",
@@ -4709,6 +4716,7 @@ export const registryDocItems = [
       "docs"
     ],
     "limitations": "Breadcrumb is display/navigation source and has no Core dependency because it owns no intrinsic state. Route matching, truncation menus, and responsive collapse policy stay in app code or composed menu source.",
+    "maturity": "Experimental",
     "name": "breadcrumb",
     "parity": {
       "visualReference": "Matches shadcn-style source-owned breadcrumb ergonomics in Solid form: nav root, ordered list, item/link/page/separator parts, current page semantics, customizable separator, and ellipsis trigger for collapsed trails.",

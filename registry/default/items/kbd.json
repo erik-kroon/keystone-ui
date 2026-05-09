@@ -28,6 +28,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/kbd.json",
+    "maturity": "Experimental",
     "api": "Kbd renders a native kbd element and accepts size sm, default, or lg plus variant default, muted, or outline. KbdGroup and KbdSeparator compose shortcut sequences without registering keyboard behavior.",
     "anatomy": [
       "root",

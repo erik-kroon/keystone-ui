@@ -29,6 +29,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/tanstack-form.json",
+    "maturity": "Experimental",
     "audit": "Current Form coverage is split deliberately: Core form-control owns label/control relationships, description and error IDs, native reset/submit hooks, required/disabled/readonly/invalid state, hidden inputs, SSR-safe IDs, and data attributes; UI already has TanStackField plus concrete TextField, TextareaField, SelectField, CheckboxField, SwitchField, RadioGroupField, ComboboxField, DatePickerField, SliderField, FileField, FieldArray, FormMessage, and FormSubmit adapters. This item is the app-layer form shell: native submit orchestration, state metadata, root errors, and state-aware submit buttons. Missing work is intentionally app-owned server actions, schema adapter choice, optimistic mutations, and route-level persistence rather than a Keystone runtime.",
     "customization": "Style the generated form, submit, and form-error parts through ui-tanstack-form classes, form state data attributes, and neutral data-slot hooks while TanStack Form owns app form state.",
     "sourceFiles": [

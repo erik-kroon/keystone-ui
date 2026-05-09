@@ -28,6 +28,13 @@ import {
   ComboboxListbox,
 } from "@keystone-ui/ui/combobox";
 import { DatePicker, DatePickerContent, DatePickerTrigger } from "@keystone-ui/ui/date-picker";
+import {
+  Field,
+  FieldControl,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@keystone-ui/ui/field";
 import { Label } from "@keystone-ui/ui/label";
 import {
   Dialog,
@@ -57,9 +64,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@keystone-ui/ui/select";
+import { Breadcrumb, BreadcrumbEllipsis } from "@keystone-ui/ui/breadcrumb";
+import { Kbd, KbdGroup, KbdSeparator } from "@keystone-ui/ui/kbd";
 import { RadioGroup, RadioGroupItem } from "@keystone-ui/ui/radio-group";
+import { ScrollArea } from "@keystone-ui/ui/scroll-area";
+import { Separator } from "@keystone-ui/ui/separator";
 import { Switch } from "@keystone-ui/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@keystone-ui/ui/tabs";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@keystone-ui/ui/table";
+import { TanStackForm, TanStackFormErrors, TanStackFormSubmit } from "@keystone-ui/ui/tanstack-form";
 import { Textarea } from "@keystone-ui/ui/textarea";
 import { Toaster } from "@keystone-ui/ui/toast";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@keystone-ui/ui/tooltip";
@@ -2020,5 +2042,695 @@ export function Component() {
         <TooltipContent>Useful context.</TooltipContent>
       </Tooltip>
     </TooltipProvider>
+  );
+}`;
+
+export function SeparatorExample() {
+  return (
+    <div class="w-full max-w-sm">
+      <div class="space-y-1">
+        <h4 class="font-medium text-foreground text-sm leading-none">Workspace</h4>
+        <p class="text-muted-foreground text-sm">Activity, ownership, and deployment metadata.</p>
+      </div>
+      <Separator class="my-4" />
+      <div class="flex h-5 items-center gap-3 text-muted-foreground text-sm">
+        <span>Docs</span>
+        <Separator orientation="vertical" />
+        <span>Registry</span>
+        <Separator orientation="vertical" />
+        <span>Examples</span>
+      </div>
+    </div>
+  );
+}
+
+export const separatorExampleCode = `import { Separator } from "@/components/ui/separator";
+
+export function Component() {
+  return (
+    <div class="w-full max-w-sm">
+      <div class="space-y-1">
+        <h4 class="font-medium text-foreground text-sm leading-none">Workspace</h4>
+        <p class="text-muted-foreground text-sm">
+          Activity, ownership, and deployment metadata.
+        </p>
+      </div>
+      <Separator class="my-4" />
+      <div class="flex h-5 items-center gap-3 text-muted-foreground text-sm">
+        <span>Docs</span>
+        <Separator orientation="vertical" />
+        <span>Registry</span>
+        <Separator orientation="vertical" />
+        <span>Examples</span>
+      </div>
+    </div>
+  );
+}`;
+
+export const separatorExample = defineCodeExample({
+  code: separatorExampleCode,
+  component: SeparatorExample,
+  description: "Horizontal and vertical separators in a compact metadata group.",
+  id: "basic",
+  title: "Basic Separator",
+  variant: "centered",
+});
+
+export const separatorExamples = [separatorExample] satisfies readonly CodeExample[];
+export const separatorUsageCode = `import { Separator } from "@/components/ui/separator";
+
+export function Component() {
+  return <Separator />;
+}`;
+
+export function KbdExample() {
+  return (
+    <div class="grid gap-4 text-sm">
+      <div class="flex items-center justify-between gap-6 rounded-lg border bg-background px-4 py-3">
+        <span class="font-medium text-foreground">Open command menu</span>
+        <KbdGroup>
+          <Kbd>⌘</Kbd>
+          <KbdSeparator />
+          <Kbd>K</Kbd>
+        </KbdGroup>
+      </div>
+      <div class="flex items-center justify-between gap-6 rounded-lg border bg-background px-4 py-3">
+        <span class="font-medium text-foreground">Search current table</span>
+        <KbdGroup>
+          <Kbd variant="outline">Shift</Kbd>
+          <KbdSeparator />
+          <Kbd variant="outline">F</Kbd>
+        </KbdGroup>
+      </div>
+    </div>
+  );
+}
+
+export const kbdExampleCode = `import { Kbd, KbdGroup, KbdSeparator } from "@/components/ui/kbd";
+
+export function Component() {
+  return (
+    <div class="grid gap-4 text-sm">
+      <div class="flex items-center justify-between gap-6 rounded-lg border bg-background px-4 py-3">
+        <span class="font-medium text-foreground">Open command menu</span>
+        <KbdGroup>
+          <Kbd>⌘</Kbd>
+          <KbdSeparator />
+          <Kbd>K</Kbd>
+        </KbdGroup>
+      </div>
+      <div class="flex items-center justify-between gap-6 rounded-lg border bg-background px-4 py-3">
+        <span class="font-medium text-foreground">Search current table</span>
+        <KbdGroup>
+          <Kbd variant="outline">Shift</Kbd>
+          <KbdSeparator />
+          <Kbd variant="outline">F</Kbd>
+        </KbdGroup>
+      </div>
+    </div>
+  );
+}`;
+
+export const kbdExample = defineCodeExample({
+  code: kbdExampleCode,
+  component: KbdExample,
+  description: "Display-only shortcut tokens with grouped keycaps.",
+  id: "shortcuts",
+  title: "Shortcut Tokens",
+  variant: "centered",
+});
+
+export const kbdExamples = [kbdExample] satisfies readonly CodeExample[];
+export const kbdUsageCode = `import { Kbd, KbdGroup, KbdSeparator } from "@/components/ui/kbd";
+
+export function Component() {
+  return (
+    <KbdGroup>
+      <Kbd>⌘</Kbd>
+      <KbdSeparator />
+      <Kbd>K</Kbd>
+    </KbdGroup>
+  );
+}`;
+
+const scrollAreaItems = [
+  "Index registry metadata",
+  "Validate source targets",
+  "Render docs preview",
+  "Check keyboard states",
+  "Inspect dark mode tokens",
+  "Confirm install command",
+  "Run type checks",
+  "Queue manual QA",
+];
+
+export function ScrollAreaExample() {
+  return (
+    <ScrollArea class="h-56 w-full max-w-md rounded-lg border bg-background">
+      <div class="grid gap-2 p-4">
+        {scrollAreaItems.map((item, index) => (
+          <div class="rounded-md border bg-card px-3 py-2 text-sm">
+            <span class="font-mono text-muted-foreground text-xs">{index + 1}.</span>{" "}
+            <span class="text-foreground">{item}</span>
+          </div>
+        ))}
+      </div>
+    </ScrollArea>
+  );
+}
+
+export const scrollAreaExampleCode = `import { ScrollArea } from "@/components/ui/scroll-area";
+
+const items = [
+  "Index registry metadata",
+  "Validate source targets",
+  "Render docs preview",
+  "Check keyboard states",
+  "Inspect dark mode tokens",
+  "Confirm install command",
+  "Run type checks",
+  "Queue manual QA",
+];
+
+export function Component() {
+  return (
+    <ScrollArea class="h-56 w-full max-w-md rounded-lg border bg-background">
+      <div class="grid gap-2 p-4">
+        {items.map((item, index) => (
+          <div class="rounded-md border bg-card px-3 py-2 text-sm">
+            <span class="font-mono text-muted-foreground text-xs">{index + 1}.</span>{" "}
+            <span class="text-foreground">{item}</span>
+          </div>
+        ))}
+      </div>
+    </ScrollArea>
+  );
+}`;
+
+export const scrollAreaExample = defineCodeExample({
+  code: scrollAreaExampleCode,
+  component: ScrollAreaExample,
+  description: "A bounded native scroll region for dense panel content.",
+  id: "panel",
+  title: "Scrollable Panel",
+  variant: "centered",
+});
+
+export const scrollAreaExamples = [scrollAreaExample] satisfies readonly CodeExample[];
+export const scrollAreaUsageCode = `import { ScrollArea } from "@/components/ui/scroll-area";
+
+export function Component() {
+  return (
+    <ScrollArea class="h-48 w-full">
+      <div>Scrollable content</div>
+    </ScrollArea>
+  );
+}`;
+
+export function BreadcrumbExample() {
+  return (
+    <Breadcrumb
+      items={[
+        { href: "/docs", label: "Docs" },
+        { href: "/docs/components", label: "Components" },
+        { label: "Breadcrumb", current: true },
+      ]}
+    />
+  );
+}
+
+export function BreadcrumbCollapsedExample() {
+  return (
+    <Breadcrumb label="Project location">
+      <ol class="flex flex-wrap items-center gap-2 text-muted-foreground text-sm">
+        <li>
+          <a class="transition-colors hover:text-foreground" href="/workspace">
+            Workspace
+          </a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li>
+          <BreadcrumbEllipsis />
+        </li>
+        <li aria-hidden="true">/</li>
+        <li>
+          <span aria-current="page" class="text-foreground">
+            Registry QA
+          </span>
+        </li>
+      </ol>
+    </Breadcrumb>
+  );
+}
+
+export const breadcrumbExampleCode = `import { Breadcrumb } from "@/components/ui/breadcrumb";
+
+export function Component() {
+  return (
+    <Breadcrumb
+      items={[
+        { href: "/docs", label: "Docs" },
+        { href: "/docs/components", label: "Components" },
+        { label: "Breadcrumb", current: true },
+      ]}
+    />
+  );
+}`;
+
+export const breadcrumbCollapsedExampleCode = `import { Breadcrumb, BreadcrumbEllipsis } from "@/components/ui/breadcrumb";
+
+export function Component() {
+  return (
+    <Breadcrumb label="Project location">
+      <ol class="flex flex-wrap items-center gap-2 text-muted-foreground text-sm">
+        <li>
+          <a class="transition-colors hover:text-foreground" href="/workspace">
+            Workspace
+          </a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li>
+          <BreadcrumbEllipsis />
+        </li>
+        <li aria-hidden="true">/</li>
+        <li>
+          <span aria-current="page" class="text-foreground">
+            Registry QA
+          </span>
+        </li>
+      </ol>
+    </Breadcrumb>
+  );
+}`;
+
+export const breadcrumbExamples = [
+  defineCodeExample({
+    code: breadcrumbExampleCode,
+    component: BreadcrumbExample,
+    description: "Route-generated breadcrumb items with current page semantics.",
+    id: "items",
+    title: "Items",
+    variant: "centered",
+  }),
+  defineCodeExample({
+    code: breadcrumbCollapsedExampleCode,
+    component: BreadcrumbCollapsedExample,
+    description: "Composed breadcrumb parts with an ellipsis affordance.",
+    id: "collapsed",
+    title: "Collapsed Trail",
+    variant: "centered",
+  }),
+] satisfies readonly CodeExample[];
+
+export const breadcrumbUsageCode = `import { Breadcrumb } from "@/components/ui/breadcrumb";
+
+export function Component() {
+  return (
+    <Breadcrumb
+      items={[
+        { href: "/", label: "Home" },
+        { label: "Current page", current: true },
+      ]}
+    />
+  );
+}`;
+
+const tableRows = [
+  { name: "Button", status: "Ready", owner: "Core UI" },
+  { name: "CommandMenu", status: "QA", owner: "App layer" },
+  { name: "Table", status: "Experimental", owner: "Data UI" },
+];
+
+export function TableExample() {
+  return (
+    <TableContainer class="max-w-xl">
+      <Table>
+        <TableCaption>Registry readiness by component.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead scope="col">Component</TableHead>
+            <TableHead scope="col">Status</TableHead>
+            <TableHead scope="col">Owner</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {tableRows.map((row) => (
+            <TableRow>
+              <TableCell class="font-medium text-foreground">{row.name}</TableCell>
+              <TableCell>{row.status}</TableCell>
+              <TableCell>{row.owner}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+export const tableExampleCode = `import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+const rows = [
+  { name: "Button", status: "Ready", owner: "Core UI" },
+  { name: "CommandMenu", status: "QA", owner: "App layer" },
+  { name: "Table", status: "Experimental", owner: "Data UI" },
+];
+
+export function Component() {
+  return (
+    <TableContainer>
+      <Table>
+        <TableCaption>Registry readiness by component.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead scope="col">Component</TableHead>
+            <TableHead scope="col">Status</TableHead>
+            <TableHead scope="col">Owner</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow>
+              <TableCell class="font-medium text-foreground">{row.name}</TableCell>
+              <TableCell>{row.status}</TableCell>
+              <TableCell>{row.owner}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}`;
+
+export const tableExample = defineCodeExample({
+  code: tableExampleCode,
+  component: TableExample,
+  description: "Presentational native table anatomy for readable data.",
+  id: "basic",
+  title: "Basic Table",
+  variant: "centered",
+});
+
+export const tableExamples = [tableExample] satisfies readonly CodeExample[];
+export const tableUsageCode = `import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+export function Component() {
+  return (
+    <TableContainer>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Item</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell>Registry source</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}`;
+
+export function FieldExample() {
+  return (
+    <Field class="w-full max-w-sm" required>
+      <FieldLabel>Email</FieldLabel>
+      <FieldControl placeholder="name@example.com" type="email" />
+      <FieldDescription>Used for registry review notifications.</FieldDescription>
+    </Field>
+  );
+}
+
+export function FieldInvalidExample() {
+  return (
+    <Field class="w-full max-w-sm" invalid required>
+      <FieldLabel>Registry slug</FieldLabel>
+      <FieldControl value="Command Menu" />
+      <FieldDescription>Use a lowercase URL-safe component slug.</FieldDescription>
+      <FieldError>Use command-menu instead.</FieldError>
+    </Field>
+  );
+}
+
+export const fieldExampleCode = `import {
+  Field,
+  FieldControl,
+  FieldDescription,
+  FieldLabel,
+} from "@/components/ui/field";
+
+export function Component() {
+  return (
+    <Field class="w-full max-w-sm" required>
+      <FieldLabel>Email</FieldLabel>
+      <FieldControl placeholder="name@example.com" type="email" />
+      <FieldDescription>Used for registry review notifications.</FieldDescription>
+    </Field>
+  );
+}`;
+
+export const fieldInvalidExampleCode = `import {
+  Field,
+  FieldControl,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/components/ui/field";
+
+export function Component() {
+  return (
+    <Field class="w-full max-w-sm" invalid required>
+      <FieldLabel>Registry slug</FieldLabel>
+      <FieldControl value="Command Menu" />
+      <FieldDescription>Use a lowercase URL-safe component slug.</FieldDescription>
+      <FieldError>Use command-menu instead.</FieldError>
+    </Field>
+  );
+}`;
+
+export const fieldExamples = [
+  defineCodeExample({
+    code: fieldExampleCode,
+    component: FieldExample,
+    description: "Label, control, and description wired through Keystone Core field semantics.",
+    id: "basic",
+    title: "Basic Field",
+    variant: "centered",
+  }),
+  defineCodeExample({
+    code: fieldInvalidExampleCode,
+    component: FieldInvalidExample,
+    description: "Invalid field state with error messaging.",
+    id: "invalid",
+    title: "Invalid Field",
+    variant: "centered",
+  }),
+] satisfies readonly CodeExample[];
+
+export const fieldUsageCode = `import { Field, FieldControl, FieldLabel } from "@/components/ui/field";
+
+export function Component() {
+  return (
+    <Field>
+      <FieldLabel>Email</FieldLabel>
+      <FieldControl type="email" />
+    </Field>
+  );
+}`;
+
+function createPreviewForm() {
+  const [submitted, setSubmitted] = createSignal(false);
+  return {
+    handleSubmit: () => setSubmitted(true),
+    state: {
+      canSubmit: true,
+      get isSubmitted() {
+        return submitted();
+      },
+    },
+  };
+}
+
+export function TanStackFormExample() {
+  const form = createPreviewForm();
+
+  return (
+    <TanStackForm form={form} class="w-full max-w-sm rounded-lg border bg-background p-4">
+      <Field>
+        <FieldLabel>Workspace name</FieldLabel>
+        <FieldControl value="Keystone UI" />
+      </Field>
+      <TanStackFormErrors form={form} />
+      <TanStackFormSubmit
+        form={form}
+        class="inline-flex h-8.5 items-center justify-center rounded-lg bg-primary px-3 font-medium text-primary-foreground text-sm shadow-xs/5"
+      >
+        Save workspace
+      </TanStackFormSubmit>
+    </TanStackForm>
+  );
+}
+
+export const tanstackFormExampleCode = `import { Field, FieldControl, FieldLabel } from "@/components/ui/field";
+import {
+  TanStackForm,
+  TanStackFormErrors,
+  TanStackFormSubmit,
+} from "@/components/ui/tanstack-form";
+
+export function Component(props: { form: unknown }) {
+  return (
+    <TanStackForm form={props.form}>
+      <Field>
+        <FieldLabel>Workspace name</FieldLabel>
+        <FieldControl name="workspace" />
+      </Field>
+      <TanStackFormErrors form={props.form} />
+      <TanStackFormSubmit form={props.form}>Save workspace</TanStackFormSubmit>
+    </TanStackForm>
+  );
+}`;
+
+export const tanstackFormExample = defineCodeExample({
+  code: tanstackFormExampleCode,
+  component: TanStackFormExample,
+  description: "Native form shell that delegates submission and state to TanStack Form.",
+  id: "basic",
+  title: "Form Shell",
+  variant: "centered",
+});
+
+export const tanstackFormExamples = [tanstackFormExample] satisfies readonly CodeExample[];
+export const tanstackFormUsageCode = `import { TanStackForm, TanStackFormSubmit } from "@/components/ui/tanstack-form";
+
+export function Component(props: { form: unknown }) {
+  return (
+    <TanStackForm form={props.form}>
+      {/* form fields */}
+      <TanStackFormSubmit form={props.form}>Submit</TanStackFormSubmit>
+    </TanStackForm>
+  );
+}`;
+
+const commandMenuItems = [
+  {
+    value: "open-dashboard",
+    label: "Open dashboard",
+    description: "Jump to the workspace overview.",
+    group: "Navigation",
+    shortcutLabel: "⌘D",
+  },
+  {
+    value: "review-registry",
+    label: "Review registry item",
+    description: "Open the current component QA checklist.",
+    group: "Actions",
+    shortcutLabel: "⌘R",
+  },
+  {
+    value: "copy-install",
+    label: "Copy install command",
+    description: "Copy the shadcn registry add command.",
+    group: "Actions",
+    shortcutLabel: "⌘⇧C",
+  },
+];
+
+export function CommandMenuExample() {
+  return (
+    <div class="w-full max-w-xl rounded-2xl border bg-popover p-2 shadow-lg/5">
+      <div class="px-3 py-2 text-muted-foreground text-sm">Search workspace commands</div>
+      <div class="rounded-xl border bg-background p-2">
+        <div class="px-2 py-1.5 font-medium text-muted-foreground text-xs">Navigation</div>
+        <div class="grid gap-1">
+          {commandMenuItems.map((item) => (
+            <div class="grid min-h-9 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-sm px-2 py-1.5 text-sm first:bg-accent first:text-accent-foreground">
+              <span class="min-w-0">
+                <span class="block truncate font-medium">{item.label}</span>
+                <span class="block truncate text-muted-foreground/72 text-xs">
+                  {item.description}
+                </span>
+              </span>
+              <kbd class="text-muted-foreground/72 text-xs tracking-widest">
+                {item.shortcutLabel}
+              </kbd>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export const commandMenuExampleCode = `import { CommandMenu, type CommandMenuItemData } from "@/components/ui/command-menu";
+
+const items = [
+  {
+    value: "open-dashboard",
+    label: "Open dashboard",
+    description: "Jump to the workspace overview.",
+    group: "Navigation",
+    shortcutLabel: "⌘D",
+  },
+  {
+    value: "review-registry",
+    label: "Review registry item",
+    description: "Open the current component QA checklist.",
+    group: "Actions",
+    shortcutLabel: "⌘R",
+  },
+] satisfies readonly CommandMenuItemData[];
+
+export function Component() {
+  return (
+    <CommandMenu
+      hotkeys={false}
+      inputPlaceholder="Search workspace commands"
+      items={items}
+      trigger={<span>Open command menu</span>}
+    />
+  );
+}`;
+
+export const commandMenuExample = defineCodeExample({
+  code: commandMenuExampleCode,
+  component: CommandMenuExample,
+  description: "Command menu trigger with grouped searchable actions.",
+  id: "basic",
+  title: "Basic Command Menu",
+  variant: "centered",
+});
+
+export const commandMenuExamples = [commandMenuExample] satisfies readonly CodeExample[];
+export const commandMenuUsageCode = `import { CommandMenu } from "@/components/ui/command-menu";
+
+export function Component() {
+  return (
+    <CommandMenu
+      hotkeys={false}
+      items={[
+        { value: "open-dashboard", label: "Open dashboard" },
+        { value: "copy-link", label: "Copy link" },
+      ]}
+      trigger={<span>Open command menu</span>}
+    />
   );
 }`;

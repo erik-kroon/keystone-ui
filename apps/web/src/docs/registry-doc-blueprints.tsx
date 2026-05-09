@@ -350,6 +350,206 @@ export const componentDocsOverrides = {
     ],
     examples: examples.switchExamples,
   },
+  separator: {
+    description: "A decorative or semantic rule for separating compact groups of content.",
+    maturity: "Experimental",
+    usageCode: examples.separatorUsageCode,
+    apiItems: [
+      {
+        name: "Separator",
+        description:
+          "Stateless separator root with horizontal or vertical orientation and decorative-by-default semantics.",
+      },
+      {
+        name: "separatorClass",
+        description:
+          "Class helper for applying Keystone separator orientation styles to compatible custom elements.",
+      },
+    ],
+    examples: examples.separatorExamples,
+  },
+  kbd: {
+    description: "Display-only keyboard tokens for shortcuts and key sequences.",
+    maturity: "Experimental",
+    usageCode: examples.kbdUsageCode,
+    apiItems: [
+      { name: "Kbd", description: "Native kbd element with size and visual variant options." },
+      {
+        name: "KbdGroup",
+        description: "Inline wrapper for rendering related keycaps as one shortcut sequence.",
+      },
+      {
+        name: "KbdSeparator",
+        description: "Display-only separator between keycaps, defaulting to a plus sign.",
+      },
+    ],
+    examples: examples.kbdExamples,
+  },
+  "scroll-area": {
+    description: "A bounded native overflow region with Keystone scrollbar styling hooks.",
+    maturity: "Experimental",
+    usageCode: examples.scrollAreaUsageCode,
+    apiItems: [
+      {
+        name: "ScrollArea",
+        description:
+          "Convenience root and viewport composition for vertical, horizontal, or two-axis native scrolling.",
+      },
+      {
+        name: "ScrollAreaRoot",
+        description: "Outer clipping container for source-owned scroll area composition.",
+      },
+      {
+        name: "ScrollAreaViewport",
+        description: "Native overflow viewport with orientation-specific scrolling classes.",
+      },
+      {
+        name: "ScrollAreaScrollbar / ScrollAreaThumb / ScrollAreaCorner",
+        description:
+          "Decorative anatomy hooks reserved for custom scrollbar styling; current behavior remains native scrolling.",
+      },
+    ],
+    examples: examples.scrollAreaExamples,
+  },
+  breadcrumb: {
+    description: "A navigation trail for docs, app routes, and dense workspace headers.",
+    maturity: "Experimental",
+    usageCode: examples.breadcrumbUsageCode,
+    apiItems: [
+      {
+        name: "Breadcrumb",
+        description:
+          "Nav landmark that can render route item data or accept composed breadcrumb children.",
+      },
+      {
+        name: "BreadcrumbList / BreadcrumbItem",
+        description: "Ordered-list anatomy for composed breadcrumb trails.",
+      },
+      {
+        name: "BreadcrumbLink / BreadcrumbPage",
+        description: "Anchor and current-page parts with native link and aria-current semantics.",
+      },
+      {
+        name: "BreadcrumbSeparator / BreadcrumbEllipsis",
+        description: "Decorative separator and accessible ellipsis button for collapsed trails.",
+      },
+    ],
+    examples: examples.breadcrumbExamples,
+  },
+  table: {
+    description: "Presentational native table anatomy for readable app data.",
+    maturity: "Experimental",
+    previewAlign: "start",
+    usageCode: examples.tableUsageCode,
+    apiItems: [
+      {
+        name: "TableContainer",
+        description: "Optional overflow and border wrapper for clipping wide native tables.",
+      },
+      {
+        name: "Table",
+        description: "Native table root with Keystone density, caption, and tabular-number styling.",
+      },
+      {
+        name: "TableHeader / TableBody / TableFooter",
+        description: "Native table section wrappers with stable data hooks.",
+      },
+      {
+        name: "TableRow / TableHead / TableCell",
+        description: "Native row, header cell, and data cell parts for app-layer composition.",
+      },
+      { name: "TableCaption", description: "Native caption part for readable table summaries." },
+    ],
+    examples: examples.tableExamples,
+  },
+  field: {
+    description: "A Core-backed field shell for labels, controls, descriptions, and errors.",
+    maturity: "Experimental",
+    usageCode: examples.fieldUsageCode,
+    apiItems: [
+      {
+        name: "Field",
+        description:
+          "Root field owner for generated IDs, disabled, required, readonly, invalid, and validation state.",
+      },
+      {
+        name: "FieldLabel",
+        description: "Label part wired to the active FieldControl through Keystone Core.",
+      },
+      {
+        name: "FieldControl",
+        description:
+          "Styled input control part that receives aria-describedby, aria-invalid, and field state attributes.",
+      },
+      {
+        name: "FieldDescription / FieldError",
+        description:
+          "Description and alert/error message parts that participate in aria-describedby wiring.",
+      },
+      {
+        name: "FieldHiddenInput",
+        description: "Hidden input part for custom controls that need native form participation.",
+      },
+    ],
+    examples: examples.fieldExamples,
+  },
+  "tanstack-form": {
+    description: "A source-owned native form shell for TanStack Form submission state.",
+    maturity: "Experimental",
+    usageCode: examples.tanstackFormUsageCode,
+    apiItems: [
+      {
+        name: "TanStackForm",
+        description:
+          "Native form wrapper that runs user submit handlers first, then calls form.handleSubmit and mirrors form state data attributes.",
+      },
+      {
+        name: "TanStackFormSubmit",
+        description:
+          "Native submit button helper that can disable while submitting or when the form cannot submit.",
+      },
+      {
+        name: "TanStackFormErrors",
+        description: "Root error display that renders alert semantics when form errors are present.",
+      },
+      {
+        name: "getTanStackFormState / formatFieldError",
+        description: "Small helpers for reading TanStack Form state and formatting error values.",
+      },
+    ],
+    examples: examples.tanstackFormExamples,
+  },
+  "command-menu": {
+    description: "A command palette surface with searchable actions and app-level shortcut hooks.",
+    maturity: "Experimental",
+    usageCode: examples.commandMenuUsageCode,
+    apiItems: [
+      {
+        name: "CommandMenu",
+        description:
+          "High-level command palette composition for trigger, input, grouped list, empty state, shortcuts, and optional footer.",
+      },
+      {
+        name: "createCommandMenuStore",
+        description:
+          "TanStack Store-backed state helper for shared open, query, selected command, and recent command state.",
+      },
+      {
+        name: "CommandMenuRoot / Trigger / Content",
+        description: "Compound parts for apps that need lower-level command palette composition.",
+      },
+      {
+        name: "CommandMenuInput / List / Group / Item",
+        description:
+          "Search input and listbox anatomy backed by Keystone Command keyboard and selection behavior.",
+      },
+      {
+        name: "CommandMenuShortcut / Empty / Separator / Footer",
+        description: "Display and layout parts for app-specific command palette content.",
+      },
+    ],
+    examples: examples.commandMenuExamples,
+  },
   tabs: {
     description: "A set of layered sections where one panel is visible at a time.",
     maturity: "Stable",

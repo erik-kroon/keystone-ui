@@ -29,6 +29,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/table.json",
+    "maturity": "Experimental",
     "customization": "Customize the native anatomy through ui-table classes, shadcn-style data-slot values, and stable data-scope=\"ui-table\" data-part hooks.",
     "sourceFiles": [
       "packages/ui/src/components/table.tsx"

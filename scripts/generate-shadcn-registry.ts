@@ -18,7 +18,11 @@ type RegistryItem = {
   $schema?: string;
   description?: string;
   files?: readonly RegistryFile[];
+  meta?: {
+    maturity?: string;
+  };
   name: string;
+  registryDependencies?: readonly string[];
   title?: string;
   type: string;
   [key: string]: unknown;
@@ -122,7 +126,8 @@ async function publicItem(item: RegistryItem): Promise<RegistryItem> {
 async function main() {
   const registry = JSON.parse(await readFile(registryIndexPath, "utf8")) as RegistryIndex;
   const items = await Promise.all(registry.items.map((item) => readItem(item.name)));
-  const publicItems = await Promise.all(items.map((item) => publicItem(item)));
+  const publicSourceItems = publicRegistryItems(items);
+  const publicItems = await Promise.all(publicSourceItems.map((item) => publicItem(item)));
 
   await rm(outputRoot, { force: true, recursive: true });
   await mkdir(outputRoot, { recursive: true });
@@ -149,3 +154,34 @@ async function main() {
 }
 
 await main();
+
+function publicRegistryItems(items: readonly RegistryItem[]) {
+  const itemByName = new Map(items.map((item) => [item.name, item]));
+  const hiddenNames = new Set(
+    items
+      .filter((item) => item.meta?.maturity?.toLowerCase() === "experimental")
+      .map((item) => item.name),
+  );
+
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const item of items) {
+      if (hiddenNames.has(item.name)) continue;
+
+      const hasHiddenRegistryDependency = (item.registryDependencies ?? []).some((dependency) =>
+        hiddenNames.has(dependency),
+      );
+      const hasMissingRegistryDependency = (item.registryDependencies ?? []).some(
+        (dependency) => !itemByName.has(dependency),
+      );
+
+      if (hasHiddenRegistryDependency || hasMissingRegistryDependency) {
+        hiddenNames.add(item.name);
+        changed = true;
+      }
+    }
+  }
+
+  return items.filter((item) => !hiddenNames.has(item.name));
+}

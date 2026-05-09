@@ -48,10 +48,27 @@ const componentRouteMeta: Readonly<Record<string, DocsRouteMeta>> = {
     description: "Styled Solid dialog component backed by Keystone overlay behavior.",
     title: "Dialog",
   },
+  breadcrumb: {
+    description: "Source-owned Solid breadcrumb navigation for docs and app routes.",
+    title: "Breadcrumb",
+  },
+  "command-menu": {
+    description:
+      "Command palette source built from Keystone Command behavior and app-layer command state.",
+    title: "CommandMenu",
+  },
+  field: {
+    description: "Core-backed form field shell with label, control, description, and error parts.",
+    title: "Field",
+  },
   input: {
     description:
       "Reference-inspired Solid input control with wrapper styling, sizes, invalid state, and native input semantics.",
     title: "Input",
+  },
+  kbd: {
+    description: "Display-only keyboard input token with group and separator parts.",
+    title: "Kbd",
   },
   label: {
     description: "Solid label component for form controls and field shells.",
@@ -71,14 +88,30 @@ const componentRouteMeta: Readonly<Record<string, DocsRouteMeta>> = {
       "Keystone-backed styled select with trigger, value, popup, listbox, group, item, and form-value behavior.",
     title: "Select",
   },
+  "scroll-area": {
+    description: "Native Solid scroll container with styled overflow hooks.",
+    title: "ScrollArea",
+  },
+  separator: {
+    description: "Decorative or semantic Solid separator with horizontal and vertical styling.",
+    title: "Separator",
+  },
   switch: {
     description: "Styled Solid switch component backed by Keystone selection-control behavior.",
     title: "Switch",
+  },
+  table: {
+    description: "Presentational native table anatomy for readable app data.",
+    title: "Table",
   },
   tabs: {
     description:
       "Styled Solid tabs component backed by Keystone tablist, trigger, and panel behavior.",
     title: "Tabs",
+  },
+  "tanstack-form": {
+    description: "Source-owned Solid form shell for TanStack Form submit and form-state metadata.",
+    title: "TanStackForm",
   },
   toast: {
     description:
@@ -92,6 +125,21 @@ const componentRouteMeta: Readonly<Record<string, DocsRouteMeta>> = {
   },
 };
 
+const experimentalComponentRoutes = new Set([
+  "breadcrumb",
+  "command-menu",
+  "field",
+  "kbd",
+  "scroll-area",
+  "separator",
+  "table",
+  "tanstack-form",
+  "toast",
+]);
+
 export function findComponentRouteMeta(slug: string) {
+  if (experimentalComponentRoutes.has(slug) && import.meta.env?.DEV !== true) {
+    return undefined;
+  }
   return componentRouteMeta[slug];
 }

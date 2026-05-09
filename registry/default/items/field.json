@@ -31,6 +31,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/field.json",
+    "maturity": "Experimental",
     "customization": "Style the shell through ui-field classes, reference-style data-slot values, and Core data attributes for field state on root, label, control, description, error-message, and hidden-input parts.",
     "sourceFiles": [
       "packages/ui/src/components/field.tsx"

@@ -102,7 +102,7 @@ function componentMaturityKey(item: RegistryDocItem) {
 
 function isPublicComponentDoc(item: RegistryDocItem) {
   const maturity = componentMaturityKey(item);
-  return maturity === "stable" || maturity === "preview" || maturity === "experimental";
+  return maturity === "stable" || maturity === "preview";
 }
 
 function maturityGroupTitle(maturity: string) {
@@ -119,11 +119,15 @@ function compareMaturityGroups(a: NavGroup, b: NavGroup) {
 
 const publicComponentDocs = componentDocs.filter(isPublicComponentDoc);
 const visibleSidebarComponentDocs = sidebarComponentDocs.filter((item) =>
-  isPublicComponentDoc(item),
+  isPublicComponentDoc(item) && componentMaturityKey(item) !== "experimental",
 );
 const sidebarMaturityGroups = Object.values(
   sidebarComponentDocs
-    .filter((item) => !isPublicComponentDoc(item))
+    .filter(
+      (item) =>
+        showFullDocsCatalog &&
+        (componentMaturityKey(item) === "experimental" || !isPublicComponentDoc(item)),
+    )
     .reduce<Record<string, NavGroup>>((groups, item) => {
       const title = maturityGroupTitle(componentMaturity(item));
       return {
@@ -141,7 +145,6 @@ const sidebarMaturityGroups = Object.values(
       };
     }, {}),
 ).sort(compareMaturityGroups);
-const visibleSidebarMaturityGroups = showFullDocsCatalog ? sidebarMaturityGroups : [];
 const visibleHookDocs = showFullDocsCatalog ? hookDocs : [];
 const routableDocs = showFullDocsCatalog ? docsItems : publicComponentDocs;
 
@@ -173,7 +176,7 @@ export const navGroups: readonly NavGroup[] = [
       label: docsItemTitle(item),
     })),
   },
-  ...visibleSidebarMaturityGroups,
+  ...sidebarMaturityGroups,
   ...(visibleHookDocs.length
     ? [
         {

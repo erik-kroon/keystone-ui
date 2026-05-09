@@ -31,6 +31,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/scroll-area.json",
+    "maturity": "Experimental",
     "api": "Exports ScrollArea plus ScrollAreaRoot, ScrollAreaViewport, ScrollAreaScrollbar, ScrollAreaThumb, and ScrollAreaCorner. ScrollArea accepts orientation=\"vertical\"|\"horizontal\"|\"both\" and viewportClass for common source-owned composition.",
     "anatomy": [
       "root",
