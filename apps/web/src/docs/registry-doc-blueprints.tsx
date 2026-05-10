@@ -437,29 +437,155 @@ export const componentDocsOverrides = {
     examples: examples.breadcrumbExamples,
   },
   table: {
-    description: "Presentational native table anatomy for readable app data.",
+    description: "Presentational native table anatomy with compact and card-style variants.",
     maturity: "Experimental",
     previewAlign: "start",
     usageCode: examples.tableUsageCode,
     apiItems: [
       {
         name: "TableContainer",
-        description: "Optional overflow and border wrapper for clipping wide native tables.",
+        description:
+          "Overflow wrapper that carries default/card variant context through data attributes.",
+        props: [
+          { name: "class", type: "string" },
+          { name: "variant", type: '"default" | "card"', default: '"default"' },
+        ],
+        examples: [
+          {
+            code: `<TableContainer>
+  <Table>
+    <TableHeader>...</TableHeader>
+    <TableBody>...</TableBody>
+  </Table>
+</TableContainer>`,
+          },
+          {
+            code: `<TableContainer variant="card">
+  <Table>
+    <TableHeader>...</TableHeader>
+    <TableBody>...</TableBody>
+  </Table>
+</TableContainer>`,
+          },
+        ],
       },
       {
         name: "Table",
         description:
-          "Native table root with Keystone density, caption, and tabular-number styling.",
+          "Native table root with Keystone density, caption, tabular-number styling, and optional variant override.",
+        props: [
+          { name: "class", type: "string" },
+          { name: "variant", type: '"default" | "card"', default: '"default"' },
+        ],
+        examples: [
+          {
+            code: `<Table>
+  <TableCaption>Caption</TableCaption>
+  <TableHeader>...</TableHeader>
+  <TableBody>...</TableBody>
+</Table>`,
+          },
+        ],
       },
       {
-        name: "TableHeader / TableBody / TableFooter",
-        description: "Native table section wrappers with stable data hooks.",
+        name: "TableHeader",
+        description: "Native header section containing column headers.",
+        props: [{ name: "class", type: "string" }],
+        examples: [
+          {
+            code: `<TableHeader>
+  <TableRow>
+    <TableHead scope="col">Header</TableHead>
+  </TableRow>
+</TableHeader>`,
+          },
+        ],
       },
       {
-        name: "TableRow / TableHead / TableCell",
-        description: "Native row, header cell, and data cell parts for app-layer composition.",
+        name: "TableBody",
+        description: "Native body section containing table rows and data cells.",
+        props: [{ name: "class", type: "string" }],
+        examples: [
+          {
+            code: `<TableBody>
+  <TableRow>
+    <TableCell>Cell</TableCell>
+  </TableRow>
+</TableBody>`,
+          },
+        ],
       },
-      { name: "TableCaption", description: "Native caption part for readable table summaries." },
+      {
+        name: "TableFooter",
+        description: "Native footer section for totals, summaries, or aggregate rows.",
+        props: [{ name: "class", type: "string" }],
+        examples: [
+          {
+            code: `<TableFooter>
+  <TableRow>
+    <TableCell colSpan={3}>Total</TableCell>
+    <TableCell class="text-right">$39,550</TableCell>
+  </TableRow>
+</TableFooter>`,
+          },
+        ],
+      },
+      {
+        name: "TableRow",
+        description: "Native row part with hover and selected-state styling hooks.",
+        props: [
+          { name: "class", type: "string" },
+          { name: "data-state", type: '"selected" | string' },
+          { name: "data-selected", type: "string" },
+        ],
+        examples: [
+          {
+            code: `<TableRow data-state="selected">
+  <TableCell>Selected row</TableCell>
+</TableRow>`,
+          },
+        ],
+      },
+      {
+        name: "TableHead",
+        description: "Native header cell for column labels.",
+        props: [
+          { name: "class", type: "string" },
+          { name: "scope", type: '"col" | "row" | "colgroup" | "rowgroup"' },
+        ],
+        examples: [
+          {
+            code: `<TableHead class="text-right" scope="col">
+  Budget
+</TableHead>`,
+          },
+        ],
+      },
+      {
+        name: "TableCell",
+        description: "Native data cell for row values.",
+        props: [
+          { name: "class", type: "string" },
+          { name: "colSpan", type: "number" },
+        ],
+        examples: [
+          {
+            code: `<TableCell class="text-right font-medium tabular-nums">
+  $12,500
+</TableCell>`,
+          },
+        ],
+      },
+      {
+        name: "TableCaption",
+        description: "Native caption part for readable table summaries.",
+        props: [{ name: "class", type: "string" }],
+        examples: [
+          {
+            code: `<TableCaption>A list of current projects.</TableCaption>`,
+          },
+        ],
+      },
     ],
     examples: examples.tableExamples,
   },

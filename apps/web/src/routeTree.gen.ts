@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as DocsRouteRouteImport } from './routes/docs/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DocsIndexRouteImport } from './routes/docs/index'
+import { Route as DocsIntroductionRouteImport } from './routes/docs/introduction'
 import { Route as DocsComponentsIndexRouteImport } from './routes/docs/components/index'
 import { Route as DocsComponentsSlugRouteImport } from './routes/docs/components/$slug'
 
@@ -30,6 +31,11 @@ const DocsIndexRoute = DocsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DocsRouteRoute,
 } as any)
+const DocsIntroductionRoute = DocsIntroductionRouteImport.update({
+  id: '/introduction',
+  path: '/introduction',
+  getParentRoute: () => DocsRouteRoute,
+} as any)
 const DocsComponentsIndexRoute = DocsComponentsIndexRouteImport.update({
   id: '/components/',
   path: '/components/',
@@ -44,12 +50,14 @@ const DocsComponentsSlugRoute = DocsComponentsSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/docs': typeof DocsRouteRouteWithChildren
+  '/docs/introduction': typeof DocsIntroductionRoute
   '/docs/': typeof DocsIndexRoute
   '/docs/components/$slug': typeof DocsComponentsSlugRoute
   '/docs/components/': typeof DocsComponentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/docs/introduction': typeof DocsIntroductionRoute
   '/docs': typeof DocsIndexRoute
   '/docs/components/$slug': typeof DocsComponentsSlugRoute
   '/docs/components': typeof DocsComponentsIndexRoute
@@ -58,6 +66,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/docs': typeof DocsRouteRouteWithChildren
+  '/docs/introduction': typeof DocsIntroductionRoute
   '/docs/': typeof DocsIndexRoute
   '/docs/components/$slug': typeof DocsComponentsSlugRoute
   '/docs/components/': typeof DocsComponentsIndexRoute
@@ -67,15 +76,22 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/docs'
+    | '/docs/introduction'
     | '/docs/'
     | '/docs/components/$slug'
     | '/docs/components/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/docs' | '/docs/components/$slug' | '/docs/components'
+  to:
+    | '/'
+    | '/docs/introduction'
+    | '/docs'
+    | '/docs/components/$slug'
+    | '/docs/components'
   id:
     | '__root__'
     | '/'
     | '/docs'
+    | '/docs/introduction'
     | '/docs/'
     | '/docs/components/$slug'
     | '/docs/components/'
@@ -109,6 +125,13 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof DocsIndexRouteImport
       parentRoute: typeof DocsRouteRoute
     }
+    '/docs/introduction': {
+      id: '/docs/introduction'
+      path: '/introduction'
+      fullPath: '/docs/introduction'
+      preLoaderRoute: typeof DocsIntroductionRouteImport
+      parentRoute: typeof DocsRouteRoute
+    }
     '/docs/components/': {
       id: '/docs/components/'
       path: '/components'
@@ -127,12 +150,14 @@ declare module '@tanstack/solid-router' {
 }
 
 interface DocsRouteRouteChildren {
+  DocsIntroductionRoute: typeof DocsIntroductionRoute
   DocsIndexRoute: typeof DocsIndexRoute
   DocsComponentsSlugRoute: typeof DocsComponentsSlugRoute
   DocsComponentsIndexRoute: typeof DocsComponentsIndexRoute
 }
 
 const DocsRouteRouteChildren: DocsRouteRouteChildren = {
+  DocsIntroductionRoute: DocsIntroductionRoute,
   DocsIndexRoute: DocsIndexRoute,
   DocsComponentsSlugRoute: DocsComponentsSlugRoute,
   DocsComponentsIndexRoute: DocsComponentsIndexRoute,

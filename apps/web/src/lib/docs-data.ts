@@ -160,7 +160,7 @@ function componentBadge(name: string) {
 export const overviewPage: DocsPage = {
   description:
     "Solid primitives, source-owned UI components, shadcn-compatible registry metadata, and app-layer registry guidance.",
-  href: "/docs",
+  href: "/docs/introduction",
   label: "Introduction",
   title: "Introduction",
   toc: [
@@ -173,7 +173,7 @@ export const overviewPage: DocsPage = {
 export const navGroups: readonly NavGroup[] = [
   {
     title: "Overview",
-    items: [{ label: "Introduction", href: "/docs" }],
+    items: [{ label: "Introduction", href: "/docs/introduction" }],
   },
   {
     title: "Components",

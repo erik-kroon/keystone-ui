@@ -165,8 +165,10 @@ export function CopyPageButton(
 export function CodeBlock(
   props: Readonly<{
     code: string;
+    colorScheme?: CodeColorScheme;
     copy?: boolean;
     language: string;
+    lineNumbers?: boolean;
     title?: string;
   }>,
 ) {
@@ -187,21 +189,31 @@ export function CodeBlock(
       <Show when={props.copy ?? true}>
         <CopyButton value={props.code} />
       </Show>
-      <div class="contents" innerHTML={renderCodeBlock(props.code)} />
+      <div
+        class="contents"
+        innerHTML={renderCodeBlock(props.code, {
+          colorScheme: props.colorScheme ?? "default",
+          lineNumbers: props.lineNumbers ?? true,
+        })}
+      />
     </figure>
   );
 }
 
 const codePreClass =
   "m-0 max-h-[450px] min-w-0 w-full overflow-auto px-4 py-3.5 font-mono text-[.8125rem] leading-snug outline-none has-data-[highlighted-line]:px-0 has-data-[line-numbers]:ps-0 !bg-transparent";
+type CodeColorScheme = "default" | "reference";
 
-function renderCodeBlock(code: string) {
+function renderCodeBlock(
+  code: string,
+  options: { colorScheme: CodeColorScheme; lineNumbers: boolean },
+) {
   const lines = code.split("\n");
 
-  return `<pre class="${codePreClass}" tabindex="0"><code data-line-numbers="">${lines
+  return `<pre class="${codePreClass}" tabindex="0"><code${options.lineNumbers ? ' data-line-numbers=""' : ""}>${lines
     .map(
       (line) =>
-        `<span class="line" data-line="">${highlightCodeLine(line) || tokenSpan(" ")}</span>`,
+        `<span class="line" data-line="">${highlightCodeLine(line, options.colorScheme) || tokenSpan(" ", colorSet(options.colorScheme).text)}</span>`,
     )
     .join("\n")}</code></pre>`;
 }
@@ -222,30 +234,44 @@ const keywordTokens = new Set([
   "satisfies",
   "type",
 ]);
-const keywordColor = ["#D73A49", "#F97583"] as const;
-const stringColor = ["#032F62", "#9ECBFF"] as const;
-const numberColor = ["#005CC5", "#79B8FF"] as const;
-const functionColor = ["#6F42C1", "#B392F0"] as const;
-const tagColor = ["#22863A", "#85E89D"] as const;
-const textColor = ["#24292E", "#E1E4E8"] as const;
-const commentColor = ["#6A737D", "#8B949E"] as const;
+const defaultCodeColors = {
+  keyword: ["#D73A49", "#F97583"],
+  string: ["#032F62", "#9ECBFF"],
+  number: ["#005CC5", "#79B8FF"],
+  function: ["#6F42C1", "#B392F0"],
+  tag: ["#22863A", "#85E89D"],
+  text: ["#24292E", "#E1E4E8"],
+  comment: ["#6A737D", "#8B949E"],
+} as const;
 
-function highlightCodeLine(line: string) {
+const referenceCodeColors = {
+  ...defaultCodeColors,
+  tag: ["#005CC5", "#79B8FF"],
+  function: ["#6F42C1", "#B392F0"],
+  text: ["#24292E", "#C9D1D9"],
+} as const;
+
+function colorSet(scheme: CodeColorScheme) {
+  return scheme === "reference" ? referenceCodeColors : defaultCodeColors;
+}
+
+function highlightCodeLine(line: string, scheme: CodeColorScheme) {
   let index = 0;
   let html = "";
+  const colors = colorSet(scheme);
 
   while (index < line.length) {
     const rest = line.slice(index);
 
     if (rest.startsWith("//")) {
-      html += tokenSpan(rest, commentColor);
+      html += tokenSpan(rest, colors.comment);
       break;
     }
 
     const quote = line[index];
     if (quote === '"' || quote === "'" || quote === "`") {
       const end = findStringEnd(line, index, quote);
-      html += tokenSpan(line.slice(index, end), stringColor);
+      html += tokenSpan(line.slice(index, end), colors.string);
       index = end;
       continue;
     }
@@ -256,19 +282,19 @@ function highlightCodeLine(line: string) {
       const before = line.slice(0, index);
       const after = line.slice(index + word.length);
 
-      html += tokenSpan(word, tokenColorForWord(word, before, after));
+      html += tokenSpan(word, tokenColorForWord(word, before, after, colors));
       index += word.length;
       continue;
     }
 
     const numberMatch = /^\d+(?:\.\d+)?/.exec(rest);
     if (numberMatch) {
-      html += tokenSpan(numberMatch[0], numberColor);
+      html += tokenSpan(numberMatch[0], colors.number);
       index += numberMatch[0].length;
       continue;
     }
 
-    html += tokenSpan(line[index] ?? "", textColor);
+    html += tokenSpan(line[index] ?? "", colors.text);
     index += 1;
   }
 
@@ -287,19 +313,24 @@ function findStringEnd(line: string, start: number, quote: string) {
   return line.length;
 }
 
-function tokenColorForWord(word: string, before: string, after: string) {
-  if (keywordTokens.has(word)) return keywordColor;
+function tokenColorForWord(
+  word: string,
+  before: string,
+  after: string,
+  colors: ReturnType<typeof colorSet>,
+) {
+  if (keywordTokens.has(word)) return colors.keyword;
   if (word === "true" || word === "false" || word === "null" || word === "undefined") {
-    return numberColor;
+    return colors.number;
   }
-  if (/<\/?$/.test(before.trimEnd())) return tagColor;
-  if (/^\s*=/.test(after)) return functionColor;
-  if (/^\s*\(/.test(after)) return functionColor;
+  if (/<\/?$/.test(before.trimEnd())) return colors.tag;
+  if (/^\s*=/.test(after)) return colors.function;
+  if (/^\s*\(/.test(after)) return colors.function;
 
-  return textColor;
+  return colors.text;
 }
 
-function tokenSpan(value: string, colors: readonly [string, string] = textColor) {
+function tokenSpan(value: string, colors: readonly [string, string] = defaultCodeColors.text) {
   return `<span style="--shiki-light:${colors[0]};--shiki-dark:${colors[1]}">${escapeHtml(
     value,
   )}</span>`;

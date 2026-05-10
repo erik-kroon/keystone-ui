@@ -18,6 +18,7 @@ import { componentDocsOverrides, hookDocsOverrides } from "../docs/registry-doc-
 import { InlineCode } from "../docs/hook-doc-widgets";
 import type {
   ApiReferenceItem,
+  ApiReferenceProp,
   CodeExample,
   ComponentDocsBlueprint,
   HookDocsBlueprint,
@@ -489,7 +490,7 @@ function DocSection(
 
 function ApiReference(props: Readonly<{ items: readonly ApiReferenceItem[] }>) {
   return (
-    <div class="mt-3 grid gap-10">
+    <div class="mt-3 grid gap-12">
       <For each={props.items}>
         {(item) => (
           <article class="scroll-mt-24">
@@ -505,6 +506,30 @@ function ApiReference(props: Readonly<{ items: readonly ApiReferenceItem[] }>) {
               </a>
             </h3>
             <ApiReferenceDescription text={item.description} />
+            <Show when={(item.props?.length ?? 0) > 0}>
+              <MdxTable
+                columns={["Prop", "Type", "Default"]}
+                rows={(item.props ?? []).map((prop) => [
+                  <ApiReferenceCodeValue value={prop.name} />,
+                  <ApiReferenceCodeValue value={prop.type} />,
+                  <ApiReferenceDefaultValue prop={prop} />,
+                ])}
+              />
+            </Show>
+            <Show when={(item.examples?.length ?? 0) > 0}>
+              <div class="mt-5 grid gap-4">
+                <For each={item.examples ?? []}>
+                  {(example) => (
+                    <CodeBlock
+                      code={example.code}
+                      colorScheme="reference"
+                      language={example.language ?? "tsx"}
+                      lineNumbers={false}
+                    />
+                  )}
+                </For>
+              </div>
+            </Show>
           </article>
         )}
       </For>
@@ -529,6 +554,20 @@ function ApiReferenceDescription(props: Readonly<{ text: string }>) {
         }
       </For>
     </p>
+  );
+}
+
+function ApiReferenceCodeValue(props: Readonly<{ value: string }>) {
+  return <InlineCode>{props.value}</InlineCode>;
+}
+
+function ApiReferenceDefaultValue(props: Readonly<{ prop: ApiReferenceProp }>) {
+  return props.prop.default ? (
+    <InlineCode>{props.prop.default}</InlineCode>
+  ) : (
+    <span class="text-muted-foreground/64" aria-label="No default value">
+      -
+    </span>
   );
 }
 
@@ -749,7 +788,7 @@ function MissingDocPage(props: Readonly<{ slug: string }>) {
           <PageHeaderDescription>
             The registry does not include an item named <code>{props.slug}</code>.
           </PageHeaderDescription>
-          <ActionLink class={`${secondaryButtonClass} mt-6`} href="/docs">
+          <ActionLink class={`${secondaryButtonClass} mt-6`} href="/docs/introduction">
             <Puzzle size={16} />
             Back to docs
           </ActionLink>
