@@ -55,9 +55,7 @@ describe("CommandMenu", () => {
     await tick();
 
     const input = document.querySelector<HTMLInputElement>("[data-slot='command-menu-input']");
-    const positioner = document.querySelector<HTMLElement>(
-      "[data-slot='command-menu-positioner']",
-    );
+    const positioner = document.querySelector<HTMLElement>("[data-slot='command-menu-positioner']");
     const content = document.querySelector<HTMLElement>("[data-slot='command-menu-content']");
     const listbox = document.querySelector("[data-slot='command-menu-list']");
     const labels = Array.from(
@@ -245,12 +243,7 @@ describe("CommandMenu", () => {
     document.body.append(host);
     const dispose = render(
       () => (
-        <CommandMenu
-          hotkeys={false}
-          items={commands}
-          onOpenChange={onOpenChange}
-          store={store}
-        />
+        <CommandMenu hotkeys={false} items={commands} onOpenChange={onOpenChange} store={store} />
       ),
       host,
     );
@@ -261,10 +254,7 @@ describe("CommandMenu", () => {
     await tick();
 
     expect(store.store.state.open).toBe(false);
-    expect(onOpenChange).toHaveBeenCalledWith(
-      false,
-      expect.objectContaining({ reason: "escape" }),
-    );
+    expect(onOpenChange).toHaveBeenCalledWith(false, expect.objectContaining({ reason: "escape" }));
 
     dispose();
   });

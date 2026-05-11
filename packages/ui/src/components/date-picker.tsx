@@ -146,11 +146,7 @@ export function CalendarPreviousTrigger(props: CalendarNavigationTriggerProps) {
   return (
     <CoreCalendar.PreviousTrigger
       {...rest}
-      class={cn(
-        "ui-calendar-navigation-trigger",
-        navigationTriggerClass,
-        local.class,
-      )}
+      class={cn("ui-calendar-navigation-trigger", navigationTriggerClass, local.class)}
     >
       <ChevronLeft aria-hidden="true" class="rtl:rotate-180" />
     </CoreCalendar.PreviousTrigger>
@@ -163,11 +159,7 @@ export function CalendarNextTrigger(props: CalendarNavigationTriggerProps) {
   return (
     <CoreCalendar.NextTrigger
       {...rest}
-      class={cn(
-        "ui-calendar-navigation-trigger",
-        navigationTriggerClass,
-        local.class,
-      )}
+      class={cn("ui-calendar-navigation-trigger", navigationTriggerClass, local.class)}
     >
       <ChevronRight aria-hidden="true" class="rtl:rotate-180" />
     </CoreCalendar.NextTrigger>
@@ -276,12 +268,7 @@ export function DatePickerContent(props: DatePickerContentProps) {
       <Popper.Positioner
         data-slot="date-picker-positioner"
         class={cn(
-          classes(
-            "ui-date-picker-positioner",
-            "z-50",
-            "w-fit",
-            "max-w-(--available-width)",
-          ),
+          classes("ui-date-picker-positioner", "z-50", "w-fit", "max-w-(--available-width)"),
           local.positionerClass,
         )}
       >

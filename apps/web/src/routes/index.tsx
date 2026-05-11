@@ -47,7 +47,11 @@ const treePaths = [
 
 const componentDocPathByTreePath = new Map(
   treePaths.map((path) => {
-    const slug = path.split("/").at(-1)?.replace(/\.tsx$/, "") ?? "";
+    const slug =
+      path
+        .split("/")
+        .at(-1)
+        ?.replace(/\.tsx$/, "") ?? "";
     return [path, `/docs/components/${slug}`] as const;
   }),
 );
@@ -61,7 +65,7 @@ function HomeRoute() {
           <div class="flex max-w-3xl flex-col items-start justify-center gap-6">
             <div class="flex flex-col gap-3">
               <p class="m-0 font-mono text-xs leading-5 text-muted-foreground">
-               unstyled, accessible primitives / beautiful, performant components
+                unstyled, accessible primitives / beautiful, performant components
               </p>
               <h1 class="m-0 max-w-3xl font-heading text-4xl leading-[1.05] font-semibold text-foreground tracking-normal sm:text-5xl lg:text-6xl">
                 Minimal interface systems for Solid applications.
@@ -69,8 +73,8 @@ function HomeRoute() {
             </div>
 
             <p class="m-0 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8 [text-wrap:pretty]">
-              Keystone pairs headless accessible primitives with a quiet, copy-paste component
-              layer for production-grade, data-dense product-work.
+              Keystone pairs headless accessible primitives with a quiet, copy-paste component layer
+              for production-grade, data-dense product-work.
             </p>
 
             <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
@@ -133,9 +137,11 @@ function LandingHeader() {
 
 function KeystoneFileTree() {
   const navigate = useNavigate();
-  let host!: HTMLDivElement;
+  let host: HTMLDivElement | undefined;
 
   onMount(() => {
+    if (!host) return;
+
     let tree: { cleanUp: () => void } | undefined;
 
     tree = new FileTree({
@@ -205,7 +211,9 @@ function KeystoneFileTree() {
 
   return (
     <div
-      ref={host}
+      ref={(element) => {
+        host = element;
+      }}
       aria-label="Keystone UI package file tree"
       class="h-[36rem] w-full overflow-hidden [--trees-bg-override:#111111] [--trees-border-color-override:transparent] [--trees-fg-override:#f4f4f5]"
     />
