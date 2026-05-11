@@ -36,6 +36,7 @@ const typeOrder: Record<string, number> = {
 };
 
 const displayTitleByName: Readonly<Record<string, string>> = {
+  "command-menu": "Command Menu",
   "radio-group": "Radio Group",
 };
 
