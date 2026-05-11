@@ -169,7 +169,7 @@ describe("TanStack field components", () => {
     const hiddenInput = host.querySelector<HTMLInputElement>(
       "[data-slot='date-picker-field-hidden-input']",
     );
-    const grid = host.querySelector("[data-scope='calendar'][data-part='grid']");
+    const grid = document.body.querySelector("[data-scope='calendar'][data-part='grid']");
 
     expect(trigger?.getAttribute("aria-haspopup")).toBe("dialog");
     expect(trigger?.getAttribute("aria-describedby")).toBeTruthy();

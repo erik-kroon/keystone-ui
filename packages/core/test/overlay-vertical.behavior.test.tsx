@@ -17,6 +17,10 @@ function focusIn(element: HTMLElement) {
   element.dispatchEvent(new FocusEvent("focus", { bubbles: true, cancelable: true }));
 }
 
+function animationFrame() {
+  return new Promise((resolve) => requestAnimationFrame(resolve));
+}
+
 describe("Popover, Tooltip, and Sheet overlay vertical", () => {
   test("popover opens from trigger, exposes floating geometry, and dismisses outside", async () => {
     const changes: string[] = [];
@@ -89,6 +93,7 @@ describe("Popover, Tooltip, and Sheet overlay vertical", () => {
     expect(queryByPart("tooltip", "content")).not.toBeNull();
 
     keyDown(getByPart("tooltip", "content"), "Escape");
+    await animationFrame();
     await settled();
     expect(queryByPart("tooltip", "content")).toBeNull();
   });

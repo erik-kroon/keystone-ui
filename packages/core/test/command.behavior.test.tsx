@@ -243,6 +243,23 @@ describe("Command behavior harness", () => {
     expect(values).toEqual(["open-settings"]);
   });
 
+  test("positioned command content opts out of floating geometry styles", async () => {
+    render(() => (
+      <Command.Root defaultOpen>
+        <Command.Input />
+        <Command.Content positioned>
+          <Command.Listbox>
+            <Command.Item value="open-file">Open file</Command.Item>
+          </Command.Listbox>
+        </Command.Content>
+      </Command.Root>
+    ));
+
+    await settled();
+
+    expect(getByPart("command", "content").getAttribute("style")).toBeNull();
+  });
+
   test("createCommand defaults its public scope to command", () => {
     createRoot((dispose) => {
       const command = createCommand();

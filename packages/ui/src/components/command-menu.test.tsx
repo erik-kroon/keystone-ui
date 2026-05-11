@@ -55,6 +55,8 @@ describe("CommandMenu", () => {
     await tick();
 
     const input = document.querySelector<HTMLInputElement>("[data-slot='command-menu-input']");
+    const positioner = document.querySelector<HTMLElement>("[data-slot='command-menu-positioner']");
+    const content = document.querySelector<HTMLElement>("[data-slot='command-menu-content']");
     const listbox = document.querySelector("[data-slot='command-menu-list']");
     const labels = Array.from(
       document.querySelectorAll("[data-slot='command-menu-group-label']"),
@@ -65,6 +67,10 @@ describe("CommandMenu", () => {
     expect(input?.getAttribute("aria-autocomplete")).toBe("list");
     expect(input?.getAttribute("aria-expanded")).toBe("true");
     expect(input?.placeholder).toBe("Find a command");
+    expect(positioner?.getAttribute("data-scope")).toBe("ui-command-menu");
+    expect(positioner?.className).toContain("fixed");
+    expect(positioner?.style.position).toBe("");
+    expect(content?.style.position).toBe("");
     expect(listbox?.getAttribute("role")).toBe("listbox");
     expect(labels).toEqual(["Navigation", "Actions"]);
     expect(shortcut?.textContent).toContain("Ctrl");
@@ -226,6 +232,29 @@ describe("CommandMenu", () => {
     await tick();
 
     expect(selected).toHaveBeenCalledWith(expect.objectContaining({ value: "open-settings" }));
+
+    dispose();
+  });
+
+  test("closes from Escape even when focus is outside the command input", async () => {
+    const store = createCommandMenuStore({ open: true });
+    const onOpenChange = vi.fn();
+    const host = document.createElement("div");
+    document.body.append(host);
+    const dispose = render(
+      () => (
+        <CommandMenu hotkeys={false} items={commands} onOpenChange={onOpenChange} store={store} />
+      ),
+      host,
+    );
+
+    await tick();
+
+    document.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "Escape" }));
+    await tick();
+
+    expect(store.store.state.open).toBe(false);
+    expect(onOpenChange).toHaveBeenCalledWith(false, expect.objectContaining({ reason: "escape" }));
 
     dispose();
   });

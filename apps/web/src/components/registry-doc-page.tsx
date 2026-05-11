@@ -40,7 +40,7 @@ import { Badge, type BadgeVariant } from "@keystone-ui/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@keystone-ui/ui/tabs";
 
 const pageHeaderActionClass =
-  "!h-7 !min-h-7 gap-1 rounded-md px-2 text-sm shadow-none sm:!h-6 sm:!min-h-6 sm:text-xs [&>svg]:size-4 [&>svg]:opacity-80 sm:[&>svg]:size-3.5";
+  "!h-7 !min-h-7 gap-2.5 px-0 rounded-md text-sm shadow-none sm:!h-6 sm:!min-h-6 sm:text-xs [&>svg]:size-4 [&>svg]:opacity-80 sm:[&>svg]:size-3.5";
 const docsSectionClass = "mt-10 scroll-mt-24 lg:mt-12";
 const previewSectionClass = "mt-6 scroll-mt-24";
 
@@ -425,13 +425,16 @@ function PreviewCodeTabs(
   }>,
 ) {
   const [tab, setTab] = createSignal<"preview" | "code">("preview");
+  const [codeRequested, setCodeRequested] = createSignal(false);
   const selectTab = (value: string) => {
-    if (value === "preview" || value === "code") setTab(value);
+    if (value !== "preview" && value !== "code") return;
+    if (value === "code") setCodeRequested(true);
+    setTab(value);
   };
   const align = () => props.align ?? "center";
 
   return (
-    <div class={cn("group relative mt-4 flex flex-col gap-2", props.class)}>
+    <div class={cn("group relative mt-4 flex min-w-0 flex-col gap-2", props.class)}>
       <Tabs onValueChange={selectTab} value={tab()}>
         <div class="flex items-center justify-between">
           <TabsList>
@@ -440,8 +443,11 @@ function PreviewCodeTabs(
           </TabsList>
         </div>
       </Tabs>
-      <div class="rounded-xl border not-dark:bg-card" data-tab={tab()}>
-        <div class="hidden data-[active=true]:block" data-active={tab() === "preview"}>
+      <div
+        class="relative min-w-0 overflow-hidden rounded-xl border not-dark:bg-card"
+        data-tab={tab()}
+      >
+        <div class="invisible data-[active=true]:visible" data-active={tab() === "preview"}>
           <div
             class="flex min-h-[430px] w-full justify-center overflow-visible bg-sidebar/24 p-8 data-[align=start]:items-start data-[align=end]:items-end data-[align=center]:items-center sm:p-10 max-sm:min-h-[380px] max-sm:px-5"
             data-align={align()}
@@ -455,11 +461,13 @@ function PreviewCodeTabs(
           </div>
         </div>
         <div
-          class="hidden overflow-hidden data-[active=true]:block **:[figure]:m-0! **:[pre]:h-[430px]"
+          class="absolute inset-0 hidden min-w-0 overflow-hidden data-[active=true]:block **:[figure]:m-0! **:[figure]:h-full **:[figure]:max-w-full **:[pre]:max-w-full"
           data-active={tab() === "code"}
           data-slot="code"
         >
-          <CodeBlock code={props.code} language="tsx" />
+          <Show when={codeRequested()}>
+            <CodeBlock code={props.code} language="tsx" />
+          </Show>
         </div>
       </div>
     </div>

@@ -107,7 +107,9 @@ export type ComboboxPortalProps = {
   mount?: Node;
 };
 export type ComboboxContentProps = ComboboxPartProps<HTMLDivElement> &
-  Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
+  Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref"> & {
+    positioned?: boolean;
+  };
 export type ComboboxPositionerProps = ComboboxPartProps<HTMLDivElement> &
   Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "ref">;
 export type ComboboxArrowProps = FloatingArrowProps<HTMLSpanElement>;

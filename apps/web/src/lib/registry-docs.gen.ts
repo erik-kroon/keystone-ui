@@ -2079,6 +2079,7 @@ export const registryDocItems = [
       "datePicker": [
         "root",
         "trigger",
+        "positioner",
         "content"
       ]
     },
@@ -2092,7 +2093,7 @@ export const registryDocItems = [
       "solid": ">=1.9.0 <2.0.0",
       "shadcn": "registry-item schema"
     },
-    "customization": "Style the generated wrappers through ui-date-picker and ui-calendar classes while Keystone keeps calendar grid generation, single-date and range state, unavailable dates, locale week starts, month navigation, keyboard movement, ARIA roles, and data attributes.",
+    "customization": "Style the generated wrappers through ui-date-picker, ui-date-picker-positioner, ui-date-picker-content, and ui-calendar classes while Keystone keeps portaled popup positioning, calendar grid generation, single-date and range state, unavailable dates, locale week starts, month navigation, keyboard movement, ARIA roles, and data attributes.",
     "dependencies": [
       "@keystone-ui/core",
       "lucide-solid",
@@ -2347,6 +2348,7 @@ export const registryDocItems = [
       "group",
       "group-label",
       "item",
+      "item-icon",
       "item-text",
       "item-label",
       "item-description",
@@ -2355,7 +2357,7 @@ export const registryDocItems = [
       "separator",
       "footer"
     ],
-    "api": "CommandMenu exports createCommandMenuStore, CommandMenu, CommandMenuRoot, CommandMenuTrigger, CommandMenuPortal, CommandMenuPositioner, CommandMenuBackdrop, CommandMenuContent, CommandMenuInput, CommandMenuPanel, CommandMenuList, CommandMenuGroup, CommandMenuGroupLabel, CommandMenuItem, CommandMenuItemText, CommandMenuShortcut, CommandMenuEmpty, CommandMenuSeparator, and CommandMenuFooter. The high-level component accepts items, filter, filteredItems, trigger, empty, footer, class escape hatches, showBackdrop, an optional shared CommandStore, and hotkey options while Core Command owns primitive open/input/value behavior.",
+    "api": "CommandMenu exports createCommandMenuStore, CommandMenu, CommandMenuRoot, CommandMenuTrigger, CommandMenuPortal, CommandMenuPositioner, CommandMenuBackdrop, CommandMenuContent, CommandMenuInput, CommandMenuPanel, CommandMenuList, CommandMenuGroup, CommandMenuGroupLabel, CommandMenuItem, CommandMenuItemText, CommandMenuShortcut, CommandMenuEmpty, CommandMenuSeparator, and CommandMenuFooter. The high-level component accepts items, filter, filteredItems, maxItems, trigger, empty, footer, class escape hatches, inline preview rendering, showBackdrop, an optional shared CommandStore, and hotkey options while Core Command owns primitive open/input/value behavior.",
     "categories": [
       "command",
       "combobox",
@@ -2367,7 +2369,7 @@ export const registryDocItems = [
       "solid": ">=1.9.9 <2.0.0",
       "shadcn": "registry-item schema"
     },
-    "customization": "Use ui-command-menu classes, data-part values, and neutral data-slot hooks for trigger, backdrop, positioner, content, input-row, input-icon, input, panel, list, group, group-label, item, item-text, item-label, item-description, shortcut, empty, separator, and footer. The default visual treatment uses a dense command palette structure: blurred backdrop, rounded max-w-xl popover, transparent search row, bordered results panel, dense grouped rows, compact shortcut kbd, and optional footer.",
+    "customization": "Use ui-command-menu classes, data-part values, and neutral data-slot hooks for trigger, backdrop, positioner, content, input-row, input-icon, input, panel, list, group, group-label, item, item-icon, item-text, item-label, item-description, shortcut, empty, separator, and footer. The default visual treatment uses a docs-search-style command palette structure: blurred backdrop, rounded max-w-xl popover, transparent search row with search icon, single bordered results panel, optional leading item icons, dense grouped rows, compact shortcut kbd, and optional footer.",
     "dependencies": [
       "@keystone-ui/core",
       "@tanstack/solid-store",
@@ -2394,7 +2396,7 @@ export const registryDocItems = [
       "tanstack"
     ],
     "limitations": "This source is a local command palette pattern. It does not include async search orchestration, nested command pages, command history, user preference persistence, route-specific command discovery, copy-command footer behavior, or a final Hotkeys API guarantee.",
-    "maturity": "Experimental",
+    "maturity": "Stable",
     "name": "command-menu",
     "parity": {
       "visualReference": "Uses a dense command palette visual structure in Solid source form: blurred backdrop, rounded popover shell, translucent-muted inner overlay, transparent search input row with search icon, bordered results panel, grouped list rows, kbd shortcut styling, separator, and footer slot.",
@@ -3380,7 +3382,7 @@ export const registryDocItems = [
       "head",
       "cell"
     ],
-    "api": "Table exports TableContainer, Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, and TableCaption. TableContainer and Table accept variant?: \"default\" | \"card\" with default \"default\"; Table inherits the container variant unless overridden. Every part forwards native HTML props, class, children, and data-scope/data-part/data-slot overrides for app-layer wrappers.",
+    "api": "Table exports TableContainer, Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, and TableCaption. Every part forwards native HTML props, class, children, and data-scope/data-part/data-slot overrides for app-layer wrappers.",
     "categories": [
       "base",
       "table",
@@ -3391,12 +3393,12 @@ export const registryDocItems = [
       "solid": ">=1.9.0 <2.0.0",
       "shadcn": "registry-item schema"
     },
-    "customization": "Customize the native anatomy through ui-table classes, shadcn-style data-slot values, stable data-scope=\"ui-table\" data-part hooks, and the default/card variant context on TableContainer and Table.",
-    "dataAttributes": "Defaults use data-scope=\"ui-table\" and data-part values container, root, caption, header, body, footer, row, head, and cell. data-slot values are table-container, table, table-caption, table-header, table-body, table-footer, table-row, table-head, and table-cell. TableContainer and Table expose data-variant=\"default\" or data-variant=\"card\" for variant-scoped styling. App-layer components may override data-scope/data-part/data-slot while retaining native elements and classes.",
+    "customization": "Customize the native anatomy through ui-table classes, shadcn-style data-slot values, stable data-scope=\"ui-table\" data-part hooks, and CardFrame-compatible table-container clipping.",
+    "dataAttributes": "Defaults use data-scope=\"ui-table\" and data-part values container, root, caption, header, body, footer, row, head, and cell. data-slot values are table-container, table, table-caption, table-header, table-body, table-footer, table-row, table-head, and table-cell. App-layer components may override data-scope/data-part/data-slot while retaining native elements and classes.",
     "dependencies": [
       "cn"
     ],
-    "description": "Presentational native table anatomy with compact default and card-style variants for readable data grids and TanStack Table app-layer composition.",
+    "description": "Presentational native table anatomy for readable data grids and TanStack Table app-layer composition.",
     "files": [
       {
         "path": "packages/ui/src/components/table.tsx",
@@ -3414,12 +3416,12 @@ export const registryDocItems = [
       "data-table"
     ],
     "limitations": "Table is presentational source, not a grid engine and not a Core wrapper. Native table semantics are the primitive for this surface. It does not implement sorting, filtering, pagination, virtualization, roving focus, column sizing, column reordering, row selection, or async loading policy.",
-    "maturity": "Experimental",
+    "maturity": "Stable",
     "name": "table",
     "parity": {
-      "coss": "Adapts the coss card/default styling idea to Solid source and Keystone tokens: variant context, separated card rows, quiet borders, rounded row edges, footer treatment, caption spacing, and CardFrame-compatible table-container clipping.",
+      "coss": "Adapts the coss table styling direction to Solid source and Keystone tokens: native anatomy, compact density, selected-row treatment, footer treatment, caption spacing, and CardFrame-compatible table-container clipping.",
       "html": "Keeps native table semantics as the contract: Keystone does not replace table markup with ARIA grid roles unless a future app component requires that behavior explicitly.",
-      "shadcn": "Matches the copy-paste anatomy shape and data-slot ergonomics in Solid source form, with Keystone tokens, compact default styling, optional card styling, and a TableContainer part compatible with CardFrame table-container clipping.",
+      "shadcn": "Matches the copy-paste anatomy shape and data-slot ergonomics in Solid source form, with Keystone tokens, compact styling, and a TableContainer part compatible with CardFrame table-container clipping.",
       "tanstackTable": "The base parts are intentionally engine-agnostic and are consumed by the first-party DataTable kit, where TanStack Table owns row models, sorting, filtering, pagination, selection, and column visibility."
     },
     "registryDependencies": [

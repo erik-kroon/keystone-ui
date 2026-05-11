@@ -1,6 +1,12 @@
 /// <reference types="vite/client" />
 
-import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from "@tanstack/solid-router";
+import {
+  HeadContent,
+  Outlet,
+  Scripts,
+  createRootRouteWithContext,
+  useRouterState,
+} from "@tanstack/solid-router";
 import { Suspense, type JSX } from "solid-js";
 import { HydrationScript } from "solid-js/web";
 
@@ -44,14 +50,21 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 });
 
 function RootComponent() {
+  const pathname = useRouterState({
+    select: (state) => (state.resolvedLocation ?? state.location).pathname,
+  });
+  const isLanding = () => pathname() === "/";
+
   return (
     <RootDocument>
       <div class="relative isolate flex min-h-svh flex-col overflow-clip bg-sidebar text-foreground [--header-height:4rem]">
         <div
           aria-hidden="true"
-          class="pointer-events-none absolute inset-0 z-45 mx-auto hidden w-full max-w-[1416px] px-4 before:absolute before:inset-y-0 before:-left-3 before:w-px before:bg-border/64 after:absolute after:inset-y-0 after:-right-3 after:w-px after:bg-border/64 lg:block lg:px-6"
+          class={`pointer-events-none absolute inset-0 z-45 mx-auto w-full max-w-[1416px] px-4 before:absolute before:inset-y-0 before:-left-3 before:w-px before:bg-border/64 after:absolute after:inset-y-0 after:-right-3 after:w-px after:bg-border/64 lg:px-6 ${
+            isLanding() ? "hidden" : "hidden lg:block"
+          }`}
         />
-        <Header />
+        {!isLanding() && <Header />}
         <Suspense>
           <Outlet />
         </Suspense>

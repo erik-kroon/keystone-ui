@@ -1,100 +1,92 @@
-import { createSignal, type JSX } from "solid-js";
-import { CalendarDays, CircleAlert, Info, TriangleAlert } from "lucide-solid";
-import { createToastManager } from "@keystone-ui/core/toast";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@keystone-ui/ui/accordion";
-import { Alert, AlertAction, AlertDescription, AlertIcon, AlertTitle } from "@keystone-ui/ui/alert";
-import { Badge } from "@keystone-ui/ui/badge";
-import { Button } from "@keystone-ui/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardFrame,
-  CardFrameDescription,
-  CardFrameHeader,
-  CardFrameTitle,
-  CardHeader,
-  CardPanel,
-  CardTitle,
-} from "@keystone-ui/ui/card";
-import { Checkbox } from "@keystone-ui/ui/checkbox";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@keystone-ui/ui/collapsible";
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxListbox,
-} from "@keystone-ui/ui/combobox";
-import { DatePicker, DatePickerContent, DatePickerTrigger } from "@keystone-ui/ui/date-picker";
-import {
-  Field,
-  FieldControl,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "@keystone-ui/ui/field";
-import { Label } from "@keystone-ui/ui/label";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogPanel,
-  DialogTitle,
-  DialogTrigger,
-} from "@keystone-ui/ui/dialog";
-import { Input } from "@keystone-ui/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverDescription,
-  PopoverFooter,
-  PopoverHeader,
-  PopoverTitle,
-  PopoverTrigger,
-} from "@keystone-ui/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@keystone-ui/ui/select";
-import { Breadcrumb, BreadcrumbEllipsis } from "@keystone-ui/ui/breadcrumb";
-import { Kbd, KbdGroup, KbdSeparator } from "@keystone-ui/ui/kbd";
-import { RadioGroup, RadioGroupItem } from "@keystone-ui/ui/radio-group";
-import { ScrollArea } from "@keystone-ui/ui/scroll-area";
-import { Separator } from "@keystone-ui/ui/separator";
-import { Switch } from "@keystone-ui/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@keystone-ui/ui/tabs";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableContainer,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@keystone-ui/ui/table";
-import {
-  TanStackForm,
-  TanStackFormErrors,
-  TanStackFormSubmit,
-} from "@keystone-ui/ui/tanstack-form";
-import { Textarea } from "@keystone-ui/ui/textarea";
-import { Toaster } from "@keystone-ui/ui/toast";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@keystone-ui/ui/tooltip";
+import type { JSX } from "solid-js";
 import type { CodeExample } from "./registry-doc-types";
+
+import singleAccordionCodeSource from "./examples/single-accordion.tsx?raw";
+import { Component as SingleAccordionExampleSourceComponent } from "./examples/single-accordion";
+import multipleAccordionCodeSource from "./examples/multiple-accordion.tsx?raw";
+import { Component as MultipleAccordionExampleSourceComponent } from "./examples/multiple-accordion";
+import controlledAccordionCodeSource from "./examples/controlled-accordion.tsx?raw";
+import { Component as ControlledAccordionExampleSourceComponent } from "./examples/controlled-accordion";
+import disabledAccordionCodeSource from "./examples/disabled-accordion.tsx?raw";
+import { Component as DisabledItemAccordionExampleSourceComponent } from "./examples/disabled-accordion";
+import collapsibleExampleCodeSource from "./examples/collapsible-example.tsx?raw";
+import { Component as CollapsibleExampleSourceComponent } from "./examples/collapsible-example";
+import comboboxExampleCodeSource from "./examples/combobox-example.tsx?raw";
+import { Component as ComboboxExampleSourceComponent } from "./examples/combobox-example";
+import radioGroupExampleCodeSource from "./examples/radio-group-example.tsx?raw";
+import { Component as RadioGroupExampleSourceComponent } from "./examples/radio-group-example";
+import datePickerExampleCodeSource from "./examples/date-picker-example.tsx?raw";
+import { Component as DatePickerExampleSourceComponent } from "./examples/date-picker-example";
+import alertWarningExampleCodeSource from "./examples/alert-warning-example.tsx?raw";
+import { Component as WarningAlertExampleSourceComponent } from "./examples/alert-warning-example";
+import alertErrorExampleCodeSource from "./examples/alert-error-example.tsx?raw";
+import { Component as ErrorAlertExampleSourceComponent } from "./examples/alert-error-example";
+import alertActionExampleCodeSource from "./examples/alert-action-example.tsx?raw";
+import { Component as AlertActionExampleSourceComponent } from "./examples/alert-action-example";
+import alertInfoExampleCodeSource from "./examples/alert-info-example.tsx?raw";
+import { Component as AlertExampleSourceComponent } from "./examples/alert-info-example";
+import buttonExampleCodeSource from "./examples/button-example.tsx?raw";
+import { Component as ButtonExampleSourceComponent } from "./examples/button-example";
+import badgeExampleCodeSource from "./examples/badge-example.tsx?raw";
+import { Component as BadgeExampleSourceComponent } from "./examples/badge-example";
+import badgeSizeExampleCodeSource from "./examples/badge-size-example.tsx?raw";
+import { Component as BadgeSizeExampleSourceComponent } from "./examples/badge-size-example";
+import cardExampleCodeSource from "./examples/card-example.tsx?raw";
+import { Component as CardExampleSourceComponent } from "./examples/card-example";
+import checkboxExampleCodeSource from "./examples/checkbox-example.tsx?raw";
+import { Component as CheckboxExampleSourceComponent } from "./examples/checkbox-example";
+import labelExampleCodeSource from "./examples/label-example.tsx?raw";
+import { Component as LabelExampleSourceComponent } from "./examples/label-example";
+import labelRequiredExampleCodeSource from "./examples/label-required-example.tsx?raw";
+import { Component as LabelRequiredExampleSourceComponent } from "./examples/label-required-example";
+import inputExampleCodeSource from "./examples/input-example.tsx?raw";
+import { Component as InputExampleSourceComponent } from "./examples/input-example";
+import inputSizesExampleCodeSource from "./examples/input-sizes-example.tsx?raw";
+import { Component as InputSizesExampleSourceComponent } from "./examples/input-sizes-example";
+import inputInvalidExampleCodeSource from "./examples/input-invalid-example.tsx?raw";
+import { Component as InputInvalidExampleSourceComponent } from "./examples/input-invalid-example";
+import inputFileExampleCodeSource from "./examples/input-file-example.tsx?raw";
+import { Component as InputFileExampleSourceComponent } from "./examples/input-file-example";
+import switchExampleCodeSource from "./examples/switch-example.tsx?raw";
+import { Component as SwitchExampleSourceComponent } from "./examples/switch-example";
+import switchDisabledExampleCodeSource from "./examples/switch-disabled-example.tsx?raw";
+import { Component as SwitchDisabledExampleSourceComponent } from "./examples/switch-disabled-example";
+import switchCompositionExampleCodeSource from "./examples/switch-composition-example.tsx?raw";
+import { Component as SwitchCompositionExampleSourceComponent } from "./examples/switch-composition-example";
+import dialogExampleCodeSource from "./examples/dialog-example.tsx?raw";
+import { Component as DialogExampleSourceComponent } from "./examples/dialog-example";
+import popoverExampleCodeSource from "./examples/popover-example.tsx?raw";
+import { Component as PopoverExampleSourceComponent } from "./examples/popover-example";
+import selectExampleCodeSource from "./examples/select-example.tsx?raw";
+import { Component as SelectExampleSourceComponent } from "./examples/select-example";
+import tabsExampleCodeSource from "./examples/tabs-example.tsx?raw";
+import { Component as TabsExampleSourceComponent } from "./examples/tabs-example";
+import tooltipExampleCodeSource from "./examples/tooltip-example.tsx?raw";
+import { Component as TooltipExampleSourceComponent } from "./examples/tooltip-example";
+import separatorExampleCodeSource from "./examples/separator-example.tsx?raw";
+import { Component as SeparatorExampleSourceComponent } from "./examples/separator-example";
+import kbdExampleCodeSource from "./examples/kbd-example.tsx?raw";
+import { Component as KbdExampleSourceComponent } from "./examples/kbd-example";
+import scrollAreaExampleCodeSource from "./examples/scroll-area-example.tsx?raw";
+import { Component as ScrollAreaExampleSourceComponent } from "./examples/scroll-area-example";
+import breadcrumbExampleCodeSource from "./examples/breadcrumb-example.tsx?raw";
+import { Component as BreadcrumbExampleSourceComponent } from "./examples/breadcrumb-example";
+import breadcrumbCollapsedExampleCodeSource from "./examples/breadcrumb-collapsed-example.tsx?raw";
+import { Component as BreadcrumbCollapsedExampleSourceComponent } from "./examples/breadcrumb-collapsed-example";
+import tableExampleCodeSource from "./examples/table-example.tsx?raw";
+import { Component as TableExampleSourceComponent } from "./examples/table-example";
+import cardFrameTableExampleCodeSource from "./examples/card-frame-table-example.tsx?raw";
+import { Component as CardFrameTableExampleSourceComponent } from "./examples/card-frame-table-example";
+import fieldExampleCodeSource from "./examples/field-example.tsx?raw";
+import { Component as FieldExampleSourceComponent } from "./examples/field-example";
+import fieldInvalidExampleCodeSource from "./examples/field-invalid-example.tsx?raw";
+import { Component as FieldInvalidExampleSourceComponent } from "./examples/field-invalid-example";
+import tanstackFormExampleCodeSource from "./examples/tanstack-form-example.tsx?raw";
+import { Component as TanStackFormExampleSourceComponent } from "./examples/tanstack-form-example";
+import commandMenuExampleCodeSource from "./examples/command-menu-example.tsx?raw";
+import { Component as CommandMenuExampleSourceComponent } from "./examples/command-menu-example";
+import toastExampleCodeSource from "./examples/toast-example.tsx?raw";
+import { Component as ToastExampleSourceComponent } from "./examples/toast-example";
 
 type DocsExampleOptions = Omit<CodeExample, "preview"> & {
   component: () => JSX.Element;
@@ -114,253 +106,9 @@ function defineCodeExample(options: DocsExampleOptions): CodeExample {
   };
 }
 
-const accordionItems = [
-  {
-    content:
-      "Keystone UI is a source-owned Solid component system for design systems and web apps.",
-    id: "item-1",
-    title: "What is Keystone UI?",
-  },
-  {
-    content:
-      "Install components with the shadcn CLI, then own the generated source in your application.",
-    id: "item-2",
-    title: "How do I get started?",
-  },
-  {
-    content: "Yes. Components are copy-paste source backed by Keystone Core.",
-    id: "item-3",
-    title: "Can I use it for my project?",
-  },
-];
-
-function AccordionItemList() {
-  return (
-    <>
-      {accordionItems.map((item) => (
-        <AccordionItem value={item.id}>
-          <AccordionTrigger>{item.title}</AccordionTrigger>
-          <AccordionContent>{item.content}</AccordionContent>
-        </AccordionItem>
-      ))}
-    </>
-  );
-}
-
-const alertPreviewClass = "w-full max-w-[25.2rem]";
-const alertActionPreviewClass = "w-full max-w-xl";
-
-export function SingleAccordionExample() {
-  return (
-    <Accordion class="w-full">
-      <AccordionItemList />
-    </Accordion>
-  );
-}
-
-export function MultipleAccordionExample() {
-  return (
-    <Accordion defaultValue={["item-1", "item-2"]} class="w-full" multiple>
-      <AccordionItemList />
-    </Accordion>
-  );
-}
-
-export function ControlledAccordionExample() {
-  const [value, setValue] = createSignal<string[]>([]);
-
-  return (
-    <div class="flex w-full flex-col gap-4">
-      <Accordion value={value()} class="w-full" onValueChange={setValue}>
-        <AccordionItemList />
-      </Accordion>
-      <div class="flex flex-col items-start gap-4">
-        <Button onClick={() => setValue(["item-1", "item-2"])} type="button" variant="outline">
-          Open first two
-        </Button>
-        <p class="m-0 text-muted-foreground text-sm">
-          Open items: {value().length > 0 ? value().join(", ") : "None"}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-export function DisabledItemAccordionExample() {
-  return (
-    <Accordion defaultValue={["item-2"]} class="w-full">
-      <AccordionItem value="item-1" disabled>
-        <AccordionTrigger>Unavailable item</AccordionTrigger>
-        <AccordionContent>
-          Disabled items keep focus order and ignore activation until enabled.
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="item-2">
-        <AccordionTrigger>Available item</AccordionTrigger>
-        <AccordionContent>This item remains interactive.</AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  );
-}
-
-export const singleAccordionCode = `import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-
-export function Component() {
-  const items = [
-    {
-      content:
-        "Keystone UI is a source-owned Solid component system for design systems and web apps.",
-      id: "item-1",
-      title: "What is Keystone UI?",
-    },
-    {
-      content:
-        "Install components with the shadcn CLI, then own the generated source in your application.",
-      id: "item-2",
-      title: "How do I get started?",
-    },
-    {
-      content: "Yes. Components are copy-paste source backed by Keystone Core.",
-      id: "item-3",
-      title: "Can I use it for my project?",
-    },
-  ];
-
-  return (
-    <Accordion class="w-full">
-      {items.map((item) => (
-        <AccordionItem value={item.id}>
-          <AccordionTrigger>{item.title}</AccordionTrigger>
-          <AccordionContent>{item.content}</AccordionContent>
-        </AccordionItem>
-      ))}
-    </Accordion>
-  );
-}`;
-
-export const multipleAccordionCode = `import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-
-export function Component() {
-  const items = [
-    {
-      content:
-        "Keystone UI is a source-owned Solid component system for design systems and web apps.",
-      id: "item-1",
-      title: "What is Keystone UI?",
-    },
-    {
-      content:
-        "Install components with the shadcn CLI, then own the generated source in your application.",
-      id: "item-2",
-      title: "How do I get started?",
-    },
-    {
-      content: "Yes. Components are copy-paste source backed by Keystone Core.",
-      id: "item-3",
-      title: "Can I use it for my project?",
-    },
-  ];
-
-  return (
-    <Accordion defaultValue={["item-1", "item-2"]} class="w-full" multiple>
-      {items.map((item) => (
-        <AccordionItem value={item.id}>
-          <AccordionTrigger>{item.title}</AccordionTrigger>
-          <AccordionContent>{item.content}</AccordionContent>
-        </AccordionItem>
-      ))}
-    </Accordion>
-  );
-}`;
-
-export const controlledAccordionCode = `import { createSignal } from "solid-js";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-
-export function Component() {
-  const [value, setValue] = createSignal<string[]>([]);
-  const items = [
-    {
-      content:
-        "Keystone UI is a source-owned Solid component system for design systems and web apps.",
-      id: "item-1",
-      title: "What is Keystone UI?",
-    },
-    {
-      content:
-        "Install components with the shadcn CLI, then own the generated source in your application.",
-      id: "item-2",
-      title: "How do I get started?",
-    },
-    {
-      content: "Yes. Components are copy-paste source backed by Keystone Core.",
-      id: "item-3",
-      title: "Can I use it for my project?",
-    },
-  ];
-
-  return (
-    <div class="flex w-full flex-col gap-4">
-      <Accordion value={value()} class="w-full" onValueChange={setValue}>
-        {items.map((item) => (
-          <AccordionItem value={item.id}>
-            <AccordionTrigger>{item.title}</AccordionTrigger>
-            <AccordionContent>{item.content}</AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-      <div class="flex flex-col items-start gap-4">
-        <Button onClick={() => setValue(["item-1", "item-2"])} type="button" variant="outline">
-          Open first two
-        </Button>
-        <p class="m-0 text-muted-foreground text-sm">
-          Open items: {value().length > 0 ? value().join(", ") : "None"}
-        </p>
-      </div>
-    </div>
-  );
-}`;
-
-export const disabledAccordionCode = `import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-
-export function Component() {
-  return (
-    <Accordion defaultValue={["item-2"]} class="w-full">
-      <AccordionItem value="item-1" disabled>
-        <AccordionTrigger>Unavailable item</AccordionTrigger>
-        <AccordionContent>Disabled items keep focus order and ignore activation until enabled.</AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="item-2">
-        <AccordionTrigger>Available item</AccordionTrigger>
-        <AccordionContent>This item remains interactive.</AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  );
-}`;
-
 export const singleAccordionExample = defineCodeExample({
-  code: singleAccordionCode,
-  component: SingleAccordionExample,
+  code: singleAccordionCodeSource,
+  component: SingleAccordionExampleSourceComponent,
   description: "A single-open accordion that starts closed.",
   id: "single",
   title: "Single Accordion",
@@ -368,8 +116,8 @@ export const singleAccordionExample = defineCodeExample({
 });
 
 export const multipleAccordionExample = defineCodeExample({
-  code: multipleAccordionCode,
-  component: MultipleAccordionExample,
+  code: multipleAccordionCodeSource,
+  component: MultipleAccordionExampleSourceComponent,
   description: "Open more than one item at a time.",
   id: "multiple",
   title: "Multiple Accordion",
@@ -377,8 +125,8 @@ export const multipleAccordionExample = defineCodeExample({
 });
 
 export const controlledAccordionExample = defineCodeExample({
-  code: controlledAccordionCode,
-  component: ControlledAccordionExample,
+  code: controlledAccordionCodeSource,
+  component: ControlledAccordionExampleSourceComponent,
   description: "Drive open items from parent state.",
   id: "controlled",
   title: "Controlled Accordion",
@@ -386,8 +134,8 @@ export const controlledAccordionExample = defineCodeExample({
 });
 
 export const disabledAccordionExample = defineCodeExample({
-  code: disabledAccordionCode,
-  component: DisabledItemAccordionExample,
+  code: disabledAccordionCodeSource,
+  component: DisabledItemAccordionExampleSourceComponent,
   description: "Disable specific items while keeping keyboard navigation.",
   id: "disabled",
   title: "Disabled Item",
@@ -419,58 +167,10 @@ export function Component() {
   );
 }`;
 
-export function CollapsibleExample() {
-  return (
-    <Collapsible defaultOpen class="w-full max-w-md rounded-lg border bg-card p-4 shadow-xs">
-      <div class="flex items-center justify-between gap-3">
-        <div>
-          <h3 class="m-0 font-medium text-foreground text-sm">Registry details</h3>
-          <p class="mt-1 text-muted-foreground text-sm">Inspect source-owned install metadata.</p>
-        </div>
-        <CollapsibleTrigger class="inline-flex h-8 items-center rounded-md border px-3 text-sm shadow-xs transition-colors hover:bg-accent">
-          Toggle
-        </CollapsibleTrigger>
-      </div>
-      <CollapsibleContent class="pt-2">
-        <div class="rounded-md bg-muted/60 p-3 text-muted-foreground text-sm">
-          Includes files, dependencies, parity notes, and Core-backed disclosure behavior.
-        </div>
-      </CollapsibleContent>
-    </Collapsible>
-  );
-}
-
-export const collapsibleExampleCode = `import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-
-export function Component() {
-  return (
-    <Collapsible defaultOpen class="w-full max-w-md rounded-lg border bg-card p-4 shadow-xs">
-      <div class="flex items-center justify-between gap-3">
-        <div>
-          <h3 class="m-0 font-medium text-foreground text-sm">Registry details</h3>
-          <p class="mt-1 text-muted-foreground text-sm">Inspect source-owned install metadata.</p>
-        </div>
-        <CollapsibleTrigger class="inline-flex h-8 items-center rounded-md border px-3 text-sm shadow-xs transition-colors hover:bg-accent">
-          Toggle
-        </CollapsibleTrigger>
-      </div>
-      <CollapsibleContent class="pt-2">
-        <div class="rounded-md bg-muted/60 p-3 text-muted-foreground text-sm">
-          Includes files, dependencies, parity notes, and Core-backed disclosure behavior.
-        </div>
-      </CollapsibleContent>
-    </Collapsible>
-  );
-}`;
-
 export const collapsibleExample = defineCodeExample({
   align: "start",
-  code: collapsibleExampleCode,
-  component: CollapsibleExample,
+  code: collapsibleExampleCodeSource,
+  component: CollapsibleExampleSourceComponent,
   description: "A simple Core-backed disclosure region with UI-owned trigger and panel styling.",
   id: "basic",
   title: "Basic Collapsible",
@@ -494,77 +194,9 @@ export function Component() {
   );
 }`;
 
-const comboboxOptions = [
-  { label: "Apple", value: "apple" },
-  { label: "Banana", value: "banana" },
-  { label: "Orange", value: "orange" },
-  { label: "Grape", value: "grape" },
-  { label: "Strawberry", value: "strawberry" },
-  { label: "Mango", value: "mango" },
-  { label: "Pineapple", value: "pineapple" },
-  { label: "Kiwi", value: "kiwi" },
-  { label: "Peach", value: "peach" },
-  { label: "Pear", value: "pear" },
-];
-
-export function ComboboxExample() {
-  return (
-    <Combobox>
-      <ComboboxInput aria-label="Select a fruit" class="w-64" placeholder="Select a fruit..." />
-      <ComboboxContent>
-        <ComboboxListbox>
-          {comboboxOptions.map((option) => (
-            <ComboboxItem value={option.value}>{option.label}</ComboboxItem>
-          ))}
-        </ComboboxListbox>
-      </ComboboxContent>
-    </Combobox>
-  );
-}
-
-export const comboboxExampleCode = `import {
-  Combobox,
-  ComboboxContent,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxListbox,
-} from "@/components/ui/combobox";
-
-export function Component() {
-  const options = [
-    { label: "Apple", value: "apple" },
-    { label: "Banana", value: "banana" },
-    { label: "Orange", value: "orange" },
-    { label: "Grape", value: "grape" },
-    { label: "Strawberry", value: "strawberry" },
-    { label: "Mango", value: "mango" },
-    { label: "Pineapple", value: "pineapple" },
-    { label: "Kiwi", value: "kiwi" },
-    { label: "Peach", value: "peach" },
-    { label: "Pear", value: "pear" },
-  ];
-
-  return (
-    <Combobox>
-      <ComboboxInput
-        aria-label="Select a fruit"
-        class="w-64"
-        placeholder="Select a fruit..."
-      />
-      <ComboboxContent>
-        <ComboboxListbox>
-          {options.map((option) => (
-            <ComboboxItem value={option.value}>{option.label}</ComboboxItem>
-          ))}
-        </ComboboxListbox>
-      </ComboboxContent>
-    </Combobox>
-  );
-}`;
-
 export const comboboxExample = defineCodeExample({
-  code: comboboxExampleCode,
-  component: ComboboxExample,
+  code: comboboxExampleCodeSource,
+  component: ComboboxExampleSourceComponent,
   description: "A searchable listbox popup with fruit options.",
   id: "fruit-list",
   title: "Fruit List",
@@ -597,34 +229,9 @@ export function Component() {
   );
 }`;
 
-export function RadioGroupExample() {
-  return (
-    <RadioGroup
-      defaultValue="email"
-      class="w-fit max-w-full rounded-lg border bg-card p-4 shadow-xs"
-    >
-      <RadioGroupItem value="email">Email notifications</RadioGroupItem>
-      <RadioGroupItem value="sms">SMS notifications</RadioGroupItem>
-      <RadioGroupItem value="none">No notifications</RadioGroupItem>
-    </RadioGroup>
-  );
-}
-
-export const radioGroupExampleCode = `import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
-export function Component() {
-  return (
-    <RadioGroup defaultValue="email" class="w-fit max-w-full rounded-lg border bg-card p-4 shadow-xs">
-      <RadioGroupItem value="email">Email notifications</RadioGroupItem>
-      <RadioGroupItem value="sms">SMS notifications</RadioGroupItem>
-      <RadioGroupItem value="none">No notifications</RadioGroupItem>
-    </RadioGroup>
-  );
-}`;
-
 export const radioGroupExample = defineCodeExample({
-  code: radioGroupExampleCode,
-  component: RadioGroupExample,
+  code: radioGroupExampleCodeSource,
+  component: RadioGroupExampleSourceComponent,
   description: "Single selection with hidden native inputs and roving focus behavior.",
   id: "basic",
   title: "Basic Radio Group",
@@ -645,46 +252,9 @@ export function Component() {
   );
 }`;
 
-export function DatePickerExample() {
-  return (
-    <DatePicker defaultMonth="2026-05" defaultValue="2026-05-15">
-      <DatePickerTrigger
-        class="inline-flex h-8.5 w-48 items-center justify-between gap-2 rounded-lg border border-input bg-background px-3 text-sm shadow-xs transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        placeholder="Select date"
-      >
-        <span>2026-05-15</span>
-        <CalendarDays class="size-4 opacity-70" />
-      </DatePickerTrigger>
-      <DatePickerContent class="mt-2 rounded-lg border bg-popover p-3 shadow-lg/5 [&_[data-part=cell-trigger]]:size-8 [&_[data-part=cell-trigger]]:rounded-md [&_[data-part=cell-trigger]]:text-sm [&_[data-part=cell-trigger]]:hover:bg-accent [&_[data-part=cell-trigger][data-outside-month]]:text-muted-foreground/50 [&_[data-part=cell-trigger][data-selected]]:bg-primary [&_[data-part=cell-trigger][data-selected]]:text-primary-foreground [&_[data-part=column-header]]:h-7 [&_[data-part=column-header]]:text-muted-foreground [&_[data-part=column-header]]:text-xs [&_[data-part=heading]]:m-0 [&_[data-part=heading]]:font-medium [&_[data-part=heading]]:text-sm [&_[data-part=header]]:mb-2 [&_[data-part=header]]:flex [&_[data-part=header]]:items-center [&_[data-part=header]]:justify-between [&_[data-part=next-trigger]]:rounded-md [&_[data-part=next-trigger]]:px-2 [&_[data-part=next-trigger]]:py-1 [&_[data-part=next-trigger]]:text-sm [&_[data-part=prev-trigger]]:rounded-md [&_[data-part=prev-trigger]]:px-2 [&_[data-part=prev-trigger]]:py-1 [&_[data-part=prev-trigger]]:text-sm [&_table]:border-collapse" />
-    </DatePicker>
-  );
-}
-
-export const datePickerExampleCode = `import { CalendarDays } from "lucide-solid";
-import {
-  DatePicker,
-  DatePickerContent,
-  DatePickerTrigger,
-} from "@/components/ui/date-picker";
-
-export function Component() {
-  return (
-    <DatePicker defaultMonth="2026-05" defaultValue="2026-05-15">
-      <DatePickerTrigger
-        class="inline-flex h-8.5 w-48 items-center justify-between gap-2 rounded-lg border border-input bg-background px-3 text-sm shadow-xs transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        placeholder="Select date"
-      >
-        <span>2026-05-15</span>
-        <CalendarDays class="size-4 opacity-70" />
-      </DatePickerTrigger>
-      <DatePickerContent class="mt-2 rounded-lg border bg-popover p-3 shadow-lg/5 [&_[data-part=cell-trigger]]:size-8 [&_[data-part=cell-trigger]]:rounded-md [&_[data-part=cell-trigger]]:text-sm [&_[data-part=cell-trigger]]:hover:bg-accent [&_[data-part=cell-trigger][data-outside-month]]:text-muted-foreground/50 [&_[data-part=cell-trigger][data-selected]]:bg-primary [&_[data-part=cell-trigger][data-selected]]:text-primary-foreground [&_[data-part=column-header]]:h-7 [&_[data-part=column-header]]:text-muted-foreground [&_[data-part=column-header]]:text-xs [&_[data-part=heading]]:m-0 [&_[data-part=heading]]:font-medium [&_[data-part=heading]]:text-sm [&_[data-part=header]]:mb-2 [&_[data-part=header]]:flex [&_[data-part=header]]:items-center [&_[data-part=header]]:justify-between [&_[data-part=next-trigger]]:rounded-md [&_[data-part=next-trigger]]:px-2 [&_[data-part=next-trigger]]:py-1 [&_[data-part=next-trigger]]:text-sm [&_[data-part=prev-trigger]]:rounded-md [&_[data-part=prev-trigger]]:px-2 [&_[data-part=prev-trigger]]:py-1 [&_[data-part=prev-trigger]]:text-sm [&_table]:border-collapse" />
-    </DatePicker>
-  );
-}`;
-
 export const datePickerExample = defineCodeExample({
-  code: datePickerExampleCode,
-  component: DatePickerExample,
+  code: datePickerExampleCodeSource,
+  component: DatePickerExampleSourceComponent,
   description: "A date picker trigger with a selected date and calendar popup.",
   id: "basic",
   title: "Basic Date Picker",
@@ -708,155 +278,9 @@ export function Component() {
   );
 }`;
 
-export function AlertExample() {
-  return (
-    <Alert variant="info" class={alertPreviewClass}>
-      <AlertIcon>
-        <Info />
-      </AlertIcon>
-      <AlertTitle>Heads up!</AlertTitle>
-      <AlertDescription>Describe what can be done about it here.</AlertDescription>
-    </Alert>
-  );
-}
-
-export function WarningAlertExample() {
-  return (
-    <Alert variant="warning" class={alertPreviewClass}>
-      <AlertIcon>
-        <TriangleAlert />
-      </AlertIcon>
-      <AlertTitle>Heads up!</AlertTitle>
-      <AlertDescription>Describe what can be done about it here.</AlertDescription>
-    </Alert>
-  );
-}
-
-export function ErrorAlertExample() {
-  return (
-    <Alert variant="error" class={alertPreviewClass}>
-      <AlertIcon>
-        <CircleAlert />
-      </AlertIcon>
-      <AlertTitle>Heads up!</AlertTitle>
-      <AlertDescription>Describe what can be done about it here.</AlertDescription>
-    </Alert>
-  );
-}
-
-export function AlertActionExample() {
-  return (
-    <Alert class={alertActionPreviewClass}>
-      <AlertIcon>
-        <Info />
-      </AlertIcon>
-      <AlertTitle>Heads up!</AlertTitle>
-      <AlertDescription>Describe what can be done about it here.</AlertDescription>
-      <AlertAction>
-        <Button size="sm" type="button" variant="ghost">
-          Dismiss
-        </Button>
-        <Button size="sm" type="button">
-          Ok
-        </Button>
-      </AlertAction>
-    </Alert>
-  );
-}
-
-export const alertWarningExampleCode = `import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-} from "@/components/ui/alert";
-import { TriangleAlert } from "lucide-solid";
-
-export function Component() {
-  return (
-    <Alert variant="warning" class="w-full max-w-[25.2rem]">
-      <AlertIcon>
-        <TriangleAlert />
-      </AlertIcon>
-      <AlertTitle>Heads up!</AlertTitle>
-      <AlertDescription>Describe what can be done about it here.</AlertDescription>
-    </Alert>
-  );
-}`;
-
-export const alertErrorExampleCode = `import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-} from "@/components/ui/alert";
-import { CircleAlert } from "lucide-solid";
-
-export function Component() {
-  return (
-    <Alert variant="error" class="w-full max-w-[25.2rem]">
-      <AlertIcon>
-        <CircleAlert />
-      </AlertIcon>
-      <AlertTitle>Heads up!</AlertTitle>
-      <AlertDescription>Describe what can be done about it here.</AlertDescription>
-    </Alert>
-  );
-}`;
-
-export const alertActionExampleCode = `import { Info } from "lucide-solid";
-import {
-  Alert,
-  AlertAction,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-} from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-
-export function Component() {
-  return (
-    <Alert class="w-full max-w-xl">
-      <AlertIcon>
-        <Info />
-      </AlertIcon>
-      <AlertTitle>Heads up!</AlertTitle>
-      <AlertDescription>Describe what can be done about it here.</AlertDescription>
-      <AlertAction>
-        <Button size="sm" type="button" variant="ghost">
-          Dismiss
-        </Button>
-        <Button size="sm" type="button">
-          Ok
-        </Button>
-      </AlertAction>
-    </Alert>
-  );
-}`;
-
-export const alertInfoExampleCode = `import { Info } from "lucide-solid";
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-} from "@/components/ui/alert";
-
-export function Component() {
-  return (
-    <Alert variant="info" class="w-full max-w-[25.2rem]">
-      <AlertIcon>
-        <Info />
-      </AlertIcon>
-      <AlertTitle>Heads up!</AlertTitle>
-      <AlertDescription>Describe what can be done about it here.</AlertDescription>
-    </Alert>
-  );
-}`;
-
 export const alertWarningExample = defineCodeExample({
-  code: alertWarningExampleCode,
-  component: WarningAlertExample,
+  code: alertWarningExampleCodeSource,
+  component: WarningAlertExampleSourceComponent,
   description: "Warning alert for important guidance that needs attention.",
   id: "warning-alert",
   title: "Warning Alert",
@@ -864,8 +288,8 @@ export const alertWarningExample = defineCodeExample({
 });
 
 export const alertErrorExample = defineCodeExample({
-  code: alertErrorExampleCode,
-  component: ErrorAlertExample,
+  code: alertErrorExampleCodeSource,
+  component: ErrorAlertExampleSourceComponent,
   description: "Error alert for failed or blocked states.",
   id: "error-alert",
   title: "Error Alert",
@@ -873,8 +297,8 @@ export const alertErrorExample = defineCodeExample({
 });
 
 export const alertActionExample = defineCodeExample({
-  code: alertActionExampleCode,
-  component: AlertActionExample,
+  code: alertActionExampleCodeSource,
+  component: AlertActionExampleSourceComponent,
   description: "Alert composition with an icon and app-owned action buttons.",
   id: "with-icon-and-action-buttons",
   title: "With Icon and Action Buttons",
@@ -882,8 +306,8 @@ export const alertActionExample = defineCodeExample({
 });
 
 export const alertInfoExample = defineCodeExample({
-  code: alertInfoExampleCode,
-  component: AlertExample,
+  code: alertInfoExampleCodeSource,
+  component: AlertExampleSourceComponent,
   description: "Informational alert for neutral contextual feedback.",
   id: "info-alert",
   title: "Info Alert",
@@ -908,33 +332,9 @@ export function Component() {
   );
 }`;
 
-export function ButtonExample() {
-  return (
-    <div class="flex flex-wrap items-center justify-center gap-3">
-      <Button>Save changes</Button>
-      <Button variant="outline">Preview</Button>
-      <Button variant="secondary">Cancel</Button>
-      <Button disabled>Disabled</Button>
-    </div>
-  );
-}
-
-export const buttonExampleCode = `import { Button } from "@/components/ui/button";
-
-export function Component() {
-  return (
-    <div class="flex flex-wrap items-center justify-center gap-3">
-      <Button>Save changes</Button>
-      <Button variant="outline">Preview</Button>
-      <Button variant="secondary">Cancel</Button>
-      <Button disabled>Disabled</Button>
-    </div>
-  );
-}`;
-
 export const buttonExample = defineCodeExample({
-  code: buttonExampleCode,
-  component: ButtonExample,
+  code: buttonExampleCodeSource,
+  component: ButtonExampleSourceComponent,
   description: "Common button variants rendered from the installable UI source.",
   id: "variants",
   title: "Variants",
@@ -949,69 +349,9 @@ export function Component() {
   return <Button type="submit">Save changes</Button>;
 }`;
 
-export function BadgeExample() {
-  return (
-    <div class="flex flex-wrap items-center justify-center gap-2.5 p-1">
-      <Badge>Default</Badge>
-      <Badge variant="info">Info</Badge>
-      <Badge variant="success">Success</Badge>
-      <Badge variant="warning">Warning</Badge>
-      <Badge variant="error">Error</Badge>
-      <Badge variant="outline">Outline</Badge>
-      <Badge variant="muted">Muted</Badge>
-    </div>
-  );
-}
-
-export function BadgeSizeExample() {
-  return (
-    <div class="flex flex-wrap items-center justify-center gap-2.5 p-1">
-      <Badge size="sm" variant="outline">
-        Small
-      </Badge>
-      <Badge variant="outline">Default</Badge>
-      <Badge size="lg" variant="outline">
-        Large
-      </Badge>
-    </div>
-  );
-}
-
-export const badgeExampleCode = `import { Badge } from "@/components/ui/badge";
-
-export function Component() {
-  return (
-    <div class="flex flex-wrap items-center justify-center gap-2.5 p-1">
-      <Badge>Default</Badge>
-      <Badge variant="info">Info</Badge>
-      <Badge variant="success">Success</Badge>
-      <Badge variant="warning">Warning</Badge>
-      <Badge variant="error">Error</Badge>
-      <Badge variant="outline">Outline</Badge>
-      <Badge variant="muted">Muted</Badge>
-    </div>
-  );
-}`;
-
-export const badgeSizeExampleCode = `import { Badge } from "@/components/ui/badge";
-
-export function Component() {
-  return (
-    <div class="flex flex-wrap items-center justify-center gap-2.5 p-1">
-      <Badge size="sm" variant="outline">
-        Small
-      </Badge>
-      <Badge variant="outline">Default</Badge>
-      <Badge size="lg" variant="outline">
-        Large
-      </Badge>
-    </div>
-  );
-}`;
-
 export const badgeExample = defineCodeExample({
-  code: badgeExampleCode,
-  component: BadgeExample,
+  code: badgeExampleCodeSource,
+  component: BadgeExampleSourceComponent,
   description: "Common badge variants rendered from the installable UI source.",
   id: "variants",
   title: "Variants",
@@ -1019,8 +359,8 @@ export const badgeExample = defineCodeExample({
 });
 
 export const badgeSizeExample = defineCodeExample({
-  code: badgeSizeExampleCode,
-  component: BadgeSizeExample,
+  code: badgeSizeExampleCodeSource,
+  component: BadgeSizeExampleSourceComponent,
   description: "Badge sizes for compact labels and slightly larger metadata chips.",
   id: "sizes",
   title: "Sizes",
@@ -1035,106 +375,9 @@ export function Component() {
   return <Badge variant="success">Published</Badge>;
 }`;
 
-export function CardExample() {
-  return (
-    <Card class="w-[22rem] max-w-full">
-      <CardHeader>
-        <CardTitle>Create project</CardTitle>
-        <CardDescription>Deploy your new project in one-click.</CardDescription>
-      </CardHeader>
-      <CardPanel class="grid gap-5">
-        <label class="grid gap-2 text-sm">
-          <span class="font-medium text-foreground">Name</span>
-          <Input placeholder="Name of your project" />
-        </label>
-        <label class="grid gap-2 text-sm">
-          <span class="font-medium text-foreground">Framework</span>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Next.js" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="next">Next.js</SelectItem>
-              <SelectItem value="solid">SolidStart</SelectItem>
-              <SelectItem value="vite">Vite</SelectItem>
-            </SelectContent>
-          </Select>
-        </label>
-      </CardPanel>
-      <CardFooter class="grid gap-5">
-        <Button class="w-full" type="button">
-          Deploy
-        </Button>
-        <p class="m-0 flex items-center gap-2 text-muted-foreground text-sm">
-          <Info aria-hidden="true" class="size-4 shrink-0 text-muted-foreground/80" />
-          <span>This will take a few seconds to complete.</span>
-        </p>
-      </CardFooter>
-    </Card>
-  );
-}
-
-export const cardExampleCode = `import { Button } from "@/components/ui/button";
-import { Info } from "lucide-solid";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardPanel,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-export function Component() {
-  return (
-    <Card class="w-[22rem] max-w-full">
-      <CardHeader>
-        <CardTitle>Create project</CardTitle>
-        <CardDescription>Deploy your new project in one-click.</CardDescription>
-      </CardHeader>
-      <CardPanel class="grid gap-5">
-        <label class="grid gap-2 text-sm">
-          <span class="font-medium text-foreground">Name</span>
-          <Input placeholder="Name of your project" />
-        </label>
-        <label class="grid gap-2 text-sm">
-          <span class="font-medium text-foreground">Framework</span>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Next.js" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="next">Next.js</SelectItem>
-              <SelectItem value="solid">SolidStart</SelectItem>
-              <SelectItem value="vite">Vite</SelectItem>
-            </SelectContent>
-          </Select>
-        </label>
-      </CardPanel>
-      <CardFooter class="grid gap-5">
-        <Button class="w-full" type="button">
-          Deploy
-        </Button>
-        <p class="m-0 flex items-center gap-2 text-muted-foreground text-sm">
-          <Info aria-hidden="true" class="size-4 shrink-0 text-muted-foreground/80" />
-          <span>This will take a few seconds to complete.</span>
-        </p>
-      </CardFooter>
-    </Card>
-  );
-}`;
-
 export const cardExample = defineCodeExample({
-  code: cardExampleCode,
-  component: CardExample,
+  code: cardExampleCodeSource,
+  component: CardExampleSourceComponent,
   description: "A project creation card with inputs, select, and footer action.",
   id: "project-card",
   title: "Project Card",
@@ -1165,34 +408,9 @@ export function Component() {
   );
 }`;
 
-export function CheckboxExample() {
-  const [checked, setChecked] = createSignal(true);
-  return (
-    <Label class="gap-3">
-      <Checkbox checked={checked()} onCheckedChange={setChecked} />
-      Enable weekly digest
-    </Label>
-  );
-}
-
-export const checkboxExampleCode = `import { createSignal } from "solid-js";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-
-export function Component() {
-  const [checked, setChecked] = createSignal(true);
-
-  return (
-    <Label class="gap-3">
-      <Checkbox checked={checked()} onCheckedChange={setChecked} />
-      Enable weekly digest
-    </Label>
-  );
-}`;
-
 export const checkboxExample = defineCodeExample({
-  code: checkboxExampleCode,
-  component: CheckboxExample,
+  code: checkboxExampleCodeSource,
+  component: CheckboxExampleSourceComponent,
   description: "Controlled checkbox with a visible label.",
   id: "controlled",
   title: "Controlled Checkbox",
@@ -1213,63 +431,9 @@ export function Component() {
   );
 }`;
 
-export function LabelExample() {
-  return (
-    <div class="grid w-full max-w-64 gap-2">
-      <Label for="preview-email">Email</Label>
-      <Input id="preview-email" placeholder="name@example.com" type="email" />
-    </div>
-  );
-}
-
-export function LabelRequiredExample() {
-  return (
-    <div class="grid w-full max-w-64 gap-2">
-      <Label for="preview-workspace">
-        Workspace name
-        <span class="text-destructive" aria-hidden="true">
-          *
-        </span>
-      </Label>
-      <Input id="preview-workspace" placeholder="Acme Studio" required />
-      <p class="m-0 text-muted-foreground text-sm">Shown in navigation and billing emails.</p>
-    </div>
-  );
-}
-
-export const labelExampleCode = `import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-export function Component() {
-  return (
-    <div class="grid w-full max-w-64 gap-2">
-      <Label for="email">Email</Label>
-      <Input id="email" placeholder="name@example.com" type="email" />
-    </div>
-  );
-}`;
-
-export const labelRequiredExampleCode = `import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-export function Component() {
-  return (
-    <div class="grid w-full max-w-64 gap-2">
-      <Label for="workspace">
-        Workspace name
-        <span class="text-destructive" aria-hidden="true">
-          *
-        </span>
-      </Label>
-      <Input id="workspace" placeholder="Acme Studio" required />
-      <p class="m-0 text-muted-foreground text-sm">Shown in navigation and billing emails.</p>
-    </div>
-  );
-}`;
-
 export const labelExample = defineCodeExample({
-  code: labelExampleCode,
-  component: LabelExample,
+  code: labelExampleCodeSource,
+  component: LabelExampleSourceComponent,
   description: "Native label associated with an input by id.",
   id: "with-input",
   title: "With Input",
@@ -1277,8 +441,8 @@ export const labelExample = defineCodeExample({
 });
 
 export const labelRequiredExample = defineCodeExample({
-  code: labelRequiredExampleCode,
-  component: LabelRequiredExample,
+  code: labelRequiredExampleCodeSource,
+  component: LabelRequiredExampleSourceComponent,
   description: "Compose label text, required marker, helper copy, and a control.",
   id: "required-field",
   title: "Required Field",
@@ -1299,96 +463,9 @@ export function Component() {
   );
 }`;
 
-export function InputExample() {
-  return (
-    <div class="grid w-full max-w-64 gap-2">
-      <Label for="preview-search">Search</Label>
-      <Input id="preview-search" placeholder="Search components..." type="search" />
-    </div>
-  );
-}
-
-export function InputSizesExample() {
-  return (
-    <div class="grid w-full max-w-64 gap-3">
-      <Input aria-label="Small input" placeholder="Small" size="sm" />
-      <Input aria-label="Default input" placeholder="Default" />
-      <Input aria-label="Large input" placeholder="Large" size="lg" />
-    </div>
-  );
-}
-
-export function InputInvalidExample() {
-  return (
-    <div class="grid w-full max-w-64 gap-2">
-      <Label for="preview-invalid-email">Email</Label>
-      <Input id="preview-invalid-email" defaultValue="not-an-email" invalid type="email" />
-      <p class="m-0 text-destructive text-sm">Enter a valid email address.</p>
-    </div>
-  );
-}
-
-export function InputFileExample() {
-  return (
-    <div class="grid w-full max-w-64 gap-2">
-      <Label for="preview-file">Avatar</Label>
-      <Input id="preview-file" type="file" />
-    </div>
-  );
-}
-
-export const inputExampleCode = `import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-export function Component() {
-  return (
-    <div class="grid w-full max-w-64 gap-2">
-      <Label for="search">Search</Label>
-      <Input id="search" placeholder="Search components..." type="search" />
-    </div>
-  );
-}`;
-
-export const inputSizesExampleCode = `import { Input } from "@/components/ui/input";
-
-export function Component() {
-  return (
-    <div class="grid w-full max-w-64 gap-3">
-      <Input aria-label="Small input" placeholder="Small" size="sm" />
-      <Input aria-label="Default input" placeholder="Default" />
-      <Input aria-label="Large input" placeholder="Large" size="lg" />
-    </div>
-  );
-}`;
-
-export const inputInvalidExampleCode = `import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-export function Component() {
-  return (
-    <div class="grid w-full max-w-64 gap-2">
-      <Label for="email">Email</Label>
-      <Input id="email" defaultValue="not-an-email" invalid type="email" />
-      <p class="m-0 text-destructive text-sm">Enter a valid email address.</p>
-    </div>
-  );
-}`;
-
-export const inputFileExampleCode = `import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-export function Component() {
-  return (
-    <div class="grid w-full max-w-64 gap-2">
-      <Label for="avatar">Avatar</Label>
-      <Input id="avatar" type="file" />
-    </div>
-  );
-}`;
-
 export const inputExample = defineCodeExample({
-  code: inputExampleCode,
-  component: InputExample,
+  code: inputExampleCodeSource,
+  component: InputExampleSourceComponent,
   description: "Text input with an associated label.",
   id: "basic",
   title: "Basic Input",
@@ -1396,8 +473,8 @@ export const inputExample = defineCodeExample({
 });
 
 export const inputSizesExample = defineCodeExample({
-  code: inputSizesExampleCode,
-  component: InputSizesExample,
+  code: inputSizesExampleCodeSource,
+  component: InputSizesExampleSourceComponent,
   description: "Small, default, and large input sizes.",
   id: "sizes",
   title: "Sizes",
@@ -1405,8 +482,8 @@ export const inputSizesExample = defineCodeExample({
 });
 
 export const inputInvalidExample = defineCodeExample({
-  code: inputInvalidExampleCode,
-  component: InputInvalidExample,
+  code: inputInvalidExampleCodeSource,
+  component: InputInvalidExampleSourceComponent,
   description: "Invalid state mirrored to aria-invalid and wrapper data attributes.",
   id: "invalid",
   title: "Invalid State",
@@ -1414,8 +491,8 @@ export const inputInvalidExample = defineCodeExample({
 });
 
 export const inputFileExample = defineCodeExample({
-  code: inputFileExampleCode,
-  component: InputFileExample,
+  code: inputFileExampleCodeSource,
+  component: InputFileExampleSourceComponent,
   description: "Native file input using the same wrapper contract.",
   id: "file",
   title: "File Input",
@@ -1435,102 +512,9 @@ export function Component() {
   return <Input placeholder="Email" type="email" />;
 }`;
 
-export function SwitchExample() {
-  const [checked, setChecked] = createSignal(false);
-  return (
-    <Label class="gap-3">
-      <Switch checked={checked()} onCheckedChange={setChecked} name="notifications" />
-      Enable notifications
-    </Label>
-  );
-}
-
-export function SwitchDisabledExample() {
-  return (
-    <div class="grid gap-3">
-      <Label class="gap-3">
-        <Switch defaultChecked disabled name="email-digest" />
-        Email digest
-      </Label>
-      <Label class="gap-3 text-muted-foreground">
-        <Switch disabled name="desktop-alerts" />
-        Desktop alerts
-      </Label>
-    </div>
-  );
-}
-
-export function SwitchCompositionExample() {
-  return (
-    <div class="grid w-full max-w-md gap-3 rounded-lg border border-border bg-card p-4">
-      <Label class="flex items-start justify-between gap-4">
-        <div class="grid gap-1">
-          <span class="leading-5">Background sync</span>
-          <p class="m-0 text-muted-foreground text-sm">
-            Keep workspace data fresh while the app is open.
-          </p>
-        </div>
-        <Switch defaultChecked name="background-sync" />
-      </Label>
-    </div>
-  );
-}
-
-export const switchExampleCode = `import { createSignal } from "solid-js";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-
-export function Component() {
-  const [checked, setChecked] = createSignal(false);
-
-  return (
-    <Label class="gap-3">
-      <Switch checked={checked()} onCheckedChange={setChecked} name="notifications" />
-      Enable notifications
-    </Label>
-  );
-}`;
-
-export const switchDisabledExampleCode = `import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-
-export function Component() {
-  return (
-    <div class="grid gap-3">
-      <Label class="gap-3">
-        <Switch defaultChecked disabled name="email-digest" />
-        Email digest
-      </Label>
-      <Label class="gap-3 text-muted-foreground">
-        <Switch disabled name="desktop-alerts" />
-        Desktop alerts
-      </Label>
-    </div>
-  );
-}`;
-
-export const switchCompositionExampleCode = `import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-
-export function Component() {
-  return (
-    <div class="grid w-full max-w-md gap-3 rounded-lg border border-border bg-card p-4">
-      <Label class="flex items-start justify-between gap-4">
-        <div class="grid gap-1">
-          <span class="leading-5">Background sync</span>
-          <p class="m-0 text-muted-foreground text-sm">
-            Keep workspace data fresh while the app is open.
-          </p>
-        </div>
-        <Switch defaultChecked name="background-sync" />
-      </Label>
-    </div>
-  );
-}`;
-
 export const switchExample = defineCodeExample({
-  code: switchExampleCode,
-  component: SwitchExample,
+  code: switchExampleCodeSource,
+  component: SwitchExampleSourceComponent,
   description: "Controlled switch composed with a visible label.",
   id: "controlled",
   title: "Controlled Switch",
@@ -1538,8 +522,8 @@ export const switchExample = defineCodeExample({
 });
 
 export const switchDisabledExample = defineCodeExample({
-  code: switchDisabledExampleCode,
-  component: SwitchDisabledExample,
+  code: switchDisabledExampleCodeSource,
+  component: SwitchDisabledExampleSourceComponent,
   description: "Disabled switches preserve checked state while blocking interaction.",
   id: "disabled",
   title: "Disabled",
@@ -1547,8 +531,8 @@ export const switchDisabledExample = defineCodeExample({
 });
 
 export const switchCompositionExample = defineCodeExample({
-  code: switchCompositionExampleCode,
-  component: SwitchCompositionExample,
+  code: switchCompositionExampleCodeSource,
+  component: SwitchCompositionExampleSourceComponent,
   description: "Switch placed in a settings row with label and helper copy.",
   id: "settings-row",
   title: "Settings Row",
@@ -1573,97 +557,9 @@ export function Component() {
   );
 }`;
 
-export function DialogExample() {
-  return (
-    <Dialog>
-      <DialogTrigger
-        class="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-primary bg-primary px-3 text-primary-foreground text-sm font-medium leading-none shadow-xs/5 outline-none transition-colors hover:bg-primary/90 focus-visible:ring-3 focus-visible:ring-ring/24 sm:min-h-8"
-        type="button"
-      >
-        Open dialog
-      </DialogTrigger>
-      <DialogContent class="sm:w-96">
-        <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription>
-        </DialogHeader>
-        <DialogPanel class="grid gap-4">
-          <label class="grid gap-2 text-sm font-medium">
-            Name
-            <Input defaultValue="Margaret Welsh" />
-          </label>
-          <label class="grid gap-2 text-sm font-medium">
-            Username
-            <Input defaultValue="@maggie.welsh" />
-          </label>
-        </DialogPanel>
-        <DialogFooter>
-          <DialogClose as={Button} type="button" variant="ghost">
-            Cancel
-          </DialogClose>
-          <Button type="button">Save</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-}
-
-export const dialogExampleCode = `import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogPanel,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-
-export function Component() {
-  return (
-    <Dialog>
-      <DialogTrigger
-        class="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-primary bg-primary px-3 text-primary-foreground text-sm font-medium leading-none shadow-xs/5 outline-none transition-colors hover:bg-primary/90 focus-visible:ring-3 focus-visible:ring-ring/24 sm:min-h-8"
-        type="button"
-      >
-        Open dialog
-      </DialogTrigger>
-      <DialogContent class="sm:w-96">
-        <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription>
-        </DialogHeader>
-        <DialogPanel class="grid gap-4">
-          <label class="grid gap-2 text-sm font-medium">
-            Name
-            <Input defaultValue="Margaret Welsh" />
-          </label>
-          <label class="grid gap-2 text-sm font-medium">
-            Username
-            <Input defaultValue="@maggie.welsh" />
-          </label>
-        </DialogPanel>
-        <DialogFooter>
-          <DialogClose as={Button} type="button" variant="ghost">
-            Cancel
-          </DialogClose>
-          <Button type="button">Save</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-}`;
-
 export const dialogExample = defineCodeExample({
-  code: dialogExampleCode,
-  component: DialogExample,
+  code: dialogExampleCodeSource,
+  component: DialogExampleSourceComponent,
   description: "A modal dialog with title, description, body, and footer action.",
   id: "basic",
   title: "Basic Dialog",
@@ -1718,85 +614,9 @@ export function Component() {
   );
 }`;
 
-export function PopoverExample() {
-  const [open, setOpen] = createSignal(false);
-  return (
-    <Popover open={open()} onOpenChange={setOpen}>
-      <PopoverTrigger
-        class="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-input bg-popover px-3 text-foreground text-sm font-medium leading-none shadow-xs/5 outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/24 sm:min-h-8"
-        type="button"
-      >
-        Open Popover
-      </PopoverTrigger>
-      <PopoverContent class="w-[18rem] sm:w-[20rem]">
-        <PopoverHeader>
-          <PopoverTitle>Send us feedback</PopoverTitle>
-          <PopoverDescription>Let us know how we can improve.</PopoverDescription>
-        </PopoverHeader>
-        <Textarea
-          aria-label="Feedback"
-          class="min-h-20"
-          placeholder="How can we improve?"
-          size="lg"
-        />
-        <PopoverFooter>
-          <Button class="w-full" onClick={() => setOpen(false)} type="button">
-            Send feedback
-          </Button>
-        </PopoverFooter>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
-export const popoverExampleCode = `import { createSignal } from "solid-js";
-import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverDescription,
-  PopoverFooter,
-  PopoverHeader,
-  PopoverTitle,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Textarea } from "@/components/ui/textarea";
-
-export function Component() {
-  const [open, setOpen] = createSignal(false);
-
-  return (
-    <Popover open={open()} onOpenChange={setOpen}>
-      <PopoverTrigger
-        class="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-input bg-popover px-3 text-foreground text-sm font-medium leading-none shadow-xs/5 outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/24 sm:min-h-8"
-        type="button"
-      >
-        Open Popover
-      </PopoverTrigger>
-      <PopoverContent class="w-[18rem] sm:w-[20rem]">
-        <PopoverHeader>
-          <PopoverTitle>Send us feedback</PopoverTitle>
-          <PopoverDescription>Let us know how we can improve.</PopoverDescription>
-        </PopoverHeader>
-        <Textarea
-          aria-label="Feedback"
-          class="min-h-20"
-          placeholder="How can we improve?"
-          size="lg"
-        />
-        <PopoverFooter>
-          <Button class="w-full" onClick={() => setOpen(false)} type="button">
-            Send feedback
-          </Button>
-        </PopoverFooter>
-      </PopoverContent>
-    </Popover>
-  );
-}`;
-
 export const popoverExample = defineCodeExample({
-  code: popoverExampleCode,
-  component: PopoverExample,
+  code: popoverExampleCodeSource,
+  component: PopoverExampleSourceComponent,
   description: "Contextual panel with title, description, content, and footer action.",
   id: "basic",
   title: "Basic Popover",
@@ -1820,47 +640,9 @@ export function Component() {
   );
 }`;
 
-export function SelectExample() {
-  return (
-    <Select>
-      <SelectTrigger class="w-56">
-        <SelectValue placeholder="Choose a framework" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="solid">Solid</SelectItem>
-        <SelectItem value="react">React</SelectItem>
-        <SelectItem value="vue">Vue</SelectItem>
-      </SelectContent>
-    </Select>
-  );
-}
-
-export const selectExampleCode = `import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-export function Component() {
-  return (
-    <Select>
-      <SelectTrigger class="w-56">
-        <SelectValue placeholder="Choose a framework" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="solid">Solid</SelectItem>
-        <SelectItem value="react">React</SelectItem>
-        <SelectItem value="vue">Vue</SelectItem>
-      </SelectContent>
-    </Select>
-  );
-}`;
-
 export const selectExample = defineCodeExample({
-  code: selectExampleCode,
-  component: SelectExample,
+  code: selectExampleCodeSource,
+  component: SelectExampleSourceComponent,
   description: "Single value select with three options.",
   id: "basic",
   title: "Basic Select",
@@ -1890,58 +672,9 @@ export function Component() {
   );
 }`;
 
-export function TabsExample() {
-  return (
-    <Tabs defaultValue="overview" class="w-full max-w-md">
-      <TabsList>
-        <TabsTrigger value="overview">Overview</TabsTrigger>
-        <TabsTrigger value="activity">Activity</TabsTrigger>
-        <TabsTrigger value="settings">Settings</TabsTrigger>
-      </TabsList>
-      <TabsContent value="overview" class="rounded-lg border border-border p-4 text-sm">
-        Track the current workspace state.
-      </TabsContent>
-      <TabsContent value="activity" class="rounded-lg border border-border p-4 text-sm">
-        Review recent changes.
-      </TabsContent>
-      <TabsContent value="settings" class="rounded-lg border border-border p-4 text-sm">
-        Configure defaults and permissions.
-      </TabsContent>
-    </Tabs>
-  );
-}
-
-export const tabsExampleCode = `import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
-
-export function Component() {
-  return (
-    <Tabs defaultValue="overview" class="w-full max-w-md">
-      <TabsList>
-        <TabsTrigger value="overview">Overview</TabsTrigger>
-        <TabsTrigger value="activity">Activity</TabsTrigger>
-        <TabsTrigger value="settings">Settings</TabsTrigger>
-      </TabsList>
-      <TabsContent value="overview" class="rounded-lg border border-border p-4 text-sm">
-        Track the current workspace state.
-      </TabsContent>
-      <TabsContent value="activity" class="rounded-lg border border-border p-4 text-sm">
-        Review recent changes.
-      </TabsContent>
-      <TabsContent value="settings" class="rounded-lg border border-border p-4 text-sm">
-        Configure defaults and permissions.
-      </TabsContent>
-    </Tabs>
-  );
-}`;
-
 export const tabsExample = defineCodeExample({
-  code: tabsExampleCode,
-  component: TabsExample,
+  code: tabsExampleCodeSource,
+  component: TabsExampleSourceComponent,
   description: "Horizontal tabs with three panels.",
   id: "basic",
   title: "Basic Tabs",
@@ -1968,68 +701,15 @@ export function Component() {
   );
 }`;
 
-export function ToastExample() {
-  const toastManager = createToastManager();
-  return (
-    <div class="flex min-h-72 w-full flex-col items-center justify-center gap-3">
-      <Button
-        type="button"
-        onClick={() =>
-          toastManager.success({ title: "Saved", description: "Your changes were synced." })
-        }
-      >
-        Show toast
-      </Button>
-      <Toaster manager={toastManager} />
-    </div>
-  );
-}
+export const toastExampleCode = toastExampleCodeSource;
 
-export const toastExampleCode = `import { toaster, Toaster } from "@/components/ui/toast";`;
-export const toastUsageCode = toastExampleCode;
+export const ToastExample = ToastExampleSourceComponent;
 
-export function TooltipExample() {
-  return (
-    <TooltipProvider delayDuration={120}>
-      <Tooltip>
-        <TooltipTrigger
-          class="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-input bg-popover px-3 text-foreground text-sm font-medium leading-none shadow-xs/5 outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/24 sm:min-h-8"
-          type="button"
-        >
-          Hover or focus
-        </TooltipTrigger>
-        <TooltipContent>Tooltip content follows the trigger.</TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-}
-
-export const tooltipExampleCode = `import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-
-export function Component() {
-  return (
-    <TooltipProvider delayDuration={120}>
-      <Tooltip>
-        <TooltipTrigger
-          class="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-input bg-popover px-3 text-foreground text-sm font-medium leading-none shadow-xs/5 outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/24 sm:min-h-8"
-          type="button"
-        >
-          Hover or focus
-        </TooltipTrigger>
-        <TooltipContent>Tooltip content follows the trigger.</TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-}`;
+export const toastUsageCode = `import { toaster, Toaster } from "@/components/ui/toast";`;
 
 export const tooltipExample = defineCodeExample({
-  code: tooltipExampleCode,
-  component: TooltipExample,
+  code: tooltipExampleCodeSource,
+  component: TooltipExampleSourceComponent,
   description: "Tooltip attached to a focusable trigger.",
   id: "basic",
   title: "Basic Tooltip",
@@ -2056,51 +736,9 @@ export function Component() {
   );
 }`;
 
-export function SeparatorExample() {
-  return (
-    <div class="w-full max-w-[22rem]">
-      <div class="space-y-1">
-        <h4 class="font-medium text-foreground text-sm leading-none">Project Links</h4>
-        <p class="text-muted-foreground text-sm">Related resources grouped in a compact row.</p>
-      </div>
-      <Separator class="my-4" />
-      <div class="grid h-6 grid-cols-[1fr_auto_1fr_auto_1fr] items-center text-muted-foreground text-sm">
-        <span class="text-center">Docs</span>
-        <Separator orientation="vertical" />
-        <span class="text-center">API</span>
-        <Separator orientation="vertical" />
-        <span class="text-center">Examples</span>
-      </div>
-    </div>
-  );
-}
-
-export const separatorExampleCode = `import { Separator } from "@/components/ui/separator";
-
-export function Component() {
-  return (
-    <div class="w-full max-w-[22rem]">
-      <div class="space-y-1">
-        <h4 class="font-medium text-foreground text-sm leading-none">Project Links</h4>
-        <p class="text-muted-foreground text-sm">
-          Related resources grouped in a compact row.
-        </p>
-      </div>
-      <Separator class="my-4" />
-      <div class="grid h-6 grid-cols-[1fr_auto_1fr_auto_1fr] items-center text-muted-foreground text-sm">
-        <span class="text-center">Docs</span>
-        <Separator orientation="vertical" />
-        <span class="text-center">API</span>
-        <Separator orientation="vertical" />
-        <span class="text-center">Examples</span>
-      </div>
-    </div>
-  );
-}`;
-
 export const separatorExample = defineCodeExample({
-  code: separatorExampleCode,
-  component: SeparatorExample,
+  code: separatorExampleCodeSource,
+  component: SeparatorExampleSourceComponent,
   description: "Horizontal and vertical separators dividing a compact resource group.",
   id: "basic",
   title: "Basic Separator",
@@ -2108,63 +746,16 @@ export const separatorExample = defineCodeExample({
 });
 
 export const separatorExamples = [separatorExample] satisfies readonly CodeExample[];
+
 export const separatorUsageCode = `import { Separator } from "@/components/ui/separator";
 
 export function Component() {
   return <Separator />;
 }`;
 
-export function KbdExample() {
-  return (
-    <div class="grid gap-4 text-sm">
-      <div class="flex items-center justify-between gap-6 rounded-lg border bg-background px-4 py-3">
-        <span class="font-medium text-foreground">Open command menu</span>
-        <KbdGroup>
-          <Kbd>⌘</Kbd>
-          <KbdSeparator />
-          <Kbd>K</Kbd>
-        </KbdGroup>
-      </div>
-      <div class="flex items-center justify-between gap-6 rounded-lg border bg-background px-4 py-3">
-        <span class="font-medium text-foreground">Search current table</span>
-        <KbdGroup>
-          <Kbd variant="outline">Shift</Kbd>
-          <KbdSeparator />
-          <Kbd variant="outline">F</Kbd>
-        </KbdGroup>
-      </div>
-    </div>
-  );
-}
-
-export const kbdExampleCode = `import { Kbd, KbdGroup, KbdSeparator } from "@/components/ui/kbd";
-
-export function Component() {
-  return (
-    <div class="grid gap-4 text-sm">
-      <div class="flex items-center justify-between gap-6 rounded-lg border bg-background px-4 py-3">
-        <span class="font-medium text-foreground">Open command menu</span>
-        <KbdGroup>
-          <Kbd>⌘</Kbd>
-          <KbdSeparator />
-          <Kbd>K</Kbd>
-        </KbdGroup>
-      </div>
-      <div class="flex items-center justify-between gap-6 rounded-lg border bg-background px-4 py-3">
-        <span class="font-medium text-foreground">Search current table</span>
-        <KbdGroup>
-          <Kbd variant="outline">Shift</Kbd>
-          <KbdSeparator />
-          <Kbd variant="outline">F</Kbd>
-        </KbdGroup>
-      </div>
-    </div>
-  );
-}`;
-
 export const kbdExample = defineCodeExample({
-  code: kbdExampleCode,
-  component: KbdExample,
+  code: kbdExampleCodeSource,
+  component: KbdExampleSourceComponent,
   description: "Display-only shortcut tokens with grouped keycaps.",
   id: "shortcuts",
   title: "Shortcut Tokens",
@@ -2172,6 +763,7 @@ export const kbdExample = defineCodeExample({
 });
 
 export const kbdExamples = [kbdExample] satisfies readonly CodeExample[];
+
 export const kbdUsageCode = `import { Kbd, KbdGroup, KbdSeparator } from "@/components/ui/kbd";
 
 export function Component() {
@@ -2184,63 +776,9 @@ export function Component() {
   );
 }`;
 
-const scrollAreaItems = [
-  "Index registry metadata",
-  "Validate source targets",
-  "Render docs preview",
-  "Check keyboard states",
-  "Inspect dark mode tokens",
-  "Confirm install command",
-  "Run type checks",
-  "Queue manual QA",
-];
-
-export function ScrollAreaExample() {
-  return (
-    <ScrollArea class="h-56 w-full max-w-md rounded-lg border bg-background">
-      <div class="grid gap-2 p-4">
-        {scrollAreaItems.map((item, index) => (
-          <div class="rounded-md border bg-card px-3 py-2 text-sm">
-            <span class="font-mono text-muted-foreground text-xs">{index + 1}.</span>{" "}
-            <span class="text-foreground">{item}</span>
-          </div>
-        ))}
-      </div>
-    </ScrollArea>
-  );
-}
-
-export const scrollAreaExampleCode = `import { ScrollArea } from "@/components/ui/scroll-area";
-
-const items = [
-  "Index registry metadata",
-  "Validate source targets",
-  "Render docs preview",
-  "Check keyboard states",
-  "Inspect dark mode tokens",
-  "Confirm install command",
-  "Run type checks",
-  "Queue manual QA",
-];
-
-export function Component() {
-  return (
-    <ScrollArea class="h-56 w-full max-w-md rounded-lg border bg-background">
-      <div class="grid gap-2 p-4">
-        {items.map((item, index) => (
-          <div class="rounded-md border bg-card px-3 py-2 text-sm">
-            <span class="font-mono text-muted-foreground text-xs">{index + 1}.</span>{" "}
-            <span class="text-foreground">{item}</span>
-          </div>
-        ))}
-      </div>
-    </ScrollArea>
-  );
-}`;
-
 export const scrollAreaExample = defineCodeExample({
-  code: scrollAreaExampleCode,
-  component: ScrollAreaExample,
+  code: scrollAreaExampleCodeSource,
+  component: ScrollAreaExampleSourceComponent,
   description: "A bounded native scroll region for dense panel content.",
   id: "panel",
   title: "Scrollable Panel",
@@ -2248,6 +786,7 @@ export const scrollAreaExample = defineCodeExample({
 });
 
 export const scrollAreaExamples = [scrollAreaExample] satisfies readonly CodeExample[];
+
 export const scrollAreaUsageCode = `import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function Component() {
@@ -2258,94 +797,18 @@ export function Component() {
   );
 }`;
 
-export function BreadcrumbExample() {
-  return (
-    <Breadcrumb
-      items={[
-        { href: "/docs/introduction", label: "Docs" },
-        { href: "/docs/components", label: "Components" },
-        { label: "Breadcrumb", current: true },
-      ]}
-    />
-  );
-}
-
-export function BreadcrumbCollapsedExample() {
-  return (
-    <Breadcrumb label="Project location">
-      <ol class="flex flex-wrap items-center gap-2 text-muted-foreground text-sm">
-        <li>
-          <a class="transition-colors hover:text-foreground" href="/workspace">
-            Workspace
-          </a>
-        </li>
-        <li aria-hidden="true">/</li>
-        <li>
-          <BreadcrumbEllipsis />
-        </li>
-        <li aria-hidden="true">/</li>
-        <li>
-          <span aria-current="page" class="text-foreground">
-            Registry QA
-          </span>
-        </li>
-      </ol>
-    </Breadcrumb>
-  );
-}
-
-export const breadcrumbExampleCode = `import { Breadcrumb } from "@/components/ui/breadcrumb";
-
-export function Component() {
-  return (
-    <Breadcrumb
-      items={[
-        { href: "/docs/introduction", label: "Docs" },
-        { href: "/docs/components", label: "Components" },
-        { label: "Breadcrumb", current: true },
-      ]}
-    />
-  );
-}`;
-
-export const breadcrumbCollapsedExampleCode = `import { Breadcrumb, BreadcrumbEllipsis } from "@/components/ui/breadcrumb";
-
-export function Component() {
-  return (
-    <Breadcrumb label="Project location">
-      <ol class="flex flex-wrap items-center gap-2 text-muted-foreground text-sm">
-        <li>
-          <a class="transition-colors hover:text-foreground" href="/workspace">
-            Workspace
-          </a>
-        </li>
-        <li aria-hidden="true">/</li>
-        <li>
-          <BreadcrumbEllipsis />
-        </li>
-        <li aria-hidden="true">/</li>
-        <li>
-          <span aria-current="page" class="text-foreground">
-            Registry QA
-          </span>
-        </li>
-      </ol>
-    </Breadcrumb>
-  );
-}`;
-
 export const breadcrumbExamples = [
   defineCodeExample({
-    code: breadcrumbExampleCode,
-    component: BreadcrumbExample,
+    code: breadcrumbExampleCodeSource,
+    component: BreadcrumbExampleSourceComponent,
     description: "Route-generated breadcrumb items with current page semantics.",
     id: "items",
     title: "Items",
     variant: "centered",
   }),
   defineCodeExample({
-    code: breadcrumbCollapsedExampleCode,
-    component: BreadcrumbCollapsedExample,
+    code: breadcrumbCollapsedExampleCodeSource,
+    component: BreadcrumbCollapsedExampleSourceComponent,
     description: "Composed breadcrumb parts with an ellipsis affordance.",
     id: "collapsed",
     title: "Collapsed Trail",
@@ -2366,421 +829,26 @@ export function Component() {
   );
 }`;
 
-type TableStatus = "Failed" | "Paid" | "Pending" | "Unpaid";
-
-const tableProjectRows: {
-  budget: string;
-  project: string;
-  status: TableStatus;
-  team: string;
-}[] = [
-  { budget: "$12,500", project: "Website Redesign", status: "Paid", team: "Frontend Team" },
-  { budget: "$8,750", project: "Mobile App", status: "Unpaid", team: "Mobile Team" },
-  { budget: "$5,200", project: "API Integration", status: "Pending", team: "Backend Team" },
-  { budget: "$3,800", project: "Database Migration", status: "Paid", team: "DevOps Team" },
-  { budget: "$7,200", project: "User Dashboard", status: "Paid", team: "UX Team" },
-  { budget: "$2,100", project: "Security Audit", status: "Failed", team: "Security Team" },
-];
-
-const tableStatusDotClass: Record<TableStatus, string> = {
-  Failed: "bg-destructive",
-  Paid: "bg-success",
-  Pending: "bg-warning",
-  Unpaid: "bg-muted-foreground/72",
-};
-
-function TableStatusBadge(props: { status: TableStatus }) {
-  return (
-    <span class="inline-flex h-6 items-center gap-1.5 rounded-md border border-border/72 bg-muted/20 px-2 font-medium text-foreground text-sm leading-none shadow-xs/5">
-      <span class={`size-2 rounded-full ${tableStatusDotClass[props.status]}`} />
-      {props.status}
-    </span>
-  );
-}
-
-export function TableExample() {
-  return (
-    <TableContainer class="w-full max-w-5xl">
-      <Table>
-        <TableCaption>A list of current projects.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead scope="col">Project</TableHead>
-            <TableHead scope="col">Status</TableHead>
-            <TableHead scope="col">Team</TableHead>
-            <TableHead class="text-right" scope="col">
-              Budget
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {tableProjectRows.map((row) => (
-            <TableRow>
-              <TableCell class="font-medium text-foreground">{row.project}</TableCell>
-              <TableCell>
-                <TableStatusBadge status={row.status} />
-              </TableCell>
-              <TableCell>{row.team}</TableCell>
-              <TableCell class="text-right font-medium tabular-nums">{row.budget}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell class="font-semibold text-foreground" colSpan={3}>
-              Total Budget
-            </TableCell>
-            <TableCell class="text-right font-semibold tabular-nums">$39,550</TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
-  );
-}
-
-export const tableExampleCode = `import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableContainer,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-const rows = [
-  { budget: "$12,500", project: "Website Redesign", status: "Paid", team: "Frontend Team" },
-  { budget: "$8,750", project: "Mobile App", status: "Unpaid", team: "Mobile Team" },
-  { budget: "$5,200", project: "API Integration", status: "Pending", team: "Backend Team" },
-  { budget: "$3,800", project: "Database Migration", status: "Paid", team: "DevOps Team" },
-  { budget: "$7,200", project: "User Dashboard", status: "Paid", team: "UX Team" },
-  { budget: "$2,100", project: "Security Audit", status: "Failed", team: "Security Team" },
-];
-
-const statusDotClass = {
-  Failed: "bg-destructive",
-  Paid: "bg-success",
-  Pending: "bg-warning",
-  Unpaid: "bg-muted-foreground/72",
-};
-
-function StatusBadge(props) {
-  return (
-    <span class="inline-flex h-6 items-center gap-1.5 rounded-md border border-border/72 bg-muted/20 px-2 font-medium text-foreground text-sm leading-none shadow-xs/5">
-      <span class={\`size-2 rounded-full \${statusDotClass[props.status]}\`} />
-      {props.status}
-    </span>
-  );
-}
-
-export function Component() {
-  return (
-    <TableContainer>
-      <Table>
-        <TableCaption>A list of current projects.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead scope="col">Project</TableHead>
-            <TableHead scope="col">Status</TableHead>
-            <TableHead scope="col">Team</TableHead>
-            <TableHead class="text-right" scope="col">
-              Budget
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow>
-              <TableCell class="font-medium text-foreground">{row.project}</TableCell>
-              <TableCell>
-                <StatusBadge status={row.status} />
-              </TableCell>
-              <TableCell>{row.team}</TableCell>
-              <TableCell class="text-right font-medium tabular-nums">{row.budget}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell class="font-semibold text-foreground" colSpan={3}>
-              Total Budget
-            </TableCell>
-            <TableCell class="text-right font-semibold tabular-nums">$39,550</TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
-  );
-}`;
-
 export const tableExample = defineCodeExample({
-  code: tableExampleCode,
-  component: TableExample,
+  code: tableExampleCodeSource,
+  component: TableExampleSourceComponent,
   description: "Presentational native table anatomy for readable data.",
   id: "basic",
   title: "Basic Table",
   variant: "full",
 });
 
-export function CardTableExample() {
-  return (
-    <TableContainer class="w-full max-w-5xl" variant="card">
-      <Table>
-        <TableCaption>A list of current projects.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead scope="col">Project</TableHead>
-            <TableHead scope="col">Status</TableHead>
-            <TableHead scope="col">Team</TableHead>
-            <TableHead class="text-right" scope="col">
-              Budget
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {tableProjectRows.map((row) => (
-            <TableRow data-state={row.status === "Paid" ? "selected" : undefined}>
-              <TableCell class="font-medium text-foreground">{row.project}</TableCell>
-              <TableCell>
-                <TableStatusBadge status={row.status} />
-              </TableCell>
-              <TableCell>{row.team}</TableCell>
-              <TableCell class="text-right font-medium tabular-nums">{row.budget}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell class="font-semibold text-foreground" colSpan={3}>
-              Total Budget
-            </TableCell>
-            <TableCell class="text-right font-semibold tabular-nums">$39,550</TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
-  );
-}
-
-export const cardTableExampleCode = `import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableContainer,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-const rows = [
-  { budget: "$12,500", project: "Website Redesign", status: "Paid", team: "Frontend Team" },
-  { budget: "$8,750", project: "Mobile App", status: "Unpaid", team: "Mobile Team" },
-  { budget: "$5,200", project: "API Integration", status: "Pending", team: "Backend Team" },
-  { budget: "$3,800", project: "Database Migration", status: "Paid", team: "DevOps Team" },
-  { budget: "$7,200", project: "User Dashboard", status: "Paid", team: "UX Team" },
-  { budget: "$2,100", project: "Security Audit", status: "Failed", team: "Security Team" },
-];
-
-const statusDotClass = {
-  Failed: "bg-destructive",
-  Paid: "bg-success",
-  Pending: "bg-warning",
-  Unpaid: "bg-muted-foreground/72",
-};
-
-function StatusBadge(props) {
-  return (
-    <span class="inline-flex h-6 items-center gap-1.5 rounded-md border border-border/72 bg-muted/20 px-2 font-medium text-foreground text-sm leading-none shadow-xs/5">
-      <span class={\`size-2 rounded-full \${statusDotClass[props.status]}\`} />
-      {props.status}
-    </span>
-  );
-}
-
-export function Component() {
-  return (
-    <TableContainer variant="card">
-      <Table>
-        <TableCaption>A list of current projects.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead scope="col">Project</TableHead>
-            <TableHead scope="col">Status</TableHead>
-            <TableHead scope="col">Team</TableHead>
-            <TableHead class="text-right" scope="col">
-              Budget
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow data-state={row.status === "Paid" ? "selected" : undefined}>
-              <TableCell class="font-medium text-foreground">{row.project}</TableCell>
-              <TableCell>
-                <StatusBadge status={row.status} />
-              </TableCell>
-              <TableCell>{row.team}</TableCell>
-              <TableCell class="text-right font-medium tabular-nums">{row.budget}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell class="font-semibold text-foreground" colSpan={3}>
-              Total Budget
-            </TableCell>
-            <TableCell class="text-right font-semibold tabular-nums">$39,550</TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
-  );
-}`;
-
-export const cardTableExample = defineCodeExample({
-  code: cardTableExampleCode,
-  component: CardTableExample,
-  description: "Card variant with separated rows, quiet borders, and selected-row styling.",
-  id: "card",
-  title: "Card Variant",
-  variant: "full",
-});
-
-export function CardFrameTableExample() {
-  return (
-    <CardFrame class="w-full max-w-5xl">
-      <CardFrameHeader>
-        <CardFrameTitle>Project Budget</CardFrameTitle>
-        <CardFrameDescription>
-          CardFrame keeps the table clipped inside a framed surface.
-        </CardFrameDescription>
-      </CardFrameHeader>
-      <TableContainer variant="card">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead scope="col">Project</TableHead>
-              <TableHead scope="col">Status</TableHead>
-              <TableHead scope="col">Team</TableHead>
-              <TableHead class="text-right" scope="col">
-                Budget
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {tableProjectRows.map((row) => (
-              <TableRow>
-                <TableCell class="font-medium text-foreground">{row.project}</TableCell>
-                <TableCell>
-                  <TableStatusBadge status={row.status} />
-                </TableCell>
-                <TableCell>{row.team}</TableCell>
-                <TableCell class="text-right font-medium tabular-nums">{row.budget}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </CardFrame>
-  );
-}
-
-export const cardFrameTableExampleCode = `import {
-  CardFrame,
-  CardFrameDescription,
-  CardFrameHeader,
-  CardFrameTitle,
-} from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-const rows = [
-  { budget: "$12,500", project: "Website Redesign", status: "Paid", team: "Frontend Team" },
-  { budget: "$8,750", project: "Mobile App", status: "Unpaid", team: "Mobile Team" },
-  { budget: "$5,200", project: "API Integration", status: "Pending", team: "Backend Team" },
-  { budget: "$3,800", project: "Database Migration", status: "Paid", team: "DevOps Team" },
-  { budget: "$7,200", project: "User Dashboard", status: "Paid", team: "UX Team" },
-  { budget: "$2,100", project: "Security Audit", status: "Failed", team: "Security Team" },
-];
-
-const statusDotClass = {
-  Failed: "bg-destructive",
-  Paid: "bg-success",
-  Pending: "bg-warning",
-  Unpaid: "bg-muted-foreground/72",
-};
-
-function StatusBadge(props) {
-  return (
-    <span class="inline-flex h-6 items-center gap-1.5 rounded-md border border-border/72 bg-muted/20 px-2 font-medium text-foreground text-sm leading-none shadow-xs/5">
-      <span class={\`size-2 rounded-full \${statusDotClass[props.status]}\`} />
-      {props.status}
-    </span>
-  );
-}
-
-export function Component() {
-  return (
-    <CardFrame>
-      <CardFrameHeader>
-        <CardFrameTitle>Project Budget</CardFrameTitle>
-        <CardFrameDescription>CardFrame keeps the table clipped inside a framed surface.</CardFrameDescription>
-      </CardFrameHeader>
-      <TableContainer variant="card">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead scope="col">Project</TableHead>
-              <TableHead scope="col">Status</TableHead>
-              <TableHead scope="col">Team</TableHead>
-              <TableHead class="text-right" scope="col">
-                Budget
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow>
-                <TableCell class="font-medium text-foreground">{row.project}</TableCell>
-                <TableCell>
-                  <StatusBadge status={row.status} />
-                </TableCell>
-                <TableCell>{row.team}</TableCell>
-                <TableCell class="text-right font-medium tabular-nums">{row.budget}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </CardFrame>
-  );
-}`;
-
 export const cardFrameTableExample = defineCodeExample({
-  code: cardFrameTableExampleCode,
-  component: CardFrameTableExample,
+  code: cardFrameTableExampleCodeSource,
+  component: CardFrameTableExampleSourceComponent,
   description: "Card table inside CardFrame with the existing table-container clipping hook.",
   id: "card-frame",
   title: "CardFrame Table",
   variant: "full",
 });
 
-export const tableExamples = [
-  tableExample,
-  cardTableExample,
-  cardFrameTableExample,
-] satisfies readonly CodeExample[];
+export const tableExamples = [tableExample, cardFrameTableExample] satisfies readonly CodeExample[];
+
 export const tableUsageCode = `import {
   Table,
   TableBody,
@@ -2810,75 +878,18 @@ export function Component() {
   );
 }`;
 
-export function FieldExample() {
-  return (
-    <Field class="w-full max-w-sm" required>
-      <FieldLabel>Email</FieldLabel>
-      <FieldControl placeholder="name@example.com" type="email" />
-      <FieldDescription>Used for registry review notifications.</FieldDescription>
-    </Field>
-  );
-}
-
-export function FieldInvalidExample() {
-  return (
-    <Field class="w-full max-w-sm" invalid required>
-      <FieldLabel>Registry slug</FieldLabel>
-      <FieldControl value="Command Menu" />
-      <FieldDescription>Use a lowercase URL-safe component slug.</FieldDescription>
-      <FieldError>Use command-menu instead.</FieldError>
-    </Field>
-  );
-}
-
-export const fieldExampleCode = `import {
-  Field,
-  FieldControl,
-  FieldDescription,
-  FieldLabel,
-} from "@/components/ui/field";
-
-export function Component() {
-  return (
-    <Field class="w-full max-w-sm" required>
-      <FieldLabel>Email</FieldLabel>
-      <FieldControl placeholder="name@example.com" type="email" />
-      <FieldDescription>Used for registry review notifications.</FieldDescription>
-    </Field>
-  );
-}`;
-
-export const fieldInvalidExampleCode = `import {
-  Field,
-  FieldControl,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "@/components/ui/field";
-
-export function Component() {
-  return (
-    <Field class="w-full max-w-sm" invalid required>
-      <FieldLabel>Registry slug</FieldLabel>
-      <FieldControl value="Command Menu" />
-      <FieldDescription>Use a lowercase URL-safe component slug.</FieldDescription>
-      <FieldError>Use command-menu instead.</FieldError>
-    </Field>
-  );
-}`;
-
 export const fieldExamples = [
   defineCodeExample({
-    code: fieldExampleCode,
-    component: FieldExample,
+    code: fieldExampleCodeSource,
+    component: FieldExampleSourceComponent,
     description: "Label, control, and description wired through Keystone Core field semantics.",
     id: "basic",
     title: "Basic Field",
     variant: "centered",
   }),
   defineCodeExample({
-    code: fieldInvalidExampleCode,
-    component: FieldInvalidExample,
+    code: fieldInvalidExampleCodeSource,
+    component: FieldInvalidExampleSourceComponent,
     description: "Invalid field state with error messaging.",
     id: "invalid",
     title: "Invalid Field",
@@ -2897,62 +908,9 @@ export function Component() {
   );
 }`;
 
-function createPreviewForm() {
-  const [submitted, setSubmitted] = createSignal(false);
-  return {
-    handleSubmit: () => setSubmitted(true),
-    state: {
-      canSubmit: true,
-      get isSubmitted() {
-        return submitted();
-      },
-    },
-  };
-}
-
-export function TanStackFormExample() {
-  const form = createPreviewForm();
-
-  return (
-    <TanStackForm form={form} class="w-full max-w-sm rounded-lg border bg-background p-4">
-      <Field>
-        <FieldLabel>Workspace name</FieldLabel>
-        <FieldControl value="Keystone UI" />
-      </Field>
-      <TanStackFormErrors form={form} />
-      <TanStackFormSubmit
-        form={form}
-        class="inline-flex h-8.5 items-center justify-center rounded-lg bg-primary px-3 font-medium text-primary-foreground text-sm shadow-xs/5"
-      >
-        Save workspace
-      </TanStackFormSubmit>
-    </TanStackForm>
-  );
-}
-
-export const tanstackFormExampleCode = `import { Field, FieldControl, FieldLabel } from "@/components/ui/field";
-import {
-  TanStackForm,
-  TanStackFormErrors,
-  TanStackFormSubmit,
-} from "@/components/ui/tanstack-form";
-
-export function Component(props: { form: unknown }) {
-  return (
-    <TanStackForm form={props.form}>
-      <Field>
-        <FieldLabel>Workspace name</FieldLabel>
-        <FieldControl name="workspace" />
-      </Field>
-      <TanStackFormErrors form={props.form} />
-      <TanStackFormSubmit form={props.form}>Save workspace</TanStackFormSubmit>
-    </TanStackForm>
-  );
-}`;
-
 export const tanstackFormExample = defineCodeExample({
-  code: tanstackFormExampleCode,
-  component: TanStackFormExample,
+  code: tanstackFormExampleCodeSource,
+  component: TanStackFormExampleSourceComponent,
   description: "Native form shell that delegates submission and state to TanStack Form.",
   id: "basic",
   title: "Form Shell",
@@ -2960,6 +918,7 @@ export const tanstackFormExample = defineCodeExample({
 });
 
 export const tanstackFormExamples = [tanstackFormExample] satisfies readonly CodeExample[];
+
 export const tanstackFormUsageCode = `import { TanStackForm, TanStackFormSubmit } from "@/components/ui/tanstack-form";
 
 export function Component(props: { form: unknown }) {
@@ -2971,89 +930,9 @@ export function Component(props: { form: unknown }) {
   );
 }`;
 
-const commandMenuItems = [
-  {
-    value: "open-dashboard",
-    label: "Open dashboard",
-    description: "Jump to the workspace overview.",
-    group: "Navigation",
-    shortcutLabel: "⌘D",
-  },
-  {
-    value: "review-registry",
-    label: "Review registry item",
-    description: "Open the current component QA checklist.",
-    group: "Actions",
-    shortcutLabel: "⌘R",
-  },
-  {
-    value: "copy-install",
-    label: "Copy install command",
-    description: "Copy the shadcn registry add command.",
-    group: "Actions",
-    shortcutLabel: "⌘⇧C",
-  },
-];
-
-export function CommandMenuExample() {
-  return (
-    <div class="w-full max-w-xl rounded-2xl border bg-popover p-2 shadow-lg/5">
-      <div class="px-3 py-2 text-muted-foreground text-sm">Search workspace commands</div>
-      <div class="rounded-xl border bg-background p-2">
-        <div class="px-2 py-1.5 font-medium text-muted-foreground text-xs">Navigation</div>
-        <div class="grid gap-1">
-          {commandMenuItems.map((item) => (
-            <div class="grid min-h-9 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-sm px-2 py-1.5 text-sm first:bg-accent first:text-accent-foreground">
-              <span class="min-w-0">
-                <span class="block truncate font-medium">{item.label}</span>
-                <span class="block truncate text-muted-foreground/72 text-xs">
-                  {item.description}
-                </span>
-              </span>
-              <kbd class="text-muted-foreground/72 text-xs tracking-widest">
-                {item.shortcutLabel}
-              </kbd>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export const commandMenuExampleCode = `import { CommandMenu, type CommandMenuItemData } from "@/components/ui/command-menu";
-
-const items = [
-  {
-    value: "open-dashboard",
-    label: "Open dashboard",
-    description: "Jump to the workspace overview.",
-    group: "Navigation",
-    shortcutLabel: "⌘D",
-  },
-  {
-    value: "review-registry",
-    label: "Review registry item",
-    description: "Open the current component QA checklist.",
-    group: "Actions",
-    shortcutLabel: "⌘R",
-  },
-] satisfies readonly CommandMenuItemData[];
-
-export function Component() {
-  return (
-    <CommandMenu
-      hotkeys={false}
-      inputPlaceholder="Search workspace commands"
-      items={items}
-      trigger={<span>Open command menu</span>}
-    />
-  );
-}`;
-
 export const commandMenuExample = defineCodeExample({
-  code: commandMenuExampleCode,
-  component: CommandMenuExample,
+  code: commandMenuExampleCodeSource,
+  component: CommandMenuExampleSourceComponent,
   description: "Command menu trigger with grouped searchable actions.",
   id: "basic",
   title: "Basic Command Menu",
@@ -3061,6 +940,7 @@ export const commandMenuExample = defineCodeExample({
 });
 
 export const commandMenuExamples = [commandMenuExample] satisfies readonly CodeExample[];
+
 export const commandMenuUsageCode = `import { CommandMenu } from "@/components/ui/command-menu";
 
 export function Component() {

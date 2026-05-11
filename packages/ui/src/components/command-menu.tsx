@@ -8,7 +8,6 @@ import {
   type CommandItemTextProps as CoreCommandItemTextProps,
   type CommandListboxProps as CoreCommandListboxProps,
   type CommandPortalProps as CoreCommandPortalProps,
-  type CommandPositionerProps as CoreCommandPositionerProps,
   type CommandRootProps as CoreCommandRootProps,
   type CommandTriggerProps as CoreCommandTriggerProps,
 } from "@keystone-ui/core/command";
@@ -19,16 +18,26 @@ import {
   type RegisterableHotkey,
 } from "@tanstack/solid-hotkeys";
 import { useSelector } from "@tanstack/solid-store";
-import { For, Show, createMemo, splitProps, type JSX, type ParentProps } from "solid-js";
+import {
+  For,
+  Show,
+  createEffect,
+  createMemo,
+  onCleanup,
+  splitProps,
+  type JSX,
+  type ParentProps,
+} from "solid-js";
 import {
   createCommandStore,
   type CommandStore,
   type CommandStoreCommand,
   type CommandStoreState,
-} from "@/components/ui/command-store";
+} from "./command-store";
 import { cn } from "@/lib/cn";
 
 export type CommandMenuItemData = Omit<CommandStoreCommand, "id"> & {
+  icon?: JSX.Element;
   value: string;
   shortcut?: RegisterableHotkey;
   shortcutLabel?: string;
@@ -61,10 +70,12 @@ export type CommandMenuProps = Omit<CoreCommandRootProps, "children" | "inputVal
   footer?: JSX.Element;
   footerClass?: string;
   hotkeys?: boolean | CommandMenuHotkeysOptions;
+  inline?: boolean;
   inputClass?: string;
   inputPlaceholder?: string;
   items: readonly CommandMenuItemData[];
   listboxClass?: string;
+  maxItems?: number;
   onSelect?: (item: CommandMenuItemData) => void;
   portal?: CommandMenuPortalProps;
   panelClass?: string;
@@ -81,10 +92,11 @@ export type CommandMenuRootProps = CoreCommandRootProps;
 export type CommandMenuTriggerProps = CoreCommandTriggerProps;
 export type CommandMenuInputProps = CoreCommandInputProps;
 export type CommandMenuPortalProps = CoreCommandPortalProps;
-export type CommandMenuPositionerProps = CoreCommandPositionerProps;
+export type CommandMenuPositionerProps = ParentProps<JSX.HTMLAttributes<HTMLDivElement>>;
 export type CommandMenuBackdropProps = JSX.HTMLAttributes<HTMLDivElement>;
 export type CommandMenuContentProps = CoreCommandContentProps & {
   backdropClass?: string;
+  inline?: boolean;
   portal?: CommandMenuPortalProps;
   positionerClass?: string;
   showBackdrop?: boolean;
@@ -94,6 +106,8 @@ export type CommandMenuPanelProps = ParentProps<JSX.HTMLAttributes<HTMLDivElemen
 export type CommandMenuGroupProps = CoreCommandGroupProps;
 export type CommandMenuGroupLabelProps = CoreCommandGroupLabelProps;
 export type CommandMenuItemProps = CoreCommandItemProps & {
+  icon?: JSX.Element;
+  reserveIconColumn?: boolean;
   shortcut?: JSX.Element;
 };
 export type CommandMenuItemTextProps = CoreCommandItemTextProps;
@@ -153,10 +167,12 @@ export function CommandMenu(props: CommandMenuProps) {
     "footer",
     "footerClass",
     "hotkeys",
+    "inline",
     "inputClass",
     "inputPlaceholder",
     "items",
     "listboxClass",
+    "maxItems",
     "onSelect",
     "portal",
     "panelClass",
@@ -171,11 +187,27 @@ export function CommandMenu(props: CommandMenuProps) {
   const commandStore = local.store ?? createCommandMenuStore({ open: rootProps.defaultOpen });
   const open = useSelector(commandStore.store, (state) => state.open);
   const query = useSelector(commandStore.store, (state) => state.query);
-  const visibleItems = createMemo(
-    () => local.filteredItems ?? filterCommandItems(local.items, query(), local.filter),
-  );
+  const visibleItems = createMemo(() => {
+    const items = local.filteredItems ?? filterCommandItems(local.items, query(), local.filter);
+    return local.maxItems === undefined ? items : items.slice(0, local.maxItems);
+  });
+  const hasItemIcons = createMemo(() => visibleItems().some((item) => item.icon != null));
   const groups = createMemo(() => groupCommandItems(visibleItems()));
   const hotkeys = createMemo(() => normalizeHotkeys(local.hotkeys));
+
+  createEffect(() => {
+    if (!open() || typeof document === "undefined") return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || !commandStore.store.state.open) return;
+
+      commandStore.close();
+      rootProps.onOpenChange?.(false, { event, reason: "escape" });
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    onCleanup(() => document.removeEventListener("keydown", onKeyDown));
+  });
 
   const selectItem = (item: CommandMenuItemData) => {
     if (item.disabled) return;
@@ -271,6 +303,7 @@ export function CommandMenu(props: CommandMenuProps) {
       <CommandMenuContent
         backdropClass={local.backdropClass}
         class={local.contentClass}
+        inline={local.inline}
         portal={local.portal}
         positionerClass={local.positionerClass}
         showBackdrop={local.showBackdrop}
@@ -296,7 +329,9 @@ export function CommandMenu(props: CommandMenuProps) {
                         <CommandMenuItem
                           disabled={item.disabled}
                           group={group.value}
+                          icon={item.icon}
                           label={item.label}
+                          reserveIconColumn={hasItemIcons()}
                           value={item.value}
                           shortcut={
                             item.shortcut ? (
@@ -387,7 +422,7 @@ export function CommandMenuTrigger(props: CommandMenuTriggerProps) {
 }
 
 export function CommandMenuInput(props: CommandMenuInputProps) {
-  const [local, rest] = splitProps(props, ["class"]);
+  const [local, rest] = splitProps(props, ["autofocus", "class"]);
   return (
     <div
       data-scope="ui-command-menu"
@@ -400,12 +435,13 @@ export function CommandMenuInput(props: CommandMenuInputProps) {
         data-scope="ui-command-menu"
         data-part="input-icon"
         data-slot="command-menu-input-icon"
-        class="pointer-events-none absolute top-[calc(50%+1px)] z-10 ms-[calc(--spacing(3)-1px)] flex size-5 -translate-y-1/2 items-center justify-center text-foreground/72 sm:size-4.5"
+        class="pointer-events-none absolute top-[calc(50%+1px)] z-10 ms-[calc(--spacing(3.5)-1px)] flex size-5 -translate-y-1/2 items-center justify-center text-foreground/72 sm:size-4.5"
       >
         <SearchIcon />
       </span>
       <CoreCommand.Input
         {...rest}
+        autofocus={local.autofocus ?? true}
         data-slot="command-menu-input"
         class={cn(
           classes(
@@ -416,7 +452,7 @@ export function CommandMenuInput(props: CommandMenuInputProps) {
             "appearance-none",
             "border-0",
             "bg-transparent",
-            "ps-[calc(--spacing(8.5)-1px)]",
+            "ps-[calc(--spacing(12.5)-1px)]",
             "pe-3",
             "text-base",
             "text-foreground",
@@ -447,13 +483,31 @@ export function CommandMenuPortal(props: CommandMenuPortalProps) {
 }
 
 export function CommandMenuPositioner(props: CommandMenuPositionerProps) {
-  const [local, rest] = splitProps(props, ["class"]);
+  const [local, rest] = splitProps(props, ["children", "class"]);
   return (
-    <CoreCommand.Positioner
+    <div
       {...rest}
+      data-scope="ui-command-menu"
+      data-part="positioner"
       data-slot="command-menu-positioner"
-      class={cn(classes("ui-command-menu-positioner", "z-50"), local.class)}
-    />
+      class={cn(
+        classes(
+          "ui-command-menu-positioner",
+          "fixed",
+          "inset-0",
+          "z-50",
+          "flex",
+          "flex-col",
+          "items-center",
+          "px-4",
+          "py-[max(1rem,4vh)]",
+          "sm:py-[10vh]",
+        ),
+        local.class,
+      )}
+    >
+      {local.children}
+    </div>
   );
 }
 
@@ -489,60 +543,67 @@ export function CommandMenuContent(props: CommandMenuContentProps) {
     "backdropClass",
     "children",
     "class",
+    "inline",
     "portal",
     "positionerClass",
     "showBackdrop",
   ]);
+  const content = (
+    <CoreCommand.Content
+      {...rest}
+      positioned
+      data-slot="command-menu-content"
+      class={cn(
+        classes(
+          "ui-command-menu-content",
+          "relative",
+          "flex",
+          "max-h-105",
+          "min-h-0",
+          "w-full",
+          "min-w-0",
+          "max-w-xl",
+          "origin-(--transform-origin)",
+          "flex-col",
+          "overflow-hidden",
+          "rounded-2xl",
+          "border",
+          "border-border",
+          "bg-popover",
+          "text-popover-foreground",
+          "shadow-lg/5",
+          "outline-none",
+          "transition-[scale,opacity]",
+          "duration-150",
+          "ease-[cubic-bezier(0.23,1,0.32,1)]",
+          "will-change-[scale,opacity]",
+          "before:pointer-events-none",
+          "before:absolute",
+          "before:inset-0",
+          "before:rounded-[calc(var(--radius-2xl)-1px)]",
+          "before:bg-muted/72",
+          "before:shadow-[0_1px_--theme(--color-black/4%)]",
+          "data-ending-style:scale-98",
+          "data-starting-style:scale-98",
+          "data-ending-style:opacity-0",
+          "data-starting-style:opacity-0",
+          "dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
+        ),
+        local.class,
+      )}
+    >
+      {local.children}
+    </CoreCommand.Content>
+  );
+
+  if (local.inline) return content;
+
   return (
     <CommandMenuPortal {...local.portal}>
       <Show when={local.showBackdrop !== false}>
         <CommandMenuBackdrop class={local.backdropClass} />
       </Show>
-      <CommandMenuPositioner class={local.positionerClass}>
-        <CoreCommand.Content
-          {...rest}
-          data-slot="command-menu-content"
-          class={cn(
-            classes(
-              "ui-command-menu-content",
-              "relative",
-              "flex",
-              "max-h-105",
-              "min-h-0",
-              "w-[min(calc(100vw-2rem),36rem)]",
-              "min-w-0",
-              "max-w-xl",
-              "origin-(--transform-origin)",
-              "flex-col",
-              "rounded-2xl",
-              "border",
-              "bg-popover",
-              "not-dark:bg-clip-padding",
-              "text-popover-foreground",
-              "shadow-lg/5",
-              "outline-none",
-              "transition-[scale,opacity]",
-              "duration-150",
-              "ease-[cubic-bezier(0.23,1,0.32,1)]",
-              "will-change-[scale,opacity]",
-              "before:pointer-events-none",
-              "before:absolute",
-              "before:inset-0",
-              "before:rounded-[calc(var(--radius-2xl)-1px)]",
-              "before:bg-muted/72",
-              "before:shadow-[0_1px_--theme(--color-black/4%)]",
-              "data-ending-style:scale-98",
-              "data-starting-style:scale-98",
-              "data-ending-style:opacity-0",
-              "data-starting-style:opacity-0",
-              "dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
-            ),
-            local.class,
-          )}
-        >
-          {local.children}
-        </CoreCommand.Content>
-      </CommandMenuPositioner>
+      <CommandMenuPositioner class={local.positionerClass}>{content}</CommandMenuPositioner>
     </CommandMenuPortal>
   );
 }
@@ -583,20 +644,17 @@ export function CommandMenuPanel(props: CommandMenuPanelProps) {
           "relative",
           "-mx-px",
           "min-h-0",
-          "rounded-t-xl",
+          "flex-1",
           "border",
           "border-b-0",
+          "border-border",
           "bg-popover",
           "bg-clip-padding",
           "shadow-xs/5",
           "[clip-path:inset(0_1px)]",
-          "not-has-[+[data-slot=command-menu-footer]]:-mb-px",
-          "not-has-[+[data-slot=command-menu-footer]]:rounded-b-2xl",
+          "not-has-[+[data-slot=command-menu-footer]]:border-b",
+          "not-has-[+[data-slot=command-menu-footer]]:rounded-b-[calc(var(--radius-2xl)-1px)]",
           "not-has-[+[data-slot=command-menu-footer]]:[clip-path:inset(0_1px_1px_1px_round_0_0_calc(var(--radius-2xl)-1px)_calc(var(--radius-2xl)-1px))]",
-          "before:pointer-events-none",
-          "before:absolute",
-          "before:inset-0",
-          "before:rounded-t-[calc(var(--radius-xl)-1px)]",
         ),
         local.class,
       )}
@@ -610,7 +668,7 @@ export function CommandMenuGroup(props: CommandMenuGroupProps) {
     <CoreCommand.Group
       {...rest}
       data-slot="command-menu-group"
-      class={cn(classes("ui-command-menu-group", "[[role=group]+&]:mt-2"), local.class)}
+      class={cn(classes("ui-command-menu-group", "mt-2", "first:mt-0"), local.class)}
     />
   );
 }
@@ -637,7 +695,13 @@ export function CommandMenuGroupLabel(props: CommandMenuGroupLabelProps) {
 }
 
 export function CommandMenuItem(props: CommandMenuItemProps) {
-  const [local, rest] = splitProps(props, ["children", "class", "shortcut"]);
+  const [local, rest] = splitProps(props, [
+    "children",
+    "class",
+    "icon",
+    "reserveIconColumn",
+    "shortcut",
+  ]);
   return (
     <CoreCommand.Item
       {...rest}
@@ -646,24 +710,23 @@ export function CommandMenuItem(props: CommandMenuItemProps) {
         classes(
           "ui-command-menu-item",
           "grid",
-          "min-h-9",
-          "cursor-pointer",
+          "min-h-10",
+          "cursor-default",
           "select-none",
           "grid-cols-[minmax(0,1fr)_auto]",
+          "has-[[data-slot=command-menu-item-icon]]:grid-cols-[auto_minmax(0,1fr)_auto]",
           "items-center",
           "gap-3",
-          "rounded-sm",
+          "rounded-md",
           "px-2",
           "py-1.5",
-          "text-base",
+          "text-sm",
           "text-foreground",
           "outline-none",
           "data-disabled:pointer-events-none",
           "data-highlighted:bg-accent",
           "data-highlighted:text-accent-foreground",
           "data-disabled:opacity-64",
-          "sm:min-h-8",
-          "sm:text-sm",
           "[&_svg:not([class*='size-'])]:size-4.5",
           "sm:[&_svg:not([class*='size-'])]:size-4",
           "[&_svg]:pointer-events-none",
@@ -672,6 +735,22 @@ export function CommandMenuItem(props: CommandMenuItemProps) {
         local.class,
       )}
     >
+      <Show when={local.icon || local.reserveIconColumn}>
+        <span
+          aria-hidden={local.icon ? undefined : "true"}
+          data-scope="ui-command-menu"
+          data-part="item-icon"
+          data-slot="command-menu-item-icon"
+          class={cn(
+            "col-start-1 flex size-8 items-center justify-center",
+            local.icon
+              ? "rounded-md border border-border bg-muted text-muted-foreground/80"
+              : "invisible",
+          )}
+        >
+          {local.icon}
+        </span>
+      </Show>
       {local.children}
       {local.shortcut}
     </CoreCommand.Item>
@@ -692,6 +771,7 @@ export function CommandMenuItemText(props: CommandMenuItemTextProps) {
           "min-w-0",
           "flex-col",
           "gap-0.5",
+          "in-[[data-slot=command-menu-item]:has([data-slot=command-menu-item-icon])]:col-start-2",
         ),
         local.class,
       )}
@@ -717,6 +797,7 @@ export function CommandMenuShortcut(props: CommandMenuShortcutProps) {
           "text-muted-foreground/72",
           "text-xs",
           "tracking-widest",
+          "in-[[data-slot=command-menu-item]:has([data-slot=command-menu-item-icon])]:col-start-3",
         ),
         local.class,
       )}

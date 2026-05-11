@@ -184,7 +184,8 @@ export const componentDocsOverrides = {
     apiItems: [
       {
         name: "DatePicker",
-        description: "Root owner for selected date, popup state, and calendar month state.",
+        description:
+          "Root owner for selected date, popup state, calendar month state, and popup positioning.",
       },
       {
         name: "DatePickerTrigger",
@@ -192,7 +193,8 @@ export const componentDocsOverrides = {
       },
       {
         name: "DatePickerContent",
-        description: "Calendar popup content with grid navigation and selectable day cells.",
+        description:
+          "Portaled calendar popup content with grid navigation and selectable day cells.",
       },
       {
         name: "Calendar",
@@ -437,30 +439,19 @@ export const componentDocsOverrides = {
     examples: examples.breadcrumbExamples,
   },
   table: {
-    description: "Presentational native table anatomy with compact and card-style variants.",
-    maturity: "Experimental",
+    description: "Presentational native table anatomy for readable data.",
+    maturity: "Stable",
     previewAlign: "start",
     usageCode: examples.tableUsageCode,
     apiItems: [
       {
         name: "TableContainer",
         description:
-          "Overflow wrapper that carries default/card variant context through data attributes.",
-        props: [
-          { name: "class", type: "string" },
-          { name: "variant", type: '"default" | "card"', default: '"default"' },
-        ],
+          "Overflow wrapper that carries table container styling and CardFrame clipping hooks.",
+        props: [{ name: "class", type: "string" }],
         examples: [
           {
             code: `<TableContainer>
-  <Table>
-    <TableHeader>...</TableHeader>
-    <TableBody>...</TableBody>
-  </Table>
-</TableContainer>`,
-          },
-          {
-            code: `<TableContainer variant="card">
   <Table>
     <TableHeader>...</TableHeader>
     <TableBody>...</TableBody>
@@ -472,11 +463,8 @@ export const componentDocsOverrides = {
       {
         name: "Table",
         description:
-          "Native table root with Keystone density, caption, tabular-number styling, and optional variant override.",
-        props: [
-          { name: "class", type: "string" },
-          { name: "variant", type: '"default" | "card"', default: '"default"' },
-        ],
+          "Native table root with Keystone density, caption, and tabular-number styling.",
+        props: [{ name: "class", type: "string" }],
         examples: [
           {
             code: `<Table>
@@ -649,7 +637,7 @@ export const componentDocsOverrides = {
   },
   "command-menu": {
     description: "A command palette surface with searchable actions and app-level shortcut hooks.",
-    maturity: "Experimental",
+    maturity: "Stable",
     usageCode: examples.commandMenuUsageCode,
     apiItems: [
       {
