@@ -25,6 +25,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/label.json",
+    "maturity": "Stable",
     "customization": "Style labels through ui-label and compose them into field shells when helper text or errors are needed.",
     "sourceFiles": [
       "packages/ui/src/components/label.tsx"

@@ -31,6 +31,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/tabs.json",
+    "maturity": "Stable",
     "customization": "Style the generated wrappers through ui-tabs classes while Keystone keeps tablist roles, selection state, keyboard navigation, ARIA relationships, measured indicator variables, dynamic trigger removal fallback, panel focus heuristics, and data attributes.",
     "sourceFiles": [
       "packages/ui/src/components/tabs.tsx"

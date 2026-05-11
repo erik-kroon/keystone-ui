@@ -30,6 +30,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/select.json",
+    "maturity": "Stable",
     "customization": "Style trigger, value, popup surface, listbox, groups, items, indicators, labels, and separators through ui-select classes, Core data attributes, and neutral data-slot hooks.",
     "sourceFiles": [
       "packages/ui/src/components/select.tsx"

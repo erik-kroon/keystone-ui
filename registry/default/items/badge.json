@@ -27,6 +27,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/badge.json",
+    "maturity": "Stable",
     "customization": "Customize visual treatment through badgeClass, ui-badge classes, data-slot=badge, and data-variant/data-size attributes.",
     "sourceFiles": [
       "packages/ui/src/components/badge.tsx"

@@ -29,6 +29,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/tooltip.json",
+    "maturity": "Stable",
     "customization": "Style the generated wrappers through ui-tooltip classes while Core owns positioning and trigger/content relationships.",
     "sourceFiles": [
       "packages/ui/src/components/tooltip.tsx"

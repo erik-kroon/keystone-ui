@@ -30,6 +30,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/switch.json",
+    "maturity": "Stable",
     "customization": "Style the generated root, control, thumb, and hidden input through ui-switch classes, Core data attributes, CSS thumb-size variable, and neutral data-slot hooks while Keystone keeps role=switch, checked state, hidden input, form reset, validation, and preventable toggle behavior.",
     "sourceFiles": [
       "packages/ui/src/components/switch.tsx"

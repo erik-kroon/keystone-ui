@@ -27,6 +27,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/card.json",
+    "maturity": "Stable",
     "customization": "Customize each part through ui-card classes, reference-style data-slot values, and stable data-part values across card and card-frame anatomy.",
     "sourceFiles": [
       "packages/ui/src/components/card.tsx"

@@ -74,6 +74,7 @@ export const registryDocItems = [
       "disclosure",
       "keystone"
     ],
+    "maturity": "Stable",
     "name": "accordion",
     "parity": {
       "baseUi": "Thin vertical covers Root/Item/Header/Trigger/Panel-style anatomy, single and multiple value state, disabled items, trigger ARIA, vertical keyboard movement, hidden-until-found behavior, and UI metadata. Gaps: measured panel CSS variables, transition lifecycle status, RTL horizontal keyboard behavior, and broader browser-find edge cases remain follow-up work.",
@@ -404,6 +405,7 @@ export const registryDocItems = [
       "message"
     ],
     "limitations": "Alert does not manage dismissal, timers, focus, or notification queues. Use Toast or app-owned state for dismissible or time-based feedback.",
+    "maturity": "Stable",
     "name": "alert",
     "parity": {
       "visualReference": "Matches the Keystone design-system Alert contract: grid layout, rounded-lg border surface, compact padding, one-rem icon column, semantic tone variants, description spacing, and responsive action placement.",
@@ -515,6 +517,7 @@ export const registryDocItems = [
       "icon"
     ],
     "limitations": "Button intentionally remains a presentational native button rather than a polymorphic link or toggle primitive; LinkButton, IconButton, Toggle, and ToggleGroup remain separate end-state surfaces.",
+    "maturity": "Stable",
     "name": "button",
     "parity": {
       "visualReference": "Matches the reference Button visual contract in Solid source form: broad variant and icon-size vocabulary, focus-visible ring classes, pointer-coarse target expansion, SVG normalization, loading indicator slot, data-loading styling, and default type=button semantics. Intentional differences: Solid class/classList conventions, no Base UI render prop, and solid/md compatibility aliases for the existing Keystone registry surface.",
@@ -571,6 +574,7 @@ export const registryDocItems = [
       "keystone"
     ],
     "limitations": "Drag gestures and app-specific field copy remain composition concerns; Keystone Core owns the primitive state and form contract while UI owns the generated visual shell.",
+    "maturity": "Stable",
     "name": "switch",
     "parity": {
       "visualReference": "Matches the reference switch visual shape in Solid source form: compact track, thumb-size CSS variable, checked/unchecked track colors, animated thumb translation, active thumb stretch, focus ring, disabled opacity, and data-slot hooks.",
@@ -629,6 +633,7 @@ export const registryDocItems = [
       "keystone"
     ],
     "limitations": "Group-level checkbox coordination and app-specific field copy remain composition concerns; Keystone Core owns the primitive state and form contract while UI owns the generated visual shell.",
+    "maturity": "Stable",
     "name": "checkbox",
     "parity": {
       "visualReference": "Matches the reference checkbox visual shape in Solid source form: compact square control, subtle surface treatment, checked and indeterminate indicator states, focus/invalid rings, disabled opacity, data-slot hooks, and responsive icon sizing.",
@@ -683,6 +688,7 @@ export const registryDocItems = [
       "checked",
       "keystone"
     ],
+    "maturity": "Stable",
     "name": "radio-group",
     "parity": {
       "baseUi": "Thin vertical covers controlled and uncontrolled value state, disabled items, radiogroup ARIA, roving tabindex, RTL-aware arrow/Home/End keyboard selection, hidden radio submission, hidden-input state metadata, and UI wrapper metadata. Gaps: toolbar/nested coordination, richer label composition, form validation edge cases, and hydration edge tests remain follow-up work.",
@@ -735,6 +741,7 @@ export const registryDocItems = [
       "file"
     ],
     "limitations": "Standalone Input does not register with Core Field context. Use FieldControl for automatic Field label, description, error, validation, reset, and state wiring.",
+    "maturity": "Stable",
     "name": "input",
     "parity": {
       "visualReference": "Matches reference Input visual shape in Solid source form: control wrapper, native input part, sm/default/lg sizes, numeric native size passthrough, invalid/focus/disabled wrapper selectors, search decoration reset classes, and file input text/file styling. Intentional difference: no Base UI Input primitive dependency because the native input provides the needed semantics.",
@@ -882,6 +889,7 @@ export const registryDocItems = [
       "field",
       "form"
     ],
+    "maturity": "Stable",
     "name": "label",
     "parity": {
       "baseUi": "Thin UI label aligns with Base UI Field Label semantics by rendering a native label and styling hook. Gaps: automatic control registration, generated for/id wiring, required marker policy, and disabled propagation remain follow-up work.",
@@ -1706,6 +1714,7 @@ export const registryDocItems = [
       "keystone"
     ],
     "limitations": "Scroll arrow affordances and object-value item helpers are not reimplemented in UI; Keystone Core owns the primitive contract and UI keeps those as future Core/API decisions.",
+    "maturity": "Stable",
     "name": "select",
     "parity": {
       "visualReference": "Matches the reference select visual shape in Solid source form: dense trigger sizing, value truncation, popup surface, listbox padding, grouped options, item indicator column, separator, labels, data-slot hooks, and pointer/focus/invalid styling.",
@@ -2116,6 +2125,7 @@ export const registryDocItems = [
       "kobalte",
       "base-ui"
     ],
+    "maturity": "Stable",
     "name": "date-picker",
     "parity": {
       "baseUi": "Covers calendar grid and popup trigger contract, selected date state, range state, unavailable date policy, disabled bounds, locale week starts, month navigation, keyboard movement, ARIA roles, and UI metadata. Gaps: date field segment editing, validation/form semantics, multi-month rendering, focus restoration depth, and full locale calendar systems remain follow-up work.",
@@ -2242,6 +2252,7 @@ export const registryDocItems = [
       "navigation",
       "keystone"
     ],
+    "maturity": "Stable",
     "name": "tabs",
     "parity": {
       "baseUi": "Covers controlled and uncontrolled value state, disabled triggers, horizontal and vertical roving focus, RTL-aware horizontal keys, automatic/manual activation, tablist/tabpanel ARIA, measured indicator CSS variables, dynamic removal focus/selection fallback, force-mounted panels, styled generated source, UI wrapper metadata, and behavior tests. Intentional gaps: app-owned delete/closable tab coordination, activation latency policy for heavy panels, and broader touch/cursor tests.",
@@ -2315,6 +2326,7 @@ export const registryDocItems = [
       "keystone"
     ],
     "limitations": "Filtering strategy, async loading state ownership, chips container composition, and object-value helpers remain app-level composition decisions; Keystone Core owns the primitive combobox contract while UI keeps styling and ergonomic wrappers.",
+    "maturity": "Stable",
     "name": "combobox",
     "parity": {
       "visualReference": "Matches the reference combobox visual shape in Solid source form: dense input sizing, optional start add-on, trigger and clear affordances, popup surface, listbox padding, grouped options, item indicator column, empty/status rows, separator, data-slot hooks, and pointer/focus/invalid styling.",
@@ -3640,6 +3652,7 @@ export const registryDocItems = [
       "surface"
     ],
     "limitations": "Card intentionally does not create roles, headings, focus behavior, keyboard behavior, or interactive-card semantics. Use native buttons/links inside cards or future LinkButton/IconButton surfaces for actions.",
+    "maturity": "Stable",
     "name": "card",
     "parity": {
       "visualReference": "Matches the reference Card source shape in Solid form: root surface styling, CardPanel/CardContent alias content area, CardAction, CardFrame, frame header/title/description/action/footer, reference data-slot names, nested card clipping variables, and table-container frame affordances. Intentional difference: no Base UI render prop until Keystone has a public Solid-native polymorphic UI convention.",
@@ -3937,6 +3950,7 @@ export const registryDocItems = [
       "metadata"
     ],
     "limitations": "Badge intentionally remains a non-interactive presentational UI component. Removable badges, notification counters with live announcements, and link/action badges should be separate components composed from native buttons, links, or future primitives.",
+    "maturity": "Stable",
     "name": "badge",
     "parity": {
       "visualReference": "Matches the reference badge source contract in Solid form: compact inline-flex shape, sm/default/lg sizes, primary/destructive filled variants, soft info/success/warning/error variants, muted and outline variants, icon normalization, stable data-slot, and source-owned class helper export. Intentional differences: Solid class conventions, no React Slot/asChild API, and solid/md aliases retained for existing Keystone source.",
@@ -4215,6 +4229,7 @@ export const registryDocItems = [
       "disclosure",
       "keystone"
     ],
+    "maturity": "Stable",
     "name": "collapsible",
     "parity": {
       "baseUi": "Thin vertical covers controlled and uncontrolled disclosure state, Root/Trigger/Panel-style anatomy, trigger ARIA, data-state hooks, and hidden-until-found browser find reveal behavior. Gaps: measured height/width CSS variables, transition status metadata, and deeper browser-find coverage remain follow-up work.",
@@ -4277,6 +4292,7 @@ export const registryDocItems = [
       "keystone"
     ],
     "limitations": "Scrollable body composition is provided through DialogPanel rather than a dedicated ScrollArea dependency, and alert-dialog semantics remain a separate future UI item. Overlay behavior stays in Keystone Core.",
+    "maturity": "Stable",
     "name": "dialog",
     "parity": {
       "visualReference": "Matches the reference dialog visual shape in Solid source form: blurred backdrop, centered desktop popup, bottom-stuck mobile sheet behavior, rounded popover surface, close affordance, header/footer/panel spacing, transition status styling, and neutral data-slot hooks.",
@@ -4339,6 +4355,7 @@ export const registryDocItems = [
       "keystone"
     ],
     "limitations": "Title and description are styled UI composition helpers, not automatic ARIA relationships. Close controls remain app composition because Core Popover does not expose a close part yet.",
+    "maturity": "Stable",
     "name": "popover",
     "parity": {
       "visualReference": "Matches the reference popover visual shape in Solid source form: z-layered positioner, rounded popover surface, viewport padding, dense tooltip-style option, calendar-friendly padding hooks, transition status styling, floating CSS variables, and neutral data-slot hooks.",
@@ -4924,6 +4941,7 @@ export const registryDocItems = [
       "keystone"
     ],
     "limitations": "The UI item styles the popup and viewport only; custom arrow artwork and disabled-trigger composition remain app-level choices while Core owns tooltip behavior.",
+    "maturity": "Stable",
     "name": "tooltip",
     "parity": {
       "visualReference": "Matches the reference tooltip visual shape in Solid source form: compact text-balanced popup, rounded bordered popover surface, small viewport padding, transition status styling, z-layered positioner, floating CSS variables, and neutral data-slot hooks.",

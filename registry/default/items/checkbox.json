@@ -31,6 +31,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/checkbox.json",
+    "maturity": "Stable",
     "customization": "Style the generated root, control, indicator, indicator icon, hidden input, and composed Label through ui-checkbox classes, Core data attributes, and neutral data-slot hooks while Keystone keeps role=checkbox, mixed state, hidden input, form reset, validation, and preventable toggle behavior.",
     "sourceFiles": [
       "packages/ui/src/components/checkbox.tsx"
