@@ -6,91 +6,91 @@ export type LandingFileTreeItem = {
 
 export const landingFileTreeItems = [
   {
-    "href": "/docs/components/accordion",
-    "path": "packages/ui/src/components/accordion.tsx"
+    href: "/docs/components/accordion",
+    path: "packages/ui/src/components/accordion.tsx",
   },
   {
-    "href": "/docs/components/alert",
-    "path": "packages/ui/src/components/alert.tsx"
+    href: "/docs/components/alert",
+    path: "packages/ui/src/components/alert.tsx",
   },
   {
-    "href": "/docs/components/badge",
-    "path": "packages/ui/src/components/badge.tsx"
+    href: "/docs/components/badge",
+    path: "packages/ui/src/components/badge.tsx",
   },
   {
-    "href": "/docs/components/breadcrumb",
-    "path": "packages/ui/src/components/breadcrumb.tsx"
+    href: "/docs/components/breadcrumb",
+    path: "packages/ui/src/components/breadcrumb.tsx",
   },
   {
-    "href": "/docs/components/button",
-    "path": "packages/ui/src/components/button.tsx"
+    href: "/docs/components/button",
+    path: "packages/ui/src/components/button.tsx",
   },
   {
-    "href": "/docs/components/card",
-    "path": "packages/ui/src/components/card.tsx"
+    href: "/docs/components/card",
+    path: "packages/ui/src/components/card.tsx",
   },
   {
-    "href": "/docs/components/checkbox",
-    "path": "packages/ui/src/components/checkbox.tsx"
+    href: "/docs/components/checkbox",
+    path: "packages/ui/src/components/checkbox.tsx",
   },
   {
-    "href": "/docs/components/collapsible",
-    "path": "packages/ui/src/components/collapsible.tsx"
+    href: "/docs/components/collapsible",
+    path: "packages/ui/src/components/collapsible.tsx",
   },
   {
-    "href": "/docs/components/combobox",
-    "path": "packages/ui/src/components/combobox.tsx"
+    href: "/docs/components/combobox",
+    path: "packages/ui/src/components/combobox.tsx",
   },
   {
-    "href": "/docs/components/command-menu",
-    "path": "packages/ui/src/components/command-menu.tsx"
+    href: "/docs/components/command-menu",
+    path: "packages/ui/src/components/command-menu.tsx",
   },
   {
-    "href": "/docs/components/date-picker",
-    "path": "packages/ui/src/components/date-picker.tsx"
+    href: "/docs/components/date-picker",
+    path: "packages/ui/src/components/date-picker.tsx",
   },
   {
-    "href": "/docs/components/dialog",
-    "path": "packages/ui/src/components/dialog.tsx"
+    href: "/docs/components/dialog",
+    path: "packages/ui/src/components/dialog.tsx",
   },
   {
-    "href": "/docs/components/input",
-    "path": "packages/ui/src/components/input.tsx"
+    href: "/docs/components/input",
+    path: "packages/ui/src/components/input.tsx",
   },
   {
-    "href": "/docs/components/label",
-    "path": "packages/ui/src/components/label.tsx"
+    href: "/docs/components/label",
+    path: "packages/ui/src/components/label.tsx",
   },
   {
-    "href": "/docs/components/popover",
-    "path": "packages/ui/src/components/popover.tsx"
+    href: "/docs/components/popover",
+    path: "packages/ui/src/components/popover.tsx",
   },
   {
-    "href": "/docs/components/radio-group",
-    "path": "packages/ui/src/components/radio-group.tsx"
+    href: "/docs/components/radio-group",
+    path: "packages/ui/src/components/radio-group.tsx",
   },
   {
-    "href": "/docs/components/select",
-    "path": "packages/ui/src/components/select.tsx"
+    href: "/docs/components/select",
+    path: "packages/ui/src/components/select.tsx",
   },
   {
-    "href": "/docs/components/separator",
-    "path": "packages/ui/src/components/separator.tsx"
+    href: "/docs/components/separator",
+    path: "packages/ui/src/components/separator.tsx",
   },
   {
-    "href": "/docs/components/switch",
-    "path": "packages/ui/src/components/switch.tsx"
+    href: "/docs/components/switch",
+    path: "packages/ui/src/components/switch.tsx",
   },
   {
-    "href": "/docs/components/table",
-    "path": "packages/ui/src/components/table.tsx"
+    href: "/docs/components/table",
+    path: "packages/ui/src/components/table.tsx",
   },
   {
-    "href": "/docs/components/tabs",
-    "path": "packages/ui/src/components/tabs.tsx"
+    href: "/docs/components/tabs",
+    path: "packages/ui/src/components/tabs.tsx",
   },
   {
-    "href": "/docs/components/tooltip",
-    "path": "packages/ui/src/components/tooltip.tsx"
-  }
+    href: "/docs/components/tooltip",
+    path: "packages/ui/src/components/tooltip.tsx",
+  },
 ] as const satisfies readonly LandingFileTreeItem[];

@@ -2,7 +2,7 @@ import { Link, createFileRoute, useNavigate } from "@tanstack/solid-router";
 import { ArrowRight } from "lucide-solid";
 import { onCleanup, onMount } from "solid-js";
 
-import { GitHubMark, KeystoneLogoMark } from "@/components/header";
+import { KeystoneLogoMark } from "@/components/header";
 import { landingFileTreeItems } from "@/lib/landing-file-tree.gen";
 import { buttonClass } from "@keystone-ui/ui/button";
 
@@ -94,7 +94,6 @@ function LandingHeader() {
             <KeystoneLogoMark size="xl" />
           </span>
         </Link>
-  
       </div>
     </header>
   );

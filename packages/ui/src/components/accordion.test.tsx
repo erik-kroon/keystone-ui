@@ -1,11 +1,6 @@
 import { render } from "solid-js/web";
 import { describe, expect, test } from "vitest";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "./accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./accordion";
 
 describe("Accordion", () => {
   test("renders Keystone-backed anatomy with stable styling hooks", () => {
