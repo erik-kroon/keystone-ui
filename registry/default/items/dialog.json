@@ -29,6 +29,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/dialog.json",
+    "maturity": "Stable",
     "customization": "Style the generated wrappers through ui-dialog classes while Keystone keeps focus, dismissal, layering, and ARIA behavior.",
     "sourceFiles": [
       "packages/ui/src/components/dialog.tsx"

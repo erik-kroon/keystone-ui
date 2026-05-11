@@ -27,6 +27,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/button.json",
+    "maturity": "Stable",
     "customization": "Customize visual treatment through buttonClass, ui-button classes, data-variant/data-size attributes, and the root/loading part hooks.",
     "sourceFiles": [
       "packages/ui/src/components/button.tsx"

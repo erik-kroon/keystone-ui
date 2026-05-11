@@ -30,6 +30,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/radio-group.json",
+    "maturity": "Stable",
     "customization": "Style the generated wrappers through ui-radio-group classes while Keystone keeps radiogroup semantics, roving focus, RTL-aware horizontal keyboard selection, hidden radio inputs, and data attributes.",
     "sourceFiles": [
       "packages/ui/src/components/radio-group.tsx"

@@ -30,6 +30,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/combobox.json",
+    "maturity": "Stable",
     "customization": "Style the generated input group, input, trigger, clear action, popup surface, listbox, groups, items, indicators, empty state, status row, arrow, and separators through ui-combobox classes, Core data attributes, and neutral data-slot hooks.",
     "sourceFiles": [
       "packages/ui/src/components/combobox.tsx"

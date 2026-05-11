@@ -29,6 +29,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/popover.json",
+    "maturity": "Stable",
     "customization": "Style the generated wrappers through ui-popover classes while Core owns positioning, dismissal, and layer ordering.",
     "sourceFiles": [
       "packages/ui/src/components/popover.tsx"

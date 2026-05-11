@@ -27,6 +27,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/input.json",
+    "maturity": "Stable",
     "customization": "Use ui-input-control, ui-input, data-size, data-invalid, data-disabled, and reference-style data-slot hooks for wrapper and native input styling.",
     "sourceFiles": [
       "packages/ui/src/components/input.tsx"

@@ -28,6 +28,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/collapsible.json",
+    "maturity": "Stable",
     "customization": "Style the generated wrappers through ui-collapsible classes while Keystone keeps open state, ARIA relationships, hidden-until-found behavior, and data attributes.",
     "sourceFiles": [
       "packages/ui/src/components/collapsible.tsx"

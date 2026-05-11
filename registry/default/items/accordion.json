@@ -31,6 +31,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/accordion.json",
+    "maturity": "Stable",
     "customization": "Style the generated wrappers through ui-accordion classes while Keystone keeps item coordination, trigger ARIA, keyboard navigation, hidden-until-found behavior, and data attributes.",
     "sourceFiles": [
       "packages/ui/src/components/accordion.tsx"

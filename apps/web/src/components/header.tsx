@@ -1,10 +1,33 @@
 import { Link } from "@tanstack/solid-router";
+import { splitProps, type JSX } from "solid-js";
 import { DocsCommandSearch } from "@/components/docs-command-search";
 import { DocsMobileNav } from "@/components/docs-mobile-nav";
+import { cn } from "@/lib/cn";
 
-export function KeystoneLogoMark() {
+const keystoneLogoMarkSizeClass = {
+  sm: "size-4.5",
+  base: "size-5.5",
+  md: "size-5.5",
+  lg: "size-7",
+  xl: "size-9",
+} as const;
+
+export type KeystoneLogoMarkSize = keyof typeof keystoneLogoMarkSizeClass;
+
+export type KeystoneLogoMarkProps = JSX.SvgSVGAttributes<SVGSVGElement> & {
+  size?: KeystoneLogoMarkSize;
+};
+
+export function KeystoneLogoMark(props: KeystoneLogoMarkProps) {
+  const [local, svgProps] = splitProps(props, ["class", "size"]);
+
   return (
-    <svg aria-hidden="true" class="size-5.5 fill-current" focusable="false" viewBox="9 11 46 42">
+    <svg
+      {...svgProps}
+      aria-hidden="true"
+      class={cn(keystoneLogoMarkSizeClass[local.size ?? "md"], "fill-current", local.class)}
+      viewBox="9 11 46 42"
+    >
       <path
         d="M12 14h40L41 50H23L12 14z"
         transform="translate(32 32) scale(1.12) translate(-32 -32)"
@@ -15,7 +38,7 @@ export function KeystoneLogoMark() {
 
 export function GitHubMark() {
   return (
-    <svg aria-hidden="true" class="size-4 fill-current" focusable="false" viewBox="0 0 24 24">
+    <svg aria-hidden="true" class="size-4 fill-current" viewBox="0 0 24 24">
       <path d="M12 .5A11.5 11.5 0 0 0 8.36 22.9c.58.11.79-.25.79-.56v-2.15c-3.21.7-3.89-1.36-3.89-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.78 1.2 1.78 1.2 1.04 1.77 2.72 1.26 3.38.96.11-.75.41-1.26.74-1.55-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.17 1.18A10.9 10.9 0 0 1 12 5.97c.98 0 1.96.13 2.88.39 2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.4-5.27 5.69.42.36.79 1.07.79 2.16v3.15c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .5Z" />
     </svg>
   );

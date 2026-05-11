@@ -36,6 +36,7 @@ const typeOrder: Record<string, number> = {
 };
 
 const displayTitleByName: Readonly<Record<string, string>> = {
+  "command-menu": "Command Menu",
   "radio-group": "Radio Group",
 };
 
@@ -63,27 +64,6 @@ export const hookDocs = navigableDocs.filter((item) =>
   ["registry:component", "registry:hook", "registry:lib", "registry:store"].includes(item.type),
 );
 
-const componentMaturityByName: Readonly<Record<string, string>> = {
-  accordion: "Stable",
-  alert: "Stable",
-  badge: "Stable",
-  button: "Stable",
-  card: "Stable",
-  checkbox: "Stable",
-  collapsible: "Stable",
-  combobox: "Stable",
-  "date-picker": "Stable",
-  dialog: "Stable",
-  input: "Stable",
-  label: "Stable",
-  popover: "Stable",
-  "radio-group": "Stable",
-  select: "Stable",
-  switch: "Stable",
-  tabs: "Stable",
-  tooltip: "Stable",
-};
-
 const maturityOrder: Readonly<Record<string, number>> = {
   preview: 0,
   beta: 1,
@@ -93,7 +73,7 @@ const maturityOrder: Readonly<Record<string, number>> = {
 };
 
 export function componentMaturity(item: RegistryDocItem) {
-  return item.maturity ?? componentMaturityByName[item.name] ?? "Draft";
+  return item.maturity ?? "Draft";
 }
 
 function componentMaturityKey(item: RegistryDocItem) {

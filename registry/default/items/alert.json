@@ -28,6 +28,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/alert.json",
+    "maturity": "Stable",
     "customization": "Customize tone and layout through ui-alert classes, data-variant, and the icon/title/description/action parts.",
     "sourceFiles": [
       "packages/ui/src/components/alert.tsx"
