@@ -21,6 +21,7 @@
 
     "rootDirs": ["."],
     "paths": {
+      "@/components/ui/*": ["../../packages/ui/src/components/*"],
       "@/*": ["./src/*"],
       "@keystone-ui/ui/blocks/*": ["../../packages/ui/src/blocks/*"],
       "@keystone-ui/ui/components/*": ["../../packages/ui/src/components/*"],

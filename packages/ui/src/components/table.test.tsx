@@ -53,9 +53,7 @@ describe("Table", () => {
 
     expect(container?.getAttribute("data-scope")).toBe("ui-table");
     expect(container?.getAttribute("data-part")).toBe("container");
-    expect(container?.getAttribute("data-variant")).toBe("default");
     expect(table?.getAttribute("data-slot")).toBe("table");
-    expect(table?.getAttribute("data-variant")).toBe("default");
     expect(caption?.textContent).toBe("Quarterly revenue");
     expect(head?.getAttribute("scope")).toBe("col");
     expect(selectedRow?.getAttribute("data-state")).toBe("selected");
@@ -86,42 +84,43 @@ describe("Table", () => {
     expect(container?.getAttribute("data-scope")).toBe("ui-data-table");
     expect(table?.getAttribute("data-scope")).toBe("ui-data-table");
     expect(body?.getAttribute("data-part")).toBe("body");
-    expect(table?.getAttribute("data-variant")).toBe("default");
 
     dispose();
   });
 
-  test("uses TableContainer card variant as styling context for table parts", () => {
+  test("keeps table containers compatible with CardFrame clipping", () => {
     const host = document.createElement("div");
     const dispose = render(
       () => (
-        <TableContainer variant="card">
-          <Table>
-            <TableCaption>Release channels</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead scope="col">Channel</TableHead>
-                <TableHead scope="col">Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow data-selected="">
-                <TableCell>Stable</TableCell>
-                <TableCell>Ready</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Canary</TableCell>
-                <TableCell>Review</TableCell>
-              </TableRow>
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TableCell>Count</TableCell>
-                <TableCell>2</TableCell>
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
+        <div data-slot="card-frame">
+          <TableContainer>
+            <Table>
+              <TableCaption>Release channels</TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead scope="col">Channel</TableHead>
+                  <TableHead scope="col">Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow data-selected="">
+                  <TableCell>Stable</TableCell>
+                  <TableCell>Ready</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Canary</TableCell>
+                  <TableCell>Review</TableCell>
+                </TableRow>
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TableCell>Count</TableCell>
+                  <TableCell>2</TableCell>
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </TableContainer>
+        </div>
       ),
       host,
     );
@@ -133,39 +132,16 @@ describe("Table", () => {
     const cell = host.querySelector("td");
     const caption = host.querySelector("caption");
 
-    expect(container?.getAttribute("data-variant")).toBe("card");
-    expect(container?.className).toContain("data-[variant=card]:rounded-2xl");
-    expect(table?.getAttribute("data-variant")).toBe("card");
-    expect(table?.className).toContain("data-[variant=card]:border-separate");
-    expect(body?.className).toContain("in-data-[variant=card]:[&_tr>td]:bg-card");
-    expect(body?.className).toContain(
-      "in-data-[variant=card]:[&_tr[data-selected]>td]:bg-muted/48",
-    );
-    expect(footer?.className).toContain("in-data-[variant=card]:[&_td]:bg-transparent");
-    expect(cell?.className).toContain("in-data-[variant=card]:px-4");
-    expect(caption?.className).toContain("in-data-[variant=card]:pt-2");
-
-    dispose();
-  });
-
-  test("allows Table variant prop to override container context", () => {
-    const host = document.createElement("div");
-    const dispose = render(
-      () => (
-        <TableContainer variant="default">
-          <Table variant="card">
-            <TableBody />
-          </Table>
-        </TableContainer>
-      ),
-      host,
-    );
-
-    const container = host.querySelector("[data-slot='table-container']");
-    const table = host.querySelector("table");
-
-    expect(container?.getAttribute("data-variant")).toBe("default");
-    expect(table?.getAttribute("data-variant")).toBe("card");
+    expect(container?.className).toContain("in-data-[slot=card-frame]:border-0");
+    expect(container?.className).toContain("in-data-[slot=card-frame]:shadow-none");
+    expect(body?.className).not.toContain("rounded-ss-xl");
+    expect(body?.className).not.toContain("rounded-se-xl");
+    expect(body?.className).not.toContain("rounded-es-xl");
+    expect(body?.className).not.toContain("rounded-ee-xl");
+    expect(table?.className).toContain("border-collapse");
+    expect(footer?.className).toContain("bg-muted/40");
+    expect(cell?.className).toContain("p-3");
+    expect(caption?.className).toContain("border-t");
 
     dispose();
   });

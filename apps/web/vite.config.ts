@@ -8,9 +8,16 @@ import solidPlugin from "vite-plugin-solid";
 export default defineConfig({
   plugins: [tanstackStart(), solidPlugin({ ssr: true }), tailwindcss()],
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
+    alias: [
+      {
+        find: "@/components/ui",
+        replacement: path.resolve(__dirname, "../../packages/ui/src/components"),
+      },
+      {
+        find: "@",
+        replacement: path.resolve(__dirname, "./src"),
+      },
+    ],
   },
   server: {
     port: 3001,

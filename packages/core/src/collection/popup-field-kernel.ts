@@ -126,6 +126,7 @@ export function createPopupFieldKernel<
   const [anchorElement, setAnchorElement] = createSignal<Anchor>();
   const [branchElements, setBranchElements] = createSignal<readonly HTMLElement[]>([]);
   const [contentElement, setContentElement] = createSignal<HTMLDivElement>();
+  const [contentPositioned, setContentPositioned] = createSignal(false);
   const [positionerElement, setPositionerElement] = createSignal<HTMLDivElement>();
   const [open, setOpenState] = createControllableBooleanSignal<Detail>({
     value: options.open.open,
@@ -139,7 +140,7 @@ export function createPopupFieldKernel<
   const required = () => options.required?.() ?? false;
   const floating = createFloatingAdapter({
     anchor: anchorElement,
-    floating: () => positionerElement() ?? contentElement(),
+    floating: () => positionerElement() ?? (contentPositioned() ? undefined : contentElement()),
     enabled: open,
     arrowPadding: options.arrowPadding,
     collisionBoundary: options.collisionBoundary,
@@ -228,8 +229,9 @@ export function createPopupFieldKernel<
     }),
     getContentProps: (props) => {
       const { positioned, ref, style, ...contentProps } = props;
+      const isPositioned = positioned === true;
       const contentStyle = () =>
-        positioned || positionerElement() ? style : floating.getFloatingProps({ style }).style;
+        isPositioned || positionerElement() ? style : floating.getFloatingProps({ style }).style;
 
       return {
         ...contentProps,
@@ -249,9 +251,11 @@ export function createPopupFieldKernel<
         },
         ref: (element: HTMLDivElement) => {
           setContentElement(element);
+          setContentPositioned(isPositioned);
           onCleanup(() => {
             if (contentElement() === element) {
               setContentElement(undefined);
+              setContentPositioned(false);
             }
           });
           assignRef(ref, element);

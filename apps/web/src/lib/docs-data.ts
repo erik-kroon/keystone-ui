@@ -151,7 +151,7 @@ const routableDocs = showFullDocsCatalog ? docsItems : publicComponentDocs;
 export const searchableComponentDocs = showFullDocsCatalog ? componentDocs : publicComponentDocs;
 export const searchableHookDocs = visibleHookDocs;
 
-const newComponentBadges = new Set(["breadcrumb", "separator"]);
+const newComponentBadges = new Set(["command-menu", "table"]);
 
 function componentBadge(name: string) {
   return newComponentBadges.has(name) ? "New" : undefined;
