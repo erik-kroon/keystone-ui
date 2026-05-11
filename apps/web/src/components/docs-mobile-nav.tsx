@@ -7,7 +7,7 @@ import type { NavGroup } from "@/lib/docs-data";
 
 let navGroupsPromise: Promise<readonly NavGroup[]> | undefined;
 
-const menuItems = [{ href: "/docs", label: "Home" }] as const;
+const menuItems = [{ href: "/docs/introduction", label: "Home" }] as const;
 
 function MenuIcon() {
   return (

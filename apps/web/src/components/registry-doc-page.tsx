@@ -4,7 +4,6 @@ import { For, Show, createSignal, type JSX } from "solid-js";
 import { ComponentPreview } from "@/components/component-preview";
 import {
   ActionLink,
-  Badge,
   CodeBlock,
   CopyPageButton,
   DocsPageFrame,
@@ -19,6 +18,7 @@ import { componentDocsOverrides, hookDocsOverrides } from "../docs/registry-doc-
 import { InlineCode } from "../docs/hook-doc-widgets";
 import type {
   ApiReferenceItem,
+  ApiReferenceProp,
   CodeExample,
   ComponentDocsBlueprint,
   HookDocsBlueprint,
@@ -36,6 +36,7 @@ import {
   type DocsPage,
 } from "@/lib/docs-data";
 import type { RegistryDocItem } from "@/lib/registry-docs.gen";
+import { Badge, type BadgeVariant } from "@keystone-ui/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@keystone-ui/ui/tabs";
 
 const pageHeaderActionClass =
@@ -45,25 +46,29 @@ const previewSectionClass = "mt-6 scroll-mt-24";
 
 const showInstallationSection = false;
 
-function maturityBadgeClass(maturity: string) {
+function maturityBadgeVariant(maturity: string): BadgeVariant {
   switch (maturity.toLowerCase()) {
     case "stable":
-      return "bg-success/8 text-success-foreground dark:bg-success/16";
+      return "success";
     case "beta":
     case "preview":
-      return "bg-info/8 text-info-foreground dark:bg-info/16";
+      return "info";
     case "experimental":
-      return "bg-warning/8 text-warning-foreground dark:bg-warning/16";
+      return "warning";
     case "deprecated":
-      return "bg-destructive/8 text-destructive-foreground dark:bg-destructive/16";
+      return "error";
     case "draft":
     default:
-      return "bg-muted text-muted-foreground dark:bg-muted/64";
+      return "muted";
   }
 }
 
 function maturityLabel(maturity: string | undefined) {
   return (maturity ?? "Draft").toLowerCase();
+}
+
+function isStableMaturity(maturity: string) {
+  return maturity === "stable";
 }
 
 export function RegistryDocPage(props: Readonly<{ slug: string }>) {
@@ -114,9 +119,12 @@ function RegistryDocContent(
           <div class="flex flex-col gap-2">
             <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
               <PageHeaderHeading>{displayTitle()}</PageHeaderHeading>
-              <Badge class={`translate-y-0.5 ${maturityBadgeClass(maturity())}`}>
-                {maturity()}
-              </Badge>
+              <div class="flex translate-y-0.5 flex-wrap items-center gap-1.5">
+                <Show when={isStableMaturity(maturity())}>
+                  <Badge variant="info">unreleased</Badge>
+                </Show>
+                <Badge variant={maturityBadgeVariant(maturity())}>{maturity()}</Badge>
+              </div>
             </div>
             <PageHeaderDescription>{description()}</PageHeaderDescription>
           </div>
@@ -482,7 +490,7 @@ function DocSection(
 
 function ApiReference(props: Readonly<{ items: readonly ApiReferenceItem[] }>) {
   return (
-    <div class="mt-3 grid gap-10">
+    <div class="mt-3 grid gap-12">
       <For each={props.items}>
         {(item) => (
           <article class="scroll-mt-24">
@@ -498,6 +506,30 @@ function ApiReference(props: Readonly<{ items: readonly ApiReferenceItem[] }>) {
               </a>
             </h3>
             <ApiReferenceDescription text={item.description} />
+            <Show when={(item.props?.length ?? 0) > 0}>
+              <MdxTable
+                columns={["Prop", "Type", "Default"]}
+                rows={(item.props ?? []).map((prop) => [
+                  <ApiReferenceCodeValue value={prop.name} />,
+                  <ApiReferenceCodeValue value={prop.type} />,
+                  <ApiReferenceDefaultValue prop={prop} />,
+                ])}
+              />
+            </Show>
+            <Show when={(item.examples?.length ?? 0) > 0}>
+              <div class="mt-5 grid gap-4">
+                <For each={item.examples ?? []}>
+                  {(example) => (
+                    <CodeBlock
+                      code={example.code}
+                      colorScheme="reference"
+                      language={example.language ?? "tsx"}
+                      lineNumbers={false}
+                    />
+                  )}
+                </For>
+              </div>
+            </Show>
           </article>
         )}
       </For>
@@ -522,6 +554,20 @@ function ApiReferenceDescription(props: Readonly<{ text: string }>) {
         }
       </For>
     </p>
+  );
+}
+
+function ApiReferenceCodeValue(props: Readonly<{ value: string }>) {
+  return <InlineCode>{props.value}</InlineCode>;
+}
+
+function ApiReferenceDefaultValue(props: Readonly<{ prop: ApiReferenceProp }>) {
+  return props.prop.default ? (
+    <InlineCode>{props.prop.default}</InlineCode>
+  ) : (
+    <span class="text-muted-foreground/64" aria-label="No default value">
+      -
+    </span>
   );
 }
 
@@ -742,7 +788,7 @@ function MissingDocPage(props: Readonly<{ slug: string }>) {
           <PageHeaderDescription>
             The registry does not include an item named <code>{props.slug}</code>.
           </PageHeaderDescription>
-          <ActionLink class={`${secondaryButtonClass} mt-6`} href="/docs">
+          <ActionLink class={`${secondaryButtonClass} mt-6`} href="/docs/introduction">
             <Puzzle size={16} />
             Back to docs
           </ActionLink>

@@ -3380,7 +3380,7 @@ export const registryDocItems = [
       "head",
       "cell"
     ],
-    "api": "Table exports TableContainer, Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, and TableCaption. Every part forwards native HTML props, class, children, and data-scope/data-part/data-slot overrides for app-layer wrappers.",
+    "api": "Table exports TableContainer, Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, and TableCaption. TableContainer and Table accept variant?: \"default\" | \"card\" with default \"default\"; Table inherits the container variant unless overridden. Every part forwards native HTML props, class, children, and data-scope/data-part/data-slot overrides for app-layer wrappers.",
     "categories": [
       "base",
       "table",
@@ -3391,12 +3391,12 @@ export const registryDocItems = [
       "solid": ">=1.9.0 <2.0.0",
       "shadcn": "registry-item schema"
     },
-    "customization": "Customize the native anatomy through ui-table classes, shadcn-style data-slot values, and stable data-scope=\"ui-table\" data-part hooks.",
-    "dataAttributes": "Defaults use data-scope=\"ui-table\" and data-part values container, root, caption, header, body, footer, row, head, and cell. data-slot values are table-container, table, table-caption, table-header, table-body, table-footer, table-row, table-head, and table-cell. App-layer components may override those attributes while retaining native elements and classes.",
+    "customization": "Customize the native anatomy through ui-table classes, shadcn-style data-slot values, stable data-scope=\"ui-table\" data-part hooks, and the default/card variant context on TableContainer and Table.",
+    "dataAttributes": "Defaults use data-scope=\"ui-table\" and data-part values container, root, caption, header, body, footer, row, head, and cell. data-slot values are table-container, table, table-caption, table-header, table-body, table-footer, table-row, table-head, and table-cell. TableContainer and Table expose data-variant=\"default\" or data-variant=\"card\" for variant-scoped styling. App-layer components may override data-scope/data-part/data-slot while retaining native elements and classes.",
     "dependencies": [
       "cn"
     ],
-    "description": "Presentational native table anatomy for readable data grids and TanStack Table app-layer composition.",
+    "description": "Presentational native table anatomy with compact default and card-style variants for readable data grids and TanStack Table app-layer composition.",
     "files": [
       {
         "path": "packages/ui/src/components/table.tsx",
@@ -3413,12 +3413,13 @@ export const registryDocItems = [
       "tanstack-table",
       "data-table"
     ],
-    "limitations": "Table is presentational source, not a grid engine. It does not implement sorting, filtering, pagination, virtualization, roving focus, column sizing, column reordering, row selection, or async loading policy.",
+    "limitations": "Table is presentational source, not a grid engine and not a Core wrapper. Native table semantics are the primitive for this surface. It does not implement sorting, filtering, pagination, virtualization, roving focus, column sizing, column reordering, row selection, or async loading policy.",
     "maturity": "Experimental",
     "name": "table",
     "parity": {
+      "coss": "Adapts the coss card/default styling idea to Solid source and Keystone tokens: variant context, separated card rows, quiet borders, rounded row edges, footer treatment, caption spacing, and CardFrame-compatible table-container clipping.",
       "html": "Keeps native table semantics as the contract: Keystone does not replace table markup with ARIA grid roles unless a future app component requires that behavior explicitly.",
-      "shadcn": "Matches the copy-paste anatomy shape and data-slot ergonomics in Solid source form, with Keystone tokens, compact styling, and a TableContainer part compatible with CardFrame table-container clipping.",
+      "shadcn": "Matches the copy-paste anatomy shape and data-slot ergonomics in Solid source form, with Keystone tokens, compact default styling, optional card styling, and a TableContainer part compatible with CardFrame table-container clipping.",
       "tanstackTable": "The base parts are intentionally engine-agnostic and are consumed by the first-party DataTable kit, where TanStack Table owns row models, sorting, filtering, pagination, selection, and column visibility."
     },
     "registryDependencies": [

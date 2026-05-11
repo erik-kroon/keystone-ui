@@ -14,6 +14,10 @@ import {
   Card,
   CardDescription,
   CardFooter,
+  CardFrame,
+  CardFrameDescription,
+  CardFrameHeader,
+  CardFrameTitle,
   CardHeader,
   CardPanel,
   CardTitle,
@@ -77,6 +81,7 @@ import {
   TableCaption,
   TableCell,
   TableContainer,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -2257,7 +2262,7 @@ export function BreadcrumbExample() {
   return (
     <Breadcrumb
       items={[
-        { href: "/docs", label: "Docs" },
+        { href: "/docs/introduction", label: "Docs" },
         { href: "/docs/components", label: "Components" },
         { label: "Breadcrumb", current: true },
       ]}
@@ -2295,7 +2300,7 @@ export function Component() {
   return (
     <Breadcrumb
       items={[
-        { href: "/docs", label: "Docs" },
+        { href: "/docs/introduction", label: "Docs" },
         { href: "/docs/components", label: "Components" },
         { label: "Breadcrumb", current: true },
       ]}
@@ -2361,33 +2366,73 @@ export function Component() {
   );
 }`;
 
-const tableRows = [
-  { name: "Button", status: "Ready", owner: "Core UI" },
-  { name: "CommandMenu", status: "QA", owner: "App layer" },
-  { name: "Table", status: "Experimental", owner: "Data UI" },
+type TableStatus = "Failed" | "Paid" | "Pending" | "Unpaid";
+
+const tableProjectRows: {
+  budget: string;
+  project: string;
+  status: TableStatus;
+  team: string;
+}[] = [
+  { budget: "$12,500", project: "Website Redesign", status: "Paid", team: "Frontend Team" },
+  { budget: "$8,750", project: "Mobile App", status: "Unpaid", team: "Mobile Team" },
+  { budget: "$5,200", project: "API Integration", status: "Pending", team: "Backend Team" },
+  { budget: "$3,800", project: "Database Migration", status: "Paid", team: "DevOps Team" },
+  { budget: "$7,200", project: "User Dashboard", status: "Paid", team: "UX Team" },
+  { budget: "$2,100", project: "Security Audit", status: "Failed", team: "Security Team" },
 ];
+
+const tableStatusDotClass: Record<TableStatus, string> = {
+  Failed: "bg-destructive",
+  Paid: "bg-success",
+  Pending: "bg-warning",
+  Unpaid: "bg-muted-foreground/72",
+};
+
+function TableStatusBadge(props: { status: TableStatus }) {
+  return (
+    <span class="inline-flex h-6 items-center gap-1.5 rounded-md border border-border/72 bg-muted/20 px-2 font-medium text-foreground text-sm leading-none shadow-xs/5">
+      <span class={`size-2 rounded-full ${tableStatusDotClass[props.status]}`} />
+      {props.status}
+    </span>
+  );
+}
 
 export function TableExample() {
   return (
-    <TableContainer class="max-w-xl">
+    <TableContainer class="w-full max-w-5xl">
       <Table>
-        <TableCaption>Registry readiness by component.</TableCaption>
+        <TableCaption>A list of current projects.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead scope="col">Component</TableHead>
+            <TableHead scope="col">Project</TableHead>
             <TableHead scope="col">Status</TableHead>
-            <TableHead scope="col">Owner</TableHead>
+            <TableHead scope="col">Team</TableHead>
+            <TableHead class="text-right" scope="col">
+              Budget
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tableRows.map((row) => (
+          {tableProjectRows.map((row) => (
             <TableRow>
-              <TableCell class="font-medium text-foreground">{row.name}</TableCell>
-              <TableCell>{row.status}</TableCell>
-              <TableCell>{row.owner}</TableCell>
+              <TableCell class="font-medium text-foreground">{row.project}</TableCell>
+              <TableCell>
+                <TableStatusBadge status={row.status} />
+              </TableCell>
+              <TableCell>{row.team}</TableCell>
+              <TableCell class="text-right font-medium tabular-nums">{row.budget}</TableCell>
             </TableRow>
           ))}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell class="font-semibold text-foreground" colSpan={3}>
+              Total Budget
+            </TableCell>
+            <TableCell class="text-right font-semibold tabular-nums">$39,550</TableCell>
+          </TableRow>
+        </TableFooter>
       </Table>
     </TableContainer>
   );
@@ -2399,38 +2444,72 @@ export const tableExampleCode = `import {
   TableCaption,
   TableCell,
   TableContainer,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 
 const rows = [
-  { name: "Button", status: "Ready", owner: "Core UI" },
-  { name: "CommandMenu", status: "QA", owner: "App layer" },
-  { name: "Table", status: "Experimental", owner: "Data UI" },
+  { budget: "$12,500", project: "Website Redesign", status: "Paid", team: "Frontend Team" },
+  { budget: "$8,750", project: "Mobile App", status: "Unpaid", team: "Mobile Team" },
+  { budget: "$5,200", project: "API Integration", status: "Pending", team: "Backend Team" },
+  { budget: "$3,800", project: "Database Migration", status: "Paid", team: "DevOps Team" },
+  { budget: "$7,200", project: "User Dashboard", status: "Paid", team: "UX Team" },
+  { budget: "$2,100", project: "Security Audit", status: "Failed", team: "Security Team" },
 ];
+
+const statusDotClass = {
+  Failed: "bg-destructive",
+  Paid: "bg-success",
+  Pending: "bg-warning",
+  Unpaid: "bg-muted-foreground/72",
+};
+
+function StatusBadge(props) {
+  return (
+    <span class="inline-flex h-6 items-center gap-1.5 rounded-md border border-border/72 bg-muted/20 px-2 font-medium text-foreground text-sm leading-none shadow-xs/5">
+      <span class={\`size-2 rounded-full \${statusDotClass[props.status]}\`} />
+      {props.status}
+    </span>
+  );
+}
 
 export function Component() {
   return (
     <TableContainer>
       <Table>
-        <TableCaption>Registry readiness by component.</TableCaption>
+        <TableCaption>A list of current projects.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead scope="col">Component</TableHead>
+            <TableHead scope="col">Project</TableHead>
             <TableHead scope="col">Status</TableHead>
-            <TableHead scope="col">Owner</TableHead>
+            <TableHead scope="col">Team</TableHead>
+            <TableHead class="text-right" scope="col">
+              Budget
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {rows.map((row) => (
             <TableRow>
-              <TableCell class="font-medium text-foreground">{row.name}</TableCell>
-              <TableCell>{row.status}</TableCell>
-              <TableCell>{row.owner}</TableCell>
+              <TableCell class="font-medium text-foreground">{row.project}</TableCell>
+              <TableCell>
+                <StatusBadge status={row.status} />
+              </TableCell>
+              <TableCell>{row.team}</TableCell>
+              <TableCell class="text-right font-medium tabular-nums">{row.budget}</TableCell>
             </TableRow>
           ))}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell class="font-semibold text-foreground" colSpan={3}>
+              Total Budget
+            </TableCell>
+            <TableCell class="text-right font-semibold tabular-nums">$39,550</TableCell>
+          </TableRow>
+        </TableFooter>
       </Table>
     </TableContainer>
   );
@@ -2442,10 +2521,266 @@ export const tableExample = defineCodeExample({
   description: "Presentational native table anatomy for readable data.",
   id: "basic",
   title: "Basic Table",
-  variant: "centered",
+  variant: "full",
 });
 
-export const tableExamples = [tableExample] satisfies readonly CodeExample[];
+export function CardTableExample() {
+  return (
+    <TableContainer class="w-full max-w-5xl" variant="card">
+      <Table>
+        <TableCaption>A list of current projects.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead scope="col">Project</TableHead>
+            <TableHead scope="col">Status</TableHead>
+            <TableHead scope="col">Team</TableHead>
+            <TableHead class="text-right" scope="col">
+              Budget
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {tableProjectRows.map((row) => (
+            <TableRow data-state={row.status === "Paid" ? "selected" : undefined}>
+              <TableCell class="font-medium text-foreground">{row.project}</TableCell>
+              <TableCell>
+                <TableStatusBadge status={row.status} />
+              </TableCell>
+              <TableCell>{row.team}</TableCell>
+              <TableCell class="text-right font-medium tabular-nums">{row.budget}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell class="font-semibold text-foreground" colSpan={3}>
+              Total Budget
+            </TableCell>
+            <TableCell class="text-right font-semibold tabular-nums">$39,550</TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
+    </TableContainer>
+  );
+}
+
+export const cardTableExampleCode = `import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+const rows = [
+  { budget: "$12,500", project: "Website Redesign", status: "Paid", team: "Frontend Team" },
+  { budget: "$8,750", project: "Mobile App", status: "Unpaid", team: "Mobile Team" },
+  { budget: "$5,200", project: "API Integration", status: "Pending", team: "Backend Team" },
+  { budget: "$3,800", project: "Database Migration", status: "Paid", team: "DevOps Team" },
+  { budget: "$7,200", project: "User Dashboard", status: "Paid", team: "UX Team" },
+  { budget: "$2,100", project: "Security Audit", status: "Failed", team: "Security Team" },
+];
+
+const statusDotClass = {
+  Failed: "bg-destructive",
+  Paid: "bg-success",
+  Pending: "bg-warning",
+  Unpaid: "bg-muted-foreground/72",
+};
+
+function StatusBadge(props) {
+  return (
+    <span class="inline-flex h-6 items-center gap-1.5 rounded-md border border-border/72 bg-muted/20 px-2 font-medium text-foreground text-sm leading-none shadow-xs/5">
+      <span class={\`size-2 rounded-full \${statusDotClass[props.status]}\`} />
+      {props.status}
+    </span>
+  );
+}
+
+export function Component() {
+  return (
+    <TableContainer variant="card">
+      <Table>
+        <TableCaption>A list of current projects.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead scope="col">Project</TableHead>
+            <TableHead scope="col">Status</TableHead>
+            <TableHead scope="col">Team</TableHead>
+            <TableHead class="text-right" scope="col">
+              Budget
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow data-state={row.status === "Paid" ? "selected" : undefined}>
+              <TableCell class="font-medium text-foreground">{row.project}</TableCell>
+              <TableCell>
+                <StatusBadge status={row.status} />
+              </TableCell>
+              <TableCell>{row.team}</TableCell>
+              <TableCell class="text-right font-medium tabular-nums">{row.budget}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell class="font-semibold text-foreground" colSpan={3}>
+              Total Budget
+            </TableCell>
+            <TableCell class="text-right font-semibold tabular-nums">$39,550</TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
+    </TableContainer>
+  );
+}`;
+
+export const cardTableExample = defineCodeExample({
+  code: cardTableExampleCode,
+  component: CardTableExample,
+  description: "Card variant with separated rows, quiet borders, and selected-row styling.",
+  id: "card",
+  title: "Card Variant",
+  variant: "full",
+});
+
+export function CardFrameTableExample() {
+  return (
+    <CardFrame class="w-full max-w-5xl">
+      <CardFrameHeader>
+        <CardFrameTitle>Project Budget</CardFrameTitle>
+        <CardFrameDescription>
+          CardFrame keeps the table clipped inside a framed surface.
+        </CardFrameDescription>
+      </CardFrameHeader>
+      <TableContainer variant="card">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead scope="col">Project</TableHead>
+              <TableHead scope="col">Status</TableHead>
+              <TableHead scope="col">Team</TableHead>
+              <TableHead class="text-right" scope="col">
+                Budget
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {tableProjectRows.map((row) => (
+              <TableRow>
+                <TableCell class="font-medium text-foreground">{row.project}</TableCell>
+                <TableCell>
+                  <TableStatusBadge status={row.status} />
+                </TableCell>
+                <TableCell>{row.team}</TableCell>
+                <TableCell class="text-right font-medium tabular-nums">{row.budget}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </CardFrame>
+  );
+}
+
+export const cardFrameTableExampleCode = `import {
+  CardFrame,
+  CardFrameDescription,
+  CardFrameHeader,
+  CardFrameTitle,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+const rows = [
+  { budget: "$12,500", project: "Website Redesign", status: "Paid", team: "Frontend Team" },
+  { budget: "$8,750", project: "Mobile App", status: "Unpaid", team: "Mobile Team" },
+  { budget: "$5,200", project: "API Integration", status: "Pending", team: "Backend Team" },
+  { budget: "$3,800", project: "Database Migration", status: "Paid", team: "DevOps Team" },
+  { budget: "$7,200", project: "User Dashboard", status: "Paid", team: "UX Team" },
+  { budget: "$2,100", project: "Security Audit", status: "Failed", team: "Security Team" },
+];
+
+const statusDotClass = {
+  Failed: "bg-destructive",
+  Paid: "bg-success",
+  Pending: "bg-warning",
+  Unpaid: "bg-muted-foreground/72",
+};
+
+function StatusBadge(props) {
+  return (
+    <span class="inline-flex h-6 items-center gap-1.5 rounded-md border border-border/72 bg-muted/20 px-2 font-medium text-foreground text-sm leading-none shadow-xs/5">
+      <span class={\`size-2 rounded-full \${statusDotClass[props.status]}\`} />
+      {props.status}
+    </span>
+  );
+}
+
+export function Component() {
+  return (
+    <CardFrame>
+      <CardFrameHeader>
+        <CardFrameTitle>Project Budget</CardFrameTitle>
+        <CardFrameDescription>CardFrame keeps the table clipped inside a framed surface.</CardFrameDescription>
+      </CardFrameHeader>
+      <TableContainer variant="card">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead scope="col">Project</TableHead>
+              <TableHead scope="col">Status</TableHead>
+              <TableHead scope="col">Team</TableHead>
+              <TableHead class="text-right" scope="col">
+                Budget
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow>
+                <TableCell class="font-medium text-foreground">{row.project}</TableCell>
+                <TableCell>
+                  <StatusBadge status={row.status} />
+                </TableCell>
+                <TableCell>{row.team}</TableCell>
+                <TableCell class="text-right font-medium tabular-nums">{row.budget}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </CardFrame>
+  );
+}`;
+
+export const cardFrameTableExample = defineCodeExample({
+  code: cardFrameTableExampleCode,
+  component: CardFrameTableExample,
+  description: "Card table inside CardFrame with the existing table-container clipping hook.",
+  id: "card-frame",
+  title: "CardFrame Table",
+  variant: "full",
+});
+
+export const tableExamples = [
+  tableExample,
+  cardTableExample,
+  cardFrameTableExample,
+] satisfies readonly CodeExample[];
 export const tableUsageCode = `import {
   Table,
   TableBody,

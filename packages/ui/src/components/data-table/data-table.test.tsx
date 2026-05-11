@@ -45,8 +45,10 @@ describe("DataTable TanStack proof", () => {
 
     expect(viewport?.getAttribute("data-scope")).toBe("ui-data-table");
     expect(viewport?.getAttribute("data-slot")).toBe("table-container");
+    expect(viewport?.getAttribute("data-variant")).toBe("default");
     expect(table?.getAttribute("data-scope")).toBe("ui-data-table");
     expect(table?.getAttribute("data-slot")).toBe("table");
+    expect(table?.getAttribute("data-variant")).toBe("default");
     expect(host.querySelector("caption")?.textContent).toBe("Service latency");
     expect(headers[0]?.getAttribute("aria-sort")).toBe("none");
     expect(cells[0]?.textContent).toBe("API");

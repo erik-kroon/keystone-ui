@@ -15,7 +15,20 @@ export type CodeExample = {
 
 export type ApiReferenceItem = {
   description: string;
+  examples?: readonly ApiReferenceExample[];
   name: string;
+  props?: readonly ApiReferenceProp[];
+};
+
+export type ApiReferenceExample = {
+  code: string;
+  language?: string;
+};
+
+export type ApiReferenceProp = {
+  default?: string;
+  name: string;
+  type: string;
 };
 
 export type ComponentDocsBlueprint = {
