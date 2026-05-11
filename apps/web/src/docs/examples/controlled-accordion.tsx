@@ -18,12 +18,13 @@ export function Component() {
     },
     {
       content:
-        "Install components with the shadcn CLI, then own the generated source in your application.",
+        "Keystone is not released yet. The registry and install flow are still being shaped in this repo.",
       id: "item-2",
       title: "How do I get started?",
     },
     {
-      content: "Yes. Components are copy-paste source backed by Keystone Core.",
+      content:
+        "Not yet. Keystone is early and the component source is still changing before a public release.",
       id: "item-3",
       title: "Can I use it for my project?",
     },

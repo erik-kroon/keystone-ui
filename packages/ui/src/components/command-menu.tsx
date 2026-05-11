@@ -650,9 +650,10 @@ export function CommandMenuList(props: CommandMenuListProps) {
       class={cn(
         classes(
           "ui-command-menu-list",
-          "max-h-[min(var(--available-height),22rem)]",
+          "max-h-[min(var(--available-height,22rem),22rem)]",
           "min-h-0",
           "overflow-y-auto",
+          "overscroll-contain",
           "not-empty:p-2",
           "not-empty:scroll-py-2",
           "in-data-has-overflow-y:pe-3",
