@@ -25,7 +25,11 @@ export function KeystoneLogoMark(props: KeystoneLogoMarkProps) {
     <svg
       {...svgProps}
       aria-hidden="true"
-      class={cn(keystoneLogoMarkSizeClass[local.size ?? "md"], "fill-current", local.class)}
+      class={cn(
+        keystoneLogoMarkSizeClass[local.size ?? "md"],
+        "fill-current",
+        local.class,
+      )}
       viewBox="9 11 46 42"
     >
       <path
@@ -56,15 +60,24 @@ export default function Header(props: Readonly<{ borderless?: boolean }>) {
       <div class="relative mx-auto flex h-(--header-height) w-full max-w-[1416px] items-center justify-between gap-2 px-4 lg:px-6">
         <div class="flex min-w-0 items-center gap-2">
           <DocsMobileNav />
-          <Link to="/" class="flex min-w-0 items-center gap-2.5" aria-label="Keystone UI home">
+          <Link
+            to="/"
+            class="flex min-w-0 items-center gap-2.5"
+            aria-label="Keystone UI home"
+          >
             <span class="flex size-6 shrink-0 items-center justify-center text-white">
               <KeystoneLogoMark />
             </span>
-            <span class="min-w-0 truncate font-semibold text-[1.2rem] leading-5">Keystone UI</span>
+            <span class="min-w-0 truncate font-semibold text-[1.2rem] leading-5">
+              UI
+            </span>
           </Link>
         </div>
 
-        <nav class="flex items-center text-sm text-muted-foreground" aria-label="Actions">
+        <nav
+          class="flex items-center text-sm text-muted-foreground"
+          aria-label="Actions"
+        >
           <DocsCommandSearch />
           <span
             aria-hidden="true"

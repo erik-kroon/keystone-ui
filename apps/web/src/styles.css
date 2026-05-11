@@ -94,6 +94,7 @@
   --code: --alpha(var(--sidebar) / 24%);
   --code-foreground: var(--foreground);
   --code-highlight: --alpha(var(--color-black) / 4%);
+  --scrollbar-thumb: color-mix(in srgb, var(--muted-foreground) 44%, transparent);
   color: var(--foreground);
   background: var(--sidebar);
   font-family: var(--font-sans);
@@ -140,12 +141,30 @@
   --code: --alpha(var(--sidebar) / 24%);
   --code-foreground: var(--foreground);
   --code-highlight: --alpha(var(--color-white) / 4%);
+  --scrollbar-thumb: color-mix(in srgb, var(--muted-foreground) 52%, transparent);
   color-scheme: dark;
 }
 
 * {
   box-sizing: border-box;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+  scrollbar-width: thin;
   @apply border-border outline-ring/50;
+}
+
+*::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+*::-webkit-scrollbar-corner,
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background-color: var(--scrollbar-thumb);
 }
 
 html {

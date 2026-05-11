@@ -518,12 +518,16 @@ export function DocsSidebar(props: Readonly<{ groups: readonly NavGroup[] }>) {
 }
 
 export function DocsToc(props: Readonly<{ items: readonly TocItem[] }>) {
+  const tocItems = createMemo<readonly TocItem[]>(() => [
+    { href: "#top", label: "(Top)" },
+    ...props.items,
+  ]);
   const itemIds = createMemo(() =>
-    props.items.map((item) => item.href.replace(/^#/, "")).filter(Boolean),
+    tocItems()
+      .map((item) => item.href.replace(/^#/, ""))
+      .filter(Boolean),
   );
-  const [activeId, setActiveId] = createSignal<string | undefined>(
-    props.items[0]?.href.replace(/^#/, ""),
-  );
+  const [activeId, setActiveId] = createSignal<string | undefined>("top");
   let tocElement: HTMLElement | undefined;
   let clickScrollId: string | undefined;
   let animationFrameId: number | undefined;
@@ -558,6 +562,16 @@ export function DocsToc(props: Readonly<{ items: readonly TocItem[] }>) {
     if (!id) return;
     clickScrollId = id;
     setActiveId(id);
+  };
+
+  const onTocItemClick = (event: MouseEvent, href: string) => {
+    setClickedActiveId(href);
+
+    if (href !== "#top" || typeof window === "undefined") return;
+
+    event.preventDefault();
+    window.history.pushState(null, "", "#top");
+    window.scrollTo({ top: 0, left: 0 });
   };
 
   createEffect(() => {
@@ -661,14 +675,14 @@ export function DocsToc(props: Readonly<{ items: readonly TocItem[] }>) {
             tocElement = element;
           }}
         >
-          <For each={props.items}>
+          <For each={tocItems()}>
             {(item) => (
               <a
                 class="relative py-1 text-[0.8125rem] text-sidebar-foreground leading-4.5 no-underline outline-none transition-colors before:absolute before:inset-y-px before:-left-3.25 before:w-px before:rounded-full before:bg-transparent hover:text-foreground focus-visible:text-foreground data-[active=true]:text-foreground data-[active=true]:before:w-0.5 data-[active=true]:before:bg-primary data-[depth=3]:ps-3.5 data-[depth=4]:ps-5.5"
                 data-active={isActive(item.href)}
                 data-depth={item.depth}
                 href={item.href}
-                onClick={() => setClickedActiveId(item.href)}
+                onClick={(event) => onTocItemClick(event, item.href)}
                 onPointerDown={() => setClickedActiveId(item.href)}
               >
                 {item.label}

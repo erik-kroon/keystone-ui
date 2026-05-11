@@ -16,6 +16,27 @@
   --success: oklch(0.57 0.15 146);
   --warning: oklch(0.72 0.17 72);
   --info: oklch(0.58 0.16 244);
+  --scrollbar-thumb: color-mix(in srgb, var(--muted-foreground) 44%, transparent);
+}
+
+* {
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+*::-webkit-scrollbar-corner,
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background-color: var(--scrollbar-thumb);
 }
 
 body {
