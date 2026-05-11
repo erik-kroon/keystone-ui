@@ -29,7 +29,7 @@ export function Component() {
         </PopoverHeader>
         <Textarea
           aria-label="Feedback"
-          class="min-h-20"
+          class="min-h-20 resize-none"
           placeholder="How can we improve?"
           size="lg"
         />

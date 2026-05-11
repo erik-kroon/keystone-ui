@@ -25,7 +25,7 @@
   ],
   "meta": {
     "install": "shadcn add https://keystone-ui.dev/r/textarea.json",
-    "customization": "Use the ui-textarea class and data-invalid attribute for resize, border, and validation-state styles.",
+    "customization": "Use class/ui-textarea for native textarea sizing and resize behavior, rootClass/ui-textarea-control for the wrapper shell, and data-invalid for validation-state styles.",
     "sourceFiles": [
       "packages/ui/src/components/textarea.tsx"
     ],

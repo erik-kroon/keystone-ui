@@ -827,7 +827,7 @@ export const registryDocItems = [
       "solid": ">=1.9.0 <2.0.0",
       "shadcn": "registry-item schema"
     },
-    "customization": "Use the ui-textarea class and data-invalid attribute for resize, border, and validation-state styles.",
+    "customization": "Use class/ui-textarea for native textarea sizing and resize behavior, rootClass/ui-textarea-control for the wrapper shell, and data-invalid for validation-state styles.",
     "dependencies": [
       "cn"
     ],
