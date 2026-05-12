@@ -7,7 +7,7 @@ Early Keystone UI monorepo bootstrap for a Solid primitive library and shadcn-co
 ## Domain Terms
 
 - `Keystone`: Solid-native primitive layer.
-- `UI`: copy-paste registry, CLI, blocks, templates, and styled source layer.
+- `UI`: copy-paste registry, blocks, templates, and styled source layer.
 - `kernel`: shared primitive internals that should be built before visible components.
 - `registry`: shadcn-compatible UI distribution model for components, blocks, templates, themes, and related files.
 - `docs`: product documentation and API guidance, served through `apps/web`.
@@ -21,8 +21,8 @@ Early Keystone UI monorepo bootstrap for a Solid primitive library and shadcn-co
 - `packages/core`
   - Early primitive package with overlay, disclosure, menu, select/combobox, field, selection-control, tabs, toolbar, slider, date-picker, toast, metadata, and utility surfaces.
   - Current breadth is useful for proving UI wrappers, but the next quality bar is deeper shared internals.
-- `packages/mason`
-  - Internal registry tooling tracer for schema experiments, validation, dependency resolution, path safety, and tests. It is not the public installer.
+- `packages/ui`
+  - First-party styled source, blocks, hooks, stores, utilities, and templates used to build shadcn-compatible registry items.
 - `registry`
   - First-party shadcn-compatible UI component, TanStack-backed app component, utility, and block metadata.
   - Registry item metadata should include parity notes against the most relevant references.
@@ -33,11 +33,10 @@ Early Keystone UI monorepo bootstrap for a Solid primitive library and shadcn-co
 
 ## Intended Growth Map
 
-The PRD's end-state structure points toward these future areas:
+The current package structure is intentionally limited:
 
 - `packages/core`: primitive package with kernel systems and subpath exports.
-- `packages/core-labs`: experimental primitives.
-- `packages/mason`: internal registry validation, shadcn payload generation support, dependency graph checks, path safety experiments, and future migration research.
+- `packages/ui`: source-owned components, blocks, hooks, stores, utilities, and templates distributed through the registry.
 - `registry/default`: UI components, blocks, themes, hooks, utilities, and templates distributed through shadcn-compatible payloads.
 - `examples`: install and compatibility targets.
 - `apps/web`: public docs/product surface, API references, examples, and registry previews.
@@ -51,8 +50,7 @@ root package.json
   -> turbo tasks
     -> apps/web Vite Solid app
     -> packages/core primitive tests
-    -> packages/mason tests
-    -> local example-app verification
+    -> packages/ui registry-source tests
 ```
 
 Intended product flow:
@@ -76,8 +74,7 @@ Core kernel
 - [docs/adr/0002-scope-names-license-governance.md](docs/adr/0002-scope-names-license-governance.md): provisional names, package scope, license intent, and governance.
 - [docs/adr/0004-core-kernel-api-boundary.md](docs/adr/0004-core-kernel-api-boundary.md): public/private Core kernel API boundary.
 - [docs/rfcs/core-api.md](docs/rfcs/core-api.md): Core compound API, low-level creators, state, polymorphism, styling contracts, SSR, and first primitives.
-- [docs/adr/0005-shadcn-registry-distribution.md](docs/adr/0005-shadcn-registry-distribution.md): Core npm distribution, shadcn registry distribution for UI, and Mason as internal tooling.
-- [docs/rfcs/mason-registry.md](docs/rfcs/mason-registry.md): superseded public Mason plan, retained for internal tooling background.
+- [docs/adr/0005-shadcn-registry-distribution.md](docs/adr/0005-shadcn-registry-distribution.md): Core npm distribution and shadcn registry distribution for UI.
 - [docs/adr/0003-ui-tanstack-app-layer.md](docs/adr/0003-ui-tanstack-app-layer.md): UI TanStack app-layer decision.
 - [docs/accessibility/testing-plan.md](docs/accessibility/testing-plan.md): accessibility release gates, automated/manual testing matrix, and first primitive coverage.
 - [registry/default](registry/default): first-party shadcn-compatible registry source and item metadata.

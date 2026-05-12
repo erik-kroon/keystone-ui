@@ -7,7 +7,6 @@ Use this guide when building modal dialogs, confirmation flows, editor panels, a
 - UI source: `packages/ui/src/ui/dialog.tsx`
 - Core primitive: `@keystone-ui/core/dialog`
 - Registry item: `registry/default/items/dialog.json`
-- Mason install: `mason add dialog`
 
 ## Boundary
 
@@ -40,7 +39,9 @@ export function RenameProjectDialog() {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Rename project</DialogTitle>
-          <DialogDescription>Update the visible project name.</DialogDescription>
+          <DialogDescription>
+            Update the visible project name.
+          </DialogDescription>
         </DialogHeader>
         <div class="grid gap-3">{/* form controls */}</div>
         <DialogFooter>{/* actions */}</DialogFooter>

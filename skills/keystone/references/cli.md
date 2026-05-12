@@ -1,4 +1,4 @@
-# Mason CLI Reference
+# Shadcn Registry Reference
 
 Use this for install, preview, and manual setup guidance.
 
@@ -7,13 +7,13 @@ Use this for install, preview, and manual setup guidance.
 Preferred shape:
 
 ```bash
-mason add button
-mason add dialog
-mason add select-field
-mason add data-table
+pnpm dlx shadcn@latest add https://keystone-ui.dev/r/button.json
+pnpm dlx shadcn@latest add https://keystone-ui.dev/r/dialog.json
+pnpm dlx shadcn@latest add https://keystone-ui.dev/r/select-field.json
+pnpm dlx shadcn@latest add https://keystone-ui.dev/r/data-table.json
 ```
 
-If the local CLI command is not available in the target project, inspect `packages/mason` and the root scripts before inventing flags.
+If the hosted endpoint is not available, use the local registry item JSON and copy the listed source files manually. Do not invent Keystone-specific installer flags.
 
 ## Discovery
 
@@ -21,6 +21,7 @@ If the local CLI command is not available in the target project, inspect `packag
 - Registry items: `registry/default/items/*.json`
 - UI source: `packages/ui/src/`
 - Docs generation: `scripts/generate-docs-registry-items.ts`
+- Public shadcn payload generation: `scripts/generate-shadcn-registry.ts`
 
 ## Manual Install
 
@@ -36,7 +37,7 @@ When manual install is requested:
 
 ## Output Checklist
 
-- Command matches a real Mason item.
+- Command matches a real shadcn registry item URL.
 - Dependency list is complete.
 - File paths are complete.
 - Token/theme requirements are stated.

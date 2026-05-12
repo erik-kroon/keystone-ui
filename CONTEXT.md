@@ -18,7 +18,7 @@ The longer-term application direction is data-dense, keyboard-first Solid produc
 - `Core`: primitive runtime and APIs. Handles behavior, accessibility, focus, keyboard interaction, positioning, forms, SSR, and composition.
 - `UI component`: styled component/block/template source installed into user apps.
 - `Keystone registry`: shadcn-compatible source registry that distributes UI components, blocks, hooks, utilities, themes, pages, templates, config, rules, and assets.
-- `registry tooling`: internal validation, generation, dependency graph, path safety, and docs support around registry items. The existing `packages/mason` code is internal tooling, not the public installer.
+- `registry tooling`: internal validation, generation, dependency graph, path safety, and docs support around shadcn-compatible registry items.
 - `primitive`: unstyled behavior component or low-level creator such as `Dialog.Root` or `createDialog`.
 - `kernel`: reusable internal systems shared by primitives, such as controllable state, presence, focus scope, dismissable layer, floating, collections, typeahead, and form control.
 - `part`: named DOM/component piece in a primitive, exposed through `data-part`.
@@ -68,7 +68,7 @@ Core internals -> Core primitives -> UI items -> UI blocks -> UI templates
 ## Key Conventions
 
 - Core should publish as one public package with subpath exports, for example `@keystone-ui/core/dialog`.
-- Styled UI source should be distributed through a shadcn-compatible Keystone registry, not a public Keystone-specific installer.
+- Styled UI source should be distributed through a shadcn-compatible Keystone registry, not a public Keystone-specific installer or separate UI package.
 - `@keystone-ui` is the provisional npm scope for internal package names and planning examples.
 - `Keystone` is the working umbrella product name until package, trademark, domain, and handle clearance are complete.
 - MIT is the intended open-source license, pending a root `LICENSE` file before public release or package publication.
@@ -93,12 +93,12 @@ Core internals -> Core primitives -> UI items -> UI blocks -> UI templates
 
 - `apps/web`: Solid + TanStack Router + Tailwind docs/product app.
 - `packages/core`: early primitive package with overlay, disclosure, menu, select/combobox, field, selection-control, tabs, toolbar, slider, date-picker, toast, metadata, and utility surfaces. It has more breadth than the original tracer, but the shared kernel is still the main quality target.
-- `packages/mason`: internal registry tooling tracer plus schema experiments, validation, dependency resolution, path safety, and tests. It is not the public installer.
+- `packages/ui`: first-party styled source, blocks, hooks, stores, utilities, and templates used to build shadcn-compatible registry items.
 - `docs/`: ADRs, RFCs, roadmap docs, accessibility plan, release notes, and app design-system guidance.
 - `registry/`: shadcn-compatible registry metadata for first-party UI components, TanStack-backed app components, utilities, and early blocks.
 - Future UI workspace work should emphasize data tables, command surfaces, resizable app shells, watchlists, inspection panels, numeric/financial formatting, chart interaction patterns, condition builders, and event feeds while preserving source ownership.
 
-The project is beyond a pure scaffold but still far from a mature primitive library. Registry tooling quality is ahead of Core runtime depth. Core needs a deeper internal kernel before broad catalog work.
+The project is beyond a pure scaffold but still far from a mature primitive library. Core needs a deeper internal kernel before broad catalog work, while UI distribution should stay centered on the shadcn-compatible registry.
 
 Phase 0 posture: consolidate direction, freeze primitive breadth, label maturity, keep private kernels private, make UI multi-file registry items first-class through shadcn-compatible registry payloads, and defer data-dense workspace implementation until Core kernels and registry evidence are credible enough to carry it.
 
@@ -110,7 +110,7 @@ The active planning baseline:
 - Use `@keystone-ui` as the provisional package scope.
 - Use MIT as the intended license and lightweight ADR/RFC-based maintainer governance.
 - Use the Core API RFC as the baseline for compound components, low-level creators, controlled state, polymorphism, event composition, data attributes, CSS variables, SSR, and first API-proving primitives.
-- Use [ADR 0005](docs/adr/0005-shadcn-registry-distribution.md) as the baseline for Core npm distribution, shadcn-compatible UI registry distribution, and Mason's demotion to internal tooling.
+- Use [ADR 0005](docs/adr/0005-shadcn-registry-distribution.md) as the baseline for Core npm distribution and shadcn-compatible UI registry distribution.
 - Use the end-state primitive/component inventory as the baseline for Keystone Core/UI surface classification and sequencing.
 - Write accessibility testing plan.
 - Preserve the strict Keystone Core/UI product boundary.

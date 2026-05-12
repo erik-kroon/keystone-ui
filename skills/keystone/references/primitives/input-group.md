@@ -9,7 +9,6 @@ Use this guide for input compositions with icons, prefixes, suffixes, clear butt
 - Text field source: `packages/ui/src/ui/text-field.tsx`
 - Field source: `packages/ui/src/ui/field.tsx`
 - Registry items: `input`, `text-field`, `combobox`, `combobox-field`
-- Mason install: `mason add input` or the concrete field/control item
 
 There is no standalone `input-group` registry item yet. Treat input-group as a composition pattern until Keystone adds a first-party source item.
 

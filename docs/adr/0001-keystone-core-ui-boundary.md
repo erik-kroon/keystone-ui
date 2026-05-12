@@ -36,7 +36,7 @@ Core internals
 
 Core should be designed as one public primitive package with subpath exports, such as `@scope/core/dialog`, unless a later ADR supersedes this decision.
 
-Styled UI source should be distributed through a shadcn-compatible Keystone registry. Mason remains internal tooling unless a later ADR restores a public Keystone-specific installer.
+Styled UI source should be distributed through a shadcn-compatible Keystone registry. Keystone should not keep a separate public installer or installer package unless a later ADR restores one.
 
 ## Consequences
 
@@ -49,5 +49,5 @@ Styled UI source should be distributed through a shadcn-compatible Keystone regi
 
 - Confirm final public names after package, trademark, domain, and handle clearance.
 - Write a Core API RFC.
-- Use ADR 0005 for public distribution and keep the Mason registry RFC as historical/internal-tooling context.
+- Use ADR 0005 for public distribution.
 - Write an accessibility testing plan.
