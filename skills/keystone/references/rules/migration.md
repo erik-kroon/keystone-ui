@@ -19,7 +19,6 @@ Use this when adapting snippets from shadcn, Radix, React, or Base UI-shaped exa
 - Inspect `packages/ui/src/ui/<component>.tsx` and the relevant Core primitive export first.
 - Replace Radix overlay behavior with Keystone Core-backed wrappers.
 - Replace one-off app behavior with existing store or TanStack app-layer items when available.
-- Use Mason registry items instead of shadcn registry names.
 
 ## Example Translations
 
@@ -56,4 +55,3 @@ const [open, setOpen] = createSignal(false);
 3. Props are verified against local source.
 4. Accessibility parts are preserved.
 5. Styling uses Keystone tokens.
-6. Registry install names use Mason items.

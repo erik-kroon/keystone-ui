@@ -70,7 +70,7 @@
       "packages/ui/src/templates/tanstack-start-dashboard/src/routeTree.gen.ts",
       "packages/ui/src/templates/tanstack-start-dashboard/src/styles.css"
     ],
-    "verification": "Template metadata is validated in the registry test suite; the invoice-dashboard block is installed and built in scripts/verify-example-app.ts.",
+    "verification": "Template metadata is emitted through scripts/generate-shadcn-registry.ts; registry dependencies should be validated through shadcn add before public preview.",
     "parity": {
       "tanstackStart": "Uses the same TanStack Start route/document/router shape as the docs app, but trims it to a product dashboard scaffold. Gaps: route generation is represented by a placeholder routeTree.gen.ts and should be regenerated in a real app.",
       "shadcn": "Template follows source-owned app scaffolding conventions while delegating UI source to registry dependencies. Gaps: no CLI create command or themed marketing shell yet.",

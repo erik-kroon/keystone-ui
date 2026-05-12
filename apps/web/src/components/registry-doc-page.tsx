@@ -281,7 +281,7 @@ function InstallationSection(props: Readonly<{ install: string; item: RegistryDo
   const [mode, setMode] = createSignal<"cli" | "manual">("cli");
   const [manager, setManager] = createSignal<"bun" | "npm" | "pnpm" | "yarn">("bun");
   const registryRef = () =>
-    props.install.replace(/^(?:mason|shadcn) add\s+/, "") ||
+    props.install.replace(/^shadcn add\s+/, "") ||
     `https://keystone-ui.dev/r/${props.item.name}.json`;
 
   const cliCommands = () => {

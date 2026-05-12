@@ -259,6 +259,28 @@ describe("CommandMenu", () => {
     dispose();
   });
 
+  test("focuses the command input when opened through external state", async () => {
+    const store = createCommandMenuStore({ open: false });
+    const host = document.createElement("div");
+    document.body.append(host);
+    const dispose = render(
+      () => <CommandMenu hotkeys={false} items={commands} store={store} trigger="Commands" />,
+      host,
+    );
+
+    await tick();
+
+    store.open();
+    await tick();
+
+    const input = document.querySelector<HTMLInputElement>("[data-slot='command-menu-input']");
+
+    expect(input).not.toBeNull();
+    expect(document.activeElement).toBe(input);
+
+    dispose();
+  });
+
   test("registers optional TanStack hotkeys for opening the menu and invoking item shortcuts", async () => {
     const onSelect = vi.fn();
     const host = document.createElement("div");

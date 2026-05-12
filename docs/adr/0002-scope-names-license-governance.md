@@ -19,9 +19,9 @@ The repository already uses `keystone-ui` as the workspace name and `@keystone-u
 Use this repository as the single monorepo for both product layers:
 
 - Core primitives and internals.
-- Registry tooling, styled source, blocks, templates, docs, and examples.
+- Styled source, blocks, templates, registry metadata, docs, and examples.
 
-Keep `Keystone` as the provisional umbrella product name for now. Treat Core and UI components as repo layer names until explicit clearance happens in a later ADR. Mason is no longer a public brand; it is internal registry tooling.
+Keep `Keystone` as the provisional umbrella product name for now. Treat Core and UI components as repo layer names until explicit clearance happens in a later ADR.
 
 Use `@keystone-ui` as the provisional npm scope for internal workspace packages and pre-clearance planning examples. Public package names remain provisional until naming clearance is complete.
 
@@ -47,5 +47,5 @@ Use lightweight maintainer governance during the foundation milestone:
 - Perform package, trademark, domain, and handle clearance for final public names.
 - Add a root `LICENSE` file before publication.
 - Write `docs/rfcs/core-api.md`.
-- Keep `docs/rfcs/mason-registry.md` as superseded internal-tooling context and use ADR 0005 for public distribution.
+- Use ADR 0005 for public distribution.
 - Write `docs/accessibility/testing-plan.md`.

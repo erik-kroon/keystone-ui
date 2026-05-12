@@ -10,7 +10,6 @@ Use this guide for Keystone field wiring, TanStack Form adapters, validation dis
 - Common controls: `packages/ui/src/ui/text-field.tsx`, `select-field.tsx`, `combobox-field.tsx`
 - Core primitive: `@keystone-ui/core/form`
 - Registry items: `field`, `tanstack-form`, `tanstack-field`, `text-field`, `select-field`, `combobox-field`
-- Mason install: `mason add tanstack-form tanstack-field text-field`
 
 ## Boundary
 
@@ -24,7 +23,10 @@ Do not move TanStack Form into Core. Core must stay independent from app-state l
 
 ```tsx
 import { createForm } from "@tanstack/solid-form";
-import { TanStackForm, TanStackFormSubmit } from "@/components/ui/tanstack-form";
+import {
+  TanStackForm,
+  TanStackFormSubmit,
+} from "@/components/ui/tanstack-form";
 import { TextField } from "@/components/ui/text-field";
 
 export function ProjectForm() {

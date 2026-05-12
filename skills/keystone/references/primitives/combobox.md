@@ -8,7 +8,6 @@ Use this guide for autocomplete, searchable selection, async option search, and 
 - Field wrapper: `packages/ui/src/ui/combobox-field.tsx`
 - Core primitive: `@keystone-ui/core/combobox`
 - Registry items: `registry/default/items/combobox.json`, `registry/default/items/combobox-field.json`
-- Mason install: `mason add combobox` or `mason add combobox-field`
 
 ## Boundary
 
@@ -34,7 +33,11 @@ export function ProjectCombobox(props: { projects: readonly Project[] }) {
 
   return (
     <Combobox value={value()} onValueChange={(next) => setValue(next)}>
-      <ComboboxInput aria-label="Project" placeholder="Search projects" showClear />
+      <ComboboxInput
+        aria-label="Project"
+        placeholder="Search projects"
+        showClear
+      />
       <ComboboxContent>
         <ComboboxListbox>
           <For each={props.projects}>

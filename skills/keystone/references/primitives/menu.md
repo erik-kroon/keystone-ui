@@ -7,7 +7,6 @@ Use this guide for action menus, row actions, toolbar menus, and trigger-based c
 - UI source: `packages/ui/src/ui/menu.tsx`
 - Core primitive: `@keystone-ui/core/menu`
 - Registry item: `registry/default/items/menu.json`
-- Mason install: `mason add menu`
 
 ## Boundary
 
@@ -18,7 +17,13 @@ Keystone UI owns styled wrappers for trigger, portal, positioner, content, group
 ## Composition
 
 ```tsx
-import { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from "@/components/ui/menu";
+import {
+  Menu,
+  MenuContent,
+  MenuItem,
+  MenuSeparator,
+  MenuTrigger,
+} from "@/components/ui/menu";
 import { Button } from "@/components/ui/button";
 
 export function ProjectActions() {

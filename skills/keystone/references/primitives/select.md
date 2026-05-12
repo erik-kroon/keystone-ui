@@ -8,7 +8,6 @@ Use this guide for single-choice or multi-choice listbox selection where the use
 - Field wrapper: `packages/ui/src/ui/select-field.tsx`
 - Core primitive: `@keystone-ui/core/select`
 - Registry items: `registry/default/items/select.json`, `registry/default/items/select-field.json`
-- Mason install: `mason add select` or `mason add select-field`
 
 ## Boundary
 
