@@ -33,11 +33,7 @@ export function ProjectCombobox(props: { projects: readonly Project[] }) {
 
   return (
     <Combobox value={value()} onValueChange={(next) => setValue(next)}>
-      <ComboboxInput
-        aria-label="Project"
-        placeholder="Search projects"
-        showClear
-      />
+      <ComboboxInput aria-label="Project" placeholder="Search projects" showClear />
       <ComboboxContent>
         <ComboboxListbox>
           <For each={props.projects}>

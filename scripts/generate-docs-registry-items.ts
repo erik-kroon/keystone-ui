@@ -2,6 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 type RegistryIndex = {
+  homepage: string;
   items: readonly RegistryIndexItem[];
 };
 
@@ -65,6 +66,10 @@ function componentHref(name: string) {
   return `/docs/components/${name}`;
 }
 
+function registryItemUrl(homepage: string, name: string) {
+  return `${homepage.replace(/\/$/, "")}/r/${name}.json`;
+}
+
 async function main() {
   const registry = JSON.parse(await readFile(registryIndexPath, "utf8")) as RegistryIndex;
   const items = await Promise.all(
@@ -86,7 +91,7 @@ async function main() {
     dependencies: item.meta?.dependencies ?? item.dependencies ?? [],
     description: item.description,
     files: item.files.map((file) => ({ path: file.path, target: file.target, type: file.type })),
-    install: item.meta?.install ?? `shadcn add https://keystone-ui.dev/r/${item.name}.json`,
+    install: `shadcn add ${registryItemUrl(registry.homepage, item.name)}`,
     keywords: item.keywords ?? [],
     limitations: item.meta?.limitations,
     maturity: item.meta?.maturity,

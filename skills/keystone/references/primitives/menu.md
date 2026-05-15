@@ -17,13 +17,7 @@ Keystone UI owns styled wrappers for trigger, portal, positioner, content, group
 ## Composition
 
 ```tsx
-import {
-  Menu,
-  MenuContent,
-  MenuItem,
-  MenuSeparator,
-  MenuTrigger,
-} from "@/components/ui/menu";
+import { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from "@/components/ui/menu";
 import { Button } from "@/components/ui/button";
 
 export function ProjectActions() {

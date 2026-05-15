@@ -34,6 +34,8 @@ const registryItemsRoot = path.join(repoRoot, "registry/default/items");
 const outputRoot = path.join(repoRoot, "apps/web/public/r");
 const shadcnRegistrySchema = "https://ui.shadcn.com/schema/registry.json";
 const shadcnItemSchema = "https://ui.shadcn.com/schema/registry-item.json";
+const registryBaseUrl = process.env.KEYSTONE_REGISTRY_BASE_URL;
+const unpublishedPackageDependencies = new Set(["@keystone-ui/core"]);
 
 function shadcnType(type: string) {
   return type === "registry:template" ? "registry:item" : type;
@@ -95,6 +97,58 @@ function stripInternalMetadata(item: RegistryItem): RegistryItem {
   return next;
 }
 
+function registryItemUrl(baseUrl: string, name: string) {
+  return `${baseUrl.replace(/\/$/, "")}/r/${name}.json`;
+}
+
+function publicRegistryDependency(
+  dependency: string,
+  itemByName: ReadonlyMap<string, RegistryItem>,
+  baseUrl: string,
+) {
+  if (dependency.startsWith("http://") || dependency.startsWith("https://")) return dependency;
+  if (dependency.startsWith("@")) return dependency;
+  if (itemByName.has(dependency)) return registryItemUrl(baseUrl, dependency);
+
+  return dependency;
+}
+
+function withPublicRegistryDependencies(
+  item: RegistryItem,
+  itemByName: ReadonlyMap<string, RegistryItem>,
+  baseUrl: string,
+) {
+  const meta = item.meta && typeof item.meta === "object" ? item.meta : undefined;
+  const install = `shadcn add ${registryItemUrl(baseUrl, item.name)}`;
+
+  return {
+    ...item,
+    ...(meta ? { meta: { ...meta, install } } : {}),
+    ...(item.registryDependencies
+      ? {
+          registryDependencies: item.registryDependencies.map((dependency) =>
+            publicRegistryDependency(dependency, itemByName, baseUrl),
+          ),
+        }
+      : {}),
+  };
+}
+
+function withoutUnpublishedPackageDependencies(item: RegistryItem) {
+  if (!item.dependencies) return item;
+
+  return {
+    ...item,
+    dependencies: (item.dependencies as readonly string[]).filter((dependency) => {
+      const packageName = dependency.startsWith("@")
+        ? dependency.split("@", 3).slice(0, 2).join("@")
+        : dependency.split("@", 1)[0];
+
+      return !unpublishedPackageDependencies.has(packageName);
+    }),
+  };
+}
+
 async function withContent(file: RegistryFile): Promise<RegistryFile> {
   const absolutePath = path.join(repoRoot, file.path);
   const content = await readFile(absolutePath, "utf8");
@@ -112,9 +166,15 @@ async function readItem(name: string): Promise<RegistryItem> {
   ) as RegistryItem;
 }
 
-async function publicItem(item: RegistryItem): Promise<RegistryItem> {
+async function publicItem(
+  item: RegistryItem,
+  itemByName: ReadonlyMap<string, RegistryItem>,
+  baseUrl: string,
+): Promise<RegistryItem> {
   const files = await Promise.all((item.files ?? []).map((file) => withContent(file)));
-  const publicMetadata = stripInternalMetadata(item);
+  const publicMetadata = withoutUnpublishedPackageDependencies(
+    withPublicRegistryDependencies(stripInternalMetadata(item), itemByName, baseUrl),
+  );
   return {
     ...publicMetadata,
     $schema: shadcnItemSchema,
@@ -126,8 +186,12 @@ async function publicItem(item: RegistryItem): Promise<RegistryItem> {
 async function main() {
   const registry = JSON.parse(await readFile(registryIndexPath, "utf8")) as RegistryIndex;
   const items = await Promise.all(registry.items.map((item) => readItem(item.name)));
+  const itemByName = new Map(items.map((item) => [item.name, item]));
   const publicSourceItems = publicRegistryItems(items);
-  const publicItems = await Promise.all(publicSourceItems.map((item) => publicItem(item)));
+  const publicBaseUrl = registryBaseUrl ?? registry.homepage;
+  const publicItems = await Promise.all(
+    publicSourceItems.map((item) => publicItem(item, itemByName, publicBaseUrl)),
+  );
 
   await rm(outputRoot, { force: true, recursive: true });
   await mkdir(outputRoot, { recursive: true });

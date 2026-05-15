@@ -67,7 +67,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/accordion.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/accordion.json",
     "keywords": [
       "accordion",
       "collapsible",
@@ -119,7 +119,7 @@ export const registryDocItems = [
         "type": "registry:block"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/account-settings.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/account-settings.json",
     "keywords": [
       "account-settings",
       "settings",
@@ -195,7 +195,7 @@ export const registryDocItems = [
         "type": "registry:block"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/invoice-dashboard.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/invoice-dashboard.json",
     "keywords": [
       "invoice-dashboard",
       "dashboard",
@@ -264,7 +264,7 @@ export const registryDocItems = [
         "type": "registry:block"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/keyboard-command-surface.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/keyboard-command-surface.json",
     "keywords": [
       "keyboard-command-surface",
       "command-surface",
@@ -334,7 +334,7 @@ export const registryDocItems = [
         "type": "registry:block"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/realtime-data-table.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/realtime-data-table.json",
     "keywords": [
       "realtime-data-table",
       "data-table",
@@ -396,7 +396,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/alert.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/alert.json",
     "keywords": [
       "alert",
       "callout",
@@ -452,7 +452,7 @@ export const registryDocItems = [
         "type": "registry:block"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/resizable-workspace-shell.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/resizable-workspace-shell.json",
     "keywords": [
       "resizable-workspace-shell",
       "workspace",
@@ -477,6 +477,45 @@ export const registryDocItems = [
     ],
     "title": "ResizableWorkspaceShellBlock",
     "type": "registry:block",
+    "version": "0.1.0"
+  },
+  {
+    "anatomy": [],
+    "categories": [
+      "utility"
+    ],
+    "compatibility": {
+      "registryTooling": ">=0.1.0 <0.2.0",
+      "solid": ">=1.9.0 <2.0.0",
+      "shadcn": "registry-item schema"
+    },
+    "customization": "Extend this helper when your project needs conditional class maps, array flattening, or conflict-aware class merging.",
+    "dependencies": [],
+    "description": "Small class name composition helper shared by UI base components.",
+    "files": [
+      {
+        "path": "packages/ui/src/lib/cn.ts",
+        "target": "@lib/cn.ts",
+        "type": "registry:lib"
+      }
+    ],
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/cn.json",
+    "keywords": [
+      "classes",
+      "utility",
+      "styling"
+    ],
+    "name": "cn",
+    "parity": {
+      "registryTooling": "Utility item, not a primitive. Parity is scoped to Keystone registry ergonomics: one small copy-paste class composer shared by base components. Gaps: conflict-aware Tailwind merging, array/object conditional inputs, and project-specific class policy are intentionally left to user customization.",
+      "shadcn": "Comparable to shadcn cn helpers in role and install shape, but currently thinner. Gaps: no clsx/tailwind-merge dependency by default and no registry option to choose a stricter merge strategy."
+    },
+    "registryDependencies": [],
+    "sourceFiles": [
+      "@lib/cn.ts"
+    ],
+    "title": "Class Name Utility",
+    "type": "registry:lib",
     "version": "0.1.0"
   },
   {
@@ -508,7 +547,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/button.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/button.json",
     "keywords": [
       "button",
       "action",
@@ -566,7 +605,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/switch.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/switch.json",
     "keywords": [
       "switch",
       "toggle",
@@ -625,7 +664,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/checkbox.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/checkbox.json",
     "keywords": [
       "checkbox",
       "checked",
@@ -681,7 +720,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/radio-group.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/radio-group.json",
     "keywords": [
       "radio",
       "radio-group",
@@ -732,7 +771,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/input.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/input.json",
     "keywords": [
       "input",
       "field",
@@ -790,7 +829,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/search-input.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/search-input.json",
     "keywords": [
       "search-input",
       "search",
@@ -839,7 +878,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/textarea.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/textarea.json",
     "keywords": [
       "textarea",
       "field",
@@ -883,7 +922,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/label.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/label.json",
     "keywords": [
       "label",
       "field",
@@ -939,7 +978,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/field.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/field.json",
     "keywords": [
       "field",
       "label",
@@ -996,7 +1035,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/tanstack-form.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/tanstack-form.json",
     "keywords": [
       "tanstack-form",
       "form",
@@ -1055,7 +1094,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/tanstack-field.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/tanstack-field.json",
     "keywords": [
       "tanstack-field",
       "field",
@@ -1116,7 +1155,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/text-field.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/text-field.json",
     "keywords": [
       "text-field",
       "field",
@@ -1182,7 +1221,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/number-field.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/number-field.json",
     "keywords": [
       "number-field",
       "number",
@@ -1246,7 +1285,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/textarea-field.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/textarea-field.json",
     "keywords": [
       "textarea-field",
       "textarea",
@@ -1314,7 +1353,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/checkbox-field.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/checkbox-field.json",
     "keywords": [
       "checkbox-field",
       "checkbox",
@@ -1384,7 +1423,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/radio-group-field.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/radio-group-field.json",
     "keywords": [
       "radio-group-field",
       "radio-group",
@@ -1452,7 +1491,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/switch-field.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/switch-field.json",
     "keywords": [
       "switch-field",
       "switch",
@@ -1520,7 +1559,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/field-array.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/field-array.json",
     "keywords": [
       "field-array",
       "array",
@@ -1577,7 +1616,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/form-message.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/form-message.json",
     "keywords": [
       "form-message",
       "validation",
@@ -1634,7 +1673,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/form-submit.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/form-submit.json",
     "keywords": [
       "form-submit",
       "submit",
@@ -1706,7 +1745,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/select.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/select.json",
     "keywords": [
       "select",
       "listbox",
@@ -1777,7 +1816,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/select-field.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/select-field.json",
     "keywords": [
       "select-field",
       "select",
@@ -1849,7 +1888,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/combobox-field.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/combobox-field.json",
     "keywords": [
       "combobox-field",
       "combobox",
@@ -1909,7 +1948,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/slider.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/slider.json",
     "keywords": [
       "slider",
       "range",
@@ -1973,7 +2012,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/slider-field.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/slider-field.json",
     "keywords": [
       "slider-field",
       "slider",
@@ -2039,7 +2078,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/file-field.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/file-field.json",
     "keywords": [
       "file-field",
       "file",
@@ -2116,7 +2155,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/date-picker.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/date-picker.json",
     "keywords": [
       "date-picker",
       "calendar",
@@ -2182,7 +2221,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/date-picker-field.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/date-picker-field.json",
     "keywords": [
       "date-picker-field",
       "date-picker",
@@ -2244,7 +2283,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/tabs.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/tabs.json",
     "keywords": [
       "tabs",
       "tablist",
@@ -2318,7 +2357,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/combobox.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/combobox.json",
     "keywords": [
       "combobox",
       "autocomplete",
@@ -2397,7 +2436,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/command-menu.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/command-menu.json",
     "keywords": [
       "command-menu",
       "command-palette",
@@ -2459,7 +2498,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/app-shell.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/app-shell.json",
     "keywords": [
       "app-shell",
       "topbar",
@@ -2524,7 +2563,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/topbar.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/topbar.json",
     "keywords": [
       "topbar",
       "header",
@@ -2588,7 +2627,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/nav-list.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/nav-list.json",
     "keywords": [
       "nav-list",
       "nav-item",
@@ -2636,7 +2675,7 @@ export const registryDocItems = [
         "type": "registry:hook"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/use-media-query.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/use-media-query.json",
     "keywords": [
       "use-media-query",
       "create-media-query",
@@ -2683,7 +2722,7 @@ export const registryDocItems = [
         "type": "registry:hook"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/use-copy-to-clipboard.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/use-copy-to-clipboard.json",
     "keywords": [
       "clipboard",
       "copy",
@@ -2732,7 +2771,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/command-store.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/command-store.json",
     "keywords": [
       "command-store",
       "command-menu",
@@ -2787,7 +2826,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/app-store-provider.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/app-store-provider.json",
     "keywords": [
       "app-store",
       "provider",
@@ -2843,7 +2882,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/theme-store.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/theme-store.json",
     "keywords": [
       "theme",
       "dark-mode",
@@ -2893,7 +2932,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/sidebar-store.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/sidebar-store.json",
     "keywords": [
       "sidebar",
       "app-shell",
@@ -2949,7 +2988,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/sidebar.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/sidebar.json",
     "keywords": [
       "sidebar",
       "app-shell",
@@ -3005,7 +3044,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/keyboard-shortcuts.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/keyboard-shortcuts.json",
     "keywords": [
       "keyboard-shortcuts",
       "hotkeys",
@@ -3064,7 +3103,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/shortcut-display.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/shortcut-display.json",
     "keywords": [
       "shortcut-display",
       "hotkey",
@@ -3124,7 +3163,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/shortcut-recorder.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/shortcut-recorder.json",
     "keywords": [
       "shortcut-recorder",
       "hotkey",
@@ -3186,7 +3225,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/shortcut-sequence-recorder.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/shortcut-sequence-recorder.json",
     "keywords": [
       "shortcut-sequence-recorder",
       "hotkey",
@@ -3239,7 +3278,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/autocomplete.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/autocomplete.json",
     "keywords": [
       "autocomplete",
       "combobox",
@@ -3342,7 +3381,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/data-table.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/data-table.json",
     "keywords": [
       "data-table",
       "table",
@@ -3418,7 +3457,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/table.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/table.json",
     "keywords": [
       "table",
       "thead",
@@ -3479,7 +3518,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/data-table-tanstack-router.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/data-table-tanstack-router.json",
     "keywords": [
       "data-table",
       "table",
@@ -3573,7 +3612,7 @@ export const registryDocItems = [
         "type": "registry:item"
       }
     ],
-    "install": "Use this template as the app scaffold, then run shadcn add https://keystone-ui.dev/r/invoice-dashboard.json inside the generated project.",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/tanstack-start-dashboard.json",
     "keywords": [
       "tanstack-start",
       "solid-start",
@@ -3643,7 +3682,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/card.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/card.json",
     "keywords": [
       "card",
       "panel",
@@ -3700,7 +3739,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/group.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/group.json",
     "keywords": [
       "group",
       "button-group",
@@ -3761,7 +3800,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/code-block.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/code-block.json",
     "keywords": [
       "code-block",
       "code",
@@ -3823,7 +3862,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/frame.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/frame.json",
     "keywords": [
       "frame",
       "preview",
@@ -3885,7 +3924,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/empty.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/empty.json",
     "keywords": [
       "empty",
       "empty-state",
@@ -3941,7 +3980,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/badge.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/badge.json",
     "keywords": [
       "badge",
       "status",
@@ -3998,7 +4037,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/kbd.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/kbd.json",
     "keywords": [
       "kbd",
       "keyboard",
@@ -4057,7 +4096,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/scroll-area.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/scroll-area.json",
     "keywords": [
       "scroll-area",
       "scroll",
@@ -4115,7 +4154,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/copy-button.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/copy-button.json",
     "keywords": [
       "copy",
       "clipboard",
@@ -4169,7 +4208,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/separator.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/separator.json",
     "keywords": [
       "separator",
       "divider",
@@ -4223,7 +4262,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/collapsible.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/collapsible.json",
     "keywords": [
       "collapsible",
       "disclosure",
@@ -4284,7 +4323,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/dialog.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/dialog.json",
     "keywords": [
       "dialog",
       "modal",
@@ -4347,7 +4386,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/popover.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/popover.json",
     "keywords": [
       "popover",
       "overlay",
@@ -4401,7 +4440,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/hover-card.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/hover-card.json",
     "keywords": [
       "hover-card",
       "preview",
@@ -4448,7 +4487,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/menu.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/menu.json",
     "keywords": [
       "menu",
       "overlay",
@@ -4519,7 +4558,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/dropdown-menu.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/dropdown-menu.json",
     "keywords": [
       "dropdown-menu",
       "menu",
@@ -4567,7 +4606,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/context-menu.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/context-menu.json",
     "keywords": [
       "context-menu",
       "menu",
@@ -4612,7 +4651,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/menubar.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/menubar.json",
     "keywords": [
       "menubar",
       "menu",
@@ -4671,7 +4710,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/navigation-menu.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/navigation-menu.json",
     "keywords": [
       "navigation-menu",
       "menubar",
@@ -4727,7 +4766,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/breadcrumb.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/breadcrumb.json",
     "keywords": [
       "breadcrumb",
       "navigation",
@@ -4818,7 +4857,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/toast.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/toast.json",
     "keywords": [
       "toast",
       "notification",
@@ -4876,7 +4915,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/toolbar.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/toolbar.json",
     "keywords": [
       "toolbar",
       "roving-focus",
@@ -4933,7 +4972,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/tooltip.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/tooltip.json",
     "keywords": [
       "tooltip",
       "overlay",
@@ -4982,7 +5021,7 @@ export const registryDocItems = [
         "type": "registry:ui"
       }
     ],
-    "install": "shadcn add https://keystone-ui.dev/r/sheet.json",
+    "install": "shadcn add https://keystone-ui.drastic.dev/r/sheet.json",
     "keywords": [
       "sheet",
       "drawer",

@@ -39,9 +39,7 @@ export function RenameProjectDialog() {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Rename project</DialogTitle>
-          <DialogDescription>
-            Update the visible project name.
-          </DialogDescription>
+          <DialogDescription>Update the visible project name.</DialogDescription>
         </DialogHeader>
         <div class="grid gap-3">{/* form controls */}</div>
         <DialogFooter>{/* actions */}</DialogFooter>
