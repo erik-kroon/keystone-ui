@@ -75,8 +75,11 @@ function RootComponent() {
 
 function RootDocument(props: Readonly<{ children: JSX.Element }>) {
   return (
-    <html lang="en" class="dark">
+    <html lang="en">
       <head>
+        <script
+          innerHTML={`try{var t=localStorage.getItem("theme")||"dark";var r=t==="light"?"light":"dark";document.documentElement.classList.remove("light","dark");document.documentElement.classList.add(r);document.documentElement.style.colorScheme=r}catch{document.documentElement.classList.add("dark")}`}
+        />
         <HydrationScript />
       </head>
       <body>

@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/solid-router";
-import { splitProps, type JSX } from "solid-js";
+import { createSignal, onMount, splitProps, type JSX } from "solid-js";
 import { DocsCommandSearch } from "@/components/docs-command-search";
 import { DocsMobileNav } from "@/components/docs-mobile-nav";
 import { cn } from "@/lib/cn";
+import { Switch } from "@/components/ui/switch";
 
 const keystoneLogoMarkSizeClass = {
   sm: "size-4.5",
@@ -40,11 +41,49 @@ export function KeystoneLogoMark(props: KeystoneLogoMarkProps) {
   );
 }
 
+export function KeystoneLogo(props: KeystoneLogoMarkProps) {
+  const [local, markProps] = splitProps(props, ["class", "size"]);
+
+  return (
+    <span
+      class={cn("flex shrink-0 items-center justify-center text-foreground", local.class)}
+      aria-hidden="true"
+    >
+      <KeystoneLogoMark {...markProps} size={local.size} />
+    </span>
+  );
+}
+
 export function GitHubMark() {
   return (
     <svg aria-hidden="true" class="size-4 fill-current" viewBox="0 0 24 24">
       <path d="M12 .5A11.5 11.5 0 0 0 8.36 22.9c.58.11.79-.25.79-.56v-2.15c-3.21.7-3.89-1.36-3.89-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.78 1.2 1.78 1.2 1.04 1.77 2.72 1.26 3.38.96.11-.75.41-1.26.74-1.55-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.17 1.18A10.9 10.9 0 0 1 12 5.97c.98 0 1.96.13 2.88.39 2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.4-5.27 5.69.42.36.79 1.07.79 2.16v3.15c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .5Z" />
     </svg>
+  );
+}
+
+function ThemeSwitch() {
+  const [checked, setChecked] = createSignal(true);
+
+  const setTheme = (theme: "dark" | "light") => {
+    document.documentElement.classList.remove("light", "dark");
+    document.documentElement.classList.add(theme);
+    document.documentElement.style.colorScheme = theme;
+    localStorage.setItem("theme", theme);
+    setChecked(theme === "dark");
+  };
+
+  onMount(() => {
+    setChecked(document.documentElement.classList.contains("dark"));
+  });
+
+  return (
+    <Switch
+      aria-label="Toggle dark theme"
+      checked={checked()}
+      class="hidden sm:inline-flex"
+      onCheckedChange={(nextChecked) => setTheme(nextChecked ? "dark" : "light")}
+    />
   );
 }
 
@@ -65,9 +104,7 @@ export default function Header(props: Readonly<{ borderless?: boolean }>) {
             class="flex min-w-0 items-center gap-2.5"
             aria-label="Keystone UI home"
           >
-            <span class="flex size-6 shrink-0 items-center justify-center text-white">
-              <KeystoneLogoMark />
-            </span>
+            <KeystoneLogo class="size-6" />
             <span class="min-w-0 truncate font-semibold text-[1.2rem] leading-5">
               UI
             </span>
@@ -84,7 +121,7 @@ export default function Header(props: Readonly<{ borderless?: boolean }>) {
             class="mx-3.5 hidden h-5 w-px shrink-0 bg-border md:block dark:bg-border/90"
           />
           <a
-            class="mr-2 hidden size-5 items-center justify-center rounded-md outline-none transition-colors hover:text-accent-foreground focus-visible:text-accent-foreground sm:flex"
+            class="mr-3 hidden size-5 items-center justify-center rounded-md outline-none transition-colors hover:text-accent-foreground focus-visible:text-accent-foreground sm:flex"
             href="https://github.com/erik-kroon/keystone-ui"
             rel="noreferrer"
             target="_blank"
@@ -92,6 +129,7 @@ export default function Header(props: Readonly<{ borderless?: boolean }>) {
           >
             <GitHubMark />
           </a>
+          <ThemeSwitch />
         </nav>
       </div>
     </header>

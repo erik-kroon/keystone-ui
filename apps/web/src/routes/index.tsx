@@ -2,7 +2,7 @@ import { Link, createFileRoute, useNavigate } from "@tanstack/solid-router";
 import { ArrowRight } from "lucide-solid";
 import { onCleanup, onMount } from "solid-js";
 
-import { KeystoneLogoMark } from "@/components/header";
+import { KeystoneLogo } from "@/components/header";
 import { landingFileTreeItems } from "@/lib/landing-file-tree.gen";
 import { buttonClass } from "@keystone-ui/ui/button";
 
@@ -128,9 +128,7 @@ function LandingHeader() {
           class="flex mt-8 items-center justify-center"
           aria-label="Keystone UI home"
         >
-          <span class="flex size-7.5 shrink-0 items-center justify-center text-white">
-            <KeystoneLogoMark size="xl" />
-          </span>
+          <KeystoneLogo class="size-7.5" size="xl" />
         </Link>
       </div>
     </header>
@@ -200,19 +198,19 @@ function KeystoneFileTree() {
         paths: treePaths,
         unsafeCSS: `
           :host {
-            --trees-bg-override: #111111;
-            --trees-bg-muted-override: #191919;
+            --trees-bg-override: var(--sidebar);
+            --trees-bg-muted-override: var(--muted);
             --trees-border-color-override: transparent;
-            --trees-fg-override: #f4f4f5;
-            --trees-fg-muted-override: #a1a1aa;
-            --trees-file-icon-color: #71717a;
-            --trees-indent-guide-bg-override: #27272a;
-            --trees-scrollbar-thumb-override: #52525b;
-            --trees-selected-bg-override: #27272a;
-            --trees-selected-fg-override: #fafafa;
-            background: #111111;
-            color: #f4f4f5;
-            color-scheme: dark;
+            --trees-fg-override: var(--foreground);
+            --trees-fg-muted-override: var(--muted-foreground);
+            --trees-file-icon-color: var(--muted-foreground);
+            --trees-indent-guide-bg-override: var(--border);
+            --trees-scrollbar-thumb-override: var(--scrollbar-thumb);
+            --trees-selected-bg-override: var(--accent);
+            --trees-selected-fg-override: var(--accent-foreground);
+            background: var(--trees-bg-override);
+            color: var(--trees-fg-override);
+            color-scheme: light dark;
             font-family:
               "SFMono-Regular", "SF Mono", Consolas, "Liberation Mono", monospace;
             font-size: 0.75rem;
@@ -221,7 +219,7 @@ function KeystoneFileTree() {
           [data-file-tree-virtualized-root='true'],
           [data-file-tree-virtualized-scroll='true'],
           [data-file-tree-virtualized-list='true'] {
-            background: #111111;
+            background: var(--trees-bg-override);
           }
 
           [data-file-tree-virtualized-scroll='true'] {
@@ -271,7 +269,7 @@ function KeystoneFileTree() {
         host = element;
       }}
       aria-label="Keystone UI package file tree"
-      class="h-[36rem] w-full overflow-hidden [--trees-bg-override:#111111] [--trees-border-color-override:transparent] [--trees-fg-override:#f4f4f5]"
+      class="h-[36rem] w-full overflow-hidden [--trees-bg-muted-override:var(--muted)] [--trees-bg-override:var(--sidebar)] [--trees-border-color-override:transparent] [--trees-fg-muted-override:var(--muted-foreground)] [--trees-fg-override:var(--foreground)] [--trees-file-icon-color:var(--muted-foreground)] [--trees-indent-guide-bg-override:var(--border)] [--trees-scrollbar-thumb-override:var(--scrollbar-thumb)] [--trees-selected-bg-override:var(--accent)] [--trees-selected-fg-override:var(--accent-foreground)]"
     />
   );
 }
