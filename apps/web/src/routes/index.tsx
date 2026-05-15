@@ -70,8 +70,7 @@ function HomeRoute() {
           <div class="flex max-w-3xl flex-col items-start justify-center gap-6">
             <div class="flex flex-col gap-3">
               <p class="m-0 mt-1 font-mono text-xs leading-5 text-muted-foreground">
-                unstyled, accessible primitives / beautiful, performant
-                components
+                unstyled, accessible primitives / beautiful, performant components
               </p>
               <h1 class="m-0 max-w-3xl font-heading text-4xl leading-[1.05] font-semibold text-foreground tracking-normal sm:text-5xl lg:text-6xl">
                 Minimal interface system for Solid applications
@@ -79,9 +78,8 @@ function HomeRoute() {
             </div>
 
             <p class="m-0 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8 [text-wrap:pretty]">
-              Keystone pairs headless accessible primitives with a quiet,
-              copy-paste component layer for production-grade, data-dense
-              product-work.
+              Keystone pairs headless accessible primitives with a quiet, copy-paste component layer
+              for production-grade, data-dense product-work.
             </p>
 
             <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
@@ -123,11 +121,7 @@ function LandingHeader() {
   return (
     <header class="relative z-40 w-full">
       <div class="mx-auto flex h-(--header-height) w-full max-w-[1350px] items-center justify-between px-4 md:pr-8 md:pl-12 lg:pr-16 lg:pl-24 xl:pr-24 xl:pl-36">
-        <Link
-          to="/"
-          class="flex mt-8 items-center justify-center"
-          aria-label="Keystone UI home"
-        >
+        <Link to="/" class="flex mt-8 items-center justify-center" aria-label="Keystone UI home">
           <KeystoneLogo class="size-7.5" size="xl" />
         </Link>
       </div>
@@ -153,14 +147,7 @@ function KeystoneFileTree() {
     };
 
     const renderTree = async () => {
-      if (
-        isImporting ||
-        isDisposed ||
-        tree != null ||
-        !host ||
-        !mediaQuery.matches
-      )
-        return;
+      if (isImporting || isDisposed || tree != null || !host || !mediaQuery.matches) return;
 
       isImporting = true;
       const { FileTree } = await import("@pierre/trees").finally(() => {
@@ -198,19 +185,19 @@ function KeystoneFileTree() {
         paths: treePaths,
         unsafeCSS: `
           :host {
-            --trees-bg-override: var(--sidebar);
-            --trees-bg-muted-override: var(--muted);
+            --trees-bg-override: #111111;
+            --trees-bg-muted-override: #191919;
             --trees-border-color-override: transparent;
-            --trees-fg-override: var(--foreground);
-            --trees-fg-muted-override: var(--muted-foreground);
-            --trees-file-icon-color: var(--muted-foreground);
-            --trees-indent-guide-bg-override: var(--border);
-            --trees-scrollbar-thumb-override: var(--scrollbar-thumb);
-            --trees-selected-bg-override: var(--accent);
-            --trees-selected-fg-override: var(--accent-foreground);
-            background: var(--trees-bg-override);
-            color: var(--trees-fg-override);
-            color-scheme: light dark;
+            --trees-fg-override: #f4f4f5;
+            --trees-fg-muted-override: #a1a1aa;
+            --trees-file-icon-color: #71717a;
+            --trees-indent-guide-bg-override: #27272a;
+            --trees-scrollbar-thumb-override: #52525b;
+            --trees-selected-bg-override: #27272a;
+            --trees-selected-fg-override: #fafafa;
+            background: #111111;
+            color: #f4f4f5;
+            color-scheme: dark;
             font-family:
               "SFMono-Regular", "SF Mono", Consolas, "Liberation Mono", monospace;
             font-size: 0.75rem;
@@ -219,7 +206,7 @@ function KeystoneFileTree() {
           [data-file-tree-virtualized-root='true'],
           [data-file-tree-virtualized-scroll='true'],
           [data-file-tree-virtualized-list='true'] {
-            background: var(--trees-bg-override);
+            background: #111111;
           }
 
           [data-file-tree-virtualized-scroll='true'] {
@@ -269,7 +256,7 @@ function KeystoneFileTree() {
         host = element;
       }}
       aria-label="Keystone UI package file tree"
-      class="h-[36rem] w-full overflow-hidden [--trees-bg-muted-override:var(--muted)] [--trees-bg-override:var(--sidebar)] [--trees-border-color-override:transparent] [--trees-fg-muted-override:var(--muted-foreground)] [--trees-fg-override:var(--foreground)] [--trees-file-icon-color:var(--muted-foreground)] [--trees-indent-guide-bg-override:var(--border)] [--trees-scrollbar-thumb-override:var(--scrollbar-thumb)] [--trees-selected-bg-override:var(--accent)] [--trees-selected-fg-override:var(--accent-foreground)]"
+      class="h-[36rem] w-full overflow-hidden [--trees-bg-override:#111111] [--trees-border-color-override:transparent] [--trees-fg-override:#f4f4f5]"
     />
   );
 }

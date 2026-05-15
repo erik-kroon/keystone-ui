@@ -18,8 +18,8 @@ export default defineConfig({
         replacement: fileURLToPath(new URL("./src/lib", import.meta.url)),
       },
       {
-        find: "@",
-        replacement: fileURLToPath(new URL("./src", import.meta.url)),
+        find: /^@\//,
+        replacement: `${fileURLToPath(new URL("./src", import.meta.url))}/`,
       },
     ],
   },

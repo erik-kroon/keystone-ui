@@ -1,9 +1,8 @@
 import { Link } from "@tanstack/solid-router";
-import { createSignal, onMount, splitProps, type JSX } from "solid-js";
+import { splitProps, type JSX } from "solid-js";
 import { DocsCommandSearch } from "@/components/docs-command-search";
 import { DocsMobileNav } from "@/components/docs-mobile-nav";
 import { cn } from "@/lib/cn";
-import { Switch } from "@/components/ui/switch";
 
 const keystoneLogoMarkSizeClass = {
   sm: "size-4.5",
@@ -26,11 +25,7 @@ export function KeystoneLogoMark(props: KeystoneLogoMarkProps) {
     <svg
       {...svgProps}
       aria-hidden="true"
-      class={cn(
-        keystoneLogoMarkSizeClass[local.size ?? "md"],
-        "fill-current",
-        local.class,
-      )}
+      class={cn(keystoneLogoMarkSizeClass[local.size ?? "md"], "fill-current", local.class)}
       viewBox="9 11 46 42"
     >
       <path
@@ -62,31 +57,6 @@ export function GitHubMark() {
   );
 }
 
-function ThemeSwitch() {
-  const [checked, setChecked] = createSignal(true);
-
-  const setTheme = (theme: "dark" | "light") => {
-    document.documentElement.classList.remove("light", "dark");
-    document.documentElement.classList.add(theme);
-    document.documentElement.style.colorScheme = theme;
-    localStorage.setItem("theme", theme);
-    setChecked(theme === "dark");
-  };
-
-  onMount(() => {
-    setChecked(document.documentElement.classList.contains("dark"));
-  });
-
-  return (
-    <Switch
-      aria-label="Toggle dark theme"
-      checked={checked()}
-      class="hidden sm:inline-flex"
-      onCheckedChange={(nextChecked) => setTheme(nextChecked ? "dark" : "light")}
-    />
-  );
-}
-
 export default function Header(props: Readonly<{ borderless?: boolean }>) {
   return (
     <header
@@ -99,22 +69,13 @@ export default function Header(props: Readonly<{ borderless?: boolean }>) {
       <div class="relative mx-auto flex h-(--header-height) w-full max-w-[1416px] items-center justify-between gap-2 px-4 lg:px-6">
         <div class="flex min-w-0 items-center gap-2">
           <DocsMobileNav />
-          <Link
-            to="/"
-            class="flex min-w-0 items-center gap-2.5"
-            aria-label="Keystone UI home"
-          >
+          <Link to="/" class="flex min-w-0 items-center gap-2.5" aria-label="Keystone UI home">
             <KeystoneLogo class="size-6" />
-            <span class="min-w-0 truncate font-semibold text-[1.2rem] leading-5">
-              UI
-            </span>
+            <span class="min-w-0 truncate font-semibold text-[1.2rem] leading-5">UI</span>
           </Link>
         </div>
 
-        <nav
-          class="flex items-center text-sm text-muted-foreground"
-          aria-label="Actions"
-        >
+        <nav class="flex items-center text-sm text-muted-foreground" aria-label="Actions">
           <DocsCommandSearch />
           <span
             aria-hidden="true"
@@ -129,7 +90,6 @@ export default function Header(props: Readonly<{ borderless?: boolean }>) {
           >
             <GitHubMark />
           </a>
-          <ThemeSwitch />
         </nav>
       </div>
     </header>
