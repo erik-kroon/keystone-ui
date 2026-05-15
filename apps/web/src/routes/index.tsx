@@ -2,7 +2,7 @@ import { Link, createFileRoute, useNavigate } from "@tanstack/solid-router";
 import { ArrowRight } from "lucide-solid";
 import { onCleanup, onMount } from "solid-js";
 
-import { KeystoneLogoMark } from "@/components/header";
+import { KeystoneLogo } from "@/components/header";
 import { landingFileTreeItems } from "@/lib/landing-file-tree.gen";
 import { buttonClass } from "@keystone-ui/ui/button";
 
@@ -70,8 +70,7 @@ function HomeRoute() {
           <div class="flex max-w-3xl flex-col items-start justify-center gap-6">
             <div class="flex flex-col gap-3">
               <p class="m-0 mt-1 font-mono text-xs leading-5 text-muted-foreground">
-                unstyled, accessible primitives / beautiful, performant
-                components
+                unstyled, accessible primitives / beautiful, performant components
               </p>
               <h1 class="m-0 max-w-3xl font-heading text-4xl leading-[1.05] font-semibold text-foreground tracking-normal sm:text-5xl lg:text-6xl">
                 Minimal interface system for Solid applications
@@ -79,9 +78,8 @@ function HomeRoute() {
             </div>
 
             <p class="m-0 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8 [text-wrap:pretty]">
-              Keystone pairs headless accessible primitives with a quiet,
-              copy-paste component layer for production-grade, data-dense
-              product-work.
+              Keystone pairs headless accessible primitives with a quiet, copy-paste component layer
+              for production-grade, data-dense product-work.
             </p>
 
             <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
@@ -123,14 +121,8 @@ function LandingHeader() {
   return (
     <header class="relative z-40 w-full">
       <div class="mx-auto flex h-(--header-height) w-full max-w-[1350px] items-center justify-between px-4 md:pr-8 md:pl-12 lg:pr-16 lg:pl-24 xl:pr-24 xl:pl-36">
-        <Link
-          to="/"
-          class="flex mt-8 items-center justify-center"
-          aria-label="Keystone UI home"
-        >
-          <span class="flex size-7.5 shrink-0 items-center justify-center text-white">
-            <KeystoneLogoMark size="xl" />
-          </span>
+        <Link to="/" class="flex mt-8 items-center justify-center" aria-label="Keystone UI home">
+          <KeystoneLogo class="size-7.5" size="xl" />
         </Link>
       </div>
     </header>
@@ -155,14 +147,7 @@ function KeystoneFileTree() {
     };
 
     const renderTree = async () => {
-      if (
-        isImporting ||
-        isDisposed ||
-        tree != null ||
-        !host ||
-        !mediaQuery.matches
-      )
-        return;
+      if (isImporting || isDisposed || tree != null || !host || !mediaQuery.matches) return;
 
       isImporting = true;
       const { FileTree } = await import("@pierre/trees").finally(() => {

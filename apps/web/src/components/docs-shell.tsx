@@ -518,10 +518,11 @@ export function DocsSidebar(props: Readonly<{ groups: readonly NavGroup[] }>) {
 }
 
 export function DocsToc(props: Readonly<{ items: readonly TocItem[] }>) {
-  const tocItems = createMemo<readonly TocItem[]>(() => [
-    { href: "#top", label: "(Top)" },
-    ...props.items,
-  ]);
+  const tocItems = createMemo<readonly TocItem[]>(() => {
+    const [firstItem, ...restItems] = props.items;
+
+    return firstItem ? [{ ...firstItem, href: "#top" }, ...restItems] : [];
+  });
   const itemIds = createMemo(() =>
     tocItems()
       .map((item) => item.href.replace(/^#/, ""))

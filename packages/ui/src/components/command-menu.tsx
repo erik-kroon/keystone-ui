@@ -60,7 +60,10 @@ export type CommandMenuFilter = (
   itemText: string,
 ) => boolean;
 
-export type CommandMenuProps = Omit<CoreCommandRootProps, "children" | "inputValue" | "open"> & {
+export type CommandMenuProps = Omit<
+  CoreCommandRootProps,
+  "children" | "inputValue" | "open"
+> & {
   children?: JSX.Element;
   backdropClass?: string;
   contentClass?: string;
@@ -92,7 +95,9 @@ export type CommandMenuRootProps = CoreCommandRootProps;
 export type CommandMenuTriggerProps = CoreCommandTriggerProps;
 export type CommandMenuInputProps = CoreCommandInputProps;
 export type CommandMenuPortalProps = CoreCommandPortalProps;
-export type CommandMenuPositionerProps = ParentProps<JSX.HTMLAttributes<HTMLDivElement>>;
+export type CommandMenuPositionerProps = ParentProps<
+  JSX.HTMLAttributes<HTMLDivElement>
+>;
 export type CommandMenuBackdropProps = JSX.HTMLAttributes<HTMLDivElement>;
 export type CommandMenuContentProps = CoreCommandContentProps & {
   backdropClass?: string;
@@ -102,7 +107,9 @@ export type CommandMenuContentProps = CoreCommandContentProps & {
   showBackdrop?: boolean;
 };
 export type CommandMenuListProps = CoreCommandListboxProps;
-export type CommandMenuPanelProps = ParentProps<JSX.HTMLAttributes<HTMLDivElement>>;
+export type CommandMenuPanelProps = ParentProps<
+  JSX.HTMLAttributes<HTMLDivElement>
+>;
 export type CommandMenuGroupProps = CoreCommandGroupProps;
 export type CommandMenuGroupLabelProps = CoreCommandGroupLabelProps;
 export type CommandMenuItemProps = CoreCommandItemProps & {
@@ -152,7 +159,9 @@ function SearchIcon() {
   );
 }
 
-export function createCommandMenuStore(initialState: Partial<CommandMenuState> = {}) {
+export function createCommandMenuStore(
+  initialState: Partial<CommandMenuState> = {},
+) {
   return createCommandStore({ initialState }) satisfies CommandMenuStore;
 }
 
@@ -184,14 +193,21 @@ export function CommandMenu(props: CommandMenuProps) {
     "trigger",
     "triggerClass",
   ]);
-  const commandStore = local.store ?? createCommandMenuStore({ open: rootProps.defaultOpen });
+  const commandStore =
+    local.store ?? createCommandMenuStore({ open: rootProps.defaultOpen });
   const open = useSelector(commandStore.store, (state) => state.open);
   const query = useSelector(commandStore.store, (state) => state.query);
   const visibleItems = createMemo(() => {
-    const items = local.filteredItems ?? filterCommandItems(local.items, query(), local.filter);
-    return local.maxItems === undefined ? items : items.slice(0, local.maxItems);
+    const items =
+      local.filteredItems ??
+      filterCommandItems(local.items, query(), local.filter);
+    return local.maxItems === undefined
+      ? items
+      : items.slice(0, local.maxItems);
   });
-  const hasItemIcons = createMemo(() => visibleItems().some((item) => item.icon != null));
+  const hasItemIcons = createMemo(() =>
+    visibleItems().some((item) => item.icon != null),
+  );
   const groups = createMemo(() => groupCommandItems(visibleItems()));
   const hotkeys = createMemo(() => normalizeHotkeys(local.hotkeys));
   let inputElement: HTMLInputElement | undefined;
@@ -243,7 +259,8 @@ export function CommandMenu(props: CommandMenuProps) {
             ignoreInputs: false,
             meta: {
               name: "Open command menu",
-              description: "Preview TanStack Hotkeys shortcut for the command menu.",
+              description:
+                "Preview TanStack Hotkeys shortcut for the command menu.",
             },
           },
         },
@@ -305,7 +322,9 @@ export function CommandMenu(props: CommandMenuProps) {
       }}
     >
       <Show when={local.trigger}>
-        <CommandMenuTrigger class={local.triggerClass}>{local.trigger}</CommandMenuTrigger>
+        <CommandMenuTrigger class={local.triggerClass}>
+          {local.trigger}
+        </CommandMenuTrigger>
       </Show>
       <CommandMenuContent
         backdropClass={local.backdropClass}
@@ -326,13 +345,22 @@ export function CommandMenu(props: CommandMenuProps) {
           <CommandMenuList class={local.listboxClass}>
             <Show
               when={visibleItems().length > 0}
-              fallback={<CommandMenuEmpty>{local.empty ?? "No results found."}</CommandMenuEmpty>}
+              fallback={
+                <CommandMenuEmpty>
+                  {local.empty ?? "No results found."}
+                </CommandMenuEmpty>
+              }
             >
               <For each={groups()}>
                 {(group) => (
-                  <CommandMenuGroup value={group.value} label={group.label ?? "Commands"}>
+                  <CommandMenuGroup
+                    value={group.value}
+                    label={group.label ?? "Commands"}
+                  >
                     <Show when={group.label}>
-                      <CommandMenuGroupLabel>{group.label}</CommandMenuGroupLabel>
+                      <CommandMenuGroupLabel>
+                        {group.label}
+                      </CommandMenuGroupLabel>
                     </Show>
                     <For each={group.items}>
                       {(item) => (
@@ -346,7 +374,8 @@ export function CommandMenu(props: CommandMenuProps) {
                           shortcut={
                             item.shortcut ? (
                               <CommandMenuShortcut class={local.shortcutClass}>
-                                {item.shortcutLabel ?? formatForDisplay(item.shortcut)}
+                                {item.shortcutLabel ??
+                                  formatForDisplay(item.shortcut)}
                               </CommandMenuShortcut>
                             ) : undefined
                           }
@@ -381,7 +410,9 @@ export function CommandMenu(props: CommandMenuProps) {
           </CommandMenuList>
         </CommandMenuPanel>
         <Show when={local.footer}>
-          <CommandMenuFooter class={local.footerClass}>{local.footer}</CommandMenuFooter>
+          <CommandMenuFooter class={local.footerClass}>
+            {local.footer}
+          </CommandMenuFooter>
         </Show>
         {local.children}
       </CommandMenuContent>
@@ -445,7 +476,7 @@ export function CommandMenuInput(props: CommandMenuInputProps) {
         data-scope="ui-command-menu"
         data-part="input-icon"
         data-slot="command-menu-input-icon"
-        class="pointer-events-none absolute top-[calc(50%+1px)] z-10 ms-[calc(--spacing(3)-2px)] flex size-5 -translate-y-1/2 items-center justify-center text-foreground/72 sm:size-4.5"
+        class="pointer-events-none absolute top-[calc(50%+1px)] z-10 ms-[calc(--spacing(2))] flex size-5 -translate-y-1/2 items-center justify-center text-foreground/72 sm:size-4.5"
       >
         <SearchIcon />
       </span>
@@ -462,7 +493,7 @@ export function CommandMenuInput(props: CommandMenuInputProps) {
             "appearance-none",
             "border-0",
             "bg-transparent",
-            "ps-[calc(--spacing(12.5)-1px)]",
+            "ps-[calc(--spacing(10.5)-1px)]",
             "pe-3",
             "text-base",
             "text-foreground",
@@ -613,7 +644,9 @@ export function CommandMenuContent(props: CommandMenuContentProps) {
       <Show when={local.showBackdrop !== false}>
         <CommandMenuBackdrop class={local.backdropClass} />
       </Show>
-      <CommandMenuPositioner class={local.positionerClass}>{content}</CommandMenuPositioner>
+      <CommandMenuPositioner class={local.positionerClass}>
+        {content}
+      </CommandMenuPositioner>
     </CommandMenuPortal>
   );
 }
@@ -679,7 +712,10 @@ export function CommandMenuGroup(props: CommandMenuGroupProps) {
     <CoreCommand.Group
       {...rest}
       data-slot="command-menu-group"
-      class={cn(classes("ui-command-menu-group", "mt-2", "first:mt-0"), local.class)}
+      class={cn(
+        classes("ui-command-menu-group", "mt-2", "first:mt-0"),
+        local.class,
+      )}
     />
   );
 }
@@ -850,7 +886,13 @@ export function CommandMenuSeparator(props: CommandMenuSeparatorProps) {
       data-part="separator"
       data-slot="command-menu-separator"
       class={cn(
-        classes("ui-command-menu-separator", "mx-2", "my-2", "h-px", "bg-border"),
+        classes(
+          "ui-command-menu-separator",
+          "mx-2",
+          "my-2",
+          "h-px",
+          "bg-border",
+        ),
         local.class,
       )}
     />
@@ -887,8 +929,13 @@ export function CommandMenuFooter(props: CommandMenuFooterProps) {
 
 function normalizeHotkeys(
   options: CommandMenuProps["hotkeys"],
-): Required<Pick<CommandMenuHotkeysOptions, "enabled" | "itemShortcuts" | "openShortcut">> &
-  Omit<CommandMenuHotkeysOptions, "enabled" | "itemShortcuts" | "openShortcut"> {
+): Required<
+  Pick<CommandMenuHotkeysOptions, "enabled" | "itemShortcuts" | "openShortcut">
+> &
+  Omit<
+    CommandMenuHotkeysOptions,
+    "enabled" | "itemShortcuts" | "openShortcut"
+  > {
   if (options === false) {
     return {
       enabled: false,
@@ -945,7 +992,9 @@ function filterCommandItems(
       ),
     }))
     .filter(
-      (match): match is { item: CommandMenuItemData; index: number; score: number } =>
+      (
+        match,
+      ): match is { item: CommandMenuItemData; index: number; score: number } =>
         match.score !== null,
     )
     .sort((a, b) => a.score - b.score || a.index - b.index)
@@ -953,7 +1002,13 @@ function filterCommandItems(
 }
 
 function commandItemText(item: CommandMenuItemData) {
-  return [item.label, item.value, item.description, item.group, ...(item.keywords ?? [])]
+  return [
+    item.label,
+    item.value,
+    item.description,
+    item.group,
+    ...(item.keywords ?? []),
+  ]
     .filter(Boolean)
     .join(" ");
 }
@@ -992,7 +1047,11 @@ function rankSearchFields(
   );
 
   if (allTermsMatch) {
-    const termScore = searchableFields.some((field) => field.weight === "primary") ? 24 : 32;
+    const termScore = searchableFields.some(
+      (field) => field.weight === "primary",
+    )
+      ? 24
+      : 32;
     bestScore = bestScore === null ? termScore : Math.min(bestScore, termScore);
   }
 
@@ -1009,15 +1068,24 @@ function rankSearchField(
   const words = field.split(" ").filter(Boolean);
   const initials = words.map((word) => word[0]).join("");
 
-  if (field === query.normalized || compactField === query.compact) return offset;
-  if (field.startsWith(query.normalized) || compactField.startsWith(query.compact)) {
+  if (field === query.normalized || compactField === query.compact)
+    return offset;
+  if (
+    field.startsWith(query.normalized) ||
+    compactField.startsWith(query.compact)
+  ) {
     return offset + 1;
   }
-  if (field.includes(query.normalized) || compactField.includes(query.compact)) {
+  if (
+    field.includes(query.normalized) ||
+    compactField.includes(query.compact)
+  ) {
     return offset + 2;
   }
   if (initials.startsWith(query.compact)) return offset + 3;
-  if (query.terms.every((term) => words.some((word) => word.startsWith(term)))) {
+  if (
+    query.terms.every((term) => words.some((word) => word.startsWith(term)))
+  ) {
     return offset + 4;
   }
   if (query.terms.every((term) => words.some((word) => word.includes(term)))) {

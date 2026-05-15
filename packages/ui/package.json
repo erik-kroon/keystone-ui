@@ -27,6 +27,7 @@
     "solid-js": "^1.9.12"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
     "happy-dom": "^20.0.10",
     "typescript": "catalog:",
     "vite-plugin-solid": "^2.11.10",

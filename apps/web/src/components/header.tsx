@@ -25,11 +25,7 @@ export function KeystoneLogoMark(props: KeystoneLogoMarkProps) {
     <svg
       {...svgProps}
       aria-hidden="true"
-      class={cn(
-        keystoneLogoMarkSizeClass[local.size ?? "md"],
-        "fill-current",
-        local.class,
-      )}
+      class={cn(keystoneLogoMarkSizeClass[local.size ?? "md"], "fill-current", local.class)}
       viewBox="9 11 46 42"
     >
       <path
@@ -37,6 +33,19 @@ export function KeystoneLogoMark(props: KeystoneLogoMarkProps) {
         transform="translate(32 32) scale(1.12) translate(-32 -32)"
       />
     </svg>
+  );
+}
+
+export function KeystoneLogo(props: KeystoneLogoMarkProps) {
+  const [local, markProps] = splitProps(props, ["class", "size"]);
+
+  return (
+    <span
+      class={cn("flex shrink-0 items-center justify-center text-foreground", local.class)}
+      aria-hidden="true"
+    >
+      <KeystoneLogoMark {...markProps} size={local.size} />
+    </span>
   );
 }
 
@@ -60,31 +69,20 @@ export default function Header(props: Readonly<{ borderless?: boolean }>) {
       <div class="relative mx-auto flex h-(--header-height) w-full max-w-[1416px] items-center justify-between gap-2 px-4 lg:px-6">
         <div class="flex min-w-0 items-center gap-2">
           <DocsMobileNav />
-          <Link
-            to="/"
-            class="flex min-w-0 items-center gap-2.5"
-            aria-label="Keystone UI home"
-          >
-            <span class="flex size-6 shrink-0 items-center justify-center text-white">
-              <KeystoneLogoMark />
-            </span>
-            <span class="min-w-0 truncate font-semibold text-[1.2rem] leading-5">
-              UI
-            </span>
+          <Link to="/" class="flex min-w-0 items-center gap-2.5" aria-label="Keystone UI home">
+            <KeystoneLogo class="size-6" />
+            <span class="min-w-0 truncate font-semibold text-[1.2rem] leading-5">UI</span>
           </Link>
         </div>
 
-        <nav
-          class="flex items-center text-sm text-muted-foreground"
-          aria-label="Actions"
-        >
+        <nav class="flex items-center text-sm text-muted-foreground" aria-label="Actions">
           <DocsCommandSearch />
           <span
             aria-hidden="true"
             class="mx-3.5 hidden h-5 w-px shrink-0 bg-border md:block dark:bg-border/90"
           />
           <a
-            class="mr-2 hidden size-5 items-center justify-center rounded-md outline-none transition-colors hover:text-accent-foreground focus-visible:text-accent-foreground sm:flex"
+            class="mr-3 hidden size-5 items-center justify-center rounded-md outline-none transition-colors hover:text-accent-foreground focus-visible:text-accent-foreground sm:flex"
             href="https://github.com/erik-kroon/keystone-ui"
             rel="noreferrer"
             target="_blank"
